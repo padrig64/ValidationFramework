@@ -13,14 +13,16 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.plaf.ColorUIResource;
 
+import validation.datarule.DataRule;
+import validation.datavalidator.TextFieldStringValidator;
 import validation.feedback.AbstractColorFeedBack;
 import validation.feedback.AbstractToolTipFeedBack;
+import validation.result.AggregatableResult;
 import validation.rule.Rule;
-import validation.validator.TextFieldValidator;
 
 public class TestFrame extends JFrame {
 
-	private class TextFieldRule implements Rule<String, TextFieldResult> {
+	private class TextFieldDataRule implements DataRule<String, TextFieldResult> {
 
 		public TextFieldResult validate(String input) {
 			TextFieldResult result = TextFieldResult.OK;
@@ -42,17 +44,19 @@ public class TestFrame extends JFrame {
 	private static final Color COLOR_NOK_EMPTY = new ColorUIResource(new Color(226, 125, 125, 127));
 	private static final Color COLOR_NOK_TOO_LONG = new ColorUIResource(new Color(226, 125, 125));
 
-	private enum TextFieldResult {
+	private enum TextFieldResult implements AggregatableResult<Boolean> {
 
-		OK("", null, null),
-		NOK_EMPTY("Cannot be empty", null, COLOR_NOK_EMPTY),
-		NOK_TOO_LONG("Should be less than 5 characters", COLOR_NOK_TOO_LONG, null);
+		OK(true, "", null, null),
+		NOK_EMPTY(false, "Cannot be empty", null, COLOR_NOK_EMPTY),
+		NOK_TOO_LONG(false, "Should be less than 5 characters", COLOR_NOK_TOO_LONG, null);
 
+		private boolean aggregatableResult;
 		private String text;
 		private Color foreground;
 		private Color background;
 
-		TextFieldResult(String text, Color foreground, Color background) {
+		TextFieldResult(boolean aggregatableResult, String text, Color foreground, Color background) {
+			this.aggregatableResult=aggregatableResult;
 			this.text = text;
 			this.foreground = foreground;
 			this.background = background;
@@ -69,6 +73,11 @@ public class TestFrame extends JFrame {
 		@Override
 		public String toString() {
 			return text;
+		}
+
+		@Override
+		public Boolean getAggregatableResult() {
+			return aggregatableResult;
 		}
 	}
 
@@ -111,6 +120,32 @@ public class TestFrame extends JFrame {
 		}
 	}
 
+	private class GroupRule implements Rule<GroupResult> {
+
+		public GroupResult validate() {
+			GroupResult result = GroupResult.OK;
+
+
+
+			return result;
+		}
+	}
+
+	private enum GroupResult {
+		OK(true),
+		NOK(false);
+
+		private final boolean applyEnabled;
+
+		GroupResult(boolean applyEnabled) {
+			this.applyEnabled = applyEnabled;
+		}
+
+		public boolean isApplyEnabled() {
+			return applyEnabled;
+		}
+	}
+
 	public TestFrame() {
 		super();
 		init();
@@ -124,22 +159,27 @@ public class TestFrame extends JFrame {
 		JPanel contentPane = new JPanel(new GridLayout(3, 1));
 		setContentPane(contentPane);
 
+		// First textfield
 		JTextField textField = new JTextField();
 		contentPane.add(textField);
-		TextFieldValidator<TextFieldResult> validator1 = new TextFieldValidator<TextFieldResult>(textField);
-		validator1.addRule(new TextFieldRule());
+		TextFieldStringValidator<TextFieldResult> validator1 = new TextFieldStringValidator<TextFieldResult>(textField);
+		validator1.addRule(new TextFieldDataRule());
 		validator1.addFeedBack(new TextFieldToolTipFeedBack(textField));
 		validator1.addFeedBack(new TextFieldColorFeedBack(textField));
 
+		// Second textfield
 		textField = new JTextField();
 		contentPane.add(textField);
-		TextFieldValidator<TextFieldResult> validator2 = new TextFieldValidator<TextFieldResult>(textField);
-		validator2.addRule(new TextFieldRule());
+		TextFieldStringValidator<TextFieldResult> validator2 = new TextFieldStringValidator<TextFieldResult>(textField);
+		validator2.addRule(new TextFieldDataRule());
 		validator2.addFeedBack(new TextFieldToolTipFeedBack(textField));
 		validator2.addFeedBack(new TextFieldColorFeedBack(textField));
 
+		// Apply button
 		JButton button = new JButton("Apply");
 		contentPane.add(button);
+
+		// Conditional logic
 
 		// Set size
 		pack();

@@ -1,11 +1,11 @@
-package validation.rule;
+package validation.datarule;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class RegexBooleanRule implements Rule<String, Boolean> {
+public class RegexBooleanRule implements DataRule<String, Boolean> {
 
 	private Map<String, Integer> patterns = new HashMap<String, Integer>();
 
@@ -28,7 +28,7 @@ public class RegexBooleanRule implements Rule<String, Boolean> {
 		for (Map.Entry<String, Integer> patternEntry : patterns.entrySet()) {
 			Pattern pattern = Pattern.compile(patternEntry.getKey(), patternEntry.getValue());
 			Matcher matcher = pattern.matcher(data);
-			if(matcher.find()) {
+			if (matcher.find()) {
 				result = true;
 			}
 		}

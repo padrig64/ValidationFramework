@@ -1,34 +1,31 @@
-package validation.validator;
+package validation.datavalidator;
 
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import validation.feedback.FeedBack;
-import validation.rule.Rule;
+public class TextFieldStringValidator<R> extends AbstractDataValidator<String, R> {
 
-public class TextFieldValidator<R> extends AbstractValidator<String, R> {
-
-	private class DocumentAdapter implements DocumentListener {
+	private class InputAdapter implements DocumentListener {
 
 		public void insertUpdate(DocumentEvent e) {
-			performValidation();
+			triggerValidation();
 		}
 
 		public void removeUpdate(DocumentEvent e) {
-			performValidation();
+			triggerValidation();
 		}
 
 		public void changedUpdate(DocumentEvent e) {
-			performValidation();
+			triggerValidation();
 		}
 	}
 
 	private JTextField textField = null;
 
-	private DocumentAdapter inputAdapter = new DocumentAdapter();
+	private InputAdapter inputAdapter = new InputAdapter();
 
-	public TextFieldValidator(JTextField inputComponent) {
+	public TextFieldStringValidator(JTextField inputComponent) {
 		super();
 		attachComponent(inputComponent);
 	}

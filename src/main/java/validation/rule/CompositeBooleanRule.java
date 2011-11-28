@@ -3,24 +3,24 @@ package validation.rule;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CompositeBooleanRule<D> implements Rule<D, Boolean> {
+public class CompositeBooleanRule implements Rule<Boolean> {
 
-	private List<Rule<D, Boolean>> rules = new ArrayList<Rule<D, Boolean>>();
+	private List<Rule<Boolean>> rules = new ArrayList<Rule<Boolean>>();
 
-	public void addRule(Rule<D, Boolean> rule) {
+	public void addRule(Rule<Boolean> rule) {
 		rules.add(rule);
 	}
 
-	public void removeRule(Rule<D, Boolean> rule) {
+	public void removeRule(Rule<Boolean> rule) {
 		rules.remove(rule);
 	}
 
 	@Override
-	public Boolean validate(D data) {
+	public Boolean validate() {
 		Boolean result = true;
 
-		for (Rule<D, Boolean> rule : rules) {
-			result &= rule.validate(data);
+		for (Rule<Boolean> rule : rules) {
+			result &= rule.validate();
 		}
 
 		return result;
