@@ -1,10 +1,11 @@
-package validation.feedback;
+package validation.feedback.swing;
 
 import java.awt.Color;
 
 import javax.swing.JComponent;
 
-import validation.utils.ColorUtils;
+import validation.feedback.FeedBack;
+import validation.utils.swing.ColorUtils;
 
 public abstract class AbstractColorFeedBack<R> implements FeedBack<R> {
 

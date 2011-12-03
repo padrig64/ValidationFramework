@@ -1,4 +1,4 @@
-package validation.test;
+package validation.test.swing;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -14,9 +14,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.plaf.ColorUIResource;
 
 import validation.datarule.DataRule;
-import validation.datavalidator.TextFieldStringValidator;
-import validation.feedback.AbstractColorFeedBack;
-import validation.feedback.AbstractToolTipFeedBack;
+import validation.datavalidator.swing.TextFieldStringValidator;
+import validation.feedback.swing.AbstractColorFeedBack;
+import validation.feedback.swing.AbstractToolTipFeedBack;
 import validation.result.AggregatableResult;
 import validation.rule.Rule;
 
@@ -56,7 +56,7 @@ public class TestFrame extends JFrame {
 		private Color background;
 
 		TextFieldResult(boolean aggregatableResult, String text, Color foreground, Color background) {
-			this.aggregatableResult=aggregatableResult;
+			this.aggregatableResult = aggregatableResult;
 			this.text = text;
 			this.foreground = foreground;
 			this.background = background;
@@ -124,7 +124,6 @@ public class TestFrame extends JFrame {
 
 		public GroupResult validate() {
 			GroupResult result = GroupResult.OK;
-
 
 
 			return result;

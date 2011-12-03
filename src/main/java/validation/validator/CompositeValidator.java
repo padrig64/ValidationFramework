@@ -3,9 +3,6 @@ package validation.validator;
 import java.util.ArrayList;
 import java.util.List;
 
-import validation.datarule.DataRule;
-import validation.datavalidator.AbstractDataValidator;
-import validation.datavalidator.DataValidator;
 import validation.feedback.FeedBack;
 import validation.rule.Rule;
 

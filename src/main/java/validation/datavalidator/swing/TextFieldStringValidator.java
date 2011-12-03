@@ -1,8 +1,10 @@
-package validation.datavalidator;
+package validation.datavalidator.swing;
 
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+
+import validation.datavalidator.AbstractDataValidator;
 
 public class TextFieldStringValidator<R> extends AbstractDataValidator<String, R> {
 

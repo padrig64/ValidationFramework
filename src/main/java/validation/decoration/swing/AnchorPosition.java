@@ -1,4 +1,4 @@
-package validation.decoration;
+package validation.decoration.swing;
 
 public enum AnchorPosition {
 	BEGIN,

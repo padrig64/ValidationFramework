@@ -1,9 +1,9 @@
-package validation.utils;
+package validation.utils.swing;
 
 import java.awt.Component;
 import java.awt.Point;
 
-import validation.decoration.DualAnchor;
+import validation.decoration.swing.DualAnchor;
 
 public class ComponentUtils {
 
@@ -14,9 +14,10 @@ public class ComponentUtils {
 	public static Point getSlaveLocation(Component master, Component slave, DualAnchor dualAnchor) {
 		Point slaveLoc = new Point(0, 0);
 
-		if(dualAnchor != null) {
-			Point masterPoint = dualAnchor.getMasterAnchor().getComponentPoint(master);
-			Point slavePoint = dualAnchor.getSlaveAnchor().getComponentPoint(slave);
+		if (dualAnchor != null) {
+			// TODO
+//			Point masterPoint = dualAnchor.getMasterAnchor().getComponentPoint(master);
+//			Point slavePoint = dualAnchor.getSlaveAnchor().getComponentPoint(slave);
 		}
 
 		return slaveLoc;

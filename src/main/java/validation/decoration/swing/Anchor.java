@@ -1,11 +1,9 @@
-package validation.decoration;
+package validation.decoration.swing;
 
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Toolkit;
-
-import javax.swing.SwingUtilities;
 
 public class Anchor {
 
@@ -61,7 +59,7 @@ public class Anchor {
 		return point;
 	}
 
-	public Point getOrigin(Component comp, Point anchorPoint) {
+	public Point getComponentOrigin(Component comp) {
 		Point point;
 
 		if (comp == null) {

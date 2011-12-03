@@ -1,9 +1,11 @@
-package validation.datavalidator;
+package validation.datavalidator.swing;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JComboBox;
+
+import validation.datavalidator.AbstractDataValidator;
 
 public class ComboBoxIndexValidator<R> extends AbstractDataValidator<Integer, R> {
 

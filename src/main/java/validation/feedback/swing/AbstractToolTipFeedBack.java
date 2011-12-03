@@ -1,4 +1,4 @@
-package validation.feedback;
+package validation.feedback.swing;
 
 import java.awt.Point;
 import java.awt.event.ComponentEvent;
@@ -21,6 +21,7 @@ import org.jdesktop.core.animation.timing.TimingSource;
 import org.jdesktop.core.animation.timing.TimingTarget;
 import org.jdesktop.core.animation.timing.interpolators.SplineInterpolator;
 import org.jdesktop.swing.animation.timing.sources.SwingTimerTimingSource;
+import validation.feedback.FeedBack;
 
 public abstract class AbstractToolTipFeedBack<R> implements FeedBack<R> {
 

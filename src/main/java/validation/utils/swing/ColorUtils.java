@@ -1,4 +1,4 @@
-package validation.utils;
+package validation.utils.swing;
 
 import java.awt.Color;
 
