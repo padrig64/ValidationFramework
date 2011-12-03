@@ -1,10 +1,10 @@
-package validation.datavalidator;
+package validation.validator;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import validation.datarule.DataRule;
 import validation.feedback.FeedBack;
+import validation.rule.DataRule;
 
 public abstract class AbstractDataValidator<D, R> implements DataValidator<D, R> {
 

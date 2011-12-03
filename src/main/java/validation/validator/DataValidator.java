@@ -1,7 +1,7 @@
-package validation.datavalidator;
+package validation.validator;
 
-import validation.datarule.DataRule;
 import validation.feedback.FeedBack;
+import validation.rule.DataRule;
 
 public interface DataValidator<D, R> {
 

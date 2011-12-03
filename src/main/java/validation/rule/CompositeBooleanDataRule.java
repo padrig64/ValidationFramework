@@ -1,4 +1,4 @@
-package validation.datarule;
+package validation.rule;
 
 import java.util.ArrayList;
 import java.util.List;

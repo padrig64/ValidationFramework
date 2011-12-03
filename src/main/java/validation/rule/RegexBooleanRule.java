@@ -1,4 +1,4 @@
-package validation.datarule;
+package validation.rule;
 
 import java.util.HashMap;
 import java.util.Map;

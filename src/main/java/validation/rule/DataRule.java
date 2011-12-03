@@ -1,4 +1,4 @@
-package validation.datarule;
+package validation.rule;
 
 public interface DataRule<D, R> {
 

@@ -13,12 +13,12 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.plaf.ColorUIResource;
 
-import validation.datarule.DataRule;
-import validation.datavalidator.swing.TextFieldStringValidator;
 import validation.feedback.swing.AbstractColorFeedBack;
 import validation.feedback.swing.AbstractToolTipFeedBack;
 import validation.result.AggregatableResult;
+import validation.rule.DataRule;
 import validation.rule.Rule;
+import validation.validator.swing.TextFieldStringValidator;
 
 public class TestFrame extends JFrame {
 

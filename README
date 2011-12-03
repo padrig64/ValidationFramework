@@ -1,6 +1,5 @@
-The Validation Framework consists in a set of utilities and base classes to help in developing full-featured GUIs with
-user interaction, by allowing to validate of user input, to assist user during input and provide feedback from the
-input.
+The Validation Framework is a set of utilities and base classes to help in developing full-featured user interaction, by
+simplifying/unifying the validation of user input as well as the assistance and feedback to the user.
 
 The following featured are expected:
 
@@ -11,7 +10,7 @@ INPUT VALIDATION
  . Validation on individual components;
  . Validation on groups of components with inter-dependencies;
  . Validation of groups within groups;
- . Syntax validation and semantic validation;
+ . Syntax validation and semantic validation.
 
 FEEDBACK
  . Immediate feedback;
@@ -20,16 +19,19 @@ FEEDBACK
    automatic correction of related components;
  . Conditional logic for components (for example, enabling/disabling of an Apply button in case of valid/invalid input)
  . Decorations for user assistance (icons, convenient tooltips, hints, etc.), staying close to the current
-   look-and-feel;
+   look-and-feel.
 
-EXTEND-ABLE FRAMEWORK
- . Most generic concepts as possible;
+EASY AND EXTENDABLE FRAMEWORK
+ . Most generic concepts as possible (validation trigger -> data reader -> validation algorithm -> validation rules ->
+   validation results -> feedback to user -> component decorations);
  . Easily pluggable to custom components;
  . Not only for Swing components;
  . Not only GUI input validation (however, this is not the focus of the framework);
- . Special components (any kind of components)
- . Custom rules (of course)
- . Custom feedbacks
+ . Special components (any kind of components);
+ . Flexibility of use (one validator for the whole application, or one validator per input component, or whatever);
+ . Easy of use (for the programmer);
+ . Custom rules (of course);
+ . Custom feedbacks;
  . Custom decorations;
  . Custom validation/feedback algorithms;
  . Anything useful you can imagine.
