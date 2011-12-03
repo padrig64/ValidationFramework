@@ -3,14 +3,25 @@ package validation.validator;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jdesktop.core.animation.timing.Trigger;
 import validation.feedback.FeedBack;
 import validation.rule.Rule;
 
 public abstract class AbstractValidator<D, R> implements Validator<D, R> {
 
+	protected List<Trigger> triggers = new ArrayList<Trigger>();
+
 	protected List<Rule<D, R>> rules = new ArrayList<Rule<D, R>>();
 
 	protected List<FeedBack<R>> feedBacks = new ArrayList<FeedBack<R>>();
+
+	public void addTrigger(Trigger trigger) {
+		triggers.add(trigger);
+	}
+
+	public void removeTrigger(Trigger trigger) {
+		triggers.remove(trigger);
+	}
 
 	public void addRule(Rule<D, R> rule) {
 		rules.add(rule);

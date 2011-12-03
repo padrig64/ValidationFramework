@@ -1,4 +1,8 @@
 package validation.trigger;
 
-public class Trigger {
+public interface Trigger {
+
+	public void addTriggerListener(TriggerListener listener);
+
+	public void removeTriggerListener(TriggerListener listener);
 }

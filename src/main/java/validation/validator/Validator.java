@@ -1,9 +1,14 @@
 package validation.validator;
 
+import org.jdesktop.core.animation.timing.Trigger;
 import validation.feedback.FeedBack;
 import validation.rule.Rule;
 
 public interface Validator<D, R> {
+
+	public void addTrigger(Trigger trigger);
+
+	public void removeTrigger(Trigger trigger);
 
 	public void addRule(Rule<D, R> rule);
 

@@ -35,3 +35,6 @@ EASY AND EXTENDABLE FRAMEWORK
  . Custom decorations;
  . Custom validation/feedback algorithms;
  . Anything useful you can imagine.
+
+OTHER
+ . Support for runtime look-and-feel switches for default feedback implementations.

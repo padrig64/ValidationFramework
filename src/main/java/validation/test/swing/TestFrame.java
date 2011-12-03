@@ -13,6 +13,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.plaf.ColorUIResource;
 
+import net.miginfocom.swing.MigLayout;
 import validation.feedback.swing.AbstractColorFeedBack;
 import validation.feedback.swing.AbstractToolTipFeedBack;
 import validation.result.AggregatableResult;
@@ -156,12 +157,12 @@ public class TestFrame extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// Create contents
-		JPanel contentPane = new JPanel(new GridLayout(3, 1));
+		JPanel contentPane = new JPanel(new MigLayout("fill, wrap 1", "", "[]related[]unrelated[]"));
 		setContentPane(contentPane);
 
 		// First textfield
 		JTextField textField = new JTextField();
-		contentPane.add(textField);
+		contentPane.add(textField, "growx");
 		TextFieldStringValidator<TextFieldResult> validator1 = new TextFieldStringValidator<TextFieldResult>(textField);
 		validator1.addRule(new TextFieldDataRule());
 		validator1.addFeedBack(new TextFieldToolTipFeedBack(textField));
@@ -169,7 +170,7 @@ public class TestFrame extends JFrame {
 
 		// Second textfield
 		textField = new JTextField();
-		contentPane.add(textField);
+		contentPane.add(textField, "growx");
 		TextFieldStringValidator<TextFieldResult> validator2 = new TextFieldStringValidator<TextFieldResult>(textField);
 		validator2.addRule(new TextFieldDataRule());
 		validator2.addFeedBack(new TextFieldToolTipFeedBack(textField));
@@ -177,15 +178,16 @@ public class TestFrame extends JFrame {
 
 		// Apply button
 		JButton button = new JButton("Apply");
-		contentPane.add(button);
+		contentPane.add(button, "growx");
 
 		// Conditional logic
 
 		// Set size
 		pack();
-		Dimension size = new Dimension(getPreferredSize());
+		Dimension size = new Dimension(getContentPane().getPreferredSize());
 		size.width = 200;
 		setSize(size);
+		setMinimumSize(getContentPane().getMinimumSize());
 
 		// Set location
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
