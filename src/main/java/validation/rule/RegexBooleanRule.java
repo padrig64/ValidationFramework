@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class RegexBooleanRule implements DataRule<String, Boolean> {
+public class RegexBooleanRule implements Rule<String, Boolean> {
 
 	private Map<String, Integer> patterns = new HashMap<String, Integer>();
 

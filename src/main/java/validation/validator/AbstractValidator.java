@@ -6,17 +6,17 @@ import java.util.List;
 import validation.feedback.FeedBack;
 import validation.rule.Rule;
 
-public abstract class AbstractValidator<R> implements Validator<R> {
+public abstract class AbstractValidator<D, R> implements Validator<D, R> {
 
-	protected List<Rule<R>> rules = new ArrayList<Rule<R>>();
+	protected List<Rule<D, R>> rules = new ArrayList<Rule<D, R>>();
 
 	protected List<FeedBack<R>> feedBacks = new ArrayList<FeedBack<R>>();
 
-	public void addRule(Rule<R> rule) {
+	public void addRule(Rule<D, R> rule) {
 		rules.add(rule);
 	}
 
-	public void removeRule(Rule<R> rule) {
+	public void removeRule(Rule<D, R> rule) {
 		rules.remove(rule);
 	}
 
@@ -28,9 +28,13 @@ public abstract class AbstractValidator<R> implements Validator<R> {
 		feedBacks.remove(feedBack);
 	}
 
+	protected abstract D getData();
+
 	protected void triggerValidation() {
-		for (Rule<R> rule : rules) {
-			R result = rule.validate();
+		D data = getData();
+
+		for (Rule<D, R> rule : rules) {
+			R result = rule.validate(data);
 			for (FeedBack<R> feedBack : feedBacks) {
 				feedBack.feedback(result);
 			}

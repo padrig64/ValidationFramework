@@ -16,13 +16,12 @@ import javax.swing.plaf.ColorUIResource;
 import validation.feedback.swing.AbstractColorFeedBack;
 import validation.feedback.swing.AbstractToolTipFeedBack;
 import validation.result.AggregatableResult;
-import validation.rule.DataRule;
 import validation.rule.Rule;
 import validation.validator.swing.TextFieldStringValidator;
 
 public class TestFrame extends JFrame {
 
-	private class TextFieldDataRule implements DataRule<String, TextFieldResult> {
+	private class TextFieldDataRule implements Rule<String, TextFieldResult> {
 
 		public TextFieldResult validate(String input) {
 			TextFieldResult result = TextFieldResult.OK;
@@ -120,11 +119,13 @@ public class TestFrame extends JFrame {
 		}
 	}
 
-	private class GroupRule implements Rule<GroupResult> {
+	private class GroupRule implements Rule<Object, GroupResult> {
 
-		public GroupResult validate() {
+		@Override
+		public GroupResult validate(Object input) {
 			GroupResult result = GroupResult.OK;
 
+			// TODO
 
 			return result;
 		}

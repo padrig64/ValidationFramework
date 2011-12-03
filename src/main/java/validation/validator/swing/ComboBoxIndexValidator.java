@@ -5,9 +5,9 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JComboBox;
 
-import validation.validator.AbstractDataValidator;
+import validation.validator.AbstractValidator;
 
-public class ComboBoxIndexValidator<R> extends AbstractDataValidator<Integer, R> {
+public class ComboBoxIndexValidator<R> extends AbstractValidator<Integer, R> {
 
 	private class InputAdapter implements ActionListener {
 

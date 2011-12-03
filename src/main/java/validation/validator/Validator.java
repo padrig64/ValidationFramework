@@ -3,11 +3,11 @@ package validation.validator;
 import validation.feedback.FeedBack;
 import validation.rule.Rule;
 
-public interface Validator<R> {
+public interface Validator<D, R> {
 
-	public void addRule(Rule<R> rule);
+	public void addRule(Rule<D, R> rule);
 
-	public void removeRule(Rule<R> rule);
+	public void removeRule(Rule<D, R> rule);
 
 	public void addFeedBack(FeedBack<R> feedBack);
 

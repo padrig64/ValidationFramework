@@ -6,28 +6,30 @@ import java.util.List;
 import validation.feedback.FeedBack;
 import validation.rule.Rule;
 
-public class CompositeValidator<R> extends AbstractValidator<R> {
+public abstract class CompositeValidator<D, R> extends AbstractValidator<D, R> {
 
-	private List<Validator<?>> validators = new ArrayList<Validator<?>>();
+	private List<Validator<D, R>> validators = new ArrayList<Validator<D, R>>();
 
-	public CompositeValidator(Validator<?>... validators) {
+	public CompositeValidator(Validator<D, R>... validators) {
 		super();
-		for (Validator<?> validator : validators) {
+		for (Validator<D, R> validator : validators) {
 			addValidator(validator);
 		}
 	}
 
-	public void addValidator(Validator<?> validator) {
+	public void addValidator(Validator<D, R> validator) {
 		validators.add(validator);
 	}
 
-	public void removeValidator(Validator<?> validator) {
+	public void removeValidator(Validator<D, R> validator) {
 		validators.remove(validator);
 	}
 
 	protected void triggerValidation() {
-		for (Rule<R> rule : rules) {
-			R result = rule.validate();
+		D data = getData();
+
+		for (Rule<D, R> rule : rules) {
+			R result = rule.validate(data);
 			for (FeedBack<R> feedBack : feedBacks) {
 				feedBack.feedback(result);
 			}

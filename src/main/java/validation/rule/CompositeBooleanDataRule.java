@@ -3,15 +3,15 @@ package validation.rule;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CompositeBooleanDataRule<D> implements DataRule<D, Boolean> {
+public class CompositeBooleanDataRule<D> implements Rule<D, Boolean> {
 
-	private List<DataRule<D, Boolean>> rules = new ArrayList<DataRule<D, Boolean>>();
+	private List<Rule<D, Boolean>> rules = new ArrayList<Rule<D, Boolean>>();
 
-	public void addRule(DataRule<D, Boolean> rule) {
+	public void addRule(Rule<D, Boolean> rule) {
 		rules.add(rule);
 	}
 
-	public void removeRule(DataRule<D, Boolean> rule) {
+	public void removeRule(Rule<D, Boolean> rule) {
 		rules.remove(rule);
 	}
 
@@ -19,7 +19,7 @@ public class CompositeBooleanDataRule<D> implements DataRule<D, Boolean> {
 	public Boolean validate(D data) {
 		Boolean result = true;
 
-		for (DataRule<D, Boolean> rule : rules) {
+		for (Rule<D, Boolean> rule : rules) {
 			result &= rule.validate(data);
 		}
 

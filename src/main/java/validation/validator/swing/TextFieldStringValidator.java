@@ -4,9 +4,9 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import validation.validator.AbstractDataValidator;
+import validation.validator.AbstractValidator;
 
-public class TextFieldStringValidator<R> extends AbstractDataValidator<String, R> {
+public class TextFieldStringValidator<R> extends AbstractValidator<String, R> {
 
 	private class InputAdapter implements DocumentListener {
 

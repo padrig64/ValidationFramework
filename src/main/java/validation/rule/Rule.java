@@ -1,6 +1,6 @@
 package validation.rule;
 
-public interface Rule<R> {
+public interface Rule<D, R> {
 
-	public R validate();
+	public R validate(D input);
 }
