@@ -1,24 +1,27 @@
-package validation.validator.swing;
+package validation.trigger.swing;
 
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import validation.validator.AbstractValidator;
+import validation.trigger.AbstractTrigger;
 
-public class TextFieldStringValidator<R> extends AbstractValidator<String, R> {
+public class TextFieldStringTrigger extends AbstractTrigger<String> {
 
 	private class InputAdapter implements DocumentListener {
 
 		public void insertUpdate(DocumentEvent e) {
+			System.out.println("TextFieldStringTrigger$InputAdapter.insertUpdate");
 			triggerValidation();
 		}
 
 		public void removeUpdate(DocumentEvent e) {
+			System.out.println("TextFieldStringTrigger$InputAdapter.removeUpdate");
 			triggerValidation();
 		}
 
 		public void changedUpdate(DocumentEvent e) {
+			System.out.println("TextFieldStringTrigger$InputAdapter.changedUpdate");
 			triggerValidation();
 		}
 	}
@@ -27,7 +30,7 @@ public class TextFieldStringValidator<R> extends AbstractValidator<String, R> {
 
 	private InputAdapter inputAdapter = new InputAdapter();
 
-	public TextFieldStringValidator(JTextField inputComponent) {
+	public TextFieldStringTrigger(JTextField inputComponent) {
 		super();
 		attachComponent(inputComponent);
 	}
@@ -36,7 +39,9 @@ public class TextFieldStringValidator<R> extends AbstractValidator<String, R> {
 		detachComponent(textField);
 
 		textField = inputComponent;
-		textField.getDocument().addDocumentListener(inputAdapter);
+		if (textField != null) {
+			textField.getDocument().addDocumentListener(inputAdapter);
+		}
 	}
 
 	public void detachComponent(JTextField inputComponent) {
@@ -48,6 +53,12 @@ public class TextFieldStringValidator<R> extends AbstractValidator<String, R> {
 
 	@Override
 	protected String getData() {
-		return textField.getText();
+		String data = null;
+
+		if (textField != null) {
+			data = textField.getText();
+		}
+
+		return data;
 	}
 }

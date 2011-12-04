@@ -3,7 +3,7 @@ package validation.utils.swing;
 import java.awt.Component;
 import java.awt.Point;
 
-import validation.decoration.swing.DualAnchor;
+import validation.decoration.swing.utils.DualAnchor;
 
 public class ComponentUtils {
 

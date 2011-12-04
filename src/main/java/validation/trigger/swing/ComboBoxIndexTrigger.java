@@ -1,13 +1,13 @@
-package validation.validator.swing;
+package validation.trigger.swing;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JComboBox;
 
-import validation.validator.AbstractValidator;
+import validation.trigger.AbstractTrigger;
 
-public class ComboBoxIndexValidator<R> extends AbstractValidator<Integer, R> {
+public class ComboBoxIndexTrigger<R> extends AbstractTrigger<Integer> {
 
 	private class InputAdapter implements ActionListener {
 
@@ -21,7 +21,7 @@ public class ComboBoxIndexValidator<R> extends AbstractValidator<Integer, R> {
 
 	private InputAdapter inputAdapter = new InputAdapter();
 
-	public ComboBoxIndexValidator(JComboBox inputComponent) {
+	public ComboBoxIndexTrigger(JComboBox inputComponent) {
 		super();
 		attachComponent(inputComponent);
 	}
@@ -30,7 +30,10 @@ public class ComboBoxIndexValidator<R> extends AbstractValidator<Integer, R> {
 		detachComponent(comboBox);
 
 		comboBox = inputComponent;
-		comboBox.addActionListener(inputAdapter);
+
+		if (comboBox != null) {
+			comboBox.addActionListener(inputAdapter);
+		}
 	}
 
 	public void detachComponent(JComboBox inputComponent) {
@@ -42,6 +45,12 @@ public class ComboBoxIndexValidator<R> extends AbstractValidator<Integer, R> {
 
 	@Override
 	protected Integer getData() {
-		return comboBox.getSelectedIndex();
+		Integer index = -1;
+
+		if (comboBox != null) {
+			comboBox.getSelectedIndex();
+		}
+
+		return index;
 	}
 }

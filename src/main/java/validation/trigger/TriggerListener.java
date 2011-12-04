@@ -1,6 +1,6 @@
 package validation.trigger;
 
-public interface TriggerListener {
+public interface TriggerListener<D> {
 
-	public void validationTriggered();
+	public void triggerValidation(D data);
 }

@@ -3,24 +3,41 @@ package validation.validator;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jdesktop.core.animation.timing.Trigger;
 import validation.feedback.FeedBack;
 import validation.rule.Rule;
+import validation.trigger.Trigger;
+import validation.trigger.TriggerListener;
 
 public abstract class AbstractValidator<D, R> implements Validator<D, R> {
 
-	protected List<Trigger> triggers = new ArrayList<Trigger>();
+	private class TriggerAdapter implements TriggerListener<D> {
+
+		@Override
+		public void triggerValidation(D data) {
+			doValidation(data);
+		}
+	}
+
+	private final TriggerAdapter triggerAdapter = new TriggerAdapter();
+
+	protected List<Trigger<D>> triggers = new ArrayList<Trigger<D>>();
 
 	protected List<Rule<D, R>> rules = new ArrayList<Rule<D, R>>();
 
 	protected List<FeedBack<R>> feedBacks = new ArrayList<FeedBack<R>>();
 
-	public void addTrigger(Trigger trigger) {
-		triggers.add(trigger);
+	public void addTrigger(Trigger<D> trigger) {
+		if (trigger != null) {
+			triggers.add(trigger);
+			trigger.addTriggerListener(triggerAdapter);
+		}
 	}
 
-	public void removeTrigger(Trigger trigger) {
-		triggers.remove(trigger);
+	public void removeTrigger(Trigger<D> trigger) {
+		if (trigger != null) {
+			triggers.remove(trigger);
+			trigger.removeTriggerListener(triggerAdapter);
+		}
 	}
 
 	public void addRule(Rule<D, R> rule) {
@@ -39,16 +56,5 @@ public abstract class AbstractValidator<D, R> implements Validator<D, R> {
 		feedBacks.remove(feedBack);
 	}
 
-	protected abstract D getData();
-
-	protected void triggerValidation() {
-		D data = getData();
-
-		for (Rule<D, R> rule : rules) {
-			R result = rule.validate(data);
-			for (FeedBack<R> feedBack : feedBacks) {
-				feedBack.feedback(result);
-			}
-		}
-	}
+	protected abstract void doValidation(D data);
 }

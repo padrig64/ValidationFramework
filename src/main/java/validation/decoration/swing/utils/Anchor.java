@@ -1,9 +1,11 @@
-package validation.decoration.swing;
+package validation.decoration.swing.utils;
 
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Toolkit;
+
+import javax.swing.Icon;
 
 public class Anchor {
 
@@ -46,7 +48,7 @@ public class Anchor {
 		return offsetY;
 	}
 
-	public Point getComponentAnchorPoint(Component comp) {
+	public Point getAnchorPoint(Component comp) {
 		Point point;
 
 		if (comp == null) {
@@ -54,6 +56,19 @@ public class Anchor {
 			point = new Point((int) (relativeX * screenSize.width + offsetX), (int) (relativeY * screenSize.height + offsetY));
 		} else {
 			point = new Point((int) (relativeX * comp.getWidth() + offsetX), (int) (relativeY * comp.getHeight() + offsetY));
+		}
+
+		return point;
+	}
+
+	public Point getAnchorPoint(Icon icon) {
+		Point point;
+
+		if (icon == null) {
+			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+			point = new Point((int) (relativeX * screenSize.width + offsetX), (int) (relativeY * screenSize.height + offsetY));
+		} else {
+			point = new Point((int) (relativeX * icon.getIconWidth() + offsetX), (int) (relativeY * icon.getIconHeight() + offsetY));
 		}
 
 		return point;

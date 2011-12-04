@@ -2,7 +2,6 @@ package validation.test.swing;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.Toolkit;
 
 import javax.swing.JButton;
@@ -15,10 +14,11 @@ import javax.swing.plaf.ColorUIResource;
 
 import net.miginfocom.swing.MigLayout;
 import validation.feedback.swing.AbstractColorFeedBack;
+import validation.feedback.swing.AbstractIconTipFeedBack;
 import validation.feedback.swing.AbstractToolTipFeedBack;
-import validation.result.AggregatableResult;
 import validation.rule.Rule;
-import validation.validator.swing.TextFieldStringValidator;
+import validation.trigger.swing.TextFieldStringTrigger;
+import validation.validator.DefaultValidator;
 
 public class TestFrame extends JFrame {
 
@@ -44,7 +44,7 @@ public class TestFrame extends JFrame {
 	private static final Color COLOR_NOK_EMPTY = new ColorUIResource(new Color(226, 125, 125, 127));
 	private static final Color COLOR_NOK_TOO_LONG = new ColorUIResource(new Color(226, 125, 125));
 
-	private enum TextFieldResult implements AggregatableResult<Boolean> {
+	private enum TextFieldResult /*implements AggregatableResult<Boolean>*/ {
 
 		OK(true, "", null, null),
 		NOK_EMPTY(false, "Cannot be empty", null, COLOR_NOK_EMPTY),
@@ -75,10 +75,10 @@ public class TestFrame extends JFrame {
 			return text;
 		}
 
-		@Override
-		public Boolean getAggregatableResult() {
-			return aggregatableResult;
-		}
+//		@Override
+//		public Boolean getAggregatableResult() {
+//			return aggregatableResult;
+//		}
 	}
 
 	private class TextFieldToolTipFeedBack extends AbstractToolTipFeedBack<TextFieldResult> {
@@ -120,32 +120,50 @@ public class TestFrame extends JFrame {
 		}
 	}
 
-	private class GroupRule implements Rule<Object, GroupResult> {
+	private class TextFieldIconTipFeedBack extends AbstractIconTipFeedBack<TextFieldResult> {
+
+		public TextFieldIconTipFeedBack(JComponent owner) {
+			super(owner);
+		}
 
 		@Override
-		public GroupResult validate(Object input) {
-			GroupResult result = GroupResult.OK;
-
-			// TODO
-
-			return result;
+		public void feedback(TextFieldResult result) {
+			switch (result) {
+				case OK:
+					hideIconTip();
+					break;
+				default:
+					showIconTip();
+			}
 		}
 	}
 
-	private enum GroupResult {
-		OK(true),
-		NOK(false);
+//	private class GroupRule implements Rule<Object, GroupResult> {
+//
+//		@Override
+//		public GroupResult validate(Object input) {
+//			GroupResult result = GroupResult.OK;
+//
+//			// TODO
+//
+//			return result;
+//		}
+//	}
 
-		private final boolean applyEnabled;
-
-		GroupResult(boolean applyEnabled) {
-			this.applyEnabled = applyEnabled;
-		}
-
-		public boolean isApplyEnabled() {
-			return applyEnabled;
-		}
-	}
+//	private enum GroupResult {
+//		OK(true),
+//		NOK(false);
+//
+//		private final boolean applyEnabled;
+//
+//		GroupResult(boolean applyEnabled) {
+//			this.applyEnabled = applyEnabled;
+//		}
+//
+//		public boolean isApplyEnabled() {
+//			return applyEnabled;
+//		}
+//	}
 
 	public TestFrame() {
 		super();
@@ -157,30 +175,36 @@ public class TestFrame extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// Create contents
-		JPanel contentPane = new JPanel(new MigLayout("fill, wrap 1", "", "[]related[]unrelated[]"));
+		JPanel contentPane = new JPanel(new MigLayout("fill, wrap 1", "", "[]related[]related[]unrelated[]"));
 		setContentPane(contentPane);
 
 		// First textfield
 		JTextField textField = new JTextField();
 		contentPane.add(textField, "growx");
-		TextFieldStringValidator<TextFieldResult> validator1 = new TextFieldStringValidator<TextFieldResult>(textField);
+		DefaultValidator<String, TextFieldResult> validator1 = new DefaultValidator<String, TextFieldResult>();
+		validator1.addTrigger(new TextFieldStringTrigger(textField));
 		validator1.addRule(new TextFieldDataRule());
 		validator1.addFeedBack(new TextFieldToolTipFeedBack(textField));
-		validator1.addFeedBack(new TextFieldColorFeedBack(textField));
 
 		// Second textfield
 		textField = new JTextField();
 		contentPane.add(textField, "growx");
-		TextFieldStringValidator<TextFieldResult> validator2 = new TextFieldStringValidator<TextFieldResult>(textField);
+		DefaultValidator<String, TextFieldResult> validator2 = new DefaultValidator<String, TextFieldResult>();
+		validator2.addTrigger(new TextFieldStringTrigger(textField));
 		validator2.addRule(new TextFieldDataRule());
-		validator2.addFeedBack(new TextFieldToolTipFeedBack(textField));
 		validator2.addFeedBack(new TextFieldColorFeedBack(textField));
+
+		// Third textfield
+		textField = new JTextField();
+		contentPane.add(textField, "growx");
+		DefaultValidator<String, TextFieldResult> validator3 = new DefaultValidator<String, TextFieldResult>();
+		validator3.addTrigger(new TextFieldStringTrigger(textField));
+		validator3.addRule(new TextFieldDataRule());
+		validator3.addFeedBack(new TextFieldIconTipFeedBack(textField));
 
 		// Apply button
 		JButton button = new JButton("Apply");
 		contentPane.add(button, "growx");
-
-		// Conditional logic
 
 		// Set size
 		pack();
