@@ -11,17 +11,14 @@ public class TextFieldStringTrigger extends AbstractTrigger<String> {
 	private class InputAdapter implements DocumentListener {
 
 		public void insertUpdate(DocumentEvent e) {
-			System.out.println("TextFieldStringTrigger$InputAdapter.insertUpdate");
 			triggerValidation();
 		}
 
 		public void removeUpdate(DocumentEvent e) {
-			System.out.println("TextFieldStringTrigger$InputAdapter.removeUpdate");
 			triggerValidation();
 		}
 
 		public void changedUpdate(DocumentEvent e) {
-			System.out.println("TextFieldStringTrigger$InputAdapter.changedUpdate");
 			triggerValidation();
 		}
 	}
@@ -52,7 +49,7 @@ public class TextFieldStringTrigger extends AbstractTrigger<String> {
 	}
 
 	@Override
-	protected String getData() {
+	public String getData() {
 		String data = null;
 
 		if (textField != null) {

@@ -44,7 +44,7 @@ public class ComboBoxIndexTrigger<R> extends AbstractTrigger<Integer> {
 	}
 
 	@Override
-	protected Integer getData() {
+	public Integer getData() {
 		Integer index = -1;
 
 		if (comboBox != null) {

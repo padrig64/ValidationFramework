@@ -1,13 +1,25 @@
+/* Copyright (c) 2007 Timothy Wall, All Rights Reserved
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ * <p/>
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ */
 package validation.decoration.swing;
 
 import java.awt.Component;
 import java.awt.Container;
-import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.HierarchyBoundsListener;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 import java.awt.event.MouseEvent;
@@ -31,25 +43,356 @@ import javax.swing.SwingUtilities;
  * of this object will live as long as its target component.<p>
  * By default, the decorator matches the location and size of the decorated
  * component, but the bounds can be adjusted by overriding
- * {@link #getDecorationBounds()}.  The {@link #synch()} method should be called
- * whenever the bounds returned by {@link #getDecorationBounds()} would change.
+ * {@link #getDecorationBounds()}.  The {@link #synch()} method should be
+ * called whenever the bounds returned by {@link #getDecorationBounds()} would
+ * change.
  * <p/>
  * The decoration is clipped to the bounds set on the decoration, which does
- * not necessarily need to be the same as the decorated component's bounds.  The
- * decoration may extend beyond the decorated component bounds, or it may be
- * reduced to a smaller region.
+ * not necessarily need to be the same as the decorated component's bounds.
+ * The decoration may extend beyond the decorated component bounds, or it may
+ * be reduced to a smaller region.
  */
 // NOTE: OSX 1.6 lacks hierarchy events that w32 sends on layer changes
 
 // TODO: should probably do some locking on Component.getTreeLock()
-// TODO: synch underlying cursor when decorator covers more than
-// one component; the cursor should change if the decoration exceeds the
-// component's bounds (add mouse listener?)
+// when moving the component
+// TODO: need to synch underlying cursor when decorator covers more than
+// one component; the cursor should change to match custom cursors if the
+// decoration exceeds the component's bounds (would need to add mouse motion
+// listener)
+// TODO: set default layer according to decorated component's layer and z order
+// (have to calculate z order on 1.4 JVMs).
 public abstract class AbstractComponentDecorator {
-	public static final Rectangle DEFAULT_BOUNDS = null;
-	public static final int TOP = 0;
-	// Disabled for now, since it doesn't work properly
-	private static final int BOTTOM = -1;
+
+	/**
+	 * Tracks changes to component configuration.
+	 */
+	private final class Listener extends ComponentAdapter
+			implements HierarchyListener, HierarchyBoundsListener,
+			PropertyChangeListener {
+		// NOTE: OSX (1.6) doesn't generate these the same as w32
+		public void hierarchyChanged(HierarchyEvent e) {
+			if ((e.getChangeFlags() & HierarchyEvent.PARENT_CHANGED) != 0) {
+				attach();
+			}
+		}
+
+		public void ancestorResized(HierarchyEvent e) {
+			synch();
+		}
+
+		public void ancestorMoved(HierarchyEvent e) {
+			synch();
+		}
+
+		public void propertyChange(PropertyChangeEvent e) {
+			if (JLayeredPane.LAYER_PROPERTY.equals(e.getPropertyName())) {
+				attach();
+			}
+		}
+
+		public void componentMoved(ComponentEvent e) {
+			synch();
+		}
+
+		public void componentResized(ComponentEvent e) {
+			synch();
+		}
+
+		public void componentHidden(ComponentEvent e) {
+			setVisible(false);
+		}
+
+		public void componentShown(ComponentEvent e) {
+			setVisible(true);
+		}
+	}
+
+	/**
+	 * Used to hook into the Swing painting architecture.
+	 */
+	protected class Painter extends JComponent {
+
+		private int base;
+
+		//private Cursor cursor;
+
+		{
+			setFocusable(false);
+		}
+
+		public boolean isShowing() {
+			return getComponent().isShowing();
+		}
+
+		public JComponent getComponent() {
+			return AbstractComponentDecorator.this.getComponent();
+		}
+
+		public void setDecoratedLayer(int base) {
+			this.base = base;
+		}
+
+		public int getDecoratedLayer() {
+			return base;
+		}
+
+		public boolean isBackgroundDecoration() {
+			return layerOffset < 0;
+		}
+
+//		/**
+//		 * Set the cursor to something else.  If null, the cursor of the
+//		 * decorated component will be used.
+//		 */
+//		public void setCursor(Cursor cursor) {
+//			Cursor oldCursor = getCursor();
+//			// Make sure the cursor actually changed, otherwise
+//			// we get cursor flicker (notably on w32 title bars)
+//			if (oldCursor == null && cursor != null
+//					|| oldCursor != null && !oldCursor.equals(cursor)) {
+//				this.cursor = cursor;
+//				super.setCursor(cursor);
+//			}
+//		}
+//
+//		/**
+//		 * Returns the cursor of the decorated component, or the last
+//		 * cursor set by {@link #setCursor}.
+//		 */
+//		public Cursor getCursor() {
+//			return cursor != null ? cursor : component.getCursor();
+//		}
+
+		/**
+		 * Delegate to the containing decorator to perform the paint.
+		 */
+		public void paintComponent(Graphics g) {
+			if (!component.isShowing())
+				return;
+			Graphics g2 = g.create();
+			g2.translate(-originOffset.x, -originOffset.y);
+			AbstractComponentDecorator.this.paint(g2);
+			g2.dispose();
+		}
+
+		/**
+		 * Provide a decorator-specific tooltip, shown when within the
+		 * decorator's bounds.
+		 */
+		public String getToolTipText(MouseEvent e) {
+			return AbstractComponentDecorator.this.getToolTipText(e);
+		}
+
+		public String toString() {
+			return "Painter for " + AbstractComponentDecorator.this;
+		}
+	}
+
+	/**
+	 * Provides a shared background painting mechanism for multiple
+	 * decorations.  This ensures that the background is only painted once
+	 * if more than one background decorator is applied.
+	 */
+	private static class BackgroundPainter extends AbstractComponentDecorator {
+		private static String key(int layer) {
+			return "backgroundPainter for layer " + layer;
+		}
+
+		private String key;
+		private int layer;
+
+		public BackgroundPainter(JLayeredPane p, int layer) {
+			super(p, 0);
+			this.layer = layer;
+			key = key(layer);
+			p.putClientProperty(key, this);
+			attach();
+		}
+
+		// "Hide" children by temporarily setting the component count to zero
+		private int hideChildren(Container c) {
+			if (c == null)
+				return 0;
+			int value = c.getComponentCount();
+			try {
+				nComponents.set(c, new Integer(0));
+			} catch (Exception e) {
+				return c.getComponentCount();
+			}
+			return value;
+		}
+
+		// Restore the child count
+		private void restoreChildren(Container c, int count) {
+			if (c != null) {
+				try {
+					nComponents.set(c, new Integer(count));
+				} catch (Exception e) {
+				}
+			}
+		}
+
+		private void paintBackground(Graphics g, Component parent, JComponent jc) {
+			int x = jc.getX();
+			int y = jc.getY();
+			int w = jc.getWidth();
+			int h = jc.getHeight();
+			paintBackground(g.create(x, y, w, h), jc);
+		}
+
+		private void paintBackground(Graphics g, JComponent jc) {
+			if (!jc.isShowing()) return;
+			if (jc.isOpaque()) {
+				if (useSimpleBackground()) {
+					g.setColor(jc.getBackground());
+					g.fillRect(0, 0, jc.getWidth(), jc.getHeight());
+				} else {
+					int count = hideChildren(jc);
+					boolean db = jc.isDoubleBuffered();
+					if (db)
+						jc.setDoubleBuffered(false);
+					jc.paint(g);
+					if (db)
+						jc.setDoubleBuffered(true);
+					restoreChildren(jc, count);
+				}
+			}
+			Component[] kids = jc.getComponents();
+			for (int i = 0; i < kids.length; i++) {
+				if (kids[i] instanceof JComponent) {
+					paintBackground(g, jc, (JComponent) kids[i]);
+				}
+			}
+		}
+
+		private List findOpaque(Component root) {
+			List list = new ArrayList();
+			if (root.isOpaque() && root instanceof JComponent) {
+				list.add(root);
+				((JComponent) root).setOpaque(false);
+			}
+			if (root instanceof Container) {
+				Component[] kids = ((Container) root).getComponents();
+				for (int i = 0; i < kids.length; i++) {
+					list.addAll(findOpaque(kids[i]));
+				}
+			}
+			return list;
+		}
+
+		private List findDoubleBuffered(Component root) {
+			List list = new ArrayList();
+			if (root.isDoubleBuffered() && root instanceof JComponent) {
+				list.add(root);
+				((JComponent) root).setDoubleBuffered(false);
+			}
+			if (root instanceof Container) {
+				Component[] kids = ((Container) root).getComponents();
+				for (int i = 0; i < kids.length; i++) {
+					list.addAll(findDoubleBuffered(kids[i]));
+				}
+			}
+			return list;
+		}
+
+		private void paintForeground(Graphics g, JComponent jc) {
+			if (!jc.isShowing()) return;
+			List opaque = findOpaque(jc);
+			List db = findDoubleBuffered(jc);
+			jc.paint(g);
+			for (Iterator i = opaque.iterator(); i.hasNext(); ) {
+				((JComponent) i.next()).setOpaque(true);
+			}
+			for (Iterator i = db.iterator(); i.hasNext(); ) {
+				((JComponent) i.next()).setDoubleBuffered(true);
+			}
+		}
+
+		/**
+		 * Walk the list of "background" decorators and paint them.
+		 */
+		public void paint(Graphics g) {
+
+			JLayeredPane lp = (JLayeredPane) getComponent();
+			Component[] kids = lp.getComponents();
+			// Construct an area of the intersection of all decorators
+			Area area = new Area();
+			List painters = new ArrayList();
+			List components = new ArrayList();
+			for (int i = kids.length - 1; i >= 0; i--) {
+				if (kids[i] instanceof Painter) {
+					Painter p = (Painter) kids[i];
+					if (p.isBackgroundDecoration()
+							&& p.getDecoratedLayer() == layer) {
+						painters.add(p);
+						if (p.isShowing()) {
+							area.add(new Area(p.getBounds()));
+						}
+					}
+				} else if (lp.getLayer(kids[i]) == layer
+						&& kids[i] instanceof JComponent) {
+					components.add(kids[i]);
+				}
+			}
+			if (painters.size() == 0) {
+				dispose();
+				return;
+			}
+			if (area.isEmpty()) {
+				return;
+			}
+
+			g.setClip(area);
+
+			// Paint background for that area
+			for (Iterator i = components.iterator(); i.hasNext(); ) {
+				JComponent c = (JComponent) i.next();
+				if (c.isShowing()) {
+					paintBackground(g, lp, c);
+				}
+			}
+
+			// Paint the bg decorators
+			for (Iterator i = painters.iterator(); i.hasNext(); ) {
+				Painter p = (Painter) i.next();
+				if (p.isShowing()) {
+					p.paint(g.create(p.getX(), p.getY(), p.getWidth(), p.getHeight()));
+				}
+			}
+			// Paint foreground for the area
+			for (Iterator i = components.iterator(); i.hasNext(); ) {
+				JComponent c = (JComponent) i.next();
+				if (c.isShowing()) {
+					paintForeground(g.create(c.getX(), c.getY(),
+							c.getWidth(), c.getHeight()), c);
+				}
+			}
+		}
+
+		public void dispose() {
+			getComponent().putClientProperty(key, null);
+			super.dispose();
+		}
+
+		public String toString() {
+			return key + " on " + getComponent();
+		}
+	}
+
+	private static final int LAYER_POSITION = 0;
+
+	private static Field nComponents;
+
+	static {
+		try {
+			nComponents = Container.class.getDeclaredField("ncomponents");
+			nComponents.setAccessible(true);
+		} catch (Exception e) {
+			nComponents = null;
+		}
+	}
+
 	/**
 	 * Account for the difference between the decorator actual origin
 	 * and the logical origin we want to pass to the {@link #paint} method.
@@ -62,7 +405,6 @@ public abstract class AbstractComponentDecorator {
 	private Component layerRoot;
 	private Listener listener;
 	private int layerOffset;
-	private int position;
 	private Rectangle bounds;
 
 	/**
@@ -78,29 +420,20 @@ public abstract class AbstractComponentDecorator {
 	 * is painted <em>before</em> the target component is painted.
 	 */
 	public AbstractComponentDecorator(JComponent c, int layerOffset) {
-		this(c, layerOffset, TOP);
-	}
-
-	/**
-	 * Create a decorator with the given position within its layer.
-	 * Use {@link #TOP} to cover other decorations, or {@link #BOTTOM}
-	 * to be covered by other decorations.<p>
-	 * WARNING: BOTTOM doesn't currently work, probably a JLayeredPane bug
-	 * in either the code or documentation.
-	 *
-	 * @see JLayeredPane
-	 */
-	public AbstractComponentDecorator(JComponent c, int layerOffset, int position) {
 		component = c;
 		this.layerOffset = layerOffset;
-		this.position = position;
-		this.bounds = DEFAULT_BOUNDS;
+		this.bounds = null;
 		parent = c.getParent();
 		painter = new Painter();
 		listener = new Listener();
 		component.addHierarchyListener(listener);
+		component.addHierarchyBoundsListener(listener);
 		component.addComponentListener(listener);
 		attach();
+	}
+
+	private static boolean useSimpleBackground() {
+		return nComponents == null;
 	}
 
 	/**
@@ -134,26 +467,18 @@ public abstract class AbstractComponentDecorator {
 	}
 
 	/**
-	 * Indicate whether the decoration is showing.  Its painter must be
-	 * visible and showing (showing depends on window ancestor).
-	 */
-	public boolean isShowing() {
-		return painter.isShowing();
-	}
-
-	/**
-	 * Indicate whether any of the decoration is visible.  The decoration
+	 * Indicate whether the decoration is visible.  The decoration
 	 * may be clipped by ancestor scroll panes or by being moved outside
 	 * if the visible region of its parent window.
 	 */
-	public boolean isVisible() {
+	private boolean isVisible() {
 		return painter.isVisible();
 	}
 
 	/**
 	 * Use this to change the visibility of the decoration.
 	 */
-	public void setVisible(boolean visible) {
+	private void setVisible(boolean visible) {
 		painter.setVisible(visible);
 	}
 
@@ -198,7 +523,7 @@ public abstract class AbstractComponentDecorator {
 				layerRoot = layeredChild;
 				layerRoot.addPropertyChangeListener(listener);
 			}
-			lp.add(painter, new Integer(layer), position);
+			lp.add(painter, new Integer(layer), LAYER_POSITION);
 		} else {
 			// Always detach when the target component's window is null
 			// or is not a suitable container,
@@ -229,7 +554,8 @@ public abstract class AbstractComponentDecorator {
 			Rectangle decorated = getDecorationBounds();
 			Rectangle clipRect = clipDecorationBounds(decorated);
 
-			Point pt = SwingUtilities.convertPoint(component, clipRect.x, clipRect.y,
+			Point pt = SwingUtilities.convertPoint(component,
+					clipRect.x, clipRect.y,
 					painterParent);
 			if (clipRect.width <= 0 || clipRect.height <= 0) {
 				setPainterBounds(-1, -1, 0, 0);
@@ -312,17 +638,17 @@ public abstract class AbstractComponentDecorator {
 	 * when overriding and referencing derived class state.
 	 */
 	protected Rectangle getDecorationBounds() {
-		return bounds != DEFAULT_BOUNDS
+		return bounds != null
 				? bounds : new Rectangle(0, 0, component.getWidth(), component.getHeight());
 	}
 
 	/**
 	 * Change the bounds of the decoration, relative to the decorated
-	 * component.  The special value {@link #DEFAULT_BOUNDS} means the bounds
+	 * component.  The special null value means the bounds
 	 * will track the component bounds.
 	 */
 	public void setDecorationBounds(Rectangle bounds) {
-		if (bounds == DEFAULT_BOUNDS) {
+		if (bounds == null) {
 			this.bounds = bounds;
 		} else {
 			this.bounds = new Rectangle(bounds);
@@ -339,8 +665,7 @@ public abstract class AbstractComponentDecorator {
 	}
 
 	protected void setPainterBounds(int x, int y, int w, int h) {
-		painter.setLocation(x, y);
-		painter.setSize(w, h);
+		painter.setBounds(x, y, w, h);
 		repaint();
 	}
 
@@ -349,22 +674,6 @@ public abstract class AbstractComponentDecorator {
 	 */
 	protected JComponent getComponent() {
 		return component;
-	}
-
-	/**
-	 * Returns the component used to paint the decoration and optionally
-	 * track events.
-	 */
-	protected JComponent getPainter() {
-		return painter;
-	}
-
-	/**
-	 * Set the cursor to appear anywhere over the decoration bounds.
-	 * If null, the cursor of the decorated component will be used.
-	 */
-	public void setCursor(Cursor cursor) {
-		painter.setCursor(cursor);
 	}
 
 	/**
@@ -381,9 +690,6 @@ public abstract class AbstractComponentDecorator {
 	 * Stop decorating.
 	 */
 	public void dispose() {
-		if (component == null)
-			return;
-
 		// Disposal must occur on the EDT
 		if (!SwingUtilities.isEventDispatchThread()) {
 			SwingUtilities.invokeLater(new Runnable() {
@@ -393,7 +699,9 @@ public abstract class AbstractComponentDecorator {
 			});
 			return;
 		}
+
 		component.removeHierarchyListener(listener);
+		component.removeHierarchyBoundsListener(listener);
 		component.removeComponentListener(listener);
 		if (parent != null) {
 			parent.removeComponentListener(listener);
@@ -421,311 +729,4 @@ public abstract class AbstractComponentDecorator {
 	 * decorated component bounds.
 	 */
 	public abstract void paint(Graphics g);
-
-	public String toString() {
-		return super.toString() + " on " + getComponent();
-	}
-
-	private static Field nComponents;
-
-	static {
-		try {
-			nComponents = Container.class.getDeclaredField("ncomponents");
-			nComponents.setAccessible(true);
-		} catch (Exception e) {
-			nComponents = null;
-		}
-	}
-
-	private static boolean useSimpleBackground() {
-		return nComponents == null;
-	}
-
-	/**
-	 * Used to hook into the Swing painting and event architecture.
-	 */
-	protected class Painter extends JComponent {
-		private int base;
-		private Cursor cursor;
-
-		{
-			setFocusable(false);
-		}
-
-		public JComponent getComponent() {
-			return AbstractComponentDecorator.this.getComponent();
-		}
-
-		public void setDecoratedLayer(int base) {
-			this.base = base;
-		}
-
-		public int getDecoratedLayer() {
-			return base;
-		}
-
-		public boolean isBackgroundDecoration() {
-			return layerOffset < 0;
-		}
-
-		/**
-		 * Set the cursor to something else.  If null, the cursor of
-		 * the decorated component will be used.
-		 */
-		public void setCursor(Cursor cursor) {
-			Cursor oldCursor = getCursor();
-			// Make sure the cursor actually changed, otherwise
-			// we get cursor flicker (notably on w32 title bars)
-			if (oldCursor == null && cursor != null
-					|| oldCursor != null && !oldCursor.equals(cursor)) {
-				this.cursor = cursor;
-				super.setCursor(cursor);
-			}
-		}
-
-		/**
-		 * Returns the cursor of the decorated component, or the last
-		 * cursor set by {@link #setCursor}.
-		 */
-		public Cursor getCursor() {
-			return cursor != null ? cursor : component.getCursor();
-		}
-
-		/**
-		 * Delegate to the containing decorator to perform the paint.
-		 */
-		public void paintComponent(Graphics g) {
-			if (!component.isShowing())
-				return;
-			Graphics g2 = g.create();
-			g2.translate(-originOffset.x, -originOffset.y);
-			AbstractComponentDecorator.this.paint(g2);
-			g2.dispose();
-		}
-
-		/**
-		 * Provide a decorator-specific tooltip, shown when within the
-		 * decorator's bounds.
-		 */
-		public String getToolTipText(MouseEvent e) {
-			return AbstractComponentDecorator.this.getToolTipText(e);
-		}
-
-		public String toString() {
-			return "Painter for " + AbstractComponentDecorator.this;
-		}
-	}
-
-	/**
-	 * Provides a shared background painting mechanism for multiple
-	 * decorations.  This ensures that the background is only painted once
-	 * if more than one background decorator is applied.
-	 */
-	private static class BackgroundPainter extends AbstractComponentDecorator {
-		private static String key(int layer) {
-			return "backgroundPainter for layer " + layer;
-		}
-
-		private String key;
-		private int layer;
-
-		public BackgroundPainter(JLayeredPane p, int layer) {
-			super(p, 0, TOP);
-			this.layer = layer;
-			key = key(layer);
-			p.putClientProperty(key, this);
-		}
-
-		private int hideChildren(Container c) {
-			if (c == null)
-				return 0;
-			int value = c.getComponentCount();
-			try {
-				nComponents.set(c, new Integer(0));
-			} catch (Exception e) {
-				return c.getComponentCount();
-			}
-			return value;
-		}
-
-		private void restoreChildren(Container c, int count) {
-			if (c != null) {
-				try {
-					nComponents.set(c, new Integer(count));
-				} catch (Exception e) {
-				}
-			}
-		}
-
-		private void paintBackground(Graphics g, Component parent, JComponent jc) {
-			int x = jc.getX();
-			int y = jc.getY();
-			int w = jc.getWidth();
-			int h = jc.getHeight();
-			paintBackground(g.create(x, y, w, h), jc);
-		}
-
-		private void paintBackground(Graphics g, JComponent jc) {
-			if (jc.isOpaque()) {
-				if (useSimpleBackground()) {
-					g.setColor(jc.getBackground());
-					g.fillRect(0, 0, jc.getWidth(), jc.getHeight());
-				} else {
-					int count = hideChildren(jc);
-					boolean db = jc.isDoubleBuffered();
-					if (db)
-						jc.setDoubleBuffered(false);
-					jc.paint(g);
-					if (db)
-						jc.setDoubleBuffered(true);
-					restoreChildren(jc, count);
-				}
-			}
-			Component[] kids = jc.getComponents();
-			for (int i = 0; i < kids.length; i++) {
-				if (kids[i] instanceof JComponent) {
-					paintBackground(g, jc, (JComponent) kids[i]);
-				}
-			}
-		}
-
-		private List findOpaque(Component root) {
-			List list = new ArrayList();
-			if (root.isOpaque() && root instanceof JComponent) {
-				list.add(root);
-				((JComponent) root).setOpaque(false);
-			}
-			if (root instanceof Container) {
-				Component[] kids = ((Container) root).getComponents();
-				for (int i = 0; i < kids.length; i++) {
-					list.addAll(findOpaque(kids[i]));
-				}
-			}
-			return list;
-		}
-
-		private List findDoubleBuffered(Component root) {
-			List list = new ArrayList();
-			if (root.isDoubleBuffered() && root instanceof JComponent) {
-				list.add(root);
-				((JComponent) root).setDoubleBuffered(false);
-			}
-			if (root instanceof Container) {
-				Component[] kids = ((Container) root).getComponents();
-				for (int i = 0; i < kids.length; i++) {
-					list.addAll(findDoubleBuffered(kids[i]));
-				}
-			}
-			return list;
-		}
-
-		private void paintForeground(Graphics g, JComponent jc) {
-			List opaque = findOpaque(jc);
-			List db = findDoubleBuffered(jc);
-			jc.paint(g);
-			for (Iterator i = opaque.iterator(); i.hasNext(); ) {
-				((JComponent) i.next()).setOpaque(true);
-			}
-			for (Iterator i = db.iterator(); i.hasNext(); ) {
-				((JComponent) i.next()).setDoubleBuffered(true);
-			}
-		}
-
-		/**
-		 * Walk the list of "background" decorators and paint them.
-		 */
-		public void paint(Graphics g) {
-
-			JLayeredPane lp = (JLayeredPane) getComponent();
-			Component[] kids = lp.getComponents();
-			// Construct an area of the intersection of all decorators
-			Area area = new Area();
-			List painters = new ArrayList();
-			List components = new ArrayList();
-			for (int i = kids.length - 1; i >= 0; i--) {
-				if (kids[i] instanceof Painter) {
-					Painter p = (Painter) kids[i];
-					if (p.isBackgroundDecoration()
-							&& p.getDecoratedLayer() == layer
-							&& p.isShowing()) {
-						painters.add(p);
-						area.add(new Area(p.getBounds()));
-					}
-				} else if (lp.getLayer(kids[i]) == layer
-						&& kids[i] instanceof JComponent) {
-					components.add(kids[i]);
-				}
-			}
-			if (painters.size() == 0) {
-				dispose();
-				return;
-			}
-			g.setClip(area);
-
-			// Paint background for that area
-			for (Iterator i = components.iterator(); i.hasNext(); ) {
-				JComponent c = (JComponent) i.next();
-				paintBackground(g, lp, c);
-			}
-
-			// Paint the bg decorators
-			for (Iterator i = painters.iterator(); i.hasNext(); ) {
-				Painter p = (Painter) i.next();
-				p.paint(g.create(p.getX(), p.getY(), p.getWidth(), p.getHeight()));
-			}
-			// Paint foreground for the area
-			for (Iterator i = components.iterator(); i.hasNext(); ) {
-				JComponent c = (JComponent) i.next();
-				paintForeground(g.create(c.getX(), c.getY(), c.getWidth(), c.getHeight()), c);
-			}
-		}
-
-		public void dispose() {
-			getComponent().putClientProperty(key, null);
-			super.dispose();
-		}
-
-		public String toString() {
-			return key + " on " + getComponent();
-		}
-	}
-
-	/**
-	 * Tracks changes to component configuration.
-	 */
-	private final class Listener extends ComponentAdapter
-			implements HierarchyListener, PropertyChangeListener {
-		// NOTE: OSX (1.6) doesn't generate these the same as w32
-		public void hierarchyChanged(HierarchyEvent e) {
-			if ((e.getChangeFlags() & HierarchyEvent.PARENT_CHANGED) != 0) {
-				attach();
-			}
-		}
-
-		public void propertyChange(PropertyChangeEvent e) {
-			if (JLayeredPane.LAYER_PROPERTY.equals(e.getPropertyName())) {
-				attach();
-			}
-		}
-
-		public void componentMoved(ComponentEvent e) {
-			// FIXME figure out why attach works and synch doesn't
-			// when painting a selection marquee over a decorated background
-			attach();
-		}
-
-		public void componentResized(ComponentEvent e) {
-			// FIXME figure out why attach works and synch doesn't
-			// when painting a selection marquee over a decorated background
-			attach();
-		}
-
-		public void componentHidden(ComponentEvent e) {
-			setVisible(false);
-		}
-
-		public void componentShown(ComponentEvent e) {
-			setVisible(true);
-		}
-	}
 }

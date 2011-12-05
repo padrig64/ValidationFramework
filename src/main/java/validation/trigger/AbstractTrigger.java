@@ -3,7 +3,7 @@ package validation.trigger;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractTrigger<D> implements Trigger<D> {
+public abstract class AbstractTrigger<D> implements Trigger<D>, DataReader<D> {
 
 	private final List<TriggerListener<D>> triggerListeners = new ArrayList<TriggerListener<D>>();
 
@@ -20,8 +20,6 @@ public abstract class AbstractTrigger<D> implements Trigger<D> {
 			triggerListeners.remove(listener);
 		}
 	}
-
-	protected abstract D getData();
 
 	protected void triggerValidation() {
 		D data = getData();

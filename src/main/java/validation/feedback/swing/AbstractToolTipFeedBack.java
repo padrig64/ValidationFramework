@@ -22,6 +22,7 @@ import org.jdesktop.core.animation.timing.TimingTarget;
 import org.jdesktop.core.animation.timing.interpolators.SplineInterpolator;
 import org.jdesktop.swing.animation.timing.sources.SwingTimerTimingSource;
 import validation.feedback.FeedBack;
+import validation.utils.ValueUtils;
 
 public abstract class AbstractToolTipFeedBack<R> implements FeedBack<R> {
 
@@ -206,7 +207,20 @@ public abstract class AbstractToolTipFeedBack<R> implements FeedBack<R> {
 	}
 
 	protected void setToolTipText(String text) {
-		toolTip.setTipText(text);
+		// Only change if different
+		if (!ValueUtils.areEqual(text, toolTip.getTipText())) {
+
+			boolean wasVisible = popupDialog.isVisible();
+			if (wasVisible) {
+				popupDialog.setVisible(false);
+			}
+
+			toolTip.setTipText(text);
+
+			if (wasVisible) {
+				popupDialog.setVisible(wasVisible);
+			}
+		}
 	}
 
 	protected void showToolTip() {

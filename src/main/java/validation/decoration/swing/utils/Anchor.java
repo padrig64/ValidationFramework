@@ -10,8 +10,8 @@ import javax.swing.Icon;
 public class Anchor {
 
 	public static final Anchor TOP_LEFT = new Anchor(0.0f, 0.0f);
-	public static final Anchor TOP_RIGHT = new Anchor(0.0f, 1.0f);
-	public static final Anchor BOTTOM_LEFT = new Anchor(1.0f, 0.0f);
+	public static final Anchor TOP_RIGHT = new Anchor(1.0f, 0.0f);
+	public static final Anchor BOTTOM_LEFT = new Anchor(0.0f, 1.0f);
 	public static final Anchor BOTTOM_RIGHT = new Anchor(1.0f, 1.0f);
 	public static final Anchor CENTER = new Anchor(0.5F, 0.5f);
 

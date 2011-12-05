@@ -13,7 +13,9 @@ import validation.decoration.swing.utils.DualAnchor;
 public class IconTipDecorator extends AbstractComponentDecorator {
 
 	private Icon icon = null;
-	private DualAnchor dualAnchor = new DualAnchor(Anchor.BOTTOM_RIGHT, Anchor.CENTER);
+	private DualAnchor dualAnchor = new DualAnchor(Anchor.BOTTOM_LEFT, Anchor.CENTER);
+
+	private boolean visible = true;
 
 	public IconTipDecorator(JComponent owner) {
 		this(owner, null);
@@ -22,6 +24,15 @@ public class IconTipDecorator extends AbstractComponentDecorator {
 	public IconTipDecorator(JComponent owner, Icon icon) {
 		super(owner);
 		this.icon = icon;
+	}
+
+	public boolean isVisible() {
+		return visible;
+	}
+
+	public void setVisible(boolean visible) {
+		this.visible = visible;
+		updateDecorationBounds();
 	}
 
 	public Icon getIcon() {
@@ -47,24 +58,15 @@ public class IconTipDecorator extends AbstractComponentDecorator {
 			setDecorationBounds(null);
 		} else {
 			Point iconLocation = dualAnchor.getRelativeSlaveLocation(getComponent(), icon);
-			System.out.println("IconTipDecorator.getDecorationBounds: " + iconLocation);
 			setDecorationBounds(iconLocation.x, iconLocation.y, icon.getIconWidth(), icon.getIconHeight());
 		}
 	}
 
 	@Override
-	protected Rectangle getDecorationBounds() {
-		Rectangle decorationBounds = super.getDecorationBounds();
-
-		System.out.println(decorationBounds);
-
-		return decorationBounds;
-	}
-
-	@Override
 	public void paint(Graphics g) {
-		if (icon != null) {
-			icon.paintIcon(getComponent(), g, 0, 0);
+		if (isVisible() && (icon != null)) {
+			Rectangle decorationBounds = getDecorationBounds();
+			icon.paintIcon(getComponent(), g, (int) decorationBounds.getX(), (int) decorationBounds.getY());
 		}
 	}
 }
