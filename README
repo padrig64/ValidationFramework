@@ -19,6 +19,7 @@ FEEDBACK
    look-and-feel.
 
 EASY AND EXTENDABLE FRAMEWORK
+ . Very simple to use;
  . Most generic concepts as possible (validation trigger -> data reader -> validation algorithm -> validation rules -> validation results -> feedback to user -> component decorations);
  . Easily pluggable to custom components;
  . Not only for Swing components;
@@ -30,6 +31,7 @@ EASY AND EXTENDABLE FRAMEWORK
  . Custom feedbacks;
  . Custom decorations;
  . Custom validation/feedback algorithms;
+ . Easily pluggable to the Commons Validator framework from Jakarta;
  . Anything useful you can imagine.
 
 OTHER
