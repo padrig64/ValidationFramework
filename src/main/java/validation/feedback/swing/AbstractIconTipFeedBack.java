@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import javax.imageio.ImageIO;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 
@@ -30,7 +31,7 @@ public abstract class AbstractIconTipFeedBack<R> implements FeedBack<R> {
 		if (owner != null) {
 			decorator = new IconTipDecorator(owner);
 			decorator.setVisible(false);
-			InputStream inputStream = getClass().getResourceAsStream("/icons/invalid2.png");
+			InputStream inputStream = getClass().getResourceAsStream("/icons/invalid3.png");
 			try {
 				BufferedImage image = ImageIO.read(inputStream);
 				ImageIcon icon = new ImageIcon(image);
@@ -47,6 +48,34 @@ public abstract class AbstractIconTipFeedBack<R> implements FeedBack<R> {
 		if (decorator != null) {
 			decorator.dispose();
 			decorator = null;
+		}
+	}
+
+	protected Icon getIcon() {
+		Icon icon = null;
+		if (decorator != null) {
+			icon = decorator.getIcon();
+		}
+		return icon;
+	}
+
+	protected void setIcon(Icon icon) {
+		if (decorator != null) {
+			decorator.setIcon(icon);
+		}
+	}
+
+	protected String getToolTipText() {
+		String tip = null;
+		if (decorator != null) {
+			tip = decorator.getText();
+		}
+		return tip;
+	}
+
+	protected void setToolTipText(String text) {
+		if (decorator != null) {
+			decorator.setText(text);
 		}
 	}
 

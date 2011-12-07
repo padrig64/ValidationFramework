@@ -7,6 +7,7 @@ import java.awt.Toolkit;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
@@ -128,6 +129,7 @@ public class TestFrame extends JFrame {
 
 		@Override
 		public void feedback(TextFieldResult result) {
+			setToolTipText(result.toString());
 			switch (result) {
 				case OK:
 					hideIconTip();
@@ -175,10 +177,11 @@ public class TestFrame extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// Create contents
-		JPanel contentPane = new JPanel(new MigLayout("fill, wrap 1", "", "[]related[]related[]unrelated[]"));
+		JPanel contentPane = new JPanel(new MigLayout("fill, wrap 2", "[]related[grow]", "[]related[]related[]unrelated[]"));
 		setContentPane(contentPane);
 
 		// First textfield
+		contentPane.add(new JLabel("Tooltip:"));
 		JTextField textField = new JTextField();
 		contentPane.add(textField, "growx");
 		DefaultValidator<String, TextFieldResult> validator1 = new DefaultValidator<String, TextFieldResult>();
@@ -187,6 +190,7 @@ public class TestFrame extends JFrame {
 		validator1.addFeedBack(new TextFieldToolTipFeedBack(textField));
 
 		// Second textfield
+		contentPane.add(new JLabel("Color:"));
 		textField = new JTextField();
 		contentPane.add(textField, "growx");
 		DefaultValidator<String, TextFieldResult> validator2 = new DefaultValidator<String, TextFieldResult>();
@@ -195,6 +199,7 @@ public class TestFrame extends JFrame {
 		validator2.addFeedBack(new TextFieldColorFeedBack(textField));
 
 		// Third textfield
+		contentPane.add(new JLabel("Icon tip:"));
 		textField = new JTextField();
 		contentPane.add(textField, "growx");
 		DefaultValidator<String, TextFieldResult> validator3 = new DefaultValidator<String, TextFieldResult>();
@@ -204,14 +209,17 @@ public class TestFrame extends JFrame {
 
 		// Apply button
 		JButton button = new JButton("Apply");
-		contentPane.add(button, "growx");
+		contentPane.add(button, "growx, span");
 
 		// Set size
 		pack();
-		Dimension size = new Dimension(getContentPane().getPreferredSize());
-		size.width = 200;
+//		Dimension size = new Dimension(getContentPane().getPreferredSize());
+//		size.width = 200;
+//		setSize(size);
+//		setMinimumSize(getContentPane().getMinimumSize());
+		Dimension size = getSize();
+		size.width += 100;
 		setSize(size);
-		setMinimumSize(getContentPane().getMinimumSize());
 
 		// Set location
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();

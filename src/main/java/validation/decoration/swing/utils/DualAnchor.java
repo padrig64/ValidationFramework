@@ -40,4 +40,14 @@ public class DualAnchor {
 
 		return slaveLocation;
 	}
+
+	public Point getRelativeSlaveLocation(Component master, Component slave) {
+
+		Point masterAnchorPoint = masterAnchor.getAnchorPoint(master);
+		Point slaveAnchorPoint = slaveAnchor.getAnchorPoint(slave);
+
+		Point slaveLocation = new Point((int) (masterAnchorPoint.getX() - slaveAnchorPoint.getX()), (int) (masterAnchorPoint.getY() - slaveAnchorPoint.getY()));
+
+		return slaveLocation;
+	}
 }

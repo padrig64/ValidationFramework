@@ -399,7 +399,7 @@ public abstract class AbstractComponentDecorator {
 	 */
 	private Point originOffset = new Point(0, 0);
 
-	private Painter painter;
+	protected Painter painter;
 	private JComponent component;
 	private Container parent;
 	private Component layerRoot;
