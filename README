@@ -1,10 +1,15 @@
-The Validation Framework is a set of utilities and base classes to help in developing full-featured user interaction, by simplifying/unifying the validation of user input as well as the assistance and feedback to the user.
+The Validation Framework is a set of base classes, interfaces and utilities to
+help in developing full-featured user interaction, by simplifying and unifying
+the validation of user input and the resulting feedback and assistance to the
+user.
 
-The following features are expected:
+This library is still in its early stage of development. The following features
+are expected:
 
 INPUT VALIDATION
  . Instant validation (for example, on each key stroke);
- . Delayed validation (for example, when focus is lost or when the ENTER key is pressed, or when Apply button is pressed);
+ . Delayed validation (for example, when focus is lost or when the ENTER key is
+   pressed, or when Apply button is pressed);
  . Validation on individual components;
  . Validation on groups of components with inter-dependencies;
  . Validation of groups within groups;
@@ -13,19 +18,26 @@ INPUT VALIDATION
 FEEDBACK
  . Immediate feedback;
  . Delayed feedback;
- . Value proposal in case of error (either automatic proposal for related components within a group), that is to say automatic correction of related components;
- . Conditional logic for components (for example, enabling/disabling of an Apply button in case of valid/invalid input)
- . Decorations for user assistance (icons, convenient tooltips, hints, etc.), staying close to the current
-   look-and-feel.
+ . Value proposal in case of error (either automatic proposal for related
+   components within a group), that is to say automatic correction of related
+   components;
+ . Conditional logic for components (for example, enabling/disabling of an Apply
+   button in case of valid/invalid input);
+ . Decorations for user assistance (icons, convenient tooltips, hints, etc.),
+   staying close to the current look-and-feel.
 
 EASY AND EXTENDABLE FRAMEWORK
  . Very simple to use;
- . Most generic concepts as possible (validation trigger -> data reader -> validation algorithm -> validation rules -> validation results -> feedback to user -> component decorations);
+ . Most generic concepts as possible (validation trigger -> data reader ->
+   validation algorithm -> validation rules -> validation results ->
+   feedback to user -> component decorations);
  . Easily pluggable to custom components;
  . Not only for Swing components;
- . Not only GUI input validation (however, this is not the focus of the framework);
+ . Not only GUI input validation (however, this is not the focus of the
+   framework);
  . Special components (any kind of components);
- . Flexibility of use (one validator for the whole application, or one validator per input component, or whatever);
+ . Flexibility of use (one validator for the whole application, or one validator
+   per input component, or whatever);
  . Easy of use (for the programmer);
  . Custom rules (of course);
  . Custom feedbacks;
@@ -35,4 +47,5 @@ EASY AND EXTENDABLE FRAMEWORK
  . Anything useful you can imagine.
 
 OTHER
- . Support for runtime look-and-feel switches for default feedback implementations.
+ . Support for runtime look-and-feel switches for default feedback
+   implementations.
