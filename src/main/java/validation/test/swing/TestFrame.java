@@ -11,6 +11,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.ColorUIResource;
 
 import net.miginfocom.swing.MigLayout;
@@ -230,6 +232,26 @@ public class TestFrame extends JFrame {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
+
+				// Set look-and-feel
+				try {
+					for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+						if ("Nimbus".equals(info.getName())) {
+							UIManager.setLookAndFeel(info.getClassName());
+							break;
+						}
+					}
+				} catch (UnsupportedLookAndFeelException e) {
+					// handle exception
+				} catch (ClassNotFoundException e) {
+					// handle exception
+				} catch (InstantiationException e) {
+					// handle exception
+				} catch (IllegalAccessException e) {
+					// handle exception
+				}
+
+				// Show window
 				new TestFrame().setVisible(true);
 			}
 		});

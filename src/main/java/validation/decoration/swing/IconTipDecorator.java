@@ -12,7 +12,7 @@ import javax.swing.JComponent;
 import validation.decoration.swing.utils.Anchor;
 import validation.decoration.swing.utils.DualAnchor;
 
-public class IconTipDecorator extends AbstractComponentDecorator {
+public class IconTipDecorator extends AbstractDecorator {
 
 	private class ToolTipAdapter extends MouseAdapter {
 
@@ -102,6 +102,16 @@ public class IconTipDecorator extends AbstractComponentDecorator {
 			Point iconLocation = dualAnchorWithOwner.getRelativeSlaveLocation(getComponent(), icon);
 			setDecorationBounds(iconLocation.x, iconLocation.y, icon.getIconWidth(), icon.getIconHeight());
 		}
+	}
+
+	@Override
+	protected int getWidth() {
+		return 0;
+	}
+
+	@Override
+	protected int getHeight() {
+		return 0;
 	}
 
 	@Override
