@@ -14,39 +14,24 @@ import validation.feedback.FeedBack;
 
 public abstract class AbstractIconTipFeedBack<R> implements FeedBack<R> {
 
-	private JComponent owner = null;
 	private IconTipDecorator decorator = null;
 
 	public AbstractIconTipFeedBack(JComponent owner) {
-		attachComponent(owner);
+		attach(owner);
 	}
 
-	public void attachComponent(JComponent owner) {
-		if (this.owner != null) {
-			detachComponent(this.owner);
-		}
-
-		this.owner = owner;
+	public void attach(JComponent owner) {
+		detach();
 
 		if (owner != null) {
 			decorator = new IconTipDecorator(owner);
 			decorator.setVisible(false);
-			InputStream inputStream = getClass().getResourceAsStream("/icons/invalid3.png");
-			try {
-				BufferedImage image = ImageIO.read(inputStream);
-				ImageIcon icon = new ImageIcon(image);
-				decorator.setIcon(icon);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
 		}
 	}
 
-	public void detachComponent(JComponent owner) {
-		this.owner = null;
-
+	public void detach() {
 		if (decorator != null) {
-			decorator.dispose();
+			decorator.detach();
 			decorator = null;
 		}
 	}

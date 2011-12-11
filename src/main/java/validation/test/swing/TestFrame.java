@@ -3,7 +3,13 @@ package validation.test.swing;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 
+import javax.imageio.ImageIO;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -49,20 +55,36 @@ public class TestFrame extends JFrame {
 
 	private enum TextFieldResult /*implements AggregatableResult<Boolean>*/ {
 
-		OK(true, "", null, null),
-		NOK_EMPTY(false, "Cannot be empty", null, COLOR_NOK_EMPTY),
-		NOK_TOO_LONG(false, "Should be less than 5 characters", COLOR_NOK_TOO_LONG, null);
+		OK(true, "", null, null, null),
+		NOK_EMPTY(false, "Should not be empty", "/icons/warning.png", null, COLOR_NOK_EMPTY),
+		NOK_TOO_LONG(false, "Cannot be more than 4 characters", "/icons/invalid2.png", COLOR_NOK_TOO_LONG, null);
 
-		private boolean aggregatableResult;
+		private final boolean aggregatableResult;
 		private String text;
+		private Icon icon;
 		private Color foreground;
 		private Color background;
 
-		TextFieldResult(boolean aggregatableResult, String text, Color foreground, Color background) {
+		TextFieldResult(boolean aggregatableResult, String text, String iconName, Color foreground, Color background) {
 			this.aggregatableResult = aggregatableResult;
 			this.text = text;
 			this.foreground = foreground;
 			this.background = background;
+
+			// Error icon
+			if ((iconName != null) && !iconName.isEmpty()) {
+				InputStream inputStream = getClass().getResourceAsStream(iconName);
+				try {
+					BufferedImage image = ImageIO.read(inputStream);
+					icon = new ImageIcon(image);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
+		public Icon getIcon() {
+			return icon;
 		}
 
 		public Color getForeground() {
@@ -131,6 +153,7 @@ public class TestFrame extends JFrame {
 
 		@Override
 		public void feedback(TextFieldResult result) {
+			setIcon(result.getIcon());
 			setToolTipText(result.toString());
 			switch (result) {
 				case OK:

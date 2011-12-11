@@ -1,8 +1,5 @@
 package validation.utils;
 
-import com.sun.jna.platform.win32.ObjBase;
-import sun.awt.SunHints;
-
 public final class ValueUtils {
 
 	/**
@@ -15,9 +12,9 @@ public final class ValueUtils {
 	public static boolean areEqual(Object val1, Object val2) {
 		boolean equal = false;
 
-		if((val1 == null) && (val2 == null)) {
+		if ((val1 == null) && (val2 == null)) {
 			equal = true;
-		} else if(val1 != null) {
+		} else if (val1 != null) {
 			equal = val1.equals(val2);
 		}
 

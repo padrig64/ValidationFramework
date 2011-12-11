@@ -23,11 +23,11 @@ public class ComboBoxIndexTrigger<R> extends AbstractTrigger<Integer> {
 
 	public ComboBoxIndexTrigger(JComboBox inputComponent) {
 		super();
-		attachComponent(inputComponent);
+		attach(inputComponent);
 	}
 
-	public void attachComponent(JComboBox inputComponent) {
-		detachComponent(comboBox);
+	public void attach(JComboBox inputComponent) {
+		detach();
 
 		comboBox = inputComponent;
 
@@ -36,7 +36,7 @@ public class ComboBoxIndexTrigger<R> extends AbstractTrigger<Integer> {
 		}
 	}
 
-	public void detachComponent(JComboBox inputComponent) {
+	public void detach() {
 		if (comboBox != null) {
 			comboBox.removeActionListener(inputAdapter);
 			comboBox = null;

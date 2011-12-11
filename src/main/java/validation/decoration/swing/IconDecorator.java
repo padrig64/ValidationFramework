@@ -5,25 +5,31 @@ import java.awt.Graphics;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 
+import validation.decoration.swing.utils.DualAnchor;
+
 public class IconDecorator extends AbstractDecorator {
 
-	private Icon decorator;
+	private Icon icon;
 
-	public IconDecorator(JComponent owner, Icon decorator) {
-		super(owner);
-		this.decorator = decorator;
+	public IconDecorator(JComponent owner, Icon icon, DualAnchor dualAnchor) {
+		super(owner, dualAnchor);
+		this.icon = icon;
 	}
 
-	public IconDecorator(JComponent c, Icon decorator, int layerOffset) {
-		super(c, layerOffset);
-		this.decorator = decorator;
+	public Icon getIcon() {
+		return icon;
+	}
+
+	public void setIcon(Icon icon) {
+		this.icon = icon;
+		synch();
 	}
 
 	@Override
 	protected int getWidth() {
 		int width = 0;
-		if (decorator != null) {
-			width = decorator.getIconWidth();
+		if (icon != null) {
+			width = icon.getIconWidth();
 		}
 		return width;
 	}
@@ -31,16 +37,16 @@ public class IconDecorator extends AbstractDecorator {
 	@Override
 	protected int getHeight() {
 		int height = 0;
-		if (decorator != null) {
-			height = decorator.getIconHeight();
+		if (icon != null) {
+			height = icon.getIconHeight();
 		}
 		return height;
 	}
 
 	@Override
 	public void paint(Graphics g) {
-		if (decorator != null) {
-			decorator.paintIcon(painter, g, 0, 0);
+		if (icon != null) {
+			icon.paintIcon(painter, g, 0, 0);
 		}
 	}
 }

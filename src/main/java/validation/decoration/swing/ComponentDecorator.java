@@ -5,17 +5,14 @@ import java.awt.Graphics;
 
 import javax.swing.JComponent;
 
+import validation.decoration.swing.utils.DualAnchor;
+
 public class ComponentDecorator extends AbstractDecorator {
 
 	private Component decorator;
 
-	public ComponentDecorator(JComponent owner, Component decorator) {
-		super(owner);
-		this.decorator = decorator;
-	}
-
-	public ComponentDecorator(JComponent c, Component decorator, int layerOffset) {
-		super(c, layerOffset);
+	public ComponentDecorator(JComponent owner, Component decorator, DualAnchor dualAnchor) {
+		super(owner, dualAnchor);
 		this.decorator = decorator;
 	}
 

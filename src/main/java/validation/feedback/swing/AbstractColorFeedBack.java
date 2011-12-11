@@ -17,18 +17,15 @@ public abstract class AbstractColorFeedBack<R> implements FeedBack<R> {
 	private boolean showing = false;
 
 	public AbstractColorFeedBack(JComponent owner) {
-		attachComponent(owner);
+		attach(owner);
 	}
 
-	public void attachComponent(JComponent owner) {
-		if (this.owner != null) {
-			detachComponent(this.owner);
-		}
-
+	public void attach(JComponent owner) {
+		detach();
 		this.owner = owner;
 	}
 
-	public void detachComponent(JComponent owner) {
+	public void detach() {
 		this.owner = null;
 	}
 

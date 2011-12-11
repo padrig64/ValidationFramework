@@ -45,7 +45,7 @@ public class IconTipDecorator extends AbstractDecorator {
 	}
 
 	public IconTipDecorator(JComponent owner, Icon icon) {
-		super(owner);
+		super(owner, null);
 		this.icon = icon;
 
 		toolTipDialog = new ToolTipDialog(painter, dualAnchorWithToolTip);
@@ -97,7 +97,7 @@ public class IconTipDecorator extends AbstractDecorator {
 
 	private void updateDecorationBounds() {
 		if ((dualAnchorWithOwner == null) || (icon == null)) {
-			setDecorationBounds(null);
+			setDecorationBounds(0, 0, 0, 0);
 		} else {
 			Point iconLocation = dualAnchorWithOwner.getRelativeSlaveLocation(getComponent(), icon);
 			setDecorationBounds(iconLocation.x, iconLocation.y, icon.getIconWidth(), icon.getIconHeight());

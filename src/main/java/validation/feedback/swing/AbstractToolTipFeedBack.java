@@ -12,17 +12,15 @@ public abstract class AbstractToolTipFeedBack<R> implements FeedBack<R> {
 	private ToolTipDialog toolTipDialog = null;
 
 	public AbstractToolTipFeedBack(JComponent owner) {
-		attachComponent(owner);
+		attach(owner);
 	}
 
-	public void attachComponent(JComponent owner) {
-		if (toolTipDialog != null) {
-			toolTipDialog.dispose();
-		}
+	public void attach(JComponent owner) {
+		detach();
 		toolTipDialog = new ToolTipDialog(owner, new DualAnchor(Anchor.TOP_RIGHT, Anchor.TOP_LEFT));
 	}
 
-	public void detachComponent(JComponent owner) {
+	public void detach() {
 		if (toolTipDialog != null) {
 			toolTipDialog.dispose();
 			toolTipDialog = null;

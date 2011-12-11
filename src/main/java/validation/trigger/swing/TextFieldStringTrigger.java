@@ -29,11 +29,11 @@ public class TextFieldStringTrigger extends AbstractTrigger<String> {
 
 	public TextFieldStringTrigger(JTextField inputComponent) {
 		super();
-		attachComponent(inputComponent);
+		attach(inputComponent);
 	}
 
-	public void attachComponent(JTextField inputComponent) {
-		detachComponent(textField);
+	public void attach(JTextField inputComponent) {
+		detach();
 
 		textField = inputComponent;
 		if (textField != null) {
@@ -41,7 +41,7 @@ public class TextFieldStringTrigger extends AbstractTrigger<String> {
 		}
 	}
 
-	public void detachComponent(JTextField inputComponent) {
+	public void detach() {
 		if (textField != null) {
 			textField.getDocument().removeDocumentListener(inputAdapter);
 			textField = null;
