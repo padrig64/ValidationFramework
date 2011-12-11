@@ -1,9 +1,7 @@
 package validation.decoration.swing.utils;
 
-import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Point;
-
-import javax.swing.Icon;
 
 public class DualAnchor {
 
@@ -31,20 +29,13 @@ public class DualAnchor {
 		this.slaveAnchor = slaveAnchor;
 	}
 
-	public Point getRelativeSlaveLocation(Component master, Icon slave) {
-
-		Point masterAnchorPoint = masterAnchor.getAnchorPoint(master);
-		Point slaveAnchorPoint = slaveAnchor.getAnchorPoint(slave);
-
-		Point slaveLocation = new Point((int) (masterAnchorPoint.getX() - slaveAnchorPoint.getX()), (int) (masterAnchorPoint.getY() - slaveAnchorPoint.getY()));
-
-		return slaveLocation;
+	public Point getRelativeSlaveLocation(Dimension masterSize, Dimension slaveSize) {
+		return getRelativeSlaveLocation(masterSize.width, masterSize.height, slaveSize.width, slaveSize.height);
 	}
 
-	public Point getRelativeSlaveLocation(Component master, Component slave) {
-
-		Point masterAnchorPoint = masterAnchor.getAnchorPoint(master);
-		Point slaveAnchorPoint = slaveAnchor.getAnchorPoint(slave);
+	public Point getRelativeSlaveLocation(int masterWidth, int masterHeight, int slaveWidth, int slaveHeight) {
+		Point masterAnchorPoint = masterAnchor.getAnchorPoint(masterWidth, masterHeight);
+		Point slaveAnchorPoint = slaveAnchor.getAnchorPoint(slaveWidth, slaveHeight);
 
 		Point slaveLocation = new Point((int) (masterAnchorPoint.getX() - slaveAnchorPoint.getX()), (int) (masterAnchorPoint.getY() - slaveAnchorPoint.getY()));
 

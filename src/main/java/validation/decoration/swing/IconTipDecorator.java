@@ -1,8 +1,6 @@
 package validation.decoration.swing;
 
 import java.awt.Graphics;
-import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -18,16 +16,12 @@ public class IconTipDecorator extends AbstractDecorator {
 
 		@Override
 		public void mouseEntered(MouseEvent e) {
-			if (isVisible()) {
-				toolTipDialog.setVisible(true);
-			}
+			toolTipDialog.setVisible(true);
 		}
 
 		@Override
 		public void mouseExited(MouseEvent e) {
-			if (isVisible()) {
-				toolTipDialog.setVisible(false);
-			}
+			toolTipDialog.setVisible(false);
 		}
 	}
 
@@ -35,7 +29,8 @@ public class IconTipDecorator extends AbstractDecorator {
 
 	private ToolTipDialog toolTipDialog = null;
 
-	private DualAnchor dualAnchorWithOwner = new DualAnchor(Anchor.BOTTOM_LEFT, Anchor.CENTER);
+	private static final DualAnchor DEFAULT_DUAL_ANCHOR_WITH_OWNER = new DualAnchor(Anchor.BOTTOM_LEFT, Anchor.CENTER);
+
 	private DualAnchor dualAnchorWithToolTip = new DualAnchor(Anchor.CENTER, Anchor.TOP_RIGHT);
 
 	private boolean visible = true;
@@ -45,20 +40,11 @@ public class IconTipDecorator extends AbstractDecorator {
 	}
 
 	public IconTipDecorator(JComponent owner, Icon icon) {
-		super(owner, null);
+		super(owner, DEFAULT_DUAL_ANCHOR_WITH_OWNER);
 		this.icon = icon;
 
-		toolTipDialog = new ToolTipDialog(painter, dualAnchorWithToolTip);
-		painter.addMouseListener(new ToolTipAdapter());
-	}
-
-	public boolean isVisible() {
-		return visible;
-	}
-
-	public void setVisible(boolean visible) {
-		this.visible = visible;
-		updateDecorationBounds();
+		toolTipDialog = new ToolTipDialog(decorationHolder, dualAnchorWithToolTip);
+		decorationHolder.addMouseListener(new ToolTipAdapter());
 	}
 
 	public String getText() {
@@ -75,16 +61,7 @@ public class IconTipDecorator extends AbstractDecorator {
 
 	public void setIcon(Icon icon) {
 		this.icon = icon;
-		updateDecorationBounds();
-	}
-
-	public DualAnchor getDualAnchorWithOwner() {
-		return dualAnchorWithOwner;
-	}
-
-	public void setDualAnchorWithOwner(DualAnchor dualAnchorWithOwner) {
-		this.dualAnchorWithOwner = dualAnchorWithOwner;
-		updateDecorationBounds();
+		followOwner();
 	}
 
 	public DualAnchor getDualAnchorWithToolTip() {
@@ -95,30 +72,37 @@ public class IconTipDecorator extends AbstractDecorator {
 		this.dualAnchorWithToolTip = dualAnchorWithToolTip;
 	}
 
-	private void updateDecorationBounds() {
-		if ((dualAnchorWithOwner == null) || (icon == null)) {
-			setDecorationBounds(0, 0, 0, 0);
-		} else {
-			Point iconLocation = dualAnchorWithOwner.getRelativeSlaveLocation(getComponent(), icon);
-			setDecorationBounds(iconLocation.x, iconLocation.y, icon.getIconWidth(), icon.getIconHeight());
+	@Override
+	public void setVisible(boolean visible) {
+		super.setVisible(visible);
+
+		if (!visible && (toolTipDialog != null)) {
+			toolTipDialog.setVisible(false);
 		}
 	}
 
 	@Override
 	protected int getWidth() {
-		return 0;
+		int width = 0;
+		if (icon != null) {
+			width = icon.getIconWidth();
+		}
+		return width;
 	}
 
 	@Override
 	protected int getHeight() {
-		return 0;
+		int height = 0;
+		if (icon != null) {
+			height = icon.getIconHeight();
+		}
+		return height;
 	}
 
 	@Override
 	public void paint(Graphics g) {
 		if (isVisible() && (icon != null)) {
-			Rectangle decorationBounds = getDecorationBounds();
-			icon.paintIcon(getComponent(), g, (int) decorationBounds.getX(), (int) decorationBounds.getY());
+			icon.paintIcon(decorationHolder, g, 0, 0);
 		}
 	}
 }

@@ -71,7 +71,6 @@ public abstract class AbstractColorFeedBack<R> implements FeedBack<R> {
 			owner.setForeground(origForeground);
 			owner.setBackground(origBackground);
 		}
-
 		showing = false;
 	}
 }

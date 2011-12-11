@@ -1,12 +1,6 @@
 package validation.feedback.swing;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
-
-import javax.imageio.ImageIO;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 
 import validation.decoration.swing.IconTipDecorator;
@@ -65,7 +59,7 @@ public abstract class AbstractIconTipFeedBack<R> implements FeedBack<R> {
 	}
 
 	protected void showIconTip() {
-		if ((decorator != null) && !decorator.isVisible()) {
+		if (decorator != null) {
 			decorator.setVisible(true);
 		}
 	}

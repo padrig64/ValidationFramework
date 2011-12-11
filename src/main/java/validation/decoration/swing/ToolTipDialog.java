@@ -183,10 +183,10 @@ public class ToolTipDialog extends JDialog {
 	}
 
 	@Override
-	public void setVisible(boolean b) {
+	public void setVisible(boolean visible) {
 		setSize(toolTip.getPreferredSize());
 		followOwner();
-		super.setVisible(b);
+		super.setVisible(visible);
 	}
 
 	@Override
@@ -226,8 +226,10 @@ public class ToolTipDialog extends JDialog {
 	}
 
 	private void followOwner() {
-		Point screenLocation = owner.getLocationOnScreen();
-		Point relativeSlaveLocation = dualAnchor.getRelativeSlaveLocation(owner, ToolTipDialog.this);
-		setLocation(screenLocation.x + relativeSlaveLocation.x, screenLocation.y + relativeSlaveLocation.y);
+		if (owner.isVisible()) {
+			Point screenLocation = owner.getLocationOnScreen();
+			Point relativeSlaveLocation = dualAnchor.getRelativeSlaveLocation(owner.getSize(), ToolTipDialog.this.getSize());
+			setLocation(screenLocation.x + relativeSlaveLocation.x, screenLocation.y + relativeSlaveLocation.y);
+		}
 	}
 }
