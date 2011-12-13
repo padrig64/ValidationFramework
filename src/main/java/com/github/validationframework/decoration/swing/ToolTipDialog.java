@@ -91,7 +91,8 @@ public class ToolTipDialog extends JDialog {
 				if (duration <= 0) {
 					timingEvent(null, 0.0);
 				} else {
-					animator = new Animator.Builder().setDuration(duration, TimeUnit.MILLISECONDS).setInterpolator(new SplineInterpolator(0.8, 0.2, 0.2, 0.8)).addTarget(this).build();
+					animator = new Animator.Builder().setDuration(duration, TimeUnit.MILLISECONDS).setInterpolator(
+							new SplineInterpolator(0.8, 0.2, 0.2, 0.8)).addTarget(this).build();
 					animator.startReverse();
 				}
 			} else {
@@ -110,7 +111,8 @@ public class ToolTipDialog extends JDialog {
 				if (duration <= 0) {
 					timingEvent(null, 1.0);
 				} else {
-					animator = new Animator.Builder().setDuration(duration, TimeUnit.MILLISECONDS).setInterpolator(new SplineInterpolator(0.8, 0.2, 0.2, 0.8)).addTarget(this).build();
+					animator = new Animator.Builder().setDuration(duration, TimeUnit.MILLISECONDS).setInterpolator(
+							new SplineInterpolator(0.8, 0.2, 0.2, 0.8)).addTarget(this).build();
 					animator.start();
 				}
 			} else {
@@ -228,7 +230,8 @@ public class ToolTipDialog extends JDialog {
 	private void followOwner() {
 		if (owner.isVisible()) {
 			Point screenLocation = owner.getLocationOnScreen();
-			Point relativeSlaveLocation = dualAnchor.getRelativeSlaveLocation(owner.getSize(), ToolTipDialog.this.getSize());
+			Point relativeSlaveLocation = dualAnchor.getRelativeSlaveLocation(owner.getSize(),
+																			  ToolTipDialog.this.getSize());
 			setLocation(screenLocation.x + relativeSlaveLocation.x, screenLocation.y + relativeSlaveLocation.y);
 		}
 	}

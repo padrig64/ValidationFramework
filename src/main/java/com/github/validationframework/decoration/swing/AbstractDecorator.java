@@ -145,9 +145,12 @@ public abstract class AbstractDecorator {
 		if (decorationHolder != null) {
 			Container ancestor = SwingUtilities.getAncestorOfClass(JLayeredPane.class, owner);
 			if (ancestor instanceof JLayeredPane) {
-				Point locationInLayeredPane = SwingUtilities.convertPoint(owner.getParent(), owner.getLocation(), ancestor);
-				Point relativeLocation = dualAnchor.getRelativeSlaveLocation(owner.getWidth(), owner.getHeight(), getWidth(), getHeight());
-				decorationHolder.setBounds(locationInLayeredPane.x + relativeLocation.x, locationInLayeredPane.y + relativeLocation.y, getWidth(), getHeight());
+				Point locationInLayeredPane = SwingUtilities.convertPoint(owner.getParent(), owner.getLocation(),
+																		  ancestor);
+				Point relativeLocation = dualAnchor.getRelativeSlaveLocation(owner.getWidth(), owner.getHeight(),
+																			 getWidth(), getHeight());
+				decorationHolder.setBounds(locationInLayeredPane.x + relativeLocation.x,
+										   locationInLayeredPane.y + relativeLocation.y, getWidth(), getHeight());
 			} else {
 				decorationHolder.setBounds(0, 0, 0, 0);
 			}

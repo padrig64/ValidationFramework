@@ -6,7 +6,7 @@
 
     <groupId>ValidationFramework</groupId>
     <artifactId>ValidationFramework</artifactId>
-    <version>0.0.</version>
+    <version>0.0.1-SNAPSHOT</version>
 
     <dependencies>
         <dependency>

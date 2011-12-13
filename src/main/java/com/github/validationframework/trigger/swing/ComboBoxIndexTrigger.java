@@ -19,7 +19,7 @@ public class ComboBoxIndexTrigger<R> extends AbstractTrigger<Integer> {
 
 	private JComboBox comboBox = null;
 
-	private InputAdapter inputAdapter = new InputAdapter();
+	private final InputAdapter inputAdapter = new InputAdapter();
 
 	public ComboBoxIndexTrigger(JComboBox inputComponent) {
 		super();

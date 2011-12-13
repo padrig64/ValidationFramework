@@ -37,8 +37,7 @@ public class DualAnchor {
 		Point masterAnchorPoint = masterAnchor.getAnchorPoint(masterWidth, masterHeight);
 		Point slaveAnchorPoint = slaveAnchor.getAnchorPoint(slaveWidth, slaveHeight);
 
-		Point slaveLocation = new Point((int) (masterAnchorPoint.getX() - slaveAnchorPoint.getX()), (int) (masterAnchorPoint.getY() - slaveAnchorPoint.getY()));
-
-		return slaveLocation;
+		return new Point((int) (masterAnchorPoint.getX() - slaveAnchorPoint.getX()),
+						 (int) (masterAnchorPoint.getY() - slaveAnchorPoint.getY()));
 	}
 }

@@ -33,8 +33,6 @@ public class IconTipDecorator extends AbstractDecorator {
 
 	private DualAnchor dualAnchorWithToolTip = new DualAnchor(Anchor.CENTER, Anchor.TOP_RIGHT);
 
-	private boolean visible = true;
-
 	public IconTipDecorator(JComponent owner) {
 		this(owner, null);
 	}

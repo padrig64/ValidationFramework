@@ -21,7 +21,10 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.ColorUIResource;
 
+import com.github.validationframework.feedback.FeedBack;
+import com.github.validationframework.feedback.TriggerFeedBack;
 import com.github.validationframework.feedback.swing.AbstractColorFeedBack;
+import com.github.validationframework.feedback.swing.AbstractIconFeedBack;
 import com.github.validationframework.feedback.swing.AbstractIconTipFeedBack;
 import com.github.validationframework.feedback.swing.AbstractToolTipFeedBack;
 import com.github.validationframework.rule.Rule;
@@ -30,21 +33,6 @@ import com.github.validationframework.validator.DefaultValidator;
 import net.miginfocom.swing.MigLayout;
 
 public class TestFrame extends JFrame {
-
-	private class TextFieldDataRule implements Rule<String, TextFieldResult> {
-
-		public TextFieldResult validate(String input) {
-			TextFieldResult result = TextFieldResult.OK;
-
-			if ((input == null) || (input.isEmpty())) {
-				result = TextFieldResult.NOK_EMPTY;
-			} else if (input.length() >= 5) {
-				result = TextFieldResult.NOK_TOO_LONG;
-			}
-
-			return result;
-		}
-	}
 
 	/**
 	 * UIResource in case look-and-feel changes while result is visible. The new look-and-feel is allowed to replace it
@@ -106,6 +94,22 @@ public class TestFrame extends JFrame {
 //		}
 	}
 
+	private class TextFieldRule implements Rule<String, TextFieldResult> {
+
+		@Override
+		public TextFieldResult validate(String input) {
+			TextFieldResult result = TextFieldResult.OK;
+
+			if ((input == null) || (input.isEmpty())) {
+				result = TextFieldResult.NOK_EMPTY;
+			} else if (input.length() >= 5) {
+				result = TextFieldResult.NOK_TOO_LONG;
+			}
+
+			return result;
+		}
+	}
+
 	private class TextFieldToolTipFeedBack extends AbstractToolTipFeedBack<TextFieldResult> {
 
 		public TextFieldToolTipFeedBack(JComponent owner) {
@@ -116,11 +120,11 @@ public class TestFrame extends JFrame {
 		public void feedback(TextFieldResult result) {
 			setToolTipText(result.toString());
 			switch (result) {
-				case OK:
-					hideToolTip();
-					break;
-				default:
-					showToolTip();
+			case OK:
+				hideToolTip();
+				break;
+			default:
+				showToolTip();
 			}
 		}
 	}
@@ -136,11 +140,30 @@ public class TestFrame extends JFrame {
 			setForeground(result.getForeground());
 			setBackground(result.getBackground());
 			switch (result) {
-				case OK:
-					hideColors();
-					break;
-				default:
-					showColors();
+			case OK:
+				hideColors();
+				break;
+			default:
+				showColors();
+			}
+		}
+	}
+
+	private class TextFieldIconFeedBack extends AbstractIconFeedBack<TextFieldResult> {
+
+		public TextFieldIconFeedBack(JComponent owner) {
+			super(owner);
+		}
+
+		@Override
+		public void feedback(TextFieldResult result) {
+			setIcon(result.getIcon());
+			switch (result) {
+			case OK:
+				hideIconTip();
+				break;
+			default:
+				showIconTip();
 			}
 		}
 	}
@@ -156,41 +179,37 @@ public class TestFrame extends JFrame {
 			setIcon(result.getIcon());
 			setToolTipText(result.toString());
 			switch (result) {
-				case OK:
-					hideIconTip();
-					break;
-				default:
-					showIconTip();
+			case OK:
+				hideIconTip();
+				break;
+			default:
+				showIconTip();
 			}
 		}
 	}
 
-//	private class GroupRule implements Rule<Object, GroupResult> {
-//
-//		@Override
-//		public GroupResult validate(Object input) {
-//			GroupResult result = GroupResult.OK;
-//
-//			// TODO
-//
-//			return result;
-//		}
-//	}
+	private enum GroupResult {
+		OK(true),
+		NOK(false);
 
-//	private enum GroupResult {
-//		OK(true),
-//		NOK(false);
-//
-//		private final boolean applyEnabled;
-//
-//		GroupResult(boolean applyEnabled) {
-//			this.applyEnabled = applyEnabled;
-//		}
-//
-//		public boolean isApplyEnabled() {
-//			return applyEnabled;
-//		}
-//	}
+		private final boolean applyEnabled;
+
+		GroupResult(boolean applyEnabled) {
+			this.applyEnabled = applyEnabled;
+		}
+
+		public boolean isApplyEnabled() {
+			return applyEnabled;
+		}
+	}
+
+	private class GroupRule implements Rule<TextFieldResult, GroupResult> {
+
+		@Override
+		public GroupResult validate(TextFieldResult input) {
+			return GroupResult.OK;
+		}
+	}
 
 	public TestFrame() {
 		super();
@@ -202,7 +221,8 @@ public class TestFrame extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// Create contents
-		JPanel contentPane = new JPanel(new MigLayout("fill, wrap 2", "[]related[grow]", "[]related[]related[]unrelated[]"));
+		JPanel contentPane = new JPanel(new MigLayout("fill, wrap 2", "[]related[grow]",
+													  "[]related[]related[]related[]unrelated[]"));
 		setContentPane(contentPane);
 
 		// First textfield
@@ -211,8 +231,10 @@ public class TestFrame extends JFrame {
 		contentPane.add(textField, "growx");
 		DefaultValidator<String, TextFieldResult> validator1 = new DefaultValidator<String, TextFieldResult>();
 		validator1.addTrigger(new TextFieldStringTrigger(textField));
-		validator1.addRule(new TextFieldDataRule());
+		validator1.addRule(new TextFieldRule());
 		validator1.addFeedBack(new TextFieldToolTipFeedBack(textField));
+		TriggerFeedBack<TextFieldResult> groupTrigger1 = new TriggerFeedBack<TextFieldResult>();
+		validator1.addFeedBack(groupTrigger1);
 
 		// Second textfield
 		contentPane.add(new JLabel("Color:"));
@@ -220,21 +242,56 @@ public class TestFrame extends JFrame {
 		contentPane.add(textField, "growx");
 		DefaultValidator<String, TextFieldResult> validator2 = new DefaultValidator<String, TextFieldResult>();
 		validator2.addTrigger(new TextFieldStringTrigger(textField));
-		validator2.addRule(new TextFieldDataRule());
+		validator2.addRule(new TextFieldRule());
 		validator2.addFeedBack(new TextFieldColorFeedBack(textField));
+		TriggerFeedBack<TextFieldResult> groupTrigger2 = new TriggerFeedBack<TextFieldResult>();
+		validator2.addFeedBack(groupTrigger2);
 
 		// Third textfield
-		contentPane.add(new JLabel("Icon tip:"));
+		contentPane.add(new JLabel("Icon:"));
 		textField = new JTextField();
 		contentPane.add(textField, "growx");
 		DefaultValidator<String, TextFieldResult> validator3 = new DefaultValidator<String, TextFieldResult>();
 		validator3.addTrigger(new TextFieldStringTrigger(textField));
-		validator3.addRule(new TextFieldDataRule());
-		validator3.addFeedBack(new TextFieldIconTipFeedBack(textField));
+		validator3.addRule(new TextFieldRule());
+		validator3.addFeedBack(new TextFieldIconFeedBack(textField));
+		TriggerFeedBack<TextFieldResult> groupTrigger3 = new TriggerFeedBack<TextFieldResult>();
+		validator3.addFeedBack(groupTrigger3);
+
+		// Fourth textfield
+		contentPane.add(new JLabel("Icon tip:"));
+		textField = new JTextField();
+		contentPane.add(textField, "growx");
+		DefaultValidator<String, TextFieldResult> validator4 = new DefaultValidator<String, TextFieldResult>();
+		validator4.addTrigger(new TextFieldStringTrigger(textField));
+		validator4.addRule(new TextFieldRule());
+		validator4.addFeedBack(new TextFieldIconTipFeedBack(textField));
+		TriggerFeedBack<TextFieldResult> groupTrigger4 = new TriggerFeedBack<TextFieldResult>();
+		validator4.addFeedBack(groupTrigger4);
 
 		// Apply button
 		JButton button = new JButton("Apply");
 		contentPane.add(button, "growx, span");
+		DefaultValidator<TextFieldResult, GroupResult> groupValidator
+				= new DefaultValidator<TextFieldResult, GroupResult>();
+		groupValidator.addTrigger(groupTrigger1);
+		groupValidator.addTrigger(groupTrigger2);
+		groupValidator.addTrigger(groupTrigger3);
+		groupValidator.addTrigger(groupTrigger4);
+		groupValidator.addRule(new Rule<TextFieldResult, GroupResult>() {
+			@Override
+			public GroupResult validate(TextFieldResult input) {
+				// Need source!!
+				// TODO
+				return null;
+			}
+		});
+		groupValidator.addFeedBack(new FeedBack<GroupResult>() {
+			@Override
+			public void feedback(GroupResult result) {
+				// TODO
+			}
+		});
 
 		// Set size
 		pack();
@@ -244,7 +301,7 @@ public class TestFrame extends JFrame {
 //		setMinimumSize(getContentPane().getMinimumSize());
 		Dimension size = getSize();
 		size.width += 100;
-		setSize(size);
+		setMinimumSize(size);
 
 		// Set location
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();

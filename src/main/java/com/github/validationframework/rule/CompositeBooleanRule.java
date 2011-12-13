@@ -3,7 +3,7 @@ package com.github.validationframework.rule;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CompositeBooleanDataRule<D> implements Rule<D, Boolean> {
+public class CompositeBooleanRule<D> implements Rule<D, Boolean> {
 
 	private List<Rule<D, Boolean>> rules = new ArrayList<Rule<D, Boolean>>();
 

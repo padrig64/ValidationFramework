@@ -10,14 +10,17 @@ public class TextFieldStringTrigger extends AbstractTrigger<String> {
 
 	private class InputAdapter implements DocumentListener {
 
+		@Override
 		public void insertUpdate(DocumentEvent e) {
 			triggerValidation();
 		}
 
+		@Override
 		public void removeUpdate(DocumentEvent e) {
 			triggerValidation();
 		}
 
+		@Override
 		public void changedUpdate(DocumentEvent e) {
 			triggerValidation();
 		}
