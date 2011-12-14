@@ -8,14 +8,14 @@ public abstract class AbstractTrigger<D> implements Trigger<D>, DataReader<D> {
 	private final List<TriggerListener<D>> triggerListeners = new ArrayList<TriggerListener<D>>();
 
 	@Override
-	public void addTriggerListener(TriggerListener listener) {
+	public void addTriggerListener(TriggerListener<D> listener) {
 		if (listener != null) {
 			triggerListeners.add(listener);
 		}
 	}
 
 	@Override
-	public void removeTriggerListener(TriggerListener listener) {
+	public void removeTriggerListener(TriggerListener<D> listener) {
 		if (listener != null) {
 			triggerListeners.remove(listener);
 		}

@@ -62,16 +62,12 @@ public abstract class AbstractDecorator {
 
 		@Override
 		public int getWidth() {
-			int width = AbstractDecorator.this.getWidth();
-			System.out.println("AbstractDecorator2$DecorationHolder.getWidth: " + width);
-			return width;
+			return AbstractDecorator.this.getWidth();
 		}
 
 		@Override
 		public int getHeight() {
-			int height = AbstractDecorator.this.getHeight();
-			System.out.println("AbstractDecorator2$DecorationHolder.getHeight: " + height);
-			return height;
+			return AbstractDecorator.this.getHeight();
 		}
 
 		@Override
@@ -81,7 +77,6 @@ public abstract class AbstractDecorator {
 			}
 		}
 	}
-
 
 	private JComponent owner;
 	private DualAnchor dualAnchor;

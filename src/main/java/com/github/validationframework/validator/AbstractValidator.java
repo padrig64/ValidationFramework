@@ -26,6 +26,7 @@ public abstract class AbstractValidator<D, R> implements Validator<D, R> {
 
 	protected List<FeedBack<R>> feedBacks = new ArrayList<FeedBack<R>>();
 
+	@Override
 	public void addTrigger(Trigger<D> trigger) {
 		if (trigger != null) {
 			triggers.add(trigger);
@@ -33,6 +34,7 @@ public abstract class AbstractValidator<D, R> implements Validator<D, R> {
 		}
 	}
 
+	@Override
 	public void removeTrigger(Trigger<D> trigger) {
 		if (trigger != null) {
 			triggers.remove(trigger);
@@ -40,18 +42,22 @@ public abstract class AbstractValidator<D, R> implements Validator<D, R> {
 		}
 	}
 
+	@Override
 	public void addRule(Rule<D, R> rule) {
 		rules.add(rule);
 	}
 
+	@Override
 	public void removeRule(Rule<D, R> rule) {
 		rules.remove(rule);
 	}
 
+	@Override
 	public void addFeedBack(FeedBack<R> feedBack) {
 		feedBacks.add(feedBack);
 	}
 
+	@Override
 	public void removeFeedBack(FeedBack<R> feedBack) {
 		feedBacks.remove(feedBack);
 	}

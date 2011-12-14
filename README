@@ -13,7 +13,8 @@ INPUT VALIDATION
  . Validation on individual components;
  . Validation on groups of components with inter-dependencies;
  . Validation of groups within groups;
- . Syntax validation and semantic validation.
+ . Syntax validation and semantic validation;
+ . Support for table edition.
 
 FEEDBACK
  . Immediate feedback;
@@ -44,6 +45,7 @@ EASY AND EXTENDABLE FRAMEWORK
  . Custom decorations;
  . Custom validation/feedback algorithms;
  . Easily pluggable to the Commons Validator framework from Jakarta;
+ . Set the validation to a certain state (for example, forcing invalidation and/or its feedback);
  . Anything useful you can imagine.
 
 OTHER

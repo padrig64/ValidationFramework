@@ -270,8 +270,8 @@ public class TestFrame extends JFrame {
 		validator4.addFeedBack(groupTrigger4);
 
 		// Apply button
-		JButton button = new JButton("Apply");
-		contentPane.add(button, "growx, span");
+		final JButton applyButton = new JButton("Apply");
+		contentPane.add(applyButton, "growx, span");
 		DefaultValidator<TextFieldResult, GroupResult> groupValidator
 				= new DefaultValidator<TextFieldResult, GroupResult>();
 		groupValidator.addTrigger(groupTrigger1);
@@ -289,16 +289,12 @@ public class TestFrame extends JFrame {
 		groupValidator.addFeedBack(new FeedBack<GroupResult>() {
 			@Override
 			public void feedback(GroupResult result) {
-				// TODO
+				applyButton.setEnabled(GroupResult.OK.equals(result));
 			}
 		});
 
 		// Set size
 		pack();
-//		Dimension size = new Dimension(getContentPane().getPreferredSize());
-//		size.width = 200;
-//		setSize(size);
-//		setMinimumSize(getContentPane().getMinimumSize());
 		Dimension size = getSize();
 		size.width += 100;
 		setMinimumSize(size);
