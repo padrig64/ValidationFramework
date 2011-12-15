@@ -1,13 +1,16 @@
 package com.github.validationframework.result;
 
-public class BooleanResultAggregator implements ResultAggregator<Boolean[], Boolean> {
+public class BooleanResultAggregator extends AbstractResultAggregator<Boolean, Boolean> {
 
 	@Override
-	public Boolean aggregateResults(Boolean... results) {
-		boolean aggregatedResult = true;
+	public Boolean getAggregatedResult() {
+		boolean aggregatedResult = false;
 
-		for (Boolean result : results) {
-			aggregatedResult &= result;
+		if (!results.isEmpty()) {
+			aggregatedResult = true;
+			for (Boolean result : results.values()) {
+				aggregatedResult &= result;
+			}
 		}
 
 		return aggregatedResult;

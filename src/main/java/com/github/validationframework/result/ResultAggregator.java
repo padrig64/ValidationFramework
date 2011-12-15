@@ -1,6 +1,6 @@
 package com.github.validationframework.result;
 
-public interface ResultAggregator<R, A> {
+public interface ResultAggregator<A> {
 
-	public A aggregateResults(R results);
+	public A getAggregatedResult();
 }
