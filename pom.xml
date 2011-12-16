@@ -9,6 +9,22 @@
     <version>0.0.1-SNAPSHOT</version>
 
     <dependencies>
+
+        <!-- Logging -->
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.6.4</version>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.16</version>
+        </dependency>
+
+        <!-- JNA -->
+
         <dependency>
             <groupId>net.java.dev.jna</groupId>
             <artifactId>jna</artifactId>
@@ -20,15 +36,22 @@
             <version>3.3.0</version>
             <classifier>platform</classifier>
         </dependency>
+
+        <!-- Animation -->
+
         <dependency>
             <groupId>net.java.timingframework</groupId>
             <artifactId>timingframework-swing</artifactId>
             <version>4.1.0</version>
         </dependency>
+
+        <!-- Layout -->
+
         <dependency>
             <groupId>com.miglayout</groupId>
             <artifactId>miglayout-swing</artifactId>
             <version>4.1</version>
         </dependency>
+
     </dependencies>
 </project>
