@@ -7,6 +7,9 @@ import javax.swing.plaf.UIResource;
 
 public final class ColorUtils {
 
+	/**
+	 * Private constructor for utility class.
+	 */
 	private ColorUtils() {
 		// Nothing to be done
 	}
@@ -22,7 +25,7 @@ public final class ColorUtils {
 			float outR = ((float) src.getRed() * srcA + (float) dst.getRed() * dstA * (1.0f - srcA)) / outA;
 			float outG = ((float) src.getGreen() * srcA + (float) dst.getGreen() * dstA * (1.0f - srcA)) / outA;
 			float outB = ((float) src.getBlue() * srcA + (float) dst.getBlue() * dstA * (1.0f - srcA)) / outA;
-			blend = new Color((int) outR, (int) outG, (int) outB, (int) outA * 255);
+			blend = new Color((int) outR, (int) outG, (int) outB, (int) (outA * 255.0f));
 		} else {
 			blend = new Color(0, 0, 0, 0);
 		}
@@ -37,7 +40,7 @@ public final class ColorUtils {
 	public static String toString(Color c) {
 		StringBuilder sb = new StringBuilder();
 
-		sb.append(c.getClass().getSimpleName());
+		sb.append(c.getClass().getSimpleName()); // Can be a ColorUIResource
 		sb.append("[");
 		sb.append(c.getRed());
 		sb.append(",");
