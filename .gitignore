@@ -1,6 +1,6 @@
 ValidationFramework.iml
-
 ValidationFramework.ipr
-
 ValidationFramework.iws
+.idea
+.DS_Store
 target

@@ -9,6 +9,14 @@ public final class ValueUtils {
 		// Nothing to be done
 	}
 
+	/**
+	 * Compares the two given values by taking null values into account.
+	 *
+	 * @param val1 First value.
+	 * @param val2 Second value.
+	 *
+	 * @return True if both values are equal or if both are null.
+	 */
 	public static boolean areEqual(Object val1, Object val2) {
 		boolean equal = false;
 
