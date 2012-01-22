@@ -1,5 +1,8 @@
 package com.github.validationframework.utils;
 
+/**
+ * Utility class dealing with various objects and values.
+ */
 public final class ValueUtils {
 
 	/**

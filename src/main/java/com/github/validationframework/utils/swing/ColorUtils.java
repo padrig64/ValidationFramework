@@ -5,6 +5,9 @@ import java.awt.Color;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.UIResource;
 
+/**
+ * Utility class dealing with colors.
+ */
 public final class ColorUtils {
 
 	/**
@@ -14,6 +17,15 @@ public final class ColorUtils {
 		// Nothing to be done
 	}
 
+	/**
+	 * Blends the two colors taking into account their alpha.<br> If one of the two input colors implements the UIResource
+	 * interface, the result color will also implement this interface.
+	 *
+	 * @param src Source color to be blended into the destination color.
+	 * @param dst Destination color on which the source color is to be blended.
+	 *
+	 * @return Color resulting from the color blending.
+	 */
 	public static Color alphaBlend(Color src, Color dst) {
 		Color blend;
 
