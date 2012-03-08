@@ -44,10 +44,11 @@ EASY AND EXTENDABLE FRAMEWORK
  . Custom feedbacks;
  . Custom decorations;
  . Custom validation/feedback algorithms;
- . Easily pluggable to the Commons Validator framework from Jakarta;
- . Set the validation to a certain state (for example, forcing invalidation and/or its feedback);
+ . Set the validation to a certain state (for example, forcing invalidation and/or its
+   feedback);
  . Anything useful you can imagine.
 
-OTHER
+MISC
  . Support for runtime look-and-feel switches for default feedback
-   implementations.
+   implementations;
+ . Easily pluggable to the Commons Validator framework from Jakarta.
