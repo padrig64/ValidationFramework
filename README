@@ -34,12 +34,12 @@ EASY AND EXTENDABLE FRAMEWORK
    feedback to user -> component decorations);
  . Easily pluggable to custom components;
  . Not only for Swing components;
- . Not only GUI input validation (however, this is not the focus of the
+ . Not only GUI input validation (however, GUI validation is the focus of the
    framework);
  . Special components (any kind of components);
  . Flexibility of use (one validator for the whole application, or one validator
    per input component, or whatever);
- . Easy of use (for the programmer);
+ . Ease of use (for the programmer);
  . Custom rules (of course);
  . Custom feedbacks;
  . Custom decorations;
