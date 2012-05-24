@@ -1,6 +1,6 @@
-ValidationFramework.iml
-ValidationFramework.ipr
-ValidationFramework.iws
+*.iml
+*.ipr
+*.iws
 .idea
 .DS_Store
 target
