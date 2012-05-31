@@ -1,60 +1,60 @@
 package com.github.validationframework.decoration.swing;
 
+import com.github.validationframework.decoration.swing.utils.DualAnchor;
 import java.awt.Container;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
-
 import javax.swing.JComponent;
 import javax.swing.JLayeredPane;
 import javax.swing.SwingUtilities;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 
-import com.github.validationframework.decoration.swing.utils.DualAnchor;
-
 public abstract class AbstractDecorator {
 
 	private final class ComponentTracker implements ComponentListener, AncestorListener {
 
 		@Override
-		public void ancestorAdded(AncestorEvent event) {
+		public void ancestorAdded(final AncestorEvent event) {
 			// Nothing to be done
 		}
 
 		@Override
-		public void ancestorRemoved(AncestorEvent event) {
+		public void ancestorRemoved(final AncestorEvent event) {
 			// Nothing to be done
 		}
 
 		@Override
-		public void ancestorMoved(AncestorEvent event) {
+		public void ancestorMoved(final AncestorEvent event) {
 			followOwner();
 		}
 
 		@Override
-		public void componentMoved(ComponentEvent e) {
+		public void componentMoved(final ComponentEvent e) {
 			followOwner();
 		}
 
 		@Override
-		public void componentResized(ComponentEvent e) {
+		public void componentResized(final ComponentEvent e) {
 			followOwner();
 		}
 
 		@Override
-		public void componentHidden(ComponentEvent e) {
+		public void componentHidden(final ComponentEvent e) {
 			// TODO
 		}
 
 		@Override
-		public void componentShown(ComponentEvent e) {
+		public void componentShown(final ComponentEvent e) {
 			// TODO
 		}
 	}
 
 	protected class DecorationHolder extends JComponent {
+
+		private static final long serialVersionUID = 7573896845503780433L;
 
 		public DecorationHolder() {
 			setFocusable(false);
@@ -71,7 +71,7 @@ public abstract class AbstractDecorator {
 		}
 
 		@Override
-		public void paintComponent(Graphics g) {
+		public void paintComponent(final Graphics g) {
 			if (isShowing()) {
 				AbstractDecorator.this.paint(g);
 			}
@@ -80,15 +80,15 @@ public abstract class AbstractDecorator {
 
 	private JComponent owner;
 	private DualAnchor dualAnchor;
-	private ComponentTracker ownerTracker = new ComponentTracker();
+	private final ComponentTracker ownerTracker = new ComponentTracker();
 	protected DecorationHolder decorationHolder = new DecorationHolder();
 
-	public AbstractDecorator(JComponent owner, DualAnchor dualAnchor) {
+	public AbstractDecorator(final JComponent owner, final DualAnchor dualAnchor) {
 		this.dualAnchor = dualAnchor;
 		attach(owner);
 	}
 
-	public void attach(JComponent owner) {
+	public void attach(final JComponent owner) {
 		detach();
 
 		this.owner = owner;
@@ -98,7 +98,7 @@ public abstract class AbstractDecorator {
 			owner.addAncestorListener(ownerTracker);
 
 			// Get ancestor layered pane that will get the decoration holder component
-			Container ancestor = SwingUtilities.getAncestorOfClass(JLayeredPane.class, owner);
+			final Container ancestor = SwingUtilities.getAncestorOfClass(JLayeredPane.class, owner);
 			if (ancestor instanceof JLayeredPane) {
 				ancestor.add(decorationHolder, JLayeredPane.DRAG_LAYER);
 			}
@@ -111,7 +111,7 @@ public abstract class AbstractDecorator {
 			owner.removeAncestorListener(ownerTracker);
 
 			// Get ancestor layered pane that contained the decoration holder component
-			Container ancestor = SwingUtilities.getAncestorOfClass(JLayeredPane.class, owner);
+			final Container ancestor = SwingUtilities.getAncestorOfClass(JLayeredPane.class, owner);
 			if (ancestor instanceof JLayeredPane) {
 				ancestor.remove(decorationHolder);
 			}
@@ -122,7 +122,7 @@ public abstract class AbstractDecorator {
 		return dualAnchor;
 	}
 
-	public void setDualAnchor(DualAnchor dualAnchor) {
+	public void setDualAnchor(final DualAnchor dualAnchor) {
 		this.dualAnchor = dualAnchor;
 	}
 
@@ -130,7 +130,7 @@ public abstract class AbstractDecorator {
 		return ((decorationHolder != null) && decorationHolder.isVisible());
 	}
 
-	public void setVisible(boolean visible) {
+	public void setVisible(final boolean visible) {
 		if (decorationHolder != null) {
 			decorationHolder.setVisible(visible);
 		}
@@ -138,14 +138,14 @@ public abstract class AbstractDecorator {
 
 	protected void followOwner() {
 		if (decorationHolder != null) {
-			Container ancestor = SwingUtilities.getAncestorOfClass(JLayeredPane.class, owner);
+			final Container ancestor = SwingUtilities.getAncestorOfClass(JLayeredPane.class, owner);
 			if (ancestor instanceof JLayeredPane) {
-				Point locationInLayeredPane = SwingUtilities.convertPoint(owner.getParent(), owner.getLocation(),
-																		  ancestor);
-				Point relativeLocation = dualAnchor.getRelativeSlaveLocation(owner.getWidth(), owner.getHeight(),
-																			 getWidth(), getHeight());
+				final Point locationInLayeredPane =
+						SwingUtilities.convertPoint(owner.getParent(), owner.getLocation(), ancestor);
+				final Point relativeLocation = dualAnchor
+						.getRelativeSlaveLocation(owner.getWidth(), owner.getHeight(), getWidth(), getHeight());
 				decorationHolder.setBounds(locationInLayeredPane.x + relativeLocation.x,
-										   locationInLayeredPane.y + relativeLocation.y, getWidth(), getHeight());
+						locationInLayeredPane.y + relativeLocation.y, getWidth(), getHeight());
 			} else {
 				decorationHolder.setBounds(0, 0, 0, 0);
 			}

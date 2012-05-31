@@ -1,41 +1,40 @@
 package com.github.validationframework.trigger.swing;
 
+import com.github.validationframework.trigger.AbstractTrigger;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-
-import com.github.validationframework.trigger.AbstractTrigger;
 
 public class TextFieldStringTrigger extends AbstractTrigger<String> {
 
 	private class InputAdapter implements DocumentListener {
 
 		@Override
-		public void insertUpdate(DocumentEvent e) {
+		public void insertUpdate(final DocumentEvent e) {
 			triggerValidation();
 		}
 
 		@Override
-		public void removeUpdate(DocumentEvent e) {
+		public void removeUpdate(final DocumentEvent e) {
 			triggerValidation();
 		}
 
 		@Override
-		public void changedUpdate(DocumentEvent e) {
+		public void changedUpdate(final DocumentEvent e) {
 			triggerValidation();
 		}
 	}
 
 	private JTextField textField = null;
 
-	private InputAdapter inputAdapter = new InputAdapter();
+	private final InputAdapter inputAdapter = new InputAdapter();
 
-	public TextFieldStringTrigger(JTextField inputComponent) {
+	public TextFieldStringTrigger(final JTextField inputComponent) {
 		super();
 		attach(inputComponent);
 	}
 
-	public void attach(JTextField inputComponent) {
+	public void attach(final JTextField inputComponent) {
 		detach();
 
 		textField = inputComponent;

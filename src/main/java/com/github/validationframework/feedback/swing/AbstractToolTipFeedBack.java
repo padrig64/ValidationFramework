@@ -1,21 +1,20 @@
 package com.github.validationframework.feedback.swing;
 
-import javax.swing.JComponent;
-
 import com.github.validationframework.decoration.swing.ToolTipDialog;
 import com.github.validationframework.decoration.swing.utils.Anchor;
 import com.github.validationframework.decoration.swing.utils.DualAnchor;
 import com.github.validationframework.feedback.FeedBack;
+import javax.swing.JComponent;
 
 public abstract class AbstractToolTipFeedBack<R> implements FeedBack<R> {
 
 	private ToolTipDialog toolTipDialog = null;
 
-	public AbstractToolTipFeedBack(JComponent owner) {
+	public AbstractToolTipFeedBack(final JComponent owner) {
 		attach(owner);
 	}
 
-	public void attach(JComponent owner) {
+	public void attach(final JComponent owner) {
 		detach();
 		toolTipDialog = new ToolTipDialog(owner, new DualAnchor(Anchor.TOP_RIGHT, Anchor.TOP_LEFT));
 	}
@@ -37,7 +36,7 @@ public abstract class AbstractToolTipFeedBack<R> implements FeedBack<R> {
 		return tip;
 	}
 
-	protected void setToolTipText(String text) {
+	protected void setToolTipText(final String text) {
 		if (toolTipDialog != null) {
 			toolTipDialog.setText(text);
 		}

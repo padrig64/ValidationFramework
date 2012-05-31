@@ -1,12 +1,11 @@
 package com.github.validationframework.validator;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.github.validationframework.feedback.FeedBack;
 import com.github.validationframework.rule.Rule;
 import com.github.validationframework.trigger.Trigger;
 import com.github.validationframework.trigger.TriggerListener;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Common validator abstraction.<br> It provides the connection to the validation triggers, but the validation algorithm
@@ -28,7 +27,7 @@ public abstract class AbstractValidator<D, R> implements Validator<D, R> {
 		 * @see TriggerListener#triggerValidation(Object)
 		 */
 		@Override
-		public void triggerValidation(D data) {
+		public void triggerValidation(final D data) {
 			doValidation(data);
 		}
 	}
@@ -57,7 +56,7 @@ public abstract class AbstractValidator<D, R> implements Validator<D, R> {
 	 * @see Validator#addTrigger(Trigger)
 	 */
 	@Override
-	public void addTrigger(Trigger<D> trigger) {
+	public void addTrigger(final Trigger<D> trigger) {
 		if (trigger != null) {
 			triggers.add(trigger);
 			trigger.addTriggerListener(triggerAdapter);
@@ -68,7 +67,7 @@ public abstract class AbstractValidator<D, R> implements Validator<D, R> {
 	 * @see Validator#removeTrigger(Trigger)
 	 */
 	@Override
-	public void removeTrigger(Trigger<D> trigger) {
+	public void removeTrigger(final Trigger<D> trigger) {
 		if (trigger != null) {
 			triggers.remove(trigger);
 			trigger.removeTriggerListener(triggerAdapter);
@@ -79,7 +78,7 @@ public abstract class AbstractValidator<D, R> implements Validator<D, R> {
 	 * @see Validator#addRule(Rule)
 	 */
 	@Override
-	public void addRule(Rule<D, R> rule) {
+	public void addRule(final Rule<D, R> rule) {
 		rules.add(rule);
 	}
 
@@ -87,7 +86,7 @@ public abstract class AbstractValidator<D, R> implements Validator<D, R> {
 	 * @see Validator#removeRule(Rule)
 	 */
 	@Override
-	public void removeRule(Rule<D, R> rule) {
+	public void removeRule(final Rule<D, R> rule) {
 		rules.remove(rule);
 	}
 
@@ -95,7 +94,7 @@ public abstract class AbstractValidator<D, R> implements Validator<D, R> {
 	 * @see Validator#addFeedBack(FeedBack)
 	 */
 	@Override
-	public void addFeedBack(FeedBack<R> feedBack) {
+	public void addFeedBack(final FeedBack<R> feedBack) {
 		feedBacks.add(feedBack);
 	}
 
@@ -103,7 +102,7 @@ public abstract class AbstractValidator<D, R> implements Validator<D, R> {
 	 * @see Validator#removeFeedBack(FeedBack)
 	 */
 	@Override
-	public void removeFeedBack(FeedBack<R> feedBack) {
+	public void removeFeedBack(final FeedBack<R> feedBack) {
 		feedBacks.remove(feedBack);
 	}
 

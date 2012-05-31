@@ -12,7 +12,7 @@ public class TriggerFeedBack<R> extends AbstractTrigger<R> implements FeedBack<R
 	}
 
 	@Override
-	public void feedback(R result) {
+	public void feedback(final R result) {
 		this.result = result;
 		triggerValidation();
 	}

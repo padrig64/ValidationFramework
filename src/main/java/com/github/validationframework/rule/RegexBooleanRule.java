@@ -7,27 +7,27 @@ import java.util.regex.Pattern;
 
 public class RegexBooleanRule implements Rule<String, Boolean> {
 
-	private Map<String, Integer> patterns = new HashMap<String, Integer>();
+	private final Map<String, Integer> patterns = new HashMap<String, Integer>();
 
-	public void addPattern(String pattern) {
+	public void addPattern(final String pattern) {
 		addPattern(pattern, 0);
 	}
 
-	public void addPattern(String pattern, int flags) {
+	public void addPattern(final String pattern, final int flags) {
 		patterns.put(pattern, flags);
 	}
 
-	public void removeRegex(String pattern) {
+	public void removeRegex(final String pattern) {
 		patterns.remove(pattern);
 	}
 
 	@Override
-	public Boolean validate(String data) {
+	public Boolean validate(final String data) {
 		Boolean result = false;
 
-		for (Map.Entry<String, Integer> patternEntry : patterns.entrySet()) {
-			Pattern pattern = Pattern.compile(patternEntry.getKey(), patternEntry.getValue());
-			Matcher matcher = pattern.matcher(data);
+		for (final Map.Entry<String, Integer> patternEntry : patterns.entrySet()) {
+			final Pattern pattern = Pattern.compile(patternEntry.getKey(), patternEntry.getValue());
+			final Matcher matcher = pattern.matcher(data);
 			if (matcher.find()) {
 				result = true;
 			}

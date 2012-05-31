@@ -7,11 +7,11 @@ public abstract class AbstractResultAggregator<R, A> implements ResultAggregator
 
 	protected Map<Object, R> results = new HashMap<Object, R>();
 
-	public void putResult(Object key, R result) {
+	public void putResult(final Object key, final R result) {
 		results.put(key, result);
 	}
 
-	public void removeResult(Object key) {
+	public void removeResult(final Object key) {
 		results.remove(key);
 	}
 }

@@ -1,12 +1,14 @@
 package com.github.validationframework.decoration.swing;
 
+import com.github.validationframework.decoration.swing.utils.DualAnchor;
+import com.github.validationframework.utils.ValueUtils;
+import com.sun.jna.platform.WindowUtils;
 import java.awt.Point;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.concurrent.TimeUnit;
-
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JRootPane;
@@ -14,10 +16,6 @@ import javax.swing.JToolTip;
 import javax.swing.SwingUtilities;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
-
-import com.github.validationframework.decoration.swing.utils.DualAnchor;
-import com.github.validationframework.utils.ValueUtils;
-import com.sun.jna.platform.WindowUtils;
 import org.jdesktop.core.animation.timing.Animator;
 import org.jdesktop.core.animation.timing.TimingSource;
 import org.jdesktop.core.animation.timing.TimingTarget;
@@ -29,70 +27,71 @@ public class ToolTipDialog extends JDialog {
 	private class LocationAdapter implements ComponentListener, AncestorListener {
 
 		@Override
-		public void componentResized(ComponentEvent e) {
+		public void componentResized(final ComponentEvent e) {
 			followOwner();
 		}
 
 		@Override
-		public void componentMoved(ComponentEvent e) {
+		public void componentMoved(final ComponentEvent e) {
 			followOwner();
 		}
 
 		@Override
-		public void componentShown(ComponentEvent e) {
+		public void componentShown(final ComponentEvent e) {
 			// Nothing to be done
 		}
 
 		@Override
-		public void componentHidden(ComponentEvent e) {
+		public void componentHidden(final ComponentEvent e) {
 			// Nothing to be done
 		}
 
 		@Override
-		public void ancestorAdded(AncestorEvent event) {
+		public void ancestorAdded(final AncestorEvent event) {
 			// Nothing to be done
 		}
 
 		@Override
-		public void ancestorRemoved(AncestorEvent event) {
+		public void ancestorRemoved(final AncestorEvent event) {
 			// Nothing to be done
 		}
 
 		@Override
-		public void ancestorMoved(AncestorEvent event) {
+		public void ancestorMoved(final AncestorEvent event) {
 			followOwner();
 		}
 	}
 
 	private class TransparencyAdapter extends MouseAdapter implements TimingTarget {
 
-		private float MIN_ALPHA = 0.25f;
-		private float MAX_ALPHA = 1.0f;
-		private float FADE_OUT_MAX_DURATION = 100;
-		private float FADE_IN_MAX_DURATION = 55;
+		private final float MIN_ALPHA = 0.25f;
+		private final float MAX_ALPHA = 1.0f;
+		private final float FADE_OUT_MAX_DURATION = 100;
+		private final float FADE_IN_MAX_DURATION = 55;
 
 		private float currentAlpha = MAX_ALPHA;
 
 		private Animator animator = null;
 
 		public TransparencyAdapter() {
-			TimingSource ts = new SwingTimerTimingSource();
+			final TimingSource ts = new SwingTimerTimingSource();
 			Animator.setDefaultTimingSource(ts);
 			ts.init();
 		}
 
 		@Override
-		public void mouseEntered(MouseEvent e) {
+		public void mouseEntered(final MouseEvent e) {
 			if (isRolloverAnimated()) {
 				if ((animator != null) && (animator.isRunning())) {
 					animator.stop();
 				}
-				long duration = (long) ((currentAlpha - MIN_ALPHA) * FADE_OUT_MAX_DURATION / (MAX_ALPHA - MIN_ALPHA));
+				final long duration =
+						(long) ((currentAlpha - MIN_ALPHA) * FADE_OUT_MAX_DURATION / (MAX_ALPHA - MIN_ALPHA));
 				if (duration <= 0) {
 					timingEvent(null, 0.0);
 				} else {
-					animator = new Animator.Builder().setDuration(duration, TimeUnit.MILLISECONDS).setInterpolator(
-							new SplineInterpolator(0.8, 0.2, 0.2, 0.8)).addTarget(this).build();
+					animator = new Animator.Builder().setDuration(duration, TimeUnit.MILLISECONDS)
+							.setInterpolator(new SplineInterpolator(0.8, 0.2, 0.2, 0.8)).addTarget(this).build();
 					animator.startReverse();
 				}
 			} else {
@@ -101,18 +100,19 @@ public class ToolTipDialog extends JDialog {
 		}
 
 		@Override
-		public void mouseExited(MouseEvent e) {
+		public void mouseExited(final MouseEvent e) {
 			if (isRolloverAnimated()) {
 				if ((animator != null) && (animator.isRunning())) {
 					animator.stop();
 				}
 
-				long duration = (long) ((MAX_ALPHA - currentAlpha) * FADE_IN_MAX_DURATION / (MAX_ALPHA - MIN_ALPHA));
+				final long duration =
+						(long) ((MAX_ALPHA - currentAlpha) * FADE_IN_MAX_DURATION / (MAX_ALPHA - MIN_ALPHA));
 				if (duration <= 0) {
 					timingEvent(null, 1.0);
 				} else {
-					animator = new Animator.Builder().setDuration(duration, TimeUnit.MILLISECONDS).setInterpolator(
-							new SplineInterpolator(0.8, 0.2, 0.2, 0.8)).addTarget(this).build();
+					animator = new Animator.Builder().setDuration(duration, TimeUnit.MILLISECONDS)
+							.setInterpolator(new SplineInterpolator(0.8, 0.2, 0.2, 0.8)).addTarget(this).build();
 					animator.start();
 				}
 			} else {
@@ -121,27 +121,27 @@ public class ToolTipDialog extends JDialog {
 		}
 
 		@Override
-		public void begin(Animator animator) {
+		public void begin(final Animator animator) {
 			// Nothing to be done because we stop the animation manually
 		}
 
 		@Override
-		public void end(Animator animator) {
+		public void end(final Animator animator) {
 			// Nothing to be done because we stop the animation manually
 		}
 
 		@Override
-		public void repeat(Animator animator) {
+		public void repeat(final Animator animator) {
 			// Nothing to be done
 		}
 
 		@Override
-		public void reverse(Animator animator) {
+		public void reverse(final Animator animator) {
 			// Nothing to be done
 		}
 
 		@Override
-		public void timingEvent(Animator animator, double v) {
+		public void timingEvent(final Animator animator, final double v) {
 			currentAlpha = (float) (v * (MAX_ALPHA - MIN_ALPHA)) + MIN_ALPHA;
 			WindowUtils.setWindowAlpha(ToolTipDialog.this, currentAlpha);
 		}
@@ -153,11 +153,11 @@ public class ToolTipDialog extends JDialog {
 
 	private DualAnchor dualAnchor = null;
 
-	private LocationAdapter locationAdapter = new LocationAdapter();
+	private final LocationAdapter locationAdapter = new LocationAdapter();
 
 	private boolean rolloverAnimated = true;
 
-	public ToolTipDialog(JComponent owner, DualAnchor dualAnchor) {
+	public ToolTipDialog(final JComponent owner, final DualAnchor dualAnchor) {
 		super(SwingUtilities.getWindowAncestor(owner));
 		this.owner = owner;
 		this.dualAnchor = dualAnchor;
@@ -185,7 +185,7 @@ public class ToolTipDialog extends JDialog {
 	}
 
 	@Override
-	public void setVisible(boolean visible) {
+	public void setVisible(final boolean visible) {
 		setSize(toolTip.getPreferredSize());
 		followOwner();
 		super.setVisible(visible);
@@ -202,7 +202,7 @@ public class ToolTipDialog extends JDialog {
 		return rolloverAnimated;
 	}
 
-	public void setRolloverAnimated(boolean animated) {
+	public void setRolloverAnimated(final boolean animated) {
 		this.rolloverAnimated = animated;
 	}
 
@@ -210,11 +210,11 @@ public class ToolTipDialog extends JDialog {
 		return toolTip.getTipText();
 	}
 
-	public void setText(String text) {
+	public void setText(final String text) {
 		// Only change if different
 		if (!ValueUtils.areEqual(text, toolTip.getTipText())) {
 
-			boolean wasVisible = isVisible();
+			final boolean wasVisible = isVisible();
 			if (wasVisible) {
 				setVisible(false);
 			}
@@ -229,9 +229,9 @@ public class ToolTipDialog extends JDialog {
 
 	private void followOwner() {
 		if (owner.isVisible()) {
-			Point screenLocation = owner.getLocationOnScreen();
-			Point relativeSlaveLocation = dualAnchor.getRelativeSlaveLocation(owner.getSize(),
-																			  ToolTipDialog.this.getSize());
+			final Point screenLocation = owner.getLocationOnScreen();
+			final Point relativeSlaveLocation =
+					dualAnchor.getRelativeSlaveLocation(owner.getSize(), ToolTipDialog.this.getSize());
 			setLocation(screenLocation.x + relativeSlaveLocation.x, screenLocation.y + relativeSlaveLocation.y);
 		}
 	}

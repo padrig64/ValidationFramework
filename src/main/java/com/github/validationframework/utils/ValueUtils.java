@@ -17,10 +17,9 @@ public final class ValueUtils {
 	 *
 	 * @param val1 First value.
 	 * @param val2 Second value.
-	 *
 	 * @return True if both values are equal or if both are null.
 	 */
-	public static boolean areEqual(Object val1, Object val2) {
+	public static boolean areEqual(final Object val1, final Object val2) {
 		boolean equal = false;
 
 		if ((val1 == null) && (val2 == null)) {

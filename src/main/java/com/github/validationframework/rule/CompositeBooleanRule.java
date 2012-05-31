@@ -5,21 +5,21 @@ import java.util.List;
 
 public class CompositeBooleanRule<D> implements Rule<D, Boolean> {
 
-	private List<Rule<D, Boolean>> rules = new ArrayList<Rule<D, Boolean>>();
+	private final List<Rule<D, Boolean>> rules = new ArrayList<Rule<D, Boolean>>();
 
-	public void addRule(Rule<D, Boolean> rule) {
+	public void addRule(final Rule<D, Boolean> rule) {
 		rules.add(rule);
 	}
 
-	public void removeRule(Rule<D, Boolean> rule) {
+	public void removeRule(final Rule<D, Boolean> rule) {
 		rules.remove(rule);
 	}
 
 	@Override
-	public Boolean validate(D data) {
+	public Boolean validate(final D data) {
 		Boolean result = true;
 
-		for (Rule<D, Boolean> rule : rules) {
+		for (final Rule<D, Boolean> rule : rules) {
 			result &= rule.validate(data);
 		}
 

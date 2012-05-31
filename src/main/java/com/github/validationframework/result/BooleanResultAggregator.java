@@ -8,7 +8,7 @@ public class BooleanResultAggregator extends AbstractResultAggregator<Boolean, B
 
 		if (!results.isEmpty()) {
 			aggregatedResult = true;
-			for (Boolean result : results.values()) {
+			for (final Boolean result : results.values()) {
 				aggregatedResult &= result;
 			}
 		}

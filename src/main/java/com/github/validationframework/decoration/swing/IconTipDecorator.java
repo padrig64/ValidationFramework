@@ -1,26 +1,24 @@
 package com.github.validationframework.decoration.swing;
 
+import com.github.validationframework.decoration.swing.utils.Anchor;
+import com.github.validationframework.decoration.swing.utils.DualAnchor;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
 import javax.swing.Icon;
 import javax.swing.JComponent;
-
-import com.github.validationframework.decoration.swing.utils.Anchor;
-import com.github.validationframework.decoration.swing.utils.DualAnchor;
 
 public class IconTipDecorator extends AbstractDecorator {
 
 	private class ToolTipAdapter extends MouseAdapter {
 
 		@Override
-		public void mouseEntered(MouseEvent e) {
+		public void mouseEntered(final MouseEvent e) {
 			toolTipDialog.setVisible(true);
 		}
 
 		@Override
-		public void mouseExited(MouseEvent e) {
+		public void mouseExited(final MouseEvent e) {
 			toolTipDialog.setVisible(false);
 		}
 	}
@@ -33,11 +31,11 @@ public class IconTipDecorator extends AbstractDecorator {
 
 	private DualAnchor dualAnchorWithToolTip = new DualAnchor(Anchor.CENTER, Anchor.TOP_RIGHT);
 
-	public IconTipDecorator(JComponent owner) {
+	public IconTipDecorator(final JComponent owner) {
 		this(owner, null);
 	}
 
-	public IconTipDecorator(JComponent owner, Icon icon) {
+	public IconTipDecorator(final JComponent owner, final Icon icon) {
 		super(owner, DEFAULT_DUAL_ANCHOR_WITH_OWNER);
 		this.icon = icon;
 
@@ -49,7 +47,7 @@ public class IconTipDecorator extends AbstractDecorator {
 		return toolTipDialog.getText();
 	}
 
-	public void setText(String text) {
+	public void setText(final String text) {
 		toolTipDialog.setText(text);
 	}
 
@@ -57,7 +55,7 @@ public class IconTipDecorator extends AbstractDecorator {
 		return icon;
 	}
 
-	public void setIcon(Icon icon) {
+	public void setIcon(final Icon icon) {
 		this.icon = icon;
 		followOwner();
 	}
@@ -66,12 +64,12 @@ public class IconTipDecorator extends AbstractDecorator {
 		return dualAnchorWithToolTip;
 	}
 
-	public void setDualAnchorWithToolTip(DualAnchor dualAnchorWithToolTip) {
+	public void setDualAnchorWithToolTip(final DualAnchor dualAnchorWithToolTip) {
 		this.dualAnchorWithToolTip = dualAnchorWithToolTip;
 	}
 
 	@Override
-	public void setVisible(boolean visible) {
+	public void setVisible(final boolean visible) {
 		super.setVisible(visible);
 
 		if (!visible && (toolTipDialog != null)) {
@@ -98,7 +96,7 @@ public class IconTipDecorator extends AbstractDecorator {
 	}
 
 	@Override
-	public void paint(Graphics g) {
+	public void paint(final Graphics g) {
 		if (isVisible() && (icon != null)) {
 			icon.paintIcon(decorationHolder, g, 0, 0);
 		}

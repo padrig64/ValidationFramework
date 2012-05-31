@@ -1,20 +1,19 @@
 package com.github.validationframework.feedback.swing;
 
-import javax.swing.Icon;
-import javax.swing.JComponent;
-
 import com.github.validationframework.decoration.swing.IconDecorator;
 import com.github.validationframework.feedback.FeedBack;
+import javax.swing.Icon;
+import javax.swing.JComponent;
 
 public abstract class AbstractIconFeedBack<R> implements FeedBack<R> {
 
 	private IconDecorator decorator = null;
 
-	public AbstractIconFeedBack(JComponent owner) {
+	public AbstractIconFeedBack(final JComponent owner) {
 		attach(owner);
 	}
 
-	public void attach(JComponent owner) {
+	public void attach(final JComponent owner) {
 		detach();
 
 		if (owner != null) {
@@ -38,7 +37,7 @@ public abstract class AbstractIconFeedBack<R> implements FeedBack<R> {
 		return icon;
 	}
 
-	protected void setIcon(Icon icon) {
+	protected void setIcon(final Icon icon) {
 		if (decorator != null) {
 			decorator.setIcon(icon);
 		}

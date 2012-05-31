@@ -5,18 +5,18 @@ import java.util.List;
 
 public class CompositeFeedBack<R> implements FeedBack<R> {
 
-	private List<FeedBack<R>> feedBacks = new ArrayList<FeedBack<R>>();
+	private final List<FeedBack<R>> feedBacks = new ArrayList<FeedBack<R>>();
 
-	public void addFeedBack(FeedBack<R> feedBack) {
+	public void addFeedBack(final FeedBack<R> feedBack) {
 		feedBacks.add(feedBack);
 	}
 
-	public void removeFeedBack(FeedBack<R> feedBack) {
+	public void removeFeedBack(final FeedBack<R> feedBack) {
 		feedBacks.remove(feedBack);
 	}
 
-	public void feedback(R result) {
-		for (FeedBack<R> feedBack : feedBacks) {
+	public void feedback(final R result) {
+		for (final FeedBack<R> feedBack : feedBacks) {
 			feedBack.feedback(result);
 		}
 	}

@@ -16,10 +16,10 @@ public class DefaultValidator<D, R> extends AbstractValidator<D, R> {
 	 * @see AbstractValidator#doValidation(Object)
 	 */
 	@Override
-	protected void doValidation(D data) {
-		for (Rule<D, R> rule : rules) {
-			R result = rule.validate(data);
-			for (FeedBack<R> feedBack : feedBacks) {
+	protected void doValidation(final D data) {
+		for (final Rule<D, R> rule : rules) {
+			final R result = rule.validate(data);
+			for (final FeedBack<R> feedBack : feedBacks) {
 				feedBack.feedback(result);
 			}
 		}

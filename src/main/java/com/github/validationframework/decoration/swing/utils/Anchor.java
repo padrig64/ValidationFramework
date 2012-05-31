@@ -17,11 +17,11 @@ public class Anchor {
 	private final int offsetX;
 	private final int offsetY;
 
-	public Anchor(float relativeX, float relativeY) {
+	public Anchor(final float relativeX, final float relativeY) {
 		this(relativeX, 0, relativeY, 0);
 	}
 
-	public Anchor(float relativeX, int offsetX, float relativeY, int offsetY) {
+	public Anchor(final float relativeX, final int offsetX, final float relativeY, final int offsetY) {
 		this.relativeX = relativeX;
 		this.offsetX = offsetX;
 		this.relativeY = relativeY;
@@ -44,11 +44,11 @@ public class Anchor {
 		return offsetY;
 	}
 
-	public Point getAnchorPoint(Dimension size) {
+	public Point getAnchorPoint(final Dimension size) {
 		return getAnchorPoint(size.width, size.height);
 	}
 
-	public Point getAnchorPoint(int width, int height) {
+	public Point getAnchorPoint(final int width, final int height) {
 		return new Point((int) (relativeX * width + offsetX), (int) (relativeY * height + offsetY));
 	}
 }

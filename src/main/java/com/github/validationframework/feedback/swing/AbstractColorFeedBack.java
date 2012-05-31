@@ -1,11 +1,9 @@
 package com.github.validationframework.feedback.swing;
 
-import java.awt.Color;
-
-import javax.swing.JComponent;
-
 import com.github.validationframework.feedback.FeedBack;
 import com.github.validationframework.utils.swing.ColorUtils;
+import java.awt.Color;
+import javax.swing.JComponent;
 
 public abstract class AbstractColorFeedBack<R> implements FeedBack<R> {
 
@@ -16,11 +14,11 @@ public abstract class AbstractColorFeedBack<R> implements FeedBack<R> {
 	private Color resultBackground = null;
 	private boolean showing = false;
 
-	public AbstractColorFeedBack(JComponent owner) {
+	public AbstractColorFeedBack(final JComponent owner) {
 		attach(owner);
 	}
 
-	public void attach(JComponent owner) {
+	public void attach(final JComponent owner) {
 		detach();
 		this.owner = owner;
 	}
@@ -33,7 +31,7 @@ public abstract class AbstractColorFeedBack<R> implements FeedBack<R> {
 		return resultForeground;
 	}
 
-	protected void setForeground(Color foreground) {
+	protected void setForeground(final Color foreground) {
 		this.resultForeground = foreground;
 	}
 
@@ -41,7 +39,7 @@ public abstract class AbstractColorFeedBack<R> implements FeedBack<R> {
 		return resultBackground;
 	}
 
-	protected void setBackground(Color background) {
+	protected void setBackground(final Color background) {
 		this.resultBackground = background;
 	}
 

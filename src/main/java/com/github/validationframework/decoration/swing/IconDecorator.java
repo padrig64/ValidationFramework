@@ -1,12 +1,10 @@
 package com.github.validationframework.decoration.swing;
 
-import java.awt.Graphics;
-
-import javax.swing.Icon;
-import javax.swing.JComponent;
-
 import com.github.validationframework.decoration.swing.utils.Anchor;
 import com.github.validationframework.decoration.swing.utils.DualAnchor;
+import java.awt.Graphics;
+import javax.swing.Icon;
+import javax.swing.JComponent;
 
 public class IconDecorator extends AbstractDecorator {
 
@@ -14,11 +12,11 @@ public class IconDecorator extends AbstractDecorator {
 
 	private static final DualAnchor DEFAULT_DUAL_ANCHOR_WITH_OWNER = new DualAnchor(Anchor.BOTTOM_LEFT, Anchor.CENTER);
 
-	public IconDecorator(JComponent owner) {
+	public IconDecorator(final JComponent owner) {
 		this(owner, null);
 	}
 
-	public IconDecorator(JComponent owner, Icon icon) {
+	public IconDecorator(final JComponent owner, final Icon icon) {
 		super(owner, DEFAULT_DUAL_ANCHOR_WITH_OWNER);
 		this.icon = icon;
 	}
@@ -27,7 +25,7 @@ public class IconDecorator extends AbstractDecorator {
 		return icon;
 	}
 
-	public void setIcon(Icon icon) {
+	public void setIcon(final Icon icon) {
 		this.icon = icon;
 		followOwner();
 	}
@@ -51,7 +49,7 @@ public class IconDecorator extends AbstractDecorator {
 	}
 
 	@Override
-	public void paint(Graphics g) {
+	public void paint(final Graphics g) {
 		if (isVisible() && (icon != null)) {
 			icon.paintIcon(decorationHolder, g, 0, 0);
 		}
