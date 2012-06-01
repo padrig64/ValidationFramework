@@ -5,7 +5,7 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-public class TextFieldStringTrigger extends AbstractTrigger<String> {
+public class TextFieldTrigger extends AbstractTrigger<JTextField> {
 
 	private class InputAdapter implements DocumentListener {
 
@@ -29,7 +29,7 @@ public class TextFieldStringTrigger extends AbstractTrigger<String> {
 
 	private final InputAdapter inputAdapter = new InputAdapter();
 
-	public TextFieldStringTrigger(final JTextField inputComponent) {
+	public TextFieldTrigger(final JTextField inputComponent) {
 		super();
 		attach(inputComponent);
 	}
@@ -51,13 +51,7 @@ public class TextFieldStringTrigger extends AbstractTrigger<String> {
 	}
 
 	@Override
-	public String getInput() {
-		String data = null;
-
-		if (textField != null) {
-			data = textField.getText();
-		}
-
-		return data;
+	public JTextField getInput() {
+		return textField;
 	}
 }

@@ -22,12 +22,12 @@ public class RegexBooleanRule implements Rule<String, Boolean> {
 	}
 
 	@Override
-	public Boolean validate(final String data) {
+	public Boolean validate(final String input) {
 		Boolean result = false;
 
 		for (final Map.Entry<String, Integer> patternEntry : patterns.entrySet()) {
 			final Pattern pattern = Pattern.compile(patternEntry.getKey(), patternEntry.getValue());
-			final Matcher matcher = pattern.matcher(data);
+			final Matcher matcher = pattern.matcher(input);
 			if (matcher.find()) {
 				result = true;
 			}

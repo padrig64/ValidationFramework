@@ -7,7 +7,7 @@ public class TriggerFeedBack<R> extends AbstractTrigger<R> implements FeedBack<R
 	private R result = null;
 
 	@Override
-	public R getData() {
+	public R getInput() {
 		return result;
 	}
 

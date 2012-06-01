@@ -7,18 +7,18 @@ import com.github.validationframework.rule.Rule;
  * Simple default validator validating any data from the validation triggers against all validation rules and providing
  * all results to all validation feedbacks.
  *
- * @param <D> Type of the data to be validated.
+ * @param <I> Type of the data to be validated.
  * @param <R> Type of the validation results produced by the validation rules.
  */
-public class DefaultValidator<D, R> extends AbstractValidator<D, R> {
+public class DefaultValidator<I, R> extends AbstractValidator<I, R> {
 
 	/**
 	 * @see AbstractValidator#doValidation(Object)
 	 */
 	@Override
-	protected void doValidation(final D data) {
-		for (final Rule<D, R> rule : rules) {
-			final R result = rule.validate(data);
+	protected void doValidation(final I input) {
+		for (final Rule<I, R> rule : rules) {
+			final R result = rule.validate(input);
 			for (final FeedBack<R> feedBack : feedBacks) {
 				feedBack.feedback(result);
 			}

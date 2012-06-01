@@ -8,27 +8,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Common validator abstraction.<br> It provides the connection to the validation triggers, but the validation algorithm
+ * Common validator abstraction.<br>It provides the connection to the validation triggers, but the validation algorithm
  * is left to the sub-classes.
  *
- * @param <D> Type of the data to be validated.
+ * @param <I> Type of the input to be validated.
  * @param <R> Type of the validation results produced by the validation rules.
  */
-public abstract class AbstractValidator<D, R> implements Validator<D, R> {
+public abstract class AbstractValidator<I, R> implements Validator<I, R> {
 
 	/**
-	 * Listener to validation triggers.<br> It provides the entry point to the validation algorithm.
+	 * Listener to validation triggers.<br>It provides the entry point to the validation algorithm.
 	 *
 	 * @see AbstractValidator#doValidation(Object)
 	 */
-	private class TriggerAdapter implements TriggerListener<D> {
+	private class TriggerAdapter implements TriggerListener<I> {
 
 		/**
 		 * @see TriggerListener#triggerValidation(Object)
 		 */
 		@Override
-		public void triggerValidation(final D data) {
-			doValidation(data);
+		public void triggerValidation(final I input) {
+			doValidation(input);
 		}
 	}
 
@@ -40,12 +40,12 @@ public abstract class AbstractValidator<D, R> implements Validator<D, R> {
 	/**
 	 * List of registered validation triggers.
 	 */
-	protected List<Trigger<D>> triggers = new ArrayList<Trigger<D>>();
+	protected List<Trigger<I>> triggers = new ArrayList<Trigger<I>>();
 
 	/**
 	 * List of registered validation rules.
 	 */
-	protected List<Rule<D, R>> rules = new ArrayList<Rule<D, R>>();
+	protected List<Rule<I, R>> rules = new ArrayList<Rule<I, R>>();
 
 	/**
 	 * List of registered validation feedbacks.
@@ -56,7 +56,7 @@ public abstract class AbstractValidator<D, R> implements Validator<D, R> {
 	 * @see Validator#addTrigger(Trigger)
 	 */
 	@Override
-	public void addTrigger(final Trigger<D> trigger) {
+	public void addTrigger(final Trigger<I> trigger) {
 		if (trigger != null) {
 			triggers.add(trigger);
 			trigger.addTriggerListener(triggerAdapter);
@@ -67,7 +67,7 @@ public abstract class AbstractValidator<D, R> implements Validator<D, R> {
 	 * @see Validator#removeTrigger(Trigger)
 	 */
 	@Override
-	public void removeTrigger(final Trigger<D> trigger) {
+	public void removeTrigger(final Trigger<I> trigger) {
 		if (trigger != null) {
 			triggers.remove(trigger);
 			trigger.removeTriggerListener(triggerAdapter);
@@ -78,7 +78,7 @@ public abstract class AbstractValidator<D, R> implements Validator<D, R> {
 	 * @see Validator#addRule(Rule)
 	 */
 	@Override
-	public void addRule(final Rule<D, R> rule) {
+	public void addRule(final Rule<I, R> rule) {
 		rules.add(rule);
 	}
 
@@ -86,7 +86,7 @@ public abstract class AbstractValidator<D, R> implements Validator<D, R> {
 	 * @see Validator#removeRule(Rule)
 	 */
 	@Override
-	public void removeRule(final Rule<D, R> rule) {
+	public void removeRule(final Rule<I, R> rule) {
 		rules.remove(rule);
 	}
 
@@ -107,10 +107,10 @@ public abstract class AbstractValidator<D, R> implements Validator<D, R> {
 	}
 
 	/**
-	 * Performs the validation on the given data with the validation rules and giving the feedback on the validation
+	 * Performs the validation on the given input with the validation rules and giving the feedback on the validation
 	 * result.
 	 *
-	 * @param data Data read by the validation triggers and that is to be validated against the validation rules.
+	 * @param input Input read by the validation triggers and that is to be validated against the validation rules.
 	 */
-	protected abstract void doValidation(D data);
+	protected abstract void doValidation(I input);
 }

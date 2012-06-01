@@ -1,6 +1,6 @@
 package com.github.validationframework.rule;
 
-public interface Rule<D, R> {
+public interface Rule<I, R> {
 
-	public R validate(D input);
+	public R validate(I input);
 }

@@ -17,8 +17,8 @@ public final class ColorUtils {
 	}
 
 	/**
-	 * Blends the two colors taking into account their alpha.<br> If one of the two input colors implements the UIResource
-	 * interface, the result color will also implement this interface.
+	 * Blends the two colors taking into account their alpha.<br>If one of the two input colors implements the {@link
+	 * UIResource} interface, the result color will also implement this interface.
 	 *
 	 * @param src Source color to be blended into the destination color.
 	 * @param dst Destination color on which the source color is to be blended.

@@ -1,18 +1,16 @@
 package com.github.validationframework.trigger.swing;
 
+import com.github.validationframework.trigger.AbstractTrigger;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JComboBox;
-
-import com.github.validationframework.trigger.AbstractTrigger;
 
 public class ComboBoxIndexTrigger<R> extends AbstractTrigger<Integer> {
 
 	private class InputAdapter implements ActionListener {
 
 		@Override
-		public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(final ActionEvent e) {
 			triggerValidation();
 		}
 	}
@@ -21,12 +19,12 @@ public class ComboBoxIndexTrigger<R> extends AbstractTrigger<Integer> {
 
 	private final InputAdapter inputAdapter = new InputAdapter();
 
-	public ComboBoxIndexTrigger(JComboBox inputComponent) {
+	public ComboBoxIndexTrigger(final JComboBox inputComponent) {
 		super();
 		attach(inputComponent);
 	}
 
-	public void attach(JComboBox inputComponent) {
+	public void attach(final JComboBox inputComponent) {
 		detach();
 
 		comboBox = inputComponent;
@@ -44,8 +42,8 @@ public class ComboBoxIndexTrigger<R> extends AbstractTrigger<Integer> {
 	}
 
 	@Override
-	public Integer getData() {
-		Integer index = -1;
+	public Integer getInput() {
+		final Integer index = -1;
 
 		if (comboBox != null) {
 			comboBox.getSelectedIndex();
