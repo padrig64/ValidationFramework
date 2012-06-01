@@ -1,4 +1,4 @@
-package com.github.validationframework.trigger.swing;
+package com.github.validationframework.trigger.swing.value;
 
 import com.github.validationframework.trigger.AbstractTrigger;
 import java.awt.event.ActionEvent;

@@ -1,11 +1,11 @@
-package com.github.validationframework.trigger.swing;
+package com.github.validationframework.trigger.swing.component;
 
 import com.github.validationframework.trigger.AbstractTrigger;
-import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.JTextComponent;
 
-public class TextFieldTrigger extends AbstractTrigger<JTextField> {
+public class TextComponentTrigger<C extends JTextComponent> extends AbstractTrigger<C> {
 
 	private class InputAdapter implements DocumentListener {
 
@@ -25,33 +25,33 @@ public class TextFieldTrigger extends AbstractTrigger<JTextField> {
 		}
 	}
 
-	private JTextField textField = null;
+	private C textComponent = null;
 
 	private final InputAdapter inputAdapter = new InputAdapter();
 
-	public TextFieldTrigger(final JTextField inputComponent) {
+	public TextComponentTrigger(final C inputComponent) {
 		super();
 		attach(inputComponent);
 	}
 
-	public void attach(final JTextField inputComponent) {
+	public void attach(final C inputComponent) {
 		detach();
 
-		textField = inputComponent;
-		if (textField != null) {
-			textField.getDocument().addDocumentListener(inputAdapter);
+		textComponent = inputComponent;
+		if (textComponent != null) {
+			textComponent.getDocument().addDocumentListener(inputAdapter);
 		}
 	}
 
 	public void detach() {
-		if (textField != null) {
-			textField.getDocument().removeDocumentListener(inputAdapter);
-			textField = null;
+		if (textComponent != null) {
+			textComponent.getDocument().removeDocumentListener(inputAdapter);
+			textComponent = null;
 		}
 	}
 
 	@Override
-	public JTextField getInput() {
-		return textField;
+	public C getInput() {
+		return textComponent;
 	}
 }
