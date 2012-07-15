@@ -25,13 +25,12 @@
 
 package com.github.validationframework.validator;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.github.validationframework.feedback.FeedBack;
 import com.github.validationframework.rule.Rule;
 import com.github.validationframework.trigger.Trigger;
 import com.github.validationframework.trigger.TriggerListener;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Common validator abstraction.<br>It provides the connection to the validation triggers, but the validation algorithm
