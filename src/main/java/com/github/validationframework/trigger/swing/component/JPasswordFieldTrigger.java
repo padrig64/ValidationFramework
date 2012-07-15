@@ -23,14 +23,13 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.trigger.swing.value;
+package com.github.validationframework.trigger.swing.component;
 
-import com.github.validationframework.trigger.swing.component.TextComponentTrigger;
-import javax.swing.JTextPane;
+import javax.swing.JPasswordField;
 
-public class TextPaneStringTrigger extends TextComponentTrigger<JTextPane> {
+public class JPasswordFieldTrigger extends BaseTextComponentTrigger<JPasswordField> {
 
-	public TextPaneStringTrigger(final JTextPane inputComponent) {
+	public JPasswordFieldTrigger(final JPasswordField inputComponent) {
 		super(inputComponent);
 	}
 }

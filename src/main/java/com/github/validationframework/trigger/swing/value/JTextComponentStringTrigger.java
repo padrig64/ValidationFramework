@@ -25,12 +25,12 @@
 
 package com.github.validationframework.trigger.swing.value;
 
-import com.github.validationframework.trigger.swing.component.TextComponentTrigger;
-import javax.swing.JPasswordField;
+import com.github.validationframework.trigger.swing.component.BaseTextComponentTrigger;
+import javax.swing.text.JTextComponent;
 
-public class PasswordFieldStringTrigger extends TextComponentTrigger<JPasswordField> {
+public class JTextComponentStringTrigger extends BaseTextComponentTrigger<JTextComponent> {
 
-	public PasswordFieldStringTrigger(final JPasswordField inputComponent) {
+	public JTextComponentStringTrigger(final JTextComponent inputComponent) {
 		super(inputComponent);
 	}
 }

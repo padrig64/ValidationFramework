@@ -23,14 +23,13 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.trigger.swing.value;
+package com.github.validationframework.trigger.swing.component;
 
-import com.github.validationframework.trigger.swing.component.TextComponentTrigger;
-import javax.swing.JFormattedTextField;
+import javax.swing.JToggleButton;
 
-public class FormattedTextFieldStringTrigger extends TextComponentTrigger<JFormattedTextField> {
+public class JToggleButtonTrigger extends BaseToggleComponentTrigger<JToggleButton> {
 
-	public FormattedTextFieldStringTrigger(final JFormattedTextField inputComponent) {
+	public JToggleButtonTrigger(final JToggleButton inputComponent) {
 		super(inputComponent);
 	}
 }

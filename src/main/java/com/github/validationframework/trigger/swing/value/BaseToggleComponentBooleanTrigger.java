@@ -25,12 +25,21 @@
 
 package com.github.validationframework.trigger.swing.value;
 
-import com.github.validationframework.trigger.swing.component.TextComponentTrigger;
-import javax.swing.JEditorPane;
+import com.github.validationframework.trigger.AbstractTrigger;
+import com.github.validationframework.trigger.swing.component.BaseToggleComponentTrigger;
+import javax.swing.JToggleButton;
 
-public class EditorPaneStringTrigger extends TextComponentTrigger<JEditorPane> {
+public class BaseToggleComponentBooleanTrigger<C extends JToggleButton> extends AbstractTrigger<Boolean> {
 
-	public EditorPaneStringTrigger(final JEditorPane inputComponent) {
-		super(inputComponent);
+	private final BaseToggleComponentTrigger<C> toggleComponentTrigger;
+
+	public BaseToggleComponentBooleanTrigger(final C inputComponent) {
+		super();
+		toggleComponentTrigger = new BaseToggleComponentTrigger<C>(inputComponent);
+	}
+
+	@Override
+	public Boolean getInput() {
+		return toggleComponentTrigger.getInput().isSelected();
 	}
 }

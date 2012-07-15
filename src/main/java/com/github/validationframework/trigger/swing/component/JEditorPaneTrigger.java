@@ -25,11 +25,11 @@
 
 package com.github.validationframework.trigger.swing.component;
 
-import javax.swing.JTextPane;
+import javax.swing.JEditorPane;
 
-public class TextPaneTrigger extends TextComponentTrigger<JTextPane> {
+public class JEditorPaneTrigger extends BaseTextComponentTrigger<JEditorPane> {
 
-	public TextPaneTrigger(final JTextPane inputComponent) {
+	public JEditorPaneTrigger(final JEditorPane inputComponent) {
 		super(inputComponent);
 	}
 }

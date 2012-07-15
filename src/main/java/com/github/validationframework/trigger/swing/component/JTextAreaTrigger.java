@@ -23,14 +23,13 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.trigger.swing.value;
+package com.github.validationframework.trigger.swing.component;
 
-import com.github.validationframework.trigger.swing.component.TextComponentTrigger;
 import javax.swing.JTextArea;
 
-public class TextAreaStringTrigger extends TextComponentTrigger<JTextArea> {
+public class JTextAreaTrigger extends BaseTextComponentTrigger<JTextArea> {
 
-	public TextAreaStringTrigger(final JTextArea inputComponent) {
+	public JTextAreaTrigger(final JTextArea inputComponent) {
 		super(inputComponent);
 	}
 }

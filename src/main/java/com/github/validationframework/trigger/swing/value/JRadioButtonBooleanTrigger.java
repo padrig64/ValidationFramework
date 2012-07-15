@@ -23,13 +23,14 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.trigger.swing.component;
+package com.github.validationframework.trigger.swing.value;
 
-import javax.swing.JTextArea;
+import com.github.validationframework.trigger.swing.component.BaseToggleComponentTrigger;
+import javax.swing.JRadioButton;
 
-public class TextAreaTrigger extends TextComponentTrigger<JTextArea> {
+public class JRadioButtonBooleanTrigger extends BaseToggleComponentTrigger<JRadioButton> {
 
-	public TextAreaTrigger(final JTextArea inputComponent) {
+	public JRadioButtonBooleanTrigger(final JRadioButton inputComponent) {
 		super(inputComponent);
 	}
 }

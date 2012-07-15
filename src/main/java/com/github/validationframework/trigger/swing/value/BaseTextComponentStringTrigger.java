@@ -23,13 +23,23 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.trigger.swing.component;
+package com.github.validationframework.trigger.swing.value;
 
-import javax.swing.JTextField;
+import com.github.validationframework.trigger.AbstractTrigger;
+import com.github.validationframework.trigger.swing.component.BaseTextComponentTrigger;
+import javax.swing.text.JTextComponent;
 
-public class TextFieldTrigger extends TextComponentTrigger<JTextField> {
+public class BaseTextComponentStringTrigger<C extends JTextComponent> extends AbstractTrigger<String> {
 
-	public TextFieldTrigger(final JTextField inputComponent) {
-		super(inputComponent);
+	private final BaseTextComponentTrigger<C> textComponentTrigger;
+
+	public BaseTextComponentStringTrigger(final C inputComponent) {
+		super();
+		textComponentTrigger = new BaseTextComponentTrigger<C>(inputComponent);
+	}
+
+	@Override
+	public String getInput() {
+		return textComponentTrigger.getInput().getText();
 	}
 }

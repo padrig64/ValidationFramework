@@ -23,13 +23,14 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.trigger.swing.component;
+package com.github.validationframework.trigger.swing.value;
 
-import javax.swing.JFormattedTextField;
+import com.github.validationframework.trigger.swing.component.BaseTextComponentTrigger;
+import javax.swing.JEditorPane;
 
-public class FormattedTextFieldTrigger extends TextComponentTrigger<JFormattedTextField> {
+public class JEditorPaneStringTrigger extends BaseTextComponentTrigger<JEditorPane> {
 
-	public FormattedTextFieldTrigger(final JFormattedTextField inputComponent) {
+	public JEditorPaneStringTrigger(final JEditorPane inputComponent) {
 		super(inputComponent);
 	}
 }

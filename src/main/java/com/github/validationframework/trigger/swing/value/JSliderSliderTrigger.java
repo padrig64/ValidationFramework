@@ -25,12 +25,27 @@
 
 package com.github.validationframework.trigger.swing.value;
 
-import com.github.validationframework.trigger.swing.component.TextComponentTrigger;
-import javax.swing.JTextField;
+import com.github.validationframework.trigger.AbstractTrigger;
+import com.github.validationframework.trigger.swing.component.JSliderTrigger;
+import javax.swing.JSlider;
 
-public class TextFieldStringTrigger extends TextComponentTrigger<JTextField> {
+public class JSliderSliderTrigger extends AbstractTrigger<Integer> {
 
-	public TextFieldStringTrigger(final JTextField inputComponent) {
-		super(inputComponent);
+	private final JSliderTrigger sliderTrigger;
+
+	public JSliderSliderTrigger(final JSlider inputComponent) {
+		super();
+		sliderTrigger = new JSliderTrigger(inputComponent);
+	}
+
+	@Override
+	public Integer getInput() {
+		final Integer index = -1;
+
+		if (sliderTrigger.getInput() != null) {
+			sliderTrigger.getInput().getValue();
+		}
+
+		return index;
 	}
 }

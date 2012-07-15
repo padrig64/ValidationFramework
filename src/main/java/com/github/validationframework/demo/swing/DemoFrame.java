@@ -32,7 +32,7 @@ import com.github.validationframework.feedback.swing.AbstractIconFeedBack;
 import com.github.validationframework.feedback.swing.AbstractIconTipFeedBack;
 import com.github.validationframework.feedback.swing.AbstractToolTipFeedBack;
 import com.github.validationframework.rule.Rule;
-import com.github.validationframework.trigger.swing.value.TextComponentStringTrigger;
+import com.github.validationframework.trigger.swing.value.BaseTextComponentStringTrigger;
 import com.github.validationframework.validator.DefaultValidator;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -257,7 +257,7 @@ public class DemoFrame extends JFrame {
 		JTextField textField = new JTextField();
 		contentPane.add(textField, "growx");
 		final DefaultValidator<String, TextFieldResult> validator1 = new DefaultValidator<String, TextFieldResult>();
-		validator1.addTrigger(new TextComponentStringTrigger(textField));
+		validator1.addTrigger(new BaseTextComponentStringTrigger(textField));
 		validator1.addRule(new TextFieldRule());
 		validator1.addFeedBack(new TextFieldToolTipFeedBack(textField));
 		final TriggerFeedBack<TextFieldResult> groupTrigger1 = new TriggerFeedBack<TextFieldResult>();
@@ -268,7 +268,7 @@ public class DemoFrame extends JFrame {
 		textField = new JTextField();
 		contentPane.add(textField, "growx");
 		final DefaultValidator<String, TextFieldResult> validator2 = new DefaultValidator<String, TextFieldResult>();
-		validator2.addTrigger(new TextComponentStringTrigger(textField));
+		validator2.addTrigger(new BaseTextComponentStringTrigger(textField));
 		validator2.addRule(new TextFieldRule());
 		validator2.addFeedBack(new TextFieldColorFeedBack(textField));
 		final TriggerFeedBack<TextFieldResult> groupTrigger2 = new TriggerFeedBack<TextFieldResult>();
@@ -279,7 +279,7 @@ public class DemoFrame extends JFrame {
 		textField = new JTextField();
 		contentPane.add(textField, "growx");
 		final DefaultValidator<String, TextFieldResult> validator3 = new DefaultValidator<String, TextFieldResult>();
-		validator3.addTrigger(new TextComponentStringTrigger(textField));
+		validator3.addTrigger(new BaseTextComponentStringTrigger(textField));
 		validator3.addRule(new TextFieldRule());
 		validator3.addFeedBack(new TextFieldIconFeedBack(textField));
 		final TriggerFeedBack<TextFieldResult> groupTrigger3 = new TriggerFeedBack<TextFieldResult>();
@@ -290,7 +290,7 @@ public class DemoFrame extends JFrame {
 		textField = new JTextField();
 		contentPane.add(textField, "growx");
 		final DefaultValidator<String, TextFieldResult> validator4 = new DefaultValidator<String, TextFieldResult>();
-		validator4.addTrigger(new TextComponentStringTrigger(textField));
+		validator4.addTrigger(new BaseTextComponentStringTrigger(textField));
 		validator4.addRule(new TextFieldRule());
 		validator4.addFeedBack(new TextFieldIconTipFeedBack(textField));
 		final TriggerFeedBack<TextFieldResult> groupTrigger4 = new TriggerFeedBack<TextFieldResult>();
