@@ -1,7 +1,6 @@
 The Validation Framework is a set of base classes, interfaces and utilities to
-help in developing full-featured user interaction, by simplifying and unifying
-the validation of user input and the resulting feedback and assistance to the
-user.
+help in implementing full-featured input validation: from the validation triggers
+to the resulting feedback and assistance to the user.
 
 This library is still in its early stage of development. The following features
 are expected:
@@ -11,6 +10,7 @@ INPUT VALIDATION
  . Delayed validation (for example, when focus is lost or when the ENTER key is
    pressed, or when Apply button is pressed);
  . Validation on individual components;
+ . Validation on groups of components without inter-dependencies;
  . Validation on groups of components with inter-dependencies;
  . Validation of groups within groups;
  . Syntax validation and semantic validation;
