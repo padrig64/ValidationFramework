@@ -23,21 +23,20 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.trigger;
+package com.github.validationframework.resulthandler;
 
 /**
- * Interface to be implemented by validation trigger listeners.<br>A trigger listener is meant to start the validation
- * process.
+ * Interface to be implemented by handlers of validation results.<br>Result handles may give feedback to the user,
+ * enable/disable other components based on conditional logic, trigger other validators, etc.
  *
- * @see Trigger
- * @see TriggerEvent
+ * @param <R> Type of validation result.<br>It can be, for instance, an enumeration or just a boolean.
  */
-public interface TriggerListener {
+public interface TypedResultHandler<R> extends ResultHandler {
 
 	/**
-	 * Starts the validation process.
+	 * Handles the specified validation result.
 	 *
-	 * @param event Trigger event.
+	 * @param result Validation result to be handled.
 	 */
-	public void triggerValidation(TriggerEvent event);
+	public void handleResult(R result);
 }

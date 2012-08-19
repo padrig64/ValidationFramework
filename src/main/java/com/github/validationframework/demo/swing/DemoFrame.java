@@ -25,15 +25,14 @@
 
 package com.github.validationframework.demo.swing;
 
-import com.github.validationframework.feedback.FeedBack;
-import com.github.validationframework.feedback.TriggerFeedBack;
-import com.github.validationframework.feedback.swing.AbstractColorFeedBack;
-import com.github.validationframework.feedback.swing.AbstractIconFeedBack;
-import com.github.validationframework.feedback.swing.AbstractIconTipFeedBack;
-import com.github.validationframework.feedback.swing.AbstractToolTipFeedBack;
-import com.github.validationframework.rule.Rule;
-import com.github.validationframework.trigger.swing.value.BaseTextComponentStringTrigger;
-import com.github.validationframework.validator.DefaultValidator;
+import com.github.validationframework.dataprovider.swing.JTextFieldTextProvider;
+import com.github.validationframework.resulthandler.swing.AbstractColorFeedBack;
+import com.github.validationframework.resulthandler.swing.AbstractIconFeedBack;
+import com.github.validationframework.resulthandler.swing.AbstractIconTipFeedBack;
+import com.github.validationframework.resulthandler.swing.AbstractToolTipFeedBack;
+import com.github.validationframework.rule.TypedDataRule;
+import com.github.validationframework.trigger.swing.JTextFieldModelChangedTrigger;
+import com.github.validationframework.validator.SimpleHomogeneousValidator;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -119,7 +118,7 @@ public class DemoFrame extends JFrame {
 //		}
 	}
 
-	private class TextFieldRule implements Rule<String, TextFieldResult> {
+	private class TextFieldRule implements TypedDataRule<String, TextFieldResult> {
 
 		@Override
 		public TextFieldResult validate(final String input) {
@@ -142,7 +141,7 @@ public class DemoFrame extends JFrame {
 		}
 
 		@Override
-		public void feedback(final TextFieldResult result) {
+		public void handleResult(final TextFieldResult result) {
 			setToolTipText(result.toString());
 			switch (result) {
 				case OK:
@@ -161,7 +160,7 @@ public class DemoFrame extends JFrame {
 		}
 
 		@Override
-		public void feedback(final TextFieldResult result) {
+		public void handleResult(final TextFieldResult result) {
 			setForeground(result.getForeground());
 			setBackground(result.getBackground());
 			switch (result) {
@@ -181,7 +180,7 @@ public class DemoFrame extends JFrame {
 		}
 
 		@Override
-		public void feedback(final TextFieldResult result) {
+		public void handleResult(final TextFieldResult result) {
 			setIcon(result.getIcon());
 			switch (result) {
 				case OK:
@@ -200,7 +199,7 @@ public class DemoFrame extends JFrame {
 		}
 
 		@Override
-		public void feedback(final TextFieldResult result) {
+		public void handleResult(final TextFieldResult result) {
 			setIcon(result.getIcon());
 			setToolTipText(result.toString());
 			switch (result) {
@@ -228,7 +227,7 @@ public class DemoFrame extends JFrame {
 		}
 	}
 
-	private class GroupRule implements Rule<TextFieldResult, GroupResult> {
+	private class GroupRule implements TypedDataRule<TextFieldResult, GroupResult> {
 
 		@Override
 		public GroupResult validate(final TextFieldResult input) {
@@ -256,69 +255,77 @@ public class DemoFrame extends JFrame {
 		contentPane.add(new JLabel("Tooltip:"));
 		JTextField textField = new JTextField();
 		contentPane.add(textField, "growx");
-		final DefaultValidator<String, TextFieldResult> validator1 = new DefaultValidator<String, TextFieldResult>();
-		validator1.addTrigger(new BaseTextComponentStringTrigger(textField));
+		final SimpleHomogeneousValidator<String, TextFieldResult> validator1 =
+				new SimpleHomogeneousValidator<String, TextFieldResult>();
+		validator1.addTrigger(new JTextFieldModelChangedTrigger(textField));
+		validator1.addDataProvider(new JTextFieldTextProvider(textField));
 		validator1.addRule(new TextFieldRule());
-		validator1.addFeedBack(new TextFieldToolTipFeedBack(textField));
-		final TriggerFeedBack<TextFieldResult> groupTrigger1 = new TriggerFeedBack<TextFieldResult>();
-		validator1.addFeedBack(groupTrigger1);
+		validator1.addResultHandler(new TextFieldToolTipFeedBack(textField));
+//		final TriggerFeedBack<TextFieldResult> groupTrigger1 = new TriggerFeedBack<TextFieldResult>();
+//		validator1.addResultHandler(groupTrigger1);
 
 		// Second textfield
 		contentPane.add(new JLabel("Color:"));
 		textField = new JTextField();
 		contentPane.add(textField, "growx");
-		final DefaultValidator<String, TextFieldResult> validator2 = new DefaultValidator<String, TextFieldResult>();
-		validator2.addTrigger(new BaseTextComponentStringTrigger(textField));
+		final SimpleHomogeneousValidator<String, TextFieldResult> validator2 =
+				new SimpleHomogeneousValidator<String, TextFieldResult>();
+		validator2.addTrigger(new JTextFieldModelChangedTrigger(textField));
+		validator2.addDataProvider(new JTextFieldTextProvider(textField));
 		validator2.addRule(new TextFieldRule());
-		validator2.addFeedBack(new TextFieldColorFeedBack(textField));
-		final TriggerFeedBack<TextFieldResult> groupTrigger2 = new TriggerFeedBack<TextFieldResult>();
-		validator2.addFeedBack(groupTrigger2);
+		validator2.addResultHandler(new TextFieldColorFeedBack(textField));
+//		final TriggerFeedBack<TextFieldResult> groupTrigger2 = new TriggerFeedBack<TextFieldResult>();
+//		validator2.addFeedBack(groupTrigger2);
 
 		// Third textfield
 		contentPane.add(new JLabel("Icon:"));
 		textField = new JTextField();
 		contentPane.add(textField, "growx");
-		final DefaultValidator<String, TextFieldResult> validator3 = new DefaultValidator<String, TextFieldResult>();
-		validator3.addTrigger(new BaseTextComponentStringTrigger(textField));
+		final SimpleHomogeneousValidator<String, TextFieldResult> validator3 =
+				new SimpleHomogeneousValidator<String, TextFieldResult>();
+		validator3.addTrigger(new JTextFieldModelChangedTrigger(textField));
+		validator3.addDataProvider(new JTextFieldTextProvider(textField));
 		validator3.addRule(new TextFieldRule());
-		validator3.addFeedBack(new TextFieldIconFeedBack(textField));
-		final TriggerFeedBack<TextFieldResult> groupTrigger3 = new TriggerFeedBack<TextFieldResult>();
-		validator3.addFeedBack(groupTrigger3);
+		validator3.addResultHandler(new TextFieldIconFeedBack(textField));
+//		final TriggerFeedBack<TextFieldResult> groupTrigger3 = new TriggerFeedBack<TextFieldResult>();
+//		validator3.addFeedBack(groupTrigger3);
 
 		// Fourth textfield
 		contentPane.add(new JLabel("Icon tip:"));
 		textField = new JTextField();
 		contentPane.add(textField, "growx");
-		final DefaultValidator<String, TextFieldResult> validator4 = new DefaultValidator<String, TextFieldResult>();
-		validator4.addTrigger(new BaseTextComponentStringTrigger(textField));
+		final SimpleHomogeneousValidator<String, TextFieldResult> validator4 =
+				new SimpleHomogeneousValidator<String, TextFieldResult>();
+		validator4.addTrigger(new JTextFieldModelChangedTrigger(textField));
+		validator4.addDataProvider(new JTextFieldTextProvider(textField));
 		validator4.addRule(new TextFieldRule());
-		validator4.addFeedBack(new TextFieldIconTipFeedBack(textField));
-		final TriggerFeedBack<TextFieldResult> groupTrigger4 = new TriggerFeedBack<TextFieldResult>();
-		validator4.addFeedBack(groupTrigger4);
+		validator4.addResultHandler(new TextFieldIconTipFeedBack(textField));
+//		final TriggerFeedBack<TextFieldResult> groupTrigger4 = new TriggerFeedBack<TextFieldResult>();
+//		validator4.addFeedBack(groupTrigger4);
 
 		// Apply button
 		final JButton applyButton = new JButton("Apply");
 		contentPane.add(applyButton, "growx, span");
-		final DefaultValidator<TextFieldResult, GroupResult> groupValidator =
-				new DefaultValidator<TextFieldResult, GroupResult>();
-		groupValidator.addTrigger(groupTrigger1);
-		groupValidator.addTrigger(groupTrigger2);
-		groupValidator.addTrigger(groupTrigger3);
-		groupValidator.addTrigger(groupTrigger4);
-		groupValidator.addRule(new Rule<TextFieldResult, GroupResult>() {
-			@Override
-			public GroupResult validate(TextFieldResult input) {
-				// Need source!!
-				// TODO
-				return null;
-			}
-		});
-		groupValidator.addFeedBack(new FeedBack<GroupResult>() {
-			@Override
-			public void feedback(GroupResult result) {
-				applyButton.setEnabled(GroupResult.OK.equals(result));
-			}
-		});
+//		final SimpleHomogeneousValidator<TextFieldResult, GroupResult> groupValidator =
+//				new SimpleHomogeneousValidator<TextFieldResult, GroupResult>();
+//		groupValidator.addTrigger(groupTrigger1);
+//		groupValidator.addTrigger(groupTrigger2);
+//		groupValidator.addTrigger(groupTrigger3);
+//		groupValidator.addTrigger(groupTrigger4);
+//		groupValidator.addRule(new Rule<TextFieldResult, GroupResult>() {
+//			@Override
+//			public GroupResult validate(TextFieldResult input) {
+//				// Need source!!
+//				// TODO
+//				return null;
+//			}
+//		});
+//		groupValidator.addFeedBack(new FeedBack<GroupResult>() {
+//			@Override
+//			public void feedback(GroupResult result) {
+//				applyButton.setEnabled(GroupResult.OK.equals(result));
+//			}
+//		});
 
 		// Set size
 		pack();

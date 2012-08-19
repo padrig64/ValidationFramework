@@ -23,21 +23,36 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.trigger;
+package com.github.validationframework.trigger.swing;
 
-/**
- * Interface to be implemented by validation trigger listeners.<br>A trigger listener is meant to start the validation
- * process.
- *
- * @see Trigger
- * @see TriggerEvent
- */
-public interface TriggerListener {
+import com.github.validationframework.trigger.AbstractTrigger;
+import com.github.validationframework.trigger.TriggerEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JComboBox;
 
-	/**
-	 * Starts the validation process.
-	 *
-	 * @param event Trigger event.
-	 */
-	public void triggerValidation(TriggerEvent event);
+public class JComboBoxModelChangedTrigger extends AbstractTrigger {
+
+	private class SourceAdapter implements ActionListener {
+
+		@Override
+		public void actionPerformed(final ActionEvent e) {
+			fireTriggerEvent(new TriggerEvent(source));
+		}
+	}
+
+	private JComboBox source = null;
+
+	private final ActionListener sourceAdapter = new SourceAdapter();
+
+	public JComboBoxModelChangedTrigger(final JComboBox source) {
+		super();
+		this.source = source;
+		source.addActionListener(sourceAdapter);
+	}
+
+	public void dispose() {
+		source.removeActionListener(sourceAdapter);
+		source = null;
+	}
 }

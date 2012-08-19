@@ -23,21 +23,46 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.trigger;
+package com.github.validationframework.trigger.swing;
 
-/**
- * Interface to be implemented by validation trigger listeners.<br>A trigger listener is meant to start the validation
- * process.
- *
- * @see Trigger
- * @see TriggerEvent
- */
-public interface TriggerListener {
+import com.github.validationframework.trigger.AbstractTrigger;
+import com.github.validationframework.trigger.TriggerEvent;
+import javax.swing.JComboBox;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 
-	/**
-	 * Starts the validation process.
-	 *
-	 * @param event Trigger event.
-	 */
-	public void triggerValidation(TriggerEvent event);
+public class JComboBoxClosedTrigger extends AbstractTrigger {
+
+	private class SourceAdapter implements PopupMenuListener {
+
+		@Override
+		public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
+			// Nothing to be done
+		}
+
+		@Override
+		public void popupMenuWillBecomeInvisible(final PopupMenuEvent e) {
+			fireTriggerEvent(new TriggerEvent(source));
+		}
+
+		@Override
+		public void popupMenuCanceled(final PopupMenuEvent e) {
+			// Nothing to be done
+		}
+	}
+
+	private JComboBox source = null;
+
+	private final PopupMenuListener sourceAdapter = new SourceAdapter();
+
+	public JComboBoxClosedTrigger(final JComboBox source) {
+		super();
+		this.source = source;
+		source.addPopupMenuListener(sourceAdapter);
+	}
+
+	public void dispose() {
+		source.removePopupMenuListener(sourceAdapter);
+		source = null;
+	}
 }

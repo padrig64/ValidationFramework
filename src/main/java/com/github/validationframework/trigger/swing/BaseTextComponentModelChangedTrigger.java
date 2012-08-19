@@ -23,21 +23,47 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.trigger;
+package com.github.validationframework.trigger.swing;
 
-/**
- * Interface to be implemented by validation trigger listeners.<br>A trigger listener is meant to start the validation
- * process.
- *
- * @see Trigger
- * @see TriggerEvent
- */
-public interface TriggerListener {
+import com.github.validationframework.trigger.AbstractTrigger;
+import com.github.validationframework.trigger.TriggerEvent;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.JTextComponent;
 
-	/**
-	 * Starts the validation process.
-	 *
-	 * @param event Trigger event.
-	 */
-	public void triggerValidation(TriggerEvent event);
+public class BaseTextComponentModelChangedTrigger<C extends JTextComponent> extends AbstractTrigger {
+
+	private class SourceAdapter implements DocumentListener {
+
+		@Override
+		public void insertUpdate(final DocumentEvent e) {
+			fireTriggerEvent(new TriggerEvent(source));
+		}
+
+		@Override
+		public void removeUpdate(final DocumentEvent e) {
+			fireTriggerEvent(new TriggerEvent(source));
+		}
+
+		@Override
+		public void changedUpdate(final DocumentEvent e) {
+			fireTriggerEvent(new TriggerEvent(source));
+		}
+	}
+
+	private C source = null;
+
+	private final DocumentListener sourceAdapter = new SourceAdapter();
+
+	public BaseTextComponentModelChangedTrigger(final C source) {
+		super();
+		this.source = source;
+		source.getDocument().addDocumentListener(sourceAdapter);
+		// TODO Track document replacement
+	}
+
+	public void dispose() {
+		source.getDocument().removeDocumentListener(sourceAdapter);
+		source = null;
+	}
 }

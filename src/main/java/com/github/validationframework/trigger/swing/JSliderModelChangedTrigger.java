@@ -23,21 +23,38 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.trigger;
+package com.github.validationframework.trigger.swing;
 
-/**
- * Interface to be implemented by validation trigger listeners.<br>A trigger listener is meant to start the validation
- * process.
- *
- * @see Trigger
- * @see TriggerEvent
- */
-public interface TriggerListener {
+import com.github.validationframework.trigger.AbstractTrigger;
+import com.github.validationframework.trigger.TriggerEvent;
+import javax.swing.JSlider;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
-	/**
-	 * Starts the validation process.
-	 *
-	 * @param event Trigger event.
-	 */
-	public void triggerValidation(TriggerEvent event);
+public class JSliderModelChangedTrigger extends AbstractTrigger {
+
+	private class SourceAdapter implements ChangeListener {
+
+		@Override
+		public void stateChanged(final ChangeEvent e) {
+			if ((e.getSource() instanceof JSlider) && !(((JSlider) e.getSource()).getValueIsAdjusting())) {
+				fireTriggerEvent(new TriggerEvent(source));
+			}
+		}
+	}
+
+	private JSlider source = null;
+
+	private final ChangeListener sourceAdapter = new SourceAdapter();
+
+	public JSliderModelChangedTrigger(final JSlider source) {
+		super();
+		this.source = source;
+		source.addChangeListener(sourceAdapter);
+	}
+
+	public void dispose() {
+		source.removeChangeListener(sourceAdapter);
+		source = null;
+	}
 }

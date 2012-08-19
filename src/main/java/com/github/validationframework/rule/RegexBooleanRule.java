@@ -30,7 +30,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class RegexBooleanRule implements Rule<String, Boolean> {
+public class RegexBooleanRule implements TypedDataRule<String, Boolean> {
 
 	private final Map<String, Integer> patterns = new HashMap<String, Integer>();
 
@@ -42,7 +42,7 @@ public class RegexBooleanRule implements Rule<String, Boolean> {
 		patterns.put(pattern, flags);
 	}
 
-	public void removeRegex(final String pattern) {
+	public void removePattern(final String pattern) {
 		patterns.remove(pattern);
 	}
 

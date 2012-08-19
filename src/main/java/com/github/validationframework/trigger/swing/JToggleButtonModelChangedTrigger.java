@@ -23,21 +23,13 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.trigger;
+package com.github.validationframework.trigger.swing;
 
-/**
- * Interface to be implemented by validation trigger listeners.<br>A trigger listener is meant to start the validation
- * process.
- *
- * @see Trigger
- * @see TriggerEvent
- */
-public interface TriggerListener {
+import javax.swing.JToggleButton;
 
-	/**
-	 * Starts the validation process.
-	 *
-	 * @param event Trigger event.
-	 */
-	public void triggerValidation(TriggerEvent event);
+public class JToggleButtonModelChangedTrigger extends BaseToggleComponentModelChangedTrigger<JToggleButton> {
+
+	public JToggleButtonModelChangedTrigger(final JToggleButton source) {
+		super(source);
+	}
 }

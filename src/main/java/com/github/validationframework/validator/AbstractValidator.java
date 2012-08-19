@@ -25,117 +25,111 @@
 
 package com.github.validationframework.validator;
 
-import com.github.validationframework.feedback.FeedBack;
+import com.github.validationframework.dataprovider.DataProvider;
+import com.github.validationframework.resulthandler.ResultHandler;
 import com.github.validationframework.rule.Rule;
 import com.github.validationframework.trigger.Trigger;
-import com.github.validationframework.trigger.TriggerListener;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Common validator abstraction.<br>It provides the connection to the validation triggers, but the validation algorithm
- * is left to the sub-classes.
+ * Abstract implementation of a validator.<br>It provides methods to add and remove triggers, data providers, rules and
+ * result handlers. However, note that the connection between triggers, data providers, rules and result handlers, as
+ * well as all the validation logic is left to the sub-classes.
  *
- * @param <I> Type of the input to be validated.
- * @param <R> Type of the validation results produced by the validation rules.
+ * @param <T> Type of trigger initiating the validation.
+ * @param <P> Type of data provider providing the input data to be validated.
+ * @param <U> Type of validation rules to be used on the input data.
+ * @param <H> Type of result handlers to be used on validation output.
+ * @see Validator
+ * @see Trigger
+ * @see DataProvider
+ * @see Rule
+ * @see ResultHandler
  */
-public abstract class AbstractValidator<I, R> implements Validator<I, R> {
+public abstract class AbstractValidator<T extends Trigger, P extends DataProvider, U extends Rule, H extends ResultHandler>
+		implements Validator<T, P, U, H> {
 
 	/**
-	 * Listener to validation triggers.<br>It provides the entry point to the validation algorithm.
-	 *
-	 * @see AbstractValidator#doValidation(Object)
+	 * Validation triggers.
 	 */
-	private class TriggerAdapter implements TriggerListener<I> {
+	protected final List<T> triggers = new ArrayList<T>();
 
-		/**
-		 * @see TriggerListener#triggerValidation(Object)
-		 */
-		@Override
-		public void triggerValidation(final I input) {
-			doValidation(input);
-		}
+	/**
+	 * Validation data providers.
+	 */
+	protected final List<P> dataProviders = new ArrayList<P>();
+
+	/**
+	 * Validation rules.
+	 */
+	protected List<U> rules = new ArrayList<U>();
+
+	/**
+	 * Validation result handlers.
+	 */
+	protected final List<H> resultHandlers = new ArrayList<H>();
+
+	/**
+	 * @see Validator#addTrigger(Object)
+	 */
+	@Override
+	public void addTrigger(final T trigger) {
+		triggers.add(trigger);
 	}
 
 	/**
-	 * Listener to validation triggers.
-	 */
-	private final TriggerAdapter triggerAdapter = new TriggerAdapter();
-
-	/**
-	 * List of registered validation triggers.
-	 */
-	protected List<Trigger<I>> triggers = new ArrayList<Trigger<I>>();
-
-	/**
-	 * List of registered validation rules.
-	 */
-	protected List<Rule<I, R>> rules = new ArrayList<Rule<I, R>>();
-
-	/**
-	 * List of registered validation feedbacks.
-	 */
-	protected List<FeedBack<R>> feedBacks = new ArrayList<FeedBack<R>>();
-
-	/**
-	 * @see Validator#addTrigger(Trigger)
+	 * @see Validator#removeTrigger(Object)
 	 */
 	@Override
-	public void addTrigger(final Trigger<I> trigger) {
-		if (trigger != null) {
-			triggers.add(trigger);
-			trigger.addTriggerListener(triggerAdapter);
-		}
+	public void removeTrigger(final T trigger) {
+		triggers.remove(trigger);
 	}
 
 	/**
-	 * @see Validator#removeTrigger(Trigger)
+	 * @see Validator#addDataProvider(Object)
 	 */
 	@Override
-	public void removeTrigger(final Trigger<I> trigger) {
-		if (trigger != null) {
-			triggers.remove(trigger);
-			trigger.removeTriggerListener(triggerAdapter);
-		}
+	public void addDataProvider(final P dataProvider) {
+		dataProviders.add(dataProvider);
 	}
 
 	/**
-	 * @see Validator#addRule(Rule)
+	 * @see Validator#removeDataProvider(Object)
 	 */
 	@Override
-	public void addRule(final Rule<I, R> rule) {
+	public void removeDataProvider(final P dataProvider) {
+		dataProviders.remove(dataProvider);
+	}
+
+	/**
+	 * @see Validator#addRule(Object)
+	 */
+	@Override
+	public void addRule(final U rule) {
 		rules.add(rule);
 	}
 
 	/**
-	 * @see Validator#removeRule(Rule)
+	 * @see Validator#removeRule(Object)
 	 */
-	@Override
-	public void removeRule(final Rule<I, R> rule) {
+	public void removeRule(final U rule) {
 		rules.remove(rule);
 	}
 
 	/**
-	 * @see Validator#addFeedBack(FeedBack)
+	 * @see Validator#addResultHandler(Object)
 	 */
 	@Override
-	public void addFeedBack(final FeedBack<R> feedBack) {
-		feedBacks.add(feedBack);
+	public void addResultHandler(final H resultHandler) {
+		resultHandlers.add(resultHandler);
 	}
 
 	/**
-	 * @see Validator#removeFeedBack(FeedBack)
+	 * @see Validator#removeResultHandler(Object)
 	 */
 	@Override
-	public void removeFeedBack(final FeedBack<R> feedBack) {
-		feedBacks.remove(feedBack);
+	public void removeResultHandler(final H resultHandler) {
+		resultHandlers.remove(resultHandler);
 	}
-
-	/**
-	 * Performs the validation on the given input with the validation rules and giving the feedback on the validation
-	 * result.
-	 *
-	 * @param input Input read by the validation triggers and that is to be validated against the validation rules.
-	 */
-	protected abstract void doValidation(I input);
 }

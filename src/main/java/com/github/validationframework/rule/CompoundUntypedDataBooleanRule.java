@@ -23,21 +23,31 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.trigger;
+package com.github.validationframework.rule;
 
-/**
- * Interface to be implemented by validation trigger listeners.<br>A trigger listener is meant to start the validation
- * process.
- *
- * @see Trigger
- * @see TriggerEvent
- */
-public interface TriggerListener {
+import java.util.ArrayList;
+import java.util.List;
 
-	/**
-	 * Starts the validation process.
-	 *
-	 * @param event Trigger event.
-	 */
-	public void triggerValidation(TriggerEvent event);
+public class CompoundUntypedDataBooleanRule implements UntypedDataRule<Boolean> {
+
+	private final List<UntypedDataRule<Boolean>> rules = new ArrayList<UntypedDataRule<Boolean>>();
+
+	public void addRule(final UntypedDataRule<Boolean> rule) {
+		rules.add(rule);
+	}
+
+	public void removeRule(final UntypedDataRule<Boolean> rule) {
+		rules.remove(rule);
+	}
+
+	@Override
+	public Boolean validate() {
+		Boolean result = true;
+
+		for (final UntypedDataRule<Boolean> rule : rules) {
+			result &= rule.validate();
+		}
+
+		return result;
+	}
 }

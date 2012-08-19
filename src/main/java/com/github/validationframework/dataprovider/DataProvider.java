@@ -23,21 +23,12 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.trigger;
+package com.github.validationframework.dataprovider;
 
 /**
- * Interface to be implemented by validation trigger listeners.<br>A trigger listener is meant to start the validation
- * process.
- *
- * @see Trigger
- * @see TriggerEvent
+ * Marker interface to be implemented by data providers.<br>Data providers provide the data to be used for the
+ * validation process.
  */
-public interface TriggerListener {
-
-	/**
-	 * Starts the validation process.
-	 *
-	 * @param event Trigger event.
-	 */
-	public void triggerValidation(TriggerEvent event);
+public interface DataProvider {
+	// Nothing to be done
 }

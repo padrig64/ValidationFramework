@@ -1,2 +1,5 @@
-. MappableValidator: Triggers->Rules and Results->Feedbacks to fine tune the connections
+. Finalize mappable validator
+. Fix issue with icon tip
+. Fix issue with formatted textfield
+
 . All features described in the README file

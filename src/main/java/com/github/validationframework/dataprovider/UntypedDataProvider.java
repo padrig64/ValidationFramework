@@ -23,21 +23,18 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.trigger;
+package com.github.validationframework.dataprovider;
 
 /**
- * Interface to be implemented by validation trigger listeners.<br>A trigger listener is meant to start the validation
- * process.
+ * Marker interface to be implemented by entities providing data that is not of a pre-determined type.<br>Untyped data
+ * providers are typically used by autonomous untyped data validators when the validation process is triggered.<br>It
+ * can be used, for example, to retrieve a group of heterogeneous data to perform group validation. Therefore, it has no
+ * specific method to retrieve the data, as this is left to application-specific classes.
  *
- * @see Trigger
- * @see TriggerEvent
+ * @see DataProvider
+ * @see com.github.validationframework.trigger.Trigger
+ * @see com.github.validationframework.validator.AutonomousUntypedDataValidator
  */
-public interface TriggerListener {
-
-	/**
-	 * Starts the validation process.
-	 *
-	 * @param event Trigger event.
-	 */
-	public void triggerValidation(TriggerEvent event);
+public interface UntypedDataProvider extends DataProvider {
+	// Nothing to be done
 }

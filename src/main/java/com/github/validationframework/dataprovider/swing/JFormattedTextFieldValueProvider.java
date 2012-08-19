@@ -23,21 +23,21 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.trigger;
+package com.github.validationframework.dataprovider.swing;
 
-/**
- * Interface to be implemented by validation trigger listeners.<br>A trigger listener is meant to start the validation
- * process.
- *
- * @see Trigger
- * @see TriggerEvent
- */
-public interface TriggerListener {
+import com.github.validationframework.dataprovider.TypedDataProvider;
+import javax.swing.JFormattedTextField;
 
-	/**
-	 * Starts the validation process.
-	 *
-	 * @param event Trigger event.
-	 */
-	public void triggerValidation(TriggerEvent event);
+public class JFormattedTextFieldValueProvider implements TypedDataProvider<Object> {
+
+	private final JFormattedTextField formattedTextField;
+
+	public JFormattedTextFieldValueProvider(final JFormattedTextField formattedTextField) {
+		this.formattedTextField = formattedTextField;
+	}
+
+	@Override
+	public Object getData() {
+		return formattedTextField.getText();
+	}
 }

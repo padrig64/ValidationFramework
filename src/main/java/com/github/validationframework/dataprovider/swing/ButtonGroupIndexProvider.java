@@ -23,21 +23,39 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.trigger;
+package com.github.validationframework.dataprovider.swing;
 
-/**
- * Interface to be implemented by validation trigger listeners.<br>A trigger listener is meant to start the validation
- * process.
- *
- * @see Trigger
- * @see TriggerEvent
- */
-public interface TriggerListener {
+import com.github.validationframework.dataprovider.TypedDataProvider;
+import java.util.Enumeration;
+import javax.swing.AbstractButton;
+import javax.swing.ButtonGroup;
+import javax.swing.ButtonModel;
 
-	/**
-	 * Starts the validation process.
-	 *
-	 * @param event Trigger event.
-	 */
-	public void triggerValidation(TriggerEvent event);
+public class ButtonGroupIndexProvider implements TypedDataProvider<Integer> {
+
+	private final ButtonGroup buttonGroup;
+
+	public ButtonGroupIndexProvider(final ButtonGroup buttonGroup) {
+		this.buttonGroup = buttonGroup;
+	}
+
+	@Override
+	public Integer getData() {
+		int index = -1;
+
+		final ButtonModel selection = buttonGroup.getSelection();
+		if (selection != null) {
+			final Enumeration<AbstractButton> buttons = buttonGroup.getElements();
+			int i = 0;
+			while (buttons.hasMoreElements()) {
+				if (buttons.nextElement().equals(selection)) {
+					index = i;
+					break;
+				}
+				i++;
+			}
+		}
+
+		return index;
+	}
 }

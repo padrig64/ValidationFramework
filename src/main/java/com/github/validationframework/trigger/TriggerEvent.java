@@ -25,19 +25,19 @@
 
 package com.github.validationframework.trigger;
 
-/**
- * Interface to be implemented by validation trigger listeners.<br>A trigger listener is meant to start the validation
- * process.
- *
- * @see Trigger
- * @see TriggerEvent
- */
-public interface TriggerListener {
+import java.util.EventObject;
+
+public class TriggerEvent extends EventObject {
 
 	/**
-	 * Starts the validation process.
-	 *
-	 * @param event Trigger event.
+	 * Generated serial UID.
 	 */
-	public void triggerValidation(TriggerEvent event);
+	private static final long serialVersionUID = 1598246986663737227L;
+
+	/**
+	 * @see EventObject#EventObject(Object)
+	 */
+	public TriggerEvent(final Object source) {
+		super(source);
+	}
 }

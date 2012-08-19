@@ -25,65 +25,75 @@
 
 package com.github.validationframework.validator;
 
-import com.github.validationframework.feedback.FeedBack;
-import com.github.validationframework.rule.Rule;
-import com.github.validationframework.trigger.Trigger;
-
 /**
- * Interface to be implemented by the validators.<br>The validator is the central point of the validation framework. It
- * has validation triggers (for example, whenever the user enters some data in a field, presses an Apply button, etc.),
- * which will read the data to be validated (for example, from the input field, a database, etc.), and will pass the
- * data to the various validation rules (for example, expecting data to be entered in a specific format), which will
- * produce validation results (for example, invalid input, valid input, input too long, misspell, etc.), which will be
- * used to give appropriate feedback to the user (for example, a popup dialog, an error icon, etc.).
+ * Interface to be implemented by validators.<br>The validator is the central point of the validation framework. It
+ * implements the whole chain of validation, from the triggers, till the display of the feedback.<br>Upon validation
+ * trigger (for example, whenever the user enters some data in a field, presses an Apply button, etc.), data is
+ * retrieved (for example, from the input field, a database, etc.) and passed to the validation algorithm (for example,
+ * expecting data to be entered in a specific format), which produces validation results (for example, invalid input,
+ * valid input, input too long, misspelled, etc.), which are then used to give appropriate feedback to the user (for
+ * example, a popup dialog, an error icon, etc.).
  *
- * @param <I> Type of the input to be validated.
- * @param <R> Type of the validation results from the validation rules.
- * @see Trigger
- * @see Rule
- * @see FeedBack
+ * @param <T> Type of trigger initiating the validation.
+ * @param <P> Type of data provider providing the input data to be validated.
+ * @param <U> Type of validation rules to be used on the input data.
+ * @param <H> Type of result handlers to be used on validation output.
  */
-public interface Validator<I, R> {
+public interface Validator<T, P, U, H> {
 
 	/**
 	 * Adds the specified validation trigger.
 	 *
-	 * @param trigger Validation trigger.
+	 * @param trigger Validation trigger to be added.
 	 */
-	public void addTrigger(Trigger<I> trigger);
+	public void addTrigger(T trigger);
 
 	/**
 	 * Removes the specified validation trigger.
 	 *
 	 * @param trigger Validation trigger to be removed.
 	 */
-	public void removeTrigger(Trigger<I> trigger);
+	public void removeTrigger(T trigger);
+
+	/**
+	 * Adds the specified validation trigger.
+	 *
+	 * @param dataProvider Validation data provider to be added.
+	 */
+	public void addDataProvider(P dataProvider);
+
+	/**
+	 * Removes the specified validation trigger.
+	 *
+	 * @param dataProvider Validation data provider to be removed.
+	 */
+	public void removeDataProvider(P dataProvider);
 
 	/**
 	 * Adds the specified validation rule.
 	 *
-	 * @param rule Validation rule.
+	 * @param rule Validation rule to be added.
 	 */
-	public void addRule(Rule<I, R> rule);
+	public void addRule(final U rule);
 
 	/**
 	 * Removes the specified validation rule.
 	 *
-	 * @param rule Validation rule.
+	 * @param rule Validation rule to be removed.
 	 */
-	public void removeRule(Rule<I, R> rule);
+	public void removeRule(final U rule);
 
 	/**
-	 * Adds the specified feedback on validation result.
+	 * Adds the specified validation result handler.
 	 *
-	 * @param feedBack Validation result feedback.
+	 * @param resultHandler Validation result handler to be added.
 	 */
-	public void addFeedBack(FeedBack<R> feedBack);
+	public void addResultHandler(H resultHandler);
 
 	/**
-	 * Removes the specified feedback on validation result.
+	 * Removes the specified validation result handler.
 	 *
-	 * @param feedBack Validation result feedback.
+	 * @param resultHandler Validation result handler to be removed.
 	 */
-	public void removeFeedBack(FeedBack<R> feedBack);
+	public void removeResultHandler(H resultHandler);
 }

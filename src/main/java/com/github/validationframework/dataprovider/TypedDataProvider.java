@@ -23,21 +23,24 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.trigger;
+package com.github.validationframework.dataprovider;
 
 /**
- * Interface to be implemented by validation trigger listeners.<br>A trigger listener is meant to start the validation
- * process.
+ * Interface to be implemented by entities providing data of a know specific type for the validation process.<br>Typed
+ * data providers are typically used by autonomous typed data validators when the validation process is triggered.
  *
- * @see Trigger
- * @see TriggerEvent
+ * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
+ * type of the component itself.
+ * @see DataProvider
+ * @see com.github.validationframework.trigger.Trigger
+ * @see com.github.validationframework.validator.AutonomousTypedDataValidator
  */
-public interface TriggerListener {
+public interface TypedDataProvider<D> extends DataProvider {
 
 	/**
-	 * Starts the validation process.
+	 * Retrieves the data to be used for validation.
 	 *
-	 * @param event Trigger event.
+	 * @return Data to be used for validation.
 	 */
-	public void triggerValidation(TriggerEvent event);
+	public D getData();
 }

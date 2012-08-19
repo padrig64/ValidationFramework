@@ -23,21 +23,37 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.trigger;
+package com.github.validationframework.trigger.swing;
 
-/**
- * Interface to be implemented by validation trigger listeners.<br>A trigger listener is meant to start the validation
- * process.
- *
- * @see Trigger
- * @see TriggerEvent
- */
-public interface TriggerListener {
+import com.github.validationframework.trigger.AbstractTrigger;
+import com.github.validationframework.trigger.TriggerEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import javax.swing.JComponent;
 
-	/**
-	 * Starts the validation process.
-	 *
-	 * @param event Trigger event.
-	 */
-	public void triggerValidation(TriggerEvent event);
+public class BaseComponentFocusLostTrigger<C extends JComponent> extends AbstractTrigger {
+
+	private class SourceAdapter extends FocusAdapter {
+
+		@Override
+		public void focusLost(final FocusEvent e) {
+			fireTriggerEvent(new TriggerEvent(source));
+		}
+	}
+
+	private C source = null;
+
+	private final FocusListener sourceAdapter = new SourceAdapter();
+
+	public BaseComponentFocusLostTrigger(final C source) {
+		super();
+		this.source = source;
+		source.addFocusListener(sourceAdapter);
+	}
+
+	public void dispose() {
+		source.removeFocusListener(sourceAdapter);
+		source = null;
+	}
 }

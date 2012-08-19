@@ -26,25 +26,24 @@
 package com.github.validationframework.trigger;
 
 /**
- * Interface to be implemented by entities triggering the validation of input.
+ * Interface to be implemented by entities triggering the validation process.
  *
- * @param <I> Type of input to be validated.<br>It can be, for instance, the type of data handled by a component, or the
- * component itself.
  * @see TriggerListener
+ * @see TriggerEvent
  */
-public interface Trigger<I> {
+public interface Trigger {
 
 	/**
 	 * Adds the specified validation trigger listener.
 	 *
 	 * @param listener Listener to validation trigger to be added.
 	 */
-	public void addTriggerListener(TriggerListener<I> listener);
+	public void addTriggerListener(TriggerListener listener);
 
 	/**
 	 * Removes the specified validation trigger listener.
 	 *
 	 * @param listener Listener to validation trigger to be removed.
 	 */
-	public void removeTriggerListener(TriggerListener<I> listener);
+	public void removeTriggerListener(TriggerListener listener);
 }
