@@ -23,29 +23,27 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.trigger;
+package com.github.validationframework.resulthandler;
 
-/**
- * Interface to be implemented by entities triggering the validation process.
- *
- * @see TriggerListener
- * @see TriggerEvent
- * @see com.github.validationframework.validator.Validator
- * @see com.github.validationframework.validator.AbstractValidator
- */
-public interface Trigger {
+import java.util.ArrayList;
+import java.util.List;
 
-	/**
-	 * Adds the specified validation trigger listener.
-	 *
-	 * @param listener Listener to validation trigger to be added.
-	 */
-	public void addTriggerListener(TriggerListener listener);
+public class CompositeTypedResultHandler<R> implements TypedResultHandler<R> {
 
-	/**
-	 * Removes the specified validation trigger listener.
-	 *
-	 * @param listener Listener to validation trigger to be removed.
-	 */
-	public void removeTriggerListener(TriggerListener listener);
+	private final List<TypedResultHandler<R>> resultHandlers = new ArrayList<TypedResultHandler<R>>();
+
+	public void addResultHandler(final TypedResultHandler<R> resultHandler) {
+		resultHandlers.add(resultHandler);
+	}
+
+	public void removeResultHandler(final TypedResultHandler<R> resultHandler) {
+		resultHandlers.remove(resultHandler);
+	}
+
+	@Override
+	public void handleResult(final R result) {
+		for (final TypedResultHandler<R> resultHandler : resultHandlers) {
+			resultHandler.handleResult(result);
+		}
+	}
 }

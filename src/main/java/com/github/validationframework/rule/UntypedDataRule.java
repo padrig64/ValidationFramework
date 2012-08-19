@@ -25,7 +25,20 @@
 
 package com.github.validationframework.rule;
 
+/**
+ * Interface to be implemented by untyped data rules.<br>Untyped data rules are validation rules that retrieve the data
+ * to be validated by themselves, and return a result of a specific type.
+ *
+ * @param <R> Type of validation result.<br>It can be, for instance, an enumeration or just a boolean.
+ * @see Rule
+ * @see TypedDataRule
+ */
 public interface UntypedDataRule<R> extends Rule {
 
+	/**
+	 * Performs some validation.
+	 *
+	 * @return Validation result.
+	 */
 	public R validate();
 }

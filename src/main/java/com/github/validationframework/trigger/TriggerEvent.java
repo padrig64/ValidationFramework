@@ -27,6 +27,13 @@ package com.github.validationframework.trigger;
 
 import java.util.EventObject;
 
+/**
+ * Trigger event given to the trigger listener starting the validation process.
+ *
+ * @see EventObject
+ * @see Trigger
+ * @see TriggerListener
+ */
 public class TriggerEvent extends EventObject {
 
 	/**

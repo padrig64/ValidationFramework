@@ -25,7 +25,23 @@
 
 package com.github.validationframework.rule;
 
+/**
+ * Interface to be implemented by typed data rules.<br>Typed data rules are validation rules that are passed data of a
+ * known specific type, and return a result of a specific type.
+ *
+ * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
+ * type of the component itself.
+ * @param <R> Type of validation result.<br>It can be, for instance, an enumeration or just a boolean.
+ * @see Rule
+ * @see UntypedDataRule
+ */
 public interface TypedDataRule<D, R> extends Rule {
 
+	/**
+	 * Checks the specified data.
+	 *
+	 * @param data Data to be validated.
+	 * @return Validation result.
+	 */
 	public R validate(D data);
 }

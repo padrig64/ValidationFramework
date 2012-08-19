@@ -25,7 +25,13 @@
 
 package com.github.validationframework.resulthandler;
 
-// TODO
+/**
+ * Marker interface to be implemented by validation rule result handlers.<br>Result handlers are meant to process the
+ * results from the validation rules, for example, by giving feedback to the user.
+ *
+ * @see com.github.validationframework.validator.Validator
+ * @see com.github.validationframework.validator.AbstractValidator
+ */
 public interface ResultHandler {
 	// Nothing to be done
 }

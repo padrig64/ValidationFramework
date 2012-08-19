@@ -23,31 +23,27 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.rule;
+package com.github.validationframework.trigger.swing;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.swing.JTextField;
 
-public class CompoundTypedDataBooleanRule<D> implements TypedDataRule<D, Boolean> {
+/**
+ * Convenience class for triggers on focus gain by a {@link JTextField}.<br>When this trigger is not longer required, do
+ * not forget to call {@link #dispose()}.
+ *
+ * @see BaseComponentFocusGainedTrigger
+ * @see #dispose()
+ */
+public class JTextFieldFocusGainedTrigger extends BaseComponentFocusGainedTrigger<JTextField> {
 
-	private final List<TypedDataRule<D, Boolean>> rules = new ArrayList<TypedDataRule<D, Boolean>>();
-
-	public void addRule(final TypedDataRule<D, Boolean> rule) {
-		rules.add(rule);
-	}
-
-	public void removeRule(final TypedDataRule<D, Boolean> rule) {
-		rules.remove(rule);
-	}
-
-	@Override
-	public Boolean validate(final D data) {
-		Boolean result = true;
-
-		for (final TypedDataRule<D, Boolean> rule : rules) {
-			result &= rule.validate(data);
-		}
-
-		return result;
+	/**
+	 * Constructor specified the textfield whose focus is to be tracked.<br>A focus listener will be installed. So you may
+	 * need to call {@link #dispose()} when trigger is no longer needed.
+	 *
+	 * @param source Component whose focus is to be tracked.
+	 * @see #dispose()
+	 */
+	public JTextFieldFocusGainedTrigger(final JTextField source) {
+		super(source);
 	}
 }

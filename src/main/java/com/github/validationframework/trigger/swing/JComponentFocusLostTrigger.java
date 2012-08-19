@@ -23,27 +23,27 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.resulthandler;
+package com.github.validationframework.trigger.swing;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.swing.JComponent;
 
-public class CompoundUntypedResultHandler implements UntypedResultHandler {
+/**
+ * Convenience class for triggers on focus loss by a {@link JComponent}.<br>When this trigger is not longer required, do
+ * not forget to call {@link #dispose()}.
+ *
+ * @see BaseComponentFocusGainedTrigger
+ * @see #dispose()
+ */
+public class JComponentFocusLostTrigger extends BaseComponentFocusLostTrigger<JComponent> {
 
-	private final List<UntypedResultHandler> resultHandlers = new ArrayList<UntypedResultHandler>();
-
-	public void addResultHandler(final UntypedResultHandler resultHandler) {
-		resultHandlers.add(resultHandler);
-	}
-
-	public void removeResultHandler(final UntypedResultHandler resultHandler) {
-		resultHandlers.remove(resultHandler);
-	}
-
-	@Override
-	public void handleResult() {
-		for (final UntypedResultHandler resultHandler : resultHandlers) {
-			resultHandler.handleResult();
-		}
+	/**
+	 * Constructor specified the component whose focus is to be tracked.<br>A focus listener will be installed. So you may
+	 * need to call {@link #dispose()} when trigger is no longer needed.
+	 *
+	 * @param source Component whose focus is to be tracked.
+	 * @see #dispose()
+	 */
+	public JComponentFocusLostTrigger(final JComponent source) {
+		super(source);
 	}
 }

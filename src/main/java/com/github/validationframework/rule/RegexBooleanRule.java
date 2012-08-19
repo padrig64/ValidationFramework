@@ -30,29 +30,59 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Rule checking string data against one or several regular expressions and returning a boolean a result.
+ *
+ * @see TypedDataRule
+ * @see Pattern
+ */
 public class RegexBooleanRule implements TypedDataRule<String, Boolean> {
 
-	private final Map<String, Integer> patterns = new HashMap<String, Integer>();
+	/**
+	 * Mapping between regex expression string and compiled patterns.
+	 */
+	private final Map<String, Pattern> patterns = new HashMap<String, Pattern>();
 
+	/**
+	 * Adds the specified regular expression to be matched against the data to be validated.
+	 *
+	 * @param pattern Regular expression to be added.
+	 * @see #addPattern(String, int)
+	 */
 	public void addPattern(final String pattern) {
 		addPattern(pattern, 0);
 	}
 
+	/**
+	 * Adds the specified regular expression to be matched against the data to be validated, with the specified pattern
+	 * flags.
+	 *
+	 * @param pattern Regular expression to be added.
+	 * @param flags Regular expression pattern flags.<br>Refer to {@link Pattern#}
+	 * @see #addPattern(String)
+	 */
 	public void addPattern(final String pattern, final int flags) {
-		patterns.put(pattern, flags);
+		patterns.put(pattern, Pattern.compile(pattern, flags));
 	}
 
+	/**
+	 * Removes the specified regular expression.
+	 *
+	 * @param pattern Regular expression to be removed.
+	 */
 	public void removePattern(final String pattern) {
 		patterns.remove(pattern);
 	}
 
+	/**
+	 * @see TypedDataRule#validate(Object)
+	 */
 	@Override
-	public Boolean validate(final String input) {
+	public Boolean validate(final String data) {
 		Boolean result = false;
 
-		for (final Map.Entry<String, Integer> patternEntry : patterns.entrySet()) {
-			final Pattern pattern = Pattern.compile(patternEntry.getKey(), patternEntry.getValue());
-			final Matcher matcher = pattern.matcher(input);
+		for (final Pattern pattern : patterns.values()) {
+			final Matcher matcher = pattern.matcher(data);
 			if (matcher.find()) {
 				result = true;
 			}

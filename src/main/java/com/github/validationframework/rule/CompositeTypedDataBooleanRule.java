@@ -28,24 +28,49 @@ package com.github.validationframework.rule;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CompoundUntypedDataBooleanRule implements UntypedDataRule<Boolean> {
+/**
+ * Composite rule checking data of a known specific type using sub-rules, and returning a boolean as an aggregation of
+ * the boolean results from its sub-rules.
+ *
+ * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
+ * type of the component itself.
+ * @see TypedDataRule
+ * @see CompositeUntypedDataBooleanRule
+ */
+public class CompositeTypedDataBooleanRule<D> implements TypedDataRule<D, Boolean> {
 
-	private final List<UntypedDataRule<Boolean>> rules = new ArrayList<UntypedDataRule<Boolean>>();
+	/**
+	 * Sub-rules to be checked.
+	 */
+	private final List<TypedDataRule<D, Boolean>> rules = new ArrayList<TypedDataRule<D, Boolean>>();
 
-	public void addRule(final UntypedDataRule<Boolean> rule) {
+	/**
+	 * Adds the specified sub-rule to be checked.
+	 *
+	 * @param rule Sub-rule to be added.
+	 */
+	public void addRule(final TypedDataRule<D, Boolean> rule) {
 		rules.add(rule);
 	}
 
-	public void removeRule(final UntypedDataRule<Boolean> rule) {
+	/**
+	 * Removes the specified sub-rule to be checked.
+	 *
+	 * @param rule Sub-rule tobe removed
+	 */
+	public void removeRule(final TypedDataRule<D, Boolean> rule) {
 		rules.remove(rule);
 	}
 
+	/**
+	 * @see TypedDataRule#validate(Object)
+	 */
 	@Override
-	public Boolean validate() {
+	public Boolean validate(final D data) {
 		Boolean result = true;
 
-		for (final UntypedDataRule<Boolean> rule : rules) {
-			result &= rule.validate();
+		for (final TypedDataRule<D, Boolean> rule : rules) {
+			result &= rule.validate(data);
 		}
 
 		return result;

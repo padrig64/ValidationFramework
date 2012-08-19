@@ -23,27 +23,51 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.resulthandler;
+package com.github.validationframework.rule;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CompoundTypedResultHandler<R> implements TypedResultHandler<R> {
+/**
+ * Composite rule performing validation using sub-rules, and returning a boolean as an aggregation of the boolean
+ * results from its sub-rules.
+ *
+ * @see UntypedDataRule
+ * @see CompositeTypedDataBooleanRule
+ */
+public class CompositeUntypedDataBooleanRule implements UntypedDataRule<Boolean> {
 
-	private final List<TypedResultHandler<R>> resultHandlers = new ArrayList<TypedResultHandler<R>>();
+	private final List<UntypedDataRule<Boolean>> rules = new ArrayList<UntypedDataRule<Boolean>>();
 
-	public void addResultHandler(final TypedResultHandler<R> resultHandler) {
-		resultHandlers.add(resultHandler);
+	/**
+	 * Adds the specified sub-rule to be checked.
+	 *
+	 * @param rule Sub-rule to be added.
+	 */
+	public void addRule(final UntypedDataRule<Boolean> rule) {
+		rules.add(rule);
 	}
 
-	public void removeResultHandler(final TypedResultHandler<R> resultHandler) {
-		resultHandlers.remove(resultHandler);
+	/**
+	 * Removes the specified sub-rule to be checked.
+	 *
+	 * @param rule Sub-rule tobe removed
+	 */
+	public void removeRule(final UntypedDataRule<Boolean> rule) {
+		rules.remove(rule);
 	}
 
+	/**
+	 * @see UntypedDataRule#validate()
+	 */
 	@Override
-	public void handleResult(final R result) {
-		for (final TypedResultHandler<R> resultHandler : resultHandlers) {
-			resultHandler.handleResult(result);
+	public Boolean validate() {
+		Boolean result = true;
+
+		for (final UntypedDataRule<Boolean> rule : rules) {
+			result &= rule.validate();
 		}
+
+		return result;
 	}
 }

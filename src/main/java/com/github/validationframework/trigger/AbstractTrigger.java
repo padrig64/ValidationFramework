@@ -28,8 +28,20 @@ package com.github.validationframework.trigger;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AbstractTrigger implements Trigger {
+/**
+ * Abstract implementation of a typical trigger.<br>It merely implements the methods to add and remove trigger
+ * listeners, and provides a method to fire a trigger event to these listeners.<br>However, the call of this method is
+ * left to the sub-classes.
+ *
+ * @see Trigger
+ * @see TriggerListener
+ * @see TriggerEvent
+ */
+public abstract class AbstractTrigger implements Trigger {
 
+	/**
+	 * Trigger listeners.
+	 */
 	protected final List<TriggerListener> listeners = new ArrayList<TriggerListener>();
 
 	/**
@@ -48,6 +60,11 @@ public class AbstractTrigger implements Trigger {
 		listeners.remove(listener);
 	}
 
+	/**
+	 * Fires the specified trigger event.<br>Calling this method is left to the sub-classes.
+	 *
+	 * @param event Trigger event to be fired.
+	 */
 	protected void fireTriggerEvent(final TriggerEvent event) {
 		for (final TriggerListener listener : listeners) {
 			listener.triggerValidation(event);

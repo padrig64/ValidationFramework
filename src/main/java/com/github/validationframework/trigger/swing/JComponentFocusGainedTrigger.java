@@ -25,46 +25,16 @@
 
 package com.github.validationframework.trigger.swing;
 
-import com.github.validationframework.trigger.AbstractTrigger;
-import com.github.validationframework.trigger.TriggerEvent;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import javax.swing.JComponent;
 
 /**
- * Base class for triggers on focus loss.<br>When this trigger is not longer required, do not forget to call {@link
- * #dispose()}.
+ * Convenience class for triggers on focus gain by a {@link JComponent}.<br>When this trigger is not longer required, do
+ * not forget to call {@link #dispose()}.
  *
- * @param <C> Type of component whose focus is to be tracked.
- * @see AbstractTrigger
+ * @see BaseComponentFocusGainedTrigger
  * @see #dispose()
  */
-public class BaseComponentFocusLostTrigger<C extends JComponent> extends AbstractTrigger {
-
-	/**
-	 * Focus listener firing a trigger event to the trigger listeners.
-	 */
-	private class SourceAdapter extends FocusAdapter {
-
-		/**
-		 * @see FocusListener#focusLost(FocusEvent)
-		 */
-		@Override
-		public void focusLost(final FocusEvent e) {
-			fireTriggerEvent(new TriggerEvent(source));
-		}
-	}
-
-	/**
-	 * Component whose focus is to be tracked.
-	 */
-	private C source = null;
-
-	/**
-	 * Focus listener installed on the component.
-	 */
-	private final FocusListener sourceAdapter = new SourceAdapter();
+public class JComponentFocusGainedTrigger extends BaseComponentFocusGainedTrigger<JComponent> {
 
 	/**
 	 * Constructor specified the component whose focus is to be tracked.<br>A focus listener will be installed. So you may
@@ -73,17 +43,7 @@ public class BaseComponentFocusLostTrigger<C extends JComponent> extends Abstrac
 	 * @param source Component whose focus is to be tracked.
 	 * @see #dispose()
 	 */
-	public BaseComponentFocusLostTrigger(final C source) {
-		super();
-		this.source = source;
-		source.addFocusListener(sourceAdapter);
-	}
-
-	/**
-	 * Detaches from the component.
-	 */
-	public void dispose() {
-		source.removeFocusListener(sourceAdapter);
-		source = null;
+	public JComponentFocusGainedTrigger(final JComponent source) {
+		super(source);
 	}
 }

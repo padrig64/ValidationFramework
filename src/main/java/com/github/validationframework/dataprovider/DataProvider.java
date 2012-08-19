@@ -26,8 +26,11 @@
 package com.github.validationframework.dataprovider;
 
 /**
- * Marker interface to be implemented by data providers.<br>Data providers provide the data to be used for the
- * validation process.
+ * Marker interface to be implemented by data providers.<br>Data providers provide the data typically used by validation
+ * rules, upon validation trigger.
+ *
+ * @see com.github.validationframework.validator.Validator
+ * @see com.github.validationframework.validator.AbstractValidator
  */
 public interface DataProvider {
 	// Nothing to be done

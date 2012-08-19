@@ -33,9 +33,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Abstract implementation of a validator.<br>It provides methods to add and remove triggers, data providers, rules and
- * result handlers. However, note that the connection between triggers, data providers, rules and result handlers, as
- * well as all the validation logic is left to the sub-classes.
+ * Abstract implementation of a validator.<br>It merely implements the methods to add and remove triggers, data
+ * providers, rules and result handlers. However, note that the connection between triggers, data providers, rules and
+ * result handlers, as well as all the validation logic is left to the sub-classes.
  *
  * @param <T> Type of trigger initiating the validation.
  * @param <P> Type of data provider providing the input data to be validated.
