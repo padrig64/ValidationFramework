@@ -36,6 +36,25 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Simple implementation of a homogeneous validator.<br>When any of its triggers is initiated, the simple homogeneous
+ * validator will read all the data from all of its data providers, check them all against all of its rules, and handles
+ * all the results using all of its result handlers.
+ *
+
+ */
+
+/**
+ * Homogeneous validator allowing to map triggers to data providers, data providers to rules, and results to result
+ * handlers.<br>Whenever a trigger is initiated, all the data providers mapped to it will be used to retrieve data. The
+ * data read from the data providers will be check only with the rules that are individually mapped to the data
+ * providers. The result will be processed only with the result handlers that are individually mapped the result.
+ *
+ * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
+ * type of the component itself.
+ * @param <R> Type of validation result.<br>It can be, for instance, an enumeration or just a boolean.
+ * @see AbstractHomogeneousValidator
+ */
 public class MappableHomogeneousValidator<D, R> extends AbstractHomogeneousValidator<D, R> {
 
 	/**
@@ -62,7 +81,12 @@ public class MappableHomogeneousValidator<D, R> extends AbstractHomogeneousValid
 			new HashMap<R, List<TypedResultHandler<R>>>();
 
 	/**
-	 * Maps the specified trigger to the specified data provider.
+	 * Maps the specified trigger to the specified data provider.<br>This means that whenever the specified trigger is
+	 * initiated, the specified data provider will be use to read the data, which will be passed to the rules that are
+	 * mapped to the this data provider.<br>Specifying null for the trigger will unmap the specified data provider from all
+	 * triggers. This means that the specified data provider will no longer be used upon any trigger.<br>Specifying null
+	 * for the data provider will unmap the specified trigger from all data providers. This means that the trigger will no
+	 * longer have effect on the validation.
 	 *
 	 * @param trigger Trigger to be mapped to the data provider.
 	 * @param dataProvider Data provider to be mapped to the trigger.
@@ -109,7 +133,12 @@ public class MappableHomogeneousValidator<D, R> extends AbstractHomogeneousValid
 	}
 
 	/**
-	 * Maps the specified data provider to the specified rule.
+	 * Maps the specified data provider to the specified rule.<br>This means that whenever the specified data provider is
+	 * used, the specified rule will be used to validate the data, and the validation result will be passed to the result
+	 * handlers that are mapped to the this result.<br>Specifying null for the data provider will unmap the specified rule
+	 * from all data providers. This means that the rule will no longer be part of the validation.<br>Specifying null for
+	 * the rule will unmap the specified data provider from all rules. This means that the data from this data provider
+	 * will no longer be validated.
 	 *
 	 * @param dataProvider Data provider to be mapped to the rule.
 	 * @param rule Rule to be mapped to the data provider.
@@ -156,7 +185,11 @@ public class MappableHomogeneousValidator<D, R> extends AbstractHomogeneousValid
 	}
 
 	/**
-	 * Maps the specified result to the specified result handler.
+	 * Maps the specified result to the specified result handler.<br>This means that whenever the specified result is
+	 * issued, the specified result handler will be used to process it.<br>Specifying null for the result will unmap the
+	 * specified result handlers from all results. This means that the result handler will no longer be used to process any
+	 * result.<br>Specifying null for the result handler will unmap the specified rule from all result handlers. This means
+	 * that the result will no longer be processed.
 	 *
 	 * @param result Result to be mapped to the result handler.
 	 * @param resultHandler Result handler to be mapped to the result.

@@ -1,5 +1,6 @@
 . Finalize mappable validator
 . Fix issue with icon tip
 . Fix issue with formatted textfield
+. Condition logic result handler
 
 . All features described in the README file
