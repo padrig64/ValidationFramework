@@ -61,6 +61,12 @@ public class MappableHomogeneousValidator<D, R> extends AbstractHomogeneousValid
 	private final Map<R, List<TypedResultHandler<R>>> resultsToResultHandlers =
 			new HashMap<R, List<TypedResultHandler<R>>>();
 
+	/**
+	 * Maps the specified trigger to the specified data provider.
+	 *
+	 * @param trigger Trigger to be mapped to the data provider.
+	 * @param dataProvider Data provider to be mapped to the trigger.
+	 */
 	public void map(final Trigger trigger, final TypedDataProvider<D> dataProvider) {
 		if ((trigger == null) && (dataProvider == null)) {
 			LOGGER.warn("Call to method will have no effect since both parameters are null");
@@ -78,12 +84,22 @@ public class MappableHomogeneousValidator<D, R> extends AbstractHomogeneousValid
 		}
 	}
 
+	/**
+	 * Disconnects the specified trigger from all data providers.
+	 *
+	 * @param trigger Trigger to be unmapped.
+	 */
 	private void unmapTriggerFromAllDataProviders(final Trigger trigger) {
 		if (trigger != null) {
 			triggersToDataProviders.remove(trigger);
 		}
 	}
 
+	/**
+	 * Disconnects the specified data providers from all triggers.
+	 *
+	 * @param dataProvider Data provider to be unmapped.
+	 */
 	private void unmapDataProviderFromAllTriggers(final TypedDataProvider<D> dataProvider) {
 		if (dataProvider != null) {
 			for (final List<TypedDataProvider<D>> mappedDataProviders : triggersToDataProviders.values()) {
@@ -92,6 +108,12 @@ public class MappableHomogeneousValidator<D, R> extends AbstractHomogeneousValid
 		}
 	}
 
+	/**
+	 * Maps the specified data provider to the specified rule.
+	 *
+	 * @param dataProvider Data provider to be mapped to the rule.
+	 * @param rule Rule to be mapped to the data provider.
+	 */
 	public void map(final TypedDataProvider<D> dataProvider, final TypedDataRule<D, R> rule) {
 		if ((dataProvider == null) && (rule == null)) {
 			LOGGER.warn("Call to method will have no effect since both parameters are null");
@@ -109,12 +131,22 @@ public class MappableHomogeneousValidator<D, R> extends AbstractHomogeneousValid
 		}
 	}
 
+	/**
+	 * Disconnects the specified data provider from all rules.
+	 *
+	 * @param dataProvider Data provider to be unmapped.
+	 */
 	private void unmapDataProviderFromAllRules(final TypedDataProvider<D> dataProvider) {
 		if (dataProvider != null) {
 			dataProvidersToRules.remove(dataProvider);
 		}
 	}
 
+	/**
+	 * Disconnects the specified rule from all data providers.
+	 *
+	 * @param rule Rule to be unmapped.
+	 */
 	private void unmapRuleFromAllDataProviders(final TypedDataRule<D, R> rule) {
 		if (rule != null) {
 			for (final List<TypedDataRule<D, R>> mappedRules : dataProvidersToRules.values()) {
@@ -123,6 +155,12 @@ public class MappableHomogeneousValidator<D, R> extends AbstractHomogeneousValid
 		}
 	}
 
+	/**
+	 * Maps the specified result to the specified result handler.
+	 *
+	 * @param result Result to be mapped to the result handler.
+	 * @param resultHandler Result handler to be mapped to the result.
+	 */
 	public void map(final R result, final TypedResultHandler<R> resultHandler) {
 		if ((result == null) && (resultHandler == null)) {
 			LOGGER.warn("Call to method will have no effect since both parameters are null");
@@ -140,12 +178,22 @@ public class MappableHomogeneousValidator<D, R> extends AbstractHomogeneousValid
 		}
 	}
 
+	/**
+	 * Disconnects the specified result from all result handlers.
+	 *
+	 * @param result Result to be unmapped.
+	 */
 	private void unmapResultFromAllResultHandlers(final R result) {
 		if (result != null) {
 			resultsToResultHandlers.remove(result);
 		}
 	}
 
+	/**
+	 * Disconnects the specified result handler from all results.
+	 *
+	 * @param resultHandler Result handler to be unmapped.
+	 */
 	private void unmapResultHandlerFromAllResults(final TypedResultHandler<R> resultHandler) {
 		if (resultHandler != null) {
 			for (final List<TypedResultHandler<R>> mappedResultHandlers : resultsToResultHandlers.values()) {
@@ -155,10 +203,12 @@ public class MappableHomogeneousValidator<D, R> extends AbstractHomogeneousValid
 	}
 
 	/**
+	 * Processes the specified trigger by finding all the mapped data providers, and so on.
+	 *
 	 * @see AbstractHomogeneousValidator#processTrigger(Trigger)
 	 */
 	@Override
-	public void processTrigger(final Trigger trigger) {
+	protected void processTrigger(final Trigger trigger) {
 		// Get data providers matching the trigger
 		final List<TypedDataProvider<D>> mappedDataProviders = triggersToDataProviders.get(trigger);
 		if ((mappedDataProviders == null) || mappedDataProviders.isEmpty()) {
@@ -171,6 +221,11 @@ public class MappableHomogeneousValidator<D, R> extends AbstractHomogeneousValid
 		}
 	}
 
+	/**
+	 * Process the specified data provider by finding all the mapped rules, and so on.
+	 *
+	 * @param dataProvider Data provider to be processed.
+	 */
 	private void processDataProvider(final TypedDataProvider<D> dataProvider) {
 		// Get rules matching the data provider
 		final List<TypedDataRule<D, R>> mappedRules = dataProvidersToRules.get(dataProvider);
@@ -189,6 +244,11 @@ public class MappableHomogeneousValidator<D, R> extends AbstractHomogeneousValid
 		}
 	}
 
+	/**
+	 * Processes the specified result by finding all the mapped results handlers.
+	 *
+	 * @param result Result to be processed.
+	 */
 	private void processResult(final R result) {
 		// Get result handlers matching the result
 		final List<TypedResultHandler<R>> mappedResultHandlers = resultsToResultHandlers.get(result);

@@ -53,7 +53,7 @@ public class SimpleHomogeneousValidator<D, R> extends AbstractHomogeneousValidat
 	 * @see AbstractHomogeneousValidator#processTrigger(Trigger)
 	 */
 	@Override
-	public void processTrigger(final Trigger trigger) {
+	protected void processTrigger(final Trigger trigger) {
 		if (dataProviders.isEmpty()) {
 			LOGGER.warn("No data providers in validator: " + this);
 		} else {
