@@ -39,11 +39,13 @@ import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.NumberFormat;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -53,6 +55,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 import javax.swing.plaf.ColorUIResource;
+import javax.swing.text.NumberFormatter;
 import net.miginfocom.swing.MigLayout;
 
 public class DemoFrame extends JFrame {
@@ -292,8 +295,15 @@ public class DemoFrame extends JFrame {
 
 		// Fourth textfield
 		contentPane.add(new JLabel("Icon tip:"));
-		textField = new JTextField();
+		final NumberFormat courseFormat = NumberFormat.getIntegerInstance();
+		courseFormat.setMinimumIntegerDigits(3);
+		courseFormat.setMaximumIntegerDigits(3);
+		final NumberFormatter courseFormatter = new NumberFormatter(courseFormat);
+		courseFormatter.setMinimum(0);
+		courseFormatter.setMaximum(359);
+		textField = new JFormattedTextField(courseFormatter);
 		contentPane.add(textField, "growx");
+
 		final SimpleHomogeneousValidator<String, TextFieldResult> validator4 =
 				new SimpleHomogeneousValidator<String, TextFieldResult>();
 		validator4.addTrigger(new JTextFieldModelChangedTrigger(textField));

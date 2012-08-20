@@ -40,12 +40,33 @@ import java.util.List;
 public class CompositeTypedDataBooleanRule<D> implements TypedDataRule<D, Boolean> {
 
 	/**
-	 * Sub-rules to be checked.
+	 * Typed data sub-rules to be checked.
 	 */
 	private final List<TypedDataRule<D, Boolean>> rules = new ArrayList<TypedDataRule<D, Boolean>>();
 
 	/**
-	 * Adds the specified sub-rule to be checked.
+	 * Default constructor.
+	 */
+	public CompositeTypedDataBooleanRule() {
+		// Nothing to be done
+	}
+
+	/**
+	 * Constructor specifying the first two rules to be added to the composite rule.<br>It is provided for convenience.
+	 *
+	 * @param firstRule First rule to be added.
+	 * @param secondRule Second rule to be added.
+	 * @see #addRule(TypedDataRule)
+	 */
+	public CompositeTypedDataBooleanRule(final TypedDataRule<D, Boolean> firstRule,
+										 final TypedDataRule<D, Boolean> secondRule) {
+		addRule(firstRule);
+		addRule(secondRule);
+	}
+
+	/**
+	 * Adds the specified sub-rule to be checked.<br>Note that the sub-rules will be checked in the same order as they are
+	 * added.
 	 *
 	 * @param rule Sub-rule to be added.
 	 */

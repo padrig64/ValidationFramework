@@ -37,10 +37,34 @@ import java.util.List;
  */
 public class CompositeUntypedDataBooleanRule implements UntypedDataRule<Boolean> {
 
+	/**
+	 * Untyped data sub-rules to be checked.
+	 */
 	private final List<UntypedDataRule<Boolean>> rules = new ArrayList<UntypedDataRule<Boolean>>();
 
 	/**
-	 * Adds the specified sub-rule to be checked.
+	 * Default constructor.
+	 */
+	public CompositeUntypedDataBooleanRule() {
+		// Nothing to be done
+	}
+
+	/**
+	 * Constructor specifying the first two rules to be added to the composite rule.<br>It is provided for convenience.
+	 *
+	 * @param firstRule First rule to be added.
+	 * @param secondRule Second rule to be added.
+	 * @see #addRule(UntypedDataRule)
+	 */
+	public CompositeUntypedDataBooleanRule(final UntypedDataRule<Boolean> firstRule,
+										   final UntypedDataRule<Boolean> secondRule) {
+		addRule(firstRule);
+		addRule(secondRule);
+	}
+
+	/**
+	 * Adds the specified sub-rule to be checked.<br>Note that the sub-rules will be checked in the same order as they are
+	 * added.
 	 *
 	 * @param rule Sub-rule to be added.
 	 */

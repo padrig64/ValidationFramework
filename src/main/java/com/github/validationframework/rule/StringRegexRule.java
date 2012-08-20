@@ -36,12 +36,29 @@ import java.util.regex.Pattern;
  * @see TypedDataRule
  * @see Pattern
  */
-public class RegexBooleanRule implements TypedDataRule<String, Boolean> {
+public class StringRegexRule implements StringBooleanRule {
 
 	/**
 	 * Mapping between regex expression string and compiled patterns.
 	 */
 	private final Map<String, Pattern> patterns = new HashMap<String, Pattern>();
+
+	/**
+	 * Default constructor.
+	 */
+	public StringRegexRule() {
+		// Nothing to be done
+	}
+
+	/**
+	 * Constructor specified a pattern to be added.<br>This constructor is provided for convenience.
+	 *
+	 * @param pattern Pattern to be added.
+	 * @see #addPattern(String)
+	 */
+	public StringRegexRule(final String pattern) {
+		addPattern(pattern);
+	}
 
 	/**
 	 * Adds the specified regular expression to be matched against the data to be validated.
@@ -75,7 +92,7 @@ public class RegexBooleanRule implements TypedDataRule<String, Boolean> {
 	}
 
 	/**
-	 * @see TypedDataRule#validate(Object)
+	 * @see StringBooleanRule#validate(Object)
 	 */
 	@Override
 	public Boolean validate(final String data) {

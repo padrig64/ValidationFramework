@@ -172,6 +172,11 @@ public class ToolTipDialog extends JDialog {
 		}
 	}
 
+	/**
+	 * Generated serial UID.
+	 */
+	private static final long serialVersionUID = -8703799877460319097L;
+
 	private JComponent owner = null;
 
 	private JToolTip toolTip = null;
