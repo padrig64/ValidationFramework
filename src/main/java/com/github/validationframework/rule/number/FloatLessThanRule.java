@@ -25,40 +25,13 @@
 
 package com.github.validationframework.rule.number;
 
-public class FloatLessThanRule implements NumberBooleanRule<Float> {
+public class FloatLessThanRule extends BaseNumberLessThanRule<Float> {
 
-	private float maxValue = Float.POSITIVE_INFINITY;
-
-	/**
-	 * Default constructor.
-	 */
 	public FloatLessThanRule() {
-		// Nothing to be done
+		super();
 	}
 
-	public FloatLessThanRule(final float maxValue) {
-		setMaxValue(maxValue);
-	}
-
-	public double getMaxValue() {
-		return maxValue;
-	}
-
-	public void setMaxValue(final float maxValue) {
-		this.maxValue = maxValue;
-	}
-
-	/**
-	 * @see NumberBooleanRule#validate(Object)
-	 */
-	@Override
-	public Boolean validate(final Float data) {
-		boolean result = false;
-
-		if (data != null) {
-			result = (data < maxValue);
-		}
-
-		return result;
+	public FloatLessThanRule(final Float minimumValue) {
+		super(minimumValue);
 	}
 }

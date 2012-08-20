@@ -25,42 +25,13 @@
 
 package com.github.validationframework.rule.number;
 
-public class NumberGreaterThanOrEqualToRule implements NumberBooleanRule<Number> {
+public class NumberGreaterThanOrEqualToRule extends BaseNumberGreaterThanOrEqualToRule<Number> {
 
-	private Number minValue = Double.NEGATIVE_INFINITY;
-
-	/**
-	 * Default constructor.
-	 */
 	public NumberGreaterThanOrEqualToRule() {
-		// Nothing to be done
+		super();
 	}
 
-	public NumberGreaterThanOrEqualToRule(final double minValue) {
-		setMinValue(minValue);
-	}
-
-	public Number getMinValue() {
-		return minValue;
-	}
-
-	public void setMinValue(final Number minValue) {
-		this.minValue = minValue;
-	}
-
-	/**
-	 * @see NumberBooleanRule#validate(Object)
-	 */
-	@Override
-	public Boolean validate(final Number data) {
-		boolean result = false;
-
-		if (data != null) {
-			final double dataDoubleValue = data.doubleValue();
-			final double minDoubleValue = minValue.doubleValue();
-			result = (dataDoubleValue >= minDoubleValue);
-		}
-
-		return result;
+	public NumberGreaterThanOrEqualToRule(final Number minimumValue) {
+		super(minimumValue);
 	}
 }

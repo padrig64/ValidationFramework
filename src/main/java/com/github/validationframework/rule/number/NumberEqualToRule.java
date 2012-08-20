@@ -25,43 +25,13 @@
 
 package com.github.validationframework.rule.number;
 
-public class NumberEqualToRule implements NumberBooleanRule<Number> {
+public class NumberEqualToRule extends BaseNumberEqualToRule<Number> {
 
-	private Number exactValue = 0.0;
-
-	/**
-	 * Default constructor.
-	 */
 	public NumberEqualToRule() {
-		// Nothing to be done
+		super();
 	}
 
 	public NumberEqualToRule(final Number exactValue) {
-		setExactValue(exactValue);
-	}
-
-	public Number getExactValue() {
-		return exactValue;
-	}
-
-	public void setExactValue(final Number exactValue) {
-		this.exactValue = exactValue;
-	}
-
-	/**
-	 * @see NumberBooleanRule#validate(Object)
-	 */
-	@Override
-	public Boolean validate(final Number data) {
-		boolean result = false;
-
-		if (data != null) {
-			final double dataDoubleValue = data.doubleValue();
-			final double exactDoubleValue = exactValue.doubleValue();
-			result = (Double.isNaN(dataDoubleValue) && Double.isNaN(exactDoubleValue)) ||
-					(dataDoubleValue == exactDoubleValue);
-		}
-
-		return result;
+		super(exactValue);
 	}
 }

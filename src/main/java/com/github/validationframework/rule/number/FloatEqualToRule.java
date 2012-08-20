@@ -25,40 +25,13 @@
 
 package com.github.validationframework.rule.number;
 
-public class FloatEqualToRule implements NumberBooleanRule<Float> {
+public class FloatEqualToRule extends BaseNumberEqualToRule<Float> {
 
-	private float exactValue = 0.0f;
-
-	/**
-	 * Default constructor.
-	 */
 	public FloatEqualToRule() {
-		// Nothing to be done
+		super();
 	}
 
-	public FloatEqualToRule(final float exactValue) {
-		setExactValue(exactValue);
-	}
-
-	public float getExactValue() {
-		return exactValue;
-	}
-
-	public void setExactValue(final float exactValue) {
-		this.exactValue = exactValue;
-	}
-
-	/**
-	 * @see NumberBooleanRule#validate(Object)
-	 */
-	@Override
-	public Boolean validate(final Float data) {
-		boolean result = false;
-
-		if (data != null) {
-			result = (data.isNaN() && Float.isNaN(exactValue)) || data.equals(exactValue);
-		}
-
-		return result;
+	public FloatEqualToRule(final Float exactValue) {
+		super(exactValue);
 	}
 }

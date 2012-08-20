@@ -25,40 +25,13 @@
 
 package com.github.validationframework.rule.number;
 
-public class FloatGreaterThanRule implements NumberBooleanRule<Float> {
+public class FloatGreaterThanRule extends BaseNumberGreaterThanRule<Float> {
 
-	private float minValue = Float.NEGATIVE_INFINITY;
-
-	/**
-	 * Default constructor.
-	 */
 	public FloatGreaterThanRule() {
-		// Nothing to be done
+		super();
 	}
 
-	public FloatGreaterThanRule(final float minValue) {
-		setMinValue(minValue);
-	}
-
-	public double getMinValue() {
-		return minValue;
-	}
-
-	public void setMinValue(final float minValue) {
-		this.minValue = minValue;
-	}
-
-	/**
-	 * @see NumberBooleanRule#validate(Object)
-	 */
-	@Override
-	public Boolean validate(final Float data) {
-		boolean result = false;
-
-		if (data != null) {
-			result = (data > minValue);
-		}
-
-		return result;
+	public FloatGreaterThanRule(final Float minimumValue) {
+		super(minimumValue);
 	}
 }

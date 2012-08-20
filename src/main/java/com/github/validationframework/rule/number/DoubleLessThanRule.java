@@ -25,40 +25,13 @@
 
 package com.github.validationframework.rule.number;
 
-public class DoubleLessThanRule implements NumberBooleanRule<Double> {
+public class DoubleLessThanRule extends BaseNumberLessThanRule<Double> {
 
-	private double maxValue = Double.POSITIVE_INFINITY;
-
-	/**
-	 * Default constructor.
-	 */
 	public DoubleLessThanRule() {
-		// Nothing to be done
+		super();
 	}
 
-	public DoubleLessThanRule(final double maxValue) {
-		setMaxValue(maxValue);
-	}
-
-	public double getMaxValue() {
-		return maxValue;
-	}
-
-	public void setMaxValue(final double maxValue) {
-		this.maxValue = maxValue;
-	}
-
-	/**
-	 * @see NumberBooleanRule#validate(Object)
-	 */
-	@Override
-	public Boolean validate(final Double data) {
-		boolean result = false;
-
-		if (data != null) {
-			result = (data < maxValue);
-		}
-
-		return result;
+	public DoubleLessThanRule(final Double minimumValue) {
+		super(minimumValue);
 	}
 }

@@ -25,13 +25,13 @@
 
 package com.github.validationframework.rule.number;
 
-public class NumberLessThanRule extends BaseNumberLessThanRule<Number> {
+public class ShortGreaterThanRule extends BaseNumberGreaterThanRule<Short> {
 
-	public NumberLessThanRule() {
+	public ShortGreaterThanRule() {
 		super();
 	}
 
-	public NumberLessThanRule(final Number minimumValue) {
+	public ShortGreaterThanRule(final Short minimumValue) {
 		super(minimumValue);
 	}
 }
