@@ -38,7 +38,8 @@ import java.util.Map;
  * Abstract implementation of a homogeneous validator.<br>A homogeneous validator is a validator whose data providers
  * and rules are bound to a known specific type of data, and whose result handlers are bound to a known specific type of
  * result. It provides the connection to the registered triggers, but the processing of the initiated triggers is left
- * to the sub-classes.
+ * to the sub-classes.<br>Homogeneous validators are typically used to validate one particular component or a group of
+ * component holding data of a same type.
  *
  * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
  * type of the component itself.

@@ -43,42 +43,120 @@ public class MappableHomogeneousValidator<D, R> extends AbstractHomogeneousValid
 	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(MappableHomogeneousValidator.class);
 
+	/**
+	 * Mapping between triggers and data providers.
+	 */
 	private final Map<Trigger, List<TypedDataProvider<D>>> triggersToDataProviders =
 			new HashMap<Trigger, List<TypedDataProvider<D>>>();
 
+	/**
+	 * Mapping between data providers and rules.
+	 */
 	private final Map<TypedDataProvider<?>, List<TypedDataRule<D, R>>> dataProvidersToRules =
 			new HashMap<TypedDataProvider<?>, List<TypedDataRule<D, R>>>();
 
+	/**
+	 * Mapping between results and result handlers.
+	 */
 	private final Map<R, List<TypedResultHandler<R>>> resultsToResultHandlers =
 			new HashMap<R, List<TypedResultHandler<R>>>();
 
 	public void map(final Trigger trigger, final TypedDataProvider<D> dataProvider) {
-		List<TypedDataProvider<D>> mappedDataProviders = triggersToDataProviders.get(trigger);
-		if (mappedDataProviders == null) {
-			mappedDataProviders = new ArrayList<TypedDataProvider<D>>();
-			triggersToDataProviders.put(trigger, mappedDataProviders);
+		if ((trigger == null) && (dataProvider == null)) {
+			LOGGER.warn("Call to method will have no effect since both parameters are null");
+		} else if (trigger == null) {
+			unmapDataProviderFromAllTriggers(dataProvider);
+		} else if (dataProvider == null) {
+			unmapTriggerFromAllDataProviders(trigger);
+		} else {
+			List<TypedDataProvider<D>> mappedDataProviders = triggersToDataProviders.get(trigger);
+			if (mappedDataProviders == null) {
+				mappedDataProviders = new ArrayList<TypedDataProvider<D>>();
+				triggersToDataProviders.put(trigger, mappedDataProviders);
+			}
+			mappedDataProviders.add(dataProvider);
 		}
-		mappedDataProviders.add(dataProvider);
+	}
+
+	private void unmapTriggerFromAllDataProviders(final Trigger trigger) {
+		if (trigger != null) {
+			triggersToDataProviders.remove(trigger);
+		}
+	}
+
+	private void unmapDataProviderFromAllTriggers(final TypedDataProvider<D> dataProvider) {
+		if (dataProvider != null) {
+			for (final List<TypedDataProvider<D>> mappedDataProviders : triggersToDataProviders.values()) {
+				mappedDataProviders.remove(dataProvider);
+			}
+		}
 	}
 
 	public void map(final TypedDataProvider<D> dataProvider, final TypedDataRule<D, R> rule) {
-		List<TypedDataRule<D, R>> mappedRules = dataProvidersToRules.get(dataProvider);
-		if (mappedRules == null) {
-			mappedRules = new ArrayList<TypedDataRule<D, R>>();
-			dataProvidersToRules.put(dataProvider, mappedRules);
+		if ((dataProvider == null) && (rule == null)) {
+			LOGGER.warn("Call to method will have no effect since both parameters are null");
+		} else if (dataProvider == null) {
+			unmapRuleFromAllDataProviders(rule);
+		} else if (rule == null) {
+			unmapDataProviderFromAllRules(dataProvider);
+		} else {
+			List<TypedDataRule<D, R>> mappedRules = dataProvidersToRules.get(dataProvider);
+			if (mappedRules == null) {
+				mappedRules = new ArrayList<TypedDataRule<D, R>>();
+				dataProvidersToRules.put(dataProvider, mappedRules);
+			}
+			mappedRules.add(rule);
 		}
-		mappedRules.add(rule);
+	}
+
+	private void unmapDataProviderFromAllRules(final TypedDataProvider<D> dataProvider) {
+		if (dataProvider != null) {
+			dataProvidersToRules.remove(dataProvider);
+		}
+	}
+
+	private void unmapRuleFromAllDataProviders(final TypedDataRule<D, R> rule) {
+		if (rule != null) {
+			for (final List<TypedDataRule<D, R>> mappedRules : dataProvidersToRules.values()) {
+				mappedRules.remove(rule);
+			}
+		}
 	}
 
 	public void map(final R result, final TypedResultHandler<R> resultHandler) {
-		List<TypedResultHandler<R>> mappedResultHandlers = resultsToResultHandlers.get(result);
-		if (mappedResultHandlers == null) {
-			mappedResultHandlers = new ArrayList<TypedResultHandler<R>>();
-			resultsToResultHandlers.put(result, mappedResultHandlers);
+		if ((result == null) && (resultHandler == null)) {
+			LOGGER.warn("Call to method will have no effect since both parameters are null");
+		} else if (result == null) {
+			unmapResultHandlerFromAllResults(resultHandler);
+		} else if (resultHandler == null) {
+			unmapResultFromAllResultHandlers(result);
+		} else {
+			List<TypedResultHandler<R>> mappedResultHandlers = resultsToResultHandlers.get(result);
+			if (mappedResultHandlers == null) {
+				mappedResultHandlers = new ArrayList<TypedResultHandler<R>>();
+				resultsToResultHandlers.put(result, mappedResultHandlers);
+			}
+			mappedResultHandlers.add(resultHandler);
 		}
-		mappedResultHandlers.add(resultHandler);
 	}
 
+	private void unmapResultFromAllResultHandlers(final R result) {
+		if (result != null) {
+			resultsToResultHandlers.remove(result);
+		}
+	}
+
+	private void unmapResultHandlerFromAllResults(final TypedResultHandler<R> resultHandler) {
+		if (resultHandler != null) {
+			for (final List<TypedResultHandler<R>> mappedResultHandlers : resultsToResultHandlers.values()) {
+				mappedResultHandlers.remove(resultHandler);
+			}
+		}
+	}
+
+	/**
+	 * @see AbstractHomogeneousValidator#processTrigger(Trigger)
+	 */
 	@Override
 	public void processTrigger(final Trigger trigger) {
 		// Get data providers matching the trigger
