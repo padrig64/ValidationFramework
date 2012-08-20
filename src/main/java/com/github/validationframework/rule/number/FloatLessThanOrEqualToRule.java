@@ -23,20 +23,20 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.rule;
+package com.github.validationframework.rule.number;
 
-public class FloatLessThanRule implements NumberBooleanRule<Float> {
+public class FloatLessThanOrEqualToRule implements NumberBooleanRule<Float> {
 
 	private float maxValue = Float.POSITIVE_INFINITY;
 
 	/**
 	 * Default constructor.
 	 */
-	public FloatLessThanRule() {
+	public FloatLessThanOrEqualToRule() {
 		// Nothing to be done
 	}
 
-	public FloatLessThanRule(final float maxValue) {
+	public FloatLessThanOrEqualToRule(final float maxValue) {
 		setMaxValue(maxValue);
 	}
 
@@ -56,7 +56,7 @@ public class FloatLessThanRule implements NumberBooleanRule<Float> {
 		boolean result = false;
 
 		if (data != null) {
-			result = (data < maxValue);
+			result = (data <= maxValue);
 		}
 
 		return result;

@@ -23,28 +23,28 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.rule;
+package com.github.validationframework.rule.number;
 
-public class DoubleGreaterThanOrEqualToRule implements NumberBooleanRule<Double> {
+public class FloatGreaterThanOrEqualToRule implements NumberBooleanRule<Float> {
 
-	private double minValue = Double.NEGATIVE_INFINITY;
+	private float minValue = Float.NEGATIVE_INFINITY;
 
 	/**
 	 * Default constructor.
 	 */
-	public DoubleGreaterThanOrEqualToRule() {
+	public FloatGreaterThanOrEqualToRule() {
 		// Nothing to be done
 	}
 
-	public DoubleGreaterThanOrEqualToRule(final double minValue) {
+	public FloatGreaterThanOrEqualToRule(final float minValue) {
 		setMinValue(minValue);
 	}
 
-	public double getMinValue() {
+	public float getMinValue() {
 		return minValue;
 	}
 
-	public void setMinValue(final double minValue) {
+	public void setMinValue(final float minValue) {
 		this.minValue = minValue;
 	}
 
@@ -52,7 +52,7 @@ public class DoubleGreaterThanOrEqualToRule implements NumberBooleanRule<Double>
 	 * @see NumberBooleanRule#validate(Object)
 	 */
 	@Override
-	public Boolean validate(final Double data) {
+	public Boolean validate(final Float data) {
 		boolean result = false;
 
 		if (data != null) {

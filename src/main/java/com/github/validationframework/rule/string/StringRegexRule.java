@@ -23,7 +23,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.rule;
+package com.github.validationframework.rule.string;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,7 +33,7 @@ import java.util.regex.Pattern;
 /**
  * Rule checking string data against one or several regular expressions and returning a boolean a result.
  *
- * @see TypedDataRule
+ * @see com.github.validationframework.rule.TypedDataRule
  * @see Pattern
  */
 public class StringRegexRule implements StringBooleanRule {

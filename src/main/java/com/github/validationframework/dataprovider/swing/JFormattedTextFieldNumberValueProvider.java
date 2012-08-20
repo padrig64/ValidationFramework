@@ -23,8 +23,31 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.rule;
+package com.github.validationframework.dataprovider.swing;
 
-public interface NumberBooleanRule<T extends Number> extends TypedDataRule<T, Boolean> {
-	// Nothing to be done
+import com.github.validationframework.dataprovider.TypedDataProvider;
+import javax.swing.JFormattedTextField;
+
+public class JFormattedTextFieldNumberValueProvider implements TypedDataProvider<Number> {
+
+	private final JFormattedTextField formattedTextField;
+
+	public JFormattedTextFieldNumberValueProvider(final JFormattedTextField formattedTextField) {
+		this.formattedTextField = formattedTextField;
+	}
+
+	/**
+	 * @see TypedDataProvider#getData()
+	 */
+	@Override
+	public Number getData() {
+		Number numberValue = null;
+
+		final Object value = formattedTextField.getValue();
+		if (value instanceof Number) {
+			numberValue = ((Number) value);
+		}
+
+		return numberValue;
+	}
 }

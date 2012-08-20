@@ -23,42 +23,41 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.rule;
+package com.github.validationframework.rule.string;
 
-public class DoubleEqualToRule implements NumberBooleanRule<Double> {
+public class StringLengthGreaterThanOrEqualToRule implements StringBooleanRule {
 
-	private double exactValue = 0.0;
+	private int minLength = Integer.MIN_VALUE;
 
 	/**
 	 * Default constructor.
 	 */
-	public DoubleEqualToRule() {
+	public StringLengthGreaterThanOrEqualToRule() {
 		// Nothing to be done
 	}
 
-	public DoubleEqualToRule(final double exactValue) {
-		setExactValue(exactValue);
+	public StringLengthGreaterThanOrEqualToRule(final int minLength) {
+		setMinLength(minLength);
 	}
 
-	public double getExactValue() {
-		return exactValue;
+	public int getMinLength() {
+		return minLength;
 	}
 
-	public void setExactValue(final double exactValue) {
-		this.exactValue = exactValue;
+	public void setMinLength(final int minLength) {
+		this.minLength = minLength;
 	}
 
 	/**
-	 * @see NumberBooleanRule#validate(Object)
+	 * @see StringBooleanRule#validate(Object)
 	 */
 	@Override
-	public Boolean validate(final Double data) {
-		boolean result = false;
-
+	public Boolean validate(final String data) {
+		int length = 0;
 		if (data != null) {
-			result = (data.isNaN() && Double.isNaN(exactValue)) || data.equals(exactValue);
+			length = data.length();
 		}
 
-		return result;
+		return (length >= minLength);
 	}
 }

@@ -23,29 +23,29 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.rule;
+package com.github.validationframework.rule.number;
 
-public class FloatGreaterThanRule implements NumberBooleanRule<Float> {
+public class FloatEqualToRule implements NumberBooleanRule<Float> {
 
-	private float minValue = Float.NEGATIVE_INFINITY;
+	private float exactValue = 0.0f;
 
 	/**
 	 * Default constructor.
 	 */
-	public FloatGreaterThanRule() {
+	public FloatEqualToRule() {
 		// Nothing to be done
 	}
 
-	public FloatGreaterThanRule(final float minValue) {
-		setMinValue(minValue);
+	public FloatEqualToRule(final float exactValue) {
+		setExactValue(exactValue);
 	}
 
-	public double getMinValue() {
-		return minValue;
+	public float getExactValue() {
+		return exactValue;
 	}
 
-	public void setMinValue(final float minValue) {
-		this.minValue = minValue;
+	public void setExactValue(final float exactValue) {
+		this.exactValue = exactValue;
 	}
 
 	/**
@@ -56,7 +56,7 @@ public class FloatGreaterThanRule implements NumberBooleanRule<Float> {
 		boolean result = false;
 
 		if (data != null) {
-			result = (data > minValue);
+			result = (data.isNaN() && Float.isNaN(exactValue)) || data.equals(exactValue);
 		}
 
 		return result;

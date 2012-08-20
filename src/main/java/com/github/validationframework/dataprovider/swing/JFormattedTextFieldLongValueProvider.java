@@ -28,16 +28,26 @@ package com.github.validationframework.dataprovider.swing;
 import com.github.validationframework.dataprovider.TypedDataProvider;
 import javax.swing.JFormattedTextField;
 
-public class JFormattedTextFieldValueProvider implements TypedDataProvider<Object> {
+public class JFormattedTextFieldLongValueProvider implements TypedDataProvider<Long> {
 
 	private final JFormattedTextField formattedTextField;
 
-	public JFormattedTextFieldValueProvider(final JFormattedTextField formattedTextField) {
+	public JFormattedTextFieldLongValueProvider(final JFormattedTextField formattedTextField) {
 		this.formattedTextField = formattedTextField;
 	}
 
+	/**
+	 * @see TypedDataProvider#getData()
+	 */
 	@Override
-	public Object getData() {
-		return formattedTextField.getText();
+	public Long getData() {
+		Long longValue = null;
+
+		final Object value = formattedTextField.getValue();
+		if (value instanceof Number) {
+			longValue = ((Number) value).longValue();
+		}
+
+		return longValue;
 	}
 }

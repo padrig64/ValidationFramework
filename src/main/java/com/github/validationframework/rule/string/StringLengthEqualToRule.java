@@ -23,42 +23,41 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.rule;
+package com.github.validationframework.rule.string;
 
-public class FloatEqualToRule implements NumberBooleanRule<Float> {
+public class StringLengthEqualToRule implements StringBooleanRule {
 
-	private float exactValue = 0.0f;
+	private int exactLength = 0;
 
 	/**
 	 * Default constructor.
 	 */
-	public FloatEqualToRule() {
+	public StringLengthEqualToRule() {
 		// Nothing to be done
 	}
 
-	public FloatEqualToRule(final float exactValue) {
-		setExactValue(exactValue);
+	public StringLengthEqualToRule(final int exactLength) {
+		setExactLength(exactLength);
 	}
 
-	public float getExactValue() {
-		return exactValue;
+	public int getExactLength() {
+		return exactLength;
 	}
 
-	public void setExactValue(final float exactValue) {
-		this.exactValue = exactValue;
+	public void setExactLength(final int exactLength) {
+		this.exactLength = exactLength;
 	}
 
 	/**
-	 * @see NumberBooleanRule#validate(Object)
+	 * @see StringBooleanRule#validate(Object)
 	 */
 	@Override
-	public Boolean validate(final Float data) {
-		boolean result = false;
-
+	public Boolean validate(final String data) {
+		int length = 0;
 		if (data != null) {
-			result = (data.isNaN() && Float.isNaN(exactValue)) || data.equals(exactValue);
+			length = data.length();
 		}
 
-		return result;
+		return (length == exactLength);
 	}
 }

@@ -23,42 +23,31 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.rule;
+package com.github.validationframework.dataprovider.swing;
 
-public class FloatLessThanOrEqualToRule implements NumberBooleanRule<Float> {
+import com.github.validationframework.dataprovider.TypedDataProvider;
+import javax.swing.JFormattedTextField;
 
-	private float maxValue = Float.POSITIVE_INFINITY;
+public class JFormattedTextFieldIntegerValueProvider implements TypedDataProvider<Integer> {
 
-	/**
-	 * Default constructor.
-	 */
-	public FloatLessThanOrEqualToRule() {
-		// Nothing to be done
-	}
+	private final JFormattedTextField formattedTextField;
 
-	public FloatLessThanOrEqualToRule(final float maxValue) {
-		setMaxValue(maxValue);
-	}
-
-	public double getMaxValue() {
-		return maxValue;
-	}
-
-	public void setMaxValue(final float maxValue) {
-		this.maxValue = maxValue;
+	public JFormattedTextFieldIntegerValueProvider(final JFormattedTextField formattedTextField) {
+		this.formattedTextField = formattedTextField;
 	}
 
 	/**
-	 * @see NumberBooleanRule#validate(Object)
+	 * @see TypedDataProvider#getData()
 	 */
 	@Override
-	public Boolean validate(final Float data) {
-		boolean result = false;
+	public Integer getData() {
+		Integer intValue = null;
 
-		if (data != null) {
-			result = (data <= maxValue);
+		final Object value = formattedTextField.getValue();
+		if (value instanceof Number) {
+			intValue = ((Number) value).intValue();
 		}
 
-		return result;
+		return intValue;
 	}
 }

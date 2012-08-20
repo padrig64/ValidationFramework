@@ -23,42 +23,10 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.rule;
+package com.github.validationframework.rule.string;
 
-public class DoubleLessThanOrEqualToRule implements NumberBooleanRule<Double> {
+import com.github.validationframework.rule.TypedDataRule;
 
-	private double maxValue = Double.POSITIVE_INFINITY;
-
-	/**
-	 * Default constructor.
-	 */
-	public DoubleLessThanOrEqualToRule() {
-		// Nothing to be done
-	}
-
-	public DoubleLessThanOrEqualToRule(final double maxValue) {
-		setMaxValue(maxValue);
-	}
-
-	public double getMaxValue() {
-		return maxValue;
-	}
-
-	public void setMaxValue(final double maxValue) {
-		this.maxValue = maxValue;
-	}
-
-	/**
-	 * @see NumberBooleanRule#validate(Object)
-	 */
-	@Override
-	public Boolean validate(final Double data) {
-		boolean result = false;
-
-		if (data != null) {
-			result = (data <= maxValue);
-		}
-
-		return result;
-	}
+public interface StringBooleanRule extends TypedDataRule<String, Boolean> {
+	// Nothing to be done
 }

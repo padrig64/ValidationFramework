@@ -23,41 +23,42 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.rule;
+package com.github.validationframework.rule.number;
 
-public class StringLengthLessThanOrEqualToRule implements StringBooleanRule {
+public class DoubleGreaterThanOrEqualToRule implements NumberBooleanRule<Double> {
 
-	private int maxLength = Integer.MAX_VALUE;
+	private double minValue = Double.NEGATIVE_INFINITY;
 
 	/**
 	 * Default constructor.
 	 */
-	public StringLengthLessThanOrEqualToRule() {
+	public DoubleGreaterThanOrEqualToRule() {
 		// Nothing to be done
 	}
 
-	public StringLengthLessThanOrEqualToRule(final int maxLength) {
-		setMaxLength(maxLength);
+	public DoubleGreaterThanOrEqualToRule(final double minValue) {
+		setMinValue(minValue);
 	}
 
-	public int getMaxLength() {
-		return maxLength;
+	public double getMinValue() {
+		return minValue;
 	}
 
-	public void setMaxLength(final int maxLength) {
-		this.maxLength = maxLength;
+	public void setMinValue(final double minValue) {
+		this.minValue = minValue;
 	}
 
 	/**
-	 * @see StringBooleanRule#validate(Object)
+	 * @see NumberBooleanRule#validate(Object)
 	 */
 	@Override
-	public Boolean validate(final String data) {
-		int length = 0;
+	public Boolean validate(final Double data) {
+		boolean result = false;
+
 		if (data != null) {
-			length = data.length();
+			result = (data >= minValue);
 		}
 
-		return (length <= maxLength);
+		return result;
 	}
 }

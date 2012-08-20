@@ -23,41 +23,31 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.rule;
+package com.github.validationframework.dataprovider.swing;
 
-public class StringLengthEqualToRule implements StringBooleanRule {
+import com.github.validationframework.dataprovider.TypedDataProvider;
+import javax.swing.JFormattedTextField;
 
-	private int exactLength = 0;
+public class JFormattedTextFieldShortValueProvider implements TypedDataProvider<Short> {
 
-	/**
-	 * Default constructor.
-	 */
-	public StringLengthEqualToRule() {
-		// Nothing to be done
-	}
+	private final JFormattedTextField formattedTextField;
 
-	public StringLengthEqualToRule(final int exactLength) {
-		setExactLength(exactLength);
-	}
-
-	public int getExactLength() {
-		return exactLength;
-	}
-
-	public void setExactLength(final int exactLength) {
-		this.exactLength = exactLength;
+	public JFormattedTextFieldShortValueProvider(final JFormattedTextField formattedTextField) {
+		this.formattedTextField = formattedTextField;
 	}
 
 	/**
-	 * @see StringBooleanRule#validate(Object)
+	 * @see TypedDataProvider#getData()
 	 */
 	@Override
-	public Boolean validate(final String data) {
-		int length = 0;
-		if (data != null) {
-			length = data.length();
+	public Short getData() {
+		Short shortValue = null;
+
+		final Object value = formattedTextField.getValue();
+		if (value instanceof Number) {
+			shortValue = ((Number) value).shortValue();
 		}
 
-		return (length == exactLength);
+		return shortValue;
 	}
 }

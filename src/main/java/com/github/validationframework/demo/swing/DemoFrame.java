@@ -25,12 +25,16 @@
 
 package com.github.validationframework.demo.swing;
 
+import com.github.validationframework.dataprovider.swing.JFormattedTextFieldNumberValueProvider;
 import com.github.validationframework.dataprovider.swing.JTextFieldTextProvider;
 import com.github.validationframework.resulthandler.swing.AbstractColorFeedBack;
 import com.github.validationframework.resulthandler.swing.AbstractIconFeedBack;
 import com.github.validationframework.resulthandler.swing.AbstractIconTipFeedBack;
 import com.github.validationframework.resulthandler.swing.AbstractToolTipFeedBack;
+import com.github.validationframework.rule.CompositeTypedDataBooleanRule;
 import com.github.validationframework.rule.TypedDataRule;
+import com.github.validationframework.rule.number.NumberGreaterThanOrEqualToRule;
+import com.github.validationframework.rule.number.NumberLessThanRule;
 import com.github.validationframework.trigger.swing.JTextFieldModelChangedTrigger;
 import com.github.validationframework.validator.SimpleHomogeneousValidator;
 import java.awt.Color;
@@ -215,6 +219,38 @@ public class DemoFrame extends JFrame {
 		}
 	}
 
+	private class AngleFeedBack extends AbstractIconTipFeedBack<Boolean> {
+
+		private static final String INVALID_ICON_NAME = "/icons/invalid2.png";
+		private Icon invalidIcon = null;
+
+		public AngleFeedBack(final JComponent owner) {
+			super(owner);
+
+			// Error icon
+			final InputStream inputStream = getClass().getResourceAsStream(INVALID_ICON_NAME);
+			try {
+				final BufferedImage image = ImageIO.read(inputStream);
+				invalidIcon = new ImageIcon(image);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+		@Override
+		public void handleResult(final Boolean result) {
+			if (result) {
+				setIcon(invalidIcon);
+				setToolTipText(result.toString());
+				hideIconTip();
+			} else {
+				setIcon(null);
+				setToolTipText(null);
+				showIconTip();
+			}
+		}
+	}
+
 	private enum GroupResult {
 		OK(true),
 		NOK(false);
@@ -301,15 +337,15 @@ public class DemoFrame extends JFrame {
 		final NumberFormatter courseFormatter = new NumberFormatter(courseFormat);
 		courseFormatter.setMinimum(0);
 		courseFormatter.setMaximum(359);
-		textField = new JFormattedTextField(courseFormatter);
-		contentPane.add(textField, "growx");
-
-		final SimpleHomogeneousValidator<String, TextFieldResult> validator4 =
-				new SimpleHomogeneousValidator<String, TextFieldResult>();
+		final JFormattedTextField formattedTextField = new JFormattedTextField(courseFormatter);
+		contentPane.add(formattedTextField, "growx");
+		final SimpleHomogeneousValidator<Number, Boolean> validator4 =
+				new SimpleHomogeneousValidator<Number, Boolean>();
 		validator4.addTrigger(new JTextFieldModelChangedTrigger(textField));
-		validator4.addDataProvider(new JTextFieldTextProvider(textField));
-		validator4.addRule(new TextFieldRule());
-		validator4.addResultHandler(new TextFieldIconTipFeedBack(textField));
+		validator4.addDataProvider(new JFormattedTextFieldNumberValueProvider(formattedTextField));
+		validator4.addRule(new CompositeTypedDataBooleanRule<Number>(new NumberGreaterThanOrEqualToRule(0.0),
+				new NumberLessThanRule(360.0)));
+		validator4.addResultHandler(new AngleFeedBack(textField));
 //		final TriggerFeedBack<TextFieldResult> groupTrigger4 = new TriggerFeedBack<TextFieldResult>();
 //		validator4.addFeedBack(groupTrigger4);
 

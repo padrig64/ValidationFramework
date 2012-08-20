@@ -23,8 +23,21 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.rule;
+package com.github.validationframework.dataprovider.swing;
 
-public interface StringBooleanRule extends TypedDataRule<String, Boolean> {
-	// Nothing to be done
+import com.github.validationframework.dataprovider.TypedDataProvider;
+import javax.swing.JFormattedTextField;
+
+public class JFormattedTextFieldObjectValueProvider implements TypedDataProvider<Object> {
+
+	private final JFormattedTextField formattedTextField;
+
+	public JFormattedTextFieldObjectValueProvider(final JFormattedTextField formattedTextField) {
+		this.formattedTextField = formattedTextField;
+	}
+
+	@Override
+	public Object getData() {
+		return formattedTextField.getValue();
+	}
 }
