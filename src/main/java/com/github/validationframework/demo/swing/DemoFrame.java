@@ -35,6 +35,7 @@ import com.github.validationframework.rule.CompositeTypedDataBooleanRule;
 import com.github.validationframework.rule.TypedDataRule;
 import com.github.validationframework.rule.number.NumberGreaterThanOrEqualToRule;
 import com.github.validationframework.rule.number.NumberLessThanRule;
+import com.github.validationframework.trigger.swing.JFormattedTextFieldFocusGainedTrigger;
 import com.github.validationframework.trigger.swing.JTextFieldModelChangedTrigger;
 import com.github.validationframework.validator.SimpleHomogeneousValidator;
 import java.awt.Color;
@@ -238,14 +239,14 @@ public class DemoFrame extends JFrame {
 		}
 
 		@Override
-		public void handleResult(final Boolean result) {
-			if (result) {
-				setIcon(invalidIcon);
-				setToolTipText(result.toString());
-				hideIconTip();
-			} else {
+		public void handleResult(final Boolean valid) {
+			if (valid) {
 				setIcon(null);
 				setToolTipText(null);
+				hideIconTip();
+			} else {
+				setIcon(invalidIcon);
+				setToolTipText("Angle should be between 000 and 359");
 				showIconTip();
 			}
 		}
@@ -331,6 +332,7 @@ public class DemoFrame extends JFrame {
 
 		// Fourth textfield
 		contentPane.add(new JLabel("Icon tip:"));
+
 		final NumberFormat courseFormat = NumberFormat.getIntegerInstance();
 		courseFormat.setMinimumIntegerDigits(3);
 		courseFormat.setMaximumIntegerDigits(3);
@@ -339,14 +341,16 @@ public class DemoFrame extends JFrame {
 		courseFormatter.setMaximum(359);
 		final JFormattedTextField formattedTextField = new JFormattedTextField(courseFormatter);
 		contentPane.add(formattedTextField, "growx");
+
 		final SimpleHomogeneousValidator<Number, Boolean> validator4 =
 				new SimpleHomogeneousValidator<Number, Boolean>();
-		validator4.addTrigger(new JTextFieldModelChangedTrigger(textField));
+		validator4.addTrigger(new JFormattedTextFieldFocusGainedTrigger(formattedTextField));
 		validator4.addDataProvider(new JFormattedTextFieldNumberValueProvider(formattedTextField));
 		validator4.addRule(new CompositeTypedDataBooleanRule<Number>(new NumberGreaterThanOrEqualToRule(0.0),
 				new NumberLessThanRule(360.0)));
-		validator4.addResultHandler(new AngleFeedBack(textField));
-//		final TriggerFeedBack<TextFieldResult> groupTrigger4 = new TriggerFeedBack<TextFieldResult>();
+		validator4.addResultHandler(new AngleFeedBack(formattedTextField));
+//
+// final TriggerFeedBack<TextFieldResult> groupTrigger4 = new TriggerFeedBack<TextFieldResult>();
 //		validator4.addFeedBack(groupTrigger4);
 
 		// Apply button

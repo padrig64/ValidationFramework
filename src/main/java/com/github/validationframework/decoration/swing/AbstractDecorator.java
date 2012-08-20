@@ -25,7 +25,7 @@
 
 package com.github.validationframework.decoration.swing;
 
-import com.github.validationframework.decoration.swing.utils.DualAnchor;
+import com.github.validationframework.decoration.swing.utils.AnchorLink;
 import java.awt.Container;
 import java.awt.Graphics;
 import java.awt.Point;
@@ -104,12 +104,12 @@ public abstract class AbstractDecorator {
 	}
 
 	private JComponent owner;
-	private DualAnchor dualAnchor;
+	private AnchorLink anchorLink;
 	private final ComponentTracker ownerTracker = new ComponentTracker();
 	protected DecorationHolder decorationHolder = new DecorationHolder();
 
-	public AbstractDecorator(final JComponent owner, final DualAnchor dualAnchor) {
-		this.dualAnchor = dualAnchor;
+	public AbstractDecorator(final JComponent owner, final AnchorLink anchorLink) {
+		this.anchorLink = anchorLink;
 		attach(owner);
 	}
 
@@ -143,12 +143,12 @@ public abstract class AbstractDecorator {
 		}
 	}
 
-	public DualAnchor getDualAnchor() {
-		return dualAnchor;
+	public AnchorLink getAnchorLink() {
+		return anchorLink;
 	}
 
-	public void setDualAnchor(final DualAnchor dualAnchor) {
-		this.dualAnchor = dualAnchor;
+	public void setAnchorLink(final AnchorLink anchorLink) {
+		this.anchorLink = anchorLink;
 	}
 
 	public boolean isVisible() {
@@ -167,7 +167,7 @@ public abstract class AbstractDecorator {
 			if (ancestor instanceof JLayeredPane) {
 				final Point locationInLayeredPane =
 						SwingUtilities.convertPoint(owner.getParent(), owner.getLocation(), ancestor);
-				final Point relativeLocation = dualAnchor
+				final Point relativeLocation = anchorLink
 						.getRelativeSlaveLocation(owner.getWidth(), owner.getHeight(), getWidth(), getHeight());
 				decorationHolder.setBounds(locationInLayeredPane.x + relativeLocation.x,
 						locationInLayeredPane.y + relativeLocation.y, getWidth(), getHeight());

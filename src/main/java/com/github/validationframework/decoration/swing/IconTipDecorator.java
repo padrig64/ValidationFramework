@@ -26,7 +26,7 @@
 package com.github.validationframework.decoration.swing;
 
 import com.github.validationframework.decoration.swing.utils.Anchor;
-import com.github.validationframework.decoration.swing.utils.DualAnchor;
+import com.github.validationframework.decoration.swing.utils.AnchorLink;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -52,19 +52,19 @@ public class IconTipDecorator extends AbstractDecorator {
 
 	private ToolTipDialog toolTipDialog = null;
 
-	private static final DualAnchor DEFAULT_DUAL_ANCHOR_WITH_OWNER = new DualAnchor(Anchor.BOTTOM_LEFT, Anchor.CENTER);
+	private static final AnchorLink DEFAULT_ANCHOR_LINK_WITH_OWNER = new AnchorLink(Anchor.BOTTOM_LEFT, Anchor.CENTER);
 
-	private DualAnchor dualAnchorWithToolTip = new DualAnchor(Anchor.CENTER, Anchor.TOP_RIGHT);
+	private AnchorLink anchorLinkWithToolTip = new AnchorLink(Anchor.BOTTOM_RIGHT, Anchor.TOP_LEFT);
 
 	public IconTipDecorator(final JComponent owner) {
 		this(owner, null);
 	}
 
 	public IconTipDecorator(final JComponent owner, final Icon icon) {
-		super(owner, DEFAULT_DUAL_ANCHOR_WITH_OWNER);
+		super(owner, DEFAULT_ANCHOR_LINK_WITH_OWNER);
 		this.icon = icon;
 
-		toolTipDialog = new ToolTipDialog(decorationHolder, dualAnchorWithToolTip);
+		toolTipDialog = new ToolTipDialog(decorationHolder, anchorLinkWithToolTip);
 		decorationHolder.addMouseListener(new ToolTipAdapter());
 	}
 
@@ -85,12 +85,12 @@ public class IconTipDecorator extends AbstractDecorator {
 		followOwner();
 	}
 
-	public DualAnchor getDualAnchorWithToolTip() {
-		return dualAnchorWithToolTip;
+	public AnchorLink getAnchorLinkWithToolTip() {
+		return anchorLinkWithToolTip;
 	}
 
-	public void setDualAnchorWithToolTip(final DualAnchor dualAnchorWithToolTip) {
-		this.dualAnchorWithToolTip = dualAnchorWithToolTip;
+	public void setAnchorLinkWithToolTip(final AnchorLink anchorLinkWithToolTip) {
+		this.anchorLinkWithToolTip = anchorLinkWithToolTip;
 	}
 
 	@Override

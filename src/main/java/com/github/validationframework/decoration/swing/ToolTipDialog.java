@@ -25,7 +25,7 @@
 
 package com.github.validationframework.decoration.swing;
 
-import com.github.validationframework.decoration.swing.utils.DualAnchor;
+import com.github.validationframework.decoration.swing.utils.AnchorLink;
 import com.github.validationframework.utils.ValueUtils;
 import com.sun.jna.platform.WindowUtils;
 import java.awt.Point;
@@ -181,16 +181,16 @@ public class ToolTipDialog extends JDialog {
 
 	private JToolTip toolTip = null;
 
-	private DualAnchor dualAnchor = null;
+	private AnchorLink anchorLink = null;
 
 	private final LocationAdapter locationAdapter = new LocationAdapter();
 
 	private boolean rolloverAnimated = true;
 
-	public ToolTipDialog(final JComponent owner, final DualAnchor dualAnchor) {
+	public ToolTipDialog(final JComponent owner, final AnchorLink anchorLink) {
 		super(SwingUtilities.getWindowAncestor(owner));
 		this.owner = owner;
-		this.dualAnchor = dualAnchor;
+		this.anchorLink = anchorLink;
 		initComponents();
 	}
 
@@ -261,7 +261,7 @@ public class ToolTipDialog extends JDialog {
 		if (owner.isVisible()) {
 			final Point screenLocation = owner.getLocationOnScreen();
 			final Point relativeSlaveLocation =
-					dualAnchor.getRelativeSlaveLocation(owner.getSize(), ToolTipDialog.this.getSize());
+					anchorLink.getRelativeSlaveLocation(owner.getSize(), ToolTipDialog.this.getSize());
 			setLocation(screenLocation.x + relativeSlaveLocation.x, screenLocation.y + relativeSlaveLocation.y);
 		}
 	}

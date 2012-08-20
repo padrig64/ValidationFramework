@@ -23,60 +23,47 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.decoration.swing;
+package com.github.validationframework.decoration.swing.utils;
 
-import com.github.validationframework.decoration.swing.utils.Anchor;
-import com.github.validationframework.decoration.swing.utils.AnchorLink;
-import java.awt.Graphics;
-import javax.swing.Icon;
-import javax.swing.JComponent;
+import java.awt.Dimension;
+import java.awt.Point;
 
-public class IconDecorator extends AbstractDecorator {
+public class AnchorLink {
 
-	private Icon icon = null;
+	private Anchor masterAnchor;
+	private Anchor slaveAnchor;
 
-	private static final AnchorLink DEFAULT_ANCHOR_LINK_WITH_OWNER = new AnchorLink(Anchor.BOTTOM_LEFT, Anchor.CENTER);
-
-	public IconDecorator(final JComponent owner) {
-		this(owner, null);
+	public AnchorLink(final Anchor masterAnchor, final Anchor slaveAnchor) {
+		this.masterAnchor = masterAnchor;
+		this.slaveAnchor = slaveAnchor;
 	}
 
-	public IconDecorator(final JComponent owner, final Icon icon) {
-		super(owner, DEFAULT_ANCHOR_LINK_WITH_OWNER);
-		this.icon = icon;
+	public Anchor getMasterAnchor() {
+		return masterAnchor;
 	}
 
-	public Icon getIcon() {
-		return icon;
+	public void setMasterAnchor(final Anchor masterAnchor) {
+		this.masterAnchor = masterAnchor;
 	}
 
-	public void setIcon(final Icon icon) {
-		this.icon = icon;
-		followOwner();
+	public Anchor getSlaveAnchor() {
+		return slaveAnchor;
 	}
 
-	@Override
-	protected int getWidth() {
-		int width = 0;
-		if (icon != null) {
-			width = icon.getIconWidth();
-		}
-		return width;
+	public void setSlaveAnchor(final Anchor slaveAnchor) {
+		this.slaveAnchor = slaveAnchor;
 	}
 
-	@Override
-	protected int getHeight() {
-		int height = 0;
-		if (icon != null) {
-			height = icon.getIconHeight();
-		}
-		return height;
+	public Point getRelativeSlaveLocation(final Dimension masterSize, final Dimension slaveSize) {
+		return getRelativeSlaveLocation(masterSize.width, masterSize.height, slaveSize.width, slaveSize.height);
 	}
 
-	@Override
-	public void paint(final Graphics g) {
-		if (isVisible() && (icon != null)) {
-			icon.paintIcon(decorationHolder, g, 0, 0);
-		}
+	public Point getRelativeSlaveLocation(final int masterWidth, final int masterHeight, final int slaveWidth,
+										  final int slaveHeight) {
+		final Point masterAnchorPoint = masterAnchor.getAnchorPoint(masterWidth, masterHeight);
+		final Point slaveAnchorPoint = slaveAnchor.getAnchorPoint(slaveWidth, slaveHeight);
+
+		return new Point((int) (masterAnchorPoint.getX() - slaveAnchorPoint.getX()),
+				(int) (masterAnchorPoint.getY() - slaveAnchorPoint.getY()));
 	}
 }

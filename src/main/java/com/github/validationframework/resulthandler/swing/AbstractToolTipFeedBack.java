@@ -27,7 +27,7 @@ package com.github.validationframework.resulthandler.swing;
 
 import com.github.validationframework.decoration.swing.ToolTipDialog;
 import com.github.validationframework.decoration.swing.utils.Anchor;
-import com.github.validationframework.decoration.swing.utils.DualAnchor;
+import com.github.validationframework.decoration.swing.utils.AnchorLink;
 import com.github.validationframework.resulthandler.TypedResultHandler;
 import javax.swing.JComponent;
 
@@ -41,7 +41,7 @@ public abstract class AbstractToolTipFeedBack<R> implements TypedResultHandler<R
 
 	public void attach(final JComponent owner) {
 		detach();
-		toolTipDialog = new ToolTipDialog(owner, new DualAnchor(Anchor.TOP_RIGHT, Anchor.TOP_LEFT));
+		toolTipDialog = new ToolTipDialog(owner, new AnchorLink(Anchor.TOP_RIGHT, Anchor.TOP_LEFT));
 	}
 
 	public void detach() {
