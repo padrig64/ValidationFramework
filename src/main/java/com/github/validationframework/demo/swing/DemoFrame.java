@@ -39,6 +39,7 @@ import com.github.validationframework.rule.number.NumberLessThanRule;
 import com.github.validationframework.rule.string.swing.JFormattedTextFieldFormatterRule;
 import com.github.validationframework.trigger.swing.JFormattedTextFieldDocumentChangedTrigger;
 import com.github.validationframework.trigger.swing.JTextFieldDocumentChangedTrigger;
+import com.github.validationframework.utils.swing.FormatAndSelectOnEnterFeature;
 import com.github.validationframework.validator.SimpleHomogeneousValidator;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -344,6 +345,8 @@ public class DemoFrame extends JFrame {
 		courseFormatter.setMaximum(127.0);
 		final JFormattedTextField formattedTextField = new JFormattedTextField(courseFormatter);
 		contentPane.add(formattedTextField, "growx");
+
+		new FormatAndSelectOnEnterFeature(formattedTextField);
 
 		final SimpleHomogeneousValidator<String, Boolean> validator4 =
 				new SimpleHomogeneousValidator<String, Boolean>();

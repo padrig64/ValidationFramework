@@ -42,11 +42,13 @@ public class JFormattedTextFieldFormatterRule implements StringBooleanRule {
 		Boolean result = false;
 
 		final JFormattedTextField.AbstractFormatter formatter = formattedTextField.getFormatter();
-		try {
-			formatter.stringToValue(data);
-			result = true;
-		} catch (ParseException e) {
-			// Nothing to be done
+		if (formatter != null) {
+			try {
+				formatter.stringToValue(data);
+				result = true;
+			} catch (ParseException e) {
+				// Nothing to be done
+			}
 		}
 
 		return result;

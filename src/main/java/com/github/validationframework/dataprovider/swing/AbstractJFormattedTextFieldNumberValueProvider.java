@@ -48,15 +48,15 @@ public abstract class AbstractJFormattedTextFieldNumberValueProvider<T extends N
 			// Parse text
 			final String dataText = formattedTextField.getText();
 			final JFormattedTextField.AbstractFormatter formatter = formattedTextField.getFormatter();
-			final Object dataValue = formatter.stringToValue(dataText);
+			if (formatter != null) {
+				final Object dataValue = formatter.stringToValue(dataText);
 
-			// Convert it to the required type
-			numberValue = getNumberFromObject(dataValue);
+				// Convert it to the required type
+				numberValue = getNumberFromObject(dataValue);
+			}
 		} catch (ParseException e) {
-			numberValue = null;
+			// Nothing to be done
 		}
-
-		System.out.println("JFormattedTextFieldNumberValueProvider.getData: " + numberValue);
 
 		return numberValue;
 	}
