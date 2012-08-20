@@ -26,17 +26,19 @@
 package com.github.validationframework.demo.swing;
 
 import com.github.validationframework.dataprovider.swing.JFormattedTextFieldNumberValueProvider;
+import com.github.validationframework.dataprovider.swing.JFormattedTextFieldTextProvider;
 import com.github.validationframework.dataprovider.swing.JTextFieldTextProvider;
-import com.github.validationframework.resulthandler.swing.AbstractColorFeedBack;
-import com.github.validationframework.resulthandler.swing.AbstractIconFeedBack;
-import com.github.validationframework.resulthandler.swing.AbstractIconTipFeedBack;
-import com.github.validationframework.resulthandler.swing.AbstractToolTipFeedBack;
+import com.github.validationframework.resulthandler.feedback.swing.AbstractColorFeedBack;
+import com.github.validationframework.resulthandler.feedback.swing.AbstractIconFeedBack;
+import com.github.validationframework.resulthandler.feedback.swing.AbstractIconTipFeedBack;
+import com.github.validationframework.resulthandler.feedback.swing.AbstractToolTipFeedBack;
 import com.github.validationframework.rule.CompositeTypedDataBooleanRule;
 import com.github.validationframework.rule.TypedDataRule;
 import com.github.validationframework.rule.number.NumberGreaterThanOrEqualToRule;
 import com.github.validationframework.rule.number.NumberLessThanRule;
-import com.github.validationframework.trigger.swing.JFormattedTextFieldFocusGainedTrigger;
-import com.github.validationframework.trigger.swing.JTextFieldModelChangedTrigger;
+import com.github.validationframework.rule.string.swing.JFormattedTextFieldFormatterRule;
+import com.github.validationframework.trigger.swing.JFormattedTextFieldDocumentChangedTrigger;
+import com.github.validationframework.trigger.swing.JTextFieldDocumentChangedTrigger;
 import com.github.validationframework.validator.SimpleHomogeneousValidator;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -297,7 +299,7 @@ public class DemoFrame extends JFrame {
 		contentPane.add(textField, "growx");
 		final SimpleHomogeneousValidator<String, TextFieldResult> validator1 =
 				new SimpleHomogeneousValidator<String, TextFieldResult>();
-		validator1.addTrigger(new JTextFieldModelChangedTrigger(textField));
+		validator1.addTrigger(new JTextFieldDocumentChangedTrigger(textField));
 		validator1.addDataProvider(new JTextFieldTextProvider(textField));
 		validator1.addRule(new TextFieldRule());
 		validator1.addResultHandler(new TextFieldToolTipFeedBack(textField));
@@ -310,7 +312,7 @@ public class DemoFrame extends JFrame {
 		contentPane.add(textField, "growx");
 		final SimpleHomogeneousValidator<String, TextFieldResult> validator2 =
 				new SimpleHomogeneousValidator<String, TextFieldResult>();
-		validator2.addTrigger(new JTextFieldModelChangedTrigger(textField));
+		validator2.addTrigger(new JTextFieldDocumentChangedTrigger(textField));
 		validator2.addDataProvider(new JTextFieldTextProvider(textField));
 		validator2.addRule(new TextFieldRule());
 		validator2.addResultHandler(new TextFieldColorFeedBack(textField));
@@ -323,7 +325,7 @@ public class DemoFrame extends JFrame {
 		contentPane.add(textField, "growx");
 		final SimpleHomogeneousValidator<String, TextFieldResult> validator3 =
 				new SimpleHomogeneousValidator<String, TextFieldResult>();
-		validator3.addTrigger(new JTextFieldModelChangedTrigger(textField));
+		validator3.addTrigger(new JTextFieldDocumentChangedTrigger(textField));
 		validator3.addDataProvider(new JTextFieldTextProvider(textField));
 		validator3.addRule(new TextFieldRule());
 		validator3.addResultHandler(new TextFieldIconFeedBack(textField));
@@ -335,20 +337,28 @@ public class DemoFrame extends JFrame {
 
 		final NumberFormat courseFormat = NumberFormat.getIntegerInstance();
 		courseFormat.setMinimumIntegerDigits(3);
-		courseFormat.setMaximumIntegerDigits(3);
+		courseFormat.setMaximumIntegerDigits(4);
+		courseFormat.setMaximumFractionDigits(0);
 		final NumberFormatter courseFormatter = new NumberFormatter(courseFormat);
-		courseFormatter.setMinimum(0);
-		courseFormatter.setMaximum(359);
+		courseFormatter.setMinimum(0.0);
+		courseFormatter.setMaximum(127.0);
 		final JFormattedTextField formattedTextField = new JFormattedTextField(courseFormatter);
 		contentPane.add(formattedTextField, "growx");
 
-		final SimpleHomogeneousValidator<Number, Boolean> validator4 =
-				new SimpleHomogeneousValidator<Number, Boolean>();
-		validator4.addTrigger(new JFormattedTextFieldFocusGainedTrigger(formattedTextField));
-		validator4.addDataProvider(new JFormattedTextFieldNumberValueProvider(formattedTextField));
-		validator4.addRule(new CompositeTypedDataBooleanRule<Number>(new NumberGreaterThanOrEqualToRule(0.0),
-				new NumberLessThanRule(360.0)));
+		final SimpleHomogeneousValidator<String, Boolean> validator4 =
+				new SimpleHomogeneousValidator<String, Boolean>();
+		validator4.addTrigger(new JFormattedTextFieldDocumentChangedTrigger(formattedTextField));
+		validator4.addDataProvider(new JFormattedTextFieldTextProvider(formattedTextField));
+		validator4.addRule(new JFormattedTextFieldFormatterRule(formattedTextField));
 		validator4.addResultHandler(new AngleFeedBack(formattedTextField));
+
+//		final SimpleHomogeneousValidator<Number, Boolean> validator4 =
+//				new SimpleHomogeneousValidator<Number, Boolean>();
+//		validator4.addTrigger(new JFormattedTextFieldDocumentChangedTrigger(formattedTextField));
+//		validator4.addDataProvider(new JFormattedTextFieldNumberValueProvider(formattedTextField));
+//		validator4.addRule(new CompositeTypedDataBooleanRule<Number>(new NumberGreaterThanOrEqualToRule(0.0),
+//				new NumberLessThanRule(360.0)));
+//		validator4.addResultHandler(new AngleFeedBack(formattedTextField));
 //
 // final TriggerFeedBack<TextFieldResult> groupTrigger4 = new TriggerFeedBack<TextFieldResult>();
 //		validator4.addFeedBack(groupTrigger4);

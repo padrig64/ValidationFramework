@@ -23,13 +23,21 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.trigger.swing;
+package com.github.validationframework.dataprovider.swing;
 
-import javax.swing.JEditorPane;
+import com.github.validationframework.dataprovider.TypedDataProvider;
+import javax.swing.JToggleButton;
 
-public class JEditorPaneModelChangedTrigger extends BaseTextComponentModelChangedTrigger<JEditorPane> {
+public class BaseJToggleButtonValueProvider<C extends JToggleButton> implements TypedDataProvider<Boolean> {
 
-	public JEditorPaneModelChangedTrigger(final JEditorPane source) {
-		super(source);
+	private final C toggleComponent;
+
+	public BaseJToggleButtonValueProvider(final C toggleComponent) {
+		this.toggleComponent = toggleComponent;
+	}
+
+	@Override
+	public Boolean getData() {
+		return toggleComponent.isSelected();
 	}
 }

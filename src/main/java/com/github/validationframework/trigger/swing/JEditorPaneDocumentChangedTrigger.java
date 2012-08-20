@@ -25,45 +25,11 @@
 
 package com.github.validationframework.trigger.swing;
 
-import com.github.validationframework.trigger.AbstractTrigger;
-import com.github.validationframework.trigger.TriggerEvent;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.text.JTextComponent;
+import javax.swing.JEditorPane;
 
-public class BaseTextComponentModelChangedTrigger<C extends JTextComponent> extends AbstractTrigger {
+public class JEditorPaneDocumentChangedTrigger extends BaseTextComponentDocumentChangedTrigger<JEditorPane> {
 
-	private class SourceAdapter implements DocumentListener {
-
-		@Override
-		public void insertUpdate(final DocumentEvent e) {
-			fireTriggerEvent(new TriggerEvent(source));
-		}
-
-		@Override
-		public void removeUpdate(final DocumentEvent e) {
-			fireTriggerEvent(new TriggerEvent(source));
-		}
-
-		@Override
-		public void changedUpdate(final DocumentEvent e) {
-			fireTriggerEvent(new TriggerEvent(source));
-		}
-	}
-
-	private C source = null;
-
-	private final DocumentListener sourceAdapter = new SourceAdapter();
-
-	public BaseTextComponentModelChangedTrigger(final C source) {
-		super();
-		this.source = source;
-		source.getDocument().addDocumentListener(sourceAdapter);
-		// TODO Track document replacement
-	}
-
-	public void dispose() {
-		source.getDocument().removeDocumentListener(sourceAdapter);
-		source = null;
+	public JEditorPaneDocumentChangedTrigger(final JEditorPane source) {
+		super(source);
 	}
 }

@@ -25,11 +25,11 @@
 
 package com.github.validationframework.trigger.swing;
 
-import javax.swing.JTextField;
+import javax.swing.JTextPane;
 
-public class JTextFieldModelChangedTrigger extends BaseTextComponentModelChangedTrigger<JTextField> {
+public class JTextPaneDocumentChangedTrigger extends BaseTextComponentDocumentChangedTrigger<JTextPane> {
 
-	public JTextFieldModelChangedTrigger(final JTextField source) {
+	public JTextPaneDocumentChangedTrigger(final JTextPane source) {
 		super(source);
 	}
 }

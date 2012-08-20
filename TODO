@@ -3,4 +3,5 @@
 . Fix issue with formatted textfield
 . Condition logic result handler
 
+. Decoration transparency on Java 7
 . All features described in the README file

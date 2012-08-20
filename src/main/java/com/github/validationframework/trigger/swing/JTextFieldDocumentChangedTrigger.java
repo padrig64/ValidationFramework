@@ -23,21 +23,13 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.dataprovider.swing;
+package com.github.validationframework.trigger.swing;
 
-import com.github.validationframework.dataprovider.TypedDataProvider;
-import javax.swing.text.JTextComponent;
+import javax.swing.JTextField;
 
-public class BaseTextComponentTextProvider<C extends JTextComponent> implements TypedDataProvider<String> {
+public class JTextFieldDocumentChangedTrigger extends BaseTextComponentDocumentChangedTrigger<JTextField> {
 
-	private final C textComponent;
-
-	public BaseTextComponentTextProvider(final C textComponent) {
-		this.textComponent = textComponent;
-	}
-
-	@Override
-	public String getData() {
-		return textComponent.getText();
+	public JTextFieldDocumentChangedTrigger(final JTextField source) {
+		super(source);
 	}
 }

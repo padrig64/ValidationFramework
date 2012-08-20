@@ -23,55 +23,74 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.resulthandler.swing;
+package com.github.validationframework.resulthandler.feedback.swing;
 
-import com.github.validationframework.decoration.swing.ToolTipDialog;
-import com.github.validationframework.decoration.swing.utils.Anchor;
-import com.github.validationframework.decoration.swing.utils.AnchorLink;
+import com.github.validationframework.decoration.swing.IconTipDecorator;
 import com.github.validationframework.resulthandler.TypedResultHandler;
+import javax.swing.Icon;
 import javax.swing.JComponent;
 
-public abstract class AbstractToolTipFeedBack<R> implements TypedResultHandler<R> {
+public abstract class AbstractIconTipFeedBack<R> implements TypedResultHandler<R> {
 
-	private ToolTipDialog toolTipDialog = null;
+	private IconTipDecorator decorator = null;
 
-	public AbstractToolTipFeedBack(final JComponent owner) {
+	public AbstractIconTipFeedBack(final JComponent owner) {
 		attach(owner);
 	}
 
 	public void attach(final JComponent owner) {
 		detach();
-		toolTipDialog = new ToolTipDialog(owner, new AnchorLink(Anchor.TOP_RIGHT, Anchor.TOP_LEFT));
+
+		if (owner != null) {
+			decorator = new IconTipDecorator(owner);
+			decorator.setVisible(false);
+		}
 	}
 
 	public void detach() {
-		if (toolTipDialog != null) {
-			toolTipDialog.dispose();
-			toolTipDialog = null;
+		if (decorator != null) {
+			decorator.detach();
+			decorator = null;
+		}
+	}
+
+	protected Icon getIcon() {
+		Icon icon = null;
+		if (decorator != null) {
+			icon = decorator.getIcon();
+		}
+		return icon;
+	}
+
+	protected void setIcon(final Icon icon) {
+		if (decorator != null) {
+			decorator.setIcon(icon);
 		}
 	}
 
 	protected String getToolTipText() {
 		String tip = null;
-
-		if (toolTipDialog != null) {
-			tip = toolTipDialog.getText();
+		if (decorator != null) {
+			tip = decorator.getText();
 		}
-
 		return tip;
 	}
 
 	protected void setToolTipText(final String text) {
-		if (toolTipDialog != null) {
-			toolTipDialog.setText(text);
+		if (decorator != null) {
+			decorator.setText(text);
 		}
 	}
 
-	protected void showToolTip() {
-		toolTipDialog.setVisible(true);
+	protected void showIconTip() {
+		if (decorator != null) {
+			decorator.setVisible(true);
+		}
 	}
 
-	protected void hideToolTip() {
-		toolTipDialog.setVisible(false);
+	protected void hideIconTip() {
+		if (decorator != null) {
+			decorator.setVisible(false);
+		}
 	}
 }

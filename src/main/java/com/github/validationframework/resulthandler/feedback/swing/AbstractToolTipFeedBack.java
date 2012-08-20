@@ -23,13 +23,55 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.trigger.swing;
+package com.github.validationframework.resulthandler.feedback.swing;
 
-import javax.swing.JFormattedTextField;
+import com.github.validationframework.decoration.swing.ToolTipDialog;
+import com.github.validationframework.decoration.swing.utils.Anchor;
+import com.github.validationframework.decoration.swing.utils.AnchorLink;
+import com.github.validationframework.resulthandler.TypedResultHandler;
+import javax.swing.JComponent;
 
-public class JFormattedTextFieldModelChangedTrigger extends BaseTextComponentModelChangedTrigger<JFormattedTextField> {
+public abstract class AbstractToolTipFeedBack<R> implements TypedResultHandler<R> {
 
-	public JFormattedTextFieldModelChangedTrigger(final JFormattedTextField source) {
-		super(source);
+	private ToolTipDialog toolTipDialog = null;
+
+	public AbstractToolTipFeedBack(final JComponent owner) {
+		attach(owner);
+	}
+
+	public void attach(final JComponent owner) {
+		detach();
+		toolTipDialog = new ToolTipDialog(owner, new AnchorLink(Anchor.TOP_RIGHT, Anchor.TOP_LEFT));
+	}
+
+	public void detach() {
+		if (toolTipDialog != null) {
+			toolTipDialog.dispose();
+			toolTipDialog = null;
+		}
+	}
+
+	protected String getToolTipText() {
+		String tip = null;
+
+		if (toolTipDialog != null) {
+			tip = toolTipDialog.getText();
+		}
+
+		return tip;
+	}
+
+	protected void setToolTipText(final String text) {
+		if (toolTipDialog != null) {
+			toolTipDialog.setText(text);
+		}
+	}
+
+	protected void showToolTip() {
+		toolTipDialog.setVisible(true);
+	}
+
+	protected void hideToolTip() {
+		toolTipDialog.setVisible(false);
 	}
 }

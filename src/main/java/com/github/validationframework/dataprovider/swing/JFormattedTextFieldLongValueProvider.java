@@ -25,25 +25,21 @@
 
 package com.github.validationframework.dataprovider.swing;
 
-import com.github.validationframework.dataprovider.TypedDataProvider;
 import javax.swing.JFormattedTextField;
 
-public class JFormattedTextFieldLongValueProvider implements TypedDataProvider<Long> {
-
-	private final JFormattedTextField formattedTextField;
+public class JFormattedTextFieldLongValueProvider extends AbstractJFormattedTextFieldNumberValueProvider<Long> {
 
 	public JFormattedTextFieldLongValueProvider(final JFormattedTextField formattedTextField) {
-		this.formattedTextField = formattedTextField;
+		super(formattedTextField);
 	}
 
 	/**
-	 * @see TypedDataProvider#getData()
+	 * @see AbstractJFormattedTextFieldNumberValueProvider#getNumberFromObject(Object)
 	 */
 	@Override
-	public Long getData() {
+	protected Long getNumberFromObject(final Object value) {
 		Long longValue = null;
 
-		final Object value = formattedTextField.getValue();
 		if (value instanceof Number) {
 			longValue = ((Number) value).longValue();
 		}

@@ -27,7 +27,7 @@ package com.github.validationframework.dataprovider.swing;
 
 import javax.swing.JTextField;
 
-public class JTextFieldTextProvider extends BaseTextComponentTextProvider<JTextField> {
+public class JTextFieldTextProvider extends BaseJTextComponentTextProvider<JTextField> {
 
 	public JTextFieldTextProvider(final JTextField textComponent) {
 		super(textComponent);

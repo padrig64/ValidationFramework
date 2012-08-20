@@ -27,7 +27,7 @@ package com.github.validationframework.dataprovider.swing;
 
 import javax.swing.text.JTextComponent;
 
-public class JTextComponentTextProvider extends BaseTextComponentTextProvider<JTextComponent> {
+public class JTextComponentTextProvider extends BaseJTextComponentTextProvider<JTextComponent> {
 
 	public JTextComponentTextProvider(final JTextComponent textComponent) {
 		super(textComponent);

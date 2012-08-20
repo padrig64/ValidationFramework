@@ -23,21 +23,47 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.dataprovider.swing;
+package com.github.validationframework.trigger.swing;
 
-import com.github.validationframework.dataprovider.TypedDataProvider;
-import javax.swing.JToggleButton;
+import com.github.validationframework.trigger.AbstractTrigger;
+import com.github.validationframework.trigger.TriggerEvent;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.JTextComponent;
 
-public class BaseToggleComponentValueProvider<C extends JToggleButton> implements TypedDataProvider<Boolean> {
+public class BaseTextComponentDocumentChangedTrigger<C extends JTextComponent> extends AbstractTrigger {
 
-	private final C toggleComponent;
+	private class SourceAdapter implements DocumentListener {
 
-	public BaseToggleComponentValueProvider(final C toggleComponent) {
-		this.toggleComponent = toggleComponent;
+		@Override
+		public void insertUpdate(final DocumentEvent e) {
+			fireTriggerEvent(new TriggerEvent(source));
+		}
+
+		@Override
+		public void removeUpdate(final DocumentEvent e) {
+			fireTriggerEvent(new TriggerEvent(source));
+		}
+
+		@Override
+		public void changedUpdate(final DocumentEvent e) {
+			fireTriggerEvent(new TriggerEvent(source));
+		}
 	}
 
-	@Override
-	public Boolean getData() {
-		return toggleComponent.isSelected();
+	private C source = null;
+
+	private final DocumentListener sourceAdapter = new SourceAdapter();
+
+	public BaseTextComponentDocumentChangedTrigger(final C source) {
+		super();
+		this.source = source;
+		source.getDocument().addDocumentListener(sourceAdapter);
+		// TODO Track document replacement
+	}
+
+	public void dispose() {
+		source.getDocument().removeDocumentListener(sourceAdapter);
+		source = null;
 	}
 }

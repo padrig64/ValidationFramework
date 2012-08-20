@@ -27,7 +27,7 @@ package com.github.validationframework.dataprovider.swing;
 
 import javax.swing.JRadioButton;
 
-public class JRadioButtonValueProvider extends BaseToggleComponentValueProvider<JRadioButton> {
+public class JRadioButtonValueProvider extends BaseJToggleButtonValueProvider<JRadioButton> {
 
 	public JRadioButtonValueProvider(final JRadioButton toggleComponent) {
 		super(toggleComponent);

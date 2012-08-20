@@ -23,27 +23,13 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.dataprovider.swing;
+package com.github.validationframework.trigger.swing;
 
-import javax.swing.JFormattedTextField;
+import javax.swing.JPasswordField;
 
-public class JFormattedTextFieldFloatValueProvider extends AbstractJFormattedTextFieldNumberValueProvider<Float> {
+public class JPasswordFieldDocumentChangedTrigger extends BaseTextComponentDocumentChangedTrigger<JPasswordField> {
 
-	public JFormattedTextFieldFloatValueProvider(final JFormattedTextField formattedTextField) {
-		super(formattedTextField);
-	}
-
-	/**
-	 * @see AbstractJFormattedTextFieldNumberValueProvider#getNumberFromObject(Object)
-	 */
-	@Override
-	protected Float getNumberFromObject(final Object value) {
-		Float numberValue = null;
-
-		if (value instanceof Number) {
-			numberValue = ((Number) value).floatValue();
-		}
-
-		return numberValue;
+	public JPasswordFieldDocumentChangedTrigger(final JPasswordField source) {
+		super(source);
 	}
 }

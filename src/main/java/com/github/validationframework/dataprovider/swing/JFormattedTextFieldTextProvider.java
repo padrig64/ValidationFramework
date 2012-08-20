@@ -27,7 +27,7 @@ package com.github.validationframework.dataprovider.swing;
 
 import javax.swing.JFormattedTextField;
 
-public class JFormattedTextFieldTextProvider extends BaseTextComponentTextProvider<JFormattedTextField> {
+public class JFormattedTextFieldTextProvider extends BaseJTextComponentTextProvider<JFormattedTextField> {
 
 	public JFormattedTextFieldTextProvider(final JFormattedTextField textComponent) {
 		super(textComponent);

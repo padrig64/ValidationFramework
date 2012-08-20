@@ -27,7 +27,7 @@ package com.github.validationframework.dataprovider.swing;
 
 import javax.swing.JTextArea;
 
-public class JTextAreaTextProvider extends BaseTextComponentTextProvider<JTextArea> {
+public class JTextAreaTextProvider extends BaseJTextComponentTextProvider<JTextArea> {
 
 	public JTextAreaTextProvider(final JTextArea textComponent) {
 		super(textComponent);

@@ -23,60 +23,21 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.resulthandler.swing;
+package com.github.validationframework.dataprovider.swing;
 
-import com.github.validationframework.decoration.swing.IconDecorator;
-import com.github.validationframework.resulthandler.TypedResultHandler;
-import javax.swing.Icon;
-import javax.swing.JComponent;
+import com.github.validationframework.dataprovider.TypedDataProvider;
+import javax.swing.text.JTextComponent;
 
-public abstract class AbstractIconFeedBack<R> implements TypedResultHandler<R> {
+public class BaseJTextComponentTextProvider<C extends JTextComponent> implements TypedDataProvider<String> {
 
-	private IconDecorator decorator = null;
+	private final C textComponent;
 
-	public AbstractIconFeedBack(final JComponent owner) {
-		attach(owner);
+	public BaseJTextComponentTextProvider(final C textComponent) {
+		this.textComponent = textComponent;
 	}
 
-	public void attach(final JComponent owner) {
-		detach();
-
-		if (owner != null) {
-			decorator = new IconDecorator(owner);
-			decorator.setVisible(false);
-		}
-	}
-
-	public void detach() {
-		if (decorator != null) {
-			decorator.detach();
-			decorator = null;
-		}
-	}
-
-	protected Icon getIcon() {
-		Icon icon = null;
-		if (decorator != null) {
-			icon = decorator.getIcon();
-		}
-		return icon;
-	}
-
-	protected void setIcon(final Icon icon) {
-		if (decorator != null) {
-			decorator.setIcon(icon);
-		}
-	}
-
-	protected void showIconTip() {
-		if (decorator != null) {
-			decorator.setVisible(true);
-		}
-	}
-
-	protected void hideIconTip() {
-		if (decorator != null) {
-			decorator.setVisible(false);
-		}
+	@Override
+	public String getData() {
+		return textComponent.getText();
 	}
 }

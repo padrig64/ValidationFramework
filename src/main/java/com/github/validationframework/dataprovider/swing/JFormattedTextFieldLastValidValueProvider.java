@@ -23,47 +23,21 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.decoration.swing.utils;
+package com.github.validationframework.dataprovider.swing;
 
-import java.awt.Dimension;
-import java.awt.Point;
+import com.github.validationframework.dataprovider.TypedDataProvider;
+import javax.swing.JFormattedTextField;
 
-public class DualAnchor {
+public class JFormattedTextFieldLastValidValueProvider implements TypedDataProvider<Object> {
 
-	private Anchor masterAnchor;
-	private Anchor slaveAnchor;
+	private final JFormattedTextField formattedTextField;
 
-	public DualAnchor(final Anchor masterAnchor, final Anchor slaveAnchor) {
-		this.masterAnchor = masterAnchor;
-		this.slaveAnchor = slaveAnchor;
+	public JFormattedTextFieldLastValidValueProvider(final JFormattedTextField formattedTextField) {
+		this.formattedTextField = formattedTextField;
 	}
 
-	public Anchor getMasterAnchor() {
-		return masterAnchor;
-	}
-
-	public void setMasterAnchor(final Anchor masterAnchor) {
-		this.masterAnchor = masterAnchor;
-	}
-
-	public Anchor getSlaveAnchor() {
-		return slaveAnchor;
-	}
-
-	public void setSlaveAnchor(final Anchor slaveAnchor) {
-		this.slaveAnchor = slaveAnchor;
-	}
-
-	public Point getRelativeSlaveLocation(final Dimension masterSize, final Dimension slaveSize) {
-		return getRelativeSlaveLocation(masterSize.width, masterSize.height, slaveSize.width, slaveSize.height);
-	}
-
-	public Point getRelativeSlaveLocation(final int masterWidth, final int masterHeight, final int slaveWidth,
-										  final int slaveHeight) {
-		final Point masterAnchorPoint = masterAnchor.getAnchorPoint(masterWidth, masterHeight);
-		final Point slaveAnchorPoint = slaveAnchor.getAnchorPoint(slaveWidth, slaveHeight);
-
-		return new Point((int) (masterAnchorPoint.getX() - slaveAnchorPoint.getX()),
-				(int) (masterAnchorPoint.getY() - slaveAnchorPoint.getY()));
+	@Override
+	public Object getData() {
+		return formattedTextField.getValue();
 	}
 }

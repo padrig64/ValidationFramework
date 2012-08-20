@@ -25,11 +25,11 @@
 
 package com.github.validationframework.trigger.swing;
 
-import javax.swing.JPasswordField;
+import javax.swing.text.JTextComponent;
 
-public class JPasswordFieldModelChangedTrigger extends BaseTextComponentModelChangedTrigger<JPasswordField> {
+public class JTextComponentDocumentChangedTrigger extends BaseTextComponentDocumentChangedTrigger<JTextComponent> {
 
-	public JPasswordFieldModelChangedTrigger(final JPasswordField source) {
+	public JTextComponentDocumentChangedTrigger(final JTextComponent source) {
 		super(source);
 	}
 }

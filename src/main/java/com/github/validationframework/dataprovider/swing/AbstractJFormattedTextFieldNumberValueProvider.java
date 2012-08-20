@@ -23,13 +23,43 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.trigger.swing;
+package com.github.validationframework.dataprovider.swing;
 
-import javax.swing.JTextArea;
+import com.github.validationframework.dataprovider.TypedDataProvider;
+import java.text.ParseException;
+import javax.swing.JFormattedTextField;
 
-public class JTextAreaModelChangedTrigger extends BaseTextComponentModelChangedTrigger<JTextArea> {
+public abstract class AbstractJFormattedTextFieldNumberValueProvider<T extends Number> implements TypedDataProvider<T> {
 
-	public JTextAreaModelChangedTrigger(final JTextArea source) {
-		super(source);
+	private final JFormattedTextField formattedTextField;
+
+	public AbstractJFormattedTextFieldNumberValueProvider(final JFormattedTextField formattedTextField) {
+		this.formattedTextField = formattedTextField;
 	}
+
+	/**
+	 * @see TypedDataProvider#getData()
+	 */
+	@Override
+	public T getData() {
+		T numberValue = null;
+
+		try {
+			// Parse text
+			final String dataText = formattedTextField.getText();
+			final JFormattedTextField.AbstractFormatter formatter = formattedTextField.getFormatter();
+			final Object dataValue = formatter.stringToValue(dataText);
+
+			// Convert it to the required type
+			numberValue = getNumberFromObject(dataValue);
+		} catch (ParseException e) {
+			numberValue = null;
+		}
+
+		System.out.println("JFormattedTextFieldNumberValueProvider.getData: " + numberValue);
+
+		return numberValue;
+	}
+
+	protected abstract T getNumberFromObject(final Object value);
 }

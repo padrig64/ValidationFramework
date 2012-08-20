@@ -23,27 +23,32 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.dataprovider.swing;
+package com.github.validationframework.rule.string.swing;
 
+import com.github.validationframework.rule.string.StringBooleanRule;
+import java.text.ParseException;
 import javax.swing.JFormattedTextField;
 
-public class JFormattedTextFieldFloatValueProvider extends AbstractJFormattedTextFieldNumberValueProvider<Float> {
+public class JFormattedTextFieldFormatterRule implements StringBooleanRule {
 
-	public JFormattedTextFieldFloatValueProvider(final JFormattedTextField formattedTextField) {
-		super(formattedTextField);
+	private final JFormattedTextField formattedTextField;
+
+	public JFormattedTextFieldFormatterRule(final JFormattedTextField formattedTextField) {
+		this.formattedTextField = formattedTextField;
 	}
 
-	/**
-	 * @see AbstractJFormattedTextFieldNumberValueProvider#getNumberFromObject(Object)
-	 */
 	@Override
-	protected Float getNumberFromObject(final Object value) {
-		Float numberValue = null;
+	public Boolean validate(final String data) {
+		Boolean result = false;
 
-		if (value instanceof Number) {
-			numberValue = ((Number) value).floatValue();
+		final JFormattedTextField.AbstractFormatter formatter = formattedTextField.getFormatter();
+		try {
+			formatter.stringToValue(data);
+			result = true;
+		} catch (ParseException e) {
+			// Nothing to be done
 		}
 
-		return numberValue;
+		return result;
 	}
 }

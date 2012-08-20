@@ -23,13 +23,60 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.trigger.swing;
+package com.github.validationframework.resulthandler.feedback.swing;
 
-import javax.swing.JTextPane;
+import com.github.validationframework.decoration.swing.IconDecorator;
+import com.github.validationframework.resulthandler.TypedResultHandler;
+import javax.swing.Icon;
+import javax.swing.JComponent;
 
-public class JTextPaneModelChangedTrigger extends BaseTextComponentModelChangedTrigger<JTextPane> {
+public abstract class AbstractIconFeedBack<R> implements TypedResultHandler<R> {
 
-	public JTextPaneModelChangedTrigger(final JTextPane source) {
-		super(source);
+	private IconDecorator decorator = null;
+
+	public AbstractIconFeedBack(final JComponent owner) {
+		attach(owner);
+	}
+
+	public void attach(final JComponent owner) {
+		detach();
+
+		if (owner != null) {
+			decorator = new IconDecorator(owner);
+			decorator.setVisible(false);
+		}
+	}
+
+	public void detach() {
+		if (decorator != null) {
+			decorator.detach();
+			decorator = null;
+		}
+	}
+
+	protected Icon getIcon() {
+		Icon icon = null;
+		if (decorator != null) {
+			icon = decorator.getIcon();
+		}
+		return icon;
+	}
+
+	protected void setIcon(final Icon icon) {
+		if (decorator != null) {
+			decorator.setIcon(icon);
+		}
+	}
+
+	protected void showIconTip() {
+		if (decorator != null) {
+			decorator.setVisible(true);
+		}
+	}
+
+	protected void hideIconTip() {
+		if (decorator != null) {
+			decorator.setVisible(false);
+		}
 	}
 }

@@ -23,7 +23,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.resulthandler.swing;
+package com.github.validationframework.resulthandler.feedback.swing;
 
 import com.github.validationframework.resulthandler.TypedResultHandler;
 import com.github.validationframework.utils.swing.ColorUtils;

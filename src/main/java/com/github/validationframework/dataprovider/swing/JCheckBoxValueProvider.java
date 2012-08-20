@@ -27,7 +27,7 @@ package com.github.validationframework.dataprovider.swing;
 
 import javax.swing.JCheckBox;
 
-public class JCheckBoxValueProvider extends BaseToggleComponentValueProvider<JCheckBox> {
+public class JCheckBoxValueProvider extends BaseJToggleButtonValueProvider<JCheckBox> {
 
 	public JCheckBoxValueProvider(final JCheckBox toggleComponent) {
 		super(toggleComponent);

@@ -23,21 +23,13 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.dataprovider.swing;
+package com.github.validationframework.trigger.swing;
 
-import com.github.validationframework.dataprovider.TypedDataProvider;
-import javax.swing.JFormattedTextField;
+import javax.swing.JTextArea;
 
-public class JFormattedTextFieldObjectValueProvider implements TypedDataProvider<Object> {
+public class JTextAreaDocumentChangedTrigger extends BaseTextComponentDocumentChangedTrigger<JTextArea> {
 
-	private final JFormattedTextField formattedTextField;
-
-	public JFormattedTextFieldObjectValueProvider(final JFormattedTextField formattedTextField) {
-		this.formattedTextField = formattedTextField;
-	}
-
-	@Override
-	public Object getData() {
-		return formattedTextField.getValue();
+	public JTextAreaDocumentChangedTrigger(final JTextArea source) {
+		super(source);
 	}
 }

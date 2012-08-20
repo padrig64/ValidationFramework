@@ -25,29 +25,25 @@
 
 package com.github.validationframework.dataprovider.swing;
 
-import com.github.validationframework.dataprovider.TypedDataProvider;
 import javax.swing.JFormattedTextField;
 
-public class JFormattedTextFieldDoubleValueProvider implements TypedDataProvider<Double> {
-
-	private final JFormattedTextField formattedTextField;
+public class JFormattedTextFieldDoubleValueProvider extends AbstractJFormattedTextFieldNumberValueProvider<Double> {
 
 	public JFormattedTextFieldDoubleValueProvider(final JFormattedTextField formattedTextField) {
-		this.formattedTextField = formattedTextField;
+		super(formattedTextField);
 	}
 
 	/**
-	 * @see TypedDataProvider#getData()
+	 * @see AbstractJFormattedTextFieldNumberValueProvider#getNumberFromObject(Object)
 	 */
 	@Override
-	public Double getData() {
-		Double doubleValue = null;
+	protected Double getNumberFromObject(final Object value) {
+		Double numberValue = null;
 
-		final Object value = formattedTextField.getValue();
 		if (value instanceof Number) {
-			doubleValue = ((Number) value).doubleValue();
+			numberValue = ((Number) value).doubleValue();
 		}
 
-		return doubleValue;
+		return numberValue;
 	}
 }

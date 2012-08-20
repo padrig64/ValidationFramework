@@ -27,7 +27,7 @@ package com.github.validationframework.dataprovider.swing;
 
 import javax.swing.JToggleButton;
 
-public class JToggleButtonValueProvider extends BaseToggleComponentValueProvider<JToggleButton> {
+public class JToggleButtonValueProvider extends BaseJToggleButtonValueProvider<JToggleButton> {
 
 	public JToggleButtonValueProvider(final JToggleButton toggleComponent) {
 		super(toggleComponent);

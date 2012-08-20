@@ -27,7 +27,7 @@ package com.github.validationframework.dataprovider.swing;
 
 import javax.swing.JTextPane;
 
-public class JTextPaneTextProvider extends BaseTextComponentTextProvider<JTextPane> {
+public class JTextPaneTextProvider extends BaseJTextComponentTextProvider<JTextPane> {
 
 	public JTextPaneTextProvider(final JTextPane textComponent) {
 		super(textComponent);
