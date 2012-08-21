@@ -51,17 +51,12 @@ public class CompositeTypedDataBooleanRule<D> implements TypedDataRule<D, Boolea
 		// Nothing to be done
 	}
 
-	/**
-	 * Constructor specifying the first two rules to be added to the composite rule.<br>It is provided for convenience.
-	 *
-	 * @param firstRule First rule to be added.
-	 * @param secondRule Second rule to be added.
-	 * @see #addRule(TypedDataRule)
-	 */
-	public CompositeTypedDataBooleanRule(final TypedDataRule<D, Boolean> firstRule,
-										 final TypedDataRule<D, Boolean> secondRule) {
-		addRule(firstRule);
-		addRule(secondRule);
+	public CompositeTypedDataBooleanRule(final TypedDataRule<D, Boolean>... rules) {
+		if (rules != null) {
+			for (final TypedDataRule<D, Boolean> rule : rules) {
+				addRule(rule);
+			}
+		}
 	}
 
 	/**

@@ -32,6 +32,21 @@ public class CompositeTypedResultHandler<R> implements TypedResultHandler<R> {
 
 	private final List<TypedResultHandler<R>> resultHandlers = new ArrayList<TypedResultHandler<R>>();
 
+	/**
+	 * Default constructor.
+	 */
+	public CompositeTypedResultHandler() {
+		// Nothing to be done
+	}
+
+	public CompositeTypedResultHandler(final TypedResultHandler<R>... resultHandlers) {
+		if (resultHandlers != null) {
+			for (final TypedResultHandler<R> resultHandler : resultHandlers) {
+				addResultHandler(resultHandler);
+			}
+		}
+	}
+
 	public void addResultHandler(final TypedResultHandler<R> resultHandler) {
 		resultHandlers.add(resultHandler);
 	}

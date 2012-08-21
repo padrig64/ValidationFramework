@@ -32,6 +32,21 @@ public class CompositeUntypedResultHandler implements UntypedResultHandler {
 
 	private final List<UntypedResultHandler> resultHandlers = new ArrayList<UntypedResultHandler>();
 
+	/**
+	 * Default constructor.
+	 */
+	public CompositeUntypedResultHandler() {
+		// Nothing to be done
+	}
+
+	public CompositeUntypedResultHandler(final UntypedResultHandler... resultHandlers) {
+		if (resultHandlers != null) {
+			for (final UntypedResultHandler resultHandler : resultHandlers) {
+				addResultHandler(resultHandler);
+			}
+		}
+	}
+
 	public void addResultHandler(final UntypedResultHandler resultHandler) {
 		resultHandlers.add(resultHandler);
 	}

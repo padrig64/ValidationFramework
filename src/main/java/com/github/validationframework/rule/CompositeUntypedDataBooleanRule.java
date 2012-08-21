@@ -49,17 +49,12 @@ public class CompositeUntypedDataBooleanRule implements UntypedDataRule<Boolean>
 		// Nothing to be done
 	}
 
-	/**
-	 * Constructor specifying the first two rules to be added to the composite rule.<br>It is provided for convenience.
-	 *
-	 * @param firstRule First rule to be added.
-	 * @param secondRule Second rule to be added.
-	 * @see #addRule(UntypedDataRule)
-	 */
-	public CompositeUntypedDataBooleanRule(final UntypedDataRule<Boolean> firstRule,
-										   final UntypedDataRule<Boolean> secondRule) {
-		addRule(firstRule);
-		addRule(secondRule);
+	public CompositeUntypedDataBooleanRule(final UntypedDataRule<Boolean>... rules) {
+		if (rules != null) {
+			for (final UntypedDataRule<Boolean> rule : rules) {
+				addRule(rule);
+			}
+		}
 	}
 
 	/**

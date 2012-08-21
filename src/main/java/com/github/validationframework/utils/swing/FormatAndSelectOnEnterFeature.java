@@ -34,6 +34,7 @@ import java.util.Set;
 import javax.swing.JFormattedTextField;
 import javax.swing.text.JTextComponent;
 
+// TODO
 public class FormatAndSelectOnEnterFeature {
 
 	private class EnterKeyAdapter extends KeyAdapter {

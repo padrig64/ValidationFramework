@@ -25,7 +25,6 @@
 
 package com.github.validationframework.demo.swing;
 
-import com.github.validationframework.dataprovider.swing.JFormattedTextFieldNumberValueProvider;
 import com.github.validationframework.dataprovider.swing.JFormattedTextFieldTextProvider;
 import com.github.validationframework.dataprovider.swing.JTextFieldTextProvider;
 import com.github.validationframework.resulthandler.feedback.swing.AbstractColorFeedBack;
@@ -34,12 +33,10 @@ import com.github.validationframework.resulthandler.feedback.swing.AbstractIconT
 import com.github.validationframework.resulthandler.feedback.swing.AbstractToolTipFeedBack;
 import com.github.validationframework.rule.CompositeTypedDataBooleanRule;
 import com.github.validationframework.rule.TypedDataRule;
-import com.github.validationframework.rule.number.NumberGreaterThanOrEqualToRule;
-import com.github.validationframework.rule.number.NumberLessThanRule;
+import com.github.validationframework.rule.string.StringRegexRule;
 import com.github.validationframework.rule.string.swing.JFormattedTextFieldFormatterRule;
 import com.github.validationframework.trigger.swing.JFormattedTextFieldDocumentChangedTrigger;
 import com.github.validationframework.trigger.swing.JTextFieldDocumentChangedTrigger;
-import com.github.validationframework.utils.swing.FormatAndSelectOnEnterFeature;
 import com.github.validationframework.validator.SimpleHomogeneousValidator;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -342,17 +339,19 @@ public class DemoFrame extends JFrame {
 		courseFormat.setMaximumFractionDigits(0);
 		final NumberFormatter courseFormatter = new NumberFormatter(courseFormat);
 		courseFormatter.setMinimum(0.0);
-		courseFormatter.setMaximum(127.0);
+		courseFormatter.setMaximum(359.0);
 		final JFormattedTextField formattedTextField = new JFormattedTextField(courseFormatter);
 		contentPane.add(formattedTextField, "growx");
 
-		new FormatAndSelectOnEnterFeature(formattedTextField);
+//		new FormatAndSelectOnEnterFeature(formattedTextField);
 
 		final SimpleHomogeneousValidator<String, Boolean> validator4 =
 				new SimpleHomogeneousValidator<String, Boolean>();
 		validator4.addTrigger(new JFormattedTextFieldDocumentChangedTrigger(formattedTextField));
 		validator4.addDataProvider(new JFormattedTextFieldTextProvider(formattedTextField));
-		validator4.addRule(new JFormattedTextFieldFormatterRule(formattedTextField));
+		validator4.addRule(
+				new CompositeTypedDataBooleanRule<String>(new JFormattedTextFieldFormatterRule(formattedTextField),
+						new StringRegexRule("^[0-9]{1,3}$")));
 		validator4.addResultHandler(new AngleFeedBack(formattedTextField));
 
 //		final SimpleHomogeneousValidator<Number, Boolean> validator4 =
