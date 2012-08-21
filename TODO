@@ -2,6 +2,9 @@
 . Finalize mappable validator
 . Fix issue with icon tip
 . Condition logic result handler
+. Table editing
+
+. Transformers (of Data and Results)
 
 . Decoration transparency on Java 7
 . All features described in the README file
