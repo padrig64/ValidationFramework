@@ -1,6 +1,6 @@
+. Group
 . Finalize mappable validator
 . Fix issue with icon tip
-. Fix issue with formatted textfield
 . Condition logic result handler
 
 . Decoration transparency on Java 7
