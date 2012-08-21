@@ -26,7 +26,7 @@
 package com.github.validationframework.validator;
 
 import com.github.validationframework.dataprovider.TypedDataProvider;
-import com.github.validationframework.resulthandler.TypedResultHandler;
+import com.github.validationframework.resulthandler.ResultHandler;
 import com.github.validationframework.rule.TypedDataRule;
 import com.github.validationframework.trigger.Trigger;
 import org.slf4j.Logger;
@@ -82,7 +82,7 @@ public class SimpleHomogeneousValidator<D, R> extends AbstractHomogeneousValidat
 	 * @param result Result to be processed by all result handlers.
 	 */
 	private void processResult(final R result) {
-		for (final TypedResultHandler<R> resultHandler : resultHandlers) {
+		for (final ResultHandler<R> resultHandler : resultHandlers) {
 			resultHandler.handleResult(result);
 		}
 	}

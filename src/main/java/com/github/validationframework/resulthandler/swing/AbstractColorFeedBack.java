@@ -25,12 +25,12 @@
 
 package com.github.validationframework.resulthandler.swing;
 
-import com.github.validationframework.resulthandler.TypedResultHandler;
+import com.github.validationframework.resulthandler.ResultHandler;
 import com.github.validationframework.utils.swing.ColorUtils;
 import java.awt.Color;
 import javax.swing.JComponent;
 
-public abstract class AbstractColorFeedBack<R> implements TypedResultHandler<R> {
+public abstract class AbstractColorFeedBack<R> implements ResultHandler<R> {
 
 	private JComponent owner = null;
 	private Color origForeground = null;

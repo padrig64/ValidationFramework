@@ -26,11 +26,11 @@
 package com.github.validationframework.resulthandler.swing;
 
 import com.github.validationframework.decoration.swing.IconDecorator;
-import com.github.validationframework.resulthandler.TypedResultHandler;
+import com.github.validationframework.resulthandler.ResultHandler;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 
-public abstract class AbstractIconFeedBack<R> implements TypedResultHandler<R> {
+public abstract class AbstractIconFeedBack<R> implements ResultHandler<R> {
 
 	private IconDecorator decorator = null;
 

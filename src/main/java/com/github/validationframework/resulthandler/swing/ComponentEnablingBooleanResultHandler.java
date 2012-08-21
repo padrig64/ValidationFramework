@@ -30,15 +30,15 @@ import java.awt.Component;
 public class ComponentEnablingBooleanResultHandler extends AbstractComponentResultHandler<Boolean> {
 
 	/**
-		 * @see AbstractComponentResultHandler#AbstractComponentResultHandler()
-		 */
+	 * @see AbstractComponentResultHandler#AbstractComponentResultHandler()
+	 */
 	public ComponentEnablingBooleanResultHandler() {
 		super();
 	}
 
 	/**
-		 * @see AbstractComponentResultHandler#AbstractComponentResultHandler(Component...)
-		 */
+	 * @see AbstractComponentResultHandler#AbstractComponentResultHandler(Component...)
+	 */
 	public ComponentEnablingBooleanResultHandler(final Component... components) {
 		super(components);
 	}

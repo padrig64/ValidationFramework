@@ -30,15 +30,15 @@ import java.awt.Component;
 public class ComponentInvisibilityBooleanResultHandler extends AbstractComponentResultHandler<Boolean> {
 
 	/**
-		 * @see AbstractComponentResultHandler#AbstractComponentResultHandler()
-		 */
+	 * @see AbstractComponentResultHandler#AbstractComponentResultHandler()
+	 */
 	public ComponentInvisibilityBooleanResultHandler() {
 		super();
 	}
 
 	/**
-		 * @see AbstractComponentResultHandler#AbstractComponentResultHandler(Component...)
-		 */
+	 * @see AbstractComponentResultHandler#AbstractComponentResultHandler(Component...)
+	 */
 	public ComponentInvisibilityBooleanResultHandler(final Component... components) {
 		super(components);
 	}

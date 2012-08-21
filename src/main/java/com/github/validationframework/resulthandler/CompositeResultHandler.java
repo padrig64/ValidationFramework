@@ -28,36 +28,36 @@ package com.github.validationframework.resulthandler;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CompositeTypedResultHandler<R> implements TypedResultHandler<R> {
+public class CompositeResultHandler<R> implements ResultHandler<R> {
 
-	private final List<TypedResultHandler<R>> resultHandlers = new ArrayList<TypedResultHandler<R>>();
+	private final List<ResultHandler<R>> resultHandlers = new ArrayList<ResultHandler<R>>();
 
 	/**
 	 * Default constructor.
 	 */
-	public CompositeTypedResultHandler() {
+	public CompositeResultHandler() {
 		// Nothing to be done
 	}
 
-	public CompositeTypedResultHandler(final TypedResultHandler<R>... resultHandlers) {
+	public CompositeResultHandler(final ResultHandler<R>... resultHandlers) {
 		if (resultHandlers != null) {
-			for (final TypedResultHandler<R> resultHandler : resultHandlers) {
+			for (final ResultHandler<R> resultHandler : resultHandlers) {
 				addResultHandler(resultHandler);
 			}
 		}
 	}
 
-	public void addResultHandler(final TypedResultHandler<R> resultHandler) {
+	public void addResultHandler(final ResultHandler<R> resultHandler) {
 		resultHandlers.add(resultHandler);
 	}
 
-	public void removeResultHandler(final TypedResultHandler<R> resultHandler) {
+	public void removeResultHandler(final ResultHandler<R> resultHandler) {
 		resultHandlers.remove(resultHandler);
 	}
 
 	@Override
 	public void handleResult(final R result) {
-		for (final TypedResultHandler<R> resultHandler : resultHandlers) {
+		for (final ResultHandler<R> resultHandler : resultHandlers) {
 			resultHandler.handleResult(result);
 		}
 	}

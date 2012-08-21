@@ -26,7 +26,7 @@
 package com.github.validationframework.validator;
 
 import com.github.validationframework.dataprovider.TypedDataProvider;
-import com.github.validationframework.resulthandler.TypedResultHandler;
+import com.github.validationframework.resulthandler.ResultHandler;
 import com.github.validationframework.rule.TypedDataRule;
 import com.github.validationframework.trigger.Trigger;
 import java.util.ArrayList;
@@ -77,8 +77,80 @@ public class MappableHomogeneousValidator<D, R> extends AbstractHomogeneousValid
 	/**
 	 * Mapping between results and result handlers.
 	 */
-	private final Map<R, List<TypedResultHandler<R>>> resultsToResultHandlers =
-			new HashMap<R, List<TypedResultHandler<R>>>();
+	private final Map<R, List<ResultHandler<R>>> resultsToResultHandlers = new HashMap<R, List<ResultHandler<R>>>();
+
+	/**
+	 * @see AbstractHomogeneousValidator#addTrigger(Object)
+	 */
+	@Override
+	public void addTrigger(final Trigger trigger) {
+		super.addTrigger(trigger);
+		// TODO
+	}
+
+	/**
+	 * @see AbstractHomogeneousValidator#removeTrigger(Object)
+	 */
+	@Override
+	public void removeTrigger(final Trigger trigger) {
+		super.removeTrigger(trigger);
+		unmapTriggerFromAllDataProviders(trigger);
+	}
+
+	/**
+	 * @see AbstractHomogeneousValidator#addDataProvider(Object)
+	 */
+	@Override
+	public void addDataProvider(final TypedDataProvider<D> dataProvider) {
+		super.addDataProvider(dataProvider);
+		// TODO
+	}
+
+	/**
+	 * @see AbstractHomogeneousValidator#removeDataProvider(Object)
+	 */
+	@Override
+	public void removeDataProvider(final TypedDataProvider<D> dataProvider) {
+		super.removeDataProvider(dataProvider);
+		unmapDataProviderFromAllTriggers(dataProvider);
+		unmapDataProviderFromAllRules(dataProvider);
+	}
+
+	/**
+	 * @see AbstractHomogeneousValidator#addRule(Object)
+	 */
+	@Override
+	public void addRule(final TypedDataRule<D, R> rule) {
+		super.addRule(rule);
+		// TODO
+	}
+
+	/**
+	 * @see AbstractHomogeneousValidator#removeRule(Object)
+	 */
+	@Override
+	public void removeRule(final TypedDataRule<D, R> rule) {
+		super.removeRule(rule);
+		unmapRuleFromAllDataProviders(rule);
+	}
+
+	/**
+	 * @see AbstractHomogeneousValidator#addResultHandler(Object)
+	 */
+	@Override
+	public void addResultHandler(final ResultHandler<R> resultHandler) {
+		super.addResultHandler(resultHandler);
+		// TODO
+	}
+
+	/**
+	 * @see AbstractHomogeneousValidator#removeResultHandler(Object)
+	 */
+	@Override
+	public void removeResultHandler(final ResultHandler<R> resultHandler) {
+		super.removeResultHandler(resultHandler);
+		unmapResultHandlerFromAllResults(resultHandler);
+	}
 
 	/**
 	 * Maps the specified trigger to the specified data provider.<br>This means that whenever the specified trigger is
@@ -194,7 +266,7 @@ public class MappableHomogeneousValidator<D, R> extends AbstractHomogeneousValid
 	 * @param result Result to be mapped to the result handler.
 	 * @param resultHandler Result handler to be mapped to the result.
 	 */
-	public void map(final R result, final TypedResultHandler<R> resultHandler) {
+	public void map(final R result, final ResultHandler<R> resultHandler) {
 		if ((result == null) && (resultHandler == null)) {
 			LOGGER.warn("Call to method will have no effect since both parameters are null");
 		} else if (result == null) {
@@ -202,9 +274,9 @@ public class MappableHomogeneousValidator<D, R> extends AbstractHomogeneousValid
 		} else if (resultHandler == null) {
 			unmapResultFromAllResultHandlers(result);
 		} else {
-			List<TypedResultHandler<R>> mappedResultHandlers = resultsToResultHandlers.get(result);
+			List<ResultHandler<R>> mappedResultHandlers = resultsToResultHandlers.get(result);
 			if (mappedResultHandlers == null) {
-				mappedResultHandlers = new ArrayList<TypedResultHandler<R>>();
+				mappedResultHandlers = new ArrayList<ResultHandler<R>>();
 				resultsToResultHandlers.put(result, mappedResultHandlers);
 			}
 			mappedResultHandlers.add(resultHandler);
@@ -227,9 +299,9 @@ public class MappableHomogeneousValidator<D, R> extends AbstractHomogeneousValid
 	 *
 	 * @param resultHandler Result handler to be unmapped.
 	 */
-	private void unmapResultHandlerFromAllResults(final TypedResultHandler<R> resultHandler) {
+	private void unmapResultHandlerFromAllResults(final ResultHandler<R> resultHandler) {
 		if (resultHandler != null) {
-			for (final List<TypedResultHandler<R>> mappedResultHandlers : resultsToResultHandlers.values()) {
+			for (final List<ResultHandler<R>> mappedResultHandlers : resultsToResultHandlers.values()) {
 				mappedResultHandlers.remove(resultHandler);
 			}
 		}
@@ -284,12 +356,12 @@ public class MappableHomogeneousValidator<D, R> extends AbstractHomogeneousValid
 	 */
 	private void processResult(final R result) {
 		// Get result handlers matching the result
-		final List<TypedResultHandler<R>> mappedResultHandlers = resultsToResultHandlers.get(result);
+		final List<ResultHandler<R>> mappedResultHandlers = resultsToResultHandlers.get(result);
 		if ((mappedResultHandlers == null) || mappedResultHandlers.isEmpty()) {
 			LOGGER.warn("No matching result handler in mappable validator for result: " + result);
 		} else {
 			// Process all matching result handlers
-			for (final TypedResultHandler<R> resultHandler : mappedResultHandlers) {
+			for (final ResultHandler<R> resultHandler : mappedResultHandlers) {
 				resultHandler.handleResult(result);
 			}
 		}

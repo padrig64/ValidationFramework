@@ -27,8 +27,8 @@ package com.github.validationframework.trigger.swing;
 
 import javax.swing.JFormattedTextField;
 
-public class JFormattedTextFieldDocumentChangedTrigger extends
-		BaseTextComponentDocumentChangedTrigger<JFormattedTextField> {
+public class JFormattedTextFieldDocumentChangedTrigger
+		extends BaseTextComponentDocumentChangedTrigger<JFormattedTextField> {
 
 	public JFormattedTextFieldDocumentChangedTrigger(final JFormattedTextField source) {
 		super(source);

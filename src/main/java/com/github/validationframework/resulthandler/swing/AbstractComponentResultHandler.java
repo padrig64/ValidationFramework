@@ -25,12 +25,12 @@
 
 package com.github.validationframework.resulthandler.swing;
 
-import com.github.validationframework.resulthandler.TypedResultHandler;
+import com.github.validationframework.resulthandler.ResultHandler;
 import java.awt.Component;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class AbstractComponentResultHandler<R> implements TypedResultHandler<R> {
+public abstract class AbstractComponentResultHandler<R> implements ResultHandler<R> {
 
 	protected Set<Component> components = new HashSet<Component>();
 

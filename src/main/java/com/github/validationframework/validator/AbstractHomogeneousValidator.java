@@ -26,7 +26,7 @@
 package com.github.validationframework.validator;
 
 import com.github.validationframework.dataprovider.TypedDataProvider;
-import com.github.validationframework.resulthandler.TypedResultHandler;
+import com.github.validationframework.resulthandler.ResultHandler;
 import com.github.validationframework.rule.TypedDataRule;
 import com.github.validationframework.trigger.Trigger;
 import com.github.validationframework.trigger.TriggerEvent;
@@ -48,10 +48,10 @@ import java.util.Map;
  * @see Trigger
  * @see TypedDataProvider
  * @see TypedDataRule
- * @see TypedResultHandler
+ * @see com.github.validationframework.resulthandler.ResultHandler
  */
 public abstract class AbstractHomogeneousValidator<D, R>
-		extends AbstractValidator<Trigger, TypedDataProvider<D>, TypedDataRule<D, R>, TypedResultHandler<R>> {
+		extends AbstractValidator<Trigger, TypedDataProvider<D>, TypedDataRule<D, R>, ResultHandler<R>> {
 
 	/**
 	 * Listener to all registered triggers, initiating the validation logic.
