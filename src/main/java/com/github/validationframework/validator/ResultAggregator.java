@@ -23,41 +23,58 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.rule.string;
+package com.github.validationframework.validator;
 
+import com.github.validationframework.dataprovider.TypedDataProvider;
+import com.github.validationframework.resulthandler.ResultHandler;
 import com.github.validationframework.rule.TypedDataRule;
+import com.github.validationframework.trigger.Trigger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public abstract class AbstractStringBooleanRule implements TypedDataRule<String, Boolean> {
 
-	protected boolean trimDataBeforeValidation = true;
+public class ResultAggregator<R, A> extends AbstractHomogeneousValidator<R, A> {
 
 	/**
-	 * Default constructor.
+	 * Logger for this class.
 	 */
-	public AbstractStringBooleanRule() {
-		super();
-	}
+	private static final Logger LOGGER = LoggerFactory.getLogger(ResultAggregator.class);
 
-	public AbstractStringBooleanRule(final boolean trimDataBeforeValidation) {
-		super();
-		setTrimDataBeforeValidation(trimDataBeforeValidation);
-	}
-
-	public boolean getTrimDataBeforeValidation() {
-		return trimDataBeforeValidation;
-	}
-
-	public void setTrimDataBeforeValidation(final boolean trimDataBeforeValidation) {
-		this.trimDataBeforeValidation = trimDataBeforeValidation;
-	}
-
-	protected String trimIfNeeded(final String data) {
-		String resultData = data;
-
-		if (trimDataBeforeValidation && (data != null)) {
-			resultData = data.trim();
+	/**
+	 * @see AbstractHomogeneousValidator#processTrigger(Trigger)
+	 */
+	@Override
+	protected void processTrigger(final Trigger trigger) {
+		if (dataProviders.isEmpty()) {
+			LOGGER.warn("No data providers in validator: " + this);
+		} else {
+			// Process data from all providers
+			for (final TypedDataProvider<R> dataProvider : dataProviders) {
+				processData(dataProvider.getData());
+			}
 		}
+	}
 
-		return resultData;
+	/**
+	 * Validates the specified data all rules.
+	 *
+	 * @param data Data to be validated against all rules.
+	 */
+	private void processData(final R data) {
+		// Check data against all rules
+		for (final TypedDataRule<R, A> rule : rules) {
+			processResult(rule.validate(data));
+		}
+	}
+
+	/**
+	 * Handles the specified result using all result handlers.
+	 *
+	 * @param result Result to be processed by all result handlers.
+	 */
+	private void processResult(final A result) {
+		for (final ResultHandler<A> resultHandler : resultHandlers) {
+			resultHandler.handleResult(result);
+		}
 	}
 }

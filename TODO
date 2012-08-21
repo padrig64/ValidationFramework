@@ -4,6 +4,7 @@
 . Condition logic result handler
 . Table editing
 . Check decoration in scrollpanes
+. SimpleHomogeneousValidator<?,Boolean> vs addRule()
 
 . Transformers (of Data and Results)
 

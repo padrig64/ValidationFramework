@@ -23,10 +23,11 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.rule.string;
+package com.github.validationframework.resulthandler;
 
-import com.github.validationframework.rule.TypedDataRule;
+import com.github.validationframework.dataprovider.TypedDataProvider;
+import com.github.validationframework.trigger.Trigger;
 
-public interface StringBooleanRule extends TypedDataRule<String, Boolean> {
+public interface ResultCollector<R, D> extends ResultHandler<R>, Trigger, TypedDataProvider<D> {
 	// Nothing to be done
 }

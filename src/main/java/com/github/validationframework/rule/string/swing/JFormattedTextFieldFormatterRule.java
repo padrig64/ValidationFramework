@@ -25,11 +25,11 @@
 
 package com.github.validationframework.rule.string.swing;
 
-import com.github.validationframework.rule.string.StringBooleanRule;
+import com.github.validationframework.rule.TypedDataRule;
 import java.text.ParseException;
 import javax.swing.JFormattedTextField;
 
-public class JFormattedTextFieldFormatterRule implements StringBooleanRule {
+public class JFormattedTextFieldFormatterRule implements TypedDataRule<String, Boolean> {
 
 	private final JFormattedTextField formattedTextField;
 

@@ -23,9 +23,29 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.result;
+package com.github.validationframework.resulthandler;
 
-public interface ResultAggregator<A> {
+import com.github.validationframework.trigger.AbstractTrigger;
+import com.github.validationframework.trigger.TriggerEvent;
 
-	public A getAggregatedResult();
+public class DirectResultCollector<R> extends AbstractTrigger implements ResultCollector<R, R> {
+
+	private R lastResult = null;
+
+	/**
+	 * @see ResultCollector#handleResult(Object)
+	 */
+	@Override
+	public void handleResult(final R result) {
+		lastResult = result;
+		fireTriggerEvent(new TriggerEvent(this));
+	}
+
+	/**
+	 * @see ResultCollector#getData()
+	 */
+	@Override
+	public R getData() {
+		return lastResult;
+	}
 }

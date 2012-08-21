@@ -23,21 +23,17 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.result;
+package com.github.validationframework.rule.bool;
 
-public class BooleanResultAggregator extends AbstractResultAggregator<Boolean, Boolean> {
+import com.github.validationframework.rule.TypedDataRule;
 
+public class DirectBooleanRule implements TypedDataRule<Boolean, Boolean> {
+
+	/**
+	 * @see TypedDataRule#validate(Object)
+	 */
 	@Override
-	public Boolean getAggregatedResult() {
-		boolean aggregatedResult = false;
-
-		if (!results.isEmpty()) {
-			aggregatedResult = true;
-			for (final Boolean result : results.values()) {
-				aggregatedResult &= result;
-			}
-		}
-
-		return aggregatedResult;
+	public Boolean validate(final Boolean data) {
+		return data;
 	}
 }

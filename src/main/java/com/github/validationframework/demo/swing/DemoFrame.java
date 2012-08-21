@@ -27,18 +27,23 @@ package com.github.validationframework.demo.swing;
 
 import com.github.validationframework.dataprovider.swing.JFormattedTextFieldTextProvider;
 import com.github.validationframework.dataprovider.swing.JTextFieldTextProvider;
+import com.github.validationframework.resulthandler.DirectResultCollector;
 import com.github.validationframework.resulthandler.swing.AbstractColorFeedBack;
 import com.github.validationframework.resulthandler.swing.AbstractIconFeedBack;
 import com.github.validationframework.resulthandler.swing.AbstractIconTipFeedBack;
 import com.github.validationframework.resulthandler.swing.AbstractToolTipFeedBack;
+import com.github.validationframework.resulthandler.swing.ComponentEnablingBooleanResultHandler;
 import com.github.validationframework.rule.CompositeTypedDataBooleanRule;
 import com.github.validationframework.rule.TypedDataRule;
+import com.github.validationframework.rule.bool.DirectBooleanRule;
 import com.github.validationframework.rule.string.StringRegexRule;
 import com.github.validationframework.rule.string.swing.JFormattedTextFieldFormatterRule;
 import com.github.validationframework.trigger.swing.JFormattedTextFieldDocumentChangedTrigger;
 import com.github.validationframework.trigger.swing.JTextFieldDocumentChangedTrigger;
+import com.github.validationframework.validator.ResultAggregator;
 import com.github.validationframework.validator.SimpleHomogeneousValidator;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
@@ -72,21 +77,18 @@ public class DemoFrame extends JFrame {
 	private static final Color COLOR_NOK_EMPTY = new ColorUIResource(new Color(226, 125, 125, 127));
 	private static final Color COLOR_NOK_TOO_LONG = new ColorUIResource(new Color(226, 125, 125));
 
-	private enum TextFieldResult /*implements AggregatableResult<Boolean>*/ {
+	private enum InputFieldResult {
 
-		OK(true, "", null, null, null),
-		NOK_EMPTY(false, "Should not be empty", "/icons/warning.png", null, COLOR_NOK_EMPTY),
-		NOK_TOO_LONG(false, "Cannot be more than 4 characters", "/icons/invalid2.png", COLOR_NOK_TOO_LONG, null);
+		OK("", null, null, null),
+		NOK_EMPTY("Should not be empty", "/icons/warning.png", null, COLOR_NOK_EMPTY),
+		NOK_TOO_LONG("Cannot be more than 4 characters", "/icons/invalid2.png", COLOR_NOK_TOO_LONG, null);
 
-		private final boolean aggregatableResult;
 		private final String text;
 		private Icon icon;
 		private final Color foreground;
 		private final Color background;
 
-		TextFieldResult(final boolean aggregatableResult, final String text, final String iconName,
-						final Color foreground, final Color background) {
-			this.aggregatableResult = aggregatableResult;
+		InputFieldResult(final String text, final String iconName, final Color foreground, final Color background) {
 			this.text = text;
 			this.foreground = foreground;
 			this.background = background;
@@ -119,37 +121,32 @@ public class DemoFrame extends JFrame {
 		public String toString() {
 			return text;
 		}
-
-//		@Override
-//		public Boolean getAggregatableResult() {
-//			return aggregatableResult;
-//		}
 	}
 
-	private class TextFieldRule implements TypedDataRule<String, TextFieldResult> {
+	private class InputFieldRule implements TypedDataRule<String, InputFieldResult> {
 
 		@Override
-		public TextFieldResult validate(final String input) {
-			TextFieldResult result = TextFieldResult.OK;
+		public InputFieldResult validate(final String input) {
+			InputFieldResult result = InputFieldResult.OK;
 
 			if ((input == null) || (input.isEmpty())) {
-				result = TextFieldResult.NOK_EMPTY;
+				result = InputFieldResult.NOK_EMPTY;
 			} else if (input.length() >= 5) {
-				result = TextFieldResult.NOK_TOO_LONG;
+				result = InputFieldResult.NOK_TOO_LONG;
 			}
 
 			return result;
 		}
 	}
 
-	private class TextFieldToolTipFeedBack extends AbstractToolTipFeedBack<TextFieldResult> {
+	private class InputFieldToolTipFeedBack extends AbstractToolTipFeedBack<InputFieldResult> {
 
-		public TextFieldToolTipFeedBack(final JComponent owner) {
+		public InputFieldToolTipFeedBack(final JComponent owner) {
 			super(owner);
 		}
 
 		@Override
-		public void handleResult(final TextFieldResult result) {
+		public void handleResult(final InputFieldResult result) {
 			setToolTipText(result.toString());
 			switch (result) {
 				case OK:
@@ -161,14 +158,14 @@ public class DemoFrame extends JFrame {
 		}
 	}
 
-	private class TextFieldColorFeedBack extends AbstractColorFeedBack<TextFieldResult> {
+	private class InputFieldColorFeedBack extends AbstractColorFeedBack<InputFieldResult> {
 
-		public TextFieldColorFeedBack(final JComponent owner) {
+		public InputFieldColorFeedBack(final JComponent owner) {
 			super(owner);
 		}
 
 		@Override
-		public void handleResult(final TextFieldResult result) {
+		public void handleResult(final InputFieldResult result) {
 			setForeground(result.getForeground());
 			setBackground(result.getBackground());
 			switch (result) {
@@ -181,15 +178,16 @@ public class DemoFrame extends JFrame {
 		}
 	}
 
-	private class TextFieldIconFeedBack extends AbstractIconFeedBack<TextFieldResult> {
+	private class InputFieldIconFeedBack extends AbstractIconFeedBack<InputFieldResult> {
 
-		public TextFieldIconFeedBack(final JComponent owner) {
+		public InputFieldIconFeedBack(final JComponent owner) {
 			super(owner);
 		}
 
 		@Override
-		public void handleResult(final TextFieldResult result) {
+		public void handleResult(final InputFieldResult result) {
 			setIcon(result.getIcon());
+			System.out.println("DemoFrame$InputFieldIconFeedBack.handleResult: " + result);
 			switch (result) {
 				case OK:
 					hideIconTip();
@@ -200,14 +198,14 @@ public class DemoFrame extends JFrame {
 		}
 	}
 
-	private class TextFieldIconTipFeedBack extends AbstractIconTipFeedBack<TextFieldResult> {
+	private class InputFieldIconTipFeedBack extends AbstractIconTipFeedBack<InputFieldResult> {
 
-		public TextFieldIconTipFeedBack(final JComponent owner) {
+		public InputFieldIconTipFeedBack(final JComponent owner) {
 			super(owner);
 		}
 
 		@Override
-		public void handleResult(final TextFieldResult result) {
+		public void handleResult(final InputFieldResult result) {
 			setIcon(result.getIcon());
 			setToolTipText(result.toString());
 			switch (result) {
@@ -220,12 +218,12 @@ public class DemoFrame extends JFrame {
 		}
 	}
 
-	private class AngleFeedBack extends AbstractIconTipFeedBack<Boolean> {
+	private class AngleInputFieldFeedBack extends AbstractIconTipFeedBack<Boolean> {
 
 		private static final String INVALID_ICON_NAME = "/icons/invalid2.png";
 		private Icon invalidIcon = null;
 
-		public AngleFeedBack(final JComponent owner) {
+		public AngleInputFieldFeedBack(final JComponent owner) {
 			super(owner);
 
 			// Error icon
@@ -252,142 +250,63 @@ public class DemoFrame extends JFrame {
 		}
 	}
 
-	private enum GroupResult {
-		OK(true),
-		NOK(false);
-
-		private final boolean applyEnabled;
-
-		GroupResult(final boolean applyEnabled) {
-			this.applyEnabled = applyEnabled;
-		}
-
-		public boolean isApplyEnabled() {
-			return applyEnabled;
-		}
-	}
-
-	private class GroupRule implements TypedDataRule<TextFieldResult, GroupResult> {
-
-		@Override
-		public GroupResult validate(final TextFieldResult input) {
-			return GroupResult.OK;
-		}
-	}
-
+	/**
+	 * Generated serial UID.
+	 */
 	private static final long serialVersionUID = -2039502440268195814L;
 
+	private DirectResultCollector<InputFieldResult> resultCollector1;
+	private DirectResultCollector<InputFieldResult> resultCollector2;
+	private DirectResultCollector<InputFieldResult> resultCollector3;
+	private DirectResultCollector<Boolean> resultCollector4;
+
+	/**
+	 * Default constructor.
+	 */
 	public DemoFrame() {
 		super();
 		init();
 	}
 
+	/**
+	 * Initializes the frame by creating its contents.
+	 */
 	private void init() {
 		setTitle("Validation Framework Test");
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-		// Create contents
+		// Create aggregation validator
+
+//		final ResultAggregator<Boolean, Boolean> resultAggregator = new ResultAggregator<Boolean, Boolean>();
+//		resultCollector1 = new DirectResultCollector<InputFieldResult>();
+//		resultCollector2 = new DirectResultCollector<InputFieldResult>();
+//		resultCollector3 = new DirectResultCollector<InputFieldResult>();
+//		resultCollector4 = new DirectResultCollector<Boolean>();
+//		resultAggregator.addTrigger(resultCollector4);
+//		resultAggregator.addDataProvider(resultCollector4);
+//		resultAggregator.addRule(new DirectBooleanRule());
+//		final ComponentEnablingBooleanResultHandler aggregatedResultHandler = new ComponentEnablingBooleanResultHandler();
+//		resultAggregator.addResultHandler(aggregatedResultHandler);
+
+		// Create content pane
 		final JPanel contentPane = new JPanel(
 				new MigLayout("fill, wrap 2", "[]related[grow]", "[]related[]related[]related[]unrelated[]"));
 		setContentPane(contentPane);
 
-		// First textfield
+		// Input fields
 		contentPane.add(new JLabel("Tooltip:"));
-		JTextField textField = new JTextField();
-		contentPane.add(textField, "growx");
-		final SimpleHomogeneousValidator<String, TextFieldResult> validator1 =
-				new SimpleHomogeneousValidator<String, TextFieldResult>();
-		validator1.addTrigger(new JTextFieldDocumentChangedTrigger(textField));
-		validator1.addDataProvider(new JTextFieldTextProvider(textField));
-		validator1.addRule(new TextFieldRule());
-		validator1.addResultHandler(new TextFieldToolTipFeedBack(textField));
-//		final TriggerFeedBack<TextFieldResult> groupTrigger1 = new TriggerFeedBack<TextFieldResult>();
-//		validator1.addResultHandler(groupTrigger1);
-
-		// Second textfield
+		contentPane.add(createInputField1(), "growx");
 		contentPane.add(new JLabel("Color:"));
-		textField = new JTextField();
-		contentPane.add(textField, "growx");
-		final SimpleHomogeneousValidator<String, TextFieldResult> validator2 =
-				new SimpleHomogeneousValidator<String, TextFieldResult>();
-		validator2.addTrigger(new JTextFieldDocumentChangedTrigger(textField));
-		validator2.addDataProvider(new JTextFieldTextProvider(textField));
-		validator2.addRule(new TextFieldRule());
-		validator2.addResultHandler(new TextFieldColorFeedBack(textField));
-//		final TriggerFeedBack<TextFieldResult> groupTrigger2 = new TriggerFeedBack<TextFieldResult>();
-//		validator2.addFeedBack(groupTrigger2);
-
-		// Third textfield
+		contentPane.add(createInputField2(), "growx");
 		contentPane.add(new JLabel("Icon:"));
-		textField = new JTextField();
-		contentPane.add(textField, "growx");
-		final SimpleHomogeneousValidator<String, TextFieldResult> validator3 =
-				new SimpleHomogeneousValidator<String, TextFieldResult>();
-		validator3.addTrigger(new JTextFieldDocumentChangedTrigger(textField));
-		validator3.addDataProvider(new JTextFieldTextProvider(textField));
-		validator3.addRule(new TextFieldRule());
-		validator3.addResultHandler(new TextFieldIconFeedBack(textField));
-//		final TriggerFeedBack<TextFieldResult> groupTrigger3 = new TriggerFeedBack<TextFieldResult>();
-//		validator3.addFeedBack(groupTrigger3);
-
-		// Fourth textfield
+		contentPane.add(createInputField3(), "growx");
 		contentPane.add(new JLabel("Icon tip:"));
-
-		final NumberFormat courseFormat = NumberFormat.getIntegerInstance();
-		courseFormat.setMinimumIntegerDigits(3);
-		courseFormat.setMaximumIntegerDigits(4);
-		courseFormat.setMaximumFractionDigits(0);
-		final NumberFormatter courseFormatter = new NumberFormatter(courseFormat);
-		courseFormatter.setMinimum(0.0);
-		courseFormatter.setMaximum(359.0);
-		final JFormattedTextField formattedTextField = new JFormattedTextField(courseFormatter);
-		contentPane.add(formattedTextField, "growx");
-
-//		new FormatAndSelectOnEnterFeature(formattedTextField);
-
-		final SimpleHomogeneousValidator<String, Boolean> validator4 =
-				new SimpleHomogeneousValidator<String, Boolean>();
-		validator4.addTrigger(new JFormattedTextFieldDocumentChangedTrigger(formattedTextField));
-		validator4.addDataProvider(new JFormattedTextFieldTextProvider(formattedTextField));
-		validator4.addRule(
-				new CompositeTypedDataBooleanRule<String>(new JFormattedTextFieldFormatterRule(formattedTextField),
-						new StringRegexRule("^[0-9]{1,3}$")));
-		validator4.addResultHandler(new AngleFeedBack(formattedTextField));
-
-//		final SimpleHomogeneousValidator<Number, Boolean> validator4 =
-//				new SimpleHomogeneousValidator<Number, Boolean>();
-//		validator4.addTrigger(new JFormattedTextFieldDocumentChangedTrigger(formattedTextField));
-//		validator4.addDataProvider(new JFormattedTextFieldNumberValueProvider(formattedTextField));
-//		validator4.addRule(new CompositeTypedDataBooleanRule<Number>(new NumberGreaterThanOrEqualToRule(0.0),
-//				new NumberLessThanRule(360.0)));
-//		validator4.addResultHandler(new AngleFeedBack(formattedTextField));
-//
-// final TriggerFeedBack<TextFieldResult> groupTrigger4 = new TriggerFeedBack<TextFieldResult>();
-//		validator4.addFeedBack(groupTrigger4);
+		contentPane.add(createInputField4(), "growx");
 
 		// Apply button
 		final JButton applyButton = new JButton("Apply");
 		contentPane.add(applyButton, "growx, span");
-//		final SimpleHomogeneousValidator<TextFieldResult, GroupResult> groupValidator =
-//				new SimpleHomogeneousValidator<TextFieldResult, GroupResult>();
-//		groupValidator.addTrigger(groupTrigger1);
-//		groupValidator.addTrigger(groupTrigger2);
-//		groupValidator.addTrigger(groupTrigger3);
-//		groupValidator.addTrigger(groupTrigger4);
-//		groupValidator.addRule(new Rule<TextFieldResult, GroupResult>() {
-//			@Override
-//			public GroupResult validate(TextFieldResult input) {
-//				// Need source!!
-//				// TODO
-//				return null;
-//			}
-//		});
-//		groupValidator.addFeedBack(new FeedBack<GroupResult>() {
-//			@Override
-//			public void feedback(GroupResult result) {
-//				applyButton.setEnabled(GroupResult.OK.equals(result));
-//			}
-//		});
+//		aggregatedResultHandler.addComponent(applyButton);
 
 		// Set size
 		pack();
@@ -398,6 +317,83 @@ public class DemoFrame extends JFrame {
 		// Set location
 		final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((screenSize.width - size.width) / 2, (screenSize.height - size.height) / 3);
+	}
+
+	private Component createInputField1() {
+		final JTextField textField = new JTextField();
+
+		final SimpleHomogeneousValidator<String, InputFieldResult> validator1 =
+				new SimpleHomogeneousValidator<String, InputFieldResult>();
+		validator1.addTrigger(new JTextFieldDocumentChangedTrigger(textField));
+		validator1.addDataProvider(new JTextFieldTextProvider(textField));
+		validator1.addRule(new InputFieldRule());
+		validator1.addResultHandler(new InputFieldToolTipFeedBack(textField));
+
+//		validator1.addResultHandler(resultCollector1);
+
+		return textField;
+	}
+
+	private Component createInputField2() {
+		final JTextField textField = new JTextField();
+
+		final SimpleHomogeneousValidator<String, InputFieldResult> validator2 =
+				new SimpleHomogeneousValidator<String, InputFieldResult>();
+		validator2.addTrigger(new JTextFieldDocumentChangedTrigger(textField));
+		validator2.addDataProvider(new JTextFieldTextProvider(textField));
+		validator2.addRule(new InputFieldRule());
+		validator2.addResultHandler(new InputFieldColorFeedBack(textField));
+
+//		validator2.addResultHandler(resultCollector2);
+
+		return textField;
+	}
+
+	private Component createInputField3() {
+		final JTextField textField = new JTextField();
+
+		final SimpleHomogeneousValidator<String, InputFieldResult> validator3 =
+				new SimpleHomogeneousValidator<String, InputFieldResult>();
+		validator3.addTrigger(new JTextFieldDocumentChangedTrigger(textField));
+		validator3.addDataProvider(new JTextFieldTextProvider(textField));
+		validator3.addRule(new InputFieldRule());
+		validator3.addResultHandler(new InputFieldIconFeedBack(textField));
+
+//		validator3.addResultHandler(resultCollector3);
+
+		return textField;
+	}
+
+	private Component createInputField4() {
+		final NumberFormat courseFormat = NumberFormat.getIntegerInstance();
+		courseFormat.setMinimumIntegerDigits(3);
+		courseFormat.setMaximumIntegerDigits(4);
+		courseFormat.setMaximumFractionDigits(0);
+		final NumberFormatter courseFormatter = new NumberFormatter(courseFormat);
+		courseFormatter.setMinimum(0.0);
+		courseFormatter.setMaximum(359.0);
+		final JFormattedTextField formattedTextField = new JFormattedTextField(courseFormatter);
+
+		final SimpleHomogeneousValidator<String, Boolean> validator4 =
+				new SimpleHomogeneousValidator<String, Boolean>();
+		validator4.addTrigger(new JFormattedTextFieldDocumentChangedTrigger(formattedTextField));
+		validator4.addDataProvider(new JFormattedTextFieldTextProvider(formattedTextField));
+		validator4.addRule(
+				new CompositeTypedDataBooleanRule<String>(new JFormattedTextFieldFormatterRule(formattedTextField),
+						new StringRegexRule("^[0-9]{1,3}$")));
+		validator4.addResultHandler(new AngleInputFieldFeedBack(formattedTextField));
+
+//		final SimpleHomogeneousValidator<Number, Boolean> validator4 =
+//				new SimpleHomogeneousValidator<Number, Boolean>();
+//		validator4.addTrigger(new JFormattedTextFieldDocumentChangedTrigger(formattedTextField));
+//		validator4.addDataProvider(new JFormattedTextFieldNumberValueProvider(formattedTextField));
+//		validator4.addRule(new CompositeTypedDataBooleanRule<Number>(new NumberGreaterThanOrEqualToRule(0.0),
+//				new NumberLessThanRule(360.0)));
+//		validator4.addResultHandler(new AngleInputFieldFeedBack(formattedTextField));
+
+//		validator4.addResultHandler(resultCollector4);
+
+		return formattedTextField;
 	}
 
 	public static void main(final String[] args) {
