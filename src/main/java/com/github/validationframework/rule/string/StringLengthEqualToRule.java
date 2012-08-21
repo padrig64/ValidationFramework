@@ -25,7 +25,7 @@
 
 package com.github.validationframework.rule.string;
 
-public class StringLengthEqualToRule implements StringBooleanRule {
+public class StringLengthEqualToRule extends AbstractStringBooleanRule {
 
 	private int exactLength = 0;
 
@@ -55,7 +55,7 @@ public class StringLengthEqualToRule implements StringBooleanRule {
 	public Boolean validate(final String data) {
 		int length = 0;
 		if (data != null) {
-			length = data.length();
+			length = trimIfNeeded(data).length();
 		}
 
 		return (length == exactLength);

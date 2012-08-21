@@ -36,7 +36,7 @@ import java.util.regex.Pattern;
  * @see com.github.validationframework.rule.TypedDataRule
  * @see Pattern
  */
-public class StringRegexRule implements StringBooleanRule {
+public class StringRegexRule extends AbstractStringBooleanRule {
 
 	/**
 	 * Mapping between regex expression string and compiled patterns.
@@ -98,8 +98,10 @@ public class StringRegexRule implements StringBooleanRule {
 	public Boolean validate(final String data) {
 		Boolean result = false;
 
+		final String dataToBeValidated = trimIfNeeded(data);
+
 		for (final Pattern pattern : patterns.values()) {
-			final Matcher matcher = pattern.matcher(data);
+			final Matcher matcher = pattern.matcher(dataToBeValidated);
 			if (matcher.find()) {
 				result = true;
 			}

@@ -25,39 +25,37 @@
 
 package com.github.validationframework.rule.string;
 
-public class StringLengthLessThanOrEqualToRule extends AbstractStringBooleanRule {
+public abstract class AbstractStringBooleanRule implements StringBooleanRule {
 
-	private int maxLength = Integer.MAX_VALUE;
+	protected boolean trimDataBeforeValidation = true;
 
 	/**
 	 * Default constructor.
 	 */
-	public StringLengthLessThanOrEqualToRule() {
-		// Nothing to be done
+	public AbstractStringBooleanRule() {
+		super();
 	}
 
-	public StringLengthLessThanOrEqualToRule(final int maxLength) {
-		setMaxLength(maxLength);
+	public AbstractStringBooleanRule(final boolean trimDataBeforeValidation) {
+		super();
+		setTrimDataBeforeValidation(trimDataBeforeValidation);
 	}
 
-	public int getMaxLength() {
-		return maxLength;
+	public boolean getTrimDataBeforeValidation() {
+		return trimDataBeforeValidation;
 	}
 
-	public void setMaxLength(final int maxLength) {
-		this.maxLength = maxLength;
+	public void setTrimDataBeforeValidation(final boolean trimDataBeforeValidation) {
+		this.trimDataBeforeValidation = trimDataBeforeValidation;
 	}
 
-	/**
-	 * @see StringBooleanRule#validate(Object)
-	 */
-	@Override
-	public Boolean validate(final String data) {
-		int length = 0;
-		if (data != null) {
-			length = trimIfNeeded(data).length();
+	protected String trimIfNeeded(final String data) {
+		String resultData = data;
+
+		if (trimDataBeforeValidation && (data != null)) {
+			resultData = data.trim();
 		}
 
-		return (length <= maxLength);
+		return resultData;
 	}
 }

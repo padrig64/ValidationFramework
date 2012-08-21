@@ -25,7 +25,7 @@
 
 package com.github.validationframework.rule.string;
 
-public class StringLengthGreaterThanOrEqualToRule implements StringBooleanRule {
+public class StringLengthGreaterThanOrEqualToRule extends AbstractStringBooleanRule {
 
 	private int minLength = Integer.MIN_VALUE;
 
@@ -55,7 +55,7 @@ public class StringLengthGreaterThanOrEqualToRule implements StringBooleanRule {
 	public Boolean validate(final String data) {
 		int length = 0;
 		if (data != null) {
-			length = data.length();
+			length = trimIfNeeded(data).length();
 		}
 
 		return (length >= minLength);

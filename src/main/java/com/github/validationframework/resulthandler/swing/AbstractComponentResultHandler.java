@@ -23,74 +23,37 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.resulthandler.feedback.swing;
+package com.github.validationframework.resulthandler.swing;
 
-import com.github.validationframework.decoration.swing.IconTipDecorator;
 import com.github.validationframework.resulthandler.TypedResultHandler;
-import javax.swing.Icon;
-import javax.swing.JComponent;
+import java.awt.Component;
+import java.util.HashSet;
+import java.util.Set;
 
-public abstract class AbstractIconTipFeedBack<R> implements TypedResultHandler<R> {
+public abstract class AbstractComponentResultHandler<R> implements TypedResultHandler<R> {
 
-	private IconTipDecorator decorator = null;
+	protected Set<Component> components = new HashSet<Component>();
 
-	public AbstractIconTipFeedBack(final JComponent owner) {
-		attach(owner);
+	/**
+	 * Default constructor.
+	 */
+	public AbstractComponentResultHandler() {
+		// Nothing to be done
 	}
 
-	public void attach(final JComponent owner) {
-		detach();
-
-		if (owner != null) {
-			decorator = new IconTipDecorator(owner);
-			decorator.setVisible(false);
+	public AbstractComponentResultHandler(final Component... components) {
+		if (components != null) {
+			for (final Component component : components) {
+				addComponent(component);
+			}
 		}
 	}
 
-	public void detach() {
-		if (decorator != null) {
-			decorator.detach();
-			decorator = null;
-		}
+	public void addComponent(final Component component) {
+		components.add(component);
 	}
 
-	protected Icon getIcon() {
-		Icon icon = null;
-		if (decorator != null) {
-			icon = decorator.getIcon();
-		}
-		return icon;
-	}
-
-	protected void setIcon(final Icon icon) {
-		if (decorator != null) {
-			decorator.setIcon(icon);
-		}
-	}
-
-	protected String getToolTipText() {
-		String tip = null;
-		if (decorator != null) {
-			tip = decorator.getText();
-		}
-		return tip;
-	}
-
-	protected void setToolTipText(final String text) {
-		if (decorator != null) {
-			decorator.setText(text);
-		}
-	}
-
-	protected void showIconTip() {
-		if (decorator != null) {
-			decorator.setVisible(true);
-		}
-	}
-
-	protected void hideIconTip() {
-		if (decorator != null) {
-			decorator.setVisible(false);
-		}
+	public void removeComponent(final Component component) {
+		components.remove(component);
 	}
 }

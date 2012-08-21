@@ -3,6 +3,7 @@
 . Fix issue with icon tip
 . Condition logic result handler
 . Table editing
+. Check decoration in scrollpanes
 
 . Transformers (of Data and Results)
 

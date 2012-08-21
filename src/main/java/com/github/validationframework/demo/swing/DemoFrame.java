@@ -27,10 +27,10 @@ package com.github.validationframework.demo.swing;
 
 import com.github.validationframework.dataprovider.swing.JFormattedTextFieldTextProvider;
 import com.github.validationframework.dataprovider.swing.JTextFieldTextProvider;
-import com.github.validationframework.resulthandler.feedback.swing.AbstractColorFeedBack;
-import com.github.validationframework.resulthandler.feedback.swing.AbstractIconFeedBack;
-import com.github.validationframework.resulthandler.feedback.swing.AbstractIconTipFeedBack;
-import com.github.validationframework.resulthandler.feedback.swing.AbstractToolTipFeedBack;
+import com.github.validationframework.resulthandler.swing.AbstractColorFeedBack;
+import com.github.validationframework.resulthandler.swing.AbstractIconFeedBack;
+import com.github.validationframework.resulthandler.swing.AbstractIconTipFeedBack;
+import com.github.validationframework.resulthandler.swing.AbstractToolTipFeedBack;
 import com.github.validationframework.rule.CompositeTypedDataBooleanRule;
 import com.github.validationframework.rule.TypedDataRule;
 import com.github.validationframework.rule.string.StringRegexRule;

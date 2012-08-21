@@ -23,41 +23,38 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.rule.string;
+package com.github.validationframework.resulthandler.swing;
 
-public class StringLengthLessThanOrEqualToRule extends AbstractStringBooleanRule {
+import java.awt.Component;
 
-	private int maxLength = Integer.MAX_VALUE;
+public class ComponentVisibilityBooleanResultHandler extends AbstractComponentResultHandler<Boolean> {
 
 	/**
-	 * Default constructor.
+	 * @see AbstractComponentResultHandler#AbstractComponentResultHandler()
 	 */
-	public StringLengthLessThanOrEqualToRule() {
-		// Nothing to be done
-	}
-
-	public StringLengthLessThanOrEqualToRule(final int maxLength) {
-		setMaxLength(maxLength);
-	}
-
-	public int getMaxLength() {
-		return maxLength;
-	}
-
-	public void setMaxLength(final int maxLength) {
-		this.maxLength = maxLength;
+	public ComponentVisibilityBooleanResultHandler() {
+		super();
 	}
 
 	/**
-	 * @see StringBooleanRule#validate(Object)
+	 * @see AbstractComponentResultHandler#AbstractComponentResultHandler(Component...)
+	 */
+	public ComponentVisibilityBooleanResultHandler(final Component... components) {
+		super(components);
+	}
+
+	/**
+	 * @see AbstractComponentResultHandler#handleResult(Object)
 	 */
 	@Override
-	public Boolean validate(final String data) {
-		int length = 0;
-		if (data != null) {
-			length = trimIfNeeded(data).length();
+	public void handleResult(final Boolean result) {
+		boolean visible = false;
+		if (result != null) {
+			visible = result;
 		}
 
-		return (length <= maxLength);
+		for (final Component component : components) {
+			component.setVisible(visible);
+		}
 	}
 }

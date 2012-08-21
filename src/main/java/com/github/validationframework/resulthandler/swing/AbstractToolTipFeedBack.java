@@ -23,41 +23,55 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.rule.string;
+package com.github.validationframework.resulthandler.swing;
 
-public class StringLengthLessThanOrEqualToRule extends AbstractStringBooleanRule {
+import com.github.validationframework.decoration.swing.ToolTipDialog;
+import com.github.validationframework.decoration.swing.utils.Anchor;
+import com.github.validationframework.decoration.swing.utils.AnchorLink;
+import com.github.validationframework.resulthandler.TypedResultHandler;
+import javax.swing.JComponent;
 
-	private int maxLength = Integer.MAX_VALUE;
+public abstract class AbstractToolTipFeedBack<R> implements TypedResultHandler<R> {
 
-	/**
-	 * Default constructor.
-	 */
-	public StringLengthLessThanOrEqualToRule() {
-		// Nothing to be done
+	private ToolTipDialog toolTipDialog = null;
+
+	public AbstractToolTipFeedBack(final JComponent owner) {
+		attach(owner);
 	}
 
-	public StringLengthLessThanOrEqualToRule(final int maxLength) {
-		setMaxLength(maxLength);
+	public void attach(final JComponent owner) {
+		detach();
+		toolTipDialog = new ToolTipDialog(owner, new AnchorLink(Anchor.TOP_RIGHT, Anchor.TOP_LEFT));
 	}
 
-	public int getMaxLength() {
-		return maxLength;
+	public void detach() {
+		if (toolTipDialog != null) {
+			toolTipDialog.dispose();
+			toolTipDialog = null;
+		}
 	}
 
-	public void setMaxLength(final int maxLength) {
-		this.maxLength = maxLength;
-	}
+	protected String getToolTipText() {
+		String tip = null;
 
-	/**
-	 * @see StringBooleanRule#validate(Object)
-	 */
-	@Override
-	public Boolean validate(final String data) {
-		int length = 0;
-		if (data != null) {
-			length = trimIfNeeded(data).length();
+		if (toolTipDialog != null) {
+			tip = toolTipDialog.getText();
 		}
 
-		return (length <= maxLength);
+		return tip;
+	}
+
+	protected void setToolTipText(final String text) {
+		if (toolTipDialog != null) {
+			toolTipDialog.setText(text);
+		}
+	}
+
+	protected void showToolTip() {
+		toolTipDialog.setVisible(true);
+	}
+
+	protected void hideToolTip() {
+		toolTipDialog.setVisible(false);
 	}
 }
