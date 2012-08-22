@@ -101,7 +101,7 @@ public class IconTipDecorator extends AbstractDecorator {
 	public void setVisible(final boolean visible) {
 		super.setVisible(visible);
 
-		if((toolTipDialog == null) && visible) {
+		if ((toolTipDialog == null) && visible) {
 			toolTipDialog = new ToolTipDialog(decorationHolder, anchorLinkWithToolTip);
 			toolTipDialog.setText(toolTipText);
 		}

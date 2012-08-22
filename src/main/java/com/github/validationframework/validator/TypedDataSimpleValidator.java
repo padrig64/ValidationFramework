@@ -32,6 +32,8 @@ import com.github.validationframework.trigger.Trigger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+// TODO javadoc
+
 /**
  * Simple implementation of a homogeneous validator.<br>When any of its triggers is initiated, the simple homogeneous
  * validator will read all the data from all of its data providers, check them all against all of its rules, and handles
@@ -40,17 +42,18 @@ import org.slf4j.LoggerFactory;
  * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
  * type of the component itself.
  * @param <R> Type of validation result.<br>It can be, for instance, an enumeration or just a boolean.
- * @see AbstractHomogeneousValidator
+ * @see AbstractSimpleValidator
  */
-public class SimpleHomogeneousValidator<D, R> extends AbstractHomogeneousValidator<D, R> {
+public class TypedDataSimpleValidator<D, R>
+		extends AbstractSimpleValidator<Trigger, TypedDataProvider<D>, TypedDataRule<D, R>, ResultHandler<R>> {
 
 	/**
 	 * Logger for this class.
 	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(SimpleHomogeneousValidator.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(TypedDataSimpleValidator.class);
 
 	/**
-	 * @see AbstractHomogeneousValidator#processTrigger(Trigger)
+	 * @see AbstractSimpleValidator#processTrigger(Trigger)
 	 */
 	@Override
 	protected void processTrigger(final Trigger trigger) {

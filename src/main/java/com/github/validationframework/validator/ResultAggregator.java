@@ -33,7 +33,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class ResultAggregator<R, A> extends AbstractHomogeneousValidator<R, A> {
+public class ResultAggregator<R, A>
+		extends AbstractSimpleValidator<Trigger, TypedDataProvider<R>, TypedDataRule<R, A>, ResultHandler<A>> {
 
 	/**
 	 * Logger for this class.
@@ -41,7 +42,7 @@ public class ResultAggregator<R, A> extends AbstractHomogeneousValidator<R, A> {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ResultAggregator.class);
 
 	/**
-	 * @see AbstractHomogeneousValidator#processTrigger(Trigger)
+	 * @see AbstractSimpleValidator#processTrigger(Trigger)
 	 */
 	@Override
 	protected void processTrigger(final Trigger trigger) {

@@ -31,7 +31,7 @@ package com.github.validationframework.trigger;
  * @see TriggerListener
  * @see TriggerEvent
  * @see com.github.validationframework.validator.Validator
- * @see com.github.validationframework.validator.AbstractValidator
+ * @see com.github.validationframework.validator.AbstractSimpleValidator
  */
 public interface Trigger {
 

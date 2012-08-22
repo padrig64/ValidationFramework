@@ -25,14 +25,27 @@
 
 package com.github.validationframework.validator;
 
-import com.github.validationframework.dataprovider.TypedDataProvider;
+import com.github.validationframework.dataprovider.DataProvider;
 import com.github.validationframework.resulthandler.ResultHandler;
-import com.github.validationframework.rule.TypedDataRule;
+import com.github.validationframework.rule.Rule;
 import com.github.validationframework.trigger.Trigger;
 import com.github.validationframework.trigger.TriggerEvent;
 import com.github.validationframework.trigger.TriggerListener;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+
+/**
+ * Interface to be implemented by validators.<br>The validator is the central point of the validation framework. It
+ * implements the whole chain of validation, from the triggers, till the display of the feedback.<br>Upon validation
+ * trigger (for example, whenever the user enters some data in a field, presses an Apply button, etc.), data is
+ * retrieved (for example, from the input field, a database, etc.) and passed to the validation algorithm (for example,
+ * expecting data to be entered in a specific format), which produces validation results (for example, invalid input,
+ * valid input, input too long, misspelled, etc.), which are then used to give appropriate feedback to the user (for
+ * example, a popup dialog, an error icon, etc.).
+ */
 
 /**
  * Abstract implementation of a homogeneous validator.<br>A homogeneous validator is a validator whose data providers
@@ -44,14 +57,31 @@ import java.util.Map;
  * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
  * type of the component itself.
  * @param <R> Type of validation result.<br>It can be, for instance, an enumeration or just a boolean.
- * @see AbstractValidator
+ * @see AbstractSimpleValidator
  * @see Trigger
- * @see TypedDataProvider
- * @see TypedDataRule
+ * @see com.github.validationframework.dataprovider.TypedDataProvider
+ * @see com.github.validationframework.rule.TypedDataRule
  * @see com.github.validationframework.resulthandler.ResultHandler
  */
-public abstract class AbstractHomogeneousValidator<D, R>
-		extends AbstractValidator<Trigger, TypedDataProvider<D>, TypedDataRule<D, R>, ResultHandler<R>> {
+// TODO javadoc
+
+/**
+ * Abstract implementation of a validator.<br>It merely implements the methods to add and remove triggers, data
+ * providers, rules and result handlers. However, note that the connection between triggers, data providers, rules and
+ * result handlers, as well as all the validation logic is left to the sub-classes.
+ *
+ * @param <T> Type of trigger initiating the validation.
+ * @param <P> Type of data provider providing the input data to be validated.
+ * @param <U> Type of validation rules to be used on the input data.
+ * @param <H> Type of result handlers to be used on validation output.
+ * @see SimpleValidator
+ * @see Trigger
+ * @see DataProvider
+ * @see Rule
+ * @see ResultHandler
+ */
+public abstract class AbstractSimpleValidator<T extends Trigger, P extends DataProvider, U extends Rule, H extends ResultHandler>
+		implements SimpleValidator<T, P, U, H> {
 
 	/**
 	 * Listener to all registered triggers, initiating the validation logic.
@@ -61,19 +91,19 @@ public abstract class AbstractHomogeneousValidator<D, R>
 		/**
 		 * Trigger that is listened to.
 		 */
-		private final Trigger trigger;
+		private final T trigger;
 
 		/**
 		 * Constructor specifying the trigger that is listened to.
 		 *
 		 * @param trigger Trigger that is listened to.
 		 */
-		public TriggerAdapter(final Trigger trigger) {
+		public TriggerAdapter(final T trigger) {
 			this.trigger = trigger;
 		}
 
 		/**
-		 * @see TriggerListener#triggerValidation(TriggerEvent)
+		 * @see TriggerListener#triggerValidation(com.github.validationframework.trigger.TriggerEvent)
 		 */
 		@Override
 		public void triggerValidation(final TriggerEvent event) {
@@ -83,16 +113,36 @@ public abstract class AbstractHomogeneousValidator<D, R>
 	}
 
 	/**
-	 * Listener to all registered triggers.
+	 * Listeners to all registered validation triggers.
 	 */
-	private final Map<Trigger, TriggerListener> triggersToTriggerAdapters = new HashMap<Trigger, TriggerListener>();
+	private final Map<T, TriggerListener> triggersToTriggerAdapters = new HashMap<T, TriggerListener>();
 
 	/**
-	 * @see AbstractValidator#addTrigger(Trigger)
+	 * Registered validation triggers.
+	 */
+	protected final List<T> triggers = new ArrayList<T>();
+
+	/**
+	 * Registered validation data providers.
+	 */
+	protected final List<P> dataProviders = new ArrayList<P>();
+
+	/**
+	 * Registered validation rules.
+	 */
+	protected List<U> rules = new ArrayList<U>();
+
+	/**
+	 * Registered validation result handlers.
+	 */
+	protected final List<H> resultHandlers = new ArrayList<H>();
+
+	/**
+	 * @see SimpleValidator#addTrigger(Object)
 	 */
 	@Override
-	public void addTrigger(final Trigger trigger) {
-		super.addTrigger(trigger);
+	public void addTrigger(final T trigger) {
+		triggers.add(trigger);
 
 		// Hook to trigger only if not already done (the same trigger listener will be used if it was already hooked)
 		if (!triggersToTriggerAdapters.containsKey(trigger)) {
@@ -103,11 +153,11 @@ public abstract class AbstractHomogeneousValidator<D, R>
 	}
 
 	/**
-	 * @see AbstractValidator#removeTrigger(Trigger)
+	 * @see SimpleValidator#removeTrigger(Object)
 	 */
 	@Override
-	public void removeTrigger(final Trigger trigger) {
-		super.removeTrigger(trigger);
+	public void removeTrigger(final T trigger) {
+		triggers.remove(trigger);
 
 		// Unhook from trigger
 		final TriggerListener triggerAdapter = triggersToTriggerAdapters.get(trigger);
@@ -121,10 +171,58 @@ public abstract class AbstractHomogeneousValidator<D, R>
 	}
 
 	/**
+	 * @see SimpleValidator#addDataProvider(Object)
+	 */
+	@Override
+	public void addDataProvider(final P dataProvider) {
+		dataProviders.add(dataProvider);
+	}
+
+	/**
+	 * @see SimpleValidator#removeDataProvider(Object)
+	 */
+	@Override
+	public void removeDataProvider(final P dataProvider) {
+		dataProviders.remove(dataProvider);
+	}
+
+	/**
+	 * @see SimpleValidator#addRule(Object)
+	 */
+	@Override
+	public void addRule(final U rule) {
+		rules.add(rule);
+	}
+
+	/**
+	 * @see SimpleValidator#removeRule(Object)
+	 */
+	@Override
+	public void removeRule(final U rule) {
+		rules.remove(rule);
+	}
+
+	/**
+	 * @see SimpleValidator#addResultHandler(Object)
+	 */
+	@Override
+	public void addResultHandler(final H resultHandler) {
+		resultHandlers.add(resultHandler);
+	}
+
+	/**
+	 * @see SimpleValidator#removeResultHandler(Object)
+	 */
+	@Override
+	public void removeResultHandler(final H resultHandler) {
+		resultHandlers.remove(resultHandler);
+	}
+
+	/**
 	 * Performs the whole validation logic for the specified trigger.<br>Typically, data will be read from the data
 	 * providers and passed to the rules, and the rule results will be processed by the result handlers.
 	 *
 	 * @param trigger Trigger actually initiated.
 	 */
-	protected abstract void processTrigger(final Trigger trigger);
+	protected abstract void processTrigger(final T trigger);
 }

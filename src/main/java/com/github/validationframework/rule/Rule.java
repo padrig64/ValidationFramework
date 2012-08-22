@@ -30,7 +30,7 @@ package com.github.validationframework.rule;
  * validation check on the data.Typically, it uses data from the data providers and return a validation result.
  *
  * @see com.github.validationframework.validator.Validator
- * @see com.github.validationframework.validator.AbstractValidator
+ * @see com.github.validationframework.validator.AbstractSimpleValidator
  */
 public interface Rule {
 	// Nothing to be done

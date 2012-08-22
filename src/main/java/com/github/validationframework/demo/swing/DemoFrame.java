@@ -37,7 +37,7 @@ import com.github.validationframework.rule.string.StringRegexRule;
 import com.github.validationframework.rule.string.swing.JFormattedTextFieldFormatterRule;
 import com.github.validationframework.trigger.swing.JFormattedTextFieldDocumentChangedTrigger;
 import com.github.validationframework.trigger.swing.JTextFieldDocumentChangedTrigger;
-import com.github.validationframework.validator.SimpleHomogeneousValidator;
+import com.github.validationframework.validator.TypedDataSimpleValidator;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -276,7 +276,7 @@ public class DemoFrame extends JFrame {
 //		resultCollector2 = new DirectResultCollector<InputFieldResult>();
 //		resultCollector3 = new DirectResultCollector<InputFieldResult>();
 //		resultCollector4 = new DirectResultCollector<Boolean>();
-//		resultAggregator.addTrigger(resultCollector4);
+//		resultAggregator.hookTrigger(resultCollector4);
 //		resultAggregator.addDataProvider(resultCollector4);
 //		resultAggregator.addRule(new DirectBooleanRule());
 //		final ComponentEnablingBooleanResultHandler aggregatedResultHandler = new ComponentEnablingBooleanResultHandler();
@@ -316,8 +316,8 @@ public class DemoFrame extends JFrame {
 	private Component createInputField1() {
 		final JTextField textField = new JTextField();
 
-		final SimpleHomogeneousValidator<String, InputFieldResult> validator1 =
-				new SimpleHomogeneousValidator<String, InputFieldResult>();
+		final TypedDataSimpleValidator<String, InputFieldResult> validator1 =
+				new TypedDataSimpleValidator<String, InputFieldResult>();
 		validator1.addTrigger(new JTextFieldDocumentChangedTrigger(textField));
 		validator1.addDataProvider(new JTextFieldTextProvider(textField));
 		validator1.addRule(new InputFieldRule());
@@ -331,8 +331,8 @@ public class DemoFrame extends JFrame {
 	private Component createInputField2() {
 		final JTextField textField = new JTextField();
 
-		final SimpleHomogeneousValidator<String, InputFieldResult> validator2 =
-				new SimpleHomogeneousValidator<String, InputFieldResult>();
+		final TypedDataSimpleValidator<String, InputFieldResult> validator2 =
+				new TypedDataSimpleValidator<String, InputFieldResult>();
 		validator2.addTrigger(new JTextFieldDocumentChangedTrigger(textField));
 		validator2.addDataProvider(new JTextFieldTextProvider(textField));
 		validator2.addRule(new InputFieldRule());
@@ -346,8 +346,8 @@ public class DemoFrame extends JFrame {
 	private Component createInputField3() {
 		final JTextField textField = new JTextField();
 
-		final SimpleHomogeneousValidator<String, InputFieldResult> validator3 =
-				new SimpleHomogeneousValidator<String, InputFieldResult>();
+		final TypedDataSimpleValidator<String, InputFieldResult> validator3 =
+				new TypedDataSimpleValidator<String, InputFieldResult>();
 		validator3.addTrigger(new JTextFieldDocumentChangedTrigger(textField));
 		validator3.addDataProvider(new JTextFieldTextProvider(textField));
 		validator3.addRule(new InputFieldRule());
@@ -368,8 +368,7 @@ public class DemoFrame extends JFrame {
 		courseFormatter.setMaximum(359.0);
 		final JFormattedTextField formattedTextField = new JFormattedTextField(courseFormatter);
 
-		final SimpleHomogeneousValidator<String, Boolean> validator4 =
-				new SimpleHomogeneousValidator<String, Boolean>();
+		final TypedDataSimpleValidator<String, Boolean> validator4 = new TypedDataSimpleValidator<String, Boolean>();
 		validator4.addTrigger(new JFormattedTextFieldDocumentChangedTrigger(formattedTextField));
 		validator4.addDataProvider(new JFormattedTextFieldTextProvider(formattedTextField));
 		validator4.addRule(
@@ -379,7 +378,7 @@ public class DemoFrame extends JFrame {
 
 //		final SimpleHomogeneousValidator<Number, Boolean> validator4 =
 //				new SimpleHomogeneousValidator<Number, Boolean>();
-//		validator4.addTrigger(new JFormattedTextFieldDocumentChangedTrigger(formattedTextField));
+//		validator4.hookTrigger(new JFormattedTextFieldDocumentChangedTrigger(formattedTextField));
 //		validator4.addDataProvider(new JFormattedTextFieldNumberValueProvider(formattedTextField));
 //		validator4.addRule(new CompositeTypedDataBooleanRule<Number>(new NumberGreaterThanOrEqualToRule(0.0),
 //				new NumberLessThanRule(360.0)));

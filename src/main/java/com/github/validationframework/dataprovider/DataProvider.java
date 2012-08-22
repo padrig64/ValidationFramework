@@ -30,7 +30,7 @@ package com.github.validationframework.dataprovider;
  * rules, upon validation trigger.
  *
  * @see com.github.validationframework.validator.Validator
- * @see com.github.validationframework.validator.AbstractValidator
+ * @see com.github.validationframework.validator.AbstractSimpleValidator
  */
 public interface DataProvider {
 	// Nothing to be done
