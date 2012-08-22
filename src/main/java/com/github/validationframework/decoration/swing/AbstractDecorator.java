@@ -108,6 +108,8 @@ public abstract class AbstractDecorator {
 	private final ComponentTracker ownerTracker = new ComponentTracker();
 	protected DecorationHolder decorationHolder = new DecorationHolder();
 
+	private JLayeredPane attachedLayeredPane = null;
+
 	public AbstractDecorator(final JComponent owner, final AnchorLink anchorLink) {
 		this.anchorLink = anchorLink;
 		attach(owner);
@@ -122,11 +124,7 @@ public abstract class AbstractDecorator {
 			owner.addComponentListener(ownerTracker);
 			owner.addAncestorListener(ownerTracker);
 
-			// Get ancestor layered pane that will get the decoration holder component
-			final Container ancestor = SwingUtilities.getAncestorOfClass(JLayeredPane.class, owner);
-			if (ancestor instanceof JLayeredPane) {
-				ancestor.add(decorationHolder, JLayeredPane.DRAG_LAYER);
-			}
+			attachToLayeredPane();
 		}
 	}
 
@@ -135,12 +133,22 @@ public abstract class AbstractDecorator {
 			owner.removeComponentListener(ownerTracker);
 			owner.removeAncestorListener(ownerTracker);
 
-			// Get ancestor layered pane that contained the decoration holder component
-			final Container ancestor = SwingUtilities.getAncestorOfClass(JLayeredPane.class, owner);
-			if (ancestor instanceof JLayeredPane) {
-				ancestor.remove(decorationHolder);
-			}
+			detachFromLayeredPane();
 		}
+	}
+
+	private void attachToLayeredPane() {
+		// Get ancestor layered pane that will get the decoration holder component
+		final Container ancestor = SwingUtilities.getAncestorOfClass(JLayeredPane.class, owner);
+		if (ancestor instanceof JLayeredPane) {
+			attachedLayeredPane = (JLayeredPane) ancestor;
+			attachedLayeredPane.add(decorationHolder, JLayeredPane.DRAG_LAYER);
+		}
+	}
+
+	private void detachFromLayeredPane() {
+		attachedLayeredPane.remove(decorationHolder);
+		attachedLayeredPane = null;
 	}
 
 	public AnchorLink getAnchorLink() {
@@ -163,6 +171,9 @@ public abstract class AbstractDecorator {
 
 	protected void followOwner() {
 		if (decorationHolder != null) {
+			if (attachedLayeredPane == null) {
+				attachToLayeredPane();
+			}
 			final Container ancestor = SwingUtilities.getAncestorOfClass(JLayeredPane.class, owner);
 			if (ancestor instanceof JLayeredPane) {
 				final Point locationInLayeredPane =

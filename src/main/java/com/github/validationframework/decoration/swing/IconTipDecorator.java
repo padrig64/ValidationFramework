@@ -50,7 +50,9 @@ public class IconTipDecorator extends AbstractDecorator {
 
 	private Icon icon = null;
 
-	private ToolTipDialog toolTipDialog = null;
+	private ToolTipDialog toolTipDialog = null; // Lazy initialization to make sure we will have a parent
+
+	private String toolTipText = null;
 
 	private static final AnchorLink DEFAULT_ANCHOR_LINK_WITH_OWNER = new AnchorLink(Anchor.BOTTOM_LEFT, Anchor.CENTER);
 
@@ -64,16 +66,18 @@ public class IconTipDecorator extends AbstractDecorator {
 		super(owner, DEFAULT_ANCHOR_LINK_WITH_OWNER);
 		this.icon = icon;
 
-		toolTipDialog = new ToolTipDialog(decorationHolder, anchorLinkWithToolTip);
 		decorationHolder.addMouseListener(new ToolTipAdapter());
 	}
 
 	public String getText() {
-		return toolTipDialog.getText();
+		return toolTipText;
 	}
 
 	public void setText(final String text) {
-		toolTipDialog.setText(text);
+		this.toolTipText = text;
+		if (toolTipDialog != null) {
+			toolTipDialog.setText(text);
+		}
 	}
 
 	public Icon getIcon() {
@@ -97,6 +101,10 @@ public class IconTipDecorator extends AbstractDecorator {
 	public void setVisible(final boolean visible) {
 		super.setVisible(visible);
 
+		if((toolTipDialog == null) && visible) {
+			toolTipDialog = new ToolTipDialog(decorationHolder, anchorLinkWithToolTip);
+			toolTipDialog.setText(toolTipText);
+		}
 		if (!visible && (toolTipDialog != null)) {
 			toolTipDialog.setVisible(false);
 		}

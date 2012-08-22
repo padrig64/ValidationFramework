@@ -8,6 +8,7 @@
 
 . Transformers (of Data and Results)
 
+. Reformat/Revert JFormattedTextField when focus lost?
 . Initial focus for JFormattedTextField helper
 
 . Decoration transparency on Java 7

@@ -27,20 +27,16 @@ package com.github.validationframework.demo.swing;
 
 import com.github.validationframework.dataprovider.swing.JFormattedTextFieldTextProvider;
 import com.github.validationframework.dataprovider.swing.JTextFieldTextProvider;
-import com.github.validationframework.resulthandler.DirectResultCollector;
 import com.github.validationframework.resulthandler.swing.AbstractColorFeedBack;
 import com.github.validationframework.resulthandler.swing.AbstractIconFeedBack;
 import com.github.validationframework.resulthandler.swing.AbstractIconTipFeedBack;
 import com.github.validationframework.resulthandler.swing.AbstractToolTipFeedBack;
-import com.github.validationframework.resulthandler.swing.ComponentEnablingBooleanResultHandler;
 import com.github.validationframework.rule.CompositeTypedDataBooleanRule;
 import com.github.validationframework.rule.TypedDataRule;
-import com.github.validationframework.rule.bool.DirectBooleanRule;
 import com.github.validationframework.rule.string.StringRegexRule;
 import com.github.validationframework.rule.string.swing.JFormattedTextFieldFormatterRule;
 import com.github.validationframework.trigger.swing.JFormattedTextFieldDocumentChangedTrigger;
 import com.github.validationframework.trigger.swing.JTextFieldDocumentChangedTrigger;
-import com.github.validationframework.validator.ResultAggregator;
 import com.github.validationframework.validator.SimpleHomogeneousValidator;
 import java.awt.Color;
 import java.awt.Component;
@@ -187,7 +183,6 @@ public class DemoFrame extends JFrame {
 		@Override
 		public void handleResult(final InputFieldResult result) {
 			setIcon(result.getIcon());
-			System.out.println("DemoFrame$InputFieldIconFeedBack.handleResult: " + result);
 			switch (result) {
 				case OK:
 					hideIconTip();
@@ -255,10 +250,10 @@ public class DemoFrame extends JFrame {
 	 */
 	private static final long serialVersionUID = -2039502440268195814L;
 
-	private DirectResultCollector<InputFieldResult> resultCollector1;
-	private DirectResultCollector<InputFieldResult> resultCollector2;
-	private DirectResultCollector<InputFieldResult> resultCollector3;
-	private DirectResultCollector<Boolean> resultCollector4;
+//	private DirectResultCollector<InputFieldResult> resultCollector1;
+//	private DirectResultCollector<InputFieldResult> resultCollector2;
+//	private DirectResultCollector<InputFieldResult> resultCollector3;
+//	private DirectResultCollector<Boolean> resultCollector4;
 
 	/**
 	 * Default constructor.
@@ -275,17 +270,17 @@ public class DemoFrame extends JFrame {
 		setTitle("Validation Framework Test");
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-		// Create aggregation validator
-		final ResultAggregator<Boolean, Boolean> resultAggregator = new ResultAggregator<Boolean, Boolean>();
-		resultCollector1 = new DirectResultCollector<InputFieldResult>();
-		resultCollector2 = new DirectResultCollector<InputFieldResult>();
-		resultCollector3 = new DirectResultCollector<InputFieldResult>();
-		resultCollector4 = new DirectResultCollector<Boolean>();
-		resultAggregator.addTrigger(resultCollector4);
-		resultAggregator.addDataProvider(resultCollector4);
-		resultAggregator.addRule(new DirectBooleanRule());
-		final ComponentEnablingBooleanResultHandler aggregatedResultHandler = new ComponentEnablingBooleanResultHandler();
-		resultAggregator.addResultHandler(aggregatedResultHandler);
+//		// Create aggregation validator
+//		final ResultAggregator<Boolean, Boolean> resultAggregator = new ResultAggregator<Boolean, Boolean>();
+//		resultCollector1 = new DirectResultCollector<InputFieldResult>();
+//		resultCollector2 = new DirectResultCollector<InputFieldResult>();
+//		resultCollector3 = new DirectResultCollector<InputFieldResult>();
+//		resultCollector4 = new DirectResultCollector<Boolean>();
+//		resultAggregator.addTrigger(resultCollector4);
+//		resultAggregator.addDataProvider(resultCollector4);
+//		resultAggregator.addRule(new DirectBooleanRule());
+//		final ComponentEnablingBooleanResultHandler aggregatedResultHandler = new ComponentEnablingBooleanResultHandler();
+//		resultAggregator.addResultHandler(aggregatedResultHandler);
 
 		// Create content pane
 		final JPanel contentPane = new JPanel(
@@ -305,7 +300,7 @@ public class DemoFrame extends JFrame {
 		// Apply button
 		final JButton applyButton = new JButton("Apply");
 		contentPane.add(applyButton, "growx, span");
-		aggregatedResultHandler.addComponent(applyButton);
+//		aggregatedResultHandler.addComponent(applyButton);
 
 		// Set size
 		pack();
@@ -328,7 +323,7 @@ public class DemoFrame extends JFrame {
 		validator1.addRule(new InputFieldRule());
 		validator1.addResultHandler(new InputFieldToolTipFeedBack(textField));
 
-		validator1.addResultHandler(resultCollector1);
+//		validator1.addResultHandler(resultCollector1);
 
 		return textField;
 	}
@@ -343,7 +338,7 @@ public class DemoFrame extends JFrame {
 		validator2.addRule(new InputFieldRule());
 		validator2.addResultHandler(new InputFieldColorFeedBack(textField));
 
-		validator2.addResultHandler(resultCollector2);
+//		validator2.addResultHandler(resultCollector2);
 
 		return textField;
 	}
@@ -358,7 +353,7 @@ public class DemoFrame extends JFrame {
 		validator3.addRule(new InputFieldRule());
 		validator3.addResultHandler(new InputFieldIconFeedBack(textField));
 
-		validator3.addResultHandler(resultCollector3);
+//		validator3.addResultHandler(resultCollector3);
 
 		return textField;
 	}
@@ -390,7 +385,7 @@ public class DemoFrame extends JFrame {
 //				new NumberLessThanRule(360.0)));
 //		validator4.addResultHandler(new AngleInputFieldFeedBack(formattedTextField));
 
-		validator4.addResultHandler(resultCollector4);
+//		validator4.addResultHandler(resultCollector4);
 
 		return formattedTextField;
 	}

@@ -28,6 +28,7 @@ package com.github.validationframework.decoration.swing;
 import com.github.validationframework.decoration.swing.utils.AnchorLink;
 import com.github.validationframework.utils.ValueUtils;
 import com.sun.jna.platform.WindowUtils;
+import java.awt.IllegalComponentStateException;
 import java.awt.Point;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
@@ -46,6 +47,8 @@ import org.jdesktop.core.animation.timing.TimingSource;
 import org.jdesktop.core.animation.timing.TimingTarget;
 import org.jdesktop.core.animation.timing.interpolators.SplineInterpolator;
 import org.jdesktop.swing.animation.timing.sources.SwingTimerTimingSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ToolTipDialog extends JDialog {
 
@@ -177,6 +180,11 @@ public class ToolTipDialog extends JDialog {
 	 */
 	private static final long serialVersionUID = -8703799877460319097L;
 
+	/**
+	 * Logger for this class.
+	 */
+	private static final Logger LOGGER = LoggerFactory.getLogger(ToolTipDialog.class);
+
 	private JComponent owner = null;
 
 	private JToolTip toolTip = null;
@@ -259,10 +267,14 @@ public class ToolTipDialog extends JDialog {
 
 	private void followOwner() {
 		if (owner.isVisible()) {
-			final Point screenLocation = owner.getLocationOnScreen();
-			final Point relativeSlaveLocation =
-					anchorLink.getRelativeSlaveLocation(owner.getSize(), ToolTipDialog.this.getSize());
-			setLocation(screenLocation.x + relativeSlaveLocation.x, screenLocation.y + relativeSlaveLocation.y);
+			try {
+				final Point screenLocation = owner.getLocationOnScreen();
+				final Point relativeSlaveLocation =
+						anchorLink.getRelativeSlaveLocation(owner.getSize(), ToolTipDialog.this.getSize());
+				setLocation(screenLocation.x + relativeSlaveLocation.x, screenLocation.y + relativeSlaveLocation.y);
+			} catch (IllegalComponentStateException e) {
+				LOGGER.error("Failed getting location of component: " + owner, e);
+			}
 		}
 	}
 }
