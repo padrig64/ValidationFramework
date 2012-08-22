@@ -61,6 +61,10 @@ public class JComboBoxOpenedTrigger extends AbstractTrigger {
 		source.addPopupMenuListener(sourceAdapter);
 	}
 
+	/**
+	 * @see AbstractTrigger#dispose()
+	 */
+	@Override
 	public void dispose() {
 		source.removePopupMenuListener(sourceAdapter);
 		source = null;

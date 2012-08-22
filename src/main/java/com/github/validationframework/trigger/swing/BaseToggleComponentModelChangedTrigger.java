@@ -51,6 +51,10 @@ public class BaseToggleComponentModelChangedTrigger<C extends JToggleButton> ext
 		source.addItemListener(sourceAdapter);
 	}
 
+	/**
+	 * @see AbstractTrigger#dispose()
+	 */
+	@Override
 	public void dispose() {
 		source.removeItemListener(sourceAdapter);
 		source = null;

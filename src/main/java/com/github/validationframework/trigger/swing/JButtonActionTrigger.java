@@ -51,6 +51,10 @@ public class JButtonActionTrigger extends AbstractTrigger {
 		source.addActionListener(sourceAdapter);
 	}
 
+	/**
+	 * @see AbstractTrigger#dispose()
+	 */
+	@Override
 	public void dispose() {
 		source.removeActionListener(sourceAdapter);
 		source = null;

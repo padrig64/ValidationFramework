@@ -64,7 +64,7 @@ import javax.swing.plaf.ColorUIResource;
 import javax.swing.text.NumberFormatter;
 import net.miginfocom.swing.MigLayout;
 
-public class DemoFrame extends JFrame {
+public class SimpleDemoApp extends JFrame {
 
 	/**
 	 * UIResource in case look-and-feel changes while result is visible. The new look-and-feel is allowed to replace it
@@ -258,7 +258,7 @@ public class DemoFrame extends JFrame {
 	/**
 	 * Default constructor.
 	 */
-	public DemoFrame() {
+	public SimpleDemoApp() {
 		super();
 		init();
 	}
@@ -413,7 +413,7 @@ public class DemoFrame extends JFrame {
 				}
 
 				// Show window
-				new DemoFrame().setVisible(true);
+				new SimpleDemoApp().setVisible(true);
 			}
 		});
 	}

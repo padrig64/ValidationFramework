@@ -23,51 +23,45 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.trigger.swing;
+package com.github.validationframework.dataprovider.swing;
 
-import com.github.validationframework.trigger.AbstractTrigger;
-import com.github.validationframework.trigger.TriggerEvent;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
+import com.github.validationframework.dataprovider.TypedDataProvider;
+import java.awt.Component;
+import javax.swing.JTable;
 import javax.swing.text.JTextComponent;
 
-public class BaseTextComponentDocumentChangedTrigger<C extends JTextComponent> extends AbstractTrigger {
+/**
+ * Provider of the text of the current text editor component from a given table.<br>Note that if the table is not in
+ * editing, no text can be provided.
+ */
+public class JTableTextEditorTextProvider implements TypedDataProvider<String> {
 
-	private class SourceAdapter implements DocumentListener {
+	/**
+	 * Table holding the editor component to get the text from.
+	 */
+	private final JTable table;
 
-		@Override
-		public void insertUpdate(final DocumentEvent e) {
-			fireTriggerEvent(new TriggerEvent(source));
-		}
-
-		@Override
-		public void removeUpdate(final DocumentEvent e) {
-			fireTriggerEvent(new TriggerEvent(source));
-		}
-
-		@Override
-		public void changedUpdate(final DocumentEvent e) {
-			fireTriggerEvent(new TriggerEvent(source));
-		}
-	}
-
-	private C source = null;
-
-	private final DocumentListener sourceAdapter = new SourceAdapter();
-
-	public BaseTextComponentDocumentChangedTrigger(final C source) {
-		super();
-		this.source = source;
-		source.getDocument().addDocumentListener(sourceAdapter);
-		// TODO Track document replacement
+	/**
+	 * Constructor specifying the table holding the editor component to get the text from.
+	 *
+	 * @param table Editable table.
+	 */
+	public JTableTextEditorTextProvider(final JTable table) {
+		this.table = table;
 	}
 
 	/**
-	 * @see AbstractTrigger#dispose()
+	 * @see TypedDataProvider#getData()
 	 */
 	@Override
-	public void dispose() {
-		source.getDocument().removeDocumentListener(sourceAdapter);
-		source = null;
+	public String getData() {
+		String data = null;
+
+		final Component editorComponent = table.getEditorComponent();
+		if (editorComponent instanceof JTextComponent) {
+			data = ((JTextComponent) editorComponent).getText();
+		}
+
+		return data;
 	}
 }

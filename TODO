@@ -5,6 +5,7 @@
 . Table editing
 . Check decoration in scrollpanes
 . SimpleHomogeneousValidator<?,Boolean> vs addRule()
+. Spinner
 
 . Transformers (of Data and Results)
 

@@ -51,6 +51,10 @@ public class JSpinnerModelChangeTrigger extends AbstractTrigger {
 		source.addChangeListener(sourceAdapter);
 	}
 
+	/**
+	 * @see AbstractTrigger#dispose()
+	 */
+	@Override
 	public void dispose() {
 		source.removeChangeListener(sourceAdapter);
 		source = null;

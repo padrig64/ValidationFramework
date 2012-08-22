@@ -80,8 +80,9 @@ public class BaseComponentFocusGainedTrigger<C extends Component> extends Abstra
 	}
 
 	/**
-	 * Detaches from the component.
+	 * @see AbstractTrigger#dispose()
 	 */
+	@Override
 	public void dispose() {
 		source.removeFocusListener(sourceAdapter);
 		source = null;

@@ -80,8 +80,9 @@ public class BaseComponentFocusLostTrigger<C extends JComponent> extends Abstrac
 	}
 
 	/**
-	 * Detaches from the component.
+	 * @see AbstractTrigger#dispose()
 	 */
+	@Override
 	public void dispose() {
 		source.removeFocusListener(sourceAdapter);
 		source = null;

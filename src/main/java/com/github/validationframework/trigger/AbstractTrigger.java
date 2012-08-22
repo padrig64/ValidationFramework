@@ -25,6 +25,7 @@
 
 package com.github.validationframework.trigger;
 
+import com.github.validationframework.common.Disposable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +38,7 @@ import java.util.List;
  * @see TriggerListener
  * @see TriggerEvent
  */
-public abstract class AbstractTrigger implements Trigger {
+public abstract class AbstractTrigger implements Trigger, Disposable {
 
 	/**
 	 * Trigger listeners.
@@ -69,5 +70,10 @@ public abstract class AbstractTrigger implements Trigger {
 		for (final TriggerListener listener : listeners) {
 			listener.triggerValidation(event);
 		}
+	}
+
+	@Override
+	public void dispose() {
+		// Nothing to be done by default
 	}
 }
