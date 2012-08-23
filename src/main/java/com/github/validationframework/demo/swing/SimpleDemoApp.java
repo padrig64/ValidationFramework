@@ -373,14 +373,13 @@ public class SimpleDemoApp extends JFrame {
 		validator4.addDataProvider(new JFormattedTextFieldTextProvider(formattedTextField));
 		validator4.addRule(
 				new CompositeAndTypedDataBooleanRule<String>(new JFormattedTextFieldFormatterRule(formattedTextField),
-						new StringRegexRule("^[0-9]{1,3}$")));
+						new StringRegexRule("^[0-9]+$")));
 		validator4.addResultHandler(new AngleInputFieldFeedBack(formattedTextField));
 
-//		final SimpleHomogeneousValidator<Number, Boolean> validator4 =
-//				new SimpleHomogeneousValidator<Number, Boolean>();
-//		validator4.hookTrigger(new JFormattedTextFieldDocumentChangedTrigger(formattedTextField));
+//		final TypedDataSimpleValidator<Number, Boolean> validator4 = new TypedDataSimpleValidator<Number, Boolean>();
+//		validator4.addTrigger(new JFormattedTextFieldDocumentChangedTrigger(formattedTextField));
 //		validator4.addDataProvider(new JFormattedTextFieldNumberValueProvider(formattedTextField));
-//		validator4.addRule(new CompositeTypedDataBooleanRule<Number>(new NumberGreaterThanOrEqualToRule(0.0),
+//		validator4.addRule(new CompositeAndTypedDataBooleanRule<Number>(new NumberGreaterThanOrEqualToRule(0.0),
 //				new NumberLessThanRule(360.0)));
 //		validator4.addResultHandler(new AngleInputFieldFeedBack(formattedTextField));
 

@@ -25,7 +25,6 @@
 
 package com.github.validationframework.rule;
 
-import com.github.validationframework.rule.UntypedDataRule;
 import java.util.ArrayList;
 import java.util.List;
 

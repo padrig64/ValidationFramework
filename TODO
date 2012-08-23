@@ -8,6 +8,7 @@
 . Spinner
 
 . Transformers (of Data and Results)
+. Auto-scroll/jump to errors in case of scrollpanes, tabbedpane, etc.
 
 . Reformat/Revert JFormattedTextField when focus lost?
 . Initial focus for JFormattedTextField helper

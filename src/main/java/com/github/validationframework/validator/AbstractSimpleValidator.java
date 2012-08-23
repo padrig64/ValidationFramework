@@ -25,6 +25,7 @@
 
 package com.github.validationframework.validator;
 
+import com.github.validationframework.common.Disposable;
 import com.github.validationframework.dataprovider.DataProvider;
 import com.github.validationframework.resulthandler.ResultHandler;
 import com.github.validationframework.rule.Rule;
@@ -81,7 +82,7 @@ import java.util.Map;
  * @see ResultHandler
  */
 public abstract class AbstractSimpleValidator<T extends Trigger, P extends DataProvider, U extends Rule, H extends ResultHandler>
-		implements SimpleValidator<T, P, U, H> {
+		implements SimpleValidator<T, P, U, H>, Disposable {
 
 	/**
 	 * Listener to all registered triggers, initiating the validation logic.
@@ -216,6 +217,87 @@ public abstract class AbstractSimpleValidator<T extends Trigger, P extends DataP
 	@Override
 	public void removeResultHandler(final H resultHandler) {
 		resultHandlers.remove(resultHandler);
+	}
+
+	/**
+	 * @see Disposable#dispose()
+	 */
+	@Override
+	public void dispose() {
+		disposeTriggers();
+		disposeDataProviders();
+		disposeRules();
+		disposeResultHandlers();
+	}
+
+	/**
+	 * Clears all triggers.
+	 */
+	private void disposeTriggers() {
+		// Browse through all triggers
+		for (final T trigger : triggers) {
+			// Disconnect installed trigger adapter and forget about the trigger
+			final TriggerListener triggerAdapter = triggersToTriggerAdapters.remove(trigger);
+			if (triggerAdapter != null) {
+				trigger.removeTriggerListener(triggerAdapter);
+			}
+
+			// Dispose trigger itself
+			if (trigger instanceof Disposable) {
+				((Disposable) trigger).dispose();
+			}
+		}
+
+		// Clears all triggers
+		triggers.clear();
+	}
+
+	/**
+	 * Clears all data providers.
+	 */
+	private void disposeDataProviders() {
+		// Browse through all data providers
+		for (final P dataProvider : dataProviders) {
+			// Dispose data provider itself
+			if (dataProvider instanceof Disposable) {
+				((Disposable) dataProvider).dispose();
+			}
+		}
+
+		// Clear all data providers
+		dataProviders.clear();
+	}
+
+	/**
+	 * Clears all rules.
+	 */
+	private void disposeRules() {
+		// Browse through all rules
+		for (final U rule : rules) {
+			// Dispose rule itself
+			if (rule instanceof Disposable) {
+				((Disposable) rule).dispose();
+			}
+		}
+
+		// Clear all data providers
+		rules.clear();
+	}
+
+	/**
+	 * Clears all result handlers.
+	 */
+	private void disposeResultHandlers() {
+		// Browse through all rules
+		for (final H resultHandler : resultHandlers) {
+			// Dispose rule itself
+			if (resultHandler instanceof Disposable) {
+				((Disposable) resultHandler).dispose();
+			}
+		}
+
+		// Clear all data providers
+		resultHandlers.clear();
 	}
 
 	/**

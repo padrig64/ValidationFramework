@@ -25,6 +25,7 @@
 
 package com.github.validationframework.validator;
 
+import com.github.validationframework.common.Disposable;
 import com.github.validationframework.dataprovider.DataProvider;
 import com.github.validationframework.resulthandler.ResultHandler;
 import com.github.validationframework.rule.Rule;
@@ -71,7 +72,7 @@ import org.slf4j.LoggerFactory;
  * @see com.github.validationframework.resulthandler.ResultHandler
  */
 public abstract class AbstractMappableValidator<T extends Trigger, P extends DataProvider, U extends Rule, R, H extends ResultHandler>
-		implements MappableValidator<T, P, U, R, H> {
+		implements MappableValidator<T, P, U, R, H>, Disposable {
 
 	/**
 	 * Listener to all registered triggers, initiating the validation logic.
@@ -108,7 +109,7 @@ public abstract class AbstractMappableValidator<T extends Trigger, P extends Dat
 	protected final Map<T, TriggerListener> triggersToTriggerAdapters = new HashMap<T, TriggerListener>();
 
 	private void hookTrigger(final T trigger) {
-		// Hook to trigger only if not already done (the same trigger listener will be used if it was already hooked)
+		// Hook to trigger only if not already done (the same trigger adatper will be used if it was already hooked)
 		if (!triggersToTriggerAdapters.containsKey(trigger)) {
 			final TriggerListener triggerAdapter = new TriggerAdapter(trigger);
 			triggersToTriggerAdapters.put(trigger, triggerAdapter);
@@ -160,6 +161,10 @@ public abstract class AbstractMappableValidator<T extends Trigger, P extends Dat
 		} else if (dataProvider == null) {
 			unmapTriggerFromAllDataProviders(trigger);
 		} else {
+			// Hook trigger
+			hookTrigger(trigger);
+
+			// Do the mapping
 			List<P> mappedDataProviders = triggersToDataProviders.get(trigger);
 			if (mappedDataProviders == null) {
 				mappedDataProviders = new ArrayList<P>();
@@ -176,6 +181,7 @@ public abstract class AbstractMappableValidator<T extends Trigger, P extends Dat
 	 */
 	private void unmapTriggerFromAllDataProviders(final T trigger) {
 		if (trigger != null) {
+			unhookTrigger(trigger);
 			triggersToDataProviders.remove(trigger);
 		}
 	}
@@ -281,6 +287,88 @@ public abstract class AbstractMappableValidator<T extends Trigger, P extends Dat
 				mappedResultHandlers.remove(resultHandler);
 			}
 		}
+	}
+
+	/**
+	 * @see Disposable#dispose()
+	 */
+	@Override
+	public void dispose() {
+		disposeTriggersAndDataProviders();
+		disposeDataProvidersAndRules();
+		disposeResultsAndResultHandlers();
+	}
+
+	private void disposeTriggersAndDataProviders() {
+		for (final Map.Entry<T, List<P>> entry : triggersToDataProviders.entrySet()) {
+			// Disconnect from trigger
+			unhookTrigger(entry.getKey());
+
+			// Dispose trigger itself
+			final T trigger = entry.getKey();
+			if (trigger instanceof Disposable) {
+				((Disposable) trigger).dispose();
+			}
+
+			// Dispose data providers
+			final List<P> dataProviders = entry.getValue();
+			if (dataProviders != null) {
+				for (final P dataProvider : dataProviders) {
+					if (dataProvider instanceof Disposable) {
+						((Disposable) dataProvider).dispose();
+					}
+				}
+			}
+		}
+
+		// Clears all triggers
+		triggersToDataProviders.clear();
+	}
+
+	private void disposeDataProvidersAndRules() {
+		for (final Map.Entry<P, List<U>> entry : dataProvidersToRules.entrySet()) {
+			// Dispose data provider
+			final P dataProvider = entry.getKey();
+			if (dataProvider instanceof Disposable) {
+				((Disposable) dataProvider).dispose();
+			}
+
+			// Dispose rules
+			final List<U> rules = entry.getValue();
+			if (rules != null) {
+				for (final U rule : rules) {
+					if (rule instanceof Disposable) {
+						((Disposable) rule).dispose();
+					}
+				}
+			}
+		}
+
+		// Clears all triggers
+		dataProvidersToRules.clear();
+	}
+
+	private void disposeResultsAndResultHandlers() {
+		for (final Map.Entry<R, List<H>> entry : resultsToResultHandlers.entrySet()) {
+			// Dispose result
+			final R result = entry.getKey();
+			if (result instanceof Disposable) {
+				((Disposable) result).dispose();
+			}
+
+			// Dispose result handlers
+			final List<H> resultHandlers = entry.getValue();
+			if (resultHandlers != null) {
+				for (final H resultHandler : resultHandlers) {
+					if (resultHandler instanceof Disposable) {
+						((Disposable) resultHandler).dispose();
+					}
+				}
+			}
+		}
+
+		// Clears all triggers
+		resultsToResultHandlers.clear();
 	}
 
 	/**
