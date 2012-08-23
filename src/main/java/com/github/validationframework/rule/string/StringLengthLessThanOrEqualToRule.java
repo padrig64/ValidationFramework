@@ -49,7 +49,7 @@ public class StringLengthLessThanOrEqualToRule extends AbstractStringBooleanRule
 	}
 
 	/**
-	 * @see StringBooleanRule#validate(Object)
+	 * @see AbstractStringBooleanRule#validate(Object)
 	 */
 	@Override
 	public Boolean validate(final String data) {

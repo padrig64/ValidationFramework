@@ -23,41 +23,55 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.rule.string;
+package com.github.validationframework.rule;
 
-public class StringLengthEqualToRule extends AbstractStringBooleanRule {
+import com.github.validationframework.rule.UntypedDataRule;
+import java.util.ArrayList;
+import java.util.List;
 
-	private int exactLength = 0;
+public abstract class AbstractUntypedDataRule<R> implements UntypedDataRule<R> {
+
+	/**
+	 * Untyped data sub-rules to be checked.
+	 */
+	protected final List<UntypedDataRule<R>> rules = new ArrayList<UntypedDataRule<R>>();
 
 	/**
 	 * Default constructor.
 	 */
-	public StringLengthEqualToRule() {
+	public AbstractUntypedDataRule() {
 		// Nothing to be done
 	}
 
-	public StringLengthEqualToRule(final int exactLength) {
-		setExactLength(exactLength);
-	}
-
-	public int getExactLength() {
-		return exactLength;
-	}
-
-	public void setExactLength(final int exactLength) {
-		this.exactLength = exactLength;
+	/**
+	 * Constructor specifying the sub-rule(s) to be added.
+	 *
+	 * @param rules Sub-rule(s) to be added.
+	 * @see #addRule(UntypedDataRule)
+	 */
+	public AbstractUntypedDataRule(final UntypedDataRule<R>... rules) {
+		if (rules != null) {
+			for (final UntypedDataRule<R> rule : rules) {
+				addRule(rule);
+			}
+		}
 	}
 
 	/**
-	 * @see AbstractStringBooleanRule#validate(Object)
+	 * Adds the specified sub-rule to be checked.
+	 *
+	 * @param rule Sub-rule to be added.
 	 */
-	@Override
-	public Boolean validate(final String data) {
-		int length = 0;
-		if (data != null) {
-			length = trimIfNeeded(data).length();
-		}
+	public void addRule(final UntypedDataRule<R> rule) {
+		rules.add(rule);
+	}
 
-		return (length == exactLength);
+	/**
+	 * Removes the specified sub-rule to be checked.
+	 *
+	 * @param rule Sub-rule tobe removed
+	 */
+	public void removeRule(final UntypedDataRule<R> rule) {
+		rules.remove(rule);
 	}
 }

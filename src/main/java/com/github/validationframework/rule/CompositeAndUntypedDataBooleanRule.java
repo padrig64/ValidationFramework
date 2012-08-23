@@ -23,41 +23,46 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.rule.string;
+package com.github.validationframework.rule;
 
-public class StringLengthEqualToRule extends AbstractStringBooleanRule {
-
-	private int exactLength = 0;
+/**
+ * Composite rule performing validation using sub-rules, and returning a boolean as an aggregation of the boolean
+ * results from its sub-rules.<br>The aggregation is basically an AND operation: the result will be true if the results
+ * of sub-rules are also true.<br>If there are no sub-rules, the default result will be true.
+ *
+ * @see AbstractUntypedDataRule
+ * @see CompositeOrUntypedDataBooleanRule
+ */
+public class CompositeAndUntypedDataBooleanRule extends AbstractUntypedDataRule<Boolean> {
 
 	/**
-	 * Default constructor.
+	 * @see AbstractUntypedDataRule#AbstractUntypedDataRule()
 	 */
-	public StringLengthEqualToRule() {
-		// Nothing to be done
-	}
-
-	public StringLengthEqualToRule(final int exactLength) {
-		setExactLength(exactLength);
-	}
-
-	public int getExactLength() {
-		return exactLength;
-	}
-
-	public void setExactLength(final int exactLength) {
-		this.exactLength = exactLength;
+	public CompositeAndUntypedDataBooleanRule() {
+		super();
 	}
 
 	/**
-	 * @see AbstractStringBooleanRule#validate(Object)
+	 * @see AbstractUntypedDataRule#AbstractUntypedDataRule(UntypedDataRule[])
+	 */
+	public CompositeAndUntypedDataBooleanRule(final UntypedDataRule<Boolean>... rules) {
+		super(rules);
+	}
+
+	/**
+	 * @see AbstractUntypedDataRule#validate()
 	 */
 	@Override
-	public Boolean validate(final String data) {
-		int length = 0;
-		if (data != null) {
-			length = trimIfNeeded(data).length();
+	public Boolean validate() {
+		Boolean result = true;
+
+		for (final UntypedDataRule<Boolean> rule : rules) {
+			result &= rule.validate();
+			if (!result) {
+				break;
+			}
 		}
 
-		return (length == exactLength);
+		return result;
 	}
 }

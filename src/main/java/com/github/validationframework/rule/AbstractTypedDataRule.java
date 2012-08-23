@@ -28,42 +28,40 @@ package com.github.validationframework.rule;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Composite rule performing validation using sub-rules, and returning a boolean as an aggregation of the boolean
- * results from its sub-rules.
- *
- * @see UntypedDataRule
- * @see CompositeTypedDataBooleanRule
- */
-public class CompositeUntypedDataBooleanRule implements UntypedDataRule<Boolean> {
+public abstract class AbstractTypedDataRule<D, R> implements TypedDataRule<D, R> {
 
 	/**
-	 * Untyped data sub-rules to be checked.
+	 * Typed data sub-rules to be checked.
 	 */
-	private final List<UntypedDataRule<Boolean>> rules = new ArrayList<UntypedDataRule<Boolean>>();
+	protected final List<TypedDataRule<D, R>> rules = new ArrayList<TypedDataRule<D, R>>();
 
 	/**
 	 * Default constructor.
 	 */
-	public CompositeUntypedDataBooleanRule() {
+	public AbstractTypedDataRule() {
 		// Nothing to be done
 	}
 
-	public CompositeUntypedDataBooleanRule(final UntypedDataRule<Boolean>... rules) {
+	/**
+	 * Constructor specifying the sub-rule(s) to be added.
+	 *
+	 * @param rules Sub-rule(s) to be added.
+	 * @see #addRule(TypedDataRule)
+	 */
+	public AbstractTypedDataRule(final TypedDataRule<D, R>... rules) {
 		if (rules != null) {
-			for (final UntypedDataRule<Boolean> rule : rules) {
+			for (final TypedDataRule<D, R> rule : rules) {
 				addRule(rule);
 			}
 		}
 	}
 
 	/**
-	 * Adds the specified sub-rule to be checked.<br>Note that the sub-rules will be checked in the same order as they are
-	 * added.
+	 * Adds the specified sub-rule to be checked.
 	 *
 	 * @param rule Sub-rule to be added.
 	 */
-	public void addRule(final UntypedDataRule<Boolean> rule) {
+	public void addRule(final TypedDataRule<D, R> rule) {
 		rules.add(rule);
 	}
 
@@ -72,21 +70,7 @@ public class CompositeUntypedDataBooleanRule implements UntypedDataRule<Boolean>
 	 *
 	 * @param rule Sub-rule tobe removed
 	 */
-	public void removeRule(final UntypedDataRule<Boolean> rule) {
+	public void removeRule(final TypedDataRule<D, R> rule) {
 		rules.remove(rule);
-	}
-
-	/**
-	 * @see UntypedDataRule#validate()
-	 */
-	@Override
-	public Boolean validate() {
-		Boolean result = true;
-
-		for (final UntypedDataRule<Boolean> rule : rules) {
-			result &= rule.validate();
-		}
-
-		return result;
 	}
 }

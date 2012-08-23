@@ -25,68 +25,44 @@
 
 package com.github.validationframework.rule;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Composite rule checking data of a known specific type using sub-rules, and returning a boolean as an aggregation of
- * the boolean results from its sub-rules.
+ * the boolean results from its sub-rules.<br>The aggregation is basically an OR operation: the result will be true if
+ * the result of  at least one sub-rule is also true.<br>If there are no sub-rules, the default result will be false.
  *
  * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
  * type of the component itself.
- * @see TypedDataRule
- * @see CompositeUntypedDataBooleanRule
+ * @see AbstractTypedDataRule
+ * @see CompositeAndTypedDataBooleanRule
  */
-public class CompositeTypedDataBooleanRule<D> implements TypedDataRule<D, Boolean> {
+public class CompositeOrTypedDataBooleanRule<D> extends AbstractTypedDataRule<D, Boolean> {
 
 	/**
-	 * Typed data sub-rules to be checked.
+	 * @see AbstractTypedDataRule#AbstractTypedDataRule()
 	 */
-	private final List<TypedDataRule<D, Boolean>> rules = new ArrayList<TypedDataRule<D, Boolean>>();
-
-	/**
-	 * Default constructor.
-	 */
-	public CompositeTypedDataBooleanRule() {
-		// Nothing to be done
-	}
-
-	public CompositeTypedDataBooleanRule(final TypedDataRule<D, Boolean>... rules) {
-		if (rules != null) {
-			for (final TypedDataRule<D, Boolean> rule : rules) {
-				addRule(rule);
-			}
-		}
+	public CompositeOrTypedDataBooleanRule() {
+		super();
 	}
 
 	/**
-	 * Adds the specified sub-rule to be checked.<br>Note that the sub-rules will be checked in the same order as they are
-	 * added.
-	 *
-	 * @param rule Sub-rule to be added.
+	 * @see AbstractTypedDataRule#AbstractTypedDataRule(TypedDataRule[])
 	 */
-	public void addRule(final TypedDataRule<D, Boolean> rule) {
-		rules.add(rule);
+	public CompositeOrTypedDataBooleanRule(final TypedDataRule<D, Boolean>... rules) {
+		super(rules);
 	}
 
 	/**
-	 * Removes the specified sub-rule to be checked.
-	 *
-	 * @param rule Sub-rule tobe removed
-	 */
-	public void removeRule(final TypedDataRule<D, Boolean> rule) {
-		rules.remove(rule);
-	}
-
-	/**
-	 * @see TypedDataRule#validate(Object)
+	 * @see AbstractTypedDataRule#validate(Object)
 	 */
 	@Override
 	public Boolean validate(final D data) {
-		Boolean result = true;
+		Boolean result = false;
 
 		for (final TypedDataRule<D, Boolean> rule : rules) {
-			result &= rule.validate(data);
+			result |= rule.validate(data);
+			if (result) {
+				break;
+			}
 		}
 
 		return result;

@@ -31,7 +31,7 @@ import com.github.validationframework.resulthandler.swing.AbstractColorFeedBack;
 import com.github.validationframework.resulthandler.swing.AbstractIconFeedBack;
 import com.github.validationframework.resulthandler.swing.AbstractIconTipFeedBack;
 import com.github.validationframework.resulthandler.swing.AbstractToolTipFeedBack;
-import com.github.validationframework.rule.CompositeTypedDataBooleanRule;
+import com.github.validationframework.rule.CompositeAndTypedDataBooleanRule;
 import com.github.validationframework.rule.TypedDataRule;
 import com.github.validationframework.rule.string.StringRegexRule;
 import com.github.validationframework.rule.string.swing.JFormattedTextFieldFormatterRule;
@@ -372,7 +372,7 @@ public class SimpleDemoApp extends JFrame {
 		validator4.addTrigger(new JFormattedTextFieldDocumentChangedTrigger(formattedTextField));
 		validator4.addDataProvider(new JFormattedTextFieldTextProvider(formattedTextField));
 		validator4.addRule(
-				new CompositeTypedDataBooleanRule<String>(new JFormattedTextFieldFormatterRule(formattedTextField),
+				new CompositeAndTypedDataBooleanRule<String>(new JFormattedTextFieldFormatterRule(formattedTextField),
 						new StringRegexRule("^[0-9]{1,3}$")));
 		validator4.addResultHandler(new AngleInputFieldFeedBack(formattedTextField));
 

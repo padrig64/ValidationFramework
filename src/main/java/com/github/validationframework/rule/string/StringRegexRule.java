@@ -33,7 +33,7 @@ import java.util.regex.Pattern;
 /**
  * Rule checking string data against one or several regular expressions and returning a boolean a result.
  *
- * @see com.github.validationframework.rule.TypedDataRule
+ * @see AbstractStringBooleanRule
  * @see Pattern
  */
 public class StringRegexRule extends AbstractStringBooleanRule {
@@ -92,7 +92,7 @@ public class StringRegexRule extends AbstractStringBooleanRule {
 	}
 
 	/**
-	 * @see StringBooleanRule#validate(Object)
+	 * @see AbstractStringBooleanRule#validate(Object)
 	 */
 	@Override
 	public Boolean validate(final String data) {

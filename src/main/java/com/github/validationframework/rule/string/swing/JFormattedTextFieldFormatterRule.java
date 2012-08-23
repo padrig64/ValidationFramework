@@ -25,11 +25,11 @@
 
 package com.github.validationframework.rule.string.swing;
 
-import com.github.validationframework.rule.TypedDataRule;
+import com.github.validationframework.rule.string.AbstractStringBooleanRule;
 import java.text.ParseException;
 import javax.swing.JFormattedTextField;
 
-public class JFormattedTextFieldFormatterRule implements TypedDataRule<String, Boolean> {
+public class JFormattedTextFieldFormatterRule extends AbstractStringBooleanRule {
 
 	private final JFormattedTextField formattedTextField;
 
@@ -37,14 +37,18 @@ public class JFormattedTextFieldFormatterRule implements TypedDataRule<String, B
 		this.formattedTextField = formattedTextField;
 	}
 
+	/**
+	 * @see AbstractStringBooleanRule#validate(Object)
+	 */
 	@Override
 	public Boolean validate(final String data) {
 		Boolean result = false;
 
 		final JFormattedTextField.AbstractFormatter formatter = formattedTextField.getFormatter();
 		if (formatter != null) {
+			final String dataToBeValidated = trimIfNeeded(data);
 			try {
-				formatter.stringToValue(data);
+				formatter.stringToValue(dataToBeValidated);
 				result = true;
 			} catch (ParseException e) {
 				// Nothing to be done

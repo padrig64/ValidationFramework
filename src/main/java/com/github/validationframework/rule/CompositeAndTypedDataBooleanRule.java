@@ -23,41 +23,48 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.rule.string;
+package com.github.validationframework.rule;
 
-public class StringLengthEqualToRule extends AbstractStringBooleanRule {
-
-	private int exactLength = 0;
+/**
+ * Composite rule checking data of a known specific type using sub-rules, and returning a boolean as an aggregation of
+ * the boolean results from its sub-rules.<br>The aggregation is basically an AND operation: the result will be true if
+ * the results of sub-rules are also true.<br>If there are no sub-rules, the default result will be true.
+ *
+ * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
+ * type of the component itself.
+ * @see AbstractTypedDataRule
+ * @see CompositeOrTypedDataBooleanRule
+ */
+public class CompositeAndTypedDataBooleanRule<D> extends AbstractTypedDataRule<D, Boolean> {
 
 	/**
-	 * Default constructor.
+	 * @see AbstractTypedDataRule#AbstractTypedDataRule()
 	 */
-	public StringLengthEqualToRule() {
-		// Nothing to be done
-	}
-
-	public StringLengthEqualToRule(final int exactLength) {
-		setExactLength(exactLength);
-	}
-
-	public int getExactLength() {
-		return exactLength;
-	}
-
-	public void setExactLength(final int exactLength) {
-		this.exactLength = exactLength;
+	public CompositeAndTypedDataBooleanRule() {
+		super();
 	}
 
 	/**
-	 * @see AbstractStringBooleanRule#validate(Object)
+	 * @see AbstractTypedDataRule#AbstractTypedDataRule(TypedDataRule[])
+	 */
+	public CompositeAndTypedDataBooleanRule(final TypedDataRule<D, Boolean>... rules) {
+		super(rules);
+	}
+
+	/**
+	 * @see AbstractTypedDataRule#validate(Object)
 	 */
 	@Override
-	public Boolean validate(final String data) {
-		int length = 0;
-		if (data != null) {
-			length = trimIfNeeded(data).length();
+	public Boolean validate(final D data) {
+		Boolean result = true;
+
+		for (final TypedDataRule<D, Boolean> rule : rules) {
+			result &= rule.validate(data);
+			if (!result) {
+				break;
+			}
 		}
 
-		return (length == exactLength);
+		return result;
 	}
 }
