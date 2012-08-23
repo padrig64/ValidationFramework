@@ -25,19 +25,19 @@
 
 package com.github.validationframework.demo.swing;
 
-import com.github.validationframework.dataprovider.swing.JFormattedTextFieldTextProvider;
-import com.github.validationframework.dataprovider.swing.JTextFieldTextProvider;
-import com.github.validationframework.resulthandler.swing.AbstractColorFeedBack;
-import com.github.validationframework.resulthandler.swing.AbstractIconFeedBack;
-import com.github.validationframework.resulthandler.swing.AbstractIconTipFeedBack;
-import com.github.validationframework.resulthandler.swing.AbstractToolTipFeedBack;
-import com.github.validationframework.rule.CompositeAndTypedDataBooleanRule;
-import com.github.validationframework.rule.TypedDataRule;
-import com.github.validationframework.rule.string.StringRegexRule;
-import com.github.validationframework.rule.string.swing.JFormattedTextFieldFormatterRule;
-import com.github.validationframework.trigger.swing.JFormattedTextFieldDocumentChangedTrigger;
-import com.github.validationframework.trigger.swing.JTextFieldDocumentChangedTrigger;
-import com.github.validationframework.validator.TypedDataSimpleValidator;
+import com.github.validationframework.api.rule.TypedDataRule;
+import com.github.validationframework.base.rule.AndCompositeTypedDataBooleanRule;
+import com.github.validationframework.base.rule.string.StringRegexRule;
+import com.github.validationframework.base.validator.TypedDataSimpleValidator;
+import com.github.validationframework.swing.dataprovider.JFormattedTextFieldTextProvider;
+import com.github.validationframework.swing.dataprovider.JTextFieldTextProvider;
+import com.github.validationframework.swing.resulthandler.AbstractColorFeedBack;
+import com.github.validationframework.swing.resulthandler.AbstractIconFeedBack;
+import com.github.validationframework.swing.resulthandler.AbstractIconTipFeedBack;
+import com.github.validationframework.swing.resulthandler.AbstractToolTipFeedBack;
+import com.github.validationframework.swing.rule.JFormattedTextFieldFormatterRule;
+import com.github.validationframework.swing.trigger.JFormattedTextFieldDocumentChangedTrigger;
+import com.github.validationframework.swing.trigger.JTextFieldDocumentChangedTrigger;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -372,7 +372,7 @@ public class SimpleDemoApp extends JFrame {
 		validator4.addTrigger(new JFormattedTextFieldDocumentChangedTrigger(formattedTextField));
 		validator4.addDataProvider(new JFormattedTextFieldTextProvider(formattedTextField));
 		validator4.addRule(
-				new CompositeAndTypedDataBooleanRule<String>(new JFormattedTextFieldFormatterRule(formattedTextField),
+				new AndCompositeTypedDataBooleanRule<String>(new JFormattedTextFieldFormatterRule(formattedTextField),
 						new StringRegexRule("^[0-9]+$")));
 		validator4.addResultHandler(new AngleInputFieldFeedBack(formattedTextField));
 

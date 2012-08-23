@@ -25,12 +25,12 @@
 
 package com.github.validationframework.demo.swing;
 
-import com.github.validationframework.dataprovider.swing.JTableTextEditorTextProvider;
-import com.github.validationframework.resulthandler.swing.AbstractIconTipFeedBack;
-import com.github.validationframework.resulthandler.swing.ComponentEnablingBooleanResultHandler;
-import com.github.validationframework.rule.string.StringLengthGreaterThanOrEqualToRule;
-import com.github.validationframework.trigger.swing.JTableTextEditorDocumentChangedTrigger;
-import com.github.validationframework.validator.TypedDataSimpleValidator;
+import com.github.validationframework.base.rule.string.StringLengthGreaterThanOrEqualToRule;
+import com.github.validationframework.base.validator.TypedDataSimpleValidator;
+import com.github.validationframework.swing.dataprovider.JTableTextEditorTextProvider;
+import com.github.validationframework.swing.resulthandler.AbstractIconTipFeedBack;
+import com.github.validationframework.swing.resulthandler.ComponentEnablingBooleanResultHandler;
+import com.github.validationframework.swing.trigger.JTableTextEditorDocumentChangedTrigger;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
