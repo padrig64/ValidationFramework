@@ -32,6 +32,7 @@ package com.github.validationframework.rule;
  *
  * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
  * type of the component itself.
+ *
  * @see AbstractTypedDataRule
  * @see CompositeOrTypedDataBooleanRule
  */

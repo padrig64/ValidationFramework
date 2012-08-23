@@ -41,6 +41,7 @@ public class JTextFieldFocusGainedTrigger extends BaseComponentFocusGainedTrigge
 	 * need to call {@link #dispose()} when trigger is no longer needed.
 	 *
 	 * @param source Component whose focus is to be tracked.
+	 *
 	 * @see #dispose()
 	 */
 	public JTextFieldFocusGainedTrigger(final JTextField source) {

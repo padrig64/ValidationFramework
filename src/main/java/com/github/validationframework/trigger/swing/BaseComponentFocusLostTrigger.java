@@ -37,6 +37,7 @@ import javax.swing.JComponent;
  * #dispose()}.
  *
  * @param <C> Type of component whose focus is to be tracked.
+ *
  * @see AbstractTrigger
  * @see #dispose()
  */
@@ -71,6 +72,7 @@ public class BaseComponentFocusLostTrigger<C extends JComponent> extends Abstrac
 	 * need to call {@link #dispose()} when trigger is no longer needed.
 	 *
 	 * @param source Component whose focus is to be tracked.
+	 *
 	 * @see #dispose()
 	 */
 	public BaseComponentFocusLostTrigger(final C source) {

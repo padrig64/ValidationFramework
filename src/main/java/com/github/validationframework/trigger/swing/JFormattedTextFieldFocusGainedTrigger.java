@@ -41,6 +41,7 @@ public class JFormattedTextFieldFocusGainedTrigger extends BaseComponentFocusGai
 	 * So you may need to call {@link #dispose()} when trigger is no longer needed.
 	 *
 	 * @param source Component whose focus is to be tracked.
+	 *
 	 * @see #dispose()
 	 */
 	public JFormattedTextFieldFocusGainedTrigger(final JFormattedTextField source) {

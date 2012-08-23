@@ -66,6 +66,7 @@ import org.slf4j.LoggerFactory;
  * @param <P> Type of data provider providing the input data to be validated.
  * @param <U> Type of validation rules to be used on the input data.
  * @param <H> Type of result handlers to be used on validation output.
+ *
  * @see com.github.validationframework.trigger.Trigger
  * @see com.github.validationframework.dataprovider.DataProvider
  * @see com.github.validationframework.rule.Rule

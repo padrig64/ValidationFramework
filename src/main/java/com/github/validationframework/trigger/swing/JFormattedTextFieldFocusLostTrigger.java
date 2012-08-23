@@ -41,6 +41,7 @@ public class JFormattedTextFieldFocusLostTrigger extends BaseComponentFocusLostT
 	 * So you may need to call {@link #dispose()} when trigger is no longer needed.
 	 *
 	 * @param source Component whose focus is to be tracked.
+	 *
 	 * @see #dispose()
 	 */
 	public JFormattedTextFieldFocusLostTrigger(final JFormattedTextField source) {

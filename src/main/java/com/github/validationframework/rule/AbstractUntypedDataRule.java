@@ -46,6 +46,7 @@ public abstract class AbstractUntypedDataRule<R> implements UntypedDataRule<R> {
 	 * Constructor specifying the sub-rule(s) to be added.
 	 *
 	 * @param rules Sub-rule(s) to be added.
+	 *
 	 * @see #addRule(UntypedDataRule)
 	 */
 	public AbstractUntypedDataRule(final UntypedDataRule<R>... rules) {

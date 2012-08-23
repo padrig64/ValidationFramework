@@ -53,6 +53,7 @@ package com.github.validationframework.validator;
  * @param <U> Type of validation rules to be used on the input data.
  * @param <R> Type of validation results returned by the validation rules.
  * @param <H> Type of result handlers to be used on validation output.
+ *
  * @see com.github.validationframework.trigger.Trigger
  * @see com.github.validationframework.dataprovider.DataProvider
  * @see com.github.validationframework.rule.Rule

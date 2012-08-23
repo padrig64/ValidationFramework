@@ -54,6 +54,7 @@ public class StringRegexRule extends AbstractStringBooleanRule {
 	 * Constructor specified a pattern to be added.<br>This constructor is provided for convenience.
 	 *
 	 * @param pattern Pattern to be added.
+	 *
 	 * @see #addPattern(String)
 	 */
 	public StringRegexRule(final String pattern) {
@@ -64,6 +65,7 @@ public class StringRegexRule extends AbstractStringBooleanRule {
 	 * Adds the specified regular expression to be matched against the data to be validated.
 	 *
 	 * @param pattern Regular expression to be added.
+	 *
 	 * @see #addPattern(String, int)
 	 */
 	public void addPattern(final String pattern) {
@@ -76,6 +78,7 @@ public class StringRegexRule extends AbstractStringBooleanRule {
 	 *
 	 * @param pattern Regular expression to be added.
 	 * @param flags Regular expression pattern flags.<br>Refer to {@link Pattern#}
+	 *
 	 * @see #addPattern(String)
 	 */
 	public void addPattern(final String pattern, final int flags) {

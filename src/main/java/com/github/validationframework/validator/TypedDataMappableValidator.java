@@ -42,6 +42,7 @@ import org.slf4j.LoggerFactory;
  * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
  * type of the component itself.
  * @param <R> Type of validation result.<br>It can be, for instance, an enumeration or just a boolean.
+ *
  * @see AbstractMappableValidator
  */
 public class TypedDataMappableValidator<D, R>

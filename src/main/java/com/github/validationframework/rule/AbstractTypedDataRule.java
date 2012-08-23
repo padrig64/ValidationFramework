@@ -46,6 +46,7 @@ public abstract class AbstractTypedDataRule<D, R> implements TypedDataRule<D, R>
 	 * Constructor specifying the sub-rule(s) to be added.
 	 *
 	 * @param rules Sub-rule(s) to be added.
+	 *
 	 * @see #addRule(TypedDataRule)
 	 */
 	public AbstractTypedDataRule(final TypedDataRule<D, R>... rules) {

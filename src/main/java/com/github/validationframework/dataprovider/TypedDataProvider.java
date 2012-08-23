@@ -31,6 +31,7 @@ package com.github.validationframework.dataprovider;
  *
  * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
  * type of the component itself.
+ *
  * @see DataProvider
  * @see com.github.validationframework.trigger.Trigger
  * @see com.github.validationframework.validator.AutonomousTypedDataValidator

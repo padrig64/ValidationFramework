@@ -37,6 +37,7 @@ import java.awt.event.FocusListener;
  * #dispose()}.
  *
  * @param <C> Type of component whose focus is to be tracked.
+ *
  * @see AbstractTrigger
  * @see #dispose()
  */
@@ -71,6 +72,7 @@ public class BaseComponentFocusGainedTrigger<C extends Component> extends Abstra
 	 * need to call {@link #dispose()} when trigger is no longer needed.
 	 *
 	 * @param source Component whose focus is to be tracked.
+	 *
 	 * @see #dispose()
 	 */
 	public BaseComponentFocusGainedTrigger(final C source) {

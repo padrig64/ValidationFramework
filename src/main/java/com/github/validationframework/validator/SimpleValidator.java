@@ -25,52 +25,20 @@
 
 package com.github.validationframework.validator;
 
-import com.github.validationframework.dataprovider.DataProvider;
-import com.github.validationframework.resulthandler.ResultHandler;
-import com.github.validationframework.rule.Rule;
-import com.github.validationframework.trigger.Trigger;
-
 /**
- * Interface to be implemented by validators.<br>The validator is the central point of the validation framework. It
- * implements the whole chain of validation, from the triggers, till the display of the feedback.<br>Upon validation
+ * Interface to be implemented by simple validators.<br>The validator is the central point of the validation framework.
+ * It implements the whole chain of validation, from the triggers, till the display of the feedback.<br>Upon validation
  * trigger (for example, whenever the user enters some data in a field, presses an Apply button, etc.), data is
  * retrieved (for example, from the input field, a database, etc.) and passed to the validation algorithm (for example,
  * expecting data to be entered in a specific format), which produces validation results (for example, invalid input,
  * valid input, input too long, misspelled, etc.), which are then used to give appropriate feedback to the user (for
- * example, a popup dialog, an error icon, etc.).
- */
-
-/**
- * Abstract implementation of a homogeneous validator.<br>A homogeneous validator is a validator whose data providers
- * and rules are bound to a known specific type of data, and whose result handlers are bound to a known specific type of
- * result. It provides the connection to the registered triggers, but the processing of the initiated triggers is left
- * to the sub-classes.<br>Homogeneous validators are typically used to validate one particular component or a group of
- * component holding data of a same type.
- *
- * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
- * type of the component itself.
- * @param <R> Type of validation result.<br>It can be, for instance, an enumeration or just a boolean.
- * @see com.github.validationframework.validator.AbstractSimpleValidator
- * @see com.github.validationframework.trigger.Trigger
- * @see com.github.validationframework.dataprovider.TypedDataProvider
- * @see com.github.validationframework.rule.TypedDataRule
- * @see com.github.validationframework.resulthandler.ResultHandler
- */
-// TODO javadoc
-
-/**
- * Abstract implementation of a validator.<br>It merely implements the methods to add and remove triggers, data
- * providers, rules and result handlers. However, note that the connection between triggers, data providers, rules and
- * result handlers, as well as all the validation logic is left to the sub-classes.
+ * example, a popup dialog, an error icon, etc.).<br>A simple validator allows to add and remove triggers, data
+ * providers, rules and result handlers.
  *
  * @param <T> Type of trigger initiating the validation.
  * @param <P> Type of data provider providing the input data to be validated.
  * @param <U> Type of validation rules to be used on the input data.
  * @param <H> Type of result handlers to be used on validation output.
- * @see Trigger
- * @see DataProvider
- * @see Rule
- * @see ResultHandler
  */
 public interface SimpleValidator<T, P, U, H> {
 

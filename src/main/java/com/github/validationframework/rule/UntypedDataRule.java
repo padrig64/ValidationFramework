@@ -30,6 +30,7 @@ package com.github.validationframework.rule;
  * to be validated by themselves, and return a result of a specific type.
  *
  * @param <R> Type of validation result.<br>It can be, for instance, an enumeration or just a boolean.
+ *
  * @see Rule
  * @see TypedDataRule
  */

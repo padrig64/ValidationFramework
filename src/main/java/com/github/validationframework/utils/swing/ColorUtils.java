@@ -47,6 +47,7 @@ public final class ColorUtils {
 	 *
 	 * @param src Source color to be blended into the destination color.
 	 * @param dst Destination color on which the source color is to be blended.
+	 *
 	 * @return Color resulting from the color blending.
 	 */
 	public static Color alphaBlend(final Color src, final Color dst) {

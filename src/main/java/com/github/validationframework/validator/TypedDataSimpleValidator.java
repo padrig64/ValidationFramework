@@ -32,17 +32,22 @@ import com.github.validationframework.trigger.Trigger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-// TODO javadoc
-
 /**
- * Simple implementation of a homogeneous validator.<br>When any of its triggers is initiated, the simple homogeneous
- * validator will read all the data from all of its data providers, check them all against all of its rules, and handles
- * all the results using all of its result handlers.
+ * Concrete implementation of a typed data validator.<br>A typed data validator is a validator whose data providers and
+ * rules are bound to a known specific type of data, and whose result handlers are bound to a known specific type of
+ * result.<br>When any of its triggers is initiated, the simple typed data validator will read all the data from all of
+ * its data providers, check them all against all of its rules, and handles all the results using all of its result
+ * handlers.
  *
  * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
  * type of the component itself.
  * @param <R> Type of validation result.<br>It can be, for instance, an enumeration or just a boolean.
+ *
  * @see AbstractSimpleValidator
+ * @see Trigger
+ * @see TypedDataProvider
+ * @see TypedDataRule
+ * @see ResultHandler
  */
 public class TypedDataSimpleValidator<D, R>
 		extends AbstractSimpleValidator<Trigger, TypedDataProvider<D>, TypedDataRule<D, R>, ResultHandler<R>> {
