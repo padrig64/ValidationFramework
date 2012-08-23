@@ -77,7 +77,7 @@ public class TypedDataSimpleValidator<D, R>
 	 *
 	 * @param data Data to be validated against all rules.
 	 */
-	private void processData(final D data) {
+	protected void processData(final D data) {
 		// Check data against all rules
 		for (final TypedDataRule<D, R> rule : rules) {
 			processResult(rule.validate(data));
@@ -89,7 +89,7 @@ public class TypedDataSimpleValidator<D, R>
 	 *
 	 * @param result Result to be processed by all result handlers.
 	 */
-	private void processResult(final R result) {
+	protected void processResult(final R result) {
 		for (final ResultHandler<R> resultHandler : resultHandlers) {
 			resultHandler.handleResult(result);
 		}

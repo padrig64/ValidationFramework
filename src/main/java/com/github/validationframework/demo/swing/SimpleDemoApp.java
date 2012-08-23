@@ -26,15 +26,15 @@
 package com.github.validationframework.demo.swing;
 
 import com.github.validationframework.api.rule.TypedDataRule;
-import com.github.validationframework.base.rule.AndCompositeTypedDataBooleanRule;
 import com.github.validationframework.base.rule.string.StringRegexRule;
+import com.github.validationframework.base.validator.AndTypedDataBooleanValidator;
 import com.github.validationframework.base.validator.TypedDataSimpleValidator;
 import com.github.validationframework.swing.dataprovider.JFormattedTextFieldTextProvider;
 import com.github.validationframework.swing.dataprovider.JTextFieldTextProvider;
 import com.github.validationframework.swing.resulthandler.AbstractColorFeedBack;
 import com.github.validationframework.swing.resulthandler.AbstractIconFeedBack;
 import com.github.validationframework.swing.resulthandler.AbstractIconTipFeedBack;
-import com.github.validationframework.swing.resulthandler.AbstractToolTipFeedBack;
+import com.github.validationframework.swing.resulthandler.AbstractStickerFeedBack;
 import com.github.validationframework.swing.rule.JFormattedTextFieldFormatterRule;
 import com.github.validationframework.swing.trigger.JFormattedTextFieldDocumentChangedTrigger;
 import com.github.validationframework.swing.trigger.JTextFieldDocumentChangedTrigger;
@@ -135,7 +135,7 @@ public class SimpleDemoApp extends JFrame {
 		}
 	}
 
-	private class InputFieldToolTipFeedBack extends AbstractToolTipFeedBack<InputFieldResult> {
+	private class InputFieldToolTipFeedBack extends AbstractStickerFeedBack<InputFieldResult> {
 
 		public InputFieldToolTipFeedBack(final JComponent owner) {
 			super(owner);
@@ -368,12 +368,11 @@ public class SimpleDemoApp extends JFrame {
 		courseFormatter.setMaximum(359.0);
 		final JFormattedTextField formattedTextField = new JFormattedTextField(courseFormatter);
 
-		final TypedDataSimpleValidator<String, Boolean> validator4 = new TypedDataSimpleValidator<String, Boolean>();
+		final AndTypedDataBooleanValidator<String> validator4 = new AndTypedDataBooleanValidator<String>();
 		validator4.addTrigger(new JFormattedTextFieldDocumentChangedTrigger(formattedTextField));
 		validator4.addDataProvider(new JFormattedTextFieldTextProvider(formattedTextField));
-		validator4.addRule(
-				new AndCompositeTypedDataBooleanRule<String>(new JFormattedTextFieldFormatterRule(formattedTextField),
-						new StringRegexRule("^[0-9]+$")));
+		validator4.addRule(new JFormattedTextFieldFormatterRule(formattedTextField));
+		validator4.addRule(new StringRegexRule("^[0-9]{2}$"));
 		validator4.addResultHandler(new AngleInputFieldFeedBack(formattedTextField));
 
 //		final TypedDataSimpleValidator<Number, Boolean> validator4 = new TypedDataSimpleValidator<Number, Boolean>();
