@@ -4,7 +4,6 @@
 . Condition logic result handler
 . Table editing
 . Check decoration in scrollpanes
-. SimpleHomogeneousValidator<?,Boolean> vs addRule()
 . Spinner
 
 . Transformers (of Data and Results)
@@ -13,6 +12,7 @@
 . Reformat/Revert JFormattedTextField when focus lost?
 . Initial focus for JFormattedTextField helper
 
+. Map rules to result handers?
 . Exception-based results
 . Decoration transparency on Java 7
 . All features described in the README file

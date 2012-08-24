@@ -27,8 +27,23 @@ package com.github.validationframework.base.validator;
 
 import com.github.validationframework.api.rule.TypedDataRule;
 
+/**
+ * Simple validator using boolean results and aggregating all results from the rules into a single result using the OR
+ * operation.
+ *
+ * @see TypedDataSimpleValidator
+ * @see AndTypedDataSimpleValidator
+ */
 public class OrTypedDataSimpleValidator<D> extends TypedDataSimpleValidator<D, Boolean> {
 
+	/**
+	 * Checks the specified data against all the rules and aggregates all the boolean results to one single result using
+	 * the OR operation.<br>If there are no rules, the default result will be false.
+	 *
+	 * @param data Data to be validated against all rules.
+	 *
+	 * @see TypedDataSimpleValidator#processData(Object)
+	 */
 	@Override
 	protected void processData(final D data) {
 		boolean result = false;

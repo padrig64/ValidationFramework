@@ -34,16 +34,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Homogeneous validator allowing to map triggers to data providers, data providers to rules, and results to result
- * handlers.<br>Whenever a trigger is initiated, all the data providers mapped to it will be used to retrieve data. The
- * data read from the data providers will be check only with the rules that are individually mapped to the data
- * providers. The result will be processed only with the result handlers that are individually mapped the result.
+ * Concrete implementation of a typed data mappable validator.<br>A typed data validator is a validator whose data
+ * providers and rules are bound to a known specific type of data, and whose result handlers are bound to a known
+ * specific type of result.<br>When any of its triggers is initiated, the typed data mappable validator will read all
+ * the data from the data providers mapped to that trigger, check the data against the rules mapped to those data
+ * providers, and handles the rule results using the result handlers that are mapped to them.
  *
  * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
  * type of the component itself.
  * @param <R> Type of validation result.<br>It can be, for instance, an enumeration or just a boolean.
  *
  * @see AbstractMappableValidator
+ * @see Trigger
+ * @see TypedDataProvider
+ * @see TypedDataRule
+ * @see ResultHandler
  */
 public class TypedDataMappableValidator<D, R>
 		extends AbstractMappableValidator<Trigger, TypedDataProvider<D>, TypedDataRule<D, R>, R, ResultHandler<R>> {

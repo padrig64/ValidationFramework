@@ -41,72 +41,22 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Abstract implementation of a homogeneous validator.<br>A homogeneous validator is a validator whose data providers
- * and rules are bound to a known specific type of data, and whose result handlers are bound to a known specific type of
- * result. It provides the connection to the registered triggers, but the processing of the initiated triggers is left
- * to the sub-classes.<br>Homogeneous validators are typically used to validate one particular component or a group of
- * component holding data of a same type.
- *
- * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
- * type of the component itself.
- * @param <R> Type of validation result.<br>It can be, for instance, an enumeration or just a boolean.
- * @see AbstractSimpleValidator
- * @see com.github.validationframework.api.trigger.Trigger
- * @see com.github.validationframework.api.dataprovider.TypedDataProvider
- * @see com.github.validationframework.api.rule.TypedDataRule
- * @see com.github.validationframework.api.resulthandler.ResultHandler
- */
-// TODO javadoc
-
-/**
- * Abstract implementation of a validator.<br>It merely implements the methods to add and remove triggers, data
- * providers, rules and result handlers. However, note that the connection between triggers, data providers, rules and
- * result handlers, as well as all the validation logic is left to the sub-classes.
+ * Abstract implementation of a simple validator.<br>It merely implements the methods to map triggers to data providers,
+ * data providers to rules, and results to result handlers. However, the use triggers, data providers, rules and result
+ * handlers, as well as all the validation logic is left to the sub-classes.
  *
  * @param <T> Type of trigger initiating the validation.
  * @param <P> Type of data provider providing the input data to be validated.
  * @param <U> Type of validation rules to be used on the input data.
- * @param <R> Type of validation results returned by the validation rules.
+ * @param <R> Type of validation results produced by validation rules.
  * @param <H> Type of result handlers to be used on validation output.
  *
- * @see com.github.validationframework.api.trigger.Trigger
- * @see com.github.validationframework.api.dataprovider.DataProvider
- * @see com.github.validationframework.api.rule.Rule
- * @see com.github.validationframework.api.resulthandler.ResultHandler
- */
-
-/**
- * Abstract implementation of a homogeneous validator.<br>A homogeneous validator is a validator whose data providers
- * and rules are bound to a known specific type of data, and whose result handlers are bound to a known specific type of
- * result. It provides the connection to the registered triggers, but the processing of the initiated triggers is left
- * to the sub-classes.<br>Homogeneous validators are typically used to validate one particular component or a group of
- * component holding data of a same type.
- *
- * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
- * type of the component itself.
- * @param <R> Type of validation result.<br>It can be, for instance, an enumeration or just a boolean.
- * @see com.github.validationframework.base.validator.AbstractSimpleValidator
- * @see com.github.validationframework.api.trigger.Trigger
- * @see com.github.validationframework.api.dataprovider.TypedDataProvider
- * @see com.github.validationframework.api.rule.TypedDataRule
- * @see com.github.validationframework.api.resulthandler.ResultHandler
- */
-// TODO javadoc
-
-/**
- * Abstract implementation of a validator.<br>It merely implements the methods to add and remove triggers, data
- * providers, rules and result handlers. However, note that the connection between triggers, data providers, rules and
- * result handlers, as well as all the validation logic is left to the sub-classes.
- *
- * @param <T> Type of trigger initiating the validation.
- * @param <P> Type of data provider providing the input data to be validated.
- * @param <U> Type of validation rules to be used on the input data.
- * @param <H> Type of result handlers to be used on validation output.
- *
- * @see com.github.validationframework.api.trigger.Trigger
- * @see com.github.validationframework.api.dataprovider.DataProvider
- * @see com.github.validationframework.api.rule.Rule
- * @see com.github.validationframework.api.resulthandler.ResultHandler
+ * @see MappableValidator
+ * @see Trigger
+ * @see DataProvider
+ * @see Rule
+ * @see ResultHandler
+ * @see Disposable
  */
 public abstract class AbstractMappableValidator<T extends Trigger, P extends DataProvider, U extends Rule, R, H extends ResultHandler>
 		implements MappableValidator<T, P, U, R, H>, Disposable {
@@ -131,7 +81,7 @@ public abstract class AbstractMappableValidator<T extends Trigger, P extends Dat
 		}
 
 		/**
-		 * @see com.github.validationframework.api.trigger.TriggerListener#triggerValidation(com.github.validationframework.api.trigger.TriggerEvent)
+		 * @see TriggerListener#triggerValidation(TriggerEvent)
 		 */
 		@Override
 		public void triggerValidation(final TriggerEvent event) {
@@ -336,6 +286,9 @@ public abstract class AbstractMappableValidator<T extends Trigger, P extends Dat
 		disposeResultsAndResultHandlers();
 	}
 
+	/**
+	 * Disposes all triggers and data providers that are mapped to each other.
+	 */
 	private void disposeTriggersAndDataProviders() {
 		for (final Map.Entry<T, List<P>> entry : triggersToDataProviders.entrySet()) {
 			// Disconnect from trigger
@@ -362,6 +315,10 @@ public abstract class AbstractMappableValidator<T extends Trigger, P extends Dat
 		triggersToDataProviders.clear();
 	}
 
+	/**
+	 * Disposes all data providers and rules that are mapped to each other.<br>Note that some data providers may have been
+	 * disposed already in the other disposal methods.
+	 */
 	private void disposeDataProvidersAndRules() {
 		for (final Map.Entry<P, List<U>> entry : dataProvidersToRules.entrySet()) {
 			// Dispose data provider
@@ -385,6 +342,9 @@ public abstract class AbstractMappableValidator<T extends Trigger, P extends Dat
 		dataProvidersToRules.clear();
 	}
 
+	/**
+	 * Disposes all results and result handlers that are mapped to each other.
+	 */
 	private void disposeResultsAndResultHandlers() {
 		for (final Map.Entry<R, List<H>> entry : resultsToResultHandlers.entrySet()) {
 			// Dispose result

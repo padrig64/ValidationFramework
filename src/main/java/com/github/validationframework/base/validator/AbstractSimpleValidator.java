@@ -48,7 +48,7 @@ import java.util.Map;
  * @param <U> Type of validation rules to be used on the input data.
  * @param <H> Type of result handlers to be used on validation output.
  *
- * @see com.github.validationframework.api.validator.SimpleValidator
+ * @see SimpleValidator
  * @see Trigger
  * @see DataProvider
  * @see Rule

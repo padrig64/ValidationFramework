@@ -27,9 +27,9 @@ package com.github.validationframework.api.dataprovider;
 
 /**
  * Marker interface to be implemented by entities providing data that is not of a pre-determined type.<br>Untyped data
- * providers are typically used by autonomous untyped data validators when the validation process is triggered.<br>It
- * can be used, for example, to retrieve a group of heterogeneous data to perform group validation. Therefore, it has no
- * specific method in this interface to retrieve the data, as this is left to application-specific classes.
+ * providers are typically used by untyped data validators when the validation process is triggered.<br>It can be used,
+ * for example, to retrieve a group of heterogeneous data to perform group validation. Therefore, it has no specific
+ * method in this interface to retrieve the data, as this is left to application-specific classes.
  *
  * @see DataProvider
  * @see TypedDataProvider

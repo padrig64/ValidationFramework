@@ -33,7 +33,7 @@ package com.github.validationframework.api.validator;
  * example, expecting data to be entered in a specific format), which produces validation results (for example, invalid
  * input, valid input, input too long, misspelled, etc.), which are then used to give appropriate feedback to the user
  * (for example, a popup dialog, an error icon, etc.).<br>A mappable validator allows to map triggers to data providers,
- * data providers to rules and results to result handlers.<br>It can be used, for example, to build validation of a
+ * data providers to rules, and results to result handlers.<br>It can be used, for example, to build validation of a
  * group of components.
  *
  * @param <T> Type of trigger initiating the validation.

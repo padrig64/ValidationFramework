@@ -29,8 +29,18 @@ import com.github.validationframework.api.resulthandler.ResultHandler;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Composite result handler that will process results using all delegate result handlers.
+ *
+ * @param <R> Type of validation result.<br>It can be, for instance, an enumeration or just a boolean.
+ *
+ * @see ResultHandler
+ */
 public class CompositeResultHandler<R> implements ResultHandler<R> {
 
+	/**
+	 * Delegate result handlers.
+	 */
 	private final List<ResultHandler<R>> resultHandlers = new ArrayList<ResultHandler<R>>();
 
 	/**
@@ -40,6 +50,13 @@ public class CompositeResultHandler<R> implements ResultHandler<R> {
 		// Nothing to be done
 	}
 
+	/**
+	 * Constructor specifying the delegate result handler(s).
+	 *
+	 * @param resultHandlers Delegate result handler(s).
+	 *
+	 * @see #addResultHandler(ResultHandler)
+	 */
 	public CompositeResultHandler(final ResultHandler<R>... resultHandlers) {
 		if (resultHandlers != null) {
 			for (final ResultHandler<R> resultHandler : resultHandlers) {
@@ -48,14 +65,31 @@ public class CompositeResultHandler<R> implements ResultHandler<R> {
 		}
 	}
 
+	/**
+	 * Adds the specified delegate result handler.
+	 *
+	 * @param resultHandler Delegate result handler to be added.
+	 */
 	public void addResultHandler(final ResultHandler<R> resultHandler) {
 		resultHandlers.add(resultHandler);
 	}
 
+	/**
+	 * Removes the specified delegate result handler.
+	 *
+	 * @param resultHandler Delegate result handler to be removed.
+	 */
 	public void removeResultHandler(final ResultHandler<R> resultHandler) {
 		resultHandlers.remove(resultHandler);
 	}
 
+	/**
+	 * Processes the specified result using all delegate result handlers.
+	 *
+	 * @param result Validation result to be handled.
+	 *
+	 * @see ResultHandler#handleResult(Object)
+	 */
 	@Override
 	public void handleResult(final R result) {
 		for (final ResultHandler<R> resultHandler : resultHandlers) {

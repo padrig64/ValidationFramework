@@ -27,7 +27,7 @@ package com.github.validationframework.demo.swing;
 
 import com.github.validationframework.api.rule.TypedDataRule;
 import com.github.validationframework.base.rule.string.StringRegexRule;
-import com.github.validationframework.base.validator.AndTypedDataBooleanValidator;
+import com.github.validationframework.base.validator.AndTypedDataSimpleValidator;
 import com.github.validationframework.base.validator.TypedDataSimpleValidator;
 import com.github.validationframework.swing.dataprovider.JFormattedTextFieldTextProvider;
 import com.github.validationframework.swing.dataprovider.JTextFieldTextProvider;
@@ -368,7 +368,7 @@ public class SimpleDemoApp extends JFrame {
 		courseFormatter.setMaximum(359.0);
 		final JFormattedTextField formattedTextField = new JFormattedTextField(courseFormatter);
 
-		final AndTypedDataBooleanValidator<String> validator4 = new AndTypedDataBooleanValidator<String>();
+		final AndTypedDataSimpleValidator<String> validator4 = new AndTypedDataSimpleValidator<String>();
 		validator4.addTrigger(new JFormattedTextFieldDocumentChangedTrigger(formattedTextField));
 		validator4.addDataProvider(new JFormattedTextFieldTextProvider(formattedTextField));
 		validator4.addRule(new JFormattedTextFieldFormatterRule(formattedTextField));
