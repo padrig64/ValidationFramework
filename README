@@ -39,7 +39,7 @@ EASY AND EXTENDABLE FRAMEWORK
  . Special components (any kind of components);
  . Flexibility of use (one validator for the whole application, or one validator
    per input component, or whatever);
- . Ease of use (for the programmer);
+ . Ease of use (for the programmer), possibly through a DSL;
  . Custom rules (of course);
  . Custom feedbacks;
  . Custom decorations;
