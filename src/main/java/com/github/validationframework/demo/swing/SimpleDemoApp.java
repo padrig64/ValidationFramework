@@ -56,11 +56,14 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.text.NumberFormatter;
 import net.miginfocom.swing.MigLayout;
@@ -217,7 +220,9 @@ public class SimpleDemoApp extends JFrame {
 		// Create content pane
 		final JPanel contentPane = new JPanel(
 				new MigLayout("fill, wrap 2", "[]related[grow]", "[]related[]related[]related[]unrelated[]"));
-		setContentPane(contentPane);
+		final JScrollPane contentWrapper = new JScrollPane(contentPane);
+		contentWrapper.setBorder(new CompoundBorder(new EmptyBorder(30, 30, 30, 30), contentWrapper.getBorder()));
+		setContentPane(contentWrapper);
 
 		// Input fields
 		contentPane.add(new JLabel("Tooltip:"));
@@ -237,7 +242,7 @@ public class SimpleDemoApp extends JFrame {
 		pack();
 		final Dimension size = getSize();
 		size.width += 100;
-		setMinimumSize(size);
+//		setMinimumSize(size);
 
 		// Set location
 		final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();

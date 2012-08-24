@@ -25,6 +25,7 @@
 
 package com.github.validationframework.swing.decoration.utils;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Point;
 
@@ -52,6 +53,11 @@ public class AnchorLink {
 
 	public void setSlaveAnchor(final Anchor slaveAnchor) {
 		this.slaveAnchor = slaveAnchor;
+	}
+
+	public Point getRelativeSlaveLocation(final Component masterComponent, final Component slaveComponent) {
+		return getRelativeSlaveLocation(masterComponent.getWidth(), masterComponent.getHeight(),
+				slaveComponent.getWidth(), slaveComponent.getHeight());
 	}
 
 	public Point getRelativeSlaveLocation(final Dimension masterSize, final Dimension slaveSize) {
