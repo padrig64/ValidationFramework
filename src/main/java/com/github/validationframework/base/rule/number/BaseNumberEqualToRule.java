@@ -25,7 +25,9 @@
 
 package com.github.validationframework.base.rule.number;
 
-public class BaseNumberEqualToRule<T extends Number> implements NumberBooleanRule<T> {
+import com.github.validationframework.api.rule.TypedDataRule;
+
+public class BaseNumberEqualToRule<T extends Number> implements TypedDataRule<T, Boolean> {
 
 	private T exactValue = null;
 
@@ -49,7 +51,7 @@ public class BaseNumberEqualToRule<T extends Number> implements NumberBooleanRul
 	}
 
 	/**
-	 * @see NumberBooleanRule#validate(Object)
+	 * @see TypedDataRule#validate(Object)
 	 */
 	@Override
 	public Boolean validate(final T data) {

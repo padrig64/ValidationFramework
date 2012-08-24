@@ -28,19 +28,12 @@ package com.github.validationframework.demo.swing;
 import com.github.validationframework.base.rule.string.StringLengthGreaterThanOrEqualToRule;
 import com.github.validationframework.base.validator.TypedDataSimpleValidator;
 import com.github.validationframework.swing.dataprovider.JTableTextEditorTextProvider;
-import com.github.validationframework.swing.resulthandler.AbstractIconTipFeedBack;
+import com.github.validationframework.swing.resulthandler.BooleanIconTipFeedBack;
 import com.github.validationframework.swing.resulthandler.ComponentEnablingBooleanResultHandler;
 import com.github.validationframework.swing.trigger.JTableTextEditorDocumentChangedTrigger;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
-import javax.imageio.ImageIO;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -53,38 +46,6 @@ import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
 
 public class TableDemoApp extends JFrame {
-
-	private class TableIconTipFeedBack extends AbstractIconTipFeedBack<Boolean> {
-
-		private static final String INVALID_ICON_NAME = "/images/experiment/invalid2.png";
-		private Icon invalidIcon = null;
-
-		public TableIconTipFeedBack(final JComponent owner) {
-			super(owner);
-
-			// Error icon
-			final InputStream inputStream = getClass().getResourceAsStream(INVALID_ICON_NAME);
-			try {
-				final BufferedImage image = ImageIO.read(inputStream);
-				invalidIcon = new ImageIcon(image);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-
-		@Override
-		public void handleResult(final Boolean valid) {
-			if (valid) {
-				setIcon(null);
-				setToolTipText(null);
-				hideIconTip();
-			} else {
-				setIcon(invalidIcon);
-				setToolTipText("Angle should be between 000 and 359");
-				showIconTip();
-			}
-		}
-	}
 
 	/**
 	 * Generated serial UID.
@@ -158,7 +119,9 @@ public class TableDemoApp extends JFrame {
 		validator.addDataProvider(new JTableTextEditorTextProvider(table));
 		validator.addRule(new StringLengthGreaterThanOrEqualToRule(3));
 		validator.addResultHandler(new ComponentEnablingBooleanResultHandler(applyButton));
-		validator.addResultHandler(new TableIconTipFeedBack(table));
+		validator.addResultHandler(
+				new BooleanIconTipFeedBack(table, null, null, BooleanIconTipFeedBack.DEFAULT_INVALID_ICON,
+						"Angle should be between 000 and 359"));
 	}
 
 	public static void main(final String[] args) {

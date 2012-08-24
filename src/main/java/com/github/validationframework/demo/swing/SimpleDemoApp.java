@@ -35,6 +35,7 @@ import com.github.validationframework.swing.resulthandler.AbstractColorFeedBack;
 import com.github.validationframework.swing.resulthandler.AbstractIconFeedBack;
 import com.github.validationframework.swing.resulthandler.AbstractStickerFeedBack;
 import com.github.validationframework.swing.resulthandler.BooleanIconTipFeedBack;
+import com.github.validationframework.swing.resulthandler.ComponentEnablingBooleanResultHandler;
 import com.github.validationframework.swing.rule.JFormattedTextFieldFormatterRule;
 import com.github.validationframework.swing.trigger.JFormattedTextFieldDocumentChangedTrigger;
 import com.github.validationframework.swing.trigger.JTextFieldDocumentChangedTrigger;
@@ -226,10 +227,10 @@ public class SimpleDemoApp extends JFrame {
 		contentPane.add(new JLabel("Icon:"));
 		contentPane.add(createInputField3(), "growx");
 		contentPane.add(new JLabel("Icon tip:"));
-		contentPane.add(createInputField4(), "growx");
+		final JButton applyButton = new JButton("Apply");
+		contentPane.add(createInputField4(applyButton), "growx");
 
 		// Apply button
-		final JButton applyButton = new JButton("Apply");
 		contentPane.add(applyButton, "growx, span");
 
 		// Set size
@@ -282,7 +283,7 @@ public class SimpleDemoApp extends JFrame {
 		return textField;
 	}
 
-	private Component createInputField4() {
+	private Component createInputField4(final JButton applyButton) {
 		final NumberFormat courseFormat = NumberFormat.getIntegerInstance();
 		courseFormat.setMinimumIntegerDigits(3);
 		courseFormat.setMaximumIntegerDigits(4);
@@ -300,6 +301,7 @@ public class SimpleDemoApp extends JFrame {
 		validator4.addResultHandler(
 				new BooleanIconTipFeedBack(formattedTextField, null, null, BooleanIconTipFeedBack.DEFAULT_INVALID_ICON,
 						"Angle should be between 000 and 359"));
+		validator4.addResultHandler(new ComponentEnablingBooleanResultHandler(applyButton));
 
 //		final TypedDataSimpleValidator<Number, Boolean> validator4 = new TypedDataSimpleValidator<Number, Boolean>();
 //		validator4.addTrigger(new JFormattedTextFieldDocumentChangedTrigger(formattedTextField));

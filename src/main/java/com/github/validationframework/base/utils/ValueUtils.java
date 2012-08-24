@@ -38,7 +38,7 @@ public final class ValueUtils {
 	}
 
 	/**
-	 * Compares the two given values by taking null values into account.
+	 * Compares the two given values by taking null and NaN values into account.
 	 *
 	 * @param val1 First value.
 	 * @param val2 Second value.
@@ -49,6 +49,12 @@ public final class ValueUtils {
 		boolean equal = false;
 
 		if ((val1 == null) && (val2 == null)) {
+			equal = true;
+		} else if ((val1 instanceof Double) && (((Double) val1).isNaN()) && (val2 instanceof Double) &&
+				(((Double) val2).isNaN())) {
+			equal = true;
+		} else if ((val1 instanceof Float) && (((Float) val1).isNaN()) && (val2 instanceof Float) &&
+				(((Float) val2).isNaN())) {
 			equal = true;
 		} else if (val1 != null) {
 			equal = val1.equals(val2);

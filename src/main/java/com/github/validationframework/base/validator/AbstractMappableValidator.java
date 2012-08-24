@@ -95,27 +95,6 @@ public abstract class AbstractMappableValidator<T extends Trigger, P extends Dat
 	 */
 	protected final Map<T, TriggerListener> triggersToTriggerAdapters = new HashMap<T, TriggerListener>();
 
-	private void hookTrigger(final T trigger) {
-		// Hook to trigger only if not already done (the same trigger adatper will be used if it was already hooked)
-		if (!triggersToTriggerAdapters.containsKey(trigger)) {
-			final TriggerListener triggerAdapter = new TriggerAdapter(trigger);
-			triggersToTriggerAdapters.put(trigger, triggerAdapter);
-			trigger.addTriggerListener(triggerAdapter);
-		}
-	}
-
-	private void unhookTrigger(final T trigger) {
-		// Unhook from trigger
-		final TriggerListener triggerAdapter = triggersToTriggerAdapters.get(trigger);
-		trigger.removeTriggerListener(triggerAdapter);
-
-		// Check if trigger was added several times
-		if (!triggersToTriggerAdapters.containsKey(trigger)) {
-			// All occurrences of the same trigger have been removed
-			triggersToTriggerAdapters.remove(trigger);
-		}
-	}
-
 	/**
 	 * Logger for this class.
 	 */
@@ -137,6 +116,38 @@ public abstract class AbstractMappableValidator<T extends Trigger, P extends Dat
 	protected final Map<R, List<H>> resultsToResultHandlers = new HashMap<R, List<H>>();
 
 	/**
+	 * Registers a trigger listener to start the validation flow.<br>If a trigger listener was already previously
+	 * registered, calling this method will have no effect.
+	 *
+	 * @param trigger Trigger to hook to.
+	 */
+	private void hookToTrigger(final T trigger) {
+		// Hook to trigger only if not already done (the same trigger adatper will be used if it was already hooked)
+		if (!triggersToTriggerAdapters.containsKey(trigger)) {
+			final TriggerListener triggerAdapter = new TriggerAdapter(trigger);
+			triggersToTriggerAdapters.put(trigger, triggerAdapter);
+			trigger.addTriggerListener(triggerAdapter);
+		}
+	}
+
+	/**
+	 * De-registers the trigger listener.
+	 *
+	 * @param trigger Trigger to unhook from.
+	 */
+	private void unhookFromTrigger(final T trigger) {
+		// Unhook from trigger
+		final TriggerListener triggerAdapter = triggersToTriggerAdapters.get(trigger);
+		trigger.removeTriggerListener(triggerAdapter);
+
+		// Check if trigger was added several times
+		if (!triggersToTriggerAdapters.containsKey(trigger)) {
+			// All occurrences of the same trigger have been removed
+			triggersToTriggerAdapters.remove(trigger);
+		}
+	}
+
+	/**
 	 * @see MappableValidator#mapTriggerToDataProvider(Object, Object)
 	 */
 	@Override
@@ -149,7 +160,7 @@ public abstract class AbstractMappableValidator<T extends Trigger, P extends Dat
 			unmapTriggerFromAllDataProviders(trigger);
 		} else {
 			// Hook trigger
-			hookTrigger(trigger);
+			hookToTrigger(trigger);
 
 			// Do the mapping
 			List<P> mappedDataProviders = triggersToDataProviders.get(trigger);
@@ -168,7 +179,7 @@ public abstract class AbstractMappableValidator<T extends Trigger, P extends Dat
 	 */
 	private void unmapTriggerFromAllDataProviders(final T trigger) {
 		if (trigger != null) {
-			unhookTrigger(trigger);
+			unhookFromTrigger(trigger);
 			triggersToDataProviders.remove(trigger);
 		}
 	}
@@ -292,7 +303,7 @@ public abstract class AbstractMappableValidator<T extends Trigger, P extends Dat
 	private void disposeTriggersAndDataProviders() {
 		for (final Map.Entry<T, List<P>> entry : triggersToDataProviders.entrySet()) {
 			// Disconnect from trigger
-			unhookTrigger(entry.getKey());
+			unhookFromTrigger(entry.getKey());
 
 			// Dispose trigger itself
 			final T trigger = entry.getKey();

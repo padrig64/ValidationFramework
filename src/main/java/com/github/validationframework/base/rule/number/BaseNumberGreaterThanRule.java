@@ -25,7 +25,9 @@
 
 package com.github.validationframework.base.rule.number;
 
-public class BaseNumberGreaterThanRule<T extends Number> implements NumberBooleanRule<T> {
+import com.github.validationframework.api.rule.TypedDataRule;
+
+public class BaseNumberGreaterThanRule<T extends Number> implements TypedDataRule<T, Boolean> {
 
 	private T minimumValue = null;
 
@@ -49,7 +51,7 @@ public class BaseNumberGreaterThanRule<T extends Number> implements NumberBoolea
 	}
 
 	/**
-	 * @see NumberBooleanRule#validate(Object)
+	 * @see TypedDataRule#validate(Object)
 	 */
 	@Override
 	public Boolean validate(final T data) {

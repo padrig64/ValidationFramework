@@ -9,7 +9,7 @@
 . Transformers (of Data and Results)
 . Auto-scroll/jump to errors in case of scrollpanes, tabbedpane, etc.
 
-. Reformat/Revert JFormattedTextField when focus lost?
+. Reformat/Revert JFormattedTextField when focus lost? Save values allowed by the rules (wider than the default number formatter)
 . Initial focus for JFormattedTextField helper
 
 . Map rules to result handers?
