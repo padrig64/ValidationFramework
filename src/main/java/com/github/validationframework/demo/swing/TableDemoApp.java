@@ -56,7 +56,7 @@ public class TableDemoApp extends JFrame {
 
 	private class TableIconTipFeedBack extends AbstractIconTipFeedBack<Boolean> {
 
-		private static final String INVALID_ICON_NAME = "/icons/invalid2.png";
+		private static final String INVALID_ICON_NAME = "/images/experiment/invalid2.png";
 		private Icon invalidIcon = null;
 
 		public TableIconTipFeedBack(final JComponent owner) {

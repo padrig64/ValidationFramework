@@ -25,24 +25,111 @@
 
 package com.github.validationframework.swing.resulthandler;
 
+import com.github.validationframework.swing.decoration.utils.IconUtils;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 
 public class BooleanIconTipFeedBack extends AbstractIconTipFeedBack<Boolean> {
 
+	public static final Icon DEFAULT_VALID_ICON =
+			IconUtils.loadImageIcon("/images/defaults/valid.png", BooleanIconTipFeedBack.class);
+
+	public static final Icon DEFAULT_INVALID_ICON =
+			IconUtils.loadImageIcon("/images/defaults/invalid.png", BooleanIconTipFeedBack.class);
+
+	private Icon validIcon = null;
+
+	private Icon invalidIcon = null;
+
+	private String validText = null;
+
+	private String invalidText = null;
+
+	private Boolean lastResult = null;
+
 	public BooleanIconTipFeedBack(final JComponent owner) {
+		this(owner, DEFAULT_VALID_ICON, DEFAULT_INVALID_ICON);
+	}
+
+	public BooleanIconTipFeedBack(final JComponent owner, final Icon validIcon, final Icon invalidIcon) {
+		this(owner, validIcon, null, invalidIcon, null);
+	}
+
+	public BooleanIconTipFeedBack(final JComponent owner, final String validText, final String invalidText) {
+		this(owner, DEFAULT_VALID_ICON, validText, DEFAULT_INVALID_ICON, invalidText);
+	}
+
+	public BooleanIconTipFeedBack(final JComponent owner, final Icon validIcon, final String validText,
+								  final Icon invalidIcon, final String invalidText) {
 		super(owner);
+
+		setValidIcon(validIcon);
+		setValidText(validText);
+		setInvalidIcon(invalidIcon);
+		setInvalidText(invalidText);
 	}
 
 	public Icon getValidIcon() {
-		return null;
+		return validIcon;
 	}
 
 	public void setValidIcon(final Icon validIcon) {
-
+		this.validIcon = validIcon;
+		updateDecoration();
 	}
 
+	public String getValidText() {
+		return validText;
+	}
+
+	public void setValidText(final String validText) {
+		this.validText = validText;
+		updateDecoration();
+	}
+
+	public Icon getInvalidIcon() {
+		return invalidIcon;
+	}
+
+	public void setInvalidIcon(final Icon invalidIcon) {
+		this.invalidIcon = invalidIcon;
+		updateDecoration();
+	}
+
+	public String getInvalidText() {
+		return invalidText;
+	}
+
+	public void setInvalidText(final String invalidText) {
+		this.invalidText = invalidText;
+		updateDecoration();
+	}
+
+	/**
+	 * @see AbstractIconTipFeedBack#handleResult(Object)
+	 */
 	@Override
-	public void handleResult(final Boolean result) {
+	public void handleResult(final Boolean valid) {
+		lastResult = valid;
+
+		updateDecoration();
+
+		if ((valid && (validIcon != null)) || (!valid && (invalidIcon != null))) {
+			showIconTip();
+		} else {
+			hideIconTip();
+		}
+	}
+
+	private void updateDecoration() {
+		if (lastResult != null) {
+			if (lastResult) {
+				setIcon(validIcon);
+				setToolTipText(validText);
+			} else {
+				setIcon(invalidIcon);
+				setToolTipText(invalidText);
+			}
+		}
 	}
 }

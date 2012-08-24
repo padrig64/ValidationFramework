@@ -33,8 +33,8 @@ import com.github.validationframework.swing.dataprovider.JFormattedTextFieldText
 import com.github.validationframework.swing.dataprovider.JTextFieldTextProvider;
 import com.github.validationframework.swing.resulthandler.AbstractColorFeedBack;
 import com.github.validationframework.swing.resulthandler.AbstractIconFeedBack;
-import com.github.validationframework.swing.resulthandler.AbstractIconTipFeedBack;
 import com.github.validationframework.swing.resulthandler.AbstractStickerFeedBack;
+import com.github.validationframework.swing.resulthandler.BooleanIconTipFeedBack;
 import com.github.validationframework.swing.rule.JFormattedTextFieldFormatterRule;
 import com.github.validationframework.swing.trigger.JFormattedTextFieldDocumentChangedTrigger;
 import com.github.validationframework.swing.trigger.JTextFieldDocumentChangedTrigger;
@@ -76,8 +76,8 @@ public class SimpleDemoApp extends JFrame {
 	private enum InputFieldResult {
 
 		OK("", null, null, null),
-		NOK_EMPTY("Should not be empty", "/icons/warning.png", null, COLOR_NOK_EMPTY),
-		NOK_TOO_LONG("Cannot be more than 4 characters", "/icons/invalid2.png", COLOR_NOK_TOO_LONG, null);
+		NOK_EMPTY("Should not be empty", "/images/defaults/warning.png", null, COLOR_NOK_EMPTY),
+		NOK_TOO_LONG("Cannot be more than 4 characters", "/images/defaults/invalid.png", COLOR_NOK_TOO_LONG, null);
 
 		private final String text;
 		private Icon icon;
@@ -193,67 +193,10 @@ public class SimpleDemoApp extends JFrame {
 		}
 	}
 
-	private class InputFieldIconTipFeedBack extends AbstractIconTipFeedBack<InputFieldResult> {
-
-		public InputFieldIconTipFeedBack(final JComponent owner) {
-			super(owner);
-		}
-
-		@Override
-		public void handleResult(final InputFieldResult result) {
-			setIcon(result.getIcon());
-			setToolTipText(result.toString());
-			switch (result) {
-				case OK:
-					hideIconTip();
-					break;
-				default:
-					showIconTip();
-			}
-		}
-	}
-
-	private class AngleInputFieldFeedBack extends AbstractIconTipFeedBack<Boolean> {
-
-		private static final String INVALID_ICON_NAME = "/icons/invalid2.png";
-		private Icon invalidIcon = null;
-
-		public AngleInputFieldFeedBack(final JComponent owner) {
-			super(owner);
-
-			// Error icon
-			final InputStream inputStream = getClass().getResourceAsStream(INVALID_ICON_NAME);
-			try {
-				final BufferedImage image = ImageIO.read(inputStream);
-				invalidIcon = new ImageIcon(image);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-
-		@Override
-		public void handleResult(final Boolean valid) {
-			if (valid) {
-				setIcon(null);
-				setToolTipText(null);
-				hideIconTip();
-			} else {
-				setIcon(invalidIcon);
-				setToolTipText("Angle should be between 000 and 359");
-				showIconTip();
-			}
-		}
-	}
-
 	/**
 	 * Generated serial UID.
 	 */
 	private static final long serialVersionUID = -2039502440268195814L;
-
-//	private DirectResultCollector<InputFieldResult> resultCollector1;
-//	private DirectResultCollector<InputFieldResult> resultCollector2;
-//	private DirectResultCollector<InputFieldResult> resultCollector3;
-//	private DirectResultCollector<Boolean> resultCollector4;
 
 	/**
 	 * Default constructor.
@@ -269,18 +212,6 @@ public class SimpleDemoApp extends JFrame {
 	private void init() {
 		setTitle("Validation Framework Test");
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
-//		// Create aggregation validator
-//		final ResultAggregator<Boolean, Boolean> resultAggregator = new ResultAggregator<Boolean, Boolean>();
-//		resultCollector1 = new DirectResultCollector<InputFieldResult>();
-//		resultCollector2 = new DirectResultCollector<InputFieldResult>();
-//		resultCollector3 = new DirectResultCollector<InputFieldResult>();
-//		resultCollector4 = new DirectResultCollector<Boolean>();
-//		resultAggregator.hookTrigger(resultCollector4);
-//		resultAggregator.addDataProvider(resultCollector4);
-//		resultAggregator.addRule(new DirectBooleanRule());
-//		final ComponentEnablingBooleanResultHandler aggregatedResultHandler = new ComponentEnablingBooleanResultHandler();
-//		resultAggregator.addResultHandler(aggregatedResultHandler);
 
 		// Create content pane
 		final JPanel contentPane = new JPanel(
@@ -300,7 +231,6 @@ public class SimpleDemoApp extends JFrame {
 		// Apply button
 		final JButton applyButton = new JButton("Apply");
 		contentPane.add(applyButton, "growx, span");
-//		aggregatedResultHandler.addComponent(applyButton);
 
 		// Set size
 		pack();
@@ -323,8 +253,6 @@ public class SimpleDemoApp extends JFrame {
 		validator1.addRule(new InputFieldRule());
 		validator1.addResultHandler(new InputFieldToolTipFeedBack(textField));
 
-//		validator1.addResultHandler(resultCollector1);
-
 		return textField;
 	}
 
@@ -338,8 +266,6 @@ public class SimpleDemoApp extends JFrame {
 		validator2.addRule(new InputFieldRule());
 		validator2.addResultHandler(new InputFieldColorFeedBack(textField));
 
-//		validator2.addResultHandler(resultCollector2);
-
 		return textField;
 	}
 
@@ -352,8 +278,6 @@ public class SimpleDemoApp extends JFrame {
 		validator3.addDataProvider(new JTextFieldTextProvider(textField));
 		validator3.addRule(new InputFieldRule());
 		validator3.addResultHandler(new InputFieldIconFeedBack(textField));
-
-//		validator3.addResultHandler(resultCollector3);
 
 		return textField;
 	}
@@ -372,17 +296,19 @@ public class SimpleDemoApp extends JFrame {
 		validator4.addTrigger(new JFormattedTextFieldDocumentChangedTrigger(formattedTextField));
 		validator4.addDataProvider(new JFormattedTextFieldTextProvider(formattedTextField));
 		validator4.addRule(new JFormattedTextFieldFormatterRule(formattedTextField));
-		validator4.addRule(new StringRegexRule("^[0-9]{2}$"));
-		validator4.addResultHandler(new AngleInputFieldFeedBack(formattedTextField));
+		validator4.addRule(new StringRegexRule("^[0-9]{1,3}$"));
+		validator4.addResultHandler(
+				new BooleanIconTipFeedBack(formattedTextField, null, null, BooleanIconTipFeedBack.DEFAULT_INVALID_ICON,
+						"Angle should be between 000 and 359"));
 
 //		final TypedDataSimpleValidator<Number, Boolean> validator4 = new TypedDataSimpleValidator<Number, Boolean>();
 //		validator4.addTrigger(new JFormattedTextFieldDocumentChangedTrigger(formattedTextField));
 //		validator4.addDataProvider(new JFormattedTextFieldNumberValueProvider(formattedTextField));
-//		validator4.addRule(new CompositeAndTypedDataBooleanRule<Number>(new NumberGreaterThanOrEqualToRule(0.0),
+//		validator4.addRule(new AndCompositeTypedDataBooleanRule<Number>(new NumberGreaterThanOrEqualToRule(0.0),
 //				new NumberLessThanRule(360.0)));
-//		validator4.addResultHandler(new AngleInputFieldFeedBack(formattedTextField));
-
-//		validator4.addResultHandler(resultCollector4);
+//		validator4.addResultHandler(
+//				new BooleanIconTipFeedBack(formattedTextField, null, null, BooleanIconTipFeedBack.DEFAULT_INVALID_ICON,
+//						"Angle should be between 000 and 359"));
 
 		return formattedTextField;
 	}

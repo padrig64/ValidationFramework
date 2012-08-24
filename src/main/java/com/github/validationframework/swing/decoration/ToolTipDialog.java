@@ -226,7 +226,10 @@ public class ToolTipDialog extends JDialog {
 	public void setVisible(final boolean visible) {
 		setSize(toolTip.getPreferredSize());
 		followOwner();
-		super.setVisible(visible);
+
+		if ((toolTip.getTipText() != null) && (!toolTip.getTipText().isEmpty())) {
+			super.setVisible(visible);
+		}
 	}
 
 	@Override
