@@ -27,14 +27,13 @@ package com.github.validationframework.api.dataprovider;
 
 /**
  * Interface to be implemented by entities providing data of a know specific type for the validation process.<br>Typed
- * data providers are typically used by autonomous typed data validators when the validation process is triggered.
+ * data providers are typically used by typed data rules when the validation process is triggered.
  *
  * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
  * type of the component itself.
  *
  * @see DataProvider
- * @see com.github.validationframework.api.trigger.Trigger
- * @see com.github.validationframework.base.validator.AutonomousTypedDataValidator
+ * @see UntypedDataProvider
  */
 public interface TypedDataProvider<D> extends DataProvider {
 

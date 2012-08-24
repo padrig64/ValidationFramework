@@ -29,11 +29,10 @@ package com.github.validationframework.api.dataprovider;
  * Marker interface to be implemented by entities providing data that is not of a pre-determined type.<br>Untyped data
  * providers are typically used by autonomous untyped data validators when the validation process is triggered.<br>It
  * can be used, for example, to retrieve a group of heterogeneous data to perform group validation. Therefore, it has no
- * specific method to retrieve the data, as this is left to application-specific classes.
+ * specific method in this interface to retrieve the data, as this is left to application-specific classes.
  *
  * @see DataProvider
- * @see com.github.validationframework.api.trigger.Trigger
- * @see com.github.validationframework.base.validator.AutonomousUntypedDataValidator
+ * @see TypedDataProvider
  */
 public interface UntypedDataProvider extends DataProvider {
 	// Nothing to be done

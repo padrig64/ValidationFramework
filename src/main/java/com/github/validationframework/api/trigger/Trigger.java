@@ -30,8 +30,6 @@ package com.github.validationframework.api.trigger;
  *
  * @see TriggerListener
  * @see TriggerEvent
- * @see com.github.validationframework.base.validator.Validator
- * @see com.github.validationframework.base.validator.AbstractSimpleValidator
  */
 public interface Trigger {
 

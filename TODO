@@ -13,5 +13,6 @@
 . Reformat/Revert JFormattedTextField when focus lost?
 . Initial focus for JFormattedTextField helper
 
+. Exception-based results
 . Decoration transparency on Java 7
 . All features described in the README file

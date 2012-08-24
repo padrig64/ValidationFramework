@@ -72,6 +72,9 @@ public abstract class AbstractTrigger implements Trigger, Disposable {
 		}
 	}
 
+	/**
+	 * @see Disposable#dispose()
+	 */
 	@Override
 	public void dispose() {
 		// Nothing to be done by default

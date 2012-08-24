@@ -27,10 +27,10 @@ package com.github.validationframework.api.rule;
 
 /**
  * Marker interface to be implemented by validation rules.<br>Validation rules can provide the whole or part of the
- * validation check on the data.Typically, it uses data from the data providers and return a validation result.
+ * validation check on the data. Typically, it uses data from the data providers and return a validation result.
  *
- * @see com.github.validationframework.base.validator.Validator
- * @see com.github.validationframework.base.validator.AbstractSimpleValidator
+ * @see TypedDataRule
+ * @see UntypedDataRule
  */
 public interface Rule {
 	// Nothing to be done
