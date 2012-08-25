@@ -50,7 +50,7 @@ import org.slf4j.LoggerFactory;
  * @see ResultHandler
  */
 public class TypedDataSimpleValidator<D, R>
-		extends AbstractSimpleValidator<Trigger, TypedDataProvider<D>, TypedDataRule<D, R>, ResultHandler<R>> {
+		extends AbstractSimpleValidator<Trigger, TypedDataProvider<D>, TypedDataRule<D, R>, R, ResultHandler<R>> {
 
 	/**
 	 * Logger for this class.

@@ -25,6 +25,11 @@
 
 package com.github.validationframework.api.validator;
 
+import com.github.validationframework.api.dataprovider.DataProvider;
+import com.github.validationframework.api.resulthandler.ResultHandler;
+import com.github.validationframework.api.rule.Rule;
+import com.github.validationframework.api.trigger.Trigger;
+
 /**
  * Interface to be implemented by simple validators.<br>The validator is the central point of the validation framework.
  * It implements the whole chain of validation, from the triggers, till the display of the feedback.<br>Upon validation
@@ -38,9 +43,10 @@ package com.github.validationframework.api.validator;
  * @param <T> Type of trigger initiating the validation.
  * @param <P> Type of data provider providing the input data to be validated.
  * @param <U> Type of validation rules to be used on the input data.
+ * @param <R> Type of validation results produced by the validation rules.
  * @param <H> Type of result handlers to be used on validation output.
  */
-public interface SimpleValidator<T, P, U, H> {
+public interface SimpleValidator<T extends Trigger, P extends DataProvider, U extends Rule, R, H extends ResultHandler<R>> {
 
 	/**
 	 * Adds the specified validation trigger.

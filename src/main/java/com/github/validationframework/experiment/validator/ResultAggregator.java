@@ -35,7 +35,7 @@ import org.slf4j.LoggerFactory;
 
 
 public class ResultAggregator<R, A>
-		extends AbstractSimpleValidator<Trigger, TypedDataProvider<R>, TypedDataRule<R, A>, ResultHandler<A>> {
+		extends AbstractSimpleValidator<Trigger, TypedDataProvider<R>, TypedDataRule<R, A>, A, ResultHandler<A>> {
 
 	/**
 	 * Logger for this class.
