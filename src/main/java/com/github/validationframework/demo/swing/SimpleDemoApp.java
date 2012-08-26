@@ -68,6 +68,8 @@ import javax.swing.plaf.ColorUIResource;
 import javax.swing.text.NumberFormatter;
 import net.miginfocom.swing.MigLayout;
 
+import static com.github.validationframework.experiment.builder.MappableValidatorBuilder.when;
+
 public class SimpleDemoApp extends JFrame {
 
 	/**
@@ -299,14 +301,23 @@ public class SimpleDemoApp extends JFrame {
 		final JFormattedTextField formattedTextField = new JFormattedTextField(courseFormatter);
 
 		final AndTypedDataSimpleValidator<String> validator4 = new AndTypedDataSimpleValidator<String>();
-		validator4.addTrigger(new JFormattedTextFieldDocumentChangedTrigger(formattedTextField));
-		validator4.addDataProvider(new JFormattedTextFieldTextProvider(formattedTextField));
-		validator4.addRule(new JFormattedTextFieldFormatterRule(formattedTextField));
-		validator4.addRule(new StringRegexRule("^[0-9]{1,3}$"));
-		validator4.addResultHandler(
+		final JFormattedTextFieldDocumentChangedTrigger trigger =
+				new JFormattedTextFieldDocumentChangedTrigger(formattedTextField);
+		final JFormattedTextFieldTextProvider dataProvider = new JFormattedTextFieldTextProvider(formattedTextField);
+		final JFormattedTextFieldFormatterRule rule1 = new JFormattedTextFieldFormatterRule(formattedTextField);
+		final StringRegexRule rule2 = new StringRegexRule("^[0-9]{1,3}$");
+		final BooleanIconTipFeedBack resultHandler1 =
 				new BooleanIconTipFeedBack(formattedTextField, null, null, BooleanIconTipFeedBack.DEFAULT_INVALID_ICON,
-						"Angle should be between 000 and 359"));
-		validator4.addResultHandler(new ComponentEnablingBooleanResultHandler(applyButton));
+						"Angle should be between 000 and 359");
+		final ComponentEnablingBooleanResultHandler resultHandler2 =
+				new ComponentEnablingBooleanResultHandler(applyButton);
+
+		validator4.addTrigger(trigger);
+		validator4.addDataProvider(dataProvider);
+		validator4.addRule(rule1);
+		validator4.addRule(rule2);
+		validator4.addResultHandler(resultHandler1);
+		validator4.addResultHandler(resultHandler2);
 
 //		final TypedDataSimpleValidator<Number, Boolean> validator4 = new TypedDataSimpleValidator<Number, Boolean>();
 //		validator4.addTrigger(new JFormattedTextFieldDocumentChangedTrigger(formattedTextField));
@@ -316,6 +327,9 @@ public class SimpleDemoApp extends JFrame {
 //		validator4.addResultHandler(
 //				new BooleanIconTipFeedBack(formattedTextField, null, null, BooleanIconTipFeedBack.DEFAULT_INVALID_ICON,
 //						"Angle should be between 000 and 359"));
+
+		when(trigger).checkDataFrom(dataProvider).with(rule1).with(rule2).handleResultWith(resultHandler1)
+				.handleResultWith(resultHandler2).done();
 
 		return formattedTextField;
 	}

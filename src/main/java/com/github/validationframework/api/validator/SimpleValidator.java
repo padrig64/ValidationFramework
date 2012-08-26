@@ -37,10 +37,10 @@ package com.github.validationframework.api.validator;
  *
  * @param <T> Type of trigger initiating the validation.
  * @param <P> Type of data provider providing the input data to be validated.
- * @param <U> Type of validation rules to be used on the input data.
+ * @param <R> Type of validation rules to be used on the input data.
  * @param <H> Type of result handlers to be used on validation output.
  */
-public interface SimpleValidator<T, P, U, H> {
+public interface SimpleValidator<T, P, R, H> {
 
 	/**
 	 * Adds the specified validation trigger.
@@ -75,14 +75,14 @@ public interface SimpleValidator<T, P, U, H> {
 	 *
 	 * @param rule Validation rule to be added.
 	 */
-	public void addRule(final U rule);
+	public void addRule(final R rule);
 
 	/**
 	 * Removes the specified validation rule.
 	 *
 	 * @param rule Validation rule to be removed.
 	 */
-	public void removeRule(final U rule);
+	public void removeRule(final R rule);
 
 	/**
 	 * Adds the specified validation result handler.

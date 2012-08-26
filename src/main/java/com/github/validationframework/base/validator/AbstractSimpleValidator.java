@@ -45,7 +45,7 @@ import java.util.Map;
  *
  * @param <T> Type of trigger initiating the validation.
  * @param <P> Type of data provider providing the input data to be validated.
- * @param <U> Type of validation rules to be used on the input data.
+ * @param <R> Type of validation rules to be used on the input data.
  * @param <H> Type of result handlers to be used on validation output.
  *
  * @see SimpleValidator
@@ -55,8 +55,8 @@ import java.util.Map;
  * @see ResultHandler
  * @see Disposable
  */
-public abstract class AbstractSimpleValidator<T extends Trigger, P extends DataProvider, U extends Rule, H extends ResultHandler>
-		implements SimpleValidator<T, P, U, H>, Disposable {
+public abstract class AbstractSimpleValidator<T extends Trigger, P extends DataProvider, R extends Rule, H extends ResultHandler>
+		implements SimpleValidator<T, P, R, H>, Disposable {
 
 	/**
 	 * Listener to all registered triggers, initiating the validation logic.
@@ -105,7 +105,7 @@ public abstract class AbstractSimpleValidator<T extends Trigger, P extends DataP
 	/**
 	 * Registered validation rules.
 	 */
-	protected List<U> rules = new ArrayList<U>();
+	protected List<R> rules = new ArrayList<R>();
 
 	/**
 	 * Registered validation result handlers.
@@ -165,7 +165,7 @@ public abstract class AbstractSimpleValidator<T extends Trigger, P extends DataP
 	 * @see SimpleValidator#addRule(Object)
 	 */
 	@Override
-	public void addRule(final U rule) {
+	public void addRule(final R rule) {
 		rules.add(rule);
 	}
 
@@ -173,7 +173,7 @@ public abstract class AbstractSimpleValidator<T extends Trigger, P extends DataP
 	 * @see SimpleValidator#removeRule(Object)
 	 */
 	@Override
-	public void removeRule(final U rule) {
+	public void removeRule(final R rule) {
 		rules.remove(rule);
 	}
 
@@ -247,7 +247,7 @@ public abstract class AbstractSimpleValidator<T extends Trigger, P extends DataP
 	 */
 	private void disposeRules() {
 		// Browse through all rules
-		for (final U rule : rules) {
+		for (final R rule : rules) {
 			// Dispose rule itself
 			if (rule instanceof Disposable) {
 				((Disposable) rule).dispose();
