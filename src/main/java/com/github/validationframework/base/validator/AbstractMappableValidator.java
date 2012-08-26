@@ -58,7 +58,7 @@ import org.slf4j.LoggerFactory;
  * @see ResultHandler
  * @see Disposable
  */
-public abstract class AbstractMappableValidator<T extends Trigger, P extends DataProvider, U extends Rule, R, H extends ResultHandler>
+public abstract class AbstractMappableValidator<T extends Trigger, P extends DataProvider, U extends Rule, R, H extends ResultHandler<R>>
 		implements MappableValidator<T, P, U, R, H>, Disposable {
 
 	/**
@@ -148,7 +148,7 @@ public abstract class AbstractMappableValidator<T extends Trigger, P extends Dat
 	}
 
 	/**
-	 * @see MappableValidator#mapTriggerToDataProvider(Object, Object)
+	 * @see MappableValidator#mapTriggerToDataProvider(Trigger, DataProvider)
 	 */
 	@Override
 	public void mapTriggerToDataProvider(final T trigger, final P dataProvider) {
@@ -198,7 +198,7 @@ public abstract class AbstractMappableValidator<T extends Trigger, P extends Dat
 	}
 
 	/**
-	 * @see MappableValidator#mapDataProviderToRule(Object, Object)
+	 * @see MappableValidator#mapDataProviderToRule(DataProvider, Rule)
 	 */
 	@Override
 	public void mapDataProviderToRule(final P dataProvider, final U rule) {
@@ -243,7 +243,7 @@ public abstract class AbstractMappableValidator<T extends Trigger, P extends Dat
 	}
 
 	/**
-	 * @see MappableValidator#mapResultToResultHandler(Object, Object)
+	 * @see MappableValidator#mapResultToResultHandler(Object, ResultHandler)
 	 */
 	@Override
 	public void mapResultToResultHandler(final R result, final H resultHandler) {
