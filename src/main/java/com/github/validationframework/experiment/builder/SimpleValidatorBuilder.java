@@ -103,7 +103,7 @@ public class SimpleValidatorBuilder {
 		}
 	}
 
-	public static class ResultHandlerContext<T, P, R> extends RuleContext {
+	public static class ResultHandlerContext<T, P, R> extends RuleContext<T, P> {
 
 		/**
 		 * Adds another rule to the validator.
