@@ -27,7 +27,6 @@ package com.github.validationframework.demo.swing;
 
 import com.github.validationframework.api.rule.TypedDataRule;
 import com.github.validationframework.base.rule.string.StringRegexRule;
-import com.github.validationframework.base.validator.AndTypedDataSimpleValidator;
 import com.github.validationframework.base.validator.TypedDataSimpleValidator;
 import com.github.validationframework.swing.dataprovider.JFormattedTextFieldTextProvider;
 import com.github.validationframework.swing.dataprovider.JTextFieldTextProvider;
@@ -56,19 +55,16 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.text.NumberFormatter;
 import net.miginfocom.swing.MigLayout;
 
-import static com.github.validationframework.experiment.builder.MappableValidatorBuilder.when;
+import static com.github.validationframework.experiment.builder.TypedDataSimpleValidatorBuilder.when;
 
 public class SimpleDemoApp extends JFrame {
 
@@ -222,9 +218,7 @@ public class SimpleDemoApp extends JFrame {
 		// Create content pane
 		final JPanel contentPane = new JPanel(
 				new MigLayout("fill, wrap 2", "[]related[grow]", "[]related[]related[]related[]unrelated[]"));
-		final JScrollPane contentWrapper = new JScrollPane(contentPane);
-		contentWrapper.setBorder(new CompoundBorder(new EmptyBorder(30, 30, 30, 30), contentWrapper.getBorder()));
-		setContentPane(contentWrapper);
+		setContentPane(contentPane);
 
 		// Input fields
 		contentPane.add(new JLabel("Tooltip:"));
@@ -244,7 +238,7 @@ public class SimpleDemoApp extends JFrame {
 		pack();
 		final Dimension size = getSize();
 		size.width += 100;
-//		setMinimumSize(size);
+		setMinimumSize(size);
 
 		// Set location
 		final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -300,7 +294,6 @@ public class SimpleDemoApp extends JFrame {
 		courseFormatter.setMaximum(359.0);
 		final JFormattedTextField formattedTextField = new JFormattedTextField(courseFormatter);
 
-		final AndTypedDataSimpleValidator<String> validator4 = new AndTypedDataSimpleValidator<String>();
 		final JFormattedTextFieldDocumentChangedTrigger trigger =
 				new JFormattedTextFieldDocumentChangedTrigger(formattedTextField);
 		final JFormattedTextFieldTextProvider dataProvider = new JFormattedTextFieldTextProvider(formattedTextField);
@@ -312,12 +305,13 @@ public class SimpleDemoApp extends JFrame {
 		final ComponentEnablingBooleanResultHandler resultHandler2 =
 				new ComponentEnablingBooleanResultHandler(applyButton);
 
-		validator4.addTrigger(trigger);
-		validator4.addDataProvider(dataProvider);
-		validator4.addRule(rule1);
-		validator4.addRule(rule2);
-		validator4.addResultHandler(resultHandler1);
-		validator4.addResultHandler(resultHandler2);
+//		final AndTypedDataSimpleValidator<String> validator4 = new AndTypedDataSimpleValidator<String>();
+//		validator4.addTrigger(trigger);
+//		validator4.addDataProvider(dataProvider);
+//		validator4.addRule(rule1);
+//		validator4.addRule(rule2);
+//		validator4.addResultHandler(resultHandler1);
+//		validator4.addResultHandler(resultHandler2);
 
 //		final TypedDataSimpleValidator<Number, Boolean> validator4 = new TypedDataSimpleValidator<Number, Boolean>();
 //		validator4.addTrigger(new JFormattedTextFieldDocumentChangedTrigger(formattedTextField));
@@ -328,8 +322,8 @@ public class SimpleDemoApp extends JFrame {
 //				new BooleanIconTipFeedBack(formattedTextField, null, null, BooleanIconTipFeedBack.DEFAULT_INVALID_ICON,
 //						"Angle should be between 000 and 359"));
 
-		when(trigger).checkDataFrom(dataProvider).with(rule1).with(rule2).handleResultWith(resultHandler1)
-				.handleResultWith(resultHandler2).done();
+		when(trigger).checkDataFrom(dataProvider).with(rule1, rule2).handleResultWith(resultHandler1, resultHandler2)
+				.done();
 
 		return formattedTextField;
 	}

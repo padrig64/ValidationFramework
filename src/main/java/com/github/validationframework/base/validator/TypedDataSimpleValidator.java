@@ -41,7 +41,7 @@ import org.slf4j.LoggerFactory;
  *
  * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
  * type of the component itself.
- * @param <R> Type of validation result.<br>It can be, for instance, an enumeration or just a boolean.
+ * @param <O> Type of validation result.<br>It can be, for instance, an enumeration or just a boolean.
  *
  * @see AbstractSimpleValidator
  * @see Trigger
@@ -49,8 +49,8 @@ import org.slf4j.LoggerFactory;
  * @see TypedDataRule
  * @see ResultHandler
  */
-public class TypedDataSimpleValidator<D, R>
-		extends AbstractSimpleValidator<Trigger, TypedDataProvider<D>, TypedDataRule<D, R>, ResultHandler<R>> {
+public class TypedDataSimpleValidator<D, O>
+		extends AbstractSimpleValidator<Trigger, TypedDataProvider<D>, TypedDataRule<D, O>, ResultHandler<O>> {
 
 	/**
 	 * Logger for this class.
@@ -79,7 +79,7 @@ public class TypedDataSimpleValidator<D, R>
 	 */
 	protected void processData(final D data) {
 		// Check data against all rules
-		for (final TypedDataRule<D, R> rule : rules) {
+		for (final TypedDataRule<D, O> rule : rules) {
 			processResult(rule.validate(data));
 		}
 	}
@@ -89,8 +89,8 @@ public class TypedDataSimpleValidator<D, R>
 	 *
 	 * @param result Result to be processed by all result handlers.
 	 */
-	protected void processResult(final R result) {
-		for (final ResultHandler<R> resultHandler : resultHandlers) {
+	protected void processResult(final O result) {
+		for (final ResultHandler<O> resultHandler : resultHandlers) {
 			resultHandler.handleResult(result);
 		}
 	}

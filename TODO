@@ -6,6 +6,8 @@
 . Check decoration in scrollpanes
 . Spinner
 
+. Use IDs
+. Better icon tip anchoring for IconTipDecorator
 . Transformers (of Data and Results)
 . Auto-scroll/jump to errors in case of scrollpanes, tabbedpane, etc.
 
