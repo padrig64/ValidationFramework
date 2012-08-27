@@ -322,7 +322,7 @@ public class SimpleDemoApp extends JFrame {
 //				new BooleanIconTipFeedBack(formattedTextField, null, null, BooleanIconTipFeedBack.DEFAULT_INVALID_ICON,
 //						"Angle should be between 000 and 359"));
 
-		when(trigger).checkDataFrom(dataProvider).with(rule1, rule2).handleResultWith(resultHandler1, resultHandler2)
+		when(trigger).readFrom(dataProvider).checkAgainst(rule1, rule2).handleResultWith(resultHandler1, resultHandler2)
 				.done();
 
 		return formattedTextField;

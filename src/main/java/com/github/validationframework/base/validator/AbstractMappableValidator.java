@@ -41,7 +41,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Abstract implementation of a mappale validator.<br>It merely implements the methods to map triggers to data
+ * Abstract implementation of a mappable validator.<br>It merely implements the methods to map triggers to data
  * providers, data providers to rules, and rules to result handlers. However, the use triggers, data providers, rules
  * and result handlers, as well as all the validation logic is left to the sub-classes.
  *
@@ -57,7 +57,7 @@ import org.slf4j.LoggerFactory;
  * @see ResultHandler
  * @see Disposable
  */
-public abstract class AbstractMappableValidator<T extends Trigger, P extends DataProvider, R extends Rule, H extends ResultHandler>
+public abstract class AbstractMappableValidator<T extends Trigger, P extends DataProvider, R extends Rule, O, H extends ResultHandler<O>>
 		implements MappableValidator<T, P, R, H>, Disposable {
 
 	/**

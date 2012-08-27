@@ -91,7 +91,7 @@ public class TypedDataSimpleValidatorBuilder {
 		 *
 		 * @return Rule context allowing to add data providers and rules, but not triggers.
 		 */
-		public <D> RuleContext<D> checkDataFrom(final TypedDataProvider<D>... dataProviders) {
+		public <D> RuleContext<D> readFrom(final TypedDataProvider<D>... dataProviders) {
 			final List<TypedDataProvider<D>> registeredDataProviders = new ArrayList<TypedDataProvider<D>>();
 			if (dataProviders != null) {
 				Collections.addAll(registeredDataProviders, dataProviders);
@@ -124,7 +124,7 @@ public class TypedDataSimpleValidatorBuilder {
 		 *
 		 * @return Same rule context.
 		 */
-		public RuleContext<D> checkDataFrom(final TypedDataProvider<D>... dataProviders) {
+		public RuleContext<D> readFrom(final TypedDataProvider<D>... dataProviders) {
 			if (dataProviders != null) {
 				Collections.addAll(registeredDataProviders, dataProviders);
 			}
@@ -139,7 +139,7 @@ public class TypedDataSimpleValidatorBuilder {
 		 *
 		 * @return Result handler context allowing to add rules and result handlers, but not data providers.
 		 */
-		public <O> ResultHandlerContext<D, O> with(final TypedDataRule<D, O>... rules) {
+		public <O> ResultHandlerContext<D, O> checkAgainst(final TypedDataRule<D, O>... rules) {
 			final List<TypedDataRule<D, O>> registeredRules = new ArrayList<TypedDataRule<D, O>>();
 			Collections.addAll(registeredRules, rules);
 			return new ResultHandlerContext<D, O>(registeredTriggers, registeredDataProviders, registeredRules);
@@ -174,7 +174,7 @@ public class TypedDataSimpleValidatorBuilder {
 		 *
 		 * @return Same result handler context.
 		 */
-		public ResultHandlerContext<D, O> with(final TypedDataRule<D, O>... rules) {
+		public ResultHandlerContext<D, O> checkAgainst(final TypedDataRule<D, O>... rules) {
 			if (rules != null) {
 				Collections.addAll(registeredRules, rules);
 			}

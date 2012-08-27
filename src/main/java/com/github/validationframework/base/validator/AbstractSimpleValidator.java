@@ -55,7 +55,7 @@ import java.util.Map;
  * @see ResultHandler
  * @see Disposable
  */
-public abstract class AbstractSimpleValidator<T extends Trigger, P extends DataProvider, R extends Rule, H extends ResultHandler>
+public abstract class AbstractSimpleValidator<T extends Trigger, P extends DataProvider, R extends Rule, O, H extends ResultHandler<O>>
 		implements SimpleValidator<T, P, R, H>, Disposable {
 
 	/**
