@@ -31,7 +31,7 @@ import javax.swing.JSpinner;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-public class JSpinnerModelChangeTrigger extends AbstractTrigger {
+public class JSpinnerModelChangedTrigger extends AbstractTrigger {
 
 	private class SourceAdapter implements ChangeListener {
 
@@ -45,7 +45,7 @@ public class JSpinnerModelChangeTrigger extends AbstractTrigger {
 
 	private final ChangeListener sourceAdapter = new SourceAdapter();
 
-	public JSpinnerModelChangeTrigger(final JSpinner source) {
+	public JSpinnerModelChangedTrigger(final JSpinner source) {
 		super();
 		this.source = source;
 		source.addChangeListener(sourceAdapter);

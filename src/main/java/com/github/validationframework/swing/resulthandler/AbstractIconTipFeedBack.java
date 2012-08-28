@@ -30,7 +30,7 @@ import com.github.validationframework.swing.decoration.IconTipDecorator;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 
-public abstract class AbstractIconTipFeedBack<R> implements ResultHandler<R> {
+public abstract class AbstractIconTipFeedBack<O> implements ResultHandler<O> {
 
 	private IconTipDecorator decorator = null;
 

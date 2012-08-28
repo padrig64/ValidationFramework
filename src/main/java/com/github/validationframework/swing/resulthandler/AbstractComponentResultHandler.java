@@ -30,7 +30,7 @@ import java.awt.Component;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class AbstractComponentResultHandler<R> implements ResultHandler<R> {
+public abstract class AbstractComponentResultHandler<O> implements ResultHandler<O> {
 
 	protected Set<Component> components = new HashSet<Component>();
 

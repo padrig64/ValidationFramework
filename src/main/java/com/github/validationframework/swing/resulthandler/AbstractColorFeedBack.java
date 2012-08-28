@@ -30,7 +30,7 @@ import com.github.validationframework.swing.utils.ColorUtils;
 import java.awt.Color;
 import javax.swing.JComponent;
 
-public abstract class AbstractColorFeedBack<R> implements ResultHandler<R> {
+public abstract class AbstractColorFeedBack<O> implements ResultHandler<O> {
 
 	private JComponent owner = null;
 	private Color origForeground = null;

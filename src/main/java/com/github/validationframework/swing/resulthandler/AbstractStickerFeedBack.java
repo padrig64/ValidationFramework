@@ -31,7 +31,7 @@ import com.github.validationframework.swing.decoration.utils.Anchor;
 import com.github.validationframework.swing.decoration.utils.AnchorLink;
 import javax.swing.JComponent;
 
-public abstract class AbstractStickerFeedBack<R> implements ResultHandler<R> {
+public abstract class AbstractStickerFeedBack<O> implements ResultHandler<O> {
 
 	private ToolTipDialog toolTipDialog = null;
 
