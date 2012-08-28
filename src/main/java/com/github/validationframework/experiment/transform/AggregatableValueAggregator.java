@@ -25,6 +25,9 @@
 
 package com.github.validationframework.experiment.transform;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 public class AggregatableValueAggregator<I, O> implements Aggregator<Aggregatable<I>, O> {
 
 	private final Aggregator<I, O> delegate;
@@ -34,16 +37,16 @@ public class AggregatableValueAggregator<I, O> implements Aggregator<Aggregatabl
 	}
 
 	/**
-	 * @see Aggregator#aggregate(Object[])
+	 * @see Aggregator#aggregate(Collection)
 	 */
 	@Override
-	public O aggregate(final Aggregatable<I>... elements) {
-		I[] aggregatableValues = null;
+	public O aggregate(final Collection<Aggregatable<I>> elements) {
+		Collection<I> aggregatableValues = null;
 
 		if (elements != null) {
-			aggregatableValues = (I[]) new Object[elements.length];
-			for (int i = 0; i < elements.length; i++) {
-				aggregatableValues[i] = elements[i].getAggregatableValue();
+			aggregatableValues = new ArrayList<I>();
+			for (final Aggregatable<I> element : elements) {
+				aggregatableValues.add(element.getAggregatableValue());
 			}
 		}
 

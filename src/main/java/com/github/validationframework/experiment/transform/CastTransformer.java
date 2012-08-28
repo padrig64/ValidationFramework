@@ -23,29 +23,32 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.experiment.resulthandler;
+package com.github.validationframework.experiment.transform;
 
-import com.github.validationframework.api.trigger.AbstractTrigger;
-import com.github.validationframework.api.trigger.TriggerEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class DirectResultCollector<R> extends AbstractTrigger implements ResultCollector<R, R> {
-
-	private R lastResult = null;
+public class CastTransformer<I, O> implements Transformer<I, O> {
 
 	/**
-	 * @see ResultCollector#handleResult(Object)
+	 * Logger for this class.
 	 */
-	@Override
-	public void handleResult(final R result) {
-		lastResult = result;
-		fireTriggerEvent(new TriggerEvent(this));
-	}
+	private static final Logger LOGGER = LoggerFactory.getLogger(CastTransformer.class);
 
 	/**
-	 * @see ResultCollector#getData()
+	 * @see Transformer#transform(Object)
 	 */
 	@Override
-	public R getData() {
-		return lastResult;
+	public O transform(final I input) {
+		O output;
+
+		try {
+			output = (O) input;
+		} catch (ClassCastException e) {
+			LOGGER.error("Failed transforming input: " + input, e);
+			output = null;
+		}
+
+		return output;
 	}
 }

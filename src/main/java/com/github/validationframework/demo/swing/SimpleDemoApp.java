@@ -28,6 +28,9 @@ package com.github.validationframework.demo.swing;
 import com.github.validationframework.api.rule.TypedDataRule;
 import com.github.validationframework.base.rule.string.StringRegexRule;
 import com.github.validationframework.base.validator.TypedDataSimpleValidator;
+import com.github.validationframework.experiment.resulthandler.ResultCollector;
+import com.github.validationframework.experiment.rule.bool.DirectBooleanRule;
+import com.github.validationframework.experiment.transform.Transformer;
 import com.github.validationframework.swing.dataprovider.JFormattedTextFieldTextProvider;
 import com.github.validationframework.swing.dataprovider.JTextFieldTextProvider;
 import com.github.validationframework.swing.resulthandler.AbstractColorFeedBack;
@@ -118,6 +121,14 @@ public class SimpleDemoApp extends JFrame {
 		@Override
 		public String toString() {
 			return text;
+		}
+	}
+
+	private class InputFieldResultToBooleanTransformer implements Transformer<InputFieldResult, Boolean> {
+
+		@Override
+		public Boolean transform(final InputFieldResult input) {
+			return InputFieldResult.OK.equals(input);
 		}
 	}
 
@@ -220,16 +231,29 @@ public class SimpleDemoApp extends JFrame {
 				new MigLayout("fill, wrap 2", "[]related[grow]", "[]related[]related[]related[]unrelated[]"));
 		setContentPane(contentPane);
 
+		final ResultCollector<InputFieldResult, Boolean> resultCollector1 =
+				new ResultCollector<InputFieldResult, Boolean>(new InputFieldResultToBooleanTransformer());
+		final ResultCollector<InputFieldResult, Boolean> resultCollector2 =
+				new ResultCollector<InputFieldResult, Boolean>(new InputFieldResultToBooleanTransformer());
+		final ResultCollector<InputFieldResult, Boolean> resultCollector3 =
+				new ResultCollector<InputFieldResult, Boolean>(new InputFieldResultToBooleanTransformer());
+		final ResultCollector<Boolean, Boolean> resultCollector4 = new ResultCollector<Boolean, Boolean>();
+
 		// Input fields
 		contentPane.add(new JLabel("Tooltip:"));
-		contentPane.add(createInputField1(), "growx");
+		contentPane.add(createInputField1(resultCollector1), "growx");
 		contentPane.add(new JLabel("Color:"));
-		contentPane.add(createInputField2(), "growx");
+		contentPane.add(createInputField2(resultCollector2), "growx");
 		contentPane.add(new JLabel("Icon:"));
-		contentPane.add(createInputField3(), "growx");
+		contentPane.add(createInputField3(resultCollector3), "growx");
 		contentPane.add(new JLabel("Icon tip:"));
 		final JButton applyButton = new JButton("Apply");
-		contentPane.add(createInputField4(applyButton), "growx");
+		contentPane.add(createInputField4(resultCollector4, applyButton), "growx");
+
+		when(resultCollector1, resultCollector2, resultCollector3, resultCollector4)
+				.readFrom(resultCollector1, resultCollector2, resultCollector3, resultCollector4)
+				.checkAgainst(new DirectBooleanRule())
+				.handleResultWith(new ComponentEnablingBooleanResultHandler(applyButton)).done();
 
 		// Apply button
 		contentPane.add(applyButton, "growx, span");
@@ -245,46 +269,50 @@ public class SimpleDemoApp extends JFrame {
 		setLocation((screenSize.width - size.width) / 2, (screenSize.height - size.height) / 3);
 	}
 
-	private Component createInputField1() {
+	private Component createInputField1(final ResultCollector<InputFieldResult, Boolean> resultCollector) {
 		final JTextField textField = new JTextField();
 
-		final TypedDataSimpleValidator<String, InputFieldResult> validator1 =
+		final TypedDataSimpleValidator<String, InputFieldResult> validator =
 				new TypedDataSimpleValidator<String, InputFieldResult>();
-		validator1.addTrigger(new JTextFieldDocumentChangedTrigger(textField));
-		validator1.addDataProvider(new JTextFieldTextProvider(textField));
-		validator1.addRule(new InputFieldRule());
-		validator1.addResultHandler(new InputFieldToolTipFeedBack(textField));
+		validator.addTrigger(new JTextFieldDocumentChangedTrigger(textField));
+		validator.addDataProvider(new JTextFieldTextProvider(textField));
+		validator.addRule(new InputFieldRule());
+		validator.addResultHandler(new InputFieldToolTipFeedBack(textField));
+		validator.addResultHandler(resultCollector);
 
 		return textField;
 	}
 
-	private Component createInputField2() {
+	private Component createInputField2(final ResultCollector<InputFieldResult, Boolean> resultCollector) {
 		final JTextField textField = new JTextField();
 
-		final TypedDataSimpleValidator<String, InputFieldResult> validator2 =
+		final TypedDataSimpleValidator<String, InputFieldResult> validator =
 				new TypedDataSimpleValidator<String, InputFieldResult>();
-		validator2.addTrigger(new JTextFieldDocumentChangedTrigger(textField));
-		validator2.addDataProvider(new JTextFieldTextProvider(textField));
-		validator2.addRule(new InputFieldRule());
-		validator2.addResultHandler(new InputFieldColorFeedBack(textField));
+		validator.addTrigger(new JTextFieldDocumentChangedTrigger(textField));
+		validator.addDataProvider(new JTextFieldTextProvider(textField));
+		validator.addRule(new InputFieldRule());
+		validator.addResultHandler(new InputFieldColorFeedBack(textField));
+		validator.addResultHandler(resultCollector);
 
 		return textField;
 	}
 
-	private Component createInputField3() {
+	private Component createInputField3(final ResultCollector<InputFieldResult, Boolean> resultCollector) {
 		final JTextField textField = new JTextField();
 
-		final TypedDataSimpleValidator<String, InputFieldResult> validator3 =
+		final TypedDataSimpleValidator<String, InputFieldResult> validator =
 				new TypedDataSimpleValidator<String, InputFieldResult>();
-		validator3.addTrigger(new JTextFieldDocumentChangedTrigger(textField));
-		validator3.addDataProvider(new JTextFieldTextProvider(textField));
-		validator3.addRule(new InputFieldRule());
-		validator3.addResultHandler(new InputFieldIconFeedBack(textField));
+		validator.addTrigger(new JTextFieldDocumentChangedTrigger(textField));
+		validator.addDataProvider(new JTextFieldTextProvider(textField));
+		validator.addRule(new InputFieldRule());
+		validator.addResultHandler(new InputFieldIconFeedBack(textField));
+		validator.addResultHandler(resultCollector);
 
 		return textField;
 	}
 
-	private Component createInputField4(final JButton applyButton) {
+	private Component createInputField4(final ResultCollector<Boolean, Boolean> resultCollector,
+										final JButton applyButton) {
 		final NumberFormat courseFormat = NumberFormat.getIntegerInstance();
 		courseFormat.setMinimumIntegerDigits(3);
 		courseFormat.setMaximumIntegerDigits(4);
@@ -302,28 +330,28 @@ public class SimpleDemoApp extends JFrame {
 		final BooleanIconTipFeedBack resultHandler1 =
 				new BooleanIconTipFeedBack(formattedTextField, null, null, BooleanIconTipFeedBack.DEFAULT_INVALID_ICON,
 						"Angle should be between 000 and 359");
-		final ComponentEnablingBooleanResultHandler resultHandler2 =
-				new ComponentEnablingBooleanResultHandler(applyButton);
+//		final ComponentEnablingBooleanResultHandler resultHandler2 =
+//				new ComponentEnablingBooleanResultHandler(applyButton);
 
-//		final AndTypedDataSimpleValidator<String> validator4 = new AndTypedDataSimpleValidator<String>();
-//		validator4.addTrigger(trigger);
-//		validator4.addDataProvider(dataProvider);
-//		validator4.addRule(rule1);
-//		validator4.addRule(rule2);
-//		validator4.addResultHandler(resultHandler1);
-//		validator4.addResultHandler(resultHandler2);
+//		final AndTypedDataSimpleValidator<String> validator4= new AndTypedDataSimpleValidator<String>();
+//		validator.addTrigger(trigger);
+//		validator.addDataProvider(dataProvider);
+//		validator.addRule(rule1);
+//		validator.addRule(rule2);
+//		validator.addResultHandler(resultHandler1);
+//		validator.addResultHandler(resultHandler2);
 
-//		final TypedDataSimpleValidator<Number, Boolean> validator4 = new TypedDataSimpleValidator<Number, Boolean>();
-//		validator4.addTrigger(new JFormattedTextFieldDocumentChangedTrigger(formattedTextField));
-//		validator4.addDataProvider(new JFormattedTextFieldNumberValueProvider(formattedTextField));
-//		validator4.addRule(new AndCompositeTypedDataBooleanRule<Number>(new NumberGreaterThanOrEqualToRule(0.0),
+//		final TypedDataSimpleValidator<Number, Boolean> validator = new TypedDataSimpleValidator<Number, Boolean>();
+//		validator.addTrigger(new JFormattedTextFieldDocumentChangedTrigger(formattedTextField));
+//		validator.addDataProvider(new JFormattedTextFieldNumberValueProvider(formattedTextField));
+//		validator.addRule(new AndCompositeTypedDataBooleanRule<Number>(new NumberGreaterThanOrEqualToRule(0.0),
 //				new NumberLessThanRule(360.0)));
-//		validator4.addResultHandler(
+//		validator.addResultHandler(
 //				new BooleanIconTipFeedBack(formattedTextField, null, null, BooleanIconTipFeedBack.DEFAULT_INVALID_ICON,
 //						"Angle should be between 000 and 359"));
 
-		when(trigger).readFrom(dataProvider).checkAgainst(rule1, rule2).handleResultWith(resultHandler1, resultHandler2)
-				.done();
+		when(trigger).readFrom(dataProvider).checkAgainst(rule1, rule2)
+				.handleResultWith(resultHandler1, resultCollector).done();
 
 		return formattedTextField;
 	}

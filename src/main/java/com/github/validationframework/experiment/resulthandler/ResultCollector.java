@@ -27,8 +27,40 @@ package com.github.validationframework.experiment.resulthandler;
 
 import com.github.validationframework.api.dataprovider.TypedDataProvider;
 import com.github.validationframework.api.resulthandler.ResultHandler;
+import com.github.validationframework.api.trigger.AbstractTrigger;
 import com.github.validationframework.api.trigger.Trigger;
+import com.github.validationframework.api.trigger.TriggerEvent;
+import com.github.validationframework.experiment.transform.CastTransformer;
+import com.github.validationframework.experiment.transform.Transformer;
 
-public interface ResultCollector<R, D> extends ResultHandler<R>, Trigger, TypedDataProvider<D> {
-	// Nothing to be done
+public class ResultCollector<O, D> extends AbstractTrigger implements ResultHandler<O>, Trigger, TypedDataProvider<D> {
+
+	private O lastResult = null;
+
+	private final Transformer<O, D> transformer;
+
+	public ResultCollector() {
+		this(new CastTransformer<O, D>());
+	}
+
+	public ResultCollector(final Transformer<O, D> transformer) {
+		this.transformer = transformer;
+	}
+
+	/**
+	 * @see ResultHandler#handleResult(Object)
+	 */
+	@Override
+	public void handleResult(final O result) {
+		lastResult = result;
+		fireTriggerEvent(new TriggerEvent(this));
+	}
+
+	/**
+	 * @see TypedDataProvider#getData()
+	 */
+	@Override
+	public D getData() {
+		return transformer.transform(lastResult);
+	}
 }

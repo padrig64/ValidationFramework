@@ -27,5 +27,5 @@ package com.github.validationframework.experiment.transform;
 
 public interface Transformer<I, O> {
 
-	public O transform(I element);
+	public O transform(I input);
 }

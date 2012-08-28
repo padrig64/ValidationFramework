@@ -25,7 +25,9 @@
 
 package com.github.validationframework.experiment.transform;
 
+import java.util.Collection;
+
 public interface Aggregator<I, O> {
 
-	public O aggregate(I... elements);
+	public O aggregate(Collection<I> elements);
 }

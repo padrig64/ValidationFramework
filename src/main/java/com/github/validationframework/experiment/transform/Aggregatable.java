@@ -25,7 +25,7 @@
 
 package com.github.validationframework.experiment.transform;
 
-public interface Aggregatable<I> {
+public interface Aggregatable<O> {
 
-	public I getAggregatableValue();
+	public O getAggregatableValue();
 }
