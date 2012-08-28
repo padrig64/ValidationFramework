@@ -33,10 +33,11 @@ public class StringLengthGreaterThanOrEqualToRule extends AbstractStringBooleanR
 	 * Default constructor.
 	 */
 	public StringLengthGreaterThanOrEqualToRule() {
-		// Nothing to be done
+		super();
 	}
 
 	public StringLengthGreaterThanOrEqualToRule(final int minLength) {
+		super();
 		setMinLength(minLength);
 	}
 

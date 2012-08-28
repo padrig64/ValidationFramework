@@ -47,7 +47,7 @@ public class StringRegexRule extends AbstractStringBooleanRule {
 	 * Default constructor.
 	 */
 	public StringRegexRule() {
-		// Nothing to be done
+		super();
 	}
 
 	/**
@@ -58,6 +58,7 @@ public class StringRegexRule extends AbstractStringBooleanRule {
 	 * @see #addPattern(String)
 	 */
 	public StringRegexRule(final String pattern) {
+		super();
 		addPattern(pattern);
 	}
 

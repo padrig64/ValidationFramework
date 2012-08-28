@@ -33,10 +33,11 @@ public class StringLengthEqualToRule extends AbstractStringBooleanRule {
 	 * Default constructor.
 	 */
 	public StringLengthEqualToRule() {
-		// Nothing to be done
+		super();
 	}
 
 	public StringLengthEqualToRule(final int exactLength) {
+		super();
 		setExactLength(exactLength);
 	}
 
