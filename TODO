@@ -6,6 +6,9 @@
 . Check decoration in scrollpanes
 . Spinner
 
+. Put decoration per plane and not per parent
+. Split into several projects
+
 . Use IDs
 . Better icon tip anchoring for IconTipDecorator
 . Transformers (of Data and Results)
