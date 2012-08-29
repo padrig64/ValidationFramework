@@ -3,11 +3,12 @@
 . Fix issue with icon tip
 . Condition logic result handler
 . Table editing
-. Check decoration in scrollpanes
-. Spinner
+. Tab decoration
 
 . Put decoration per plane and not per parent
 . Split into several projects
+
+. Check licenses
 
 . Use IDs
 . Better icon tip anchoring for IconTipDecorator

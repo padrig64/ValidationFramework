@@ -10,16 +10,16 @@
     <packaging>pom</packaging>
     <name>Validation Framework</name>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <compilerVersion>1.6</compilerVersion>
+    </properties>
+
     <modules>
         <module>validationframework-core</module>
         <module>validationframework-swing</module>
         <module>validationframework-experimental</module>
     </modules>
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <compiler.version>1.6</compiler.version>
-    </properties>
 
     <dependencyManagement>
         <dependencies>
@@ -99,9 +99,9 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <groupId>org.apache.maven.plugins</groupId>
                 <configuration>
-                    <source>${compiler.version}</source>
-                    <target>${compiler.version}</target>
-                    <compilerVersion>${compiler.version}</compilerVersion>
+                    <source>${compilerVersion}</source>
+                    <target>${compilerVersion}</target>
+                    <compilerVersion>${compilerVersion}</compilerVersion>
                 </configuration>
             </plugin>
         </plugins>
