@@ -25,8 +25,8 @@
 
 package com.github.validationframework.swing.trigger;
 
-import com.github.validationframework.api.trigger.AbstractTrigger;
 import com.github.validationframework.api.trigger.TriggerEvent;
+import com.github.validationframework.base.trigger.AbstractTrigger;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.JTextComponent;

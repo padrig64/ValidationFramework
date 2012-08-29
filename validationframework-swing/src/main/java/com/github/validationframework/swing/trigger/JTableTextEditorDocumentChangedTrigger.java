@@ -26,9 +26,9 @@
 package com.github.validationframework.swing.trigger;
 
 import com.github.validationframework.api.common.Disposable;
-import com.github.validationframework.api.trigger.AbstractTrigger;
 import com.github.validationframework.api.trigger.TriggerEvent;
 import com.github.validationframework.api.trigger.TriggerListener;
+import com.github.validationframework.base.trigger.AbstractTrigger;
 import java.awt.Component;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;

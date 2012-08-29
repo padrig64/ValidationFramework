@@ -27,9 +27,9 @@ package com.github.validationframework.experimental.resulthandler;
 
 import com.github.validationframework.api.dataprovider.TypedDataProvider;
 import com.github.validationframework.api.resulthandler.ResultHandler;
-import com.github.validationframework.api.trigger.AbstractTrigger;
 import com.github.validationframework.api.trigger.Trigger;
 import com.github.validationframework.api.trigger.TriggerEvent;
+import com.github.validationframework.base.trigger.AbstractTrigger;
 import com.github.validationframework.experimental.transform.CastTransformer;
 import com.github.validationframework.experimental.transform.Transformer;
 

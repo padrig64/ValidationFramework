@@ -23,9 +23,12 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.api.trigger;
+package com.github.validationframework.base.trigger;
 
 import com.github.validationframework.api.common.Disposable;
+import com.github.validationframework.api.trigger.Trigger;
+import com.github.validationframework.api.trigger.TriggerEvent;
+import com.github.validationframework.api.trigger.TriggerListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,9 +37,9 @@ import java.util.List;
  * listeners, and provides a method to fire a trigger event to these listeners.<br>However, the call of this method is
  * left to the sub-classes.
  *
- * @see Trigger
- * @see TriggerListener
- * @see TriggerEvent
+ * @see com.github.validationframework.api.trigger.Trigger
+ * @see com.github.validationframework.api.trigger.TriggerListener
+ * @see com.github.validationframework.api.trigger.TriggerEvent
  */
 public abstract class AbstractTrigger implements Trigger, Disposable {
 
