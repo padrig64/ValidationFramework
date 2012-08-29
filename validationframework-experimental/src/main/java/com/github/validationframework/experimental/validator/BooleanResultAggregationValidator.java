@@ -23,45 +23,15 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.base.validator;
+package com.github.validationframework.experimental.validator;
 
-import com.github.validationframework.api.rule.TypedDataRule;
+import com.github.validationframework.experimental.rule.bool.DirectBooleanRule;
+import com.github.validationframework.experimental.transform.AndBooleanAggregator;
 
-/**
- * Simple validator using boolean results and aggregating all results from the rules into a single result using the AND
- * operation.
- *
- * @see TypedDataSimpleValidator
- * @see OrTypedDataSimpleValidator
- */
-public class AndTypedDataSimpleValidator<D> extends TypedDataSimpleValidator<D, Boolean> {
+public class BooleanResultAggregationValidator extends ResultAggregationValidator<Boolean, Boolean, Boolean> {
 
-	/**
-	 * Checks the specified data against all the rules and aggregates all the boolean results to one single result using
-	 * the AND operation.<br>If there are no rules, the default result will be false.
-	 *
-	 * @param data Data to be validated against all rules.
-	 *
-	 * @see TypedDataSimpleValidator#processData(Object)
-	 */
-	@Override
-	protected void processData(final D data) {
-		boolean aggregatedResult = true;
-
-		System.out.println("AndTypedDataSimpleValidator.processData(" + data + ")");
-
-		// Check data against all rules
-		for (final TypedDataRule<D, Boolean> rule : rules) {
-			System.out.println(" |_ rule: " + rule);
-			Boolean result = rule.validate(data);
-			System.out.println(" |_ result: " + result);
-			if (result == null) {
-				result = false;
-			}
-			aggregatedResult &= result;
-		}
-
-		// Process overall result
-		processResult(aggregatedResult);
+	public BooleanResultAggregationValidator() {
+		super(new AndBooleanAggregator());
+		addRule(new DirectBooleanRule());
 	}
 }

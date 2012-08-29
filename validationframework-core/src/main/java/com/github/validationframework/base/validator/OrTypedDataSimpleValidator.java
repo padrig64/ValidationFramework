@@ -46,14 +46,18 @@ public class OrTypedDataSimpleValidator<D> extends TypedDataSimpleValidator<D, B
 	 */
 	@Override
 	protected void processData(final D data) {
-		boolean result = false;
+		boolean aggregatedResult = false;
 
 		// Check data against all rules
 		for (final TypedDataRule<D, Boolean> rule : rules) {
-			result |= rule.validate(data);
+			Boolean result = rule.validate(data);
+			if (result == null) {
+				result = false;
+			}
+			aggregatedResult |= result;
 		}
 
 		// Process overall result
-		processResult(result);
+		processResult(aggregatedResult);
 	}
 }

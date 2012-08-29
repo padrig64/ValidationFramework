@@ -29,8 +29,8 @@ import com.github.validationframework.api.rule.TypedDataRule;
 import com.github.validationframework.base.rule.string.StringRegexRule;
 import com.github.validationframework.base.validator.TypedDataSimpleValidator;
 import com.github.validationframework.experimental.resulthandler.ResultCollector;
-import com.github.validationframework.experimental.rule.bool.DirectBooleanRule;
 import com.github.validationframework.experimental.transform.Transformer;
+import com.github.validationframework.experimental.validator.BooleanResultAggregationValidator;
 import com.github.validationframework.swing.dataprovider.JFormattedTextFieldTextProvider;
 import com.github.validationframework.swing.dataprovider.JTextFieldTextProvider;
 import com.github.validationframework.swing.resulthandler.AbstractColorFeedBack;
@@ -250,10 +250,12 @@ public class SimpleDemoApp extends JFrame {
 		final JButton applyButton = new JButton("Apply");
 		contentPane.add(createInputField4(resultCollector4, applyButton), "growx");
 
-		when(resultCollector1, resultCollector2, resultCollector3, resultCollector4)
-				.readFrom(resultCollector1, resultCollector2, resultCollector3, resultCollector4)
-				.checkAgainst(new DirectBooleanRule())
-				.handleResultWith(new ComponentEnablingBooleanResultHandler(applyButton)).done();
+		final BooleanResultAggregationValidator globalValidator = new BooleanResultAggregationValidator();
+		globalValidator.addResultCollector(resultCollector1);
+		globalValidator.addResultCollector(resultCollector2);
+		globalValidator.addResultCollector(resultCollector3);
+		globalValidator.addResultCollector(resultCollector4);
+		globalValidator.addResultHandler(new ComponentEnablingBooleanResultHandler(applyButton));
 
 		// Apply button
 		contentPane.add(applyButton, "growx, span");

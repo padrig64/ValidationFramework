@@ -38,7 +38,11 @@ public class AndBooleanAggregator implements Aggregator<Boolean, Boolean> {
 
 		if (elements != null) {
 			for (final Boolean element : elements) {
-				aggregation &= element;
+				if (element == null) {
+					aggregation = false;
+				} else {
+					aggregation &= element;
+				}
 			}
 		}
 
