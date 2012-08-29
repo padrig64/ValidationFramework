@@ -27,13 +27,13 @@ package com.github.validationframework.experimental.transform;
 
 import java.util.Collection;
 
-public class AndBooleanAggregator implements Aggregator<Boolean, Boolean> {
+public class AndBooleanAggregator implements Transformer<Collection<Boolean>, Boolean> {
 
 	/**
-	 * @see Aggregator#aggregate(Collection)
+	 * @see Transformer#transform(Object)
 	 */
 	@Override
-	public Boolean aggregate(final Collection<Boolean> elements) {
+	public Boolean transform(final Collection<Boolean> elements) {
 		boolean aggregation = true;
 
 		if (elements != null) {

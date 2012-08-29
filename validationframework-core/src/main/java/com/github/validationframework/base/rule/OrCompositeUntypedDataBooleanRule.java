@@ -56,15 +56,19 @@ public class OrCompositeUntypedDataBooleanRule extends AbstractCompositeUntypedD
 	 */
 	@Override
 	public Boolean validate() {
-		Boolean result = false;
+		Boolean aggregatedResult = false;
 
 		for (final UntypedDataRule<Boolean> rule : rules) {
-			result |= rule.validate();
-			if (result) {
+			Boolean result = rule.validate();
+			if (result == null) {
+				result = false;
+			}
+			aggregatedResult |= result;
+			if (aggregatedResult) {
 				break;
 			}
 		}
 
-		return result;
+		return aggregatedResult;
 	}
 }

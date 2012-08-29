@@ -23,11 +23,48 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.experimental.transform;
+package com.github.validationframework.base.rule.bool;
 
+import com.github.validationframework.api.rule.TypedDataRule;
 import java.util.Collection;
 
-public interface Aggregator<I, O> {
+public class OrBooleanRule implements TypedDataRule<Collection<Boolean>, Boolean> {
 
-	public O aggregate(Collection<I> elements);
+	private static final boolean DEFAULT_EMPTY_COLLECTION_VALID = true;
+	private static final boolean DEFAULT_NULL_ELEMENT_VALID = false;
+
+	private final boolean emptyCollectionValid;
+
+	private final boolean nullElementValid;
+
+	public OrBooleanRule() {
+		this(DEFAULT_EMPTY_COLLECTION_VALID, DEFAULT_NULL_ELEMENT_VALID);
+	}
+
+	public OrBooleanRule(final boolean emptyCollectionValid, final boolean nullElementValid) {
+		this.emptyCollectionValid = emptyCollectionValid;
+		this.nullElementValid = nullElementValid;
+	}
+
+	@Override
+	public Boolean validate(final Collection<Boolean> elements) {
+		Boolean aggregatedResult = false;
+
+		if ((elements == null) || elements.isEmpty()) {
+			aggregatedResult = emptyCollectionValid;
+		} else {
+			for (final Boolean element : elements) {
+				Boolean result = element;
+				if (result == null) {
+					result = nullElementValid;
+				}
+				aggregatedResult |= result;
+				if (!aggregatedResult) {
+					break;
+				}
+			}
+		}
+
+		return aggregatedResult;
+	}
 }

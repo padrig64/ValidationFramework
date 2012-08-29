@@ -28,19 +28,19 @@ package com.github.validationframework.experimental.transform;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class AggregatableValueAggregator<I, O> implements Aggregator<Aggregatable<I>, O> {
+public class AggregatableValueAggregator<I, O> implements Transformer<Collection<Aggregatable<I>>, O> {
 
-	private final Aggregator<I, O> delegate;
+	private final Transformer<Collection<I>, O> delegate;
 
-	public AggregatableValueAggregator(final Aggregator<I, O> delegate) {
+	public AggregatableValueAggregator(final Transformer<Collection<I>, O> delegate) {
 		this.delegate = delegate;
 	}
 
 	/**
-	 * @see Aggregator#aggregate(Collection)
+	 * @see Transformer#transform(Object)
 	 */
 	@Override
-	public O aggregate(final Collection<Aggregatable<I>> elements) {
+	public O transform(final Collection<Aggregatable<I>> elements) {
 		Collection<I> aggregatableValues = null;
 
 		if (elements != null) {
@@ -50,6 +50,6 @@ public class AggregatableValueAggregator<I, O> implements Aggregator<Aggregatabl
 			}
 		}
 
-		return delegate.aggregate(aggregatableValues);
+		return delegate.transform(aggregatableValues);
 	}
 }

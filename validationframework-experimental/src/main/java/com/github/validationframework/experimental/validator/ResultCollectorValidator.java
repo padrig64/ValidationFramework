@@ -30,33 +30,34 @@ import com.github.validationframework.api.resulthandler.ResultHandler;
 import com.github.validationframework.api.rule.TypedDataRule;
 import com.github.validationframework.api.trigger.Trigger;
 import com.github.validationframework.base.validator.AbstractSimpleValidator;
-import com.github.validationframework.experimental.transform.Transformer;
+import com.github.validationframework.experimental.resulthandler.ResultCollector;
 import java.util.ArrayList;
 import java.util.Collection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @deprecated Hard to use?
+ * TODO
+ *
+ * @param <D> Type of data handled by this validator, that is to say, the transformed collected results.
+ * @param <O> Typed of output of this validator.
  */
-@Deprecated
-public class TypedDataAggregateResultValidator<D, O, A>
-		extends AbstractSimpleValidator<Trigger, TypedDataProvider<D>, TypedDataRule<D, O>, A, ResultHandler<A>> {
+public class ResultCollectorValidator<D, O> extends
+		AbstractSimpleValidator<Trigger, TypedDataProvider<D>, TypedDataRule<Collection<D>, O>, O, ResultHandler<O>> {
 
 	/**
 	 * Logger for this class.
 	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(TypedDataAggregateResultValidator.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ResultCollectorValidator.class);
 
-	private Transformer<Collection<O>, A> aggregator = null;
-
-	public TypedDataAggregateResultValidator() {
-		super();
+	public void addResultCollector(final ResultCollector<?, D> resultCollector) {
+		addTrigger(resultCollector);
+		addDataProvider(resultCollector);
 	}
 
-	public TypedDataAggregateResultValidator(final Transformer<Collection<O>, A> aggregator) {
-		super();
-		this.aggregator = aggregator;
+	public void removeResultCollector(final ResultCollector<?, D> resultCollector) {
+		removeTrigger(resultCollector);
+		removeDataProvider(resultCollector);
 	}
 
 	/**
@@ -67,10 +68,14 @@ public class TypedDataAggregateResultValidator<D, O, A>
 		if (dataProviders.isEmpty()) {
 			LOGGER.warn("No data providers in validator: " + this);
 		} else {
-			// Process data from all providers
+			// Collect results
+			final Collection<D> collectedResults = new ArrayList<D>();
 			for (final TypedDataProvider<D> dataProvider : dataProviders) {
-				processData(dataProvider.getData());
+				collectedResults.add(dataProvider.getData());
 			}
+
+			// Process results
+			processData(collectedResults);
 		}
 	}
 
@@ -79,17 +84,10 @@ public class TypedDataAggregateResultValidator<D, O, A>
 	 *
 	 * @param data Data to be validated against all rules.
 	 */
-	protected void processData(final D data) {
-		if (!rules.isEmpty()) {
-			// Check data against all rules and collect results
-			final Collection<O> results = new ArrayList<O>();
-			for (final TypedDataRule<D, O> rule : rules) {
-				results.add(rule.validate(data));
-			}
-
-			// Aggregate results and process aggregated result
-			final A aggregatedResult = aggregator.transform(results);
-			processResult(aggregatedResult);
+	protected void processData(final Collection<D> data) {
+		// Check data against all rules
+		for (final TypedDataRule<Collection<D>, O> rule : rules) {
+			processResult(rule.validate(data));
 		}
 	}
 
@@ -98,8 +96,8 @@ public class TypedDataAggregateResultValidator<D, O, A>
 	 *
 	 * @param result Result to be processed by all result handlers.
 	 */
-	protected void processResult(final A result) {
-		for (final ResultHandler<A> resultHandler : resultHandlers) {
+	protected void processResult(final O result) {
+		for (final ResultHandler<O> resultHandler : resultHandlers) {
 			resultHandler.handleResult(result);
 		}
 	}

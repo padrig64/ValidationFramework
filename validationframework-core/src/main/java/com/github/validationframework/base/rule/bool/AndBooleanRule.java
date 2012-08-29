@@ -23,52 +23,45 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.base.rule;
+package com.github.validationframework.base.rule.bool;
 
 import com.github.validationframework.api.rule.TypedDataRule;
+import java.util.Collection;
 
-/**
- * Composite rule checking data of a known specific type using sub-rules, and returning a boolean as an aggregation of
- * the boolean results from its sub-rules.<br>The aggregation is basically an OR operation: the result will be true if
- * the result of  at least one sub-rule is also true.<br>If there are no sub-rules, the default result will be false.
- *
- * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
- * type of the component itself.
- *
- * @see AbstractCompositeTypedDataRule
- * @see AndCompositeTypedDataBooleanRule
- */
-public class OrCompositeTypedDataBooleanRule<D> extends AbstractCompositeTypedDataRule<D, Boolean> {
+public class AndBooleanRule implements TypedDataRule<Collection<Boolean>, Boolean> {
 
-	/**
-	 * @see AbstractCompositeTypedDataRule#AbstractCompositeTypedDataRule()
-	 */
-	public OrCompositeTypedDataBooleanRule() {
-		super();
+	private static final boolean DEFAULT_EMPTY_COLLECTION_VALID = true;
+	private static final boolean DEFAULT_NULL_ELEMENT_VALID = false;
+
+	private final boolean emptyCollectionValid;
+
+	private final boolean nullElementValid;
+
+	public AndBooleanRule() {
+		this(DEFAULT_EMPTY_COLLECTION_VALID, DEFAULT_NULL_ELEMENT_VALID);
 	}
 
-	/**
-	 * @see AbstractCompositeTypedDataRule#AbstractCompositeTypedDataRule(com.github.validationframework.api.rule.TypedDataRule[])
-	 */
-	public OrCompositeTypedDataBooleanRule(final TypedDataRule<D, Boolean>... rules) {
-		super(rules);
+	public AndBooleanRule(final boolean emptyCollectionValid, final boolean nullElementValid) {
+		this.emptyCollectionValid = emptyCollectionValid;
+		this.nullElementValid = nullElementValid;
 	}
 
-	/**
-	 * @see AbstractCompositeTypedDataRule#validate(Object)
-	 */
 	@Override
-	public Boolean validate(final D data) {
-		Boolean aggregatedResult = false;
+	public Boolean validate(final Collection<Boolean> elements) {
+		Boolean aggregatedResult = true;
 
-		for (final TypedDataRule<D, Boolean> rule : rules) {
-			Boolean result = rule.validate(data);
-			if (result == null) {
-				result = false;
-			}
-			aggregatedResult |= result;
-			if (aggregatedResult) {
-				break;
+		if ((elements == null) || elements.isEmpty()) {
+			aggregatedResult = emptyCollectionValid;
+		} else {
+			for (final Boolean element : elements) {
+				Boolean result = element;
+				if (result == null) {
+					result = nullElementValid;
+				}
+				aggregatedResult &= result;
+				if (!aggregatedResult) {
+					break;
+				}
 			}
 		}
 

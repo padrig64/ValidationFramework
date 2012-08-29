@@ -41,7 +41,10 @@ package com.github.validationframework.experimental.validator;
  * @param <R> Type of validation rules to be used on the input data.
  * @param <O> Type of validation results produced by the validation rules.
  * @param <H> Type of result handlers to be used on validation output.
+ *
+ * @deprecated The regular MappableValidator is more intuitive
  */
+@Deprecated
 public interface MappableResultValidator<T, P, R, O, H> {
 
 	/**

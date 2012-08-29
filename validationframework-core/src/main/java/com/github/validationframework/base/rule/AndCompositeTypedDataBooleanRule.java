@@ -59,15 +59,19 @@ public class AndCompositeTypedDataBooleanRule<D> extends AbstractCompositeTypedD
 	 */
 	@Override
 	public Boolean validate(final D data) {
-		Boolean result = true;
+		Boolean aggregatedResult = true;
 
 		for (final TypedDataRule<D, Boolean> rule : rules) {
-			result &= rule.validate(data);
-			if (!result) {
+			Boolean result = rule.validate(data);
+			if (result == null) {
+				result = false;
+			}
+			aggregatedResult &= result;
+			if (!aggregatedResult) {
 				break;
 			}
 		}
 
-		return result;
+		return aggregatedResult;
 	}
 }

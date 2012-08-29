@@ -31,7 +31,7 @@ import com.github.validationframework.api.rule.TypedDataRule;
 import com.github.validationframework.api.trigger.Trigger;
 import com.github.validationframework.base.validator.AbstractSimpleValidator;
 import com.github.validationframework.experimental.resulthandler.ResultCollector;
-import com.github.validationframework.experimental.transform.Aggregator;
+import com.github.validationframework.experimental.transform.Transformer;
 import java.util.ArrayList;
 import java.util.Collection;
 import org.slf4j.Logger;
@@ -43,7 +43,10 @@ import org.slf4j.LoggerFactory;
  * @param <D> Type of data handled by this validator, that is to say, the transformed collected results.
  * @param <A> Type of data resulting from the aggregation and that is passed to the rules.
  * @param <O> Typed of output of this validator.
+ *
+ * @deprecated The ResultCollectorValidator is more intuitive
  */
+@Deprecated
 public class ResultAggregationValidator<D, A, O>
 		extends AbstractSimpleValidator<Trigger, TypedDataProvider<D>, TypedDataRule<A, O>, O, ResultHandler<O>> {
 
@@ -52,9 +55,9 @@ public class ResultAggregationValidator<D, A, O>
 	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(ResultAggregationValidator.class);
 
-	private final Aggregator<D, A> resultAggregator;
+	private final Transformer<Collection<D>, A> resultAggregator;
 
-	public ResultAggregationValidator(final Aggregator<D, A> resultAggregator) {
+	public ResultAggregationValidator(final Transformer<Collection<D>, A> resultAggregator) {
 		super();
 		this.resultAggregator = resultAggregator;
 	}
@@ -66,7 +69,7 @@ public class ResultAggregationValidator<D, A, O>
 
 	public void removeResultCollector(final ResultCollector<?, D> resultCollector) {
 		removeTrigger(resultCollector);
-		removeTrigger(resultCollector);
+		removeDataProvider(resultCollector);
 	}
 
 	@Override
@@ -81,7 +84,7 @@ public class ResultAggregationValidator<D, A, O>
 			}
 
 			// Aggregate results
-			final A aggregatedData = resultAggregator.aggregate(collectedResults);
+			final A aggregatedData = resultAggregator.transform(collectedResults);
 
 			// Process aggregation
 			processData(aggregatedData);

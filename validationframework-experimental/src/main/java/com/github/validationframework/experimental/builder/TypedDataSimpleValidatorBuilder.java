@@ -48,7 +48,7 @@ public class TypedDataSimpleValidatorBuilder {
 		 *
 		 * @return Data provider context allowing to add triggers and data providers.
 		 */
-		public DataProviderContext when(final Trigger... triggers) {
+		public DataProviderContext on(final Trigger... triggers) {
 			final List<Trigger> registeredTriggers = new ArrayList<Trigger>();
 			if (triggers != null) {
 				Collections.addAll(registeredTriggers, triggers);
@@ -75,7 +75,7 @@ public class TypedDataSimpleValidatorBuilder {
 		 *
 		 * @return Same data provider context.
 		 */
-		public DataProviderContext when(final Trigger... triggers) {
+		public DataProviderContext on(final Trigger... triggers) {
 			if (triggers != null) {
 				Collections.addAll(registeredTriggers, triggers);
 			}
@@ -91,7 +91,7 @@ public class TypedDataSimpleValidatorBuilder {
 		 *
 		 * @return Rule context allowing to add data providers and rules, but not triggers.
 		 */
-		public <D> RuleContext<D> readFrom(final TypedDataProvider<D>... dataProviders) {
+		public <D> RuleContext<D> read(final TypedDataProvider<D>... dataProviders) {
 			final List<TypedDataProvider<D>> registeredDataProviders = new ArrayList<TypedDataProvider<D>>();
 			if (dataProviders != null) {
 				Collections.addAll(registeredDataProviders, dataProviders);
@@ -124,7 +124,7 @@ public class TypedDataSimpleValidatorBuilder {
 		 *
 		 * @return Same rule context.
 		 */
-		public RuleContext<D> readFrom(final TypedDataProvider<D>... dataProviders) {
+		public RuleContext<D> read(final TypedDataProvider<D>... dataProviders) {
 			if (dataProviders != null) {
 				Collections.addAll(registeredDataProviders, dataProviders);
 			}
@@ -139,7 +139,7 @@ public class TypedDataSimpleValidatorBuilder {
 		 *
 		 * @return Result handler context allowing to add rules and result handlers, but not data providers.
 		 */
-		public <O> ResultHandlerContext<D, O> checkAgainst(final TypedDataRule<D, O>... rules) {
+		public <O> ResultHandlerContext<D, O> check(final TypedDataRule<D, O>... rules) {
 			final List<TypedDataRule<D, O>> registeredRules = new ArrayList<TypedDataRule<D, O>>();
 			Collections.addAll(registeredRules, rules);
 			return new ResultHandlerContext<D, O>(registeredTriggers, registeredDataProviders, registeredRules);
@@ -174,7 +174,7 @@ public class TypedDataSimpleValidatorBuilder {
 		 *
 		 * @return Same result handler context.
 		 */
-		public ResultHandlerContext<D, O> checkAgainst(final TypedDataRule<D, O>... rules) {
+		public ResultHandlerContext<D, O> check(final TypedDataRule<D, O>... rules) {
 			if (rules != null) {
 				Collections.addAll(registeredRules, rules);
 			}
@@ -188,7 +188,7 @@ public class TypedDataSimpleValidatorBuilder {
 		 *
 		 * @return Validator context allowing to add result handlers and to create the validator.
 		 */
-		public ValidatorContext<D, O> handleResultWith(final ResultHandler<O>... resultHandlers) {
+		public ValidatorContext<D, O> handleWith(final ResultHandler<O>... resultHandlers) {
 			final List<ResultHandler<O>> registeredResultHandlers = new ArrayList<ResultHandler<O>>();
 			if (resultHandlers != null) {
 				Collections.addAll(registeredResultHandlers, resultHandlers);
@@ -229,7 +229,7 @@ public class TypedDataSimpleValidatorBuilder {
 		 *
 		 * @return Same validator context.
 		 */
-		public ValidatorContext<D, O> handleResultWith(final ResultHandler<O>... resultHandlers) {
+		public ValidatorContext<D, O> handleWith(final ResultHandler<O>... resultHandlers) {
 			if (resultHandlers != null) {
 				Collections.addAll(registeredResultHandlers, resultHandlers);
 			}
@@ -241,7 +241,7 @@ public class TypedDataSimpleValidatorBuilder {
 		 *
 		 * @return Newly created and configured validator.
 		 */
-		public TypedDataSimpleValidator<D, O> done() {
+		public TypedDataSimpleValidator<D, O> build() {
 			final TypedDataSimpleValidator<D, O> validator = new TypedDataSimpleValidator<D, O>();
 
 			for (final Trigger trigger : registeredTriggers) {
@@ -261,7 +261,7 @@ public class TypedDataSimpleValidatorBuilder {
 		}
 	}
 
-	public static DataProviderContext when(final Trigger... triggers) {
-		return new TriggerContext().when(triggers);
+	public static DataProviderContext on(final Trigger... triggers) {
+		return new TriggerContext().on(triggers);
 	}
 }

@@ -25,13 +25,12 @@
 
 package com.github.validationframework.experimental.validator;
 
-import com.github.validationframework.experimental.rule.bool.DirectBooleanRule;
 import com.github.validationframework.experimental.transform.AndBooleanAggregator;
 
+@Deprecated
 public class BooleanResultAggregationValidator extends ResultAggregationValidator<Boolean, Boolean, Boolean> {
 
 	public BooleanResultAggregationValidator() {
 		super(new AndBooleanAggregator());
-		addRule(new DirectBooleanRule());
 	}
 }

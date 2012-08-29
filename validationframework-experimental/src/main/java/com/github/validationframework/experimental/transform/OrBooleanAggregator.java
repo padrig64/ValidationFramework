@@ -27,13 +27,13 @@ package com.github.validationframework.experimental.transform;
 
 import java.util.Collection;
 
-public class OrBooleanAggregator implements Aggregator<Boolean, Boolean> {
+public class OrBooleanAggregator implements Transformer<Collection<Boolean>, Boolean> {
 
 	/**
-	 * @see Aggregator#aggregate(java.util.Collection)
+	 * @see Transformer#transform(Object)
 	 */
 	@Override
-	public Boolean aggregate(final Collection<Boolean> elements) {
+	public Boolean transform(final Collection<Boolean> elements) {
 		boolean aggregation = false;
 
 		if (elements != null) {
