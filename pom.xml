@@ -13,6 +13,8 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <compilerVersion>1.6</compilerVersion>
+        <mockito.version>1.9.0</mockito.version>
+        <junit.version>4.10</junit.version>
     </properties>
 
     <modules>
@@ -88,6 +90,22 @@
                 <groupId>com.miglayout</groupId>
                 <artifactId>miglayout-swing</artifactId>
                 <version>4.1</version>
+            </dependency>
+
+            <!-- Test dependencies -->
+
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>${mockito.version}</version>
+                <scope>test</scope>
             </dependency>
 
         </dependencies>
