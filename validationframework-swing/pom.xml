@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>validationframework</artifactId>
+        <groupId>validationframework</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>validationframework-swing</artifactId>
+    <name>Validation Framework Swing Support</name>
+
+    <dependencies>
+
+        <!-- Validation Framework -->
+
+        <dependency>
+            <groupId>validationframework</groupId>
+            <artifactId>validationframework-core</artifactId>
+        </dependency>
+
+        <!-- Logging -->
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+
+        <!-- JNA -->
+
+        <dependency>
+            <groupId>net.java.dev.jna</groupId>
+            <artifactId>jna</artifactId>
+            <classifier>platform</classifier>
+        </dependency>
+
+        <!-- Animation -->
+
+        <dependency>
+            <groupId>net.java.timingframework</groupId>
+            <artifactId>timingframework-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.java.timingframework</groupId>
+            <artifactId>timingframework-swing</artifactId>
+        </dependency>
+
+    </dependencies>
+</project>

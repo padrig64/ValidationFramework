@@ -1,63 +1,110 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>ValidationFramework</groupId>
-    <artifactId>ValidationFramework</artifactId>
+    <groupId>validationframework</groupId>
+    <artifactId>validationframework</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>Validation Framework</name>
 
-    <dependencies>
+    <modules>
+        <module>validationframework-core</module>
+        <module>validationframework-swing</module>
+        <module>validationframework-experimental</module>
+    </modules>
 
-        <!-- Logging -->
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <compiler.version>1.6</compiler.version>
+    </properties>
 
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.6.4</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>1.6.6</version>
-        </dependency>
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.16</version>
-        </dependency>
+    <dependencyManagement>
+        <dependencies>
 
-        <!-- JNA -->
+            <!-- Validation Framework -->
 
-        <dependency>
-            <groupId>net.java.dev.jna</groupId>
-            <artifactId>jna</artifactId>
-            <version>3.3.0</version>
-        </dependency>
-        <dependency>
-            <groupId>net.java.dev.jna</groupId>
-            <artifactId>jna</artifactId>
-            <version>3.3.0</version>
-            <classifier>platform</classifier>
-        </dependency>
+            <dependency>
+                <groupId>validationframework</groupId>
+                <artifactId>validationframework-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>validationframework</groupId>
+                <artifactId>validationframework-swing</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
-        <!-- Animation -->
+            <!-- Logging -->
 
-        <dependency>
-            <groupId>net.java.timingframework</groupId>
-            <artifactId>timingframework-swing</artifactId>
-            <version>4.1.0</version>
-        </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>1.6.4</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-log4j12</artifactId>
+                <version>1.6.6</version>
+            </dependency>
+            <dependency>
+                <groupId>log4j</groupId>
+                <artifactId>log4j</artifactId>
+                <version>1.2.16</version>
+            </dependency>
 
-        <!-- Layout -->
+            <!-- JNA -->
 
-        <dependency>
-            <groupId>com.miglayout</groupId>
-            <artifactId>miglayout-swing</artifactId>
-            <version>4.1</version>
-        </dependency>
+            <dependency>
+                <groupId>net.java.dev.jna</groupId>
+                <artifactId>jna</artifactId>
+                <version>3.3.0</version>
+            </dependency>
+            <dependency>
+                <groupId>net.java.dev.jna</groupId>
+                <artifactId>jna</artifactId>
+                <version>3.3.0</version>
+                <classifier>platform</classifier>
+            </dependency>
 
-    </dependencies>
+            <!-- Animation -->
+
+            <dependency>
+                <groupId>net.java.timingframework</groupId>
+                <artifactId>timingframework-core</artifactId>
+                <version>4.1.0</version>
+            </dependency>
+            <dependency>
+                <groupId>net.java.timingframework</groupId>
+                <artifactId>timingframework-swing</artifactId>
+                <version>4.1.0</version>
+            </dependency>
+
+            <!-- Layout -->
+
+            <dependency>
+                <groupId>com.miglayout</groupId>
+                <artifactId>miglayout-swing</artifactId>
+                <version>4.1</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId>
+                <configuration>
+                    <source>${compiler.version}</source>
+                    <target>${compiler.version}</target>
+                    <compilerVersion>${compiler.version}</compilerVersion>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>
