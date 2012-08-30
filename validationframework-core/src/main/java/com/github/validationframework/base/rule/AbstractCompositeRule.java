@@ -25,50 +25,54 @@
 
 package com.github.validationframework.base.rule;
 
-import com.github.validationframework.api.rule.UntypedDataRule;
+import com.github.validationframework.api.rule.Rule;
+import java.util.ArrayList;
+import java.util.List;
 
-/**
- * Composite rule performing validation using sub-rules, and returning a boolean as an aggregation of the boolean
- * results from its sub-rules.<br>The aggregation is basically an AND operation: the result will be true if the results
- * of sub-rules are also true.<br>If there are no sub-rules, the default result will be true.
- *
- * @see AbstractCompositeUntypedDataRule
- * @see OrCompositeUntypedDataBooleanRule
- */
-public class AndCompositeUntypedDataBooleanRule extends AbstractCompositeUntypedDataRule<Boolean> {
+public abstract class AbstractCompositeRule<D, R> implements Rule<D, R> {
 
 	/**
-	 * @see AbstractCompositeUntypedDataRule#AbstractCompositeUntypedDataRule()
+	 * Sub-rules to be checked.
 	 */
-	public AndCompositeUntypedDataBooleanRule() {
-		super();
+	protected final List<Rule<D, R>> rules = new ArrayList<Rule<D, R>>();
+
+	/**
+	 * Default constructor.
+	 */
+	public AbstractCompositeRule() {
+		// Nothing to be done
 	}
 
 	/**
-	 * @see AbstractCompositeUntypedDataRule#AbstractCompositeUntypedDataRule(com.github.validationframework.api.rule.UntypedDataRule[])
+	 * Constructor specifying the sub-rule(s) to be added.
+	 *
+	 * @param rules Sub-rule(s) to be added.
+	 *
+	 * @see #addRule(com.github.validationframework.api.rule.Rule)
 	 */
-	public AndCompositeUntypedDataBooleanRule(final UntypedDataRule<Boolean>... rules) {
-		super(rules);
-	}
-
-	/**
-	 * @see AbstractCompositeUntypedDataRule#validate()
-	 */
-	@Override
-	public Boolean validate() {
-		Boolean aggregatedResult = true;
-
-		for (final UntypedDataRule<Boolean> rule : rules) {
-			Boolean result = rule.validate();
-			if (result == null) {
-				result = false;
-			}
-			aggregatedResult &= result;
-			if (!aggregatedResult) {
-				break;
+	public AbstractCompositeRule(final Rule<D, R>... rules) {
+		if (rules != null) {
+			for (final Rule<D, R> rule : rules) {
+				addRule(rule);
 			}
 		}
+	}
 
-		return aggregatedResult;
+	/**
+	 * Adds the specified sub-rule to be checked.
+	 *
+	 * @param rule Sub-rule to be added.
+	 */
+	public void addRule(final Rule<D, R> rule) {
+		rules.add(rule);
+	}
+
+	/**
+	 * Removes the specified sub-rule to be checked.
+	 *
+	 * @param rule Sub-rule tobe removed
+	 */
+	public void removeRule(final Rule<D, R> rule) {
+		rules.remove(rule);
 	}
 }

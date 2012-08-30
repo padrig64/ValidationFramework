@@ -25,54 +25,53 @@
 
 package com.github.validationframework.base.rule;
 
-import com.github.validationframework.api.rule.TypedDataRule;
-import java.util.ArrayList;
-import java.util.List;
+import com.github.validationframework.api.rule.Rule;
 
-public abstract class AbstractCompositeTypedDataRule<D, R> implements TypedDataRule<D, R> {
+/**
+ * Composite rule checking data of a known specific type using sub-rules, and returning a boolean as an aggregation of
+ * the boolean results from its sub-rules.<br>The aggregation is basically an AND operation: the result will be true if
+ * the results of sub-rules are also true.<br>If there are no sub-rules, the default result will be true.
+ *
+ * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
+ * type of the component itself.
+ *
+ * @see AbstractCompositeRule
+ * @see OrCompositeBooleanRule
+ */
+public class AndCompositeBooleanRule<D> extends AbstractCompositeRule<D, Boolean> {
 
 	/**
-	 * Typed data sub-rules to be checked.
+	 * @see AbstractCompositeRule#AbstractCompositeRule()
 	 */
-	protected final List<TypedDataRule<D, R>> rules = new ArrayList<TypedDataRule<D, R>>();
-
-	/**
-	 * Default constructor.
-	 */
-	public AbstractCompositeTypedDataRule() {
-		// Nothing to be done
+	public AndCompositeBooleanRule() {
+		super();
 	}
 
 	/**
-	 * Constructor specifying the sub-rule(s) to be added.
-	 *
-	 * @param rules Sub-rule(s) to be added.
-	 *
-	 * @see #addRule(TypedDataRule)
+	 * @see AbstractCompositeRule#AbstractCompositeRule(com.github.validationframework.api.rule.Rule[])
 	 */
-	public AbstractCompositeTypedDataRule(final TypedDataRule<D, R>... rules) {
-		if (rules != null) {
-			for (final TypedDataRule<D, R> rule : rules) {
-				addRule(rule);
+	public AndCompositeBooleanRule(final Rule<D, Boolean>... rules) {
+		super(rules);
+	}
+
+	/**
+	 * @see AbstractCompositeRule#validate(Object)
+	 */
+	@Override
+	public Boolean validate(final D data) {
+		Boolean aggregatedResult = true;
+
+		for (final Rule<D, Boolean> rule : rules) {
+			Boolean result = rule.validate(data);
+			if (result == null) {
+				result = false;
+			}
+			aggregatedResult &= result;
+			if (!aggregatedResult) {
+				break;
 			}
 		}
-	}
 
-	/**
-	 * Adds the specified sub-rule to be checked.
-	 *
-	 * @param rule Sub-rule to be added.
-	 */
-	public void addRule(final TypedDataRule<D, R> rule) {
-		rules.add(rule);
-	}
-
-	/**
-	 * Removes the specified sub-rule to be checked.
-	 *
-	 * @param rule Sub-rule tobe removed
-	 */
-	public void removeRule(final TypedDataRule<D, R> rule) {
-		rules.remove(rule);
+		return aggregatedResult;
 	}
 }

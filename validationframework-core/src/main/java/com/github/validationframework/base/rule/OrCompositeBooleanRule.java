@@ -23,45 +23,55 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.base.validator;
+package com.github.validationframework.base.rule;
 
-import com.github.validationframework.api.rule.TypedDataRule;
+import com.github.validationframework.api.rule.Rule;
 
 /**
- * Simple validator using boolean results and aggregating all results from the rules into a single result using the AND
- * operation.
+ * Composite rule checking data of a known specific type using sub-rules, and returning a boolean as an aggregation of
+ * the boolean results from its sub-rules.<br>The aggregation is basically an OR operation: the result will be true if
+ * the result of  at least one sub-rule is also true.<br>If there are no sub-rules, the default result will be false.
  *
- * @see TypedDataSimpleValidator
- * @see OrTypedDataSimpleValidator
+ * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
+ * type of the component itself.
+ *
+ * @see AbstractCompositeRule
+ * @see AndCompositeBooleanRule
  */
-public class AndTypedDataSimpleValidator<D> extends TypedDataSimpleValidator<D, Boolean> {
+public class OrCompositeBooleanRule<D> extends AbstractCompositeRule<D, Boolean> {
 
 	/**
-	 * Checks the specified data against all the rules and aggregates all the boolean results to one single result using
-	 * the AND operation.<br>If there are no rules, the default result will be false.
-	 *
-	 * @param data Data to be validated against all rules.
-	 *
-	 * @see TypedDataSimpleValidator#processData(Object)
+	 * @see AbstractCompositeRule#AbstractCompositeRule()
+	 */
+	public OrCompositeBooleanRule() {
+		super();
+	}
+
+	/**
+	 * @see AbstractCompositeRule#AbstractCompositeRule(com.github.validationframework.api.rule.Rule[])
+	 */
+	public OrCompositeBooleanRule(final Rule<D, Boolean>... rules) {
+		super(rules);
+	}
+
+	/**
+	 * @see AbstractCompositeRule#validate(Object)
 	 */
 	@Override
-	protected void processData(final D data) {
-		boolean aggregatedResult = true;
+	public Boolean validate(final D data) {
+		Boolean aggregatedResult = false;
 
-		System.out.println("AndTypedDataSimpleValidator.processData(" + data + ")");
-
-		// Check data against all rules
-		for (final TypedDataRule<D, Boolean> rule : rules) {
-			System.out.println(" |_ rule: " + rule);
+		for (final Rule<D, Boolean> rule : rules) {
 			Boolean result = rule.validate(data);
-			System.out.println(" |_ result: " + result);
 			if (result == null) {
 				result = false;
 			}
-			aggregatedResult &= result;
+			aggregatedResult |= result;
+			if (aggregatedResult) {
+				break;
+			}
 		}
 
-		// Process overall result
-		processResult(aggregatedResult);
+		return aggregatedResult;
 	}
 }

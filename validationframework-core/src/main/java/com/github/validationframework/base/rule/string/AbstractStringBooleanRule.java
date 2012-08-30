@@ -25,9 +25,9 @@
 
 package com.github.validationframework.base.rule.string;
 
-import com.github.validationframework.api.rule.TypedDataRule;
+import com.github.validationframework.api.rule.Rule;
 
-public abstract class AbstractStringBooleanRule implements TypedDataRule<String, Boolean> {
+public abstract class AbstractStringBooleanRule implements Rule<String, Boolean> {
 
 	protected boolean trimDataBeforeValidation = true;
 

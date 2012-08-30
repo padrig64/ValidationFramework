@@ -25,12 +25,12 @@
 
 package com.github.validationframework.experimental.rule.bool;
 
-import com.github.validationframework.api.rule.TypedDataRule;
+import com.github.validationframework.api.rule.Rule;
 
-public class DirectBooleanRule implements TypedDataRule<Boolean, Boolean> {
+public class DirectBooleanRule implements Rule<Boolean, Boolean> {
 
 	/**
-	 * @see TypedDataRule#validate(Object)
+	 * @see com.github.validationframework.api.rule.Rule#validate(Object)
 	 */
 	@Override
 	public Boolean validate(final Boolean data) {

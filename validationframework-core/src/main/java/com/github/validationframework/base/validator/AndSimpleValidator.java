@@ -23,23 +23,41 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.api.rule;
+package com.github.validationframework.base.validator;
+
+import com.github.validationframework.api.rule.Rule;
 
 /**
- * Interface to be implemented by untyped data rules.<br>Untyped data rules are validation rules that retrieve the data
- * to be validated by themselves, and return a result of a specific type.
+ * Simple validator using boolean results and aggregating all results from the rules into a single result using the AND
+ * operation.
  *
- * @param <R> Type of validation result.<br>It can be, for instance, an enumeration or just a boolean.
- *
- * @see Rule
- * @see TypedDataRule
+ * @see SimpleValidator
+ * @see OrSimpleValidator
  */
-public interface UntypedDataRule<R> extends Rule {
+public class AndSimpleValidator<D> extends SimpleValidator<D, Boolean> {
 
 	/**
-	 * Performs some validation.
+	 * Checks the specified data against all the rules and aggregates all the boolean results to one single result using
+	 * the AND operation.<br>If there are no rules, the default result will be false.
 	 *
-	 * @return Validation result.
+	 * @param data Data to be validated against all rules.
+	 *
+	 * @see SimpleValidator#processData(Object)
 	 */
-	public R validate();
+	@Override
+	protected void processData(final D data) {
+		boolean aggregatedResult = true;
+
+		// Check data against all rules
+		for (final Rule<D, Boolean> rule : rules) {
+			Boolean result = rule.validate(data);
+			if (result == null) {
+				result = false;
+			}
+			aggregatedResult &= result;
+		}
+
+		// Process overall result
+		processResult(aggregatedResult);
+	}
 }

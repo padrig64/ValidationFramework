@@ -47,17 +47,19 @@ import org.slf4j.LoggerFactory;
  *
  * @param <T> Type of trigger initiating the validation.
  * @param <P> Type of data provider providing the input data to be validated.
+ * @param <D>
+ * @param <O>
  * @param <R> Type of validation rules to be used on the input data.
  * @param <H> Type of result handlers to be used on validation output.
  *
  * @see MappableValidator
  * @see Trigger
  * @see DataProvider
- * @see Rule
+ * @see com.github.validationframework.api.rule.Rule
  * @see ResultHandler
  * @see Disposable
  */
-public abstract class AbstractMappableValidator<T extends Trigger, P extends DataProvider, R extends Rule, O, H extends ResultHandler<O>>
+public abstract class AbstractMappableValidator<T extends Trigger, P extends DataProvider, D, O, R extends Rule<D, O>, H extends ResultHandler<O>>
 		implements MappableValidator<T, P, R, H>, Disposable {
 
 	/**

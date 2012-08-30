@@ -27,18 +27,18 @@ package com.github.validationframework.base.validator;
 
 import com.github.validationframework.api.dataprovider.TypedDataProvider;
 import com.github.validationframework.api.resulthandler.ResultHandler;
-import com.github.validationframework.api.rule.TypedDataRule;
+import com.github.validationframework.api.rule.Rule;
 import com.github.validationframework.api.trigger.Trigger;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Concrete implementation of a typed data mappable validator.<br>A typed data validator is a validator whose data
- * providers and rules are bound to a known specific type of data, and whose result handlers are bound to a known
- * specific type of result.<br>When any of its triggers is initiated, the mappable typed data validator will read all
- * the data from the data providers mapped to that trigger, check the data against the rules mapped to those data
- * providers, and handles the rule results using the result handlers that are mapped to those rules.
+ * Concrete implementation of a mappable validator.<br>A mappable validator is a validator whose data providers and
+ * rules are bound to a known specific type of data, and whose result handlers are bound to a known specific type of
+ * result.<br>When any of its triggers is initiated, the mappable validator will read all the data from the data
+ * providers mapped to that trigger, check the data against the rules mapped to those data providers, and handles the
+ * rule results using the result handlers that are mapped to those rules.
  *
  * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
  * type of the component itself.
@@ -47,16 +47,16 @@ import org.slf4j.LoggerFactory;
  * @see AbstractMappableValidator
  * @see Trigger
  * @see TypedDataProvider
- * @see TypedDataRule
+ * @see Rule
  * @see ResultHandler
  */
-public class TypedDataMappableValidator<D, O>
-		extends AbstractMappableValidator<Trigger, TypedDataProvider<D>, TypedDataRule<D, O>, O, ResultHandler<O>> {
+public class MappableValidator<D, O>
+		extends AbstractMappableValidator<Trigger, TypedDataProvider<D>, D, O, Rule<D, O>, ResultHandler<O>> {
 
 	/**
 	 * Logger for this class.
 	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(TypedDataMappableValidator.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(MappableValidator.class);
 
 	/**
 	 * Processes the specified trigger by finding all the mapped data providers, and so on.
@@ -84,7 +84,7 @@ public class TypedDataMappableValidator<D, O>
 	 */
 	private void processDataProvider(final TypedDataProvider<D> dataProvider) {
 		// Get rules matching the data provider
-		final List<TypedDataRule<D, O>> mappedRules = dataProvidersToRules.get(dataProvider);
+		final List<Rule<D, O>> mappedRules = dataProvidersToRules.get(dataProvider);
 		if ((mappedRules == null) || mappedRules.isEmpty()) {
 			LOGGER.warn("No matching rule in mappable validator for data provider: " + dataProvider);
 		} else {
@@ -92,7 +92,7 @@ public class TypedDataMappableValidator<D, O>
 			final D data = dataProvider.getData();
 
 			// Process all matching rules
-			for (final TypedDataRule<D, O> rule : mappedRules) {
+			for (final Rule<D, O> rule : mappedRules) {
 				processRule(rule, data);
 			}
 		}
@@ -105,7 +105,7 @@ public class TypedDataMappableValidator<D, O>
 	 * @param rule Rule to be processed.
 	 * @param data Data to be checked against the rule.
 	 */
-	private void processRule(final TypedDataRule<D, O> rule, final D data) {
+	private void processRule(final Rule<D, O> rule, final D data) {
 		// Get result handlers matching the rule
 		final List<ResultHandler<O>> mappedResultHandlers = rulesToResultHandlers.get(rule);
 		if ((mappedResultHandlers == null) || mappedResultHandlers.isEmpty()) {

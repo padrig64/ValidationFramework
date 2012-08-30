@@ -26,12 +26,21 @@
 package com.github.validationframework.api.rule;
 
 /**
- * Marker interface to be implemented by validation rules.<br>Validation rules can provide the whole or part of the
- * validation check on the data. Typically, it uses data from the data providers and return a validation result.
+ * Interface to be implemented by validation rules.<br>Rules are passed data of a known specific type, and return a
+ * result of a specific type.<br>Typically, a rule uses data from the data providers and return a validation result.
  *
- * @see TypedDataRule
- * @see UntypedDataRule
+ * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
+ * type of the component itself.
+ * @param <R> Type of validation result.<br>It can be, for instance, an enumeration or just a boolean.
  */
-public interface Rule {
-	// Nothing to be done
+public interface Rule<D, R> {
+
+	/**
+	 * Checks the specified data.
+	 *
+	 * @param data Data to be validated.
+	 *
+	 * @return Validation result.
+	 */
+	public R validate(D data);
 }

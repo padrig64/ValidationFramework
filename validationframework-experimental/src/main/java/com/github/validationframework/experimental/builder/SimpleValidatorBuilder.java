@@ -27,14 +27,14 @@ package com.github.validationframework.experimental.builder;
 
 import com.github.validationframework.api.dataprovider.TypedDataProvider;
 import com.github.validationframework.api.resulthandler.ResultHandler;
-import com.github.validationframework.api.rule.TypedDataRule;
+import com.github.validationframework.api.rule.Rule;
 import com.github.validationframework.api.trigger.Trigger;
-import com.github.validationframework.base.validator.TypedDataSimpleValidator;
+import com.github.validationframework.base.validator.SimpleValidator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class TypedDataSimpleValidatorBuilder {
+public class SimpleValidatorBuilder {
 
 	/**
 	 * Context to add the first triggers.
@@ -139,8 +139,8 @@ public class TypedDataSimpleValidatorBuilder {
 		 *
 		 * @return Result handler context allowing to add rules and result handlers, but not data providers.
 		 */
-		public <O> ResultHandlerContext<D, O> check(final TypedDataRule<D, O>... rules) {
-			final List<TypedDataRule<D, O>> registeredRules = new ArrayList<TypedDataRule<D, O>>();
+		public <O> ResultHandlerContext<D, O> check(final Rule<D, O>... rules) {
+			final List<Rule<D, O>> registeredRules = new ArrayList<Rule<D, O>>();
 			Collections.addAll(registeredRules, rules);
 			return new ResultHandlerContext<D, O>(registeredTriggers, registeredDataProviders, registeredRules);
 		}
@@ -157,11 +157,11 @@ public class TypedDataSimpleValidatorBuilder {
 
 		final List<Trigger> registeredTriggers;
 		final List<TypedDataProvider<D>> registeredDataProviders;
-		final List<TypedDataRule<D, O>> registeredRules;
+		final List<Rule<D, O>> registeredRules;
 
 		public ResultHandlerContext(final List<Trigger> registeredTriggers,
 									final List<TypedDataProvider<D>> registeredDataProviders,
-									final List<TypedDataRule<D, O>> registeredRules) {
+									final List<Rule<D, O>> registeredRules) {
 			this.registeredTriggers = registeredTriggers;
 			this.registeredDataProviders = registeredDataProviders;
 			this.registeredRules = registeredRules;
@@ -174,7 +174,7 @@ public class TypedDataSimpleValidatorBuilder {
 		 *
 		 * @return Same result handler context.
 		 */
-		public ResultHandlerContext<D, O> check(final TypedDataRule<D, O>... rules) {
+		public ResultHandlerContext<D, O> check(final Rule<D, O>... rules) {
 			if (rules != null) {
 				Collections.addAll(registeredRules, rules);
 			}
@@ -209,12 +209,12 @@ public class TypedDataSimpleValidatorBuilder {
 
 		final List<Trigger> registeredTriggers;
 		final List<TypedDataProvider<D>> registeredDataProviders;
-		final List<TypedDataRule<D, O>> registeredRules;
+		final List<Rule<D, O>> registeredRules;
 		final List<ResultHandler<O>> registeredResultHandlers;
 
 		public ValidatorContext(final List<Trigger> registeredTriggers,
 								final List<TypedDataProvider<D>> registeredDataProviders,
-								final List<TypedDataRule<D, O>> registeredRules,
+								final List<Rule<D, O>> registeredRules,
 								final List<ResultHandler<O>> registeredResultHandlers) {
 			this.registeredTriggers = registeredTriggers;
 			this.registeredDataProviders = registeredDataProviders;
@@ -241,8 +241,8 @@ public class TypedDataSimpleValidatorBuilder {
 		 *
 		 * @return Newly created and configured validator.
 		 */
-		public TypedDataSimpleValidator<D, O> build() {
-			final TypedDataSimpleValidator<D, O> validator = new TypedDataSimpleValidator<D, O>();
+		public SimpleValidator<D, O> build() {
+			final SimpleValidator<D, O> validator = new SimpleValidator<D, O>();
 
 			for (final Trigger trigger : registeredTriggers) {
 				validator.addTrigger(trigger);
@@ -250,7 +250,7 @@ public class TypedDataSimpleValidatorBuilder {
 			for (final TypedDataProvider<D> dataProvider : registeredDataProviders) {
 				validator.addDataProvider(dataProvider);
 			}
-			for (final TypedDataRule<D, O> rule : registeredRules) {
+			for (final Rule<D, O> rule : registeredRules) {
 				validator.addRule(rule);
 			}
 			for (final ResultHandler<O> resultHandler : registeredResultHandlers) {

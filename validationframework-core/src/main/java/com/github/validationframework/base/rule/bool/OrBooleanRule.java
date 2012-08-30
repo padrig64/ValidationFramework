@@ -25,10 +25,10 @@
 
 package com.github.validationframework.base.rule.bool;
 
-import com.github.validationframework.api.rule.TypedDataRule;
+import com.github.validationframework.api.rule.Rule;
 import java.util.Collection;
 
-public class OrBooleanRule implements TypedDataRule<Collection<Boolean>, Boolean> {
+public class OrBooleanRule implements Rule<Collection<Boolean>, Boolean> {
 
 	private static final boolean DEFAULT_EMPTY_COLLECTION_VALID = true;
 	private static final boolean DEFAULT_NULL_ELEMENT_VALID = false;

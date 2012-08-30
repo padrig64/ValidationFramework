@@ -26,7 +26,7 @@
 package com.github.validationframework.demo.swing;
 
 import com.github.validationframework.base.rule.string.StringLengthGreaterThanOrEqualToRule;
-import com.github.validationframework.base.validator.TypedDataSimpleValidator;
+import com.github.validationframework.base.validator.SimpleValidator;
 import com.github.validationframework.swing.dataprovider.JTableTextEditorTextProvider;
 import com.github.validationframework.swing.resulthandler.BooleanIconTipFeedBack;
 import com.github.validationframework.swing.resulthandler.ComponentEnablingBooleanResultHandler;
@@ -113,7 +113,7 @@ public class TableDemoApp extends JFrame {
 	}
 
 	private void installValidator(final JTable table, final JButton applyButton) {
-		final TypedDataSimpleValidator<String, Boolean> validator = new TypedDataSimpleValidator<String, Boolean>();
+		final SimpleValidator<String, Boolean> validator = new SimpleValidator<String, Boolean>();
 
 		validator.addTrigger(new JTableTextEditorDocumentChangedTrigger(table));
 		validator.addDataProvider(new JTableTextEditorTextProvider(table));

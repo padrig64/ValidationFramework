@@ -33,7 +33,6 @@ package com.github.validationframework.api.dataprovider;
  * type of the component itself.
  *
  * @see DataProvider
- * @see UntypedDataProvider
  */
 public interface TypedDataProvider<D> extends DataProvider {
 

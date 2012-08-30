@@ -25,10 +25,10 @@
 
 package com.github.validationframework.demo.swing;
 
-import com.github.validationframework.api.rule.TypedDataRule;
+import com.github.validationframework.api.rule.Rule;
 import com.github.validationframework.base.rule.bool.AndBooleanRule;
 import com.github.validationframework.base.rule.string.StringRegexRule;
-import com.github.validationframework.base.validator.TypedDataSimpleValidator;
+import com.github.validationframework.base.validator.SimpleValidator;
 import com.github.validationframework.experimental.resulthandler.ResultCollector;
 import com.github.validationframework.experimental.transform.Transformer;
 import com.github.validationframework.swing.dataprovider.JFormattedTextFieldTextProvider;
@@ -68,7 +68,7 @@ import javax.swing.text.NumberFormatter;
 import net.miginfocom.swing.MigLayout;
 
 import static com.github.validationframework.experimental.builder.ResultCollectorValidatorBuilder.collect;
-import static com.github.validationframework.experimental.builder.TypedDataSimpleValidatorBuilder.on;
+import static com.github.validationframework.experimental.builder.SimpleValidatorBuilder.on;
 
 public class SimpleDemoApp extends JFrame {
 
@@ -133,7 +133,7 @@ public class SimpleDemoApp extends JFrame {
 		}
 	}
 
-	private class InputFieldRule implements TypedDataRule<String, InputFieldResult> {
+	private class InputFieldRule implements Rule<String, InputFieldResult> {
 
 		@Override
 		public InputFieldResult validate(final String input) {
@@ -289,8 +289,7 @@ public class SimpleDemoApp extends JFrame {
 
 	private Component createValidator1(final JTextField textField,
 									   final ResultCollector<InputFieldResult, Boolean> resultCollector) {
-		final TypedDataSimpleValidator<String, InputFieldResult> validator =
-				new TypedDataSimpleValidator<String, InputFieldResult>();
+		final SimpleValidator<String, InputFieldResult> validator = new SimpleValidator<String, InputFieldResult>();
 
 		validator.addTrigger(new JTextFieldDocumentChangedTrigger(textField));
 		validator.addDataProvider(new JTextFieldTextProvider(textField));
@@ -303,8 +302,7 @@ public class SimpleDemoApp extends JFrame {
 
 	private Component createValidator2(final JTextField textField,
 									   final ResultCollector<InputFieldResult, Boolean> resultCollector) {
-		final TypedDataSimpleValidator<String, InputFieldResult> validator =
-				new TypedDataSimpleValidator<String, InputFieldResult>();
+		final SimpleValidator<String, InputFieldResult> validator = new SimpleValidator<String, InputFieldResult>();
 
 		validator.addTrigger(new JTextFieldDocumentChangedTrigger(textField));
 		validator.addDataProvider(new JTextFieldTextProvider(textField));
@@ -317,8 +315,7 @@ public class SimpleDemoApp extends JFrame {
 
 	private Component createValidator3(final JTextField textField,
 									   final ResultCollector<InputFieldResult, Boolean> resultCollector) {
-		final TypedDataSimpleValidator<String, InputFieldResult> validator =
-				new TypedDataSimpleValidator<String, InputFieldResult>();
+		final SimpleValidator<String, InputFieldResult> validator = new SimpleValidator<String, InputFieldResult>();
 
 		validator.addTrigger(new JTextFieldDocumentChangedTrigger(textField));
 		validator.addDataProvider(new JTextFieldTextProvider(textField));
@@ -344,7 +341,7 @@ public class SimpleDemoApp extends JFrame {
 //		final ComponentEnablingBooleanResultHandler resultHandler2 =
 //				new ComponentEnablingBooleanResultHandler(applyButton);
 
-//		final AndTypedDataSimpleValidator<String> validator4= new AndTypedDataSimpleValidator<String>();
+//		final AndSimpleValidator<String> validator4= new AndSimpleValidator<String>();
 //		validator.addTrigger(trigger);
 //		validator.addDataProvider(dataProvider);
 //		validator.addRule(rule1);
@@ -352,10 +349,10 @@ public class SimpleDemoApp extends JFrame {
 //		validator.addResultHandler(resultHandler1);
 //		validator.addResultHandler(resultHandler2);
 
-//		final TypedDataSimpleValidator<Number, Boolean> validator = new TypedDataSimpleValidator<Number, Boolean>();
+//		final SimpleValidator<Number, Boolean> validator = new SimpleValidator<Number, Boolean>();
 //		validator.addTrigger(new JFormattedTextFieldDocumentChangedTrigger(formattedTextField));
 //		validator.addDataProvider(new JFormattedTextFieldNumberValueProvider(formattedTextField));
-//		validator.addRule(new AndCompositeTypedDataBooleanRule<Number>(new NumberGreaterThanOrEqualToRule(0.0),
+//		validator.addRule(new AndCompositeBooleanRule<Number>(new NumberGreaterThanOrEqualToRule(0.0),
 //				new NumberLessThanRule(360.0)));
 //		validator.addResultHandler(
 //				new BooleanIconTipFeedBack(formattedTextField, null, null, BooleanIconTipFeedBack.DEFAULT_INVALID_ICON,

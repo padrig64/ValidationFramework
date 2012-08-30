@@ -51,11 +51,11 @@ import java.util.Map;
  * @see SimpleValidator
  * @see Trigger
  * @see DataProvider
- * @see Rule
+ * @see com.github.validationframework.api.rule.Rule
  * @see ResultHandler
  * @see Disposable
  */
-public abstract class AbstractSimpleValidator<T extends Trigger, P extends DataProvider, R extends Rule, O, H extends ResultHandler<O>>
+public abstract class AbstractSimpleValidator<T extends Trigger, P extends DataProvider, D, O, R extends Rule<D, O>, H extends ResultHandler<O>>
 		implements SimpleValidator<T, P, R, H>, Disposable {
 
 	/**

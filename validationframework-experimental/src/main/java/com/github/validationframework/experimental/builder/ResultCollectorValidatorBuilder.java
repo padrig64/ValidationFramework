@@ -26,7 +26,7 @@
 package com.github.validationframework.experimental.builder;
 
 import com.github.validationframework.api.resulthandler.ResultHandler;
-import com.github.validationframework.api.rule.TypedDataRule;
+import com.github.validationframework.api.rule.Rule;
 import com.github.validationframework.experimental.resulthandler.ResultCollector;
 import com.github.validationframework.experimental.validator.ResultCollectorValidator;
 import java.util.ArrayList;
@@ -62,9 +62,8 @@ public class ResultCollectorValidatorBuilder {
 			return this;
 		}
 
-		public <O> ResultHandlerContext<D, O> check(final TypedDataRule<Collection<D>, O>... rules) {
-			final List<TypedDataRule<Collection<D>, O>> registeredRules =
-					new ArrayList<TypedDataRule<Collection<D>, O>>();
+		public <O> ResultHandlerContext<D, O> check(final Rule<Collection<D>, O>... rules) {
+			final List<Rule<Collection<D>, O>> registeredRules = new ArrayList<Rule<Collection<D>, O>>();
 			if (rules != null) {
 				Collections.addAll(registeredRules, rules);
 			}
@@ -82,15 +81,15 @@ public class ResultCollectorValidatorBuilder {
 	public static class ResultHandlerContext<D, O> {
 
 		final List<ResultCollector<?, D>> registeredResultCollectors;
-		final List<TypedDataRule<Collection<D>, O>> registeredRules;
+		final List<Rule<Collection<D>, O>> registeredRules;
 
 		public ResultHandlerContext(final List<ResultCollector<?, D>> registeredResultCollectors,
-									final List<TypedDataRule<Collection<D>, O>> registeredRules) {
+									final List<Rule<Collection<D>, O>> registeredRules) {
 			this.registeredResultCollectors = registeredResultCollectors;
 			this.registeredRules = registeredRules;
 		}
 
-		public ResultHandlerContext<D, O> check(final TypedDataRule<Collection<D>, O>... rules) {
+		public ResultHandlerContext<D, O> check(final Rule<Collection<D>, O>... rules) {
 			if (rules != null) {
 				Collections.addAll(registeredRules, rules);
 			}
@@ -123,11 +122,11 @@ public class ResultCollectorValidatorBuilder {
 	public static class ValidatorContext<D, O> {
 
 		final List<ResultCollector<?, D>> registeredResultCollectors;
-		final List<TypedDataRule<Collection<D>, O>> registeredRules;
+		final List<Rule<Collection<D>, O>> registeredRules;
 		final List<ResultHandler<O>> registeredResultHandlers;
 
 		public ValidatorContext(final List<ResultCollector<?, D>> registeredResultCollectors,
-								final List<TypedDataRule<Collection<D>, O>> registeredRules,
+								final List<Rule<Collection<D>, O>> registeredRules,
 								final List<ResultHandler<O>> registeredResultHandlers) {
 			this.registeredResultCollectors = registeredResultCollectors;
 			this.registeredRules = registeredRules;
@@ -159,7 +158,7 @@ public class ResultCollectorValidatorBuilder {
 			for (final ResultCollector<?, D> resultCollector : registeredResultCollectors) {
 				validator.addResultCollector(resultCollector);
 			}
-			for (final TypedDataRule<Collection<D>, O> rule : registeredRules) {
+			for (final Rule<Collection<D>, O> rule : registeredRules) {
 				validator.addRule(rule);
 			}
 			for (final ResultHandler<O> resultHandler : registeredResultHandlers) {

@@ -27,7 +27,7 @@ package com.github.validationframework.experimental.validator;
 
 import com.github.validationframework.api.dataprovider.TypedDataProvider;
 import com.github.validationframework.api.resulthandler.ResultHandler;
-import com.github.validationframework.api.rule.TypedDataRule;
+import com.github.validationframework.api.rule.Rule;
 import com.github.validationframework.api.trigger.Trigger;
 import com.github.validationframework.base.validator.AbstractSimpleValidator;
 import com.github.validationframework.experimental.resulthandler.ResultCollector;
@@ -43,7 +43,7 @@ import org.slf4j.LoggerFactory;
  * @param <O> Typed of output of this validator.
  */
 public class ResultCollectorValidator<D, O> extends
-		AbstractSimpleValidator<Trigger, TypedDataProvider<D>, TypedDataRule<Collection<D>, O>, O, ResultHandler<O>> {
+		AbstractSimpleValidator<Trigger, TypedDataProvider<D>, Collection<D>, O, Rule<Collection<D>, O>, ResultHandler<O>> {
 
 	/**
 	 * Logger for this class.
@@ -86,7 +86,7 @@ public class ResultCollectorValidator<D, O> extends
 	 */
 	protected void processData(final Collection<D> data) {
 		// Check data against all rules
-		for (final TypedDataRule<Collection<D>, O> rule : rules) {
+		for (final Rule<Collection<D>, O> rule : rules) {
 			processResult(rule.validate(data));
 		}
 	}

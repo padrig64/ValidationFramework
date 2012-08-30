@@ -23,55 +23,41 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.base.rule;
+package com.github.validationframework.base.validator;
 
-import com.github.validationframework.api.rule.TypedDataRule;
+import com.github.validationframework.api.rule.Rule;
 
 /**
- * Composite rule checking data of a known specific type using sub-rules, and returning a boolean as an aggregation of
- * the boolean results from its sub-rules.<br>The aggregation is basically an OR operation: the result will be true if
- * the result of  at least one sub-rule is also true.<br>If there are no sub-rules, the default result will be false.
+ * Simple validator using boolean results and aggregating all results from the rules into a single result using the OR
+ * operation.
  *
- * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
- * type of the component itself.
- *
- * @see AbstractCompositeTypedDataRule
- * @see AndCompositeTypedDataBooleanRule
+ * @see SimpleValidator
+ * @see AndSimpleValidator
  */
-public class OrCompositeTypedDataBooleanRule<D> extends AbstractCompositeTypedDataRule<D, Boolean> {
+public class OrSimpleValidator<D> extends SimpleValidator<D, Boolean> {
 
 	/**
-	 * @see AbstractCompositeTypedDataRule#AbstractCompositeTypedDataRule()
-	 */
-	public OrCompositeTypedDataBooleanRule() {
-		super();
-	}
-
-	/**
-	 * @see AbstractCompositeTypedDataRule#AbstractCompositeTypedDataRule(com.github.validationframework.api.rule.TypedDataRule[])
-	 */
-	public OrCompositeTypedDataBooleanRule(final TypedDataRule<D, Boolean>... rules) {
-		super(rules);
-	}
-
-	/**
-	 * @see AbstractCompositeTypedDataRule#validate(Object)
+	 * Checks the specified data against all the rules and aggregates all the boolean results to one single result using
+	 * the OR operation.<br>If there are no rules, the default result will be false.
+	 *
+	 * @param data Data to be validated against all rules.
+	 *
+	 * @see SimpleValidator#processData(Object)
 	 */
 	@Override
-	public Boolean validate(final D data) {
-		Boolean aggregatedResult = false;
+	protected void processData(final D data) {
+		boolean aggregatedResult = false;
 
-		for (final TypedDataRule<D, Boolean> rule : rules) {
+		// Check data against all rules
+		for (final Rule<D, Boolean> rule : rules) {
 			Boolean result = rule.validate(data);
 			if (result == null) {
 				result = false;
 			}
 			aggregatedResult |= result;
-			if (aggregatedResult) {
-				break;
-			}
 		}
 
-		return aggregatedResult;
+		// Process overall result
+		processResult(aggregatedResult);
 	}
 }

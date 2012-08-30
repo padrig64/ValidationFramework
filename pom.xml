@@ -12,7 +12,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <compilerVersion>1.6</compilerVersion>
+        <java.compiler.version>1.6</java.compiler.version>
+        <mavencompilerplugin.version>2.5.1</mavencompilerplugin.version>
         <mockito.version>1.9.0</mockito.version>
         <junit.version>4.10</junit.version>
     </properties>
@@ -116,10 +117,11 @@
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <groupId>org.apache.maven.plugins</groupId>
+                <version>${mavencompilerplugin.version}</version>
                 <configuration>
-                    <source>${compilerVersion}</source>
-                    <target>${compilerVersion}</target>
-                    <compilerVersion>${compilerVersion}</compilerVersion>
+                    <source>${java.compiler.version}</source>
+                    <target>${java.compiler.version}</target>
+                    <compilerVersion>${java.compiler.version}</compilerVersion>
                 </configuration>
             </plugin>
         </plugins>
