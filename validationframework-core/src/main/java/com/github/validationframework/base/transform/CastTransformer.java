@@ -23,44 +23,32 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.experimental.resulthandler;
+package com.github.validationframework.base.transform;
 
-import com.github.validationframework.api.dataprovider.TypedDataProvider;
-import com.github.validationframework.api.resulthandler.ResultHandler;
-import com.github.validationframework.api.trigger.Trigger;
-import com.github.validationframework.api.trigger.TriggerEvent;
-import com.github.validationframework.base.trigger.AbstractTrigger;
-import com.github.validationframework.experimental.transform.CastTransformer;
-import com.github.validationframework.experimental.transform.Transformer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class ResultCollector<O, D> extends AbstractTrigger implements ResultHandler<O>, Trigger, TypedDataProvider<D> {
-
-	private O lastResult = null;
-
-	private final Transformer<O, D> transformer;
-
-	public ResultCollector() {
-		this(new CastTransformer<O, D>());
-	}
-
-	public ResultCollector(final Transformer<O, D> transformer) {
-		this.transformer = transformer;
-	}
+public class CastTransformer<I, O> implements Transformer<I, O> {
 
 	/**
-	 * @see ResultHandler#handleResult(Object)
+	 * Logger for this class.
 	 */
-	@Override
-	public void handleResult(final O result) {
-		lastResult = result;
-		fireTriggerEvent(new TriggerEvent(this));
-	}
+	private static final Logger LOGGER = LoggerFactory.getLogger(CastTransformer.class);
 
 	/**
-	 * @see TypedDataProvider#getData()
+	 * @see Transformer#transform(Object)
 	 */
 	@Override
-	public D getData() {
-		return transformer.transform(lastResult);
+	public O transform(final I input) {
+		O output;
+
+		try {
+			output = (O) input;
+		} catch (ClassCastException e) {
+			LOGGER.error("Failed transforming input: " + input, e);
+			output = null;
+		}
+
+		return output;
 	}
 }

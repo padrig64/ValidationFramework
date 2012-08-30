@@ -25,6 +25,7 @@
 
 package com.github.validationframework.experimental.transform;
 
+import com.github.validationframework.base.transform.Transformer;
 import java.util.Collection;
 
 public class OrBooleanAggregator implements Transformer<Collection<Boolean>, Boolean> {

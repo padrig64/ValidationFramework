@@ -23,14 +23,13 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.experimental.validator;
+package com.github.validationframework.base.validator;
 
 import com.github.validationframework.api.dataprovider.TypedDataProvider;
 import com.github.validationframework.api.resulthandler.ResultHandler;
 import com.github.validationframework.api.rule.Rule;
 import com.github.validationframework.api.trigger.Trigger;
-import com.github.validationframework.base.validator.AbstractSimpleValidator;
-import com.github.validationframework.experimental.resulthandler.ResultCollector;
+import com.github.validationframework.base.resulthandler.ResultCollector;
 import java.util.ArrayList;
 import java.util.Collection;
 import org.slf4j.Logger;

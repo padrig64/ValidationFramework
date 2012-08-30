@@ -23,9 +23,44 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.experimental.transform;
+package com.github.validationframework.base.resulthandler;
 
-public interface Transformer<I, O> {
+import com.github.validationframework.api.dataprovider.TypedDataProvider;
+import com.github.validationframework.api.resulthandler.ResultHandler;
+import com.github.validationframework.api.trigger.Trigger;
+import com.github.validationframework.api.trigger.TriggerEvent;
+import com.github.validationframework.base.transform.CastTransformer;
+import com.github.validationframework.base.transform.Transformer;
+import com.github.validationframework.base.trigger.AbstractTrigger;
 
-	public O transform(I input);
+public class ResultCollector<O, D> extends AbstractTrigger implements ResultHandler<O>, Trigger, TypedDataProvider<D> {
+
+	private O lastResult = null;
+
+	private final Transformer<O, D> transformer;
+
+	public ResultCollector() {
+		this(new CastTransformer<O, D>());
+	}
+
+	public ResultCollector(final Transformer<O, D> transformer) {
+		this.transformer = transformer;
+	}
+
+	/**
+	 * @see ResultHandler#handleResult(Object)
+	 */
+	@Override
+	public void handleResult(final O result) {
+		lastResult = result;
+		fireTriggerEvent(new TriggerEvent(this));
+	}
+
+	/**
+	 * @see TypedDataProvider#getData()
+	 */
+	@Override
+	public D getData() {
+		return transformer.transform(lastResult);
+	}
 }

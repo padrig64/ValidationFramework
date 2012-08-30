@@ -27,8 +27,8 @@ package com.github.validationframework.experimental.builder;
 
 import com.github.validationframework.api.resulthandler.ResultHandler;
 import com.github.validationframework.api.rule.Rule;
-import com.github.validationframework.experimental.resulthandler.ResultCollector;
-import com.github.validationframework.experimental.validator.ResultCollectorValidator;
+import com.github.validationframework.base.resulthandler.ResultCollector;
+import com.github.validationframework.base.validator.ResultCollectorValidator;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;

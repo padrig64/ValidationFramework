@@ -23,32 +23,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.experimental.transform;
+package com.github.validationframework.base.transform;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+public interface Transformer<I, O> {
 
-public class CastTransformer<I, O> implements Transformer<I, O> {
-
-	/**
-	 * Logger for this class.
-	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(CastTransformer.class);
-
-	/**
-	 * @see Transformer#transform(Object)
-	 */
-	@Override
-	public O transform(final I input) {
-		O output;
-
-		try {
-			output = (O) input;
-		} catch (ClassCastException e) {
-			LOGGER.error("Failed transforming input: " + input, e);
-			output = null;
-		}
-
-		return output;
-	}
+	public O transform(I input);
 }

@@ -26,11 +26,11 @@
 package com.github.validationframework.demo.swing;
 
 import com.github.validationframework.api.rule.Rule;
+import com.github.validationframework.base.resulthandler.ResultCollector;
 import com.github.validationframework.base.rule.bool.AndBooleanRule;
 import com.github.validationframework.base.rule.string.StringRegexRule;
+import com.github.validationframework.base.transform.Transformer;
 import com.github.validationframework.base.validator.SimpleValidator;
-import com.github.validationframework.experimental.resulthandler.ResultCollector;
-import com.github.validationframework.experimental.transform.Transformer;
 import com.github.validationframework.swing.dataprovider.JFormattedTextFieldTextProvider;
 import com.github.validationframework.swing.dataprovider.JTextFieldTextProvider;
 import com.github.validationframework.swing.resulthandler.AbstractColorFeedBack;
