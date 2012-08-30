@@ -47,20 +47,22 @@ import org.slf4j.LoggerFactory;
  *
  * @param <T> Type of trigger initiating the validation.
  * @param <P> Type of data provider providing the input data to be validated.
- * @param <D>
- * @param <O>
+ * @param <D> Type of data the rules will check.
+ * @param <O> Type of result the rules will produce.
  * @param <R> Type of validation rules to be used on the input data.
+ * @param <A> Type of result the result handlers will handler.<br>It may or may not be the same as {@link O} depending
+ * on the implementations. For instance, an implementation could aggregate/transform the results before using the result
+ * handlers.
  * @param <H> Type of result handlers to be used on validation output.
  *
- * @see MappableValidator
  * @see Trigger
  * @see DataProvider
- * @see com.github.validationframework.api.rule.Rule
+ * @see Rule
  * @see ResultHandler
  * @see Disposable
  */
-public abstract class AbstractMappableValidator<T extends Trigger, P extends DataProvider, D, O, R extends Rule<D, O>, H extends ResultHandler<O>>
-		implements MappableValidator<T, P, R, H>, Disposable {
+public abstract class AbstractMappableValidator<T extends Trigger, P extends DataProvider, D, O, R extends Rule<D, O>, A, H extends ResultHandler<A>>
+		implements MappableValidator<T, P, D, O, R, A, H>, Disposable {
 
 	/**
 	 * Listener to all registered triggers, initiating the validation logic.
@@ -149,7 +151,7 @@ public abstract class AbstractMappableValidator<T extends Trigger, P extends Dat
 	}
 
 	/**
-	 * @see MappableValidator#mapTriggerToDataProvider(Object, Object)
+	 * @see MappableValidator#mapTriggerToDataProvider(Trigger, DataProvider)
 	 */
 	@Override
 	public void mapTriggerToDataProvider(final T trigger, final P dataProvider) {
@@ -199,7 +201,7 @@ public abstract class AbstractMappableValidator<T extends Trigger, P extends Dat
 	}
 
 	/**
-	 * @see MappableValidator#mapDataProviderToRule(Object, Object)
+	 * @see MappableValidator#mapDataProviderToRule(DataProvider, Rule)
 	 */
 	@Override
 	public void mapDataProviderToRule(final P dataProvider, final R rule) {
@@ -244,7 +246,7 @@ public abstract class AbstractMappableValidator<T extends Trigger, P extends Dat
 	}
 
 	/**
-	 * @see MappableValidator#mapRuleToResultHandler(Object, Object)
+	 * @see MappableValidator#mapRuleToResultHandler(Rule, ResultHandler)
 	 */
 	@Override
 	public void mapRuleToResultHandler(final R rule, final H resultHandler) {

@@ -51,7 +51,7 @@ import org.slf4j.LoggerFactory;
  * @see ResultHandler
  */
 public class MappableValidator<D, O>
-		extends AbstractMappableValidator<Trigger, TypedDataProvider<D>, D, O, Rule<D, O>, ResultHandler<O>> {
+		extends AbstractMappableValidator<Trigger, TypedDataProvider<D>, D, O, Rule<D, O>, O, ResultHandler<O>> {
 
 	/**
 	 * Logger for this class.

@@ -25,6 +25,11 @@
 
 package com.github.validationframework.api.validator;
 
+import com.github.validationframework.api.dataprovider.DataProvider;
+import com.github.validationframework.api.resulthandler.ResultHandler;
+import com.github.validationframework.api.rule.Rule;
+import com.github.validationframework.api.trigger.Trigger;
+
 /**
  * Interface to be implemented by mappable validators.<br>The validator is the central point of the validation
  * framework. It implements the whole chain of validation, from the triggers, till the display of the feedback.<br>Upon
@@ -38,10 +43,21 @@ package com.github.validationframework.api.validator;
  *
  * @param <T> Type of trigger initiating the validation.
  * @param <P> Type of data provider providing the input data to be validated.
+ * @param <D> Type of data the rules will check.
+ * @param <O> Type of result the rules will produce.
  * @param <R> Type of validation rules to be used on the input data.
+ * @param <A> Type of result the result handlers will handler.<br>It may or may not be the same as {@link O} depending
+ * on the implementations. For instance, an implementation could aggregate/transform the results before using the result
+ * handlers.
  * @param <H> Type of result handlers to be used on validation output.
+ *
+ * @see Trigger
+ * @see DataProvider
+ * @see Rule
+ * @see ResultHandler
+ * @see SimpleValidator
  */
-public interface MappableValidator<T, P, R, H> {
+public interface MappableValidator<T extends Trigger, P extends DataProvider, D, O, R extends Rule<D, O>, A, H extends ResultHandler<A>> {
 
 	/**
 	 * Maps the specified trigger to the specified data provider.<br>This means that whenever the specified trigger is

@@ -42,7 +42,7 @@ import org.slf4j.LoggerFactory;
  * @param <O> Typed of output of this validator.
  */
 public class ResultCollectorValidator<D, O> extends
-		AbstractSimpleValidator<Trigger, TypedDataProvider<D>, Collection<D>, O, Rule<Collection<D>, O>, ResultHandler<O>> {
+		AbstractSimpleValidator<Trigger, TypedDataProvider<D>, Collection<D>, O, Rule<Collection<D>, O>, O, ResultHandler<O>> {
 
 	/**
 	 * Logger for this class.

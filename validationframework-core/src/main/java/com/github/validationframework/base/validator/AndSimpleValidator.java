@@ -31,6 +31,9 @@ import com.github.validationframework.api.rule.Rule;
  * Simple validator using boolean results and aggregating all results from the rules into a single result using the AND
  * operation.
  *
+ * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
+ * type of the component itself.
+ *
  * @see SimpleValidator
  * @see OrSimpleValidator
  */

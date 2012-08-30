@@ -45,18 +45,22 @@ import java.util.Map;
  *
  * @param <T> Type of trigger initiating the validation.
  * @param <P> Type of data provider providing the input data to be validated.
+ * @param <D> Type of data the rules will check.
+ * @param <O> Type of result the rules will produce.
  * @param <R> Type of validation rules to be used on the input data.
+ * @param <A> Type of result the result handlers will handler.<br>It may or may not be the same as {@link O} depending
+ * on the implementations. For instance, an implementation could aggregate/transform the results before using the result
+ * handlers.
  * @param <H> Type of result handlers to be used on validation output.
  *
- * @see SimpleValidator
  * @see Trigger
  * @see DataProvider
- * @see com.github.validationframework.api.rule.Rule
+ * @see Rule
  * @see ResultHandler
  * @see Disposable
  */
-public abstract class AbstractSimpleValidator<T extends Trigger, P extends DataProvider, D, O, R extends Rule<D, O>, H extends ResultHandler<O>>
-		implements SimpleValidator<T, P, R, H>, Disposable {
+public abstract class AbstractSimpleValidator<T extends Trigger, P extends DataProvider, D, O, R extends Rule<D, O>, A, H extends ResultHandler<A>>
+		implements SimpleValidator<T, P, D, O, R, A, H>, Disposable {
 
 	/**
 	 * Listener to all registered triggers, initiating the validation logic.
@@ -113,7 +117,7 @@ public abstract class AbstractSimpleValidator<T extends Trigger, P extends DataP
 	protected final List<H> resultHandlers = new ArrayList<H>();
 
 	/**
-	 * @see SimpleValidator#addTrigger(Object)
+	 * @see SimpleValidator#addTrigger(Trigger)
 	 */
 	@Override
 	public void addTrigger(final T trigger) {
@@ -128,7 +132,7 @@ public abstract class AbstractSimpleValidator<T extends Trigger, P extends DataP
 	}
 
 	/**
-	 * @see SimpleValidator#removeTrigger(Object)
+	 * @see SimpleValidator#removeTrigger(Trigger)
 	 */
 	@Override
 	public void removeTrigger(final T trigger) {
@@ -146,7 +150,7 @@ public abstract class AbstractSimpleValidator<T extends Trigger, P extends DataP
 	}
 
 	/**
-	 * @see SimpleValidator#addDataProvider(Object)
+	 * @see SimpleValidator#addDataProvider(DataProvider
 	 */
 	@Override
 	public void addDataProvider(final P dataProvider) {
@@ -154,7 +158,7 @@ public abstract class AbstractSimpleValidator<T extends Trigger, P extends DataP
 	}
 
 	/**
-	 * @see SimpleValidator#removeDataProvider(Object)
+	 * @see SimpleValidator#removeDataProvider(DataProvider)
 	 */
 	@Override
 	public void removeDataProvider(final P dataProvider) {
@@ -162,7 +166,7 @@ public abstract class AbstractSimpleValidator<T extends Trigger, P extends DataP
 	}
 
 	/**
-	 * @see SimpleValidator#addRule(Object)
+	 * @see SimpleValidator#addRule(Rule)
 	 */
 	@Override
 	public void addRule(final R rule) {
@@ -170,7 +174,7 @@ public abstract class AbstractSimpleValidator<T extends Trigger, P extends DataP
 	}
 
 	/**
-	 * @see SimpleValidator#removeRule(Object)
+	 * @see SimpleValidator#removeRule(Rule)
 	 */
 	@Override
 	public void removeRule(final R rule) {
@@ -178,7 +182,7 @@ public abstract class AbstractSimpleValidator<T extends Trigger, P extends DataP
 	}
 
 	/**
-	 * @see SimpleValidator#addResultHandler(Object)
+	 * @see SimpleValidator#addResultHandler(ResultHandler)
 	 */
 	@Override
 	public void addResultHandler(final H resultHandler) {
@@ -186,7 +190,7 @@ public abstract class AbstractSimpleValidator<T extends Trigger, P extends DataP
 	}
 
 	/**
-	 * @see SimpleValidator#removeResultHandler(Object)
+	 * @see SimpleValidator#removeResultHandler(ResultHandler)
 	 */
 	@Override
 	public void removeResultHandler(final H resultHandler) {

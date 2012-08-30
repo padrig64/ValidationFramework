@@ -30,8 +30,8 @@ FEEDBACK
 EASY AND EXTENDABLE FRAMEWORK
  . Very simple to use;
  . Most generic concepts as possible (validation trigger -> data reader ->
-   validation algorithm -> validation rules -> validation results ->
-   feedback to user -> component decorations);
+   validation algorithm -> validation rules -> validation results -> feedback to
+   user -> component decorations);
  . Easily pluggable to custom components;
  . Not only for Swing components;
  . Not only GUI input validation (however, GUI validation is the focus of the
@@ -44,8 +44,8 @@ EASY AND EXTENDABLE FRAMEWORK
  . Custom feedbacks;
  . Custom decorations;
  . Custom validation/feedback algorithms;
- . Set the validation to a certain state (for example, forcing invalidation and/or its
-   feedback);
+ . Set the validation to a certain state (for example, forcing invalidation
+   and/or its feedback);
  . Anything useful you can imagine.
 
 MISC
