@@ -45,6 +45,14 @@ public class ResultCollectorValidatorBuilder {
 			}
 			return new RuleContext<D>(registeredResultCollectors);
 		}
+
+		public <D> RuleContext<D> collect(final Collection<ResultCollector<?, D>> resultCollectors) {
+			final List<ResultCollector<?, D>> registeredResultCollectors = new ArrayList<ResultCollector<?, D>>();
+			if (resultCollectors != null) {
+				registeredResultCollectors.addAll(resultCollectors);
+			}
+			return new RuleContext<D>(registeredResultCollectors);
+		}
 	}
 
 	public static class RuleContext<D> {
@@ -62,10 +70,25 @@ public class ResultCollectorValidatorBuilder {
 			return this;
 		}
 
+		public RuleContext<D> collect(final Collection<ResultCollector<?, D>> resultCollectors) {
+			if (resultCollectors != null) {
+				registeredResultCollectors.addAll(resultCollectors);
+			}
+			return this;
+		}
+
 		public <O> ResultHandlerContext<D, O> check(final Rule<Collection<D>, O>... rules) {
 			final List<Rule<Collection<D>, O>> registeredRules = new ArrayList<Rule<Collection<D>, O>>();
 			if (rules != null) {
 				Collections.addAll(registeredRules, rules);
+			}
+			return new ResultHandlerContext<D, O>(registeredResultCollectors, registeredRules);
+		}
+
+		public <O> ResultHandlerContext<D, O> check(final Collection<Rule<Collection<D>, O>> rules) {
+			final List<Rule<Collection<D>, O>> registeredRules = new ArrayList<Rule<Collection<D>, O>>();
+			if (rules != null) {
+				registeredRules.addAll(rules);
 			}
 			return new ResultHandlerContext<D, O>(registeredResultCollectors, registeredRules);
 		}
@@ -96,6 +119,13 @@ public class ResultCollectorValidatorBuilder {
 			return this;
 		}
 
+		public ResultHandlerContext<D, O> check(final Collection<Rule<Collection<D>, O>> rules) {
+			if (rules != null) {
+				registeredRules.addAll(rules);
+			}
+			return this;
+		}
+
 		/**
 		 * Adds the first result handlers to the validator.
 		 *
@@ -107,6 +137,14 @@ public class ResultCollectorValidatorBuilder {
 			final List<ResultHandler<O>> registeredResultHandlers = new ArrayList<ResultHandler<O>>();
 			if (resultHandlers != null) {
 				Collections.addAll(registeredResultHandlers, resultHandlers);
+			}
+			return new ValidatorContext<D, O>(registeredResultCollectors, registeredRules, registeredResultHandlers);
+		}
+
+		public ValidatorContext<D, O> handleResultWith(final Collection<ResultHandler<O>> resultHandlers) {
+			final List<ResultHandler<O>> registeredResultHandlers = new ArrayList<ResultHandler<O>>();
+			if (resultHandlers != null) {
+				registeredResultHandlers.addAll(resultHandlers);
 			}
 			return new ValidatorContext<D, O>(registeredResultCollectors, registeredRules, registeredResultHandlers);
 		}
@@ -147,6 +185,13 @@ public class ResultCollectorValidatorBuilder {
 			return this;
 		}
 
+		public ValidatorContext<D, O> handleResultWith(final Collection<ResultHandler<O>> resultHandlers) {
+			if (resultHandlers != null) {
+				registeredResultHandlers.addAll(resultHandlers);
+			}
+			return this;
+		}
+
 		/**
 		 * Creates the validator and makes all the connections.
 		 *
@@ -170,6 +215,10 @@ public class ResultCollectorValidatorBuilder {
 	}
 
 	public static <D> RuleContext<D> collect(final ResultCollector<?, D>... resultCollectors) {
+		return new ResultCollectorContext().collect(resultCollectors);
+	}
+
+	public static <D> RuleContext<D> collect(final Collection<ResultCollector<?, D>> resultCollectors) {
 		return new ResultCollectorContext().collect(resultCollectors);
 	}
 }

@@ -31,6 +31,7 @@ import com.github.validationframework.api.rule.Rule;
 import com.github.validationframework.api.trigger.Trigger;
 import com.github.validationframework.base.validator.SimpleValidator;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -52,6 +53,14 @@ public class SimpleValidatorBuilder {
 			final List<Trigger> registeredTriggers = new ArrayList<Trigger>();
 			if (triggers != null) {
 				Collections.addAll(registeredTriggers, triggers);
+			}
+			return new DataProviderContext(registeredTriggers);
+		}
+
+		public DataProviderContext on(final Collection<Trigger> triggers) {
+			final List<Trigger> registeredTriggers = new ArrayList<Trigger>();
+			if (triggers != null) {
+				registeredTriggers.addAll(triggers);
 			}
 			return new DataProviderContext(registeredTriggers);
 		}
@@ -82,6 +91,13 @@ public class SimpleValidatorBuilder {
 			return this;
 		}
 
+		public DataProviderContext on(final Collection<Trigger> triggers) {
+			if (triggers != null) {
+				registeredTriggers.addAll(triggers);
+			}
+			return this;
+		}
+
 		/**
 		 * Adds the first data providers to the validator.
 		 *
@@ -95,6 +111,14 @@ public class SimpleValidatorBuilder {
 			final List<TypedDataProvider<D>> registeredDataProviders = new ArrayList<TypedDataProvider<D>>();
 			if (dataProviders != null) {
 				Collections.addAll(registeredDataProviders, dataProviders);
+			}
+			return new RuleContext<D>(registeredTriggers, registeredDataProviders);
+		}
+
+		public <D> RuleContext<D> read(final Collection<TypedDataProvider<D>> dataProviders) {
+			final List<TypedDataProvider<D>> registeredDataProviders = new ArrayList<TypedDataProvider<D>>();
+			if (dataProviders != null) {
+				registeredDataProviders.addAll(dataProviders);
 			}
 			return new RuleContext<D>(registeredTriggers, registeredDataProviders);
 		}
@@ -131,6 +155,13 @@ public class SimpleValidatorBuilder {
 			return this;
 		}
 
+		public RuleContext<D> read(final Collection<TypedDataProvider<D>> dataProviders) {
+			if (dataProviders != null) {
+				registeredDataProviders.addAll(dataProviders);
+			}
+			return this;
+		}
+
 		/**
 		 * Adds the first rules to the validator.
 		 *
@@ -141,7 +172,17 @@ public class SimpleValidatorBuilder {
 		 */
 		public <O> ResultHandlerContext<D, O> check(final Rule<D, O>... rules) {
 			final List<Rule<D, O>> registeredRules = new ArrayList<Rule<D, O>>();
-			Collections.addAll(registeredRules, rules);
+			if (rules != null) {
+				Collections.addAll(registeredRules, rules);
+			}
+			return new ResultHandlerContext<D, O>(registeredTriggers, registeredDataProviders, registeredRules);
+		}
+
+		public <O> ResultHandlerContext<D, O> check(final Collection<Rule<D, O>> rules) {
+			final List<Rule<D, O>> registeredRules = new ArrayList<Rule<D, O>>();
+			if (rules != null) {
+				registeredRules.addAll(rules);
+			}
 			return new ResultHandlerContext<D, O>(registeredTriggers, registeredDataProviders, registeredRules);
 		}
 	}
@@ -181,6 +222,13 @@ public class SimpleValidatorBuilder {
 			return this;
 		}
 
+		public ResultHandlerContext<D, O> check(final Collection<Rule<D, O>> rules) {
+			if (rules != null) {
+				registeredRules.addAll(rules);
+			}
+			return this;
+		}
+
 		/**
 		 * Adds the first result handlers to the validator.
 		 *
@@ -192,6 +240,15 @@ public class SimpleValidatorBuilder {
 			final List<ResultHandler<O>> registeredResultHandlers = new ArrayList<ResultHandler<O>>();
 			if (resultHandlers != null) {
 				Collections.addAll(registeredResultHandlers, resultHandlers);
+			}
+			return new ValidatorContext<D, O>(registeredTriggers, registeredDataProviders, registeredRules,
+					registeredResultHandlers);
+		}
+
+		public ValidatorContext<D, O> handleWith(final Collection<ResultHandler<O>> resultHandlers) {
+			final List<ResultHandler<O>> registeredResultHandlers = new ArrayList<ResultHandler<O>>();
+			if (resultHandlers != null) {
+				registeredResultHandlers.addAll(resultHandlers);
 			}
 			return new ValidatorContext<D, O>(registeredTriggers, registeredDataProviders, registeredRules,
 					registeredResultHandlers);
@@ -236,6 +293,13 @@ public class SimpleValidatorBuilder {
 			return this;
 		}
 
+		public ValidatorContext<D, O> handleWith(final Collection<ResultHandler<O>> resultHandlers) {
+			if (resultHandlers != null) {
+				registeredResultHandlers.addAll(resultHandlers);
+			}
+			return this;
+		}
+
 		/**
 		 * Creates the validator and makes all the connections.
 		 *
@@ -262,6 +326,10 @@ public class SimpleValidatorBuilder {
 	}
 
 	public static DataProviderContext on(final Trigger... triggers) {
+		return new TriggerContext().on(triggers);
+	}
+
+	public static DataProviderContext on(final Collection<Trigger> triggers) {
 		return new TriggerContext().on(triggers);
 	}
 }
