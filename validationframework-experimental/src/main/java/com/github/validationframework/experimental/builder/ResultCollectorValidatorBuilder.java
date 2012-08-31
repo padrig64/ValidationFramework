@@ -43,4 +43,6 @@ public class ResultCollectorValidatorBuilder {
 	public static <D> RuleContext<D> collect(final Collection<ResultCollector<?, D>> resultCollectors) {
 		return new ResultCollectorContext().collect(resultCollectors);
 	}
+
+	// TODO Collect from validator
 }

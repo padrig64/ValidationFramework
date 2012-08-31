@@ -61,6 +61,14 @@ public class RuleContext<D> {
 		return this;
 	}
 
+	public <O> ResultHandlerContext<D, O> check(final Rule<Collection<D>, O> rule) {
+		final List<Rule<Collection<D>, O>> registeredRules = new ArrayList<Rule<Collection<D>, O>>();
+		if (rule != null) {
+			registeredRules.add(rule);
+		}
+		return new ResultHandlerContext<D, O>(registeredResultCollectors, registeredRules);
+	}
+
 	public <O> ResultHandlerContext<D, O> check(final Rule<Collection<D>, O>... rules) {
 		final List<Rule<Collection<D>, O>> registeredRules = new ArrayList<Rule<Collection<D>, O>>();
 		if (rules != null) {

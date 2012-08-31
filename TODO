@@ -6,6 +6,7 @@
 . Icon tip decoration a bit more on the up and right when using Nimbus LAF
 . No decoration on disable component (config + listen to component state)
 . Put decoration per plane and not per parent
+. Avoid instantiation of result collectors (collect directly from validators, etc.)
 . Check licenses
 . Flow logging
 . Use IDs

@@ -56,4 +56,6 @@ public class ResultCollectorContext {
 		}
 		return new RuleContext<D>(registeredResultCollectors);
 	}
+
+	// TODO Collect from validator
 }
