@@ -34,6 +34,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SimpleValidatorBuilder {
 
@@ -64,6 +66,18 @@ public class SimpleValidatorBuilder {
 			}
 			return new DataProviderContext(registeredTriggers);
 		}
+
+		public DataProviderContext on(final Class<? extends Trigger> triggerClass) {
+			Trigger trigger = null;
+			try {
+				trigger = triggerClass.newInstance();
+			} catch (InstantiationException e) {
+				LOGGER.error(NEW_INSTANCE_ERROR_MSG + triggerClass, e);
+			} catch (IllegalAccessException e) {
+				LOGGER.error(NEW_INSTANCE_ERROR_MSG + triggerClass, e);
+			}
+			return on(trigger);
+		}
 	}
 
 	/**
@@ -75,6 +89,13 @@ public class SimpleValidatorBuilder {
 
 		public DataProviderContext(final List<Trigger> registeredTriggers) {
 			this.registeredTriggers = registeredTriggers;
+		}
+
+		public DataProviderContext on(final Trigger trigger) {
+			if (trigger != null) {
+				registeredTriggers.add(trigger);
+			}
+			return this;
 		}
 
 		/**
@@ -96,6 +117,18 @@ public class SimpleValidatorBuilder {
 				registeredTriggers.addAll(triggers);
 			}
 			return this;
+		}
+
+		public DataProviderContext on(final Class<? extends Trigger> triggerClass) {
+			Trigger trigger = null;
+			try {
+				trigger = triggerClass.newInstance();
+			} catch (InstantiationException e) {
+				LOGGER.error(NEW_INSTANCE_ERROR_MSG + triggerClass, e);
+			} catch (IllegalAccessException e) {
+				LOGGER.error(NEW_INSTANCE_ERROR_MSG + triggerClass, e);
+			}
+			return on(trigger);
 		}
 
 		/**
@@ -121,6 +154,18 @@ public class SimpleValidatorBuilder {
 				registeredDataProviders.addAll(dataProviders);
 			}
 			return new RuleContext<D>(registeredTriggers, registeredDataProviders);
+		}
+
+		public <D> RuleContext<D> read(final Class<? extends TypedDataProvider<D>> dataProviderClass) {
+			TypedDataProvider<D> dataProvider = null;
+			try {
+				dataProvider = dataProviderClass.newInstance();
+			} catch (InstantiationException e) {
+				LOGGER.error(NEW_INSTANCE_ERROR_MSG + dataProviderClass, e);
+			} catch (IllegalAccessException e) {
+				LOGGER.error(NEW_INSTANCE_ERROR_MSG + dataProviderClass, e);
+			}
+			return read(dataProvider);
 		}
 	}
 
@@ -332,4 +377,8 @@ public class SimpleValidatorBuilder {
 	public static DataProviderContext on(final Collection<Trigger> triggers) {
 		return new TriggerContext().on(triggers);
 	}
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(SimpleValidatorBuilder.class);
+
+	private static final String NEW_INSTANCE_ERROR_MSG = "Failed creating instance of class: ";
 }

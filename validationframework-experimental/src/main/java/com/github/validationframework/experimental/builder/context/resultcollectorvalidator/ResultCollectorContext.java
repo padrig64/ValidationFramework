@@ -23,24 +23,37 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.experimental.builder;
+package com.github.validationframework.experimental.builder.context.resultcollectorvalidator;
 
 import com.github.validationframework.base.resulthandler.ResultCollector;
-import com.github.validationframework.experimental.builder.context.resultcollectorvalidator.ResultCollectorContext;
-import com.github.validationframework.experimental.builder.context.resultcollectorvalidator.RuleContext;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
-public class ResultCollectorValidatorBuilder {
+public class ResultCollectorContext {
 
-	public static <D> RuleContext<D> collect(final ResultCollector<?, D> resultCollector) {
-		return new ResultCollectorContext().collect(resultCollector);
+	public <D> RuleContext<D> collect(final ResultCollector<?, D> resultCollector) {
+		final List<ResultCollector<?, D>> registeredResultCollectors = new ArrayList<ResultCollector<?, D>>();
+		if (resultCollector != null) {
+			registeredResultCollectors.add(resultCollector);
+		}
+		return new RuleContext<D>(registeredResultCollectors);
 	}
 
-	public static <D> RuleContext<D> collect(final ResultCollector<?, D>... resultCollectors) {
-		return new ResultCollectorContext().collect(resultCollectors);
+	public <D> RuleContext<D> collect(final ResultCollector<?, D>... resultCollectors) {
+		final List<ResultCollector<?, D>> registeredResultCollectors = new ArrayList<ResultCollector<?, D>>();
+		if (resultCollectors != null) {
+			Collections.addAll(registeredResultCollectors, resultCollectors);
+		}
+		return new RuleContext<D>(registeredResultCollectors);
 	}
 
-	public static <D> RuleContext<D> collect(final Collection<ResultCollector<?, D>> resultCollectors) {
-		return new ResultCollectorContext().collect(resultCollectors);
+	public <D> RuleContext<D> collect(final Collection<ResultCollector<?, D>> resultCollectors) {
+		final List<ResultCollector<?, D>> registeredResultCollectors = new ArrayList<ResultCollector<?, D>>();
+		if (resultCollectors != null) {
+			registeredResultCollectors.addAll(resultCollectors);
+		}
+		return new RuleContext<D>(registeredResultCollectors);
 	}
 }
