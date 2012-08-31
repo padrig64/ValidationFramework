@@ -22,7 +22,7 @@
         <miglayout.version>4.1</miglayout.version>
         <mockito.version>1.9.0</mockito.version>
         <slf4j.version>1.6.6</slf4j.version>
-        <timingframework.version>4.1.0</timingframework.version>
+        <timingframework.version>5.1.0</timingframework.version>
     </properties>
 
     <modules>
