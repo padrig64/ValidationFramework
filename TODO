@@ -3,25 +3,18 @@
 . Fix issue with icon tip
 . Table editing
 . Tab decoration
-
 . Icon tip decoration a bit more on the up and right when using Nimbus LAF
 . No decoration on disable component (config + listen to component state)
-
 . Put decoration per plane and not per parent
-. Split into several projects
-
 . Check licenses
-
+. Flow logging
 . Use IDs
 . Better icon tip anchoring for IconTipDecorator
 . Transformers (of Data and Results)
 . Auto-scroll/jump to errors in case of scrollpanes, tabbedpane, etc.
-
 . Initial state
-
 . Reformat/Revert JFormattedTextField when focus lost? Save values allowed by the rules (wider than the default number formatter)
 . Initial focus for JFormattedTextField helper
-
 . Map rules to result handlers?
 . Exception-based results
 . Decoration transparency on Java 7
