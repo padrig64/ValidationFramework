@@ -161,10 +161,12 @@ public abstract class AbstractDecorator {
 		 * Calls the method {@link AbstractDecorator#paint(Graphics)} of the decorator.
 		 *
 		 * @param g Graphics to paint on.
+		 *
+		 * @see AbstractDecorator#paint(Graphics)
 		 */
 		@Override
 		public void paintComponent(final Graphics g) {
-			if (isShowing()) {
+			if (owner.isVisible() && owner.isShowing() && isVisible() && isShowing()) {
 				final Rectangle bounds = decorationHolder.getBounds();
 				if ((bounds.width != 0) && (bounds.height != 0)) {
 					// Clip graphics context
