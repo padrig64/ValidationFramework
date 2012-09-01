@@ -29,7 +29,7 @@ import com.github.validationframework.base.resulthandler.ResultCollector;
 import com.github.validationframework.base.rule.bool.AndBooleanRule;
 import com.github.validationframework.swing.dataprovider.JFormattedTextFieldTextProvider;
 import com.github.validationframework.swing.resulthandler.BooleanIconTipFeedBack;
-import com.github.validationframework.swing.resulthandler.BooleanTabIconFeedback;
+import com.github.validationframework.swing.resulthandler.BooleanTabIconTipFeedback;
 import com.github.validationframework.swing.resulthandler.ComponentEnablingBooleanResultHandler;
 import com.github.validationframework.swing.rule.JFormattedTextFieldFormatterRule;
 import com.github.validationframework.swing.trigger.JFormattedTextFieldDocumentChangedTrigger;
@@ -160,7 +160,7 @@ public class TabbedPaneDemoApp extends JFrame {
 
 		// Create validator for the whole tab
 		collect(fieldResultCollectors).check(new AndBooleanRule()).handleResultWith(
-				new BooleanTabIconFeedback(tabbedPane, i, null, null, BooleanTabIconFeedback.DEFAULT_INVALID_ICON,
+				new BooleanTabIconTipFeedback(tabbedPane, i, null, null, BooleanTabIconTipFeedback.DEFAULT_INVALID_ICON,
 						"One or several invalid input fields")).handleResultWith(tabResultCollector).build();
 	}
 

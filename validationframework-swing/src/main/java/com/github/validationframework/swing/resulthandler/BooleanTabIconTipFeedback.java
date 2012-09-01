@@ -52,7 +52,7 @@ import org.slf4j.LoggerFactory;
  * future.<br>Finally, note that any icon set using the method {@link JTabbedPane#setIconAt(int, Icon)} will not be
  * shown.
  */
-public class BooleanTabIconFeedback implements ResultHandler<Boolean>, Disposable {
+public class BooleanTabIconTipFeedback implements ResultHandler<Boolean>, Disposable {
 
 	private static class TitleRenderer extends JPanel {
 
@@ -195,13 +195,13 @@ public class BooleanTabIconFeedback implements ResultHandler<Boolean>, Disposabl
 	/**
 	 * Logger for this class.
 	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(BooleanTabIconFeedback.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(BooleanTabIconTipFeedback.class);
 
 	public static final Icon DEFAULT_VALID_ICON =
-			IconUtils.loadImageIcon("/images/defaults/valid.png", BooleanTabIconFeedback.class);
+			IconUtils.loadImageIcon("/images/defaults/valid.png", BooleanTabIconTipFeedback.class);
 
 	public static final Icon DEFAULT_INVALID_ICON =
-			IconUtils.loadImageIcon("/images/defaults/invalid.png", BooleanTabIconFeedback.class);
+			IconUtils.loadImageIcon("/images/defaults/invalid.png", BooleanTabIconTipFeedback.class);
 
 	public static final int DEFAULT_ICON_POSITION = SwingConstants.LEADING;
 
@@ -221,19 +221,19 @@ public class BooleanTabIconFeedback implements ResultHandler<Boolean>, Disposabl
 
 	private final PropertyChangeListener tabPropertyAdapter = new TabPropertyAdapter();
 
-	public BooleanTabIconFeedback(final JTabbedPane tabbedPane, final int tabIndex) {
+	public BooleanTabIconTipFeedback(final JTabbedPane tabbedPane, final int tabIndex) {
 		this(tabbedPane, tabIndex, DEFAULT_VALID_ICON, null, DEFAULT_INVALID_ICON, null);
 	}
 
-	public BooleanTabIconFeedback(final JTabbedPane tabbedPane, final int tabIndex, final Icon validIcon,
-								  final String validText, final Icon invalidIcon, final String invalidText) {
+	public BooleanTabIconTipFeedback(final JTabbedPane tabbedPane, final int tabIndex, final Icon validIcon,
+									 final String validText, final Icon invalidIcon, final String invalidText) {
 		this(tabbedPane, tabIndex, validIcon, validText, invalidIcon, invalidText, DEFAULT_ICON_POSITION,
 				DEFAULT_ICON_TEXT_GAP);
 	}
 
-	public BooleanTabIconFeedback(final JTabbedPane tabbedPane, final int tabIndex, final Icon validIcon,
-								  final String validText, final Icon invalidIcon, final String invalidText,
-								  final int iconPosition, final int iconTextGap) {
+	public BooleanTabIconTipFeedback(final JTabbedPane tabbedPane, final int tabIndex, final Icon validIcon,
+									 final String validText, final Icon invalidIcon, final String invalidText,
+									 final int iconPosition, final int iconTextGap) {
 		this.tabbedPane = tabbedPane;
 		this.tabIndex = tabIndex;
 		this.validIcon = validIcon;

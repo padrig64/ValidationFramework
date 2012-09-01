@@ -230,6 +230,8 @@ public class SimpleDemoApp extends JFrame {
 		// Create content pane
 		final JPanel contentPane = new JPanel(
 				new MigLayout("fill, wrap 2", "[]related[grow]", "[]related[]related[]related[]unrelated[]"));
+//		contentPane.setBorder(new EmptyBorder(50, 50, 50, 50));
+//		setContentPane(new JScrollPane(contentPane));
 		setContentPane(contentPane);
 
 		// Input fields
@@ -262,7 +264,7 @@ public class SimpleDemoApp extends JFrame {
 		pack();
 		final Dimension size = getSize();
 		size.width += 100;
-		setMinimumSize(size);
+//		setMinimumSize(size);
 
 		// Set location
 		final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();

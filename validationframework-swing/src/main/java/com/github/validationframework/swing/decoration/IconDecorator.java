@@ -76,7 +76,7 @@ public class IconDecorator extends AbstractDecorator {
 	@Override
 	public void paint(final Graphics g) {
 		if (isVisible() && (icon != null)) {
-			icon.paintIcon(decorationHolder, g, 0, 0);
+			icon.paintIcon(decorationPainter, g, 0, 0);
 		}
 	}
 }
