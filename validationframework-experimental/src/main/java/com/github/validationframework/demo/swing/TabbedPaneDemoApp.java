@@ -93,6 +93,7 @@ public class TabbedPaneDemoApp extends JFrame {
 			final Set<ResultCollector<?, Boolean>> fieldResultCollectors = new HashSet<ResultCollector<?, Boolean>>();
 			tabbedPane.add("Tab " + i, createTabContent(fieldResultCollectors));
 			installTabValidator(tabbedPane, i, fieldResultCollectors, tabResultCollectors);
+			tabbedPane.setTitleAt(i, "Tab");
 		}
 
 		// Install global validator
@@ -132,7 +133,6 @@ public class TabbedPaneDemoApp extends JFrame {
 			field.setColumns(10);
 			field.setFocusLostBehavior(JFormattedTextField.PERSIST);
 
-
 			// Create field validator
 			installFieldValidator(field, fieldResultCollectors);
 		}
@@ -159,9 +159,9 @@ public class TabbedPaneDemoApp extends JFrame {
 		tabResultCollectors.add(tabResultCollector);
 
 		// Create validator for the whole tab
-		collect(fieldResultCollectors).check(new AndBooleanRule())
-				.handleResultWith(new BooleanTabIconFeedback(tabbedPane, i)).handleResultWith(tabResultCollector)
-				.build();
+		collect(fieldResultCollectors).check(new AndBooleanRule()).handleResultWith(
+				new BooleanTabIconFeedback(tabbedPane, i, null, null, BooleanTabIconFeedback.DEFAULT_INVALID_ICON,
+						"One or several invalid input fields")).handleResultWith(tabResultCollector).build();
 	}
 
 	private void installGlobalValidator(final Set<ResultCollector<?, Boolean>> tabResultCollectors,
