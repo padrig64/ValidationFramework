@@ -264,7 +264,7 @@ public class SimpleDemoApp extends JFrame {
 		pack();
 		final Dimension size = getSize();
 		size.width += 100;
-//		setMinimumSize(size);
+		setMinimumSize(size);
 
 		// Set location
 		final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();

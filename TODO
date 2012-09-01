@@ -1,7 +1,8 @@
 . Group
 . Finalize mappable validator
-. Fix issue with icon tip
 . Table editing
+. Fix UnsupportedOperationException at ToolTipDialog.java:174
+. Forward clicks on custom tab title renderer
 . Tab decoration depending on tab selection
 . Icon tip decoration a bit more on the up and right when using Nimbus LAF
 . No decoration on disable component (config + listen to component state)
