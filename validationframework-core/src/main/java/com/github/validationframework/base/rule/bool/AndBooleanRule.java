@@ -26,45 +26,28 @@
 package com.github.validationframework.base.rule.bool;
 
 import com.github.validationframework.api.rule.Rule;
+import com.github.validationframework.base.transform.AndBooleanAggregator;
+import com.github.validationframework.base.transform.Transformer;
 import java.util.Collection;
 
 public class AndBooleanRule implements Rule<Collection<Boolean>, Boolean> {
 
-	private static final boolean DEFAULT_EMPTY_COLLECTION_VALID = true;
-	private static final boolean DEFAULT_NULL_ELEMENT_VALID = false;
+	public static final boolean DEFAULT_EMPTY_COLLECTION_VALID = AndBooleanAggregator.DEFAULT_EMPTY_COLLECTION_VALID;
 
-	private final boolean emptyCollectionValid;
+	public static final boolean DEFAULT_NULL_ELEMENT_VALID = AndBooleanAggregator.DEFAULT_NULL_ELEMENT_VALID;
 
-	private final boolean nullElementValid;
+	private final Transformer<Collection<Boolean>, Boolean> aggregator;
 
 	public AndBooleanRule() {
 		this(DEFAULT_EMPTY_COLLECTION_VALID, DEFAULT_NULL_ELEMENT_VALID);
 	}
 
 	public AndBooleanRule(final boolean emptyCollectionValid, final boolean nullElementValid) {
-		this.emptyCollectionValid = emptyCollectionValid;
-		this.nullElementValid = nullElementValid;
+		aggregator = new AndBooleanAggregator(emptyCollectionValid, nullElementValid);
 	}
 
 	@Override
 	public Boolean validate(final Collection<Boolean> elements) {
-		Boolean aggregatedResult = true;
-
-		if ((elements == null) || elements.isEmpty()) {
-			aggregatedResult = emptyCollectionValid;
-		} else {
-			for (final Boolean element : elements) {
-				Boolean result = element;
-				if (result == null) {
-					result = nullElementValid;
-				}
-				aggregatedResult &= result;
-				if (!aggregatedResult) {
-					break;
-				}
-			}
-		}
-
-		return aggregatedResult;
+		return aggregator.transform(elements);
 	}
 }

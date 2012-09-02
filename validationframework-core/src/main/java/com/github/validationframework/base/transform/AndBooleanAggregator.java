@@ -23,26 +23,47 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.experimental.transform;
+package com.github.validationframework.base.transform;
 
-import com.github.validationframework.base.transform.Transformer;
 import java.util.Collection;
 
 public class AndBooleanAggregator implements Transformer<Collection<Boolean>, Boolean> {
+
+	public static final boolean DEFAULT_EMPTY_COLLECTION_VALID = true;
+
+	public static final boolean DEFAULT_NULL_ELEMENT_VALID = false;
+
+	private final boolean emptyCollectionValid;
+
+	private final boolean nullElementValid;
+
+	public AndBooleanAggregator() {
+		this(DEFAULT_EMPTY_COLLECTION_VALID, DEFAULT_NULL_ELEMENT_VALID);
+	}
+
+	public AndBooleanAggregator(final boolean emptyCollectionValid, final boolean nullElementValid) {
+		this.emptyCollectionValid = emptyCollectionValid;
+		this.nullElementValid = nullElementValid;
+	}
 
 	/**
 	 * @see Transformer#transform(Object)
 	 */
 	@Override
 	public Boolean transform(final Collection<Boolean> elements) {
-		boolean aggregation = true;
+		Boolean aggregation = true;
 
-		if (elements != null) {
+		if ((elements == null) || elements.isEmpty()) {
+			aggregation = emptyCollectionValid;
+		} else {
 			for (final Boolean element : elements) {
-				if (element == null) {
-					aggregation = false;
-				} else {
-					aggregation &= element;
+				Boolean result = element;
+				if (result == null) {
+					result = nullElementValid;
+				}
+				aggregation &= result;
+				if (!aggregation) {
+					break;
 				}
 			}
 		}
