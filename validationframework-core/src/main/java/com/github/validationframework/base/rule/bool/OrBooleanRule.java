@@ -26,26 +26,55 @@
 package com.github.validationframework.base.rule.bool;
 
 import com.github.validationframework.api.rule.Rule;
+import com.github.validationframework.base.transform.AndBooleanAggregator;
 import com.github.validationframework.base.transform.OrBooleanAggregator;
 import com.github.validationframework.base.transform.Transformer;
 import java.util.Collection;
 
+/**
+ * Rule validating a collection of boolean values using the boolean AND operator.
+ *
+ * @see AndBooleanRule
+ */
 public class OrBooleanRule implements Rule<Collection<Boolean>, Boolean> {
 
-	public static final boolean DEFAULT_EMPTY_COLLECTION_VALID = OrBooleanAggregator.DEFAULT_EMPTY_COLLECTION_VALID;
+	/**
+	 * Default boolean result for empty or null collections.
+	 */
+	public static final boolean DEFAULT_EMPTY_COLLECTION_VALID = OrBooleanAggregator.DEFAULT_EMPTY_COLLECTION_VALUE;
 
-	public static final boolean DEFAULT_NULL_ELEMENT_VALID = OrBooleanAggregator.DEFAULT_NULL_ELEMENT_VALID;
+	/**
+	 * Default boolean value for null elements in the collections.
+	 */
+	public static final boolean DEFAULT_NULL_ELEMENT_VALID = OrBooleanAggregator.DEFAULT_NULL_ELEMENT_VALUE;
 
+	/**
+	 * Boolean aggregator using the OR operator.
+	 *
+	 * @see OrBooleanAggregator
+	 */
 	private final Transformer<Collection<Boolean>, Boolean> aggregator;
 
+	/**
+	 * Default constructor using default results for empty collections and null elements.
+	 */
 	public OrBooleanRule() {
 		this(DEFAULT_EMPTY_COLLECTION_VALID, DEFAULT_NULL_ELEMENT_VALID);
 	}
 
+	/**
+	 * Constructor specifying the results for empty and null collections, and null elements.
+	 *
+	 * @param emptyCollectionValid Result for empty and null collections.
+	 * @param nullElementValid Boolean value for null elements.
+	 */
 	public OrBooleanRule(final boolean emptyCollectionValid, final boolean nullElementValid) {
-		aggregator = new OrBooleanAggregator(emptyCollectionValid, nullElementValid);
+		aggregator = new AndBooleanAggregator(emptyCollectionValid, nullElementValid);
 	}
 
+	/**
+	 * @see Rule#validate(Object)
+	 */
 	@Override
 	public Boolean validate(final Collection<Boolean> elements) {
 		return aggregator.transform(elements);

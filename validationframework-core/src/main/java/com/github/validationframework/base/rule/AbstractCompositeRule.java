@@ -29,6 +29,9 @@ import com.github.validationframework.api.rule.Rule;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Abstraction of a composite rule composed of sub-rules.
+ */
 public abstract class AbstractCompositeRule<D, R> implements Rule<D, R> {
 
 	/**
@@ -48,7 +51,7 @@ public abstract class AbstractCompositeRule<D, R> implements Rule<D, R> {
 	 *
 	 * @param rules Sub-rule(s) to be added.
 	 *
-	 * @see #addRule(com.github.validationframework.api.rule.Rule)
+	 * @see #addRule(Rule)
 	 */
 	public AbstractCompositeRule(final Rule<D, R>... rules) {
 		if (rules != null) {

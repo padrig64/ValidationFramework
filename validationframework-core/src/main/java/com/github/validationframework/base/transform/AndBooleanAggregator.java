@@ -27,23 +27,52 @@ package com.github.validationframework.base.transform;
 
 import java.util.Collection;
 
+/**
+ * Transforms a collection of boolean values into a single boolean value by aggregating with the boolean AND operator.
+ *
+ * @see Transformer
+ */
 public class AndBooleanAggregator implements Transformer<Collection<Boolean>, Boolean> {
 
-	public static final boolean DEFAULT_EMPTY_COLLECTION_VALID = true;
+	/**
+	 * Default boolean value to be used when transforming an empty or null collection.
+	 */
+	public static final boolean DEFAULT_EMPTY_COLLECTION_VALUE = true;
 
-	public static final boolean DEFAULT_NULL_ELEMENT_VALID = false;
+	/**
+	 * Default boolean value to be used when transforming a null value from the collection.
+	 */
+	public static final boolean DEFAULT_NULL_ELEMENT_VALUE = false;
 
+	/**
+	 * Boolean value to be used when transforming an empty collection.
+	 */
 	private final boolean emptyCollectionValid;
 
+	/**
+	 * Boolean value to be used when transforming a null value from the collection.
+	 */
 	private final boolean nullElementValid;
 
+	/**
+	 * Default constructor using default values for empty and null collections, and null elements.
+	 *
+	 * @see #DEFAULT_EMPTY_COLLECTION_VALUE
+	 * @see #DEFAULT_NULL_ELEMENT_VALUE
+	 */
 	public AndBooleanAggregator() {
-		this(DEFAULT_EMPTY_COLLECTION_VALID, DEFAULT_NULL_ELEMENT_VALID);
+		this(DEFAULT_EMPTY_COLLECTION_VALUE, DEFAULT_NULL_ELEMENT_VALUE);
 	}
 
-	public AndBooleanAggregator(final boolean emptyCollectionValid, final boolean nullElementValid) {
-		this.emptyCollectionValid = emptyCollectionValid;
-		this.nullElementValid = nullElementValid;
+	/**
+	 * Constructor specifying the boolean values for empty and null collections, and null elements.
+	 *
+	 * @param emptyCollectionValue Value for empty and null collections.
+	 * @param nullElementValue Value for null elements in the transformed collection.
+	 */
+	public AndBooleanAggregator(final boolean emptyCollectionValue, final boolean nullElementValue) {
+		this.emptyCollectionValid = emptyCollectionValue;
+		this.nullElementValid = nullElementValue;
 	}
 
 	/**
