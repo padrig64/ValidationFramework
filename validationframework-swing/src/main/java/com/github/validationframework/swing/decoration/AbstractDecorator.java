@@ -309,7 +309,9 @@ public abstract class AbstractDecorator {
 
 			// Repaint
 			decorationPainter.repaint();
-			ancestor.repaint();
+			if (ancestor != null) {
+				ancestor.repaint();
+			}
 		}
 	}
 
