@@ -230,6 +230,8 @@ public class SimpleDemoApp extends JFrame {
 		// Create content pane
 		final JPanel contentPane = new JPanel(
 				new MigLayout("fill, wrap 2", "[]related[grow]", "[]related[]related[]related[]unrelated[]"));
+//		contentPane.setBorder(new EmptyBorder(50, 50, 50, 50));
+//		setContentPane(new JScrollPane(contentPane));
 		setContentPane(contentPane);
 
 		// Input fields
@@ -358,7 +360,8 @@ public class SimpleDemoApp extends JFrame {
 //				new BooleanIconTipFeedBack(formattedTextField, null, null, BooleanIconTipFeedBack.DEFAULT_INVALID_ICON,
 //						"Angle should be between 000 and 359"));
 
-		on(trigger).read(dataProvider).check(rule1, rule2).handleWith(resultHandler1, resultCollector).build();
+		on(trigger).read(dataProvider).check(rule1, rule2).handleWith(resultHandler1).handleWith(resultCollector)
+				.build();
 
 		return formattedTextField;
 	}

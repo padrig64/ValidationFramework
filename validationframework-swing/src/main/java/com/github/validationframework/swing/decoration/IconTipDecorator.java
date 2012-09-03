@@ -66,7 +66,7 @@ public class IconTipDecorator extends AbstractDecorator {
 		super(owner, DEFAULT_ANCHOR_LINK_WITH_OWNER);
 		this.icon = icon;
 
-		decorationHolder.addMouseListener(new ToolTipAdapter());
+		decorationPainter.addMouseListener(new ToolTipAdapter());
 	}
 
 	public String getText() {
@@ -102,7 +102,7 @@ public class IconTipDecorator extends AbstractDecorator {
 		super.setVisible(visible);
 
 		if ((toolTipDialog == null) && visible) {
-			toolTipDialog = new ToolTipDialog(decorationHolder, anchorLinkWithToolTip);
+			toolTipDialog = new ToolTipDialog(decorationPainter, anchorLinkWithToolTip);
 			toolTipDialog.setText(toolTipText);
 		}
 		if (!visible && (toolTipDialog != null)) {
@@ -131,7 +131,7 @@ public class IconTipDecorator extends AbstractDecorator {
 	@Override
 	public void paint(final Graphics g) {
 		if (isVisible() && (icon != null)) {
-			icon.paintIcon(decorationHolder, g, 0, 0);
+			icon.paintIcon(decorationPainter, g, 0, 0);
 		}
 	}
 }

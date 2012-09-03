@@ -130,6 +130,12 @@ public abstract class AbstractDecorator {
 		 */
 		private static final long serialVersionUID = 7573896845503780433L;
 
+		private Rectangle clipBounds = null;
+
+		public void setClipBounds(final Rectangle clipBounds) {
+			this.clipBounds = clipBounds;
+		}
+
 		/**
 		 * Default constructor.
 		 */
@@ -161,20 +167,18 @@ public abstract class AbstractDecorator {
 		 * Calls the method {@link AbstractDecorator#paint(Graphics)} of the decorator.
 		 *
 		 * @param g Graphics to paint on.
+		 *
+		 * @see AbstractDecorator#paint(Graphics)
 		 */
 		@Override
 		public void paintComponent(final Graphics g) {
-			if (isShowing()) {
-				final Rectangle bounds = decorationHolder.getBounds();
-				if ((bounds.width != 0) && (bounds.height != 0)) {
-					// Clip graphics context
-					final Rectangle clippedBounds =
-							SwingUtilities.convertRectangle(decorationHolder.getParent(), bounds, decorationHolder);
-					g.setClip(clippedBounds);
+			if (owner.isVisible() && owner.isShowing() && isVisible() && isShowing() && (clipBounds != null) &&
+					(clipBounds.width > 0) && (clipBounds.height > 0)) {
+				// Clip graphics
+				g.setClip(clipBounds);
 
-					// Paint decorator
-					AbstractDecorator.this.paint(g);
-				}
+				// Paint decorator
+				AbstractDecorator.this.paint(g);
 			}
 		}
 	}
@@ -182,7 +186,7 @@ public abstract class AbstractDecorator {
 	private JComponent owner;
 	private AnchorLink anchorLink;
 	private final ComponentTracker ownerTracker = new ComponentTracker();
-	protected DecorationPainter decorationHolder = new DecorationPainter();
+	protected DecorationPainter decorationPainter = new DecorationPainter();
 
 	private JLayeredPane attachedLayeredPane = null;
 
@@ -219,12 +223,12 @@ public abstract class AbstractDecorator {
 		final Container ancestor = SwingUtilities.getAncestorOfClass(JLayeredPane.class, owner);
 		if (ancestor instanceof JLayeredPane) {
 			attachedLayeredPane = (JLayeredPane) ancestor;
-			attachedLayeredPane.add(decorationHolder, JLayeredPane.DRAG_LAYER);
+			attachedLayeredPane.add(decorationPainter, JLayeredPane.DRAG_LAYER);
 		}
 	}
 
 	private void detachFromLayeredPane() {
-		attachedLayeredPane.remove(decorationHolder);
+		attachedLayeredPane.remove(decorationPainter);
 		attachedLayeredPane = null;
 	}
 
@@ -237,17 +241,17 @@ public abstract class AbstractDecorator {
 	}
 
 	public boolean isVisible() {
-		return ((decorationHolder != null) && decorationHolder.isVisible());
+		return ((decorationPainter != null) && decorationPainter.isVisible());
 	}
 
 	public void setVisible(final boolean visible) {
-		if (decorationHolder != null) {
-			decorationHolder.setVisible(visible);
+		if (decorationPainter != null) {
+			decorationPainter.setVisible(visible);
 		}
 	}
 
 	protected void followOwner() {
-		if (decorationHolder != null) {
+		if (decorationPainter != null) {
 			if (attachedLayeredPane == null) {
 				attachToLayeredPane();
 			}
@@ -256,13 +260,15 @@ public abstract class AbstractDecorator {
 				final Point relativeLocationToOwner = anchorLink
 						.getRelativeSlaveLocation(owner.getWidth(), owner.getHeight(), getWidth(), getHeight());
 
-//				final Point ownerLocationInLayeredPane =
-//						SwingUtilities.convertPoint(owner.getParent(), owner.getLocation(), ancestor);
-//				final Rectangle decorationBoundsInLayeredPane =
-//						new Rectangle(ownerLocationInLayeredPane.x + relativeLocationToOwner.x,
-//								ownerLocationInLayeredPane.y + relativeLocationToOwner.y, getWidth(), getHeight());
-////				decorationHolder.setBounds(decorationBoundsInLayeredPane); // Old version
+				// Calculate decoration painter unclipped bounds
+				final Point ownerLocationInLayeredPane =
+						SwingUtilities.convertPoint(owner.getParent(), owner.getLocation(), ancestor);
+				final Rectangle decorationBoundsInLayeredPane =
+						new Rectangle(ownerLocationInLayeredPane.x + relativeLocationToOwner.x,
+								ownerLocationInLayeredPane.y + relativeLocationToOwner.y, getWidth(), getHeight());
+				decorationPainter.setBounds(decorationBoundsInLayeredPane);
 
+				// Calculate decoration painter clipped bounds
 //				System.out.println("=========================================");
 //				System.out.println("AbstractDecorator.getVisibleBounds: parent:" + owner.getParent());
 
@@ -287,16 +293,22 @@ public abstract class AbstractDecorator {
 							.convertRectangle(owner.getParent(), decorationVisibleBoundsInParent, ancestor);
 //					System.out
 //							.println(" |_ visible bounds in layered pane:    " + decorationVisibleBoundsInLayeredPane);
-					decorationHolder.setBounds(decorationVisibleBoundsInLayeredPane);
+//					decorationPainter.setBounds(decorationVisibleBoundsInLayeredPane);
+
+					// Clip graphics context
+					final Rectangle clipBounds = SwingUtilities
+							.convertRectangle(decorationPainter.getParent(), decorationVisibleBoundsInLayeredPane,
+									decorationPainter);
+					decorationPainter.setClipBounds(clipBounds);
 				} else {
-					decorationHolder.setBounds(0, 0, 0, 0);
+					decorationPainter.setClipBounds(null);
 				}
 			} else {
-				decorationHolder.setBounds(0, 0, 0, 0);
+				decorationPainter.setClipBounds(null);
 			}
 
 			// Repaint
-			decorationHolder.repaint();
+			decorationPainter.repaint();
 			ancestor.repaint();
 		}
 	}

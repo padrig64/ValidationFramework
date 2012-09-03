@@ -25,193 +25,15 @@
 
 package com.github.validationframework.experimental.builder;
 
-import com.github.validationframework.api.resulthandler.ResultHandler;
-import com.github.validationframework.api.rule.Rule;
 import com.github.validationframework.base.resulthandler.ResultCollector;
-import com.github.validationframework.base.validator.ResultCollectorValidator;
-import java.util.ArrayList;
+import com.github.validationframework.experimental.builder.context.resultcollectorvalidator.ResultCollectorContext;
+import com.github.validationframework.experimental.builder.context.resultcollectorvalidator.RuleContext;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 public class ResultCollectorValidatorBuilder {
 
-	public static class ResultCollectorContext {
-
-		public <D> RuleContext<D> collect(final ResultCollector<?, D>... resultCollectors) {
-			final List<ResultCollector<?, D>> registeredResultCollectors = new ArrayList<ResultCollector<?, D>>();
-			if (resultCollectors != null) {
-				Collections.addAll(registeredResultCollectors, resultCollectors);
-			}
-			return new RuleContext<D>(registeredResultCollectors);
-		}
-
-		public <D> RuleContext<D> collect(final Collection<ResultCollector<?, D>> resultCollectors) {
-			final List<ResultCollector<?, D>> registeredResultCollectors = new ArrayList<ResultCollector<?, D>>();
-			if (resultCollectors != null) {
-				registeredResultCollectors.addAll(resultCollectors);
-			}
-			return new RuleContext<D>(registeredResultCollectors);
-		}
-	}
-
-	public static class RuleContext<D> {
-
-		final List<ResultCollector<?, D>> registeredResultCollectors;
-
-		public RuleContext(final List<ResultCollector<?, D>> registeredResultCollectors) {
-			this.registeredResultCollectors = registeredResultCollectors;
-		}
-
-		public RuleContext<D> collect(final ResultCollector<?, D>... resultCollectors) {
-			if (resultCollectors != null) {
-				Collections.addAll(registeredResultCollectors, resultCollectors);
-			}
-			return this;
-		}
-
-		public RuleContext<D> collect(final Collection<ResultCollector<?, D>> resultCollectors) {
-			if (resultCollectors != null) {
-				registeredResultCollectors.addAll(resultCollectors);
-			}
-			return this;
-		}
-
-		public <O> ResultHandlerContext<D, O> check(final Rule<Collection<D>, O>... rules) {
-			final List<Rule<Collection<D>, O>> registeredRules = new ArrayList<Rule<Collection<D>, O>>();
-			if (rules != null) {
-				Collections.addAll(registeredRules, rules);
-			}
-			return new ResultHandlerContext<D, O>(registeredResultCollectors, registeredRules);
-		}
-
-		public <O> ResultHandlerContext<D, O> check(final Collection<Rule<Collection<D>, O>> rules) {
-			final List<Rule<Collection<D>, O>> registeredRules = new ArrayList<Rule<Collection<D>, O>>();
-			if (rules != null) {
-				registeredRules.addAll(rules);
-			}
-			return new ResultHandlerContext<D, O>(registeredResultCollectors, registeredRules);
-		}
-	}
-
-	/**
-	 * Context to add more rules and the first result handlers.
-	 *
-	 * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
-	 * type of the component itself.
-	 * @param <O> Type of validation result.<br>It can be, for instance, an enumeration or just a boolean.
-	 */
-	public static class ResultHandlerContext<D, O> {
-
-		final List<ResultCollector<?, D>> registeredResultCollectors;
-		final List<Rule<Collection<D>, O>> registeredRules;
-
-		public ResultHandlerContext(final List<ResultCollector<?, D>> registeredResultCollectors,
-									final List<Rule<Collection<D>, O>> registeredRules) {
-			this.registeredResultCollectors = registeredResultCollectors;
-			this.registeredRules = registeredRules;
-		}
-
-		public ResultHandlerContext<D, O> check(final Rule<Collection<D>, O>... rules) {
-			if (rules != null) {
-				Collections.addAll(registeredRules, rules);
-			}
-			return this;
-		}
-
-		public ResultHandlerContext<D, O> check(final Collection<Rule<Collection<D>, O>> rules) {
-			if (rules != null) {
-				registeredRules.addAll(rules);
-			}
-			return this;
-		}
-
-		/**
-		 * Adds the first result handlers to the validator.
-		 *
-		 * @param resultHandlers Result handlers to be added.
-		 *
-		 * @return Validator context allowing to add result handlers and to create the validator.
-		 */
-		public ValidatorContext<D, O> handleResultWith(final ResultHandler<O>... resultHandlers) {
-			final List<ResultHandler<O>> registeredResultHandlers = new ArrayList<ResultHandler<O>>();
-			if (resultHandlers != null) {
-				Collections.addAll(registeredResultHandlers, resultHandlers);
-			}
-			return new ValidatorContext<D, O>(registeredResultCollectors, registeredRules, registeredResultHandlers);
-		}
-
-		public ValidatorContext<D, O> handleResultWith(final Collection<ResultHandler<O>> resultHandlers) {
-			final List<ResultHandler<O>> registeredResultHandlers = new ArrayList<ResultHandler<O>>();
-			if (resultHandlers != null) {
-				registeredResultHandlers.addAll(resultHandlers);
-			}
-			return new ValidatorContext<D, O>(registeredResultCollectors, registeredRules, registeredResultHandlers);
-		}
-	}
-
-	/**
-	 * Context to add more result handlers and to create the validator.
-	 *
-	 * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
-	 * type of the component itself.
-	 * @param <O> Type of validation result.<br>It can be, for instance, an enumeration or just a boolean.
-	 */
-	public static class ValidatorContext<D, O> {
-
-		final List<ResultCollector<?, D>> registeredResultCollectors;
-		final List<Rule<Collection<D>, O>> registeredRules;
-		final List<ResultHandler<O>> registeredResultHandlers;
-
-		public ValidatorContext(final List<ResultCollector<?, D>> registeredResultCollectors,
-								final List<Rule<Collection<D>, O>> registeredRules,
-								final List<ResultHandler<O>> registeredResultHandlers) {
-			this.registeredResultCollectors = registeredResultCollectors;
-			this.registeredRules = registeredRules;
-			this.registeredResultHandlers = registeredResultHandlers;
-		}
-
-		/**
-		 * Adds more result handlers to the validator.
-		 *
-		 * @param resultHandlers Result handlers to be added.
-		 *
-		 * @return Same validator context.
-		 */
-		public ValidatorContext<D, O> handleResultWith(final ResultHandler<O>... resultHandlers) {
-			if (resultHandlers != null) {
-				Collections.addAll(registeredResultHandlers, resultHandlers);
-			}
-			return this;
-		}
-
-		public ValidatorContext<D, O> handleResultWith(final Collection<ResultHandler<O>> resultHandlers) {
-			if (resultHandlers != null) {
-				registeredResultHandlers.addAll(resultHandlers);
-			}
-			return this;
-		}
-
-		/**
-		 * Creates the validator and makes all the connections.
-		 *
-		 * @return Newly created and configured validator.
-		 */
-		public ResultCollectorValidator<D, O> build() {
-			final ResultCollectorValidator<D, O> validator = new ResultCollectorValidator<D, O>();
-
-			for (final ResultCollector<?, D> resultCollector : registeredResultCollectors) {
-				validator.addResultCollector(resultCollector);
-			}
-			for (final Rule<Collection<D>, O> rule : registeredRules) {
-				validator.addRule(rule);
-			}
-			for (final ResultHandler<O> resultHandler : registeredResultHandlers) {
-				validator.addResultHandler(resultHandler);
-			}
-
-			return validator;
-		}
+	public static <D> RuleContext<D> collect(final ResultCollector<?, D> resultCollector) {
+		return new ResultCollectorContext().collect(resultCollector);
 	}
 
 	public static <D> RuleContext<D> collect(final ResultCollector<?, D>... resultCollectors) {
@@ -221,4 +43,6 @@ public class ResultCollectorValidatorBuilder {
 	public static <D> RuleContext<D> collect(final Collection<ResultCollector<?, D>> resultCollectors) {
 		return new ResultCollectorContext().collect(resultCollectors);
 	}
+
+	// TODO Collect from validator
 }

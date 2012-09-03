@@ -26,11 +26,14 @@
 package com.github.validationframework.base.rule;
 
 import com.github.validationframework.api.rule.Rule;
+import com.github.validationframework.base.transform.AndBooleanAggregator;
+import com.github.validationframework.base.transform.Transformer;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Composite rule checking data of a known specific type using sub-rules, and returning a boolean as an aggregation of
- * the boolean results from its sub-rules.<br>The aggregation is basically an AND operation: the result will be true if
- * the results of sub-rules are also true.<br>If there are no sub-rules, the default result will be true.
+ * the boolean results from its sub-rules.
  *
  * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
  * type of the component itself.
@@ -41,17 +44,26 @@ import com.github.validationframework.api.rule.Rule;
 public class AndCompositeBooleanRule<D> extends AbstractCompositeRule<D, Boolean> {
 
 	/**
+	 * Boolean aggregator using the AND operator.
+	 *
+	 * @see AndBooleanAggregator
+	 */
+	private final Transformer<Collection<Boolean>, Boolean> aggregator;
+
+	/**
 	 * @see AbstractCompositeRule#AbstractCompositeRule()
 	 */
 	public AndCompositeBooleanRule() {
 		super();
+		aggregator = new AndBooleanAggregator();
 	}
 
 	/**
-	 * @see AbstractCompositeRule#AbstractCompositeRule(com.github.validationframework.api.rule.Rule[])
+	 * @see AbstractCompositeRule#AbstractCompositeRule(Rule[])
 	 */
 	public AndCompositeBooleanRule(final Rule<D, Boolean>... rules) {
 		super(rules);
+		aggregator = new AndBooleanAggregator();
 	}
 
 	/**
@@ -59,19 +71,14 @@ public class AndCompositeBooleanRule<D> extends AbstractCompositeRule<D, Boolean
 	 */
 	@Override
 	public Boolean validate(final D data) {
-		Boolean aggregatedResult = true;
-
+		// Collect results
+		final Collection<Boolean> results = new ArrayList<Boolean>();
 		for (final Rule<D, Boolean> rule : rules) {
-			Boolean result = rule.validate(data);
-			if (result == null) {
-				result = false;
-			}
-			aggregatedResult &= result;
-			if (!aggregatedResult) {
-				break;
-			}
+			final Boolean result = rule.validate(data);
+			results.add(result);
 		}
 
-		return aggregatedResult;
+		// Aggregate results
+		return aggregator.transform(results);
 	}
 }

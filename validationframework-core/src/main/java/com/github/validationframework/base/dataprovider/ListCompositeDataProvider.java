@@ -23,26 +23,54 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.experimental.transform;
+package com.github.validationframework.base.dataprovider;
 
-import com.github.validationframework.base.transform.Transformer;
-import java.util.Collection;
+import com.github.validationframework.api.dataprovider.TypedDataProvider;
+import java.util.ArrayList;
+import java.util.List;
 
-public class OrBooleanAggregator implements Transformer<Collection<Boolean>, Boolean> {
+/**
+ * Composite data provider returning the data of all the sub-data providers in a list.
+ *
+ * @param <D> Type of data in the list.
+ */
+public class ListCompositeDataProvider<D> implements TypedDataProvider<List<D>> {
 
 	/**
-	 * @see Transformer#transform(Object)
+	 * Sub-data providers
+	 */
+	protected final List<TypedDataProvider<D>> dataProviders = new ArrayList<TypedDataProvider<D>>();
+
+	/**
+	 * Adds the specified data provider
+	 *
+	 * @param dataProvider Data provider to be added.
+	 */
+	public void addDataProvider(final TypedDataProvider<D> dataProvider) {
+		dataProviders.add(dataProvider);
+	}
+
+	/**
+	 * Removes the specified data provider.
+	 *
+	 * @param dataProvider Data provider to be removed.
+	 */
+	public void removeDataProvider(final TypedDataProvider<D> dataProvider) {
+		dataProviders.remove(dataProvider);
+	}
+
+	/**
+	 * @see TypedDataProvider#getData()
 	 */
 	@Override
-	public Boolean transform(final Collection<Boolean> elements) {
-		boolean aggregation = false;
+	public List<D> getData() {
+		final List<D> dataList = new ArrayList<D>();
 
-		if (elements != null) {
-			for (final Boolean element : elements) {
-				aggregation |= element;
-			}
+		// Read data from all data providers and put them in the list
+		for (final TypedDataProvider<D> dataProvider : dataProviders) {
+			dataList.add(dataProvider.getData());
 		}
 
-		return aggregation;
+		return dataList;
 	}
 }

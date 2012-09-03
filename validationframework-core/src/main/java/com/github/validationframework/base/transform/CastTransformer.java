@@ -28,6 +28,14 @@ package com.github.validationframework.base.transform;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Transformer transforming input by casting.
+ *
+ * @param <I> Type of the input object to be transformed.
+ * @param <O> Type of the output object after transformation.
+ *
+ * @see Transformer
+ */
 public class CastTransformer<I, O> implements Transformer<I, O> {
 
 	/**
@@ -43,6 +51,7 @@ public class CastTransformer<I, O> implements Transformer<I, O> {
 		O output;
 
 		try {
+			// Cast
 			output = (O) input;
 		} catch (ClassCastException e) {
 			LOGGER.error("Failed transforming input: " + input, e);

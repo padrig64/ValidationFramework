@@ -15,7 +15,7 @@ public class OrCompositeBooleanRuleTest extends AbstractCompositeBooleanRuleTest
 		Object[][] data = new Object[][] {
 				//             Rules (Object data, Boolean result)                                     Result
 				new Object[] { new Rule[] { createRule(true), createRule(true) }, true },
-				new Object[] { new Rule[] { createRule(true) }, true }, new Object[] { new Rule[] { }, false },
+				new Object[] { new Rule[] { createRule(true) }, true }, new Object[] { new Rule[] { }, true },
 				new Object[] { new Rule[] { createRule(true), createRule(false) }, true },
 				new Object[] { new Rule[] { createRule(false), createRule(true) }, true },
 				new Object[] { new Rule[] { createRule(false), createRule(false) }, false } };

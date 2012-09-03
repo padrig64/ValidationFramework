@@ -23,59 +23,56 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.base.rule;
+package com.github.validationframework.base.dataprovider;
 
-import com.github.validationframework.api.rule.Rule;
-import java.util.ArrayList;
-import java.util.List;
+import com.github.validationframework.api.dataprovider.TypedDataProvider;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * Abstraction of a composite rule composed of sub-rules.
+ * Composite data provider returning the data of all the sub-data providers in a map.
+ *
+ * @param <K> Type of the keys to retrieve the data from the map.
+ * @param <D> Type of data in the map.
  */
-public abstract class AbstractCompositeRule<D, R> implements Rule<D, R> {
+public class MapCompositeDataProvider<K, D> implements TypedDataProvider<Map<K, D>> {
 
 	/**
-	 * Sub-rules to be checked.
+	 * Sub-data providers.
 	 */
-	protected final List<Rule<D, R>> rules = new ArrayList<Rule<D, R>>();
+	private final Map<K, TypedDataProvider<D>> dataProviders = new HashMap<K, TypedDataProvider<D>>();
 
 	/**
-	 * Default constructor.
+	 * Adds the specified data provider with the specified key.
+	 *
+	 * @param key Key associated to the data provider.
+	 * @param dataProvider Data provider associated to the key.
 	 */
-	public AbstractCompositeRule() {
-		// Nothing to be done
+	public void addDataProvider(final K key, final TypedDataProvider<D> dataProvider) {
+		dataProviders.put(key, dataProvider);
 	}
 
 	/**
-	 * Constructor specifying the sub-rule(s) to be added.
+	 * Results the data provider associated to the specified key.
 	 *
-	 * @param rules Sub-rule(s) to be added.
-	 *
-	 * @see #addRule(Rule)
+	 * @param key Key associated to the data provider to be remove.
 	 */
-	public AbstractCompositeRule(final Rule<D, R>... rules) {
-		if (rules != null) {
-			for (final Rule<D, R> rule : rules) {
-				addRule(rule);
-			}
+	public void removeDataProvider(final K key) {
+		dataProviders.remove(key);
+	}
+
+	/**
+	 * @see TypedDataProvider#getData()
+	 */
+	@Override
+	public Map<K, D> getData() {
+		final Map<K, D> dataList = new HashMap<K, D>();
+
+		// Read the data from all data providers and put them in the map
+		for (final Map.Entry<K, TypedDataProvider<D>> entry : dataProviders.entrySet()) {
+			dataList.put(entry.getKey(), entry.getValue().getData());
 		}
-	}
 
-	/**
-	 * Adds the specified sub-rule to be checked.
-	 *
-	 * @param rule Sub-rule to be added.
-	 */
-	public void addRule(final Rule<D, R> rule) {
-		rules.add(rule);
-	}
-
-	/**
-	 * Removes the specified sub-rule to be checked.
-	 *
-	 * @param rule Sub-rule tobe removed
-	 */
-	public void removeRule(final Rule<D, R> rule) {
-		rules.remove(rule);
+		return dataList;
 	}
 }

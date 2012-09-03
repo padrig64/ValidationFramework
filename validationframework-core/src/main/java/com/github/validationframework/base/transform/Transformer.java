@@ -25,7 +25,21 @@
 
 package com.github.validationframework.base.transform;
 
+/**
+ * Interface to be implemented by entities transforming one object into another.<br>It can be used, for instance, to
+ * transform data before validation, or to transform results before their handling.
+ *
+ * @param <I> Type of the input object to be transformed.
+ * @param <O> Type of the output object after transformation.
+ */
 public interface Transformer<I, O> {
 
+	/**
+	 * Transforms the specified input.
+	 *
+	 * @param input Input to be transformed.
+	 *
+	 * @return Transformation result.
+	 */
 	public O transform(I input);
 }
