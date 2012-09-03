@@ -23,11 +23,15 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.swing.decoration.utils;
+package com.github.validationframework.swing.decoration.anchor;
 
 import java.awt.Dimension;
 import java.awt.Point;
 
+/**
+ * Entity representing an anchor.<br>An anchor is, for instance, a virtual point on a component relatively to its
+ * bounds, and can be used as the point to attach decoration.
+ */
 public class Anchor {
 
 	public static final Anchor TOP_LEFT = new Anchor(0.0f, 0.0f);
@@ -36,10 +40,28 @@ public class Anchor {
 	public static final Anchor BOTTOM_RIGHT = new Anchor(1.0f, 1.0f);
 	public static final Anchor CENTER = new Anchor(0.5F, 0.5f);
 
+	/**
+	 * Relative position in percentage relatively to the origin and length on the X axis.<br>For instance, on a component
+	 * whose bounds are defined by the rectangle [X,Y,W,H], a value of 0.0f would represent X, and a value of 1.0f would
+	 * represent X+W.
+	 */
 	private final float relativeX;
+
+	/**
+	 * Relative position in percentage relatively to the origin and length on the Y axis.<br>For instance, on a component
+	 * whose bounds are defined by the rectangle [X,Y,W,H], a value of 0.0f would represent Y, and a value of 1.0f would
+	 * represent Y+H.
+	 */
 	private final float relativeY;
 
+	/**
+	 * Offset in pixels on the X axis, relatively to {@link #relativeX}.
+	 */
 	private final int offsetX;
+
+	/**
+	 * Offset in pixels on the Y axis, relatively to {@link #relativeY}.
+	 */
 	private final int offsetY;
 
 	public Anchor(final float relativeX, final float relativeY) {

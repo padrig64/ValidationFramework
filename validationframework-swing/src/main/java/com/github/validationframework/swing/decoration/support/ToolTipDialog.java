@@ -23,10 +23,10 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.swing.decoration;
+package com.github.validationframework.swing.decoration.support;
 
 import com.github.validationframework.base.utils.ValueUtils;
-import com.github.validationframework.swing.decoration.utils.AnchorLink;
+import com.github.validationframework.swing.decoration.anchor.AnchorLink;
 import com.sun.jna.platform.WindowUtils;
 import java.awt.IllegalComponentStateException;
 import java.awt.Point;
@@ -269,7 +269,7 @@ public class ToolTipDialog extends JDialog {
 	}
 
 	private void followOwner() {
-		if (owner.isVisible()) {
+		if (owner.isVisible() && owner.isShowing()) {
 			try {
 				final Point screenLocation = owner.getLocationOnScreen();
 				final Point relativeSlaveLocation =

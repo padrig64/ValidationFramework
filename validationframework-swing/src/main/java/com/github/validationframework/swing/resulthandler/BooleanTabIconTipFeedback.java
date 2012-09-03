@@ -27,14 +27,15 @@ package com.github.validationframework.swing.resulthandler;
 
 import com.github.validationframework.api.common.Disposable;
 import com.github.validationframework.api.resulthandler.ResultHandler;
-import com.github.validationframework.swing.decoration.ToolTipDialog;
-import com.github.validationframework.swing.decoration.utils.Anchor;
-import com.github.validationframework.swing.decoration.utils.AnchorLink;
+import com.github.validationframework.swing.decoration.anchor.Anchor;
+import com.github.validationframework.swing.decoration.anchor.AnchorLink;
+import com.github.validationframework.swing.decoration.support.ToolTipDialog;
 import com.github.validationframework.swing.decoration.utils.IconUtils;
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.event.MouseAdapter;
+import java.awt.Container;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import javax.swing.Icon;
@@ -43,6 +44,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,6 +56,9 @@ import org.slf4j.LoggerFactory;
  */
 public class BooleanTabIconTipFeedback implements ResultHandler<Boolean>, Disposable {
 
+	/**
+	 *
+	 */
 	private static class TitleRenderer extends JPanel {
 
 		private static final long serialVersionUID = -8023773742352528637L;
@@ -129,7 +134,7 @@ public class BooleanTabIconTipFeedback implements ResultHandler<Boolean>, Dispos
 		}
 	}
 
-	private static class IconToolTipAdapter extends MouseAdapter {
+	private static class IconToolTipAdapter implements MouseListener {
 
 		private ToolTipDialog toolTipDialog = null;
 
@@ -148,7 +153,7 @@ public class BooleanTabIconTipFeedback implements ResultHandler<Boolean>, Dispos
 		}
 
 		/**
-		 * @see java.awt.event.MouseListener#mouseEntered(MouseEvent)
+		 * @see MouseListener#mouseEntered(MouseEvent)
 		 */
 		@Override
 		public void mouseEntered(final MouseEvent e) {
@@ -160,11 +165,49 @@ public class BooleanTabIconTipFeedback implements ResultHandler<Boolean>, Dispos
 		}
 
 		/**
-		 * @see java.awt.event.MouseListener#mouseExited(MouseEvent)
+		 * @see MouseListener#mouseExited(MouseEvent)
 		 */
 		@Override
 		public void mouseExited(final MouseEvent e) {
 			toolTipDialog.setVisible(false);
+		}
+
+		/**
+		 * @see MouseListener#mousePressed(MouseEvent)
+		 */
+		@Override
+		public void mousePressed(final MouseEvent e) {
+			forwardToParent(e);
+		}
+
+		/**
+		 * @see MouseListener#mouseReleased(MouseEvent)
+		 */
+		@Override
+		public void mouseReleased(final MouseEvent e) {
+			forwardToParent(e);
+		}
+
+		/**
+		 * @see MouseListener#mouseClicked(MouseEvent)
+		 */
+		@Override
+		public void mouseClicked(final MouseEvent e) {
+			forwardToParent(e);
+		}
+
+		private void forwardToParent(final MouseEvent e) {
+			// Find parent tabbed pane
+			Container parent = owner.getParent();
+			while ((parent != null) && !(parent instanceof JTabbedPane)) {
+				parent = parent.getParent();
+			}
+
+			// Forward event to tabbed pane if found
+			if (parent != null) {
+				final MouseEvent transformedEvent = SwingUtilities.convertMouseEvent(owner, e, parent);
+				parent.dispatchEvent(transformedEvent);
+			}
 		}
 
 		public void setToolTipText(final String toolTipText) {
@@ -197,40 +240,105 @@ public class BooleanTabIconTipFeedback implements ResultHandler<Boolean>, Dispos
 	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(BooleanTabIconTipFeedback.class);
 
+	/**
+	 * Default icon to represent valid results.
+	 */
 	public static final Icon DEFAULT_VALID_ICON =
 			IconUtils.loadImageIcon("/images/defaults/valid.png", BooleanTabIconTipFeedback.class);
 
+	/**
+	 * Default icon to represent invalid results.
+	 */
 	public static final Icon DEFAULT_INVALID_ICON =
 			IconUtils.loadImageIcon("/images/defaults/invalid.png", BooleanTabIconTipFeedback.class);
 
+	/**
+	 * Default icon position with respect to the tab title.
+	 */
 	public static final int DEFAULT_ICON_POSITION = SwingConstants.LEADING;
 
-	public static final int DEFAULT_ICON_TEXT_GAP = 5;
+	/**
+	 * Default spacing between the icon and the tab title.
+	 */
+	public static final int DEFAULT_ICON_TEXT_GAP = 3;
 
+	/**
+	 * Icon representing valid results, or null.
+	 */
 	private final Icon validIcon;
 
+	/**
+	 * Tooltip text on the valid icon explaining the valid results, or null.
+	 */
 	private final String validText;
 
+	/**
+	 * Icon representing invalid results, or null.
+	 */
 	private final Icon invalidIcon;
 
+	/**
+	 * Tooltip text on the invalid icon explaining the invalid results, or null.
+	 */
 	private final String invalidText;
 
+	/**
+	 * Tabbed pane to show the icon tip feedback on.
+	 */
 	private JTabbedPane tabbedPane = null;
 
+	/**
+	 * Index of the tab to show the icon tip feedback on.
+	 */
 	private final int tabIndex;
 
+	/**
+	 * Listener to changes of tab titles.
+	 */
 	private final PropertyChangeListener tabPropertyAdapter = new TabPropertyAdapter();
 
+	/**
+	 * Constructor specifying the tabbed pane and the index of the tab to show the decoration on.
+	 *
+	 * @param tabbedPane Tabbed pane to show the icon tip feedback on.
+	 * @param tabIndex Index of the tab to show the icon tip feedback on.
+	 */
 	public BooleanTabIconTipFeedback(final JTabbedPane tabbedPane, final int tabIndex) {
 		this(tabbedPane, tabIndex, DEFAULT_VALID_ICON, null, DEFAULT_INVALID_ICON, null);
 	}
 
+	/**
+	 * Constructor specifying the tabbed pane and the index of the tab to show the decoration on, as well as the icon and
+	 * tooltip text representing valid and invalid results.
+	 *
+	 * @param tabbedPane Tabbed pane to show the icon tip feedback on.
+	 * @param tabIndex Index of the tab to show the icon tip feedback on.
+	 * @param validIcon Icon representing valid results, or null.
+	 * @param validText Tooltip text on the valid icon explaining the valid results, or null.
+	 * @param invalidIcon Icon representing invalid results, or null.
+	 * @param invalidText Tooltip text on the invalid icon explaining the invalid results, or null.
+	 */
 	public BooleanTabIconTipFeedback(final JTabbedPane tabbedPane, final int tabIndex, final Icon validIcon,
 									 final String validText, final Icon invalidIcon, final String invalidText) {
 		this(tabbedPane, tabIndex, validIcon, validText, invalidIcon, invalidText, DEFAULT_ICON_POSITION,
 				DEFAULT_ICON_TEXT_GAP);
 	}
 
+	/**
+	 * Constructor specifying the tabbed pane and the index of the tab to show the decoration on, as well as the icon and
+	 * tooltip text representing valid and invalid results, and the position and spacing of the decoration icon with
+	 * respect to the tab title.
+	 *
+	 * @param tabbedPane Tabbed pane to show the icon tip feedback on.
+	 * @param tabIndex Index of the tab to show the icon tip feedback on.
+	 * @param validIcon Icon representing valid results, or null.
+	 * @param validText Tooltip text on the valid icon explaining the valid results, or null.
+	 * @param invalidIcon Icon representing invalid results, or null.
+	 * @param invalidText Tooltip text on the invalid icon explaining the invalid results, or null.
+	 * @param iconPosition Position of the icon with respect to the tab title.<br>It can be {@link SwingConstants#LEADING},
+	 * {@link SwingConstants#LEFT}, {@link SwingConstants#TRAILING} or {@link SwingConstants#RIGHT}.
+	 * @param iconTextGap Spacing between the icon and the text.
+	 */
 	public BooleanTabIconTipFeedback(final JTabbedPane tabbedPane, final int tabIndex, final Icon validIcon,
 									 final String validText, final Icon invalidIcon, final String invalidText,
 									 final int iconPosition, final int iconTextGap) {
@@ -259,14 +367,20 @@ public class BooleanTabIconTipFeedback implements ResultHandler<Boolean>, Dispos
 	public void handleResult(final Boolean result) {
 		if (tabbedPane != null) {
 			if ((result == null) || !result) {
-				applyResult(invalidIcon, invalidText);
+				showResult(invalidIcon, invalidText);
 			} else {
-				applyResult(validIcon, validText);
+				showResult(validIcon, validText);
 			}
 		}
 	}
 
-	private void applyResult(final Icon icon, final String toolTipText) {
+	/**
+	 * Shows the result on the tab title renderer.
+	 *
+	 * @param icon Icon representing the result.
+	 * @param toolTipText Tooltip text on the icon.
+	 */
+	private void showResult(final Icon icon, final String toolTipText) {
 		final Component title = tabbedPane.getTabComponentAt(tabIndex);
 		if (title instanceof TitleRenderer) {
 			// Set icon on the custom tab title renderer

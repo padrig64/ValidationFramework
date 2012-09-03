@@ -70,7 +70,7 @@ import net.miginfocom.swing.MigLayout;
 import static com.github.validationframework.experimental.builder.ResultCollectorValidatorBuilder.collect;
 import static com.github.validationframework.experimental.builder.SimpleValidatorBuilder.on;
 
-public class SimpleDemoApp extends JFrame {
+public class FeedbackDemoApp extends JFrame {
 
 	/**
 	 * UIResource in case look-and-feel changes while result is visible. The new look-and-feel is allowed to replace it
@@ -215,7 +215,7 @@ public class SimpleDemoApp extends JFrame {
 	/**
 	 * Default constructor.
 	 */
-	public SimpleDemoApp() {
+	public FeedbackDemoApp() {
 		super();
 		init();
 	}
@@ -390,7 +390,7 @@ public class SimpleDemoApp extends JFrame {
 				}
 
 				// Show window
-				new SimpleDemoApp().setVisible(true);
+				new FeedbackDemoApp().setVisible(true);
 			}
 		});
 	}

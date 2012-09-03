@@ -26,9 +26,9 @@
 package com.github.validationframework.swing.resulthandler;
 
 import com.github.validationframework.api.resulthandler.ResultHandler;
-import com.github.validationframework.swing.decoration.ToolTipDialog;
-import com.github.validationframework.swing.decoration.utils.Anchor;
-import com.github.validationframework.swing.decoration.utils.AnchorLink;
+import com.github.validationframework.swing.decoration.anchor.Anchor;
+import com.github.validationframework.swing.decoration.anchor.AnchorLink;
+import com.github.validationframework.swing.decoration.support.ToolTipDialog;
 import javax.swing.JComponent;
 
 public abstract class AbstractStickerFeedBack<O> implements ResultHandler<O> {

@@ -25,7 +25,7 @@
 
 package com.github.validationframework.swing.decoration;
 
-import com.github.validationframework.swing.decoration.utils.AnchorLink;
+import com.github.validationframework.swing.decoration.anchor.AnchorLink;
 import java.awt.Container;
 import java.awt.Graphics;
 import java.awt.Point;

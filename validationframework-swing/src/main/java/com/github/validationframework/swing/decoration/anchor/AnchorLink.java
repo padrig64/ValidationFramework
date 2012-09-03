@@ -23,7 +23,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.swing.decoration.utils;
+package com.github.validationframework.swing.decoration.anchor;
 
 import java.awt.Component;
 import java.awt.Dimension;

@@ -71,14 +71,14 @@ public abstract class AbstractIconTipFeedBack<O> implements ResultHandler<O> {
 	protected String getToolTipText() {
 		String tip = null;
 		if (decorator != null) {
-			tip = decorator.getText();
+			tip = decorator.getToolTipText();
 		}
 		return tip;
 	}
 
 	protected void setToolTipText(final String text) {
 		if (decorator != null) {
-			decorator.setText(text);
+			decorator.setToolTipText(text);
 		}
 	}
 
