@@ -2,6 +2,10 @@
 . Component state conditional rule
 . More comments on the classes on the "what can it be used for"
 . Group
+. Rule-based formatter
+. Disabled decoration on tab
+. Icon decoration below combobox popups
+. Conditional result collector (according to the selection of a combobox, checkbox selection, etc.)
 . More consistency for handling "no result" results
 . Finalize mappable validator
 . Table editing
