@@ -218,7 +218,11 @@ public class ToolTipDialog extends JDialog {
 		pack(); // Seems to help for the very first setVisible(true) when window transparency is on
 
 		if (WindowUtils.isWindowAlphaSupported()) {
-			WindowUtils.setWindowTransparent(this, true);
+			try {
+				WindowUtils.setWindowTransparent(this, true);
+			} catch (IllegalArgumentException e) {
+				LOGGER.warn("Transparency reported as supported, but it just does not work", e);
+			}
 		}
 	}
 
