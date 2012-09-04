@@ -25,36 +25,63 @@
 
 package com.github.validationframework.swing.decoration;
 
-import com.github.validationframework.swing.decoration.utils.Anchor;
-import com.github.validationframework.swing.decoration.utils.AnchorLink;
+import com.github.validationframework.swing.decoration.anchor.Anchor;
+import com.github.validationframework.swing.decoration.anchor.AnchorLink;
 import java.awt.Graphics;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 
 public class IconDecorator extends AbstractDecorator {
 
+	/**
+	 * Default anchor link with the owner component on which the decorator will be attached.
+	 */
+	public static final AnchorLink DEFAULT_ANCHOR_LINK_WITH_OWNER = new AnchorLink(Anchor.BOTTOM_LEFT, Anchor.CENTER);
+
+	/**
+	 * Icon to be displayed as decoration on the owner component.
+	 */
 	private Icon icon = null;
 
-	private static final AnchorLink DEFAULT_ANCHOR_LINK_WITH_OWNER = new AnchorLink(Anchor.BOTTOM_LEFT, Anchor.CENTER);
-
 	public IconDecorator(final JComponent owner) {
-		this(owner, null);
+		this(owner, null, DEFAULT_ANCHOR_LINK_WITH_OWNER);
+	}
+
+	public IconDecorator(final JComponent owner, final AnchorLink anchorLinkWithOwner) {
+		this(owner, null, anchorLinkWithOwner);
 	}
 
 	public IconDecorator(final JComponent owner, final Icon icon) {
-		super(owner, DEFAULT_ANCHOR_LINK_WITH_OWNER);
+		this(owner, icon, DEFAULT_ANCHOR_LINK_WITH_OWNER);
+	}
+
+	public IconDecorator(final JComponent owner, final Icon icon, final AnchorLink anchorLinkWithOwner) {
+		super(owner, anchorLinkWithOwner);
 		this.icon = icon;
 	}
 
+	/**
+	 * Gets the decoration icon.
+	 *
+	 * @return Decoration icon attached to the owner component.
+	 */
 	public Icon getIcon() {
 		return icon;
 	}
 
+	/**
+	 * Sets the decoration.
+	 *
+	 * @param icon Decoration icon to be attached to the owner component.
+	 */
 	public void setIcon(final Icon icon) {
 		this.icon = icon;
 		followOwner();
 	}
 
+	/**
+	 * @see AbstractDecorator#getWidth()
+	 */
 	@Override
 	protected int getWidth() {
 		int width = 0;
@@ -64,6 +91,9 @@ public class IconDecorator extends AbstractDecorator {
 		return width;
 	}
 
+	/**
+	 * @see AbstractDecorator#getHeight()
+	 */
 	@Override
 	protected int getHeight() {
 		int height = 0;
@@ -73,6 +103,9 @@ public class IconDecorator extends AbstractDecorator {
 		return height;
 	}
 
+	/**
+	 * @see AbstractDecorator#paint(Graphics)
+	 */
 	@Override
 	public void paint(final Graphics g) {
 		if (isVisible() && (icon != null)) {

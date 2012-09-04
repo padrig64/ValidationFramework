@@ -1,5 +1,8 @@
+. Move boolean result handlers to bool package
 . Component state conditional rule
+. More comments on the classes on the "what can it be used for"
 . Group
+. More consistency for handling "no result" results
 . Finalize mappable validator
 . Table editing
 . Fix UnsupportedOperationException at ToolTipDialog.java:174
