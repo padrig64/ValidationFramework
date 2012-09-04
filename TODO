@@ -21,5 +21,6 @@
 . Initial focus for JFormattedTextField helper
 . Map rules to result handlers?
 . Exception-based results
+. Property data provider
 . Decoration transparency on Java 7
 . All features described in the README file
