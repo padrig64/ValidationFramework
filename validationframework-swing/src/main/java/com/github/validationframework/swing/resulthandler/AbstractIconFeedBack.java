@@ -49,7 +49,7 @@ public abstract class AbstractIconFeedBack<O> implements ResultHandler<O> {
 
 	public void detach() {
 		if (decorator != null) {
-			decorator.detach();
+			decorator.dispose();
 			decorator = null;
 		}
 	}

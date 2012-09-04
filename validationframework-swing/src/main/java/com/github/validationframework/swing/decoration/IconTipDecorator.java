@@ -100,7 +100,7 @@ public class IconTipDecorator extends AbstractDecorator {
 	 */
 	public void setIcon(final Icon icon) {
 		this.icon = icon;
-		followOwner();
+		followDecoratedComponent();
 	}
 
 	public String getToolTipText() {

@@ -76,7 +76,7 @@ public class IconDecorator extends AbstractDecorator {
 	 */
 	public void setIcon(final Icon icon) {
 		this.icon = icon;
-		followOwner();
+		followDecoratedComponent();
 	}
 
 	/**

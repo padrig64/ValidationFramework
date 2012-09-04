@@ -40,6 +40,7 @@ import java.text.DecimalFormat;
 import java.util.HashSet;
 import java.util.Set;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -116,6 +117,11 @@ public class TabbedPaneDemoApp extends JFrame {
 	private Component createTabContent(final Set<ResultCollector<?, Boolean>> fieldResultCollectors) {
 		final JPanel panel = new JPanel();
 		panel.setLayout(new MigLayout("fill, wrap 2", "[][grow, fill]"));
+
+		panel.add(new JLabel("Choice:"));
+		final JComboBox comboBox =
+				new JComboBox(new String[] { "Option 1", "Option 2", "Option 3", "Option 4", "Option 5" });
+		panel.add(comboBox);
 
 		for (int i = 0; i < 4; i++) {
 			panel.add(new JLabel("Field " + i + ":"));

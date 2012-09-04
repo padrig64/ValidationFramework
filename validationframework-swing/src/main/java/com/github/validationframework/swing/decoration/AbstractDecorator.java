@@ -25,6 +25,7 @@
 
 package com.github.validationframework.swing.decoration;
 
+import com.github.validationframework.api.common.Disposable;
 import com.github.validationframework.swing.decoration.anchor.AnchorLink;
 import java.awt.Container;
 import java.awt.Graphics;
@@ -44,7 +45,7 @@ import javax.swing.event.AncestorListener;
  * Abstract implementation of a decorator that can be attached to a component.<br>Concrete implementations will just
  * need to provide the size and do the painting on the already-computed location.
  */
-public abstract class AbstractDecorator {
+public abstract class AbstractDecorator implements Disposable {
 
 	/**
 	 * Entity responsible of tracking the changes on the decorated component and/or its ancestors that would require to
@@ -70,12 +71,12 @@ public abstract class AbstractDecorator {
 
 		@Override
 		public void ancestorMoved(final HierarchyEvent e) {
-			followOwner();
+			followDecoratedComponent();
 		}
 
 		@Override
 		public void ancestorResized(final HierarchyEvent e) {
-			followOwner();
+			followDecoratedComponent();
 		}
 
 		/**
@@ -83,7 +84,7 @@ public abstract class AbstractDecorator {
 		 */
 		@Override
 		public void ancestorMoved(final AncestorEvent event) {
-			followOwner();
+			followDecoratedComponent();
 		}
 
 		/**
@@ -91,7 +92,7 @@ public abstract class AbstractDecorator {
 		 */
 		@Override
 		public void componentMoved(final ComponentEvent e) {
-			followOwner();
+			followDecoratedComponent();
 		}
 
 		/**
@@ -99,7 +100,7 @@ public abstract class AbstractDecorator {
 		 */
 		@Override
 		public void componentResized(final ComponentEvent e) {
-			followOwner();
+			followDecoratedComponent();
 		}
 
 		/**
@@ -172,7 +173,8 @@ public abstract class AbstractDecorator {
 		 */
 		@Override
 		public void paintComponent(final Graphics g) {
-			if (owner.isVisible() && owner.isShowing() && isVisible() && isShowing() && (clipBounds != null) &&
+			if (decoratedComponent.isVisible() && decoratedComponent.isShowing() && isVisible() && isShowing() &&
+					(clipBounds != null) &&
 					(clipBounds.width > 0) && (clipBounds.height > 0)) {
 				// Clip graphics
 				g.setClip(clipBounds);
@@ -183,86 +185,186 @@ public abstract class AbstractDecorator {
 		}
 	}
 
-	private JComponent owner;
+	/**
+	 * Offset in the layer of the layered pane where the decoration is to be put.<br>The decoration will be added to the
+	 * layered pane at the same layer index as the decorated component, incremented by this offset.
+	 *
+	 * @see #getDecoratedComponentLayerInLayeredPane
+	 */
+	private static final int DECORATION_LAYER_OFFSET = 1;
+
+	/**
+	 * Decorated component on which the decoration is to be attached.
+	 */
+	private JComponent decoratedComponent;
+
+	/**
+	 * Anchor link between the decorated component and its decoration.
+	 */
 	private AnchorLink anchorLink;
-	private final ComponentTracker ownerTracker = new ComponentTracker();
+
+	/**
+	 * Listener to decorated component changes that would affect properties of the decoration attached to it (for instance,
+	 * size, location, etc.).
+	 */
+	private final ComponentTracker decoratedComponentTracker = new ComponentTracker();
+
+	/**
+	 * Decoration painter component.<br>It is merely a hook into the Swing painting mechanism.<br>This is the component
+	 * that is actually added to the layered pane.
+	 *
+	 * @see #DECORATION_LAYER_OFFSET
+	 * @see #attach(JComponent)
+	 * @see #getDecoratedComponentLayerInLayeredPane
+	 * @see #decorationPainter
+	 */
 	protected DecorationPainter decorationPainter = new DecorationPainter();
 
+	/**
+	 * Layered pane to which the decoration painter will be added.<br>The decoration will actually contain a component
+	 * responsible of painting the decoration.
+	 *
+	 * @see #decorationPainter
+	 */
 	private JLayeredPane attachedLayeredPane = null;
 
-	public AbstractDecorator(final JComponent owner, final AnchorLink anchorLink) {
+	/**
+	 * Constructor specifying the component to be decorated and the anchor link between the decorated component and its
+	 * decoration.
+	 *
+	 * @param decoratedComponent Component to be decorated.
+	 * @param anchorLink Anchor link between the decorated component and its decoration.
+	 */
+	public AbstractDecorator(final JComponent decoratedComponent, final AnchorLink anchorLink) {
 		this.anchorLink = anchorLink;
-		attach(owner);
+		attach(decoratedComponent);
 	}
 
-	public void attach(final JComponent owner) {
+	/**
+	 * Attaches the decoration to the specified component.
+	 *
+	 * @param decoratedComponent Component to be decorated.
+	 */
+	private void attach(final JComponent decoratedComponent) {
 		detach();
 
-		this.owner = owner;
+		this.decoratedComponent = decoratedComponent;
 
-		if (owner != null) {
-			owner.addComponentListener(ownerTracker);
-			owner.addAncestorListener(ownerTracker);
-			owner.addHierarchyBoundsListener(ownerTracker);
+		if (decoratedComponent != null) {
+			decoratedComponent.addComponentListener(decoratedComponentTracker);
+			decoratedComponent.addAncestorListener(decoratedComponentTracker);
+			decoratedComponent.addHierarchyBoundsListener(decoratedComponentTracker);
 
 			attachToLayeredPane();
 		}
 	}
 
-	public void detach() {
-		if (owner != null) {
-			owner.removeComponentListener(ownerTracker);
-			owner.removeAncestorListener(ownerTracker);
+	/**
+	 * Detaches the decoration from the decorated component.
+	 */
+	private void detach() {
+		if (decoratedComponent != null) {
+			decoratedComponent.removeComponentListener(decoratedComponentTracker);
+			decoratedComponent.removeAncestorListener(decoratedComponentTracker);
 
 			detachFromLayeredPane();
 		}
 	}
 
+	/**
+	 * Inserts the decoration to the layered pane right above the decorated component.
+	 */
 	private void attachToLayeredPane() {
 		// Get ancestor layered pane that will get the decoration holder component
-		final Container ancestor = SwingUtilities.getAncestorOfClass(JLayeredPane.class, owner);
+		final Container ancestor = SwingUtilities.getAncestorOfClass(JLayeredPane.class, decoratedComponent);
 		if (ancestor instanceof JLayeredPane) {
 			attachedLayeredPane = (JLayeredPane) ancestor;
-			attachedLayeredPane.add(decorationPainter, JLayeredPane.DRAG_LAYER);
+			attachedLayeredPane.add(decorationPainter, getDecoratedComponentLayerInLayeredPane(attachedLayeredPane));
 		}
 	}
 
+	/**
+	 * Retrieves the layer index of the decorated component in the layered pane of the window.
+	 *
+	 * @param layeredPane Layered pane of the window.
+	 *
+	 * @return Index of the decorated component in the layered pane.
+	 */
+	private Integer getDecoratedComponentLayerInLayeredPane(final JLayeredPane layeredPane) {
+		Container ancestorInLayer = decoratedComponent;
+		while (!layeredPane.equals(ancestorInLayer.getParent())) {
+			ancestorInLayer = ancestorInLayer.getParent();
+		}
+
+		return (layeredPane.getLayer(ancestorInLayer) + DECORATION_LAYER_OFFSET);
+	}
+
+	/**
+	 * Removes the decoration from the layered pane.
+	 */
 	private void detachFromLayeredPane() {
 		attachedLayeredPane.remove(decorationPainter);
 		attachedLayeredPane = null;
 	}
 
+	/**
+	 * Gets the anchor link between the decorated component and its decoration.
+	 *
+	 * @return Anchor link between the component and its decoration.
+	 */
 	public AnchorLink getAnchorLink() {
 		return anchorLink;
 	}
 
+	/**
+	 * Sets the anchor link between the component and its decoration.
+	 *
+	 * @param anchorLink Anchor link between the component and its decoration.
+	 */
 	public void setAnchorLink(final AnchorLink anchorLink) {
 		this.anchorLink = anchorLink;
+		followDecoratedComponent();
 	}
 
+	/**
+	 * States whether the decoration is visible or not.
+	 *
+	 * @return True if the decoration is visible, false otherwise.
+	 */
 	public boolean isVisible() {
 		return ((decorationPainter != null) && decorationPainter.isVisible());
 	}
 
+	/**
+	 * Sets the visibility of the decoration.
+	 *
+	 * @param visible True to make the decoration visible, false to make it invisible.
+	 */
 	public void setVisible(final boolean visible) {
 		if (decorationPainter != null) {
 			decorationPainter.setVisible(visible);
 		}
 	}
 
-	protected void followOwner() {
+	/**
+	 * Updates the decoration painter with respect to the decorated component.<br>This method is to be called whenever
+	 * changes on the decorated component have an impact on the decoration (for instance, its size, location,
+	 * etc.).<br>This method has been made protected so that it can be easily called from the implementating sub-classes.
+	 */
+	protected void followDecoratedComponent() {
 		if (decorationPainter != null) {
 			if (attachedLayeredPane == null) {
 				attachToLayeredPane();
 			}
-			final Container ancestor = SwingUtilities.getAncestorOfClass(JLayeredPane.class, owner);
+			final Container ancestor = SwingUtilities.getAncestorOfClass(JLayeredPane.class, decoratedComponent);
 			if (ancestor instanceof JLayeredPane) {
 				final Point relativeLocationToOwner = anchorLink
-						.getRelativeSlaveLocation(owner.getWidth(), owner.getHeight(), getWidth(), getHeight());
+						.getRelativeSlaveLocation(decoratedComponent.getWidth(), decoratedComponent.getHeight(),
+								getWidth(), getHeight());
 
 				// Calculate decoration painter unclipped bounds
-				final Point ownerLocationInLayeredPane =
-						SwingUtilities.convertPoint(owner.getParent(), owner.getLocation(), ancestor);
+				final Point ownerLocationInLayeredPane = SwingUtilities
+						.convertPoint(decoratedComponent.getParent(), decoratedComponent.getLocation(), ancestor);
 				final Rectangle decorationBoundsInLayeredPane =
 						new Rectangle(ownerLocationInLayeredPane.x + relativeLocationToOwner.x,
 								ownerLocationInLayeredPane.y + relativeLocationToOwner.y, getWidth(), getHeight());
@@ -274,7 +376,7 @@ public abstract class AbstractDecorator {
 
 //				System.out.println(" |_ bounds in layered pane:            " + decorationBoundsInLayeredPane);
 
-				final Rectangle ownerBoundsInParent = owner.getBounds();
+				final Rectangle ownerBoundsInParent = decoratedComponent.getBounds();
 //				System.out.println(" |_ owner bounds in parent:            " + ownerBoundsInParent);
 
 				final Rectangle decorationBoundsInParent =
@@ -282,7 +384,7 @@ public abstract class AbstractDecorator {
 								ownerBoundsInParent.y + relativeLocationToOwner.y, getWidth(), getHeight());
 //				System.out.println(" |_ decoration bounds in parent:       " + decorationBoundsInParent);
 
-				final Rectangle parentVisibleRect = ((JComponent) owner.getParent()).getVisibleRect();
+				final Rectangle parentVisibleRect = ((JComponent) decoratedComponent.getParent()).getVisibleRect();
 //				System.out.println(" |_ parent visible rect in parent:     " + parentVisibleRect);
 
 				final Rectangle decorationVisibleBoundsInParent =
@@ -290,7 +392,8 @@ public abstract class AbstractDecorator {
 //				System.out.println(" |_ decoration visible rect in parent: " + decorationVisibleBoundsInParent);
 				if ((decorationVisibleBoundsInParent.width != 0) && (decorationVisibleBoundsInParent.height != 0)) {
 					final Rectangle decorationVisibleBoundsInLayeredPane = SwingUtilities
-							.convertRectangle(owner.getParent(), decorationVisibleBoundsInParent, ancestor);
+							.convertRectangle(decoratedComponent.getParent(), decorationVisibleBoundsInParent,
+									ancestor);
 //					System.out
 //							.println(" |_ visible bounds in layered pane:    " + decorationVisibleBoundsInLayeredPane);
 //					decorationPainter.setBounds(decorationVisibleBoundsInLayeredPane);
@@ -315,9 +418,32 @@ public abstract class AbstractDecorator {
 		}
 	}
 
+	/**
+	 * @see Disposable
+	 */
+	@Override
+	public void dispose() {
+		detach();
+	}
+
+	/**
+	 * Returns the width of the decoration.
+	 *
+	 * @return Unclipped width of the decoration.
+	 */
 	protected abstract int getWidth();
 
+	/**
+	 * Returns the height of the decoration.
+	 *
+	 * @return Unclipped height of the decoration.
+	 */
 	protected abstract int getHeight();
 
+	/**
+	 * Paints the decoration in the specified graphics.
+	 *
+	 * @param g Graphics to paint the decoration to.
+	 */
 	public abstract void paint(Graphics g);
 }
