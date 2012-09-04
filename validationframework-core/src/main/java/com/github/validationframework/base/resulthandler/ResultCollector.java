@@ -49,12 +49,12 @@ public class ResultCollector<O, D> extends AbstractTrigger implements ResultHand
 	/**
 	 * Last collected result.
 	 */
-	private O lastResult = null;
+	protected O lastResult = null;
 
 	/**
 	 * Transformer to apply on the collected result before providing it.
 	 */
-	private final Transformer<O, D> transformer;
+	protected final Transformer<O, D> transformer;
 
 	/**
 	 * Default constructor using the simple cast transformer.
