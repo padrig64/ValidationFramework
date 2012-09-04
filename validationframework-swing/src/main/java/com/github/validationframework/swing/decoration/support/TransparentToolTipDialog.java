@@ -27,10 +27,14 @@ package com.github.validationframework.swing.decoration.support;
 
 import com.github.validationframework.base.utils.ValueUtils;
 import com.github.validationframework.swing.decoration.anchor.AnchorLink;
+import com.sun.jna.platform.WindowUtils;
 import java.awt.IllegalComponentStateException;
 import java.awt.Point;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.concurrent.TimeUnit;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JRootPane;
@@ -38,10 +42,15 @@ import javax.swing.JToolTip;
 import javax.swing.SwingUtilities;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
+import org.jdesktop.core.animation.timing.Animator;
+import org.jdesktop.core.animation.timing.TimingSource;
+import org.jdesktop.core.animation.timing.TimingTarget;
+import org.jdesktop.core.animation.timing.interpolators.SplineInterpolator;
+import org.jdesktop.swing.animation.timing.sources.SwingTimerTimingSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ToolTipDialog extends JDialog {
+public class TransparentToolTipDialog extends JDialog {
 
 	private class LocationAdapter implements ComponentListener, AncestorListener {
 
@@ -81,6 +90,91 @@ public class ToolTipDialog extends JDialog {
 		}
 	}
 
+	private class TransparencyAdapter extends MouseAdapter implements TimingTarget {
+
+		private final float MIN_ALPHA = 0.25f;
+		private final float MAX_ALPHA = 1.0f;
+		private final float FADE_OUT_MAX_DURATION = 100;
+		private final float FADE_IN_MAX_DURATION = 55;
+
+		private float currentAlpha = MAX_ALPHA;
+
+		private Animator animator = null;
+
+		public TransparencyAdapter() {
+			final TimingSource ts = new SwingTimerTimingSource();
+			Animator.setDefaultTimingSource(ts);
+			ts.init();
+		}
+
+		@Override
+		public void mouseEntered(final MouseEvent e) {
+			if (isRolloverAnimated()) {
+				if ((animator != null) && (animator.isRunning())) {
+					animator.stop();
+				}
+				final long duration =
+						(long) ((currentAlpha - MIN_ALPHA) * FADE_OUT_MAX_DURATION / (MAX_ALPHA - MIN_ALPHA));
+				if (duration <= 0) {
+					timingEvent(null, 0.0);
+				} else {
+					animator = new Animator.Builder().setDuration(duration, TimeUnit.MILLISECONDS)
+							.setInterpolator(new SplineInterpolator(0.8, 0.2, 0.2, 0.8)).addTarget(this).build();
+					animator.startReverse();
+				}
+			} else {
+				WindowUtils.setWindowAlpha(TransparentToolTipDialog.this, MIN_ALPHA);
+			}
+		}
+
+		@Override
+		public void mouseExited(final MouseEvent e) {
+			if (isRolloverAnimated()) {
+				if ((animator != null) && (animator.isRunning())) {
+					animator.stop();
+				}
+
+				final long duration =
+						(long) ((MAX_ALPHA - currentAlpha) * FADE_IN_MAX_DURATION / (MAX_ALPHA - MIN_ALPHA));
+				if (duration <= 0) {
+					timingEvent(null, 1.0);
+				} else {
+					animator = new Animator.Builder().setDuration(duration, TimeUnit.MILLISECONDS)
+							.setInterpolator(new SplineInterpolator(0.8, 0.2, 0.2, 0.8)).addTarget(this).build();
+					animator.start();
+				}
+			} else {
+				WindowUtils.setWindowAlpha(TransparentToolTipDialog.this, MAX_ALPHA);
+			}
+		}
+
+		@Override
+		public void begin(final Animator animator) {
+			// Nothing to be done because we stop the animation manually
+		}
+
+		@Override
+		public void end(final Animator animator) {
+			// Nothing to be done because we stop the animation manually
+		}
+
+		@Override
+		public void repeat(final Animator animator) {
+			// Nothing to be done
+		}
+
+		@Override
+		public void reverse(final Animator animator) {
+			// Nothing to be done
+		}
+
+		@Override
+		public void timingEvent(final Animator animator, final double v) {
+			currentAlpha = (float) (v * (MAX_ALPHA - MIN_ALPHA)) + MIN_ALPHA;
+			WindowUtils.setWindowAlpha(TransparentToolTipDialog.this, currentAlpha);
+		}
+	}
+
 	/**
 	 * Generated serial UID.
 	 */
@@ -89,7 +183,7 @@ public class ToolTipDialog extends JDialog {
 	/**
 	 * Logger for this class.
 	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(ToolTipDialog.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(TransparentToolTipDialog.class);
 
 	private JComponent owner = null;
 
@@ -101,7 +195,7 @@ public class ToolTipDialog extends JDialog {
 
 	private boolean rolloverAnimated = true;
 
-	public ToolTipDialog(final JComponent owner, final AnchorLink anchorLink) {
+	public TransparentToolTipDialog(final JComponent owner, final AnchorLink anchorLink) {
 		super(SwingUtilities.getWindowAncestor(owner));
 		this.owner = owner;
 		this.anchorLink = anchorLink;
@@ -110,6 +204,7 @@ public class ToolTipDialog extends JDialog {
 
 	private void initComponents() {
 		toolTip = new JToolTip();
+		toolTip.addMouseListener(new TransparencyAdapter());
 
 		owner.addComponentListener(locationAdapter);
 		owner.addAncestorListener(locationAdapter);
@@ -120,6 +215,15 @@ public class ToolTipDialog extends JDialog {
 		setFocusableWindowState(false);
 		setResizable(false); // Just in case...
 		setContentPane(toolTip);
+		pack(); // Seems to help for the very first setVisible(true) when window transparency is on
+
+		if (WindowUtils.isWindowAlphaSupported()) {
+			try {
+				WindowUtils.setWindowTransparent(this, true);
+			} catch (IllegalArgumentException e) {
+				LOGGER.warn("Transparency reported as being supported, but it just does not work", e);
+			}
+		}
 	}
 
 	@Override
@@ -173,7 +277,7 @@ public class ToolTipDialog extends JDialog {
 			try {
 				final Point screenLocation = owner.getLocationOnScreen();
 				final Point relativeSlaveLocation =
-						anchorLink.getRelativeSlaveLocation(owner.getSize(), ToolTipDialog.this.getSize());
+						anchorLink.getRelativeSlaveLocation(owner.getSize(), TransparentToolTipDialog.this.getSize());
 				setLocation(screenLocation.x + relativeSlaveLocation.x, screenLocation.y + relativeSlaveLocation.y);
 			} catch (IllegalComponentStateException e) {
 				LOGGER.error("Failed getting location of component: " + owner, e);

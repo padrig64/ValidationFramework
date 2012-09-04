@@ -28,12 +28,12 @@ package com.github.validationframework.swing.resulthandler;
 import com.github.validationframework.api.resulthandler.ResultHandler;
 import com.github.validationframework.swing.decoration.anchor.Anchor;
 import com.github.validationframework.swing.decoration.anchor.AnchorLink;
-import com.github.validationframework.swing.decoration.support.ToolTipDialog;
+import com.github.validationframework.swing.decoration.support.TransparentToolTipDialog;
 import javax.swing.JComponent;
 
 public abstract class AbstractStickerFeedBack<O> implements ResultHandler<O> {
 
-	private ToolTipDialog toolTipDialog = null;
+	private TransparentToolTipDialog toolTipDialog = null;
 
 	public AbstractStickerFeedBack(final JComponent owner) {
 		attach(owner);
@@ -41,7 +41,7 @@ public abstract class AbstractStickerFeedBack<O> implements ResultHandler<O> {
 
 	public void attach(final JComponent owner) {
 		detach();
-		toolTipDialog = new ToolTipDialog(owner, new AnchorLink(Anchor.TOP_RIGHT, Anchor.TOP_LEFT));
+		toolTipDialog = new TransparentToolTipDialog(owner, new AnchorLink(Anchor.TOP_RIGHT, Anchor.TOP_LEFT));
 	}
 
 	public void detach() {
