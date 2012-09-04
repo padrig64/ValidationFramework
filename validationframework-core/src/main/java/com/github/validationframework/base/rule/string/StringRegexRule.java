@@ -51,15 +51,19 @@ public class StringRegexRule extends AbstractStringBooleanRule {
 	}
 
 	/**
-	 * Constructor specified a pattern to be added.<br>This constructor is provided for convenience.
+	 * Constructor specifying the pattern(s) to be added.
 	 *
-	 * @param pattern Pattern to be added.
+	 * @param patterns Patterns to be added.
 	 *
 	 * @see #addPattern(String)
 	 */
-	public StringRegexRule(final String pattern) {
+	public StringRegexRule(final String... patterns) {
 		super();
-		addPattern(pattern);
+		if (patterns != null) {
+			for (final String pattern : patterns) {
+				addPattern(pattern);
+			}
+		}
 	}
 
 	/**
