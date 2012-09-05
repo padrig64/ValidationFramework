@@ -26,57 +26,74 @@
 package com.github.validationframework.swing.resulthandler;
 
 import com.github.validationframework.api.resulthandler.ResultHandler;
-import com.github.validationframework.swing.decoration.IconDecorator;
-import javax.swing.Icon;
+import com.github.validationframework.swing.utils.ColorUtils;
+import java.awt.Color;
 import javax.swing.JComponent;
 
-public abstract class AbstractIconFeedback2<O> implements ResultHandler<O> {
+public abstract class AbstractColorFeedback<O> implements ResultHandler<O> {
 
-	private IconDecorator decorator = null;
+	private JComponent owner = null;
+	private Color origForeground = null;
+	private Color origBackground = null;
+	private Color resultForeground = null;
+	private Color resultBackground = null;
+	private boolean showing = false;
 
-	public AbstractIconFeedback2(final JComponent owner) {
+	public AbstractColorFeedback(final JComponent owner) {
 		attach(owner);
 	}
 
 	public void attach(final JComponent owner) {
 		detach();
-
-		if (owner != null) {
-			decorator = new IconDecorator(owner);
-			decorator.setVisible(false);
-		}
+		this.owner = owner;
 	}
 
 	public void detach() {
-		if (decorator != null) {
-			decorator.dispose();
-			decorator = null;
-		}
+		this.owner = null;
 	}
 
-	protected Icon getIcon() {
-		Icon icon = null;
-		if (decorator != null) {
-			icon = decorator.getIcon();
-		}
-		return icon;
+	protected Color getForeground() {
+		return resultForeground;
 	}
 
-	protected void setIcon(final Icon icon) {
-		if (decorator != null) {
-			decorator.setIcon(icon);
-		}
+	protected void setForeground(final Color foreground) {
+		this.resultForeground = foreground;
 	}
 
-	protected void showIconTip() {
-		if (decorator != null) {
-			decorator.setVisible(true);
-		}
+	protected Color getBackground() {
+		return resultBackground;
 	}
 
-	protected void hideIconTip() {
-		if (decorator != null) {
-			decorator.setVisible(false);
+	protected void setBackground(final Color background) {
+		this.resultBackground = background;
+	}
+
+	protected void showColors() {
+		if (!showing) {
+			origForeground = owner.getForeground();
+			origBackground = owner.getBackground();
 		}
+
+		if (resultForeground == null) {
+			owner.setForeground(origForeground);
+		} else {
+			owner.setForeground(ColorUtils.alphaBlend(resultForeground, origForeground));
+		}
+		if (resultBackground == null) {
+			owner.setBackground(origBackground);
+		} else {
+			owner.setBackground(ColorUtils.alphaBlend(resultBackground, origBackground));
+		}
+		owner.getParent().repaint();
+
+		showing = true;
+	}
+
+	protected void hideColors() {
+		if (showing) {
+			owner.setForeground(origForeground);
+			owner.setBackground(origBackground);
+		}
+		showing = false;
 	}
 }

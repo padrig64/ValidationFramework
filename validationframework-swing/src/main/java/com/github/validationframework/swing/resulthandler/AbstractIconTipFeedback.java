@@ -26,74 +26,71 @@
 package com.github.validationframework.swing.resulthandler;
 
 import com.github.validationframework.api.resulthandler.ResultHandler;
-import com.github.validationframework.swing.utils.ColorUtils;
-import java.awt.Color;
+import com.github.validationframework.swing.decoration.IconTipDecorator;
+import javax.swing.Icon;
 import javax.swing.JComponent;
 
-public abstract class AbstractColorFeedback2<O> implements ResultHandler<O> {
+public abstract class AbstractIconTipFeedback<O> implements ResultHandler<O> {
 
-	private JComponent owner = null;
-	private Color origForeground = null;
-	private Color origBackground = null;
-	private Color resultForeground = null;
-	private Color resultBackground = null;
-	private boolean showing = false;
+	private IconTipDecorator decorator = null;
 
-	public AbstractColorFeedback2(final JComponent owner) {
+	public AbstractIconTipFeedback(final JComponent owner) {
 		attach(owner);
 	}
 
 	public void attach(final JComponent owner) {
 		detach();
-		this.owner = owner;
+
+		if (owner != null) {
+			decorator = new IconTipDecorator(owner);
+			decorator.setVisible(false);
+		}
 	}
 
 	public void detach() {
-		this.owner = null;
-	}
-
-	protected Color getForeground() {
-		return resultForeground;
-	}
-
-	protected void setForeground(final Color foreground) {
-		this.resultForeground = foreground;
-	}
-
-	protected Color getBackground() {
-		return resultBackground;
-	}
-
-	protected void setBackground(final Color background) {
-		this.resultBackground = background;
-	}
-
-	protected void showColors() {
-		if (!showing) {
-			origForeground = owner.getForeground();
-			origBackground = owner.getBackground();
+		if (decorator != null) {
+			decorator.dispose();
+			decorator = null;
 		}
-
-		if (resultForeground == null) {
-			owner.setForeground(origForeground);
-		} else {
-			owner.setForeground(ColorUtils.alphaBlend(resultForeground, origForeground));
-		}
-		if (resultBackground == null) {
-			owner.setBackground(origBackground);
-		} else {
-			owner.setBackground(ColorUtils.alphaBlend(resultBackground, origBackground));
-		}
-		owner.getParent().repaint();
-
-		showing = true;
 	}
 
-	protected void hideColors() {
-		if (showing) {
-			owner.setForeground(origForeground);
-			owner.setBackground(origBackground);
+	protected Icon getIcon() {
+		Icon icon = null;
+		if (decorator != null) {
+			icon = decorator.getIcon();
 		}
-		showing = false;
+		return icon;
+	}
+
+	protected void setIcon(final Icon icon) {
+		if (decorator != null) {
+			decorator.setIcon(icon);
+		}
+	}
+
+	protected String getToolTipText() {
+		String tip = null;
+		if (decorator != null) {
+			tip = decorator.getToolTipText();
+		}
+		return tip;
+	}
+
+	protected void setToolTipText(final String text) {
+		if (decorator != null) {
+			decorator.setToolTipText(text);
+		}
+	}
+
+	protected void showIconTip() {
+		if (decorator != null) {
+			decorator.setVisible(true);
+		}
+	}
+
+	protected void hideIconTip() {
+		if (decorator != null) {
+			decorator.setVisible(false);
+		}
 	}
 }
