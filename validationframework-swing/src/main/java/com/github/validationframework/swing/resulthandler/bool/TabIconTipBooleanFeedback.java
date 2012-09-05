@@ -34,6 +34,7 @@ import com.github.validationframework.swing.decoration.utils.IconUtils;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
@@ -59,8 +60,11 @@ public class TabIconTipBooleanFeedback implements ResultHandler<Boolean>, Dispos
 	/**
 	 *
 	 */
-	private static class TitleRenderer extends JPanel {
+	private class TitleRenderer extends JPanel {
 
+		/**
+		 * Generated serial UID.
+		 */
 		private static final long serialVersionUID = -8023773742352528637L;
 
 		private final JLabel textLabel = new JLabel();
@@ -70,6 +74,16 @@ public class TabIconTipBooleanFeedback implements ResultHandler<Boolean>, Dispos
 		private final String iconPositionInLayout;
 
 		private final IconToolTipAdapter toolTipAdapter;
+
+		/**
+		 * Flag indicating the last known enabled state of the tab.<br>It is used to check if the enabled state changed when
+		 * painting because the {@link JTabbedPane} does not trigger anything when the enabled state of the tabs is changed by
+		 * calling {@link JTabbedPane#setEnabledAt(int, boolean)}.
+		 *
+		 * @see JTabbedPane#setEnabledAt(int, boolean)
+		 * @see #paint(Graphics)
+		 */
+		private boolean titleEnabled = tabbedPane.isEnabledAt(tabIndex);
 
 		public TitleRenderer(final int iconPosition, final int iconTextGap) {
 			super();
@@ -114,8 +128,8 @@ public class TabIconTipBooleanFeedback implements ResultHandler<Boolean>, Dispos
 					remove(iconLabel);
 				}
 			} else {
-				// Add icon label if not already there
-				if (getComponentCount() < 2) {
+				// Add icon label if not already there, and only if title is enabled
+				if ((getComponentCount() < 2) && isEnabled()) {
 					add(iconLabel, iconPositionInLayout);
 				}
 			}
@@ -131,6 +145,46 @@ public class TabIconTipBooleanFeedback implements ResultHandler<Boolean>, Dispos
 		public void setTitle(final String text) {
 			// Update text label
 			textLabel.setText(text);
+		}
+
+		/**
+		 * @see JPanel#setEnabled(boolean)
+		 */
+		@Override
+		public void setEnabled(final boolean enabled) {
+			super.setEnabled(enabled);
+			iconLabel.setEnabled(enabled);
+			textLabel.setEnabled(enabled);
+
+			if (enabled) {
+				// Re-add icon label if not already there and if there is an icon to show
+				if ((getComponentCount() < 2) && (iconLabel.getIcon() != null)) {
+					add(iconLabel, iconPositionInLayout);
+				}
+			} else {
+				// Remove the icon label if it is there
+				if (getComponentCount() > 1) {
+					remove(iconLabel);
+				}
+			}
+		}
+
+		/**
+		 * @see JPanel#paint(Graphics)
+		 * @see #titleEnabled
+		 */
+		@Override
+		public void paint(final Graphics g) {
+			// Check if tab enabled state changed since last paint
+			final boolean tabEnabled = tabbedPane.isEnabledAt(tabIndex);
+			if (tabEnabled != titleEnabled) {
+				titleEnabled = tabEnabled;
+				setEnabled(titleEnabled);
+				// Will paint later
+			} else {
+				// No change in tab enabled state
+				super.paint(g);
+			}
 		}
 	}
 
@@ -161,7 +215,9 @@ public class TabIconTipBooleanFeedback implements ResultHandler<Boolean>, Dispos
 				toolTipDialog = new ToolTipDialog(owner, anchorLinkWithToolTip);
 				toolTipDialog.setText(toolTipText);
 			}
-			toolTipDialog.setVisible(true);
+			if (owner.isEnabled()) { // TODO Listen to owner property changes
+				toolTipDialog.setVisible(true);
+			}
 		}
 
 		/**
@@ -230,6 +286,12 @@ public class TabIconTipBooleanFeedback implements ResultHandler<Boolean>, Dispos
 				final Component title = tabbedPane.getTabComponentAt(tabIndex);
 				if (title instanceof TitleRenderer) {
 					((TitleRenderer) title).setTitle(tabbedPane.getTitleAt(tabIndex));
+				}
+			} else if ("enabled".equals(evt.getPropertyName())) {
+				// Update title renderers
+				for (int i = 0; i < tabbedPane.getTabCount(); i++) {
+					final Component title = tabbedPane.getTabComponentAt(i);
+					title.setEnabled(tabbedPane.isEnabled());
 				}
 			}
 		}
@@ -349,7 +411,8 @@ public class TabIconTipBooleanFeedback implements ResultHandler<Boolean>, Dispos
 		this.invalidIcon = invalidIcon;
 		this.invalidText = invalidText;
 
-		this.tabbedPane.addPropertyChangeListener(tabPropertyAdapter);
+		this.tabbedPane.addPropertyChangeListener("indexForTitle", tabPropertyAdapter);
+		this.tabbedPane.addPropertyChangeListener("enabled", tabPropertyAdapter);
 
 		// Create tab title renderer
 		final TitleRenderer customTitleRenderer = new TitleRenderer(iconPosition, iconTextGap);

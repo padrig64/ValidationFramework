@@ -124,7 +124,7 @@ public class TabbedPaneDemoApp extends JFrame {
 		panel.add(comboBox);
 
 		for (int i = 0; i < 4; i++) {
-			panel.add(new JLabel("Field " + i + ":"));
+			panel.add(new JLabel("Field " + (i + 1) + ":"));
 
 			// Create formatter for the formatted textfield
 			final NumberFormatter formatter = new NumberFormatter();
