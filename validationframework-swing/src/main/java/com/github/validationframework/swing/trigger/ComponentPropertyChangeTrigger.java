@@ -76,13 +76,18 @@ public class ComponentPropertyChangeTrigger extends AbstractTrigger {
 	 * Constructor specifying the component for which the specified property changes are to be watched.
 	 *
 	 * @param component Component whose property changes are to be listened to.
-	 * @param propertyNames Names of the properties of the component to listen to.
+	 * @param propertyNames Optional names of the properties of the component to listen to.<br>If no property name is
+	 * specified, changes on any property will initiate the trigger.
 	 */
 	public ComponentPropertyChangeTrigger(final Component component, final String... propertyNames) {
 		this.component = component;
 
-		for (final String propertyName : propertyNames) {
-			component.addPropertyChangeListener(propertyName, propertyChangeAdapter);
+		if ((propertyNames == null) || (propertyNames.length == 0)) {
+			component.addPropertyChangeListener(propertyChangeAdapter);
+		} else {
+			for (final String propertyName : propertyNames) {
+				component.addPropertyChangeListener(propertyName, propertyChangeAdapter);
+			}
 		}
 	}
 
