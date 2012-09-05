@@ -23,7 +23,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.experimental.resulthandler;
+package com.github.validationframework.base.resulthandler;
 
 import com.github.validationframework.api.resulthandler.ResultHandler;
 import java.io.PrintStream;
