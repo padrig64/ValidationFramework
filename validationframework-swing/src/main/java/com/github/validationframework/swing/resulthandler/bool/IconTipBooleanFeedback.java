@@ -23,19 +23,20 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.swing.resulthandler;
+package com.github.validationframework.swing.resulthandler.bool;
 
 import com.github.validationframework.swing.decoration.utils.IconUtils;
+import com.github.validationframework.swing.resulthandler.AbstractIconTipFeedback;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 
-public class BooleanIconTipFeedBack extends AbstractIconTipFeedBack<Boolean> {
+public class IconTipBooleanFeedback extends AbstractIconTipFeedback<Boolean> {
 
 	public static final Icon DEFAULT_VALID_ICON =
-			IconUtils.loadImageIcon("/images/defaults/valid.png", BooleanIconTipFeedBack.class);
+			IconUtils.loadImageIcon("/images/defaults/valid.png", IconTipBooleanFeedback.class);
 
 	public static final Icon DEFAULT_INVALID_ICON =
-			IconUtils.loadImageIcon("/images/defaults/invalid.png", BooleanIconTipFeedBack.class);
+			IconUtils.loadImageIcon("/images/defaults/invalid.png", IconTipBooleanFeedback.class);
 
 	private Icon validIcon = null;
 
@@ -47,19 +48,19 @@ public class BooleanIconTipFeedBack extends AbstractIconTipFeedBack<Boolean> {
 
 	private Boolean lastResult = null;
 
-	public BooleanIconTipFeedBack(final JComponent owner) {
+	public IconTipBooleanFeedback(final JComponent owner) {
 		this(owner, DEFAULT_VALID_ICON, DEFAULT_INVALID_ICON);
 	}
 
-	public BooleanIconTipFeedBack(final JComponent owner, final Icon validIcon, final Icon invalidIcon) {
+	public IconTipBooleanFeedback(final JComponent owner, final Icon validIcon, final Icon invalidIcon) {
 		this(owner, validIcon, null, invalidIcon, null);
 	}
 
-	public BooleanIconTipFeedBack(final JComponent owner, final String validText, final String invalidText) {
+	public IconTipBooleanFeedback(final JComponent owner, final String validText, final String invalidText) {
 		this(owner, DEFAULT_VALID_ICON, validText, DEFAULT_INVALID_ICON, invalidText);
 	}
 
-	public BooleanIconTipFeedBack(final JComponent owner, final Icon validIcon, final String validText,
+	public IconTipBooleanFeedback(final JComponent owner, final Icon validIcon, final String validText,
 								  final Icon invalidIcon, final String invalidText) {
 		super(owner);
 
@@ -106,7 +107,7 @@ public class BooleanIconTipFeedBack extends AbstractIconTipFeedBack<Boolean> {
 	}
 
 	/**
-	 * @see AbstractIconTipFeedBack#handleResult(Object)
+	 * @see AbstractIconTipFeedback#handleResult(Object)
 	 */
 	@Override
 	public void handleResult(final Boolean valid) {

@@ -23,8 +23,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.swing.resulthandler;
+package com.github.validationframework.swing.resulthandler.bool;
 
+import com.github.validationframework.swing.resulthandler.AbstractComponentResultHandler;
 import java.awt.Component;
 
 public class ComponentVisibilityBooleanResultHandler extends AbstractComponentResultHandler<Boolean> {

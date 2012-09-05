@@ -23,7 +23,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.swing.resulthandler;
+package com.github.validationframework.swing.resulthandler.bool;
 
 import com.github.validationframework.api.common.Disposable;
 import com.github.validationframework.api.resulthandler.ResultHandler;
@@ -54,7 +54,7 @@ import org.slf4j.LoggerFactory;
  * future.<br>Finally, note that any icon set using the method {@link JTabbedPane#setIconAt(int, Icon)} will not be
  * shown.
  */
-public class BooleanTabIconTipFeedback implements ResultHandler<Boolean>, Disposable {
+public class TabIconTipBooleanFeedback implements ResultHandler<Boolean>, Disposable {
 
 	/**
 	 *
@@ -238,19 +238,19 @@ public class BooleanTabIconTipFeedback implements ResultHandler<Boolean>, Dispos
 	/**
 	 * Logger for this class.
 	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(BooleanTabIconTipFeedback.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(TabIconTipBooleanFeedback.class);
 
 	/**
 	 * Default icon to represent valid results.
 	 */
 	public static final Icon DEFAULT_VALID_ICON =
-			IconUtils.loadImageIcon("/images/defaults/valid.png", BooleanTabIconTipFeedback.class);
+			IconUtils.loadImageIcon("/images/defaults/valid.png", TabIconTipBooleanFeedback.class);
 
 	/**
 	 * Default icon to represent invalid results.
 	 */
 	public static final Icon DEFAULT_INVALID_ICON =
-			IconUtils.loadImageIcon("/images/defaults/invalid.png", BooleanTabIconTipFeedback.class);
+			IconUtils.loadImageIcon("/images/defaults/invalid.png", TabIconTipBooleanFeedback.class);
 
 	/**
 	 * Default icon position with respect to the tab title.
@@ -303,7 +303,7 @@ public class BooleanTabIconTipFeedback implements ResultHandler<Boolean>, Dispos
 	 * @param tabbedPane Tabbed pane to show the icon tip feedback on.
 	 * @param tabIndex Index of the tab to show the icon tip feedback on.
 	 */
-	public BooleanTabIconTipFeedback(final JTabbedPane tabbedPane, final int tabIndex) {
+	public TabIconTipBooleanFeedback(final JTabbedPane tabbedPane, final int tabIndex) {
 		this(tabbedPane, tabIndex, DEFAULT_VALID_ICON, null, DEFAULT_INVALID_ICON, null);
 	}
 
@@ -318,7 +318,7 @@ public class BooleanTabIconTipFeedback implements ResultHandler<Boolean>, Dispos
 	 * @param invalidIcon Icon representing invalid results, or null.
 	 * @param invalidText Tooltip text on the invalid icon explaining the invalid results, or null.
 	 */
-	public BooleanTabIconTipFeedback(final JTabbedPane tabbedPane, final int tabIndex, final Icon validIcon,
+	public TabIconTipBooleanFeedback(final JTabbedPane tabbedPane, final int tabIndex, final Icon validIcon,
 									 final String validText, final Icon invalidIcon, final String invalidText) {
 		this(tabbedPane, tabIndex, validIcon, validText, invalidIcon, invalidText, DEFAULT_ICON_POSITION,
 				DEFAULT_ICON_TEXT_GAP);
@@ -339,7 +339,7 @@ public class BooleanTabIconTipFeedback implements ResultHandler<Boolean>, Dispos
 	 * {@link SwingConstants#LEFT}, {@link SwingConstants#TRAILING} or {@link SwingConstants#RIGHT}.
 	 * @param iconTextGap Spacing between the icon and the text.
 	 */
-	public BooleanTabIconTipFeedback(final JTabbedPane tabbedPane, final int tabIndex, final Icon validIcon,
+	public TabIconTipBooleanFeedback(final JTabbedPane tabbedPane, final int tabIndex, final Icon validIcon,
 									 final String validText, final Icon invalidIcon, final String invalidText,
 									 final int iconPosition, final int iconTextGap) {
 		this.tabbedPane = tabbedPane;

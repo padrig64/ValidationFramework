@@ -23,23 +23,24 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.swing.resulthandler;
+package com.github.validationframework.swing.resulthandler.bool;
 
+import com.github.validationframework.swing.resulthandler.AbstractComponentResultHandler;
 import java.awt.Component;
 
-public class ComponentEnablingBooleanResultHandler extends AbstractComponentResultHandler<Boolean> {
+public class ComponentInvisibilityBooleanResultHandler extends AbstractComponentResultHandler<Boolean> {
 
 	/**
 	 * @see AbstractComponentResultHandler#AbstractComponentResultHandler()
 	 */
-	public ComponentEnablingBooleanResultHandler() {
+	public ComponentInvisibilityBooleanResultHandler() {
 		super();
 	}
 
 	/**
 	 * @see AbstractComponentResultHandler#AbstractComponentResultHandler(Component...)
 	 */
-	public ComponentEnablingBooleanResultHandler(final Component... components) {
+	public ComponentInvisibilityBooleanResultHandler(final Component... components) {
 		super(components);
 	}
 
@@ -48,13 +49,13 @@ public class ComponentEnablingBooleanResultHandler extends AbstractComponentResu
 	 */
 	@Override
 	public void handleResult(final Boolean result) {
-		boolean enabled = false;
+		boolean visible = true;
 		if (result != null) {
-			enabled = result;
+			visible = !result;
 		}
 
 		for (final Component component : components) {
-			component.setEnabled(enabled);
+			component.setEnabled(visible);
 		}
 	}
 }
