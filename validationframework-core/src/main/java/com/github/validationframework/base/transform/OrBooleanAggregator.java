@@ -32,7 +32,7 @@ import java.util.Collection;
  *
  * @see Transformer
  */
-public class OrBooleanAggregator implements Transformer<Collection<Boolean>, Boolean> {
+public class OrBooleanAggregator implements Aggregator<Boolean, Boolean> {
 
 	/**
 	 * Default boolean value to be used when transforming an empty or null collection.
