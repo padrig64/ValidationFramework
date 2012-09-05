@@ -26,11 +26,11 @@
 package com.github.validationframework.swing.resulthandler.bool;
 
 import com.github.validationframework.swing.decoration.utils.IconUtils;
-import com.github.validationframework.swing.resulthandler.AbstractIconTipFeedback;
+import com.github.validationframework.swing.resulthandler.AbstractIconTipFeedback2;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 
-public class IconTipBooleanFeedback extends AbstractIconTipFeedback<Boolean> {
+public class IconTipBooleanFeedback extends AbstractIconTipFeedback2<Boolean> {
 
 	public static final Icon DEFAULT_VALID_ICON =
 			IconUtils.loadImageIcon("/images/defaults/valid.png", IconTipBooleanFeedback.class);
@@ -107,7 +107,7 @@ public class IconTipBooleanFeedback extends AbstractIconTipFeedback<Boolean> {
 	}
 
 	/**
-	 * @see AbstractIconTipFeedback#handleResult(Object)
+	 * @see com.github.validationframework.swing.resulthandler.AbstractIconTipFeedback2#handleResult(Object)
 	 */
 	@Override
 	public void handleResult(final Boolean valid) {

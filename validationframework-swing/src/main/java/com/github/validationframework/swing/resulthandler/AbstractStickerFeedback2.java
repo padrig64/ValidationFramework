@@ -31,11 +31,11 @@ import com.github.validationframework.swing.decoration.anchor.AnchorLink;
 import com.github.validationframework.swing.decoration.support.TransparentToolTipDialog;
 import javax.swing.JComponent;
 
-public abstract class AbstractStickerFeedBack<O> implements ResultHandler<O> {
+public abstract class AbstractStickerFeedback2<O> implements ResultHandler<O> {
 
 	private TransparentToolTipDialog toolTipDialog = null;
 
-	public AbstractStickerFeedBack(final JComponent owner) {
+	public AbstractStickerFeedback2(final JComponent owner) {
 		attach(owner);
 	}
 

@@ -26,15 +26,15 @@
 package com.github.validationframework.swing.resulthandler;
 
 import com.github.validationframework.api.resulthandler.ResultHandler;
-import com.github.validationframework.swing.decoration.IconTipDecorator;
+import com.github.validationframework.swing.decoration.IconDecorator;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 
-public abstract class AbstractIconTipFeedBack<O> implements ResultHandler<O> {
+public abstract class AbstractIconFeedback2<O> implements ResultHandler<O> {
 
-	private IconTipDecorator decorator = null;
+	private IconDecorator decorator = null;
 
-	public AbstractIconTipFeedBack(final JComponent owner) {
+	public AbstractIconFeedback2(final JComponent owner) {
 		attach(owner);
 	}
 
@@ -42,7 +42,7 @@ public abstract class AbstractIconTipFeedBack<O> implements ResultHandler<O> {
 		detach();
 
 		if (owner != null) {
-			decorator = new IconTipDecorator(owner);
+			decorator = new IconDecorator(owner);
 			decorator.setVisible(false);
 		}
 	}
@@ -65,20 +65,6 @@ public abstract class AbstractIconTipFeedBack<O> implements ResultHandler<O> {
 	protected void setIcon(final Icon icon) {
 		if (decorator != null) {
 			decorator.setIcon(icon);
-		}
-	}
-
-	protected String getToolTipText() {
-		String tip = null;
-		if (decorator != null) {
-			tip = decorator.getToolTipText();
-		}
-		return tip;
-	}
-
-	protected void setToolTipText(final String text) {
-		if (decorator != null) {
-			decorator.setToolTipText(text);
 		}
 	}
 
