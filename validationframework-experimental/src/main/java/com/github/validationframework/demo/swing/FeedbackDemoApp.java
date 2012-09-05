@@ -33,11 +33,11 @@ import com.github.validationframework.base.transform.Transformer;
 import com.github.validationframework.base.validator.SimpleValidator;
 import com.github.validationframework.swing.dataprovider.JFormattedTextFieldTextProvider;
 import com.github.validationframework.swing.dataprovider.JTextFieldTextProvider;
-import com.github.validationframework.swing.resulthandler.AbstractColorFeedBack;
-import com.github.validationframework.swing.resulthandler.AbstractIconFeedBack;
-import com.github.validationframework.swing.resulthandler.AbstractStickerFeedBack;
-import com.github.validationframework.swing.resulthandler.BooleanIconTipFeedBack;
-import com.github.validationframework.swing.resulthandler.ComponentEnablingBooleanResultHandler;
+import com.github.validationframework.swing.resulthandler.AbstractColorFeedback;
+import com.github.validationframework.swing.resulthandler.AbstractIconFeedback;
+import com.github.validationframework.swing.resulthandler.AbstractStickerFeedback;
+import com.github.validationframework.swing.resulthandler.bool.ComponentEnablingBooleanResultHandler;
+import com.github.validationframework.swing.resulthandler.bool.IconTipBooleanFeedback;
 import com.github.validationframework.swing.rule.JFormattedTextFieldFormatterRule;
 import com.github.validationframework.swing.trigger.JFormattedTextFieldDocumentChangedTrigger;
 import com.github.validationframework.swing.trigger.JTextFieldDocumentChangedTrigger;
@@ -149,9 +149,9 @@ public class FeedbackDemoApp extends JFrame {
 		}
 	}
 
-	private class InputFieldToolTipFeedBack extends AbstractStickerFeedBack<InputFieldResult> {
+	private class InputFieldToolTipFeedback extends AbstractStickerFeedback<InputFieldResult> {
 
-		public InputFieldToolTipFeedBack(final JComponent owner) {
+		public InputFieldToolTipFeedback(final JComponent owner) {
 			super(owner);
 		}
 
@@ -168,9 +168,9 @@ public class FeedbackDemoApp extends JFrame {
 		}
 	}
 
-	private class InputFieldColorFeedBack extends AbstractColorFeedBack<InputFieldResult> {
+	private class InputFieldColorFeedback extends AbstractColorFeedback<InputFieldResult> {
 
-		public InputFieldColorFeedBack(final JComponent owner) {
+		public InputFieldColorFeedback(final JComponent owner) {
 			super(owner);
 		}
 
@@ -188,9 +188,9 @@ public class FeedbackDemoApp extends JFrame {
 		}
 	}
 
-	private class InputFieldIconFeedBack extends AbstractIconFeedBack<InputFieldResult> {
+	private class InputFieldIconFeedback extends AbstractIconFeedback<InputFieldResult> {
 
-		public InputFieldIconFeedBack(final JComponent owner) {
+		public InputFieldIconFeedback(final JComponent owner) {
 			super(owner);
 		}
 
@@ -296,7 +296,7 @@ public class FeedbackDemoApp extends JFrame {
 		validator.addTrigger(new JTextFieldDocumentChangedTrigger(textField));
 		validator.addDataProvider(new JTextFieldTextProvider(textField));
 		validator.addRule(new InputFieldRule());
-		validator.addResultHandler(new InputFieldToolTipFeedBack(textField));
+		validator.addResultHandler(new InputFieldToolTipFeedback(textField));
 		validator.addResultHandler(resultCollector);
 
 		return textField;
@@ -309,7 +309,7 @@ public class FeedbackDemoApp extends JFrame {
 		validator.addTrigger(new JTextFieldDocumentChangedTrigger(textField));
 		validator.addDataProvider(new JTextFieldTextProvider(textField));
 		validator.addRule(new InputFieldRule());
-		validator.addResultHandler(new InputFieldColorFeedBack(textField));
+		validator.addResultHandler(new InputFieldColorFeedback(textField));
 		validator.addResultHandler(resultCollector);
 
 		return textField;
@@ -322,7 +322,7 @@ public class FeedbackDemoApp extends JFrame {
 		validator.addTrigger(new JTextFieldDocumentChangedTrigger(textField));
 		validator.addDataProvider(new JTextFieldTextProvider(textField));
 		validator.addRule(new InputFieldRule());
-		validator.addResultHandler(new InputFieldIconFeedBack(textField));
+		validator.addResultHandler(new InputFieldIconFeedback(textField));
 		validator.addResultHandler(resultCollector);
 
 		return textField;
@@ -336,8 +336,8 @@ public class FeedbackDemoApp extends JFrame {
 		final JFormattedTextFieldTextProvider dataProvider = new JFormattedTextFieldTextProvider(formattedTextField);
 		final JFormattedTextFieldFormatterRule rule1 = new JFormattedTextFieldFormatterRule(formattedTextField);
 		final StringRegexRule rule2 = new StringRegexRule("^[0-9]{1,3}$");
-		final BooleanIconTipFeedBack resultHandler1 =
-				new BooleanIconTipFeedBack(formattedTextField, null, null, BooleanIconTipFeedBack.DEFAULT_INVALID_ICON,
+		final IconTipBooleanFeedback resultHandler1 =
+				new IconTipBooleanFeedback(formattedTextField, null, null, IconTipBooleanFeedback.DEFAULT_INVALID_ICON,
 						"Angle should be between 000 and 359");
 
 //		final ComponentEnablingBooleanResultHandler resultHandler2 =

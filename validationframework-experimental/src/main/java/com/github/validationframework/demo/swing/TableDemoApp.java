@@ -28,8 +28,8 @@ package com.github.validationframework.demo.swing;
 import com.github.validationframework.base.rule.string.StringLengthGreaterThanOrEqualToRule;
 import com.github.validationframework.base.validator.SimpleValidator;
 import com.github.validationframework.swing.dataprovider.JTableTextEditorTextProvider;
-import com.github.validationframework.swing.resulthandler.BooleanIconTipFeedBack;
-import com.github.validationframework.swing.resulthandler.ComponentEnablingBooleanResultHandler;
+import com.github.validationframework.swing.resulthandler.bool.ComponentEnablingBooleanResultHandler;
+import com.github.validationframework.swing.resulthandler.bool.IconTipBooleanFeedback;
 import com.github.validationframework.swing.trigger.JTableTextEditorDocumentChangedTrigger;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -120,7 +120,7 @@ public class TableDemoApp extends JFrame {
 		validator.addRule(new StringLengthGreaterThanOrEqualToRule(3));
 		validator.addResultHandler(new ComponentEnablingBooleanResultHandler(applyButton));
 		validator.addResultHandler(
-				new BooleanIconTipFeedBack(table, null, null, BooleanIconTipFeedBack.DEFAULT_INVALID_ICON,
+				new IconTipBooleanFeedback(table, null, null, IconTipBooleanFeedback.DEFAULT_INVALID_ICON,
 						"Angle should be between 000 and 359"));
 	}
 
