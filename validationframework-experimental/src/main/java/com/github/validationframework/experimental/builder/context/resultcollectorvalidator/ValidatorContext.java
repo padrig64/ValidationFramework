@@ -54,7 +54,7 @@ public class ValidatorContext<D, O> {
 		this.registeredResultHandlers = registeredResultHandlers;
 	}
 
-	public ValidatorContext<D, O> handleResultWith(final ResultHandler<O> resultHandler) {
+	public ValidatorContext<D, O> handleWith(final ResultHandler<O> resultHandler) {
 		if (resultHandler != null) {
 			registeredResultHandlers.add(resultHandler);
 		}
@@ -68,14 +68,14 @@ public class ValidatorContext<D, O> {
 	 *
 	 * @return Same validator context.
 	 */
-	public ValidatorContext<D, O> handleResultWith(final ResultHandler<O>... resultHandlers) {
+	public ValidatorContext<D, O> handleWith(final ResultHandler<O>... resultHandlers) {
 		if (resultHandlers != null) {
 			Collections.addAll(registeredResultHandlers, resultHandlers);
 		}
 		return this;
 	}
 
-	public ValidatorContext<D, O> handleResultWith(final Collection<ResultHandler<O>> resultHandlers) {
+	public ValidatorContext<D, O> handleWith(final Collection<ResultHandler<O>> resultHandlers) {
 		if (resultHandlers != null) {
 			registeredResultHandlers.addAll(resultHandlers);
 		}

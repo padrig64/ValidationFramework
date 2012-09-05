@@ -285,8 +285,7 @@ public class FeedbackDemoApp extends JFrame {
 
 		// Create global
 		collect(resultCollector1, resultCollector1).collect(resultCollector3, resultCollector4)
-				.check(new AndBooleanRule()).handleResultWith(new ComponentEnablingBooleanResultHandler(applyButton))
-				.build();
+				.check(new AndBooleanRule()).handleWith(new ComponentEnablingBooleanResultHandler(applyButton)).build();
 	}
 
 	private Component createValidator1(final JTextField textField,

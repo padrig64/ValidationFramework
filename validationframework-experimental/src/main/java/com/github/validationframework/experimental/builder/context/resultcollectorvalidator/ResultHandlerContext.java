@@ -72,7 +72,7 @@ public class ResultHandlerContext<D, O> {
 		return this;
 	}
 
-	public ValidatorContext<D, O> handleResultWith(final ResultHandler<O> resultHandler) {
+	public ValidatorContext<D, O> handleWith(final ResultHandler<O> resultHandler) {
 		final List<ResultHandler<O>> registeredResultHandlers = new ArrayList<ResultHandler<O>>();
 		if (resultHandler != null) {
 			registeredResultHandlers.add(resultHandler);
@@ -87,7 +87,7 @@ public class ResultHandlerContext<D, O> {
 	 *
 	 * @return Validator context allowing to add result handlers and to create the validator.
 	 */
-	public ValidatorContext<D, O> handleResultWith(final ResultHandler<O>... resultHandlers) {
+	public ValidatorContext<D, O> handleWith(final ResultHandler<O>... resultHandlers) {
 		final List<ResultHandler<O>> registeredResultHandlers = new ArrayList<ResultHandler<O>>();
 		if (resultHandlers != null) {
 			Collections.addAll(registeredResultHandlers, resultHandlers);
@@ -95,7 +95,7 @@ public class ResultHandlerContext<D, O> {
 		return new ValidatorContext<D, O>(registeredResultCollectors, registeredRules, registeredResultHandlers);
 	}
 
-	public ValidatorContext<D, O> handleResultWith(final Collection<ResultHandler<O>> resultHandlers) {
+	public ValidatorContext<D, O> handleWith(final Collection<ResultHandler<O>> resultHandlers) {
 		final List<ResultHandler<O>> registeredResultHandlers = new ArrayList<ResultHandler<O>>();
 		if (resultHandlers != null) {
 			registeredResultHandlers.addAll(resultHandlers);

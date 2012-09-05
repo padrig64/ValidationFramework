@@ -165,15 +165,15 @@ public class TabbedPaneDemoApp extends JFrame {
 		tabResultCollectors.add(tabResultCollector);
 
 		// Create validator for the whole tab
-		collect(fieldResultCollectors).check(new AndBooleanRule()).handleResultWith(
+		collect(fieldResultCollectors).check(new AndBooleanRule()).handleWith(
 				new TabIconTipBooleanFeedback(tabbedPane, i, null, null, TabIconTipBooleanFeedback.DEFAULT_INVALID_ICON,
-						"One or several invalid input fields")).handleResultWith(tabResultCollector).build();
+						"One or several invalid input fields")).handleWith(tabResultCollector).build();
 	}
 
 	private void installGlobalValidator(final Set<ResultCollector<?, Boolean>> tabResultCollectors,
 										final Component... buttons) {
 		collect(tabResultCollectors).check(new AndBooleanRule())
-				.handleResultWith(new ComponentEnablingBooleanResultHandler(buttons)).build();
+				.handleWith(new ComponentEnablingBooleanResultHandler(buttons)).build();
 	}
 
 	public static void main(final String[] args) {
