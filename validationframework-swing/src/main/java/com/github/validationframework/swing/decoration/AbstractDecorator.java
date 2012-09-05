@@ -58,7 +58,7 @@ public abstract class AbstractDecorator implements Disposable {
 		 */
 		@Override
 		public void ancestorAdded(final AncestorEvent event) {
-			// Nothing to be done
+			followDecoratedComponent();
 		}
 
 		/**
@@ -104,19 +104,19 @@ public abstract class AbstractDecorator implements Disposable {
 		}
 
 		/**
-		 * @see ComponentListener#componentHidden(ComponentEvent)
-		 */
-		@Override
-		public void componentHidden(final ComponentEvent e) {
-			// TODO ?
-		}
-
-		/**
 		 * @see ComponentListener#componentShown(ComponentEvent)
 		 */
 		@Override
 		public void componentShown(final ComponentEvent e) {
 			followDecoratedComponent();
+		}
+
+		/**
+		 * @see ComponentListener#componentHidden(ComponentEvent)
+		 */
+		@Override
+		public void componentHidden(final ComponentEvent e) {
+			// Nothing to be done
 		}
 	}
 
