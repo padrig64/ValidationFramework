@@ -1,5 +1,4 @@
 . Fix ToolTipDialog transparency support
-. Move boolean result handlers to bool package
 . Component state conditional rule
 . More comments on the classes on the "what can it be used for"
 . Group
