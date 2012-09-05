@@ -137,7 +137,7 @@ public class TabbedPaneDemoApp extends JFrame {
 			final JFormattedTextField field = new JFormattedTextField(formatter);
 			panel.add(field);
 			field.setColumns(10);
-			field.setFocusLostBehavior(JFormattedTextField.PERSIST);
+			field.setFocusLostBehavior(JFormattedTextField.COMMIT);
 
 			// Create field validator
 			installFieldValidator(field, fieldResultCollectors);

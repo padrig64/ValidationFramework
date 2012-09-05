@@ -116,7 +116,7 @@ public abstract class AbstractDecorator implements Disposable {
 		 */
 		@Override
 		public void componentShown(final ComponentEvent e) {
-			// TODO ?
+			followDecoratedComponent();
 		}
 	}
 
@@ -173,7 +173,7 @@ public abstract class AbstractDecorator implements Disposable {
 		 */
 		@Override
 		public void paintComponent(final Graphics g) {
-			if (decoratedComponent.isVisible() && decoratedComponent.isShowing() && isVisible() && isShowing() &&
+			if (decoratedComponent.isVisible() && decoratedComponent.isShowing() && isVisible() &&
 					(clipBounds != null) &&
 					(clipBounds.width > 0) && (clipBounds.height > 0)) {
 				// Clip graphics
