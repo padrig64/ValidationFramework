@@ -27,37 +27,61 @@ package com.github.validationframework.swing.decoration;
 
 import com.github.validationframework.swing.decoration.anchor.Anchor;
 import com.github.validationframework.swing.decoration.anchor.AnchorLink;
+import com.github.validationframework.swing.decoration.support.ToolTipDialog;
 import java.awt.Graphics;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 
-public class IconDecorator extends AbstractDecorator {
+public class IconTipComponentDecoration extends AbstractComponentDecoration {
+
+	private class ToolTipAdapter extends MouseAdapter {
+
+		/**
+		 * @see MouseAdapter#mouseEntered(MouseEvent)
+		 */
+		@Override
+		public void mouseEntered(final MouseEvent e) {
+			toolTipDialog.setVisible(true);
+		}
+
+		/**
+		 * @see MouseAdapter#mouseExited(MouseEvent)
+		 */
+		@Override
+		public void mouseExited(final MouseEvent e) {
+			toolTipDialog.setVisible(false);
+		}
+	}
 
 	/**
 	 * Default anchor link with the owner component on which the decorator will be attached.
 	 */
-	public static final AnchorLink DEFAULT_ANCHOR_LINK_WITH_OWNER = new AnchorLink(Anchor.BOTTOM_LEFT, Anchor.CENTER);
+	// TODO Make this dependent on the LAF
+	public static final AnchorLink DEFAULT_ANCHOR_LINK_WITH_OWNER =
+			new AnchorLink(new Anchor(0.0f, 3, 1.0f, -3), Anchor.CENTER);
 
 	/**
 	 * Icon to be displayed as decoration on the owner component.
 	 */
 	private Icon icon = null;
 
-	public IconDecorator(final JComponent owner) {
-		this(owner, null, DEFAULT_ANCHOR_LINK_WITH_OWNER);
+	private ToolTipDialog toolTipDialog = null; // Lazy initialization to make sure we will have a parent
+
+	private String toolTipText = null;
+
+	private AnchorLink anchorLinkWithToolTip = new AnchorLink(Anchor.BOTTOM_RIGHT, Anchor.TOP_LEFT);
+
+	public IconTipComponentDecoration(final JComponent decoratedComponent) {
+		this(decoratedComponent, null);
 	}
 
-	public IconDecorator(final JComponent owner, final AnchorLink anchorLinkWithOwner) {
-		this(owner, null, anchorLinkWithOwner);
-	}
-
-	public IconDecorator(final JComponent owner, final Icon icon) {
-		this(owner, icon, DEFAULT_ANCHOR_LINK_WITH_OWNER);
-	}
-
-	public IconDecorator(final JComponent owner, final Icon icon, final AnchorLink anchorLinkWithOwner) {
-		super(owner, anchorLinkWithOwner);
+	public IconTipComponentDecoration(final JComponent decoratedComponent, final Icon icon) {
+		super(decoratedComponent, DEFAULT_ANCHOR_LINK_WITH_OWNER);
 		this.icon = icon;
+
+		decorationPainter.addMouseListener(new ToolTipAdapter());
 	}
 
 	/**
@@ -79,8 +103,43 @@ public class IconDecorator extends AbstractDecorator {
 		followDecoratedComponent();
 	}
 
+	public String getToolTipText() {
+		return toolTipText;
+	}
+
+	public void setToolTipText(final String text) {
+		this.toolTipText = text;
+		if (toolTipDialog != null) {
+			toolTipDialog.setText(text);
+		}
+	}
+
+	public AnchorLink getAnchorLinkWithToolTip() {
+		return anchorLinkWithToolTip;
+	}
+
+	public void setAnchorLinkWithToolTip(final AnchorLink anchorLinkWithToolTip) {
+		this.anchorLinkWithToolTip = anchorLinkWithToolTip;
+	}
+
 	/**
-	 * @see AbstractDecorator#getWidth()
+	 * @see AbstractComponentDecoration#setVisible(boolean)
+	 */
+	@Override
+	public void setVisible(final boolean visible) {
+		super.setVisible(visible);
+
+		if ((toolTipDialog == null) && visible) {
+			toolTipDialog = new ToolTipDialog(decorationPainter, anchorLinkWithToolTip);
+			toolTipDialog.setText(toolTipText);
+		}
+		if (!visible && (toolTipDialog != null)) {
+			toolTipDialog.setVisible(false);
+		}
+	}
+
+	/**
+	 * @see AbstractComponentDecoration#getWidth()
 	 */
 	@Override
 	protected int getWidth() {
@@ -92,7 +151,7 @@ public class IconDecorator extends AbstractDecorator {
 	}
 
 	/**
-	 * @see AbstractDecorator#getHeight()
+	 * @see AbstractComponentDecoration#getHeight()
 	 */
 	@Override
 	protected int getHeight() {
@@ -104,7 +163,7 @@ public class IconDecorator extends AbstractDecorator {
 	}
 
 	/**
-	 * @see AbstractDecorator#paint(Graphics)
+	 * @see AbstractComponentDecoration#paint(Graphics)
 	 */
 	@Override
 	public void paint(final Graphics g) {

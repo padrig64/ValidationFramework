@@ -58,7 +58,7 @@ import org.slf4j.LoggerFactory;
 public class TabIconTipBooleanFeedback implements ResultHandler<Boolean>, Disposable {
 
 	/**
-	 *
+	 * Component in charge of rendering the title of the tab, containing the tab title text and the decoration icon.
 	 */
 	private class TitleRenderer extends JPanel {
 

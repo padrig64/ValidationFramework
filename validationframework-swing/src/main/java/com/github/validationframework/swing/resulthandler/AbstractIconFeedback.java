@@ -26,13 +26,13 @@
 package com.github.validationframework.swing.resulthandler;
 
 import com.github.validationframework.api.resulthandler.ResultHandler;
-import com.github.validationframework.swing.decoration.IconDecorator;
+import com.github.validationframework.swing.decoration.IconComponentDecoration;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 
 public abstract class AbstractIconFeedback<O> implements ResultHandler<O> {
 
-	private IconDecorator decorator = null;
+	private IconComponentDecoration decorator = null;
 
 	public AbstractIconFeedback(final JComponent owner) {
 		attach(owner);
@@ -42,7 +42,7 @@ public abstract class AbstractIconFeedback<O> implements ResultHandler<O> {
 		detach();
 
 		if (owner != null) {
-			decorator = new IconDecorator(owner);
+			decorator = new IconComponentDecoration(owner);
 			decorator.setVisible(false);
 		}
 	}

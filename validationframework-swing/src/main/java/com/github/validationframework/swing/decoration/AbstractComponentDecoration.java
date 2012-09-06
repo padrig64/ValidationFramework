@@ -45,7 +45,7 @@ import javax.swing.event.AncestorListener;
  * Abstract implementation of a decorator that can be attached to a component.<br>Concrete implementations will just
  * need to provide the size and do the painting on the already-computed location.
  */
-public abstract class AbstractDecorator implements Disposable {
+public abstract class AbstractComponentDecoration implements Disposable {
 
 	/**
 	 * Entity responsible of tracking the changes on the decorated component and/or its ancestors that would require to
@@ -121,8 +121,8 @@ public abstract class AbstractDecorator implements Disposable {
 	}
 
 	/**
-	 * Entity responsible of calling the {@link AbstractDecorator#paint(Graphics)} method.<br>It is a hook in the Swing
-	 * paint mechanism.
+	 * Entity responsible of calling the {@link AbstractComponentDecoration#paint(Graphics)} method.<br>It is a hook in the
+	 * Swing paint mechanism.
 	 */
 	protected class DecorationPainter extends JComponent {
 
@@ -151,7 +151,7 @@ public abstract class AbstractDecorator implements Disposable {
 		 */
 		@Override
 		public int getWidth() {
-			return AbstractDecorator.this.getWidth();
+			return AbstractComponentDecoration.this.getWidth();
 		}
 
 		/**
@@ -161,15 +161,15 @@ public abstract class AbstractDecorator implements Disposable {
 		 */
 		@Override
 		public int getHeight() {
-			return AbstractDecorator.this.getHeight();
+			return AbstractComponentDecoration.this.getHeight();
 		}
 
 		/**
-		 * Calls the method {@link AbstractDecorator#paint(Graphics)} of the decorator.
+		 * Calls the method {@link AbstractComponentDecoration#paint(Graphics)} of the decorator.
 		 *
 		 * @param g Graphics to paint on.
 		 *
-		 * @see AbstractDecorator#paint(Graphics)
+		 * @see AbstractComponentDecoration#paint(Graphics)
 		 */
 		@Override
 		public void paintComponent(final Graphics g) {
@@ -180,7 +180,7 @@ public abstract class AbstractDecorator implements Disposable {
 				g.setClip(clipBounds);
 
 				// Paint decorator
-				AbstractDecorator.this.paint(g);
+				AbstractComponentDecoration.this.paint(g);
 			}
 		}
 	}
@@ -235,7 +235,7 @@ public abstract class AbstractDecorator implements Disposable {
 	 * @param decoratedComponent Component to be decorated.
 	 * @param anchorLink Anchor link between the decorated component and its decoration.
 	 */
-	public AbstractDecorator(final JComponent decoratedComponent, final AnchorLink anchorLink) {
+	public AbstractComponentDecoration(final JComponent decoratedComponent, final AnchorLink anchorLink) {
 		this.anchorLink = anchorLink;
 		attach(decoratedComponent);
 	}
@@ -263,12 +263,22 @@ public abstract class AbstractDecorator implements Disposable {
 	 * Detaches the decoration from the decorated component.
 	 */
 	private void detach() {
+		setVisible(false);
 		if (decoratedComponent != null) {
 			decoratedComponent.removeComponentListener(decoratedComponentTracker);
 			decoratedComponent.removeAncestorListener(decoratedComponentTracker);
 
 			detachFromLayeredPane();
 		}
+	}
+
+	/**
+	 * Gets the decorated component to which the decoration is attached.
+	 *
+	 * @return Decorated component.
+	 */
+	public JComponent getDecoratedComponent() {
+		return decoratedComponent;
 	}
 
 	/**

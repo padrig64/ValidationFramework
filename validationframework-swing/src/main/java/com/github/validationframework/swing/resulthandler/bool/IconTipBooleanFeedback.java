@@ -107,7 +107,7 @@ public class IconTipBooleanFeedback extends AbstractIconTipFeedback<Boolean> {
 	}
 
 	/**
-	 * @see com.github.validationframework.swing.resulthandler.AbstractIconTipFeedback#handleResult(Object)
+	 * @see AbstractIconTipFeedback#handleResult(Object)
 	 */
 	@Override
 	public void handleResult(final Boolean valid) {
