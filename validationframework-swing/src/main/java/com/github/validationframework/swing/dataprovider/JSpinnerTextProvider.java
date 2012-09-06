@@ -26,24 +26,33 @@
 package com.github.validationframework.swing.dataprovider;
 
 import com.github.validationframework.api.dataprovider.TypedDataProvider;
+import javax.swing.JComponent;
 import javax.swing.JSpinner;
+import javax.swing.text.JTextComponent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * Data provider reading the value from a spinner.
+ * Data provider reading the text from the text editor of a spinner.
  */
-public class JSpinnerValueProvider implements TypedDataProvider<Object> {
+public class JSpinnerTextProvider implements TypedDataProvider<String> {
 
 	/**
-	 * Spinner to get the value from.
+	 * Logger for this class.
+	 */
+	private static final Logger LOGGER = LoggerFactory.getLogger(JSpinnerTextProvider.class);
+
+	/**
+	 * Spinner to get the text from.
 	 */
 	private final JSpinner spinner;
 
 	/**
-	 * Constructor specifying the spinner to get the value from.
+	 * Constructor specifying the spinner to get the text from.
 	 *
-	 * @param spinner Spinner to get the value from.
+	 * @param spinner Spinner to get the text from.
 	 */
-	public JSpinnerValueProvider(final JSpinner spinner) {
+	public JSpinnerTextProvider(final JSpinner spinner) {
 		this.spinner = spinner;
 	}
 
@@ -51,7 +60,17 @@ public class JSpinnerValueProvider implements TypedDataProvider<Object> {
 	 * @see TypedDataProvider#getData()
 	 */
 	@Override
-	public Object getData() {
-		return spinner.getValue();
+	public String getData() {
+		final String data;
+
+		final JComponent spinnerEditor = spinner.getEditor();
+		if (spinnerEditor instanceof JTextComponent) {
+			data = ((JTextComponent) spinnerEditor).getText();
+		} else {
+			LOGGER.warn("Cannot read text from spinner editor component: " + spinnerEditor);
+			data = null;
+		}
+
+		return data;
 	}
 }

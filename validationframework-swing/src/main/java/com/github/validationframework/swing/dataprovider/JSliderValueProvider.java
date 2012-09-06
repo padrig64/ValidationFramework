@@ -28,14 +28,28 @@ package com.github.validationframework.swing.dataprovider;
 import com.github.validationframework.api.dataprovider.TypedDataProvider;
 import javax.swing.JSlider;
 
+/**
+ * Data provider reading the value from a slider.
+ */
 public class JSliderValueProvider implements TypedDataProvider<Integer> {
 
+	/**
+	 * Slider to get the value from.
+	 */
 	private final JSlider slider;
 
+	/**
+	 * Constructor specifying the slider to get the value from.
+	 *
+	 * @param slider Slider to get the value from.
+	 */
 	public JSliderValueProvider(final JSlider slider) {
 		this.slider = slider;
 	}
 
+	/**
+	 * @see TypedDataProvider#getData()
+	 */
 	@Override
 	public Integer getData() {
 		return slider.getValue();
