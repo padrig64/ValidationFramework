@@ -39,19 +39,56 @@ import org.slf4j.LoggerFactory;
 public class CastTransformer<I, O> implements Transformer<I, O> {
 
 	/**
+	 * Type of behavior in case of an error while casting.
+	 */
+	public enum CastErrorBehavior {
+
+		/**
+		 * Just return null.
+		 */
+		IGNORE,
+
+		/**
+		 * Log a warning and return null.
+		 */
+		LOG_WARNING,
+
+		/**
+		 * Log an error and return null.
+		 */
+		LOG_ERROR,
+
+		/**
+		 * Throw a ClassCastException.
+		 */
+		TRHOW_EXCEPTION
+	}
+
+	/**
 	 * Logger for this class.
 	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(CastTransformer.class);
 
-	private boolean logError = false;
+	/**
+	 * Behavior in case of an error while casting.
+	 */
+	private final CastErrorBehavior castErrorBehavior;
 
+	/**
+	 * Default constructor
+	 */
 	public CastTransformer() {
-		super();
+		this(CastErrorBehavior.IGNORE);
 	}
 
-	public CastTransformer(final boolean logCastException) {
+	/**
+	 * Constructor specifying the behavior in case of an error while casting.
+	 *
+	 * @param castErrorBehavior Behavior in case of an error while casting.
+	 */
+	public CastTransformer(final CastErrorBehavior castErrorBehavior) {
 		super();
-		this.logError = logCastException;
+		this.castErrorBehavior = castErrorBehavior;
 	}
 
 	/**
@@ -65,8 +102,17 @@ public class CastTransformer<I, O> implements Transformer<I, O> {
 			// Cast
 			output = (O) input;
 		} catch (ClassCastException e) {
-			if (logError) {
-				LOGGER.error("Failed transforming input: " + input, e);
+			switch (castErrorBehavior) {
+				case LOG_WARNING:
+					LOGGER.warn("Failed transforming input: " + input, e);
+					break;
+				case LOG_ERROR:
+					LOGGER.error("Failed transforming input: " + input, e);
+					break;
+				case TRHOW_EXCEPTION:
+					throw e;
+				case IGNORE:
+				default:
 			}
 			output = null;
 		}
