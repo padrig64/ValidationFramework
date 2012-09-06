@@ -26,29 +26,45 @@
 package com.github.validationframework.swing.dataprovider;
 
 import com.github.validationframework.api.dataprovider.TypedDataProvider;
+import com.github.validationframework.base.transform.CastTransformer;
+import com.github.validationframework.base.transform.Transformer;
 import java.awt.Component;
 import java.text.ParseException;
 import javax.swing.JFormattedTextField;
 import javax.swing.JTable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Provider of the text of the current text editor component from a given table.<br>Note that if the table is not in
  * editing, no text can be provided.
  */
-public abstract class AbstractJTableTextEditorNumberValueProvider<T extends Number> implements TypedDataProvider<T> {
+public class JTableTextEditorValueProvider<T> implements TypedDataProvider<T> {
+
+	/**
+	 * Logger for this class.
+	 */
+	private static final Logger LOGGER = LoggerFactory.getLogger(JTableTextEditorValueProvider.class);
 
 	/**
 	 * Table holding the editor component to get the text from.
 	 */
 	private final JTable table;
 
+	private final Transformer<Object, T> transformer;
+
 	/**
 	 * Constructor specifying the table holding the editor component to get the text from.
 	 *
 	 * @param table Editable table.
 	 */
-	public AbstractJTableTextEditorNumberValueProvider(final JTable table) {
+	public JTableTextEditorValueProvider(final JTable table) {
+		this(table, new CastTransformer<Object, T>());
+	}
+
+	public JTableTextEditorValueProvider(final JTable table, final Transformer<Object, T> transformer) {
 		this.table = table;
+		this.transformer = transformer;
 	}
 
 	/**
@@ -56,7 +72,7 @@ public abstract class AbstractJTableTextEditorNumberValueProvider<T extends Numb
 	 */
 	@Override
 	public T getData() {
-		T numberValue = null;
+		T typedValue = null;
 
 		final Component editorComponent = table.getEditorComponent();
 		if (editorComponent instanceof JFormattedTextField) {
@@ -70,15 +86,15 @@ public abstract class AbstractJTableTextEditorNumberValueProvider<T extends Numb
 					final Object dataValue = formatter.stringToValue(dataText);
 
 					// Convert it to the required type
-					numberValue = getNumberFromObject(dataValue);
+					typedValue = transformer.transform(dataValue);
 				}
 			} catch (ParseException e) {
 				// Nothing to be done
 			}
+		} else {
+			LOGGER.warn("Table editor component is not a JFormattedTextField: " + editorComponent);
 		}
 
-		return numberValue;
+		return typedValue;
 	}
-
-	protected abstract T getNumberFromObject(final Object value);
 }

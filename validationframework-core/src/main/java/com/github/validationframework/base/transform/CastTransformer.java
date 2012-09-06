@@ -43,6 +43,17 @@ public class CastTransformer<I, O> implements Transformer<I, O> {
 	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(CastTransformer.class);
 
+	private boolean logError = false;
+
+	public CastTransformer() {
+		super();
+	}
+
+	public CastTransformer(final boolean logCastException) {
+		super();
+		this.logError = logCastException;
+	}
+
 	/**
 	 * @see Transformer#transform(Object)
 	 */
@@ -54,7 +65,9 @@ public class CastTransformer<I, O> implements Transformer<I, O> {
 			// Cast
 			output = (O) input;
 		} catch (ClassCastException e) {
-			LOGGER.error("Failed transforming input: " + input, e);
+			if (logError) {
+				LOGGER.error("Failed transforming input: " + input, e);
+			}
 			output = null;
 		}
 

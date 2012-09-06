@@ -25,25 +25,49 @@
 
 package com.github.validationframework.swing.dataprovider;
 
+import com.github.validationframework.api.dataprovider.TypedDataProvider;
+import com.github.validationframework.base.transform.CastTransformer;
+import com.github.validationframework.base.transform.Transformer;
+import java.text.ParseException;
 import javax.swing.JFormattedTextField;
 
-public class JFormattedTextFieldNumberValueProvider extends AbstractJFormattedTextFieldNumberValueProvider<Number> {
+public class JFormattedTextFieldValueProvider<T> implements TypedDataProvider<T> {
 
-	public JFormattedTextFieldNumberValueProvider(final JFormattedTextField formattedTextField) {
-		super(formattedTextField);
+	private final JFormattedTextField formattedTextField;
+
+	private final Transformer<Object, T> transformer;
+
+	public JFormattedTextFieldValueProvider(final JFormattedTextField formattedTextField) {
+		this(formattedTextField, new CastTransformer<Object, T>());
+	}
+
+	public JFormattedTextFieldValueProvider(final JFormattedTextField formattedTextField,
+											final Transformer<Object, T> transformer) {
+		this.formattedTextField = formattedTextField;
+		this.transformer = transformer;
 	}
 
 	/**
-	 * @see AbstractJFormattedTextFieldNumberValueProvider#getNumberFromObject(Object)
+	 * @see TypedDataProvider#getData()
 	 */
 	@Override
-	protected Number getNumberFromObject(final Object value) {
-		Number numberValue = null;
+	public T getData() {
+		T typedValue = null;
 
-		if (value instanceof Number) {
-			numberValue = (Number) value;
+		try {
+			// Parse text
+			final String dataText = formattedTextField.getText();
+			final JFormattedTextField.AbstractFormatter formatter = formattedTextField.getFormatter();
+			if (formatter != null) {
+				final Object dataValue = formatter.stringToValue(dataText);
+
+				// Convert it to the required type
+				typedValue = transformer.transform(dataValue);
+			}
+		} catch (ParseException e) {
+			// Nothing to be done
 		}
 
-		return numberValue;
+		return typedValue;
 	}
 }
