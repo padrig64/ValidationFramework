@@ -63,12 +63,23 @@ public class JSpinnerTextProvider implements TypedDataProvider<String> {
 	public String getData() {
 		final String data;
 
+		// Try to find a text component in the spinner
+		final JTextComponent textComponent;
 		final JComponent spinnerEditor = spinner.getEditor();
 		if (spinnerEditor instanceof JTextComponent) {
-			data = ((JTextComponent) spinnerEditor).getText();
+			textComponent = (JTextComponent) spinnerEditor;
+		} else if (spinnerEditor instanceof JSpinner.DefaultEditor) {
+			textComponent = ((JSpinner.DefaultEditor) spinnerEditor).getTextField();
 		} else {
+			textComponent = null;
+		}
+
+		// Read text from the text component if found
+		if (textComponent == null) {
 			LOGGER.warn("Cannot read text from spinner editor component: " + spinnerEditor);
 			data = null;
+		} else {
+			data = textComponent.getText();
 		}
 
 		return data;

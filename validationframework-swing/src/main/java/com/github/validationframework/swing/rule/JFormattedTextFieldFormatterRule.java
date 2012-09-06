@@ -29,10 +29,21 @@ import com.github.validationframework.base.rule.string.AbstractStringBooleanRule
 import java.text.ParseException;
 import javax.swing.JFormattedTextField;
 
+/**
+ * Convenience rule that will check if the formatter of a formatted textfield can successfully parse the input text.
+ */
 public class JFormattedTextFieldFormatterRule extends AbstractStringBooleanRule {
 
+	/**
+	 * Formatted textfield whose formatter is to be checked.
+	 */
 	private final JFormattedTextField formattedTextField;
 
+	/**
+	 * Constructor specifying the formatted textfield whose formatter is to be checked.
+	 *
+	 * @param formattedTextField Formatted textfield whose formatter is to be checked.
+	 */
 	public JFormattedTextFieldFormatterRule(final JFormattedTextField formattedTextField) {
 		this.formattedTextField = formattedTextField;
 	}
