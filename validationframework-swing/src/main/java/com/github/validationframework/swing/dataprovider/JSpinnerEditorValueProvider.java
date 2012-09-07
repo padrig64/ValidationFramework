@@ -39,12 +39,12 @@ import org.slf4j.LoggerFactory;
  * Data provider reading the value from a spinner.<br>Note that the value is not read from the model, but instead
  * corresponds to the current text.
  */
-public class JSpinnerValueProvider<D> implements TypedDataProvider<D> {
+public class JSpinnerEditorValueProvider<D> implements TypedDataProvider<D> {
 
 	/**
 	 * Logger for this class.
 	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(JSpinnerValueProvider.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(JSpinnerEditorValueProvider.class);
 
 	/**
 	 * Spinner to get the data from.<br>Note that the text and the formatter are retrieved every time they are needed so
@@ -62,7 +62,7 @@ public class JSpinnerValueProvider<D> implements TypedDataProvider<D> {
 	 *
 	 * @param spinner Spinner to get the value from.
 	 */
-	public JSpinnerValueProvider(final JSpinner spinner) {
+	public JSpinnerEditorValueProvider(final JSpinner spinner) {
 		this(spinner, new CastTransformer<Object, D>());
 	}
 
@@ -72,7 +72,7 @@ public class JSpinnerValueProvider<D> implements TypedDataProvider<D> {
 	 * @param spinner Spinner to get the value from.
 	 * @param transformer Transformer used to convert the object parsed from the spinner to the expected type.
 	 */
-	public JSpinnerValueProvider(final JSpinner spinner, final Transformer<Object, D> transformer) {
+	public JSpinnerEditorValueProvider(final JSpinner spinner, final Transformer<Object, D> transformer) {
 		this.spinner = spinner;
 		this.transformer = transformer;
 	}

@@ -1,3 +1,5 @@
+. Initial state/trigger when building the validators
+. Marker interface for validators
 . Fix ToolTipDialog transparency support
 . Component state conditional rule
 . More comments on the classes on the "what can it be used for"
@@ -30,6 +32,7 @@
 . Map rules to result handlers?
 . Exception-based results
 . Property data provider
+. Conditional logic
 . Decoration transparency on Java 7
 . All features described in the README file
 . Think about dialog strategies

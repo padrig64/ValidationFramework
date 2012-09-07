@@ -35,12 +35,12 @@ import org.slf4j.LoggerFactory;
 /**
  * Data provider reading the text from the text editor of a spinner.
  */
-public class JSpinnerTextProvider implements TypedDataProvider<String> {
+public class JSpinnerEditorTextProvider implements TypedDataProvider<String> {
 
 	/**
 	 * Logger for this class.
 	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(JSpinnerTextProvider.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(JSpinnerEditorTextProvider.class);
 
 	/**
 	 * Spinner to get the text from.
@@ -52,7 +52,7 @@ public class JSpinnerTextProvider implements TypedDataProvider<String> {
 	 *
 	 * @param spinner Spinner to get the text from.
 	 */
-	public JSpinnerTextProvider(final JSpinner spinner) {
+	public JSpinnerEditorTextProvider(final JSpinner spinner) {
 		this.spinner = spinner;
 	}
 
