@@ -31,18 +31,41 @@ import com.github.validationframework.base.transform.Transformer;
 import java.text.ParseException;
 import javax.swing.JFormattedTextField;
 
-public class JFormattedTextFieldValueProvider<T> implements TypedDataProvider<T> {
+/**
+ * Data provider reading the value from a formatted textfield.<br>Note that the value is not read from the model, but
+ * instead corresponds to the current text.
+ */
+public class JFormattedTextFieldValueProvider<D> implements TypedDataProvider<D> {
 
+	/**
+	 * Formatted textfield to get the data from.<br>Note that the text and the formatter are retrieved every time they are
+	 * needed so that we do not have to listener to changes in the formatted textfield to track them.
+	 */
 	private final JFormattedTextField formattedTextField;
 
-	private final Transformer<Object, T> transformer;
+	/**
+	 * Transformer used to convert the object parsed from the formatted textfield to the expected type.
+	 */
+	private final Transformer<Object, D> transformer;
 
+	/**
+	 * Constructor specifying the formatted textfield to get the value from.
+	 *
+	 * @param formattedTextField Formatted textfield to get the value from.
+	 */
 	public JFormattedTextFieldValueProvider(final JFormattedTextField formattedTextField) {
-		this(formattedTextField, new CastTransformer<Object, T>());
+		this(formattedTextField, new CastTransformer<Object, D>());
 	}
 
+	/**
+	 * Constructor specifying the formatted textfield to get the value from and the transformer to convert it to the
+	 * required type.
+	 *
+	 * @param formattedTextField Formatted textfield to get the value from.
+	 * @param transformer Transformer used to convert the object parsed from the spinner to the expected type.
+	 */
 	public JFormattedTextFieldValueProvider(final JFormattedTextField formattedTextField,
-											final Transformer<Object, T> transformer) {
+											final Transformer<Object, D> transformer) {
 		this.formattedTextField = formattedTextField;
 		this.transformer = transformer;
 	}
@@ -51,8 +74,8 @@ public class JFormattedTextFieldValueProvider<T> implements TypedDataProvider<T>
 	 * @see TypedDataProvider#getData()
 	 */
 	@Override
-	public T getData() {
-		T typedValue = null;
+	public D getData() {
+		D typedValue = null;
 
 		try {
 			// Parse text
