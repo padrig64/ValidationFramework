@@ -31,6 +31,7 @@ import com.github.validationframework.base.rule.bool.AndBooleanRule;
 import com.github.validationframework.base.rule.string.StringRegexRule;
 import com.github.validationframework.base.transform.Transformer;
 import com.github.validationframework.base.validator.SimpleValidator;
+import com.github.validationframework.experimental.resulthandler.IconTipFeedbackOnTrigger;
 import com.github.validationframework.swing.dataprovider.JFormattedTextFieldTextProvider;
 import com.github.validationframework.swing.dataprovider.JTextFieldTextProvider;
 import com.github.validationframework.swing.resulthandler.AbstractColorFeedback;
@@ -284,8 +285,15 @@ public class FeedbackDemoApp extends JFrame {
 		createValidator4(formattedTextField, resultCollector4);
 
 		// Create global
+		final IconTipBooleanFeedback jumpingFeedback = new IconTipBooleanFeedback(null);
+		IconTipFeedbackOnTrigger<Boolean> triggerFollower = new IconTipFeedbackOnTrigger<Boolean>(jumpingFeedback);
+		triggerFollower.addTrigger(new JTextFieldDocumentChangedTrigger(textField1));
+		triggerFollower.addTrigger(new JTextFieldDocumentChangedTrigger(textField2));
+		triggerFollower.addTrigger(new JTextFieldDocumentChangedTrigger(textField3));
+		triggerFollower.addTrigger(new JTextFieldDocumentChangedTrigger(formattedTextField));
 		collect(resultCollector1, resultCollector1).collect(resultCollector3, resultCollector4)
-				.check(new AndBooleanRule()).handleWith(new ComponentEnablingBooleanResultHandler(applyButton)).build();
+				.check(new AndBooleanRule()).handleWith(new ComponentEnablingBooleanResultHandler(applyButton)).
+				handleWith(jumpingFeedback).build();
 	}
 
 	private Component createValidator1(final JTextField textField,

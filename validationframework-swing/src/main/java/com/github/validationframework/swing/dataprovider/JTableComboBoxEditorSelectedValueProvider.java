@@ -29,22 +29,21 @@ import com.github.validationframework.api.dataprovider.TypedDataProvider;
 import com.github.validationframework.base.transform.CastTransformer;
 import com.github.validationframework.base.transform.Transformer;
 import java.awt.Component;
-import java.text.ParseException;
-import javax.swing.JFormattedTextField;
+import javax.swing.JComboBox;
 import javax.swing.JTable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Provider of the value of the current formatted text editor component from a given table.<br>Note that if the table is
- * not in editing, no value can be provided.
+ * Provider of the selected value of the current cmobobox editor component from a given table.<br>Note that if the table
+ * is not in editing, no value can be provided.
  */
-public class JTableTextEditorValueProvider<T> implements TypedDataProvider<T> {
+public class JTableComboBoxEditorSelectedValueProvider<T> implements TypedDataProvider<T> {
 
 	/**
 	 * Logger for this class.
 	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(JTableTextEditorValueProvider.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(JTableComboBoxEditorSelectedValueProvider.class);
 
 	/**
 	 * Table holding the editor component to get the text from.
@@ -58,11 +57,11 @@ public class JTableTextEditorValueProvider<T> implements TypedDataProvider<T> {
 	 *
 	 * @param table Editable table.
 	 */
-	public JTableTextEditorValueProvider(final JTable table) {
+	public JTableComboBoxEditorSelectedValueProvider(final JTable table) {
 		this(table, new CastTransformer<Object, T>());
 	}
 
-	public JTableTextEditorValueProvider(final JTable table, final Transformer<Object, T> transformer) {
+	public JTableComboBoxEditorSelectedValueProvider(final JTable table, final Transformer<Object, T> transformer) {
 		this.table = table;
 		this.transformer = transformer;
 	}
@@ -74,27 +73,18 @@ public class JTableTextEditorValueProvider<T> implements TypedDataProvider<T> {
 	public T getData() {
 		T typedValue = null;
 
-		// Get the formatted textfield editor from the table, if any
+		// Get the combobox editor from the table, if any
 		final Component editorComponent = table.getEditorComponent();
-		if (editorComponent instanceof JFormattedTextField) {
-			final JFormattedTextField formattedTextField = (JFormattedTextField) editorComponent;
+		if (editorComponent instanceof JComboBox) {
+			final JComboBox comboBox = (JComboBox) editorComponent;
 
-			// Parse text
-			Object dataValue = null;
-			try {
-				final String dataText = formattedTextField.getText();
-				final JFormattedTextField.AbstractFormatter formatter = formattedTextField.getFormatter();
-				if (formatter != null) {
-					dataValue = formatter.stringToValue(dataText);
-				}
-			} catch (ParseException e) {
-				// Nothing to be done
-			}
+			// Get the selected value from the combobox
+			final Object dataValue = comboBox.getSelectedItem();
 
 			// Convert it to the required type
 			typedValue = transformer.transform(dataValue);
 		} else {
-			LOGGER.warn("Table editor component is not a JFormattedTextField: " + editorComponent);
+			LOGGER.warn("Table editor component is not a JComboBox: " + editorComponent);
 		}
 
 		return typedValue;
