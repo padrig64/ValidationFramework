@@ -27,6 +27,7 @@ package com.github.validationframework.swing.resulthandler;
 
 import com.github.validationframework.api.resulthandler.ResultHandler;
 import com.github.validationframework.swing.decoration.IconComponentDecoration;
+import com.github.validationframework.swing.decoration.anchor.AnchorLink;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 
@@ -34,16 +35,26 @@ public abstract class AbstractIconFeedback<O> implements ResultHandler<O> {
 
 	private IconComponentDecoration decorator = null;
 
-	public AbstractIconFeedback(final JComponent owner) {
-		attach(owner);
+	public AbstractIconFeedback(final JComponent decoratedComponent) {
+		attach(decoratedComponent);
 	}
 
-	public void attach(final JComponent owner) {
+	public void attach(final JComponent decoratedComponent) {
+		attach(decoratedComponent, IconComponentDecoration.DEFAULT_ANCHOR_LINK_WITH_OWNER);
+	}
+
+	public void attach(final JComponent decoratedComponent, final AnchorLink anchorLinkWithOwner) {
+		boolean wasVisible = false;
+		if (decorator != null) {
+			wasVisible = decorator.isVisible();
+		}
+
 		detach();
 
-		if (owner != null) {
-			decorator = new IconComponentDecoration(owner);
-			decorator.setVisible(false);
+		if (decoratedComponent != null) {
+			decorator = new IconComponentDecoration(decoratedComponent);
+			decorator.setAnchorLink(anchorLinkWithOwner);
+			decorator.setVisible(wasVisible);
 		}
 	}
 
@@ -52,6 +63,23 @@ public abstract class AbstractIconFeedback<O> implements ResultHandler<O> {
 			decorator.dispose();
 			decorator = null;
 		}
+	}
+
+	public JComponent getDecoratedComponent() {
+		JComponent component = null;
+		if (decorator != null) {
+			component = decorator.getDecoratedComponent();
+		}
+		return component;
+	}
+
+
+	public AnchorLink getAnchorLink() {
+		return decorator.getAnchorLink();
+	}
+
+	public void setAnchorLink(final AnchorLink anchorLink) {
+		decorator.setAnchorLink(anchorLink);
 	}
 
 	protected Icon getIcon() {
@@ -65,6 +93,20 @@ public abstract class AbstractIconFeedback<O> implements ResultHandler<O> {
 	protected void setIcon(final Icon icon) {
 		if (decorator != null) {
 			decorator.setIcon(icon);
+		}
+	}
+
+	protected String getToolTipText() {
+		String tip = null;
+		if (decorator != null) {
+			tip = decorator.getToolTipText();
+		}
+		return tip;
+	}
+
+	protected void setToolTipText(final String text) {
+		if (decorator != null) {
+			decorator.setToolTipText(text);
 		}
 	}
 

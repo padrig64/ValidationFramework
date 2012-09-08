@@ -28,10 +28,11 @@ package com.github.validationframework.experimental.resulthandler;
 import com.github.validationframework.api.trigger.Trigger;
 import com.github.validationframework.api.trigger.TriggerEvent;
 import com.github.validationframework.api.trigger.TriggerListener;
-import com.github.validationframework.swing.resulthandler.AbstractIconTipFeedback;
+import com.github.validationframework.swing.resulthandler.AbstractIconFeedback;
 import javax.swing.JComponent;
 
-public class IconTipFeedbackOnTrigger<O> {
+// TODO
+public class IconFeedbackOnTrigger<O> {
 
 	private class TriggerAdapter implements TriggerListener {
 
@@ -50,9 +51,9 @@ public class IconTipFeedbackOnTrigger<O> {
 
 	private final TriggerListener triggerAdapter = new TriggerAdapter();
 
-	private final AbstractIconTipFeedback<O> feedback;
+	private final AbstractIconFeedback<O> feedback;
 
-	public IconTipFeedbackOnTrigger(final AbstractIconTipFeedback<O> feedback) {
+	public IconFeedbackOnTrigger(final AbstractIconFeedback<O> feedback) {
 		this.feedback = feedback;
 	}
 

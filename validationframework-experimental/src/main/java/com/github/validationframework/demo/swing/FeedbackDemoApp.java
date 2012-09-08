@@ -31,14 +31,14 @@ import com.github.validationframework.base.rule.bool.AndBooleanRule;
 import com.github.validationframework.base.rule.string.StringRegexRule;
 import com.github.validationframework.base.transform.Transformer;
 import com.github.validationframework.base.validator.SimpleValidator;
-import com.github.validationframework.experimental.resulthandler.IconTipFeedbackOnTrigger;
+import com.github.validationframework.experimental.resulthandler.AbstractIconFeedback;
+import com.github.validationframework.experimental.resulthandler.IconFeedbackOnTrigger;
 import com.github.validationframework.swing.dataprovider.JFormattedTextFieldTextProvider;
 import com.github.validationframework.swing.dataprovider.JTextFieldTextProvider;
 import com.github.validationframework.swing.resulthandler.AbstractColorFeedback;
-import com.github.validationframework.swing.resulthandler.AbstractIconFeedback;
 import com.github.validationframework.swing.resulthandler.AbstractStickerFeedback;
 import com.github.validationframework.swing.resulthandler.bool.ComponentEnablingBooleanResultHandler;
-import com.github.validationframework.swing.resulthandler.bool.IconTipBooleanFeedback;
+import com.github.validationframework.swing.resulthandler.bool.IconBooleanFeedback;
 import com.github.validationframework.swing.rule.JFormattedTextFieldFormatterRule;
 import com.github.validationframework.swing.trigger.JFormattedTextFieldDocumentChangedTrigger;
 import com.github.validationframework.swing.trigger.JTextFieldDocumentChangedTrigger;
@@ -200,10 +200,10 @@ public class FeedbackDemoApp extends JFrame {
 			setIcon(result.getIcon());
 			switch (result) {
 				case OK:
-					hideIconTip();
+					hideIcon();
 					break;
 				default:
-					showIconTip();
+					showIcon();
 			}
 		}
 	}
@@ -245,7 +245,7 @@ public class FeedbackDemoApp extends JFrame {
 		contentPane.add(new JLabel("Icon:"));
 		final JTextField textField3 = new JTextField();
 		contentPane.add(textField3, "growx");
-		contentPane.add(new JLabel("Icon tip:"));
+		contentPane.add(new JLabel("Icon with tooltip:"));
 
 		final NumberFormat courseFormat = NumberFormat.getIntegerInstance();
 		courseFormat.setMinimumIntegerDigits(3);
@@ -285,8 +285,8 @@ public class FeedbackDemoApp extends JFrame {
 		createValidator4(formattedTextField, resultCollector4);
 
 		// Create global
-		final IconTipBooleanFeedback jumpingFeedback = new IconTipBooleanFeedback(null);
-		IconTipFeedbackOnTrigger<Boolean> triggerFollower = new IconTipFeedbackOnTrigger<Boolean>(jumpingFeedback);
+		final IconBooleanFeedback jumpingFeedback = new IconBooleanFeedback(null);
+		IconFeedbackOnTrigger<Boolean> triggerFollower = new IconFeedbackOnTrigger<Boolean>(jumpingFeedback);
 		triggerFollower.addTrigger(new JTextFieldDocumentChangedTrigger(textField1));
 		triggerFollower.addTrigger(new JTextFieldDocumentChangedTrigger(textField2));
 		triggerFollower.addTrigger(new JTextFieldDocumentChangedTrigger(textField3));
@@ -343,29 +343,9 @@ public class FeedbackDemoApp extends JFrame {
 		final JFormattedTextFieldTextProvider dataProvider = new JFormattedTextFieldTextProvider(formattedTextField);
 		final JFormattedTextFieldFormatterRule rule1 = new JFormattedTextFieldFormatterRule(formattedTextField);
 		final StringRegexRule rule2 = new StringRegexRule("^[0-9]{1,3}$");
-		final IconTipBooleanFeedback resultHandler1 =
-				new IconTipBooleanFeedback(formattedTextField, null, null, IconTipBooleanFeedback.DEFAULT_INVALID_ICON,
+		final IconBooleanFeedback resultHandler1 =
+				new IconBooleanFeedback(formattedTextField, null, null, IconBooleanFeedback.DEFAULT_INVALID_ICON,
 						"Angle should be between 000 and 359");
-
-//		final ComponentEnablingBooleanResultHandler resultHandler2 =
-//				new ComponentEnablingBooleanResultHandler(applyButton);
-
-//		final AndSimpleValidator<String> validator4= new AndSimpleValidator<String>();
-//		validator.addTrigger(trigger);
-//		validator.addDataProvider(dataProvider);
-//		validator.addRule(rule1);
-//		validator.addRule(rule2);
-//		validator.addResultHandler(resultHandler1);
-//		validator.addResultHandler(resultHandler2);
-
-//		final SimpleValidator<Number, Boolean> validator = new SimpleValidator<Number, Boolean>();
-//		validator.addTrigger(new JFormattedTextFieldDocumentChangedTrigger(formattedTextField));
-//		validator.addDataProvider(new JFormattedTextFieldNumberValueProvider(formattedTextField));
-//		validator.addRule(new AndCompositeBooleanRule<Number>(new NumberGreaterThanOrEqualToRule(0.0),
-//				new NumberLessThanRule(360.0)));
-//		validator.addResultHandler(
-//				new BooleanIconTipFeedBack(formattedTextField, null, null, BooleanIconTipFeedBack.DEFAULT_INVALID_ICON,
-//						"Angle should be between 000 and 359"));
 
 		on(trigger).read(dataProvider).check(rule1, rule2).handleWith(resultHandler1).handleWith(resultCollector)
 				.build();

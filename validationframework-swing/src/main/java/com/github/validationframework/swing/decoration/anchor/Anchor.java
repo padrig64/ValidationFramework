@@ -64,6 +64,10 @@ public class Anchor {
 	 */
 	private final int offsetY;
 
+	public Anchor(final Anchor anchor) {
+		this(anchor.getRelativeX(), anchor.getOffsetX(), anchor.getRelativeY(), anchor.getOffsetY());
+	}
+
 	public Anchor(final float relativeX, final float relativeY) {
 		this(relativeX, 0, relativeY, 0);
 	}

@@ -23,41 +23,25 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.swing.resulthandler;
+package com.github.validationframework.base.rule.object;
 
-import com.github.validationframework.api.resulthandler.ResultHandler;
-import javax.swing.JLabel;
+import com.github.validationframework.api.rule.Rule;
 
-public class JLabelBooleanFeedback implements ResultHandler<Boolean> {
+/**
+ * Rule making sure that the provided data is not null.<br>It will return true if the data is null, and false
+ * otherwise.<br>Note that even though generics are not needed in the logic of this class, providing a specific type
+ * makes it more convenient to reduce compilation warnings and errors.
+ *
+ * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
+ * type of the component itself.
+ */
+public class NonNullBooleanRule<D> implements Rule<D, Boolean> {
 
-	private JLabel label = new JLabel();
-
-	private Boolean lastResult = null;
-
-	public JLabelBooleanFeedback() {
-		super();
-	}
-
-	public JLabel getLabel() {
-		return label;
-	}
-
-	public void setLabel(final JLabel label) {
-		this.label = label;
-
-		if (this.label == null) {
-			this.label = new JLabel();
-			showResult(lastResult);
-		}
-	}
-
+	/**
+	 * @see Rule#validate(Object)
+	 */
 	@Override
-	public void handleResult(final Boolean result) {
-		lastResult = result;
-		showResult(result);
-	}
-
-	private void showResult(final Boolean result) {
-		// TODO
+	public Boolean validate(final D data) {
+		return (data != null);
 	}
 }

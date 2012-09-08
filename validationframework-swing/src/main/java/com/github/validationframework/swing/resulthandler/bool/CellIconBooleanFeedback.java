@@ -26,17 +26,17 @@
 package com.github.validationframework.swing.resulthandler.bool;
 
 import com.github.validationframework.swing.decoration.utils.IconUtils;
-import com.github.validationframework.swing.resulthandler.AbstractIconTipFeedback;
+import com.github.validationframework.swing.resulthandler.AbstractCellIconFeedback;
 import javax.swing.Icon;
-import javax.swing.JComponent;
+import javax.swing.JTable;
 
-public class IconTipBooleanFeedback extends AbstractIconTipFeedback<Boolean> {
+public class CellIconBooleanFeedback extends AbstractCellIconFeedback<Boolean> {
 
 	public static final Icon DEFAULT_VALID_ICON =
-			IconUtils.loadImageIcon("/images/defaults/valid.png", IconTipBooleanFeedback.class);
+			IconUtils.loadImageIcon("/images/defaults/valid.png", IconBooleanFeedback.class);
 
 	public static final Icon DEFAULT_INVALID_ICON =
-			IconUtils.loadImageIcon("/images/defaults/invalid.png", IconTipBooleanFeedback.class);
+			IconUtils.loadImageIcon("/images/defaults/invalid.png", IconBooleanFeedback.class);
 
 	private Icon validIcon = null;
 
@@ -48,21 +48,24 @@ public class IconTipBooleanFeedback extends AbstractIconTipFeedback<Boolean> {
 
 	private Boolean lastResult = null;
 
-	public IconTipBooleanFeedback(final JComponent owner) {
-		this(owner, DEFAULT_VALID_ICON, DEFAULT_INVALID_ICON);
+	public CellIconBooleanFeedback(final JTable table, final int modelRowIndex, final int modelColumnIndex) {
+		this(table, modelRowIndex, modelColumnIndex, DEFAULT_VALID_ICON, DEFAULT_INVALID_ICON);
 	}
 
-	public IconTipBooleanFeedback(final JComponent owner, final Icon validIcon, final Icon invalidIcon) {
-		this(owner, validIcon, null, invalidIcon, null);
+	public CellIconBooleanFeedback(final JTable table, final int modelRowIndex, final int modelColumnIndex,
+								   final Icon validIcon, final Icon invalidIcon) {
+		this(table, modelRowIndex, modelColumnIndex, validIcon, null, invalidIcon, null);
 	}
 
-	public IconTipBooleanFeedback(final JComponent owner, final String validText, final String invalidText) {
-		this(owner, DEFAULT_VALID_ICON, validText, DEFAULT_INVALID_ICON, invalidText);
+	public CellIconBooleanFeedback(final JTable table, final int modelRowIndex, final int modelColumnIndex,
+								   final String validText, final String invalidText) {
+		this(table, modelRowIndex, modelColumnIndex, DEFAULT_VALID_ICON, validText, DEFAULT_INVALID_ICON, invalidText);
 	}
 
-	public IconTipBooleanFeedback(final JComponent owner, final Icon validIcon, final String validText,
-								  final Icon invalidIcon, final String invalidText) {
-		super(owner);
+	public CellIconBooleanFeedback(final JTable table, final int modelRowIndex, final int modelColumnIndex,
+								   final Icon validIcon, final String validText, final Icon invalidIcon,
+								   final String invalidText) {
+		super(table, modelRowIndex, modelColumnIndex);
 
 		setValidIcon(validIcon);
 		setValidText(validText);
@@ -107,7 +110,7 @@ public class IconTipBooleanFeedback extends AbstractIconTipFeedback<Boolean> {
 	}
 
 	/**
-	 * @see AbstractIconTipFeedback#handleResult(Object)
+	 * @see com.github.validationframework.swing.resulthandler.AbstractCellIconFeedback#handleResult(Object)
 	 */
 	@Override
 	public void handleResult(final Boolean valid) {

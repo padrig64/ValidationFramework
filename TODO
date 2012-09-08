@@ -1,9 +1,15 @@
+. CellIconBooleanFeedback when sorting table
+. Validator marker interface?
 . Initial state/trigger when building the validators
 . Marker interface for validators
 . Fix ToolTipDialog transparency support
 . Component state conditional rule
 . More comments on the classes on the "what can it be used for"
-. Group
+. Heterogeneous Group
+. Label boolean feedback
+. Common settings (default icons, etc.)
+. RuleTransformerWrapper
+. DataProviderTransformerWrapper
 . Rule-based formatter
 . Aggregate boolean result collectors
 . Disabled decoration on tab
@@ -11,7 +17,7 @@
 . Conditional result collector (according to the selection of a combobox, checkbox selection, etc.)
 . More consistency for handling "no result" results
 . Finalize mappable validator
-. Table editing
+. Table editing: with/without valid commit to model, cell/column-wise validator
 . Fix UnsupportedOperationException at ToolTipDialog.java:174
 . Forward clicks on custom tab title renderer
 . Tab decoration depending on tab selection

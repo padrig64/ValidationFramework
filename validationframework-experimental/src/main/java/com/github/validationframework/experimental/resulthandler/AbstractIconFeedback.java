@@ -23,32 +23,28 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.swing.resulthandler;
+package com.github.validationframework.experimental.resulthandler;
 
 import com.github.validationframework.api.resulthandler.ResultHandler;
-import com.github.validationframework.swing.decoration.IconTipComponentDecoration;
+import com.github.validationframework.experimental.decoration.IconComponentDecoration;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 
-public abstract class AbstractIconTipFeedback<O> implements ResultHandler<O> {
+@Deprecated
+public abstract class AbstractIconFeedback<O> implements ResultHandler<O> {
 
-	private IconTipComponentDecoration decorator = null;
+	private IconComponentDecoration decorator = null;
 
-	public AbstractIconTipFeedback(final JComponent decoratedComponent) {
-		attach(decoratedComponent);
+	public AbstractIconFeedback(final JComponent owner) {
+		attach(owner);
 	}
 
-	public void attach(final JComponent decoratedComponent) {
-		boolean wasVisible = false;
-		if (decorator != null) {
-			wasVisible = decorator.isVisible();
-		}
-
+	public void attach(final JComponent owner) {
 		detach();
 
-		if (decoratedComponent != null) {
-			decorator = new IconTipComponentDecoration(decoratedComponent);
-			decorator.setVisible(wasVisible);
+		if (owner != null) {
+			decorator = new IconComponentDecoration(owner);
+			decorator.setVisible(false);
 		}
 	}
 
@@ -57,14 +53,6 @@ public abstract class AbstractIconTipFeedback<O> implements ResultHandler<O> {
 			decorator.dispose();
 			decorator = null;
 		}
-	}
-
-	public JComponent getDecoratedComponent() {
-		JComponent component = null;
-		if (decorator != null) {
-			component = decorator.getDecoratedComponent();
-		}
-		return component;
 	}
 
 	protected Icon getIcon() {
@@ -81,27 +69,13 @@ public abstract class AbstractIconTipFeedback<O> implements ResultHandler<O> {
 		}
 	}
 
-	protected String getToolTipText() {
-		String tip = null;
-		if (decorator != null) {
-			tip = decorator.getToolTipText();
-		}
-		return tip;
-	}
-
-	protected void setToolTipText(final String text) {
-		if (decorator != null) {
-			decorator.setToolTipText(text);
-		}
-	}
-
-	protected void showIconTip() {
+	protected void showIcon() {
 		if (decorator != null) {
 			decorator.setVisible(true);
 		}
 	}
 
-	protected void hideIconTip() {
+	protected void hideIcon() {
 		if (decorator != null) {
 			decorator.setVisible(false);
 		}

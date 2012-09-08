@@ -313,8 +313,10 @@ public abstract class AbstractComponentDecoration implements Disposable {
 	 * Removes the decoration from the layered pane.
 	 */
 	private void detachFromLayeredPane() {
-		attachedLayeredPane.remove(decorationPainter);
-		attachedLayeredPane = null;
+		if (attachedLayeredPane != null) {
+			attachedLayeredPane.remove(decorationPainter);
+			attachedLayeredPane = null;
+		}
 	}
 
 	/**
@@ -362,7 +364,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
 	 * etc.).<br>This method has been made protected so that it can be easily called from the implementating sub-classes.
 	 */
 	protected void followDecoratedComponent() {
-		if (decorationPainter != null) {
+		if ((decorationPainter != null) && (anchorLink != null)) {
 			if (attachedLayeredPane == null) {
 				attachToLayeredPane();
 			}

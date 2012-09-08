@@ -23,65 +23,43 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.swing.decoration;
+package com.github.validationframework.experimental.decoration;
 
+import com.github.validationframework.swing.decoration.AbstractComponentDecoration;
 import com.github.validationframework.swing.decoration.anchor.Anchor;
 import com.github.validationframework.swing.decoration.anchor.AnchorLink;
-import com.github.validationframework.swing.decoration.support.ToolTipDialog;
 import java.awt.Graphics;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 
-public class IconTipComponentDecoration extends AbstractComponentDecoration {
-
-	private class ToolTipAdapter extends MouseAdapter {
-
-		/**
-		 * @see MouseAdapter#mouseEntered(MouseEvent)
-		 */
-		@Override
-		public void mouseEntered(final MouseEvent e) {
-			toolTipDialog.setVisible(true);
-		}
-
-		/**
-		 * @see MouseAdapter#mouseExited(MouseEvent)
-		 */
-		@Override
-		public void mouseExited(final MouseEvent e) {
-			toolTipDialog.setVisible(false);
-		}
-	}
+@Deprecated
+public class IconComponentDecoration extends AbstractComponentDecoration {
 
 	/**
 	 * Default anchor link with the owner component on which the decorator will be attached.
 	 */
-	// TODO Make this dependent on the LAF
-	public static final AnchorLink DEFAULT_ANCHOR_LINK_WITH_OWNER =
-			new AnchorLink(new Anchor(0.0f, 3, 1.0f, -3), Anchor.CENTER);
+	public static final AnchorLink DEFAULT_ANCHOR_LINK_WITH_OWNER = new AnchorLink(Anchor.BOTTOM_LEFT, Anchor.CENTER);
 
 	/**
 	 * Icon to be displayed as decoration on the owner component.
 	 */
 	private Icon icon = null;
 
-	private ToolTipDialog toolTipDialog = null; // Lazy initialization to make sure we will have a parent
-
-	private String toolTipText = null;
-
-	private AnchorLink anchorLinkWithToolTip = new AnchorLink(Anchor.BOTTOM_RIGHT, Anchor.TOP_LEFT);
-
-	public IconTipComponentDecoration(final JComponent decoratedComponent) {
-		this(decoratedComponent, null);
+	public IconComponentDecoration(final JComponent owner) {
+		this(owner, null, DEFAULT_ANCHOR_LINK_WITH_OWNER);
 	}
 
-	public IconTipComponentDecoration(final JComponent decoratedComponent, final Icon icon) {
-		super(decoratedComponent, DEFAULT_ANCHOR_LINK_WITH_OWNER);
-		this.icon = icon;
+	public IconComponentDecoration(final JComponent owner, final AnchorLink anchorLinkWithOwner) {
+		this(owner, null, anchorLinkWithOwner);
+	}
 
-		decorationPainter.addMouseListener(new ToolTipAdapter());
+	public IconComponentDecoration(final JComponent owner, final Icon icon) {
+		this(owner, icon, DEFAULT_ANCHOR_LINK_WITH_OWNER);
+	}
+
+	public IconComponentDecoration(final JComponent owner, final Icon icon, final AnchorLink anchorLinkWithOwner) {
+		super(owner, anchorLinkWithOwner);
+		this.icon = icon;
 	}
 
 	/**
@@ -101,41 +79,6 @@ public class IconTipComponentDecoration extends AbstractComponentDecoration {
 	public void setIcon(final Icon icon) {
 		this.icon = icon;
 		followDecoratedComponent();
-	}
-
-	public String getToolTipText() {
-		return toolTipText;
-	}
-
-	public void setToolTipText(final String text) {
-		this.toolTipText = text;
-		if (toolTipDialog != null) {
-			toolTipDialog.setText(text);
-		}
-	}
-
-	public AnchorLink getAnchorLinkWithToolTip() {
-		return anchorLinkWithToolTip;
-	}
-
-	public void setAnchorLinkWithToolTip(final AnchorLink anchorLinkWithToolTip) {
-		this.anchorLinkWithToolTip = anchorLinkWithToolTip;
-	}
-
-	/**
-	 * @see AbstractComponentDecoration#setVisible(boolean)
-	 */
-	@Override
-	public void setVisible(final boolean visible) {
-		super.setVisible(visible);
-
-		if ((toolTipDialog == null) && visible) {
-			toolTipDialog = new ToolTipDialog(decorationPainter, anchorLinkWithToolTip);
-			toolTipDialog.setText(toolTipText);
-		}
-		if (!visible && (toolTipDialog != null)) {
-			toolTipDialog.setVisible(false);
-		}
 	}
 
 	/**

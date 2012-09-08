@@ -35,10 +35,10 @@ import java.beans.PropertyChangeListener;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.DefaultCellEditor;
+import javax.swing.JComboBox;
 import javax.swing.JTable;
-import javax.swing.text.JTextComponent;
 
-public class JTableTextEditorDocumentChangedTrigger extends AbstractTrigger {
+public class JTableComboBoxEditorModelChangedTrigger extends AbstractTrigger {
 
 	private class SourceAdapter implements PropertyChangeListener {
 
@@ -61,9 +61,9 @@ public class JTableTextEditorDocumentChangedTrigger extends AbstractTrigger {
 			// Attach to new only if it is the right cell
 			if (evt.getNewValue() instanceof DefaultCellEditor) {
 				final Component editorComponent = ((DefaultCellEditor) evt.getNewValue()).getComponent();
-				if (editorComponent instanceof JTextComponent) {
-					final JTextComponentDocumentChangedTrigger trigger =
-							new JTextComponentDocumentChangedTrigger((JTextComponent) editorComponent);
+				if (editorComponent instanceof JComboBox) {
+					final JComboBoxModelChangedTrigger trigger =
+							new JComboBoxModelChangedTrigger((JComboBox) editorComponent);
 					trigger.addTriggerListener(triggerForwarder);
 					editorToTrigger.put(evt.getNewValue(), trigger);
 					// TODO Check if already there?
@@ -137,12 +137,12 @@ public class JTableTextEditorDocumentChangedTrigger extends AbstractTrigger {
 
 	private final TriggerListener triggerForwarder = new TriggerForwarder();
 
-	public JTableTextEditorDocumentChangedTrigger(final JTable table) {
+	public JTableComboBoxEditorModelChangedTrigger(final JTable table) {
 		this(table, ALL_ROWS, ALL_COLUMNS);
 	}
 
-	public JTableTextEditorDocumentChangedTrigger(final JTable table, final int modelRowIndex,
-												  final int modelColumnIndex) {
+	public JTableComboBoxEditorModelChangedTrigger(final JTable table, final int modelRowIndex,
+												   final int modelColumnIndex) {
 		super();
 		this.table = table;
 		this.modelRowIndex = modelRowIndex;

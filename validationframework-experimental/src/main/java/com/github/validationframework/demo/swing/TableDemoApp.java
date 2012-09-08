@@ -25,15 +25,20 @@
 
 package com.github.validationframework.demo.swing;
 
+import com.github.validationframework.base.resulthandler.PrintStreamResultHandler;
+import com.github.validationframework.base.rule.object.NonNullBooleanRule;
 import com.github.validationframework.base.rule.string.StringLengthGreaterThanOrEqualToRule;
 import com.github.validationframework.base.validator.SimpleValidator;
+import com.github.validationframework.swing.dataprovider.JTableComboBoxEditorSelectedValueProvider;
 import com.github.validationframework.swing.dataprovider.JTableTextEditorTextProvider;
-import com.github.validationframework.swing.resulthandler.bool.ComponentEnablingBooleanResultHandler;
-import com.github.validationframework.swing.resulthandler.bool.IconTipBooleanFeedback;
+import com.github.validationframework.swing.resulthandler.bool.CellIconBooleanFeedback;
+import com.github.validationframework.swing.trigger.JTableComboBoxEditorModelChangedTrigger;
 import com.github.validationframework.swing.trigger.JTableTextEditorDocumentChangedTrigger;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -75,7 +80,7 @@ public class TableDemoApp extends JFrame {
 
 		// Table
 		final JTable table = createTable();
-		installValidator(table, applyButton);
+		installValidators(table, applyButton);
 		contentPane.add(new JScrollPane(table), "grow");
 
 		// Apply button
@@ -109,19 +114,33 @@ public class TableDemoApp extends JFrame {
 			model.addRow(new String[] { "ABCD", "123456", "ZZ", "123.456" });
 		}
 
+		final JComboBox comboBoxEditorComponent = new JComboBox();
+		comboBoxEditorComponent.addItem("Option 1");
+		comboBoxEditorComponent.addItem("Option 2");
+		comboBoxEditorComponent.addItem("Option 3");
+		comboBoxEditorComponent.addItem("Option 4");
+		table.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(comboBoxEditorComponent));
+
 		return table;
 	}
 
-	private void installValidator(final JTable table, final JButton applyButton) {
+	private void installValidators(final JTable table, final JButton applyButton) {
 		final SimpleValidator<String, Boolean> validator = new SimpleValidator<String, Boolean>();
 
-		validator.addTrigger(new JTableTextEditorDocumentChangedTrigger(table));
+		validator.addTrigger(new JTableTextEditorDocumentChangedTrigger(table, 1, 1));
 		validator.addDataProvider(new JTableTextEditorTextProvider(table));
 		validator.addRule(new StringLengthGreaterThanOrEqualToRule(3));
-		validator.addResultHandler(new ComponentEnablingBooleanResultHandler(applyButton));
-		validator.addResultHandler(
-				new IconTipBooleanFeedback(table, null, null, IconTipBooleanFeedback.DEFAULT_INVALID_ICON,
-						"Angle should be between 000 and 359"));
+		validator.addResultHandler(new PrintStreamResultHandler<Boolean>("(1,1) => "));
+//		validator.addResultHandler(
+//				new IconTipBooleanFeedback(table, null, null, IconTipBooleanFeedback.DEFAULT_INVALID_ICON,
+//						"Cell should contain at least 3 characters"));
+		CellIconBooleanFeedback resultHandler = new CellIconBooleanFeedback(table, 1, 1);
+		validator.addResultHandler(resultHandler);
+
+		final SimpleValidator<Object, Boolean> validator2 = new SimpleValidator<Object, Boolean>();
+		validator2.addTrigger(new JTableComboBoxEditorModelChangedTrigger(table));
+		validator2.addDataProvider(new JTableComboBoxEditorSelectedValueProvider<Object>(table));
+		validator2.addRule(new NonNullBooleanRule<Object>());
 	}
 
 	public static void main(final String[] args) {

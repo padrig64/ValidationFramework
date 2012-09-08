@@ -34,6 +34,10 @@ public class AnchorLink {
 	private Anchor masterAnchor;
 	private Anchor slaveAnchor;
 
+	public AnchorLink(final AnchorLink anchorLink) {
+		this(new Anchor(anchorLink.getMasterAnchor()), new Anchor(anchorLink.getSlaveAnchor()));
+	}
+
 	public AnchorLink(final Anchor masterAnchor, final Anchor slaveAnchor) {
 		this.masterAnchor = masterAnchor;
 		this.slaveAnchor = slaveAnchor;

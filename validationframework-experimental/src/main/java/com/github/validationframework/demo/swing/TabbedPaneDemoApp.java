@@ -29,8 +29,8 @@ import com.github.validationframework.base.resulthandler.ResultCollector;
 import com.github.validationframework.base.rule.bool.AndBooleanRule;
 import com.github.validationframework.swing.dataprovider.JFormattedTextFieldTextProvider;
 import com.github.validationframework.swing.resulthandler.bool.ComponentEnablingBooleanResultHandler;
-import com.github.validationframework.swing.resulthandler.bool.IconTipBooleanFeedback;
-import com.github.validationframework.swing.resulthandler.bool.TabIconTipBooleanFeedback;
+import com.github.validationframework.swing.resulthandler.bool.IconBooleanFeedback;
+import com.github.validationframework.swing.resulthandler.bool.TabIconBooleanFeedback;
 import com.github.validationframework.swing.rule.JFormattedTextFieldFormatterRule;
 import com.github.validationframework.swing.trigger.JFormattedTextFieldDocumentChangedTrigger;
 import java.awt.Component;
@@ -153,7 +153,7 @@ public class TabbedPaneDemoApp extends JFrame {
 		fieldResultCollectors.add(fieldResultCollector);
 
 		on(new JFormattedTextFieldDocumentChangedTrigger(field)).read(new JFormattedTextFieldTextProvider(field))
-				.check(new JFormattedTextFieldFormatterRule(field)).handleWith(new IconTipBooleanFeedback(field))
+				.check(new JFormattedTextFieldFormatterRule(field)).handleWith(new IconBooleanFeedback(field))
 				.handleWith(fieldResultCollector).build();
 	}
 
@@ -166,7 +166,7 @@ public class TabbedPaneDemoApp extends JFrame {
 
 		// Create validator for the whole tab
 		collect(fieldResultCollectors).check(new AndBooleanRule()).handleWith(
-				new TabIconTipBooleanFeedback(tabbedPane, i, null, null, TabIconTipBooleanFeedback.DEFAULT_INVALID_ICON,
+				new TabIconBooleanFeedback(tabbedPane, i, null, null, TabIconBooleanFeedback.DEFAULT_INVALID_ICON,
 						"One or several invalid input fields")).handleWith(tabResultCollector).build();
 	}
 
