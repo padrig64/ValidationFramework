@@ -42,6 +42,7 @@ import com.github.validationframework.swing.resulthandler.bool.IconBooleanFeedba
 import com.github.validationframework.swing.rule.JFormattedTextFieldFormatterRule;
 import com.github.validationframework.swing.trigger.JFormattedTextFieldDocumentChangedTrigger;
 import com.github.validationframework.swing.trigger.JTextFieldDocumentChangedTrigger;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -64,6 +65,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
+import javax.swing.border.LineBorder;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.text.NumberFormatter;
 import net.miginfocom.swing.MigLayout;
@@ -255,7 +257,9 @@ public class FeedbackDemoApp extends JFrame {
 		courseFormatter.setMinimum(0.0);
 		courseFormatter.setMaximum(359.0);
 		final JFormattedTextField formattedTextField = new JFormattedTextField(courseFormatter);
-		contentPane.add(formattedTextField, "growx");
+		JPanel panel = new JPanel(new BorderLayout());
+		panel.add(formattedTextField);
+		contentPane.add(panel, "growx");
 
 		// Apply button
 		final JButton applyButton = new JButton("Apply");
@@ -346,6 +350,10 @@ public class FeedbackDemoApp extends JFrame {
 		final IconBooleanFeedback resultHandler1 =
 				new IconBooleanFeedback(formattedTextField, null, null, IconBooleanFeedback.DEFAULT_INVALID_ICON,
 						"Angle should be between 000 and 359");
+
+		// Example of decoration that would be clipped by the parent panel
+		((JComponent) formattedTextField.getParent().getParent()).setBorder(new LineBorder(Color.RED));
+		resultHandler1.setClippingAncestor((JComponent) formattedTextField.getParent().getParent());
 
 		on(trigger).read(dataProvider).check(rule1, rule2).handleWith(resultHandler1).handleWith(resultCollector)
 				.build();

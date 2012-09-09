@@ -4,9 +4,11 @@ FIXES
  . Disabled decoration on tab?
  . Disabled decoration on cell?
  . Icon tip decoration a bit more on the up and right when using Nimbus LAF
+ . Show icon tip tooltip only if mouse over visible rectangle (not on clipped out region)
 
 NEW STUFF
  . More comments
+ . Table checkbox editor trigger
  . Table editing: with/without valid commit to model, column-wise validator, per-cell/per-row group validation
  . More consistency for handling "no result" results
  . Initial state/trigger when building the validators

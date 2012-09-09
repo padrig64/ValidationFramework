@@ -51,7 +51,7 @@ public class BaseNumberEqualToRule<T extends Number> implements Rule<T, Boolean>
 	}
 
 	/**
-	 * @see com.github.validationframework.api.rule.Rule#validate(Object)
+	 * @see Rule#validate(Object)
 	 */
 	@Override
 	public Boolean validate(final T data) {

@@ -30,6 +30,9 @@ import javax.swing.ImageIcon;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Utility class for handling icons.
+ */
 public final class IconUtils {
 
 	/**
@@ -44,6 +47,14 @@ public final class IconUtils {
 		// Nothing to be done
 	}
 
+	/**
+	 * Loads an image icon from a resource file.
+	 *
+	 * @param iconName Name of the resource file to be loaded.
+	 * @param clazz Class for which the resource exists.
+	 *
+	 * @return Image icon if it could be loaded, null otherwise.
+	 */
 	public static ImageIcon loadImageIcon(final String iconName, final Class<?> clazz) {
 		ImageIcon icon = null;
 

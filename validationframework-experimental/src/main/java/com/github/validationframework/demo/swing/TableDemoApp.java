@@ -32,6 +32,7 @@ import com.github.validationframework.base.validator.SimpleValidator;
 import com.github.validationframework.swing.dataprovider.JTableComboBoxEditorSelectedValueProvider;
 import com.github.validationframework.swing.dataprovider.JTableTextEditorTextProvider;
 import com.github.validationframework.swing.resulthandler.bool.CellIconBooleanFeedback;
+import com.github.validationframework.swing.resulthandler.bool.IconBooleanFeedback;
 import com.github.validationframework.swing.trigger.JTableComboBoxEditorModelChangedTrigger;
 import com.github.validationframework.swing.trigger.JTableTextEditorDocumentChangedTrigger;
 import java.awt.Dimension;
@@ -80,8 +81,8 @@ public class TableDemoApp extends JFrame {
 
 		// Table
 		final JTable table = createTable();
-		installValidators(table, applyButton);
 		contentPane.add(new JScrollPane(table), "grow");
+		installValidators(table, applyButton);
 
 		// Apply button
 		contentPane.add(applyButton, "align right");
@@ -131,11 +132,10 @@ public class TableDemoApp extends JFrame {
 		validator.addDataProvider(new JTableTextEditorTextProvider(table));
 		validator.addRule(new StringLengthGreaterThanOrEqualToRule(3));
 		validator.addResultHandler(new PrintStreamResultHandler<Boolean>("(1,1) => "));
-//		validator.addResultHandler(
-//				new IconTipBooleanFeedback(table, null, null, IconTipBooleanFeedback.DEFAULT_INVALID_ICON,
-//						"Cell should contain at least 3 characters"));
-		CellIconBooleanFeedback resultHandler = new CellIconBooleanFeedback(table, 1, 1);
-		validator.addResultHandler(resultHandler);
+		validator.addResultHandler(
+				new IconBooleanFeedback(applyButton, null, null, IconBooleanFeedback.DEFAULT_INVALID_ICON,
+						"Cell should contain at least 3 characters"));
+		validator.addResultHandler(new CellIconBooleanFeedback(table, 1, 1));
 
 		final SimpleValidator<Object, Boolean> validator2 = new SimpleValidator<Object, Boolean>();
 		validator2.addTrigger(new JTableComboBoxEditorModelChangedTrigger(table));
