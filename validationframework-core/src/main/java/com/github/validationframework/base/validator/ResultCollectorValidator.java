@@ -38,8 +38,30 @@ import org.slf4j.LoggerFactory;
 /**
  * TODO
  *
- * @param <D> Type of data handled by this validator, that is to say, the transformed collected results.
+ * @param <D> Type of data handled by this validator, that is to say, the transformed collected results from other validators.
  * @param <O> Typed of output of this validator.
+ */
+
+/**
+ * Concrete implementation of a simple validator that is collecting the results from other validators and performs
+ * validation at a higher level.<br>A simple validator has data providers and rules that are bound to a known specific
+ * type of data, in this case the transformed results from other validators, and result handlers that are bound to a
+ * known specific type of result.<br>When any of its result collectors (as triggers) is initiated by other validators,
+ * the result collector validator will read all the results from all of its result collectors (as data providers), check
+ * them all against all of its rules, and handles all the results using all of its result handlers.<br>The result
+ * collector validator can be useful to aggregate the validation from a group of components (for instance, from
+ * different tabs) to enable/disable some buttons accordingly.
+ *
+ * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
+ * type of the component itself.
+ * @param <O> Type of validation result.<br>It can be, for instance, an enumeration or just a boolean.
+ *
+ * @see AbstractSimpleValidator
+ * @see ResultCollector
+ * @see Trigger
+ * @see TypedDataProvider
+ * @see Rule
+ * @see ResultHandler
  */
 public class ResultCollectorValidator<D, O> extends
 		AbstractSimpleValidator<Trigger, TypedDataProvider<D>, Collection<D>, O, Rule<Collection<D>, O>, O, ResultHandler<O>> {
@@ -49,11 +71,21 @@ public class ResultCollectorValidator<D, O> extends
 	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(ResultCollectorValidator.class);
 
+	/**
+	 * Adds the specified result collector as trigger and data provider for this validator.
+	 *
+	 * @param resultCollector Result collector being a result handler for another validator.
+	 */
 	public void addResultCollector(final ResultCollector<?, D> resultCollector) {
 		addTrigger(resultCollector);
 		addDataProvider(resultCollector);
 	}
 
+	/**
+	 * Removes the specified result collector as trigger and data provider for this validator.
+	 *
+	 * @param resultCollector Result collector being a result handler for another validator.
+	 */
 	public void removeResultCollector(final ResultCollector<?, D> resultCollector) {
 		removeTrigger(resultCollector);
 		removeDataProvider(resultCollector);

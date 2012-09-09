@@ -27,6 +27,12 @@ package com.github.validationframework.base.transform;
 
 import java.util.Collection;
 
+/**
+ * Convenience interface that can be implemented by transformers aggregating a collection of input data.
+ *
+ * @param <I> Type of the input object to be transformed.
+ * @param <O> Type of the output object after aggregation.
+ */
 public interface Aggregator<I, O> extends Transformer<Collection<I>, O> {
 	// Nothing to be done
 }

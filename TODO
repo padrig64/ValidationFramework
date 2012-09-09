@@ -1,44 +1,44 @@
-. CellIconBooleanFeedback when sorting table
-. Validator marker interface?
-. Initial state/trigger when building the validators
-. Marker interface for validators
-. Fix ToolTipDialog transparency support
-. Component state conditional rule
-. More comments on the classes on the "what can it be used for"
-. Heterogeneous Group
-. Label boolean feedback
-. Common settings (default icons, etc.)
-. RuleTransformerWrapper
-. DataProviderTransformerWrapper
-. Rule-based formatter
-. Aggregate boolean result collectors
-. Disabled decoration on tab
-. Icon decoration below combobox popups
-. Conditional result collector (according to the selection of a combobox, checkbox selection, etc.)
-. More consistency for handling "no result" results
-. Finalize mappable validator
-. Table editing: with/without valid commit to model, cell/column-wise validator
-. Fix UnsupportedOperationException at ToolTipDialog.java:174
-. Forward clicks on custom tab title renderer
-. Tab decoration depending on tab selection
-. No decoration on disabled components
-. Icon tip decoration a bit more on the up and right when using Nimbus LAF
-. No decoration on disable component (config + listen to component state)
-. Put decoration per plane and not per parent
-. Avoid instantiation of result collectors (collect directly from validators, etc.)
-. Check licenses
-. Flow logging
-. Use IDs
-. Better icon tip anchoring for IconTipDecorator
-. Transformers (of Data and Results)
-. Auto-scroll/jump to errors in case of scrollpanes, tabbedpane, etc.
-. Initial state
-. Reformat/Revert JFormattedTextField when focus lost? Save values allowed by the rules (wider than the default number formatter)
-. Initial focus for JFormattedTextField helper
-. Map rules to result handlers?
-. Exception-based results
-. Property data provider
-. Conditional logic
-. Decoration transparency on Java 7
-. All features described in the README file
-. Think about dialog strategies
+FIXES
+ . CellIconBooleanFeedback when sorting table
+ . More comments on the classes on the "what can it be used for"
+ . Disabled decoration on tab?
+ . Disabled decoration on cell?
+ . Icon tip decoration a bit more on the up and right when using Nimbus LAF
+
+NEW STUFF
+ . More comments
+ . Table editing: with/without valid commit to model, column-wise validator, per-cell/per-row group validation
+ . More consistency for handling "no result" results
+ . Initial state/trigger when building the validators
+ . Fix ToolTipDialog transparency support (Java 6, Java 7 and JNA)
+ . Label boolean feedback
+ . Mappable validator builder
+ . Common settings (default icons, etc.)
+ . Rule-based formatter
+ . Reformat/Revert JFormattedTextField when focus lost? Save values allowed by the rules (wider than the default number formatter)
+ . Icon decoration above combobox popups
+ . JavaFX 2 support
+ . Tab decoration depending on tab selection
+ . No decoration on disabled components (config + listen to component state)
+ . Avoid instantiation of result collectors (collect directly from validators, etc.)
+ . Better icon tip anchoring for IconTipDecorator
+ . Common implementation for the icon tip
+ . Auto-scroll/jump to errors in case of scrollpanes, tabbedpane, etc.
+ . Initial focus for JFormattedTextField helper
+
+THINK ABOUT
+ . Remove data provider marker interface (check validation of heterogeneous groups first)
+ . Property data provider
+ . Check licenses again
+ . Validation flow logging
+ . Use of IDs
+ . Use of predicates or compose heterogeneous rules or component state conditional rule or RuleTransformerWrapper/DataProviderTransformerWrapper
+ . Aggregate boolean result collectors
+ . Aggregate data from multiple providers, aggregate rule results
+ . Validator marker interface?
+ . Heterogeneous Group
+ . Put decoration per plane and not per parent
+ . Exception-based results
+ . Conditional logic framework
+ . All features described in the README file
+ . Dialog strategies
