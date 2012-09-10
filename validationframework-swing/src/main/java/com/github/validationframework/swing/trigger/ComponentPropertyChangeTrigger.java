@@ -25,6 +25,7 @@
 
 package com.github.validationframework.swing.trigger;
 
+import com.github.validationframework.api.common.Disposable;
 import com.github.validationframework.api.trigger.TriggerEvent;
 import com.github.validationframework.base.trigger.AbstractTrigger;
 import java.awt.Component;
@@ -34,7 +35,7 @@ import java.beans.PropertyChangeListener;
 /**
  * Trigger initiating the validation when one or several properties of a component change.
  */
-public class ComponentPropertyChangeTrigger extends AbstractTrigger {
+public class ComponentPropertyChangeTrigger extends AbstractTrigger implements Disposable {
 
 	/**
 	 * Listener to component property changes triggering the validation.
@@ -92,11 +93,10 @@ public class ComponentPropertyChangeTrigger extends AbstractTrigger {
 	}
 
 	/**
-	 * @see AbstractTrigger#dispose()
+	 * @see Disposable#dispose()
 	 */
 	@Override
 	public void dispose() {
-		super.dispose();
 		component.removePropertyChangeListener(propertyChangeAdapter);
 	}
 }

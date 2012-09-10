@@ -26,18 +26,38 @@
 package com.github.validationframework.swing.dataprovider;
 
 import com.github.validationframework.api.dataprovider.TypedDataProvider;
-import javax.swing.JComboBox;
+import javax.swing.JList;
 
-public class JComboBoxIndexProvider implements TypedDataProvider<Integer> {
+/**
+ * Data provider retrieving the selected value of a list.
+ *
+ * @see TypedDataProvider
+ * @see JList#getSelectedValue()
+ * @see JListSelectedIndexProvider
+ * @see JListSelectedIndicesProvider
+ * @see JListSelectedValuesProvider
+ */
+public class JListSelectedValueProvider implements TypedDataProvider<Object> {
 
-	private final JComboBox comboBox;
+	/**
+	 * List to get the selected value from.
+	 */
+	private final JList list;
 
-	public JComboBoxIndexProvider(final JComboBox comboBox) {
-		this.comboBox = comboBox;
+	/**
+	 * Constructor specifying the list to get the selected value from.
+	 *
+	 * @param list List to get the selected value from.
+	 */
+	public JListSelectedValueProvider(final JList list) {
+		this.list = list;
 	}
 
+	/**
+	 * @see TypedDataProvider#getData()
+	 */
 	@Override
-	public Integer getData() {
-		return comboBox.getSelectedIndex();
+	public Object getData() {
+		return list.getSelectedValue();
 	}
 }

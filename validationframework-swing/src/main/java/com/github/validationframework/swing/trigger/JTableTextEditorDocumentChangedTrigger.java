@@ -38,7 +38,7 @@ import javax.swing.DefaultCellEditor;
 import javax.swing.JTable;
 import javax.swing.text.JTextComponent;
 
-public class JTableTextEditorDocumentChangedTrigger extends AbstractTrigger {
+public class JTableTextEditorDocumentChangedTrigger extends AbstractTrigger implements Disposable {
 
 	private class SourceAdapter implements PropertyChangeListener {
 
@@ -151,7 +151,7 @@ public class JTableTextEditorDocumentChangedTrigger extends AbstractTrigger {
 	}
 
 	/**
-	 * @see AbstractTrigger#dispose()
+	 * @see Disposable#dispose()
 	 */
 	@Override
 	public void dispose() {

@@ -25,13 +25,14 @@
 
 package com.github.validationframework.swing.trigger;
 
+import com.github.validationframework.api.common.Disposable;
 import com.github.validationframework.api.trigger.TriggerEvent;
 import com.github.validationframework.base.trigger.AbstractTrigger;
 import javax.swing.JSpinner;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-public class JSpinnerModelChangedTrigger extends AbstractTrigger {
+public class JSpinnerModelChangedTrigger extends AbstractTrigger implements Disposable {
 
 	private class SourceAdapter implements ChangeListener {
 
@@ -52,7 +53,7 @@ public class JSpinnerModelChangedTrigger extends AbstractTrigger {
 	}
 
 	/**
-	 * @see AbstractTrigger#dispose()
+	 * @see Disposable#dispose()
 	 */
 	@Override
 	public void dispose() {

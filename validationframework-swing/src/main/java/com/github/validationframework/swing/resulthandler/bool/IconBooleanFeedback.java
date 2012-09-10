@@ -116,9 +116,9 @@ public class IconBooleanFeedback extends AbstractIconFeedback<Boolean> {
 		updateDecoration();
 
 		if ((valid && (validIcon != null)) || (!valid && (invalidIcon != null))) {
-			showIconTip();
+			showIcon();
 		} else {
-			hideIconTip();
+			hideIcon();
 		}
 	}
 

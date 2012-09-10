@@ -25,13 +25,15 @@
 
 package com.github.validationframework.swing.trigger;
 
+import com.github.validationframework.api.common.Disposable;
 import com.github.validationframework.api.trigger.TriggerEvent;
 import com.github.validationframework.base.trigger.AbstractTrigger;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import javax.swing.JToggleButton;
 
-public class BaseToggleComponentModelChangedTrigger<C extends JToggleButton> extends AbstractTrigger {
+public class BaseToggleComponentModelChangedTrigger<C extends JToggleButton> extends AbstractTrigger
+		implements Disposable {
 
 	private class SourceAdapter implements ItemListener {
 
@@ -52,7 +54,7 @@ public class BaseToggleComponentModelChangedTrigger<C extends JToggleButton> ext
 	}
 
 	/**
-	 * @see AbstractTrigger#dispose()
+	 * @see Disposable#dispose()
 	 */
 	@Override
 	public void dispose() {

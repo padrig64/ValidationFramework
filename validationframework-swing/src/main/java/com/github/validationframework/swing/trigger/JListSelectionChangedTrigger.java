@@ -28,58 +28,50 @@ package com.github.validationframework.swing.trigger;
 import com.github.validationframework.api.common.Disposable;
 import com.github.validationframework.api.trigger.TriggerEvent;
 import com.github.validationframework.base.trigger.AbstractTrigger;
-import java.awt.Component;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
+import javax.swing.JList;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 /**
- * Base class for triggers on focus gain.<br>When this trigger is not longer required, do not forget to call {@link
- * #dispose()}.
- *
- * @param <C> Type of component whose focus is to be tracked.
- *
- * @see AbstractTrigger
- * @see #dispose()
+ * Trigger that initiates the validation whenever the selection in a list changes.
  */
-public class BaseComponentFocusGainedTrigger<C extends Component> extends AbstractTrigger implements Disposable {
+public class JListSelectionChangedTrigger extends AbstractTrigger implements Disposable {
 
 	/**
-	 * Focus listener firing a trigger event to the trigger listeners.
+	 * Listener to selection changes in the selection model of the list, triggering the validation.<br>Note that there is
+	 * no need to track replacement of the selection model in the list as this is already done in {@link JList}.
 	 */
-	private class SourceAdapter extends FocusAdapter {
+	private class SelectionAdapter implements ListSelectionListener {
 
 		/**
-		 * @see FocusListener#focusGained(FocusEvent)
+		 * @see ListSelectionListener#valueChanged(ListSelectionEvent)
 		 */
 		@Override
-		public void focusGained(final FocusEvent e) {
-			fireTriggerEvent(new TriggerEvent(source));
+		public void valueChanged(final ListSelectionEvent e) {
+			if (!e.getValueIsAdjusting()) {
+				fireTriggerEvent(new TriggerEvent(list));
+			}
 		}
 	}
 
 	/**
-	 * Component whose focus is to be tracked.
+	 * List to track selection changes.
 	 */
-	private C source = null;
+	private final JList list;
 
 	/**
-	 * Focus listener installed on the component.
+	 * Listener to selection changes.
 	 */
-	private final FocusListener sourceAdapter = new SourceAdapter();
+	private final SelectionAdapter selectionAdapter = new SelectionAdapter();
 
 	/**
-	 * Constructor specified the component whose focus is to be tracked.<br>A focus listener will be installed. So you may
-	 * need to call {@link #dispose()} when trigger is no longer needed.
+	 * Constructor specifying the list whose selection changes are meant to trigger validation.
 	 *
-	 * @param source Component whose focus is to be tracked.
-	 *
-	 * @see #dispose()
+	 * @param list List whose selection changes are meant to trigger validation.
 	 */
-	public BaseComponentFocusGainedTrigger(final C source) {
-		super();
-		this.source = source;
-		source.addFocusListener(sourceAdapter);
+	public JListSelectionChangedTrigger(final JList list) {
+		this.list = list;
+		this.list.addListSelectionListener(selectionAdapter);
 	}
 
 	/**
@@ -87,7 +79,6 @@ public class BaseComponentFocusGainedTrigger<C extends Component> extends Abstra
 	 */
 	@Override
 	public void dispose() {
-		source.removeFocusListener(sourceAdapter);
-		source = null;
+		list.removeListSelectionListener(selectionAdapter);
 	}
 }

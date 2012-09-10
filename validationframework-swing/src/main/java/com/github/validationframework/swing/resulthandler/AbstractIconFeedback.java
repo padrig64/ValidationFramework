@@ -150,13 +150,13 @@ public abstract class AbstractIconFeedback<O> implements ResultHandler<O> {
 		}
 	}
 
-	protected void showIconTip() {
+	protected void showIcon() {
 		if (decoration != null) {
 			decoration.setVisible(true);
 		}
 	}
 
-	protected void hideIconTip() {
+	protected void hideIcon() {
 		if (decoration != null) {
 			decoration.setVisible(false);
 		}

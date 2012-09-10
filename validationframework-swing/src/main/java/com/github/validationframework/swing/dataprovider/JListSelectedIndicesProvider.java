@@ -23,54 +23,47 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.base.trigger;
+package com.github.validationframework.swing.dataprovider;
 
-import com.github.validationframework.api.trigger.Trigger;
-import com.github.validationframework.api.trigger.TriggerEvent;
-import com.github.validationframework.api.trigger.TriggerListener;
+import com.github.validationframework.api.dataprovider.TypedDataProvider;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import javax.swing.JList;
 
 /**
- * Abstract implementation of a typical trigger.<br>It merely implements the methods to add and remove trigger
- * listeners, and provides a method to fire a trigger event to these listeners.<br>However, the call of this method is
- * left to the sub-classes.
+ * Data provider retrieving the selected indices of a list.
  *
- * @see Trigger
- * @see TriggerListener
- * @see TriggerEvent
+ * @see TypedDataProvider
+ * @see JList#getSelectedIndices()
+ * @see JListSelectedIndexProvider
+ * @see JListSelectedValueProvider
+ * @see JListSelectedValuesProvider
  */
-public abstract class AbstractTrigger implements Trigger {
+public class JListSelectedIndicesProvider implements TypedDataProvider<Collection<Integer>> {
 
 	/**
-	 * Trigger listeners.
+	 * List to get the selected indices from.
 	 */
-	protected final List<TriggerListener> listeners = new ArrayList<TriggerListener>();
+	private final JList list;
 
 	/**
-	 * @see Trigger#addTriggerListener(TriggerListener)
-	 */
-	@Override
-	public void addTriggerListener(final TriggerListener listener) {
-		listeners.add(listener);
-	}
-
-	/**
-	 * @see Trigger#removeTriggerListener(TriggerListener)
-	 */
-	@Override
-	public void removeTriggerListener(final TriggerListener listener) {
-		listeners.remove(listener);
-	}
-
-	/**
-	 * Fires the specified trigger event.<br>Calling this method is left to the sub-classes.
+	 * Constructor specifying the list to get the selected indices from.
 	 *
-	 * @param event Trigger event to be fired.
+	 * @param list List to get the selected index from.
 	 */
-	protected void fireTriggerEvent(final TriggerEvent event) {
-		for (final TriggerListener listener : listeners) {
-			listener.triggerValidation(event);
+	public JListSelectedIndicesProvider(final JList list) {
+		this.list = list;
+	}
+
+	/**
+	 * @see TypedDataProvider#getData()
+	 */
+	@Override
+	public Collection<Integer> getData() {
+		final Collection<Integer> indices = new ArrayList<Integer>();
+		for (final int index : list.getSelectedIndices()) {
+			indices.add(index);
 		}
+		return indices;
 	}
 }

@@ -38,7 +38,7 @@ import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
 
-public class JTableComboBoxEditorModelChangedTrigger extends AbstractTrigger {
+public class JTableComboBoxEditorModelChangedTrigger extends AbstractTrigger implements Disposable {
 
 	private class SourceAdapter implements PropertyChangeListener {
 
@@ -151,7 +151,7 @@ public class JTableComboBoxEditorModelChangedTrigger extends AbstractTrigger {
 	}
 
 	/**
-	 * @see AbstractTrigger#dispose()
+	 * @see Disposable#dispose()
 	 */
 	@Override
 	public void dispose() {

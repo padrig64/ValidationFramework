@@ -23,54 +23,39 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.base.trigger;
+package com.github.validationframework.swing.dataprovider;
 
-import com.github.validationframework.api.trigger.Trigger;
-import com.github.validationframework.api.trigger.TriggerEvent;
-import com.github.validationframework.api.trigger.TriggerListener;
-import java.util.ArrayList;
-import java.util.List;
+import com.github.validationframework.api.dataprovider.TypedDataProvider;
+import javax.swing.JComboBox;
 
 /**
- * Abstract implementation of a typical trigger.<br>It merely implements the methods to add and remove trigger
- * listeners, and provides a method to fire a trigger event to these listeners.<br>However, the call of this method is
- * left to the sub-classes.
+ * Data provider retrieving the selected value of a combobox.
  *
- * @see Trigger
- * @see TriggerListener
- * @see TriggerEvent
+ * @see TypedDataProvider
+ * @see JComboBoxSelectedIndexProvider
+ * @see JComboBox#getSelectedItem()
  */
-public abstract class AbstractTrigger implements Trigger {
+public class JComboBoxSelectedValueProvider implements TypedDataProvider<Object> {
 
 	/**
-	 * Trigger listeners.
+	 * Combobox to get the selected value from.
 	 */
-	protected final List<TriggerListener> listeners = new ArrayList<TriggerListener>();
+	private final JComboBox comboBox;
 
 	/**
-	 * @see Trigger#addTriggerListener(TriggerListener)
-	 */
-	@Override
-	public void addTriggerListener(final TriggerListener listener) {
-		listeners.add(listener);
-	}
-
-	/**
-	 * @see Trigger#removeTriggerListener(TriggerListener)
-	 */
-	@Override
-	public void removeTriggerListener(final TriggerListener listener) {
-		listeners.remove(listener);
-	}
-
-	/**
-	 * Fires the specified trigger event.<br>Calling this method is left to the sub-classes.
+	 * Constructor specifying the combobox to get the selected value from.
 	 *
-	 * @param event Trigger event to be fired.
+	 * @param comboBox Combobox to get the selected value from.
 	 */
-	protected void fireTriggerEvent(final TriggerEvent event) {
-		for (final TriggerListener listener : listeners) {
-			listener.triggerValidation(event);
-		}
+	public JComboBoxSelectedValueProvider(final JComboBox comboBox) {
+		this.comboBox = comboBox;
+	}
+
+	/**
+	 * @see TypedDataProvider#getData()
+	 */
+	@Override
+	public Object getData() {
+		return comboBox.getSelectedItem();
 	}
 }

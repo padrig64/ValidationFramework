@@ -119,9 +119,9 @@ public class CellIconBooleanFeedback extends AbstractCellIconFeedback<Boolean> {
 		updateDecoration();
 
 		if ((valid && (validIcon != null)) || (!valid && (invalidIcon != null))) {
-			showIconTip();
+			showIcon();
 		} else {
-			hideIconTip();
+			hideIcon();
 		}
 	}
 

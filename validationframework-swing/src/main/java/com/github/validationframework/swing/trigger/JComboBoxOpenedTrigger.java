@@ -25,13 +25,14 @@
 
 package com.github.validationframework.swing.trigger;
 
+import com.github.validationframework.api.common.Disposable;
 import com.github.validationframework.api.trigger.TriggerEvent;
 import com.github.validationframework.base.trigger.AbstractTrigger;
 import javax.swing.JComboBox;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
-public class JComboBoxOpenedTrigger extends AbstractTrigger {
+public class JComboBoxOpenedTrigger extends AbstractTrigger implements Disposable {
 
 	private class SourceAdapter implements PopupMenuListener {
 
@@ -62,7 +63,7 @@ public class JComboBoxOpenedTrigger extends AbstractTrigger {
 	}
 
 	/**
-	 * @see AbstractTrigger#dispose()
+	 * @see Disposable#dispose()
 	 */
 	@Override
 	public void dispose() {

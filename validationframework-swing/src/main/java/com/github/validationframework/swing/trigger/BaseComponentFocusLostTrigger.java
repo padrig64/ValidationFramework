@@ -25,6 +25,7 @@
 
 package com.github.validationframework.swing.trigger;
 
+import com.github.validationframework.api.common.Disposable;
 import com.github.validationframework.api.trigger.TriggerEvent;
 import com.github.validationframework.base.trigger.AbstractTrigger;
 import java.awt.event.FocusAdapter;
@@ -41,7 +42,7 @@ import javax.swing.JComponent;
  * @see AbstractTrigger
  * @see #dispose()
  */
-public class BaseComponentFocusLostTrigger<C extends JComponent> extends AbstractTrigger {
+public class BaseComponentFocusLostTrigger<C extends JComponent> extends AbstractTrigger implements Disposable {
 
 	/**
 	 * Focus listener firing a trigger event to the trigger listeners.
@@ -82,7 +83,7 @@ public class BaseComponentFocusLostTrigger<C extends JComponent> extends Abstrac
 	}
 
 	/**
-	 * @see AbstractTrigger#dispose()
+	 * @see Disposable#dispose()
 	 */
 	@Override
 	public void dispose() {

@@ -25,13 +25,15 @@
 
 package com.github.validationframework.swing.trigger;
 
+import com.github.validationframework.api.common.Disposable;
 import com.github.validationframework.api.trigger.TriggerEvent;
 import com.github.validationframework.base.trigger.AbstractTrigger;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.JTextComponent;
 
-public class BaseTextComponentDocumentChangedTrigger<C extends JTextComponent> extends AbstractTrigger {
+public class BaseTextComponentDocumentChangedTrigger<C extends JTextComponent> extends AbstractTrigger
+		implements Disposable {
 
 	private class SourceAdapter implements DocumentListener {
 
@@ -63,7 +65,7 @@ public class BaseTextComponentDocumentChangedTrigger<C extends JTextComponent> e
 	}
 
 	/**
-	 * @see AbstractTrigger#dispose()
+	 * @see Disposable#dispose()
 	 */
 	@Override
 	public void dispose() {

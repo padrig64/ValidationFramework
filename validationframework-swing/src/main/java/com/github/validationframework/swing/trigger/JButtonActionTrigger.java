@@ -25,13 +25,14 @@
 
 package com.github.validationframework.swing.trigger;
 
+import com.github.validationframework.api.common.Disposable;
 import com.github.validationframework.api.trigger.TriggerEvent;
 import com.github.validationframework.base.trigger.AbstractTrigger;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 
-public class JButtonActionTrigger extends AbstractTrigger {
+public class JButtonActionTrigger extends AbstractTrigger implements Disposable {
 
 	private class SourceAdapter implements ActionListener {
 
@@ -52,7 +53,7 @@ public class JButtonActionTrigger extends AbstractTrigger {
 	}
 
 	/**
-	 * @see AbstractTrigger#dispose()
+	 * @see Disposable#dispose()
 	 */
 	@Override
 	public void dispose() {
