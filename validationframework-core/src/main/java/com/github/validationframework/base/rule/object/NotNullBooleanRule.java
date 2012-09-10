@@ -28,14 +28,14 @@ package com.github.validationframework.base.rule.object;
 import com.github.validationframework.api.rule.Rule;
 
 /**
- * Rule making sure that the provided data is not null.<br>It will return true if the data is null, and false
+ * Rule making sure that the provided data is not null.<br>It will return true if the data is not null, and false
  * otherwise.<br>Note that even though generics are not needed in the logic of this class, providing a specific type
  * makes it more convenient to reduce compilation warnings and errors.
  *
  * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
  * type of the component itself.
  */
-public class NonNullBooleanRule<D> implements Rule<D, Boolean> {
+public class NotNullBooleanRule<D> implements Rule<D, Boolean> {
 
 	/**
 	 * @see Rule#validate(Object)

@@ -26,7 +26,7 @@
 package com.github.validationframework.demo.swing;
 
 import com.github.validationframework.base.resulthandler.PrintStreamResultHandler;
-import com.github.validationframework.base.rule.object.NonNullBooleanRule;
+import com.github.validationframework.base.rule.object.NotNullBooleanRule;
 import com.github.validationframework.base.rule.string.StringLengthGreaterThanOrEqualToRule;
 import com.github.validationframework.base.validator.SimpleValidator;
 import com.github.validationframework.swing.dataprovider.JTableComboBoxEditorSelectedValueProvider;
@@ -140,7 +140,7 @@ public class TableDemoApp extends JFrame {
 		final SimpleValidator<Object, Boolean> validator2 = new SimpleValidator<Object, Boolean>();
 		validator2.addTrigger(new JTableComboBoxEditorModelChangedTrigger(table));
 		validator2.addDataProvider(new JTableComboBoxEditorSelectedValueProvider<Object>(table));
-		validator2.addRule(new NonNullBooleanRule<Object>());
+		validator2.addRule(new NotNullBooleanRule<Object>());
 	}
 
 	public static void main(final String[] args) {
