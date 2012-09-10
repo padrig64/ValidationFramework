@@ -42,6 +42,6 @@ public class NullBooleanRule<D> implements Rule<D, Boolean> {
 	 */
 	@Override
 	public Boolean validate(final D data) {
-		return (data != null);
+		return (data == null);
 	}
 }
