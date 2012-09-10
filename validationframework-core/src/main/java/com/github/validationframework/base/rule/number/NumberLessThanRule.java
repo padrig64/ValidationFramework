@@ -25,13 +25,46 @@
 
 package com.github.validationframework.base.rule.number;
 
-public class NumberLessThanRule extends BaseNumberLessThanRule<Number> {
+import com.github.validationframework.api.rule.Rule;
 
+public class NumberLessThanRule<T extends Number> implements Rule<T, Boolean> {
+
+	private T minimumValue = null;
+
+	/**
+	 * Default constructor.
+	 */
 	public NumberLessThanRule() {
-		super();
+		// Nothing to be done
 	}
 
-	public NumberLessThanRule(final Number minimumValue) {
-		super(minimumValue);
+	public NumberLessThanRule(final T minimumValue) {
+		setMinimumValue(minimumValue);
+	}
+
+	public Number getMinimumValue() {
+		return minimumValue;
+	}
+
+	public void setMinimumValue(final T minimumValue) {
+		this.minimumValue = minimumValue;
+	}
+
+	/**
+	 * @see Rule#validate(Object)
+	 */
+	@Override
+	public Boolean validate(final T data) {
+		double comparableDataValue = Double.NaN;
+		if (data != null) {
+			comparableDataValue = data.doubleValue();
+		}
+		double comparableRuleValue = Double.NaN;
+		if (minimumValue != null) {
+			comparableRuleValue = minimumValue.doubleValue();
+		}
+
+		return (Double.isNaN(comparableDataValue) && Double.isNaN(comparableRuleValue)) ||
+				(comparableDataValue < comparableRuleValue);
 	}
 }

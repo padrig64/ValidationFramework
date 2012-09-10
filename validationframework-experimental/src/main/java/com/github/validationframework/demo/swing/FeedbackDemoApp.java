@@ -65,7 +65,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
-import javax.swing.border.LineBorder;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.text.NumberFormatter;
 import net.miginfocom.swing.MigLayout;
@@ -257,7 +256,7 @@ public class FeedbackDemoApp extends JFrame {
 		courseFormatter.setMinimum(0.0);
 		courseFormatter.setMaximum(359.0);
 		final JFormattedTextField formattedTextField = new JFormattedTextField(courseFormatter);
-		JPanel panel = new JPanel(new BorderLayout());
+		final JPanel panel = new JPanel(new BorderLayout());
 		panel.add(formattedTextField);
 		contentPane.add(panel, "growx");
 
@@ -290,7 +289,7 @@ public class FeedbackDemoApp extends JFrame {
 
 		// Create global
 		final IconBooleanFeedback jumpingFeedback = new IconBooleanFeedback(null);
-		IconFeedbackOnTrigger<Boolean> triggerFollower = new IconFeedbackOnTrigger<Boolean>(jumpingFeedback);
+		final IconFeedbackOnTrigger<Boolean> triggerFollower = new IconFeedbackOnTrigger<Boolean>(jumpingFeedback);
 		triggerFollower.addTrigger(new JTextFieldDocumentChangedTrigger(textField1));
 		triggerFollower.addTrigger(new JTextFieldDocumentChangedTrigger(textField2));
 		triggerFollower.addTrigger(new JTextFieldDocumentChangedTrigger(textField3));
@@ -352,7 +351,6 @@ public class FeedbackDemoApp extends JFrame {
 						"Angle should be between 000 and 359");
 
 		// Example of decoration that would be clipped by the parent panel
-		((JComponent) formattedTextField.getParent().getParent()).setBorder(new LineBorder(Color.RED));
 		resultHandler1.setClippingAncestor((JComponent) formattedTextField.getParent().getParent());
 
 		on(trigger).read(dataProvider).check(rule1, rule2).handleWith(resultHandler1).handleWith(resultCollector)
