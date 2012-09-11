@@ -1,5 +1,6 @@
 FIXES
- . CellIconBooleanFeedback when sorting table
+ . Fixed display of tooltip and click forwarding when decoration is not showing when using the CardLayout
+ . Check CellIconBooleanFeedback when sorting table
  . More comments on the classes on the "what can it be used for"
  . Disabled decoration on tab?
  . Disabled decoration on cell?
