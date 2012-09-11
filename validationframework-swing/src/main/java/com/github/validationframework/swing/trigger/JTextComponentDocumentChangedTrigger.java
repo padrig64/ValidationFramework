@@ -27,8 +27,18 @@ package com.github.validationframework.swing.trigger;
 
 import javax.swing.text.JTextComponent;
 
+/**
+ * Convenience trigger that initiates the validation whenever the document of a text component is modified.
+ *
+ * @see BaseTextComponentDocumentChangedTrigger
+ */
 public class JTextComponentDocumentChangedTrigger extends BaseTextComponentDocumentChangedTrigger<JTextComponent> {
 
+	/**
+	 * Constructor specifying the text component to listen to.
+	 *
+	 * @param source Text component to listen to
+	 */
 	public JTextComponentDocumentChangedTrigger(final JTextComponent source) {
 		super(source);
 	}

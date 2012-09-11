@@ -27,8 +27,18 @@ package com.github.validationframework.swing.trigger;
 
 import javax.swing.JTextField;
 
+/**
+ * Convenience trigger that initiates the validation whenever the document of a textfield is modified.
+ *
+ * @see BaseTextComponentDocumentChangedTrigger
+ */
 public class JTextFieldDocumentChangedTrigger extends BaseTextComponentDocumentChangedTrigger<JTextField> {
 
+	/**
+	 * Constructor specifying the textfield to listen to.
+	 *
+	 * @param source Textfield to listen to
+	 */
 	public JTextFieldDocumentChangedTrigger(final JTextField source) {
 		super(source);
 	}

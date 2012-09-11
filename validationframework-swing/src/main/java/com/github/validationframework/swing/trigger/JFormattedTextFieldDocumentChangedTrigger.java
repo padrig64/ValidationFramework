@@ -27,9 +27,19 @@ package com.github.validationframework.swing.trigger;
 
 import javax.swing.JFormattedTextField;
 
+/**
+ * Convenience trigger that initiates the validation whenever the document of a formatted textfield is modified.
+ *
+ * @see BaseTextComponentDocumentChangedTrigger
+ */
 public class JFormattedTextFieldDocumentChangedTrigger
 		extends BaseTextComponentDocumentChangedTrigger<JFormattedTextField> {
 
+	/**
+	 * Constructor specifying the formatted textfield to listen to.
+	 *
+	 * @param source Formatted textfield to listen to
+	 */
 	public JFormattedTextFieldDocumentChangedTrigger(final JFormattedTextField source) {
 		super(source);
 	}

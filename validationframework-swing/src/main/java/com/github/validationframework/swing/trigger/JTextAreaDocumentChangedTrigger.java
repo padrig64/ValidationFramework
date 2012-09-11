@@ -27,8 +27,18 @@ package com.github.validationframework.swing.trigger;
 
 import javax.swing.JTextArea;
 
+/**
+ * Convenience trigger that initiates the validation whenever the document of a text area is modified.
+ *
+ * @see BaseTextComponentDocumentChangedTrigger
+ */
 public class JTextAreaDocumentChangedTrigger extends BaseTextComponentDocumentChangedTrigger<JTextArea> {
 
+	/**
+	 * Constructor specifying the text area to listen to.
+	 *
+	 * @param source Text area to listen to
+	 */
 	public JTextAreaDocumentChangedTrigger(final JTextArea source) {
 		super(source);
 	}
