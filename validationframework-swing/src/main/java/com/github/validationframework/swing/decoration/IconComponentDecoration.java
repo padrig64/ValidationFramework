@@ -43,7 +43,9 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
 		 */
 		@Override
 		public void mouseEntered(final MouseEvent e) {
-			toolTipDialog.setVisible(true);
+			if (decorationPainter.isShowing()) {
+				toolTipDialog.setVisible(true);
+			}
 		}
 
 		/**
