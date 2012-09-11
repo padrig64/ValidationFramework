@@ -1,4 +1,5 @@
 FIXES
+ . Implement Disposable wherever appropriate
  . Fixed display of tooltip and click forwarding when decoration is not showing when using the CardLayout
  . Check CellIconBooleanFeedback when sorting table
  . More comments on the classes on the "what can it be used for"
@@ -18,6 +19,7 @@ NEW STUFF
  . Fix ToolTipDialog transparency support (Java 6, Java 7 and JNA)
  . Label boolean feedback
  . Mappable validator builder
+ . Manual trigger or trigger() method on the validator? How about the mappable validator?
  . Common settings (default icons, etc.)
  . Rule-based formatter
  . Reformat/Revert JFormattedTextField when focus lost? Save values allowed by the rules (wider than the default number formatter)
