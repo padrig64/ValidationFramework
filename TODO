@@ -8,6 +8,8 @@ FIXES
 
 NEW STUFF
  . More comments
+ . Table model change trigger
+ . Table editing started/stopped/canceled triggers
  . Table checkbox editor trigger
  . Table editing: with/without valid commit to model, column-wise validator, per-cell/per-row group validation
  . More consistency for handling "no result" results
