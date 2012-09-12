@@ -25,8 +25,16 @@
 
 package com.github.validationframework.base.rule.string;
 
+/**
+ * Rule checking whether the data, being a string, has a length equal to a specific value.
+ *
+ * @see AbstractStringBooleanRule
+ */
 public class StringLengthEqualToRule extends AbstractStringBooleanRule {
 
+	/**
+	 * String length to which the data string length is to be compared.
+	 */
 	private int exactLength = 0;
 
 	/**
@@ -36,15 +44,30 @@ public class StringLengthEqualToRule extends AbstractStringBooleanRule {
 		super();
 	}
 
+	/**
+	 * Constructor specifying the string length to which the data string length is to be compared.
+	 *
+	 * @param exactLength String length to which the data string length is to be compared.
+	 */
 	public StringLengthEqualToRule(final int exactLength) {
 		super();
 		setExactLength(exactLength);
 	}
 
+	/**
+	 * Gets the string length to which the data string length is compared.
+	 *
+	 * @return String length to which the data string length is compared.
+	 */
 	public int getExactLength() {
 		return exactLength;
 	}
 
+	/**
+	 * Sets the string length to which the data string length is compared.
+	 *
+	 * @param exactLength String length to which the data string length is compared.
+	 */
 	public void setExactLength(final int exactLength) {
 		this.exactLength = exactLength;
 	}

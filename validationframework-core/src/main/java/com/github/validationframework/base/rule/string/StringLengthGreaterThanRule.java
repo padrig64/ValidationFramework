@@ -25,8 +25,16 @@
 
 package com.github.validationframework.base.rule.string;
 
+/**
+ * Rule checking whether the data, being a string, has a length greater than a specific value.
+ *
+ * @see AbstractStringBooleanRule
+ */
 public class StringLengthGreaterThanRule extends AbstractStringBooleanRule {
 
+	/**
+	 * String length to which the data string length is to be compared.
+	 */
 	private int lengthLimit = Integer.MIN_VALUE;
 
 	/**
@@ -36,15 +44,30 @@ public class StringLengthGreaterThanRule extends AbstractStringBooleanRule {
 		super();
 	}
 
+	/**
+	 * Constructor specifying the string length to which the data string length is to be compared.
+	 *
+	 * @param lengthLimit String length to which the data string length is to be compared.
+	 */
 	public StringLengthGreaterThanRule(final int lengthLimit) {
 		super();
 		setLengthLimit(lengthLimit);
 	}
 
+	/**
+	 * Gets the string length to which the data string length is compared.
+	 *
+	 * @return String length to which the data string length is compared.
+	 */
 	public int getLengthLimit() {
 		return lengthLimit;
 	}
 
+	/**
+	 * Sets the string length to which the data string length is compared.
+	 *
+	 * @param lengthLimit String length to which the data string length is compared.
+	 */
 	public void setLengthLimit(final int lengthLimit) {
 		this.lengthLimit = lengthLimit;
 	}

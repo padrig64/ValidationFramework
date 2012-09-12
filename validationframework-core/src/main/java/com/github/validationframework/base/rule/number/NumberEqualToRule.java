@@ -28,8 +28,8 @@ package com.github.validationframework.base.rule.number;
 import com.github.validationframework.api.rule.Rule;
 
 /**
- * Rule checking whether the data, being a number, is equal to a specific value.<br>Note that if the data and the exact
- * value are both null or NaN, they will be considered equal.
+ * Rule checking whether the data, being a number, is equal to a specific value.<br>Note that if the data and the
+ * specified value are both null or NaN, they will be considered equal.
  *
  * @param <T> Type of number handled by this rule.<br>It also it is not really required for the internal logic of the
  * rule, it helps in reducing compilation warnings and/or errors when add a rule in a validator.
@@ -37,7 +37,7 @@ import com.github.validationframework.api.rule.Rule;
 public class NumberEqualToRule<T extends Number> implements Rule<T, Boolean> {
 
 	/**
-	 * Exact value to which the data is to be compared.
+	 * Value to which the data is to be compared.
 	 */
 	private T exactValue = null;
 
@@ -49,27 +49,27 @@ public class NumberEqualToRule<T extends Number> implements Rule<T, Boolean> {
 	}
 
 	/**
-	 * Constructor specifying the exact value to which the data is to be compared.
+	 * Constructor specifying the value to which the data is to be compared.
 	 *
-	 * @param exactValue Exact value to which the data is to be compared.
+	 * @param exactValue Value to which the data is to be compared.
 	 */
 	public NumberEqualToRule(final T exactValue) {
 		setExactValue(exactValue);
 	}
 
 	/**
-	 * Gets the exact value to which the data is compared.
+	 * Gets the value to which the data is compared.
 	 *
-	 * @return Exact value to which the data is compared.
+	 * @return Value to which the data is compared.
 	 */
 	public T getExactValue() {
 		return exactValue;
 	}
 
 	/**
-	 * Sets the exact value to which the data is to be compared.
+	 * Sets the value to which the data is to be compared.
 	 *
-	 * @param exactValue Exact value to which the data is to be compared.
+	 * @param exactValue Value to which the data is to be compared.
 	 */
 	public void setExactValue(final T exactValue) {
 		this.exactValue = exactValue;

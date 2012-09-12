@@ -29,7 +29,7 @@ import com.github.validationframework.api.rule.Rule;
 
 /**
  * Rule checking whether the data, being a number, is strictly less than a specific value.<br>Note that if the data and
- * the exact value are both null or NaN, they will be considered equal.
+ * the value are both null or NaN, they will be considered equal.
  *
  * @param <T> Type of number handled by this rule.<br>It also it is not really required for the internal logic of the
  * rule, it helps in reducing compilation warnings and/or errors when add a rule in a validator.
@@ -37,7 +37,7 @@ import com.github.validationframework.api.rule.Rule;
 public class NumberLessThanRule<T extends Number> implements Rule<T, Boolean> {
 
 	/**
-	 * Exact value to which the data is to be compared.
+	 * Value to which the data is to be compared.
 	 */
 	private T maximumValue = null;
 
@@ -49,27 +49,27 @@ public class NumberLessThanRule<T extends Number> implements Rule<T, Boolean> {
 	}
 
 	/**
-	 * Constructor specifying the exact value to which the data is to be compared.
+	 * Constructor specifying the value to which the data is to be compared.
 	 *
-	 * @param maximumValue Exact value to which the data is to be compared.
+	 * @param maximumValue Value to which the data is to be compared.
 	 */
 	public NumberLessThanRule(final T maximumValue) {
 		setMaximumValue(maximumValue);
 	}
 
 	/**
-	 * Gets the exact value to which the data is compared.
+	 * Gets the value to which the data is compared.
 	 *
-	 * @return Exact value to which the data is compared.
+	 * @return Value to which the data is compared.
 	 */
 	public Number getMaximumValue() {
 		return maximumValue;
 	}
 
 	/**
-	 * Sets the exact value to which the data is to be compared.
+	 * Sets the value to which the data is to be compared.
 	 *
-	 * @param maximumValue Exact value to which the data is to be compared.
+	 * @param maximumValue Value to which the data is to be compared.
 	 */
 	public void setMaximumValue(final T maximumValue) {
 		this.maximumValue = maximumValue;

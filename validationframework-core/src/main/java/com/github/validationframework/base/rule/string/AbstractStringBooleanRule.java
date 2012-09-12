@@ -27,8 +27,14 @@ package com.github.validationframework.base.rule.string;
 
 import com.github.validationframework.api.rule.Rule;
 
+/**
+ * Abstract implementation of a rule validating strings and return a boolean as a result.
+ */
 public abstract class AbstractStringBooleanRule implements Rule<String, Boolean> {
 
+	/**
+	 * Flag stating whether the data string should be trimmed before validation.
+	 */
 	protected boolean trimDataBeforeValidation = true;
 
 	/**
@@ -38,19 +44,42 @@ public abstract class AbstractStringBooleanRule implements Rule<String, Boolean>
 		super();
 	}
 
+	/**
+	 * Constructor specifying whether the data string should be trimmed before validation.
+	 *
+	 * @param trimDataBeforeValidation True if the data string should be trimmed, false otherwise.
+	 */
 	public AbstractStringBooleanRule(final boolean trimDataBeforeValidation) {
 		super();
 		setTrimDataBeforeValidation(trimDataBeforeValidation);
 	}
 
+	/**
+	 * States whether the data string is trimmed before validation or not.
+	 *
+	 * @return trimDataBeforeValidation True if the data string is trimmed, false otherwise.
+	 */
 	public boolean getTrimDataBeforeValidation() {
 		return trimDataBeforeValidation;
 	}
 
+	/**
+	 * States whether the data string should be trimmed before validation or not.
+	 *
+	 * @param trimDataBeforeValidation True if the data string should be trimmed, false otherwise.
+	 */
 	public void setTrimDataBeforeValidation(final boolean trimDataBeforeValidation) {
 		this.trimDataBeforeValidation = trimDataBeforeValidation;
 	}
 
+	/**
+	 * Trims the data string if the {@link #trimDataBeforeValidation} is set.<br>This method is to be called by concrete
+	 * sub-classes before validation.
+	 *
+	 * @param data Data to be maybe trimmed before validation.
+	 *
+	 * @return Trimmed data or untrimmed data.
+	 */
 	protected String trimIfNeeded(final String data) {
 		String resultData = data;
 
