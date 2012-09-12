@@ -133,15 +133,19 @@ public abstract class AbstractComponentDecoration implements Disposable {
 
 		private Rectangle clipBounds = null;
 
-		public void setClipBounds(final Rectangle clipBounds) {
-			this.clipBounds = clipBounds;
-		}
-
 		/**
 		 * Default constructor.
 		 */
 		public DecorationPainter() {
 			setFocusable(false);
+		}
+
+		public Rectangle getClipBounds() {
+			return clipBounds;
+		}
+
+		public void setClipBounds(final Rectangle clipBounds) {
+			this.clipBounds = clipBounds;
 		}
 
 		/**
@@ -173,7 +177,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
 		 */
 		@Override
 		public void paintComponent(final Graphics g) {
-			if (decoratedComponent.isVisible() && decoratedComponent.isShowing() && isVisible() &&
+			if (decoratedComponent.isShowing() && isVisible() &&
 					(clipBounds != null) &&
 					(clipBounds.width > 0) && (clipBounds.height > 0)) {
 				// Clip graphics

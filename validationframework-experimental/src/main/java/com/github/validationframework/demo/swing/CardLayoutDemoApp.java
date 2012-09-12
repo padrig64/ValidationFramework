@@ -25,45 +25,76 @@
 
 package com.github.validationframework.demo.swing;
 
-import com.github.validationframework.base.resulthandler.PrintStreamResultHandler;
-import com.github.validationframework.base.rule.object.NotNullBooleanRule;
-import com.github.validationframework.base.rule.string.StringLengthGreaterThanOrEqualToRule;
-import com.github.validationframework.base.validator.SimpleValidator;
-import com.github.validationframework.swing.dataprovider.JTableComboBoxEditorSelectedValueProvider;
-import com.github.validationframework.swing.dataprovider.JTableTextEditorTextProvider;
-import com.github.validationframework.swing.resulthandler.bool.CellIconBooleanFeedback;
+import com.github.validationframework.base.rule.string.StringLengthLessThanOrEqualToRule;
+import com.github.validationframework.experimental.builder.SimpleValidatorBuilder;
+import com.github.validationframework.swing.dataprovider.JTextFieldTextProvider;
 import com.github.validationframework.swing.resulthandler.bool.IconBooleanFeedback;
-import com.github.validationframework.swing.trigger.JTableComboBoxEditorModelChangedTrigger;
-import com.github.validationframework.swing.trigger.JTableTextEditorDocumentChangedTrigger;
+import com.github.validationframework.swing.trigger.JTextFieldDocumentChangedTrigger;
+import java.awt.CardLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Toolkit;
-import javax.swing.DefaultCellEditor;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.border.EmptyBorder;
 import net.miginfocom.swing.MigLayout;
 
-public class TableDemoApp extends JFrame {
+public class CardLayoutDemoApp extends JFrame implements ItemListener {
+
+	private static class Card extends JPanel {
+
+		private static final long serialVersionUID = -7961649303239986607L;
+
+		public Card() {
+			super();
+			init();
+		}
+
+		private void init() {
+			setLayout(new FlowLayout());
+
+			add(new JLabel("Field: "));
+
+			final JTextField textField = new JTextField();
+			textField.setColumns(8);
+			add(textField);
+
+			installValidator(textField);
+		}
+
+		private void installValidator(final JTextField textField) {
+			SimpleValidatorBuilder.on(new JTextFieldDocumentChangedTrigger(textField))
+					.read(new JTextFieldTextProvider(textField))
+					.check(new StringLengthLessThanOrEqualToRule(5))
+					.handleWith(new IconBooleanFeedback(textField, null, null, IconBooleanFeedback.DEFAULT_INVALID_ICON,
+							"Should be less then 6 characters")).build();
+		}
+	}
 
 	/**
 	 * Generated serial UID.
 	 */
 	private static final long serialVersionUID = -7459554050305728899L;
 
-	final JButton applyButton = new JButton("Apply");
+	private final JButton applyButton = new JButton("Apply");
+
+	private JPanel cardContainer = null;
 
 	/**
 	 * Default constructor.
 	 */
-	public TableDemoApp() {
+	public CardLayoutDemoApp() {
 		super();
 		init();
 	}
@@ -79,10 +110,21 @@ public class TableDemoApp extends JFrame {
 		final JPanel contentPane = new JPanel(new MigLayout("fill, wrap 1", "[]", "[grow]unrelated[]"));
 		setContentPane(contentPane);
 
-		// Table
-		final JTable table = createTable();
-		contentPane.add(new JScrollPane(table), "grow");
-		installValidators(table, applyButton);
+		// Combobox
+		final JComboBox comboBox = new JComboBox();
+		contentPane.add(comboBox, "grow");
+		comboBox.addItem("First");
+		comboBox.addItem("Second");
+		comboBox.addItem("Third");
+		comboBox.addItemListener(this);
+
+		// Panels
+		cardContainer = new JPanel(new CardLayout());
+		cardContainer.setBorder(new EmptyBorder(30, 30, 30, 30));
+		cardContainer.add(new Card(), "First");
+		cardContainer.add(new Card(), "Second");
+		cardContainer.add(new Card(), "Third");
+		contentPane.add(new JScrollPane(cardContainer));
 
 		// Apply button
 		contentPane.add(applyButton, "align right");
@@ -90,59 +132,18 @@ public class TableDemoApp extends JFrame {
 		// Set size
 		pack();
 		final Dimension size = getSize();
-		size.width += 100;
-		setMinimumSize(size);
+//		size.width += 100;
+//		setMinimumSize(size);
 
 		// Set location
 		final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((screenSize.width - size.width) / 2, (screenSize.height - size.height) / 3);
 	}
 
-	private JTable createTable() {
-		final JTable table = new JTable();
-
-		// Create table model
-		final DefaultTableModel model = new DefaultTableModel();
-		table.setModel(model);
-
-		// Fill table model
-		model.addColumn("First column");
-		model.addColumn("Second column");
-		model.addColumn("Third column");
-		model.addColumn("Fourth column");
-
-		for (int i = 0; i < 50; i++) {
-			model.addRow(new String[] { "ABCD", "123456", "ZZ", "123.456" });
-		}
-
-		final JComboBox comboBoxEditorComponent = new JComboBox();
-		comboBoxEditorComponent.addItem("Option 1");
-		comboBoxEditorComponent.addItem("Option 2");
-		comboBoxEditorComponent.addItem("Option 3");
-		comboBoxEditorComponent.addItem("Option 4");
-		table.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(comboBoxEditorComponent));
-
-		return table;
-	}
-
-	private void installValidators(final JTable table, final JButton applyButton) {
-		final SimpleValidator<String, Boolean> validator = new SimpleValidator<String, Boolean>();
-
-		validator.addTrigger(new JTableTextEditorDocumentChangedTrigger(table, 1, 1));
-		validator.addDataProvider(new JTableTextEditorTextProvider(table));
-		validator.addRule(new StringLengthGreaterThanOrEqualToRule(3));
-		validator.addResultHandler(new PrintStreamResultHandler<Boolean>("(1,1) => "));
-		validator.addResultHandler(
-				new IconBooleanFeedback(applyButton, null, null, IconBooleanFeedback.DEFAULT_INVALID_ICON,
-						"Cell should contain at least 3 characters"));
-		validator.addResultHandler(
-				new CellIconBooleanFeedback(table, 1, 1, null, null, CellIconBooleanFeedback.DEFAULT_INVALID_ICON,
-						"Invalid text"));
-
-		final SimpleValidator<Object, Boolean> validator2 = new SimpleValidator<Object, Boolean>();
-		validator2.addTrigger(new JTableComboBoxEditorModelChangedTrigger(table));
-		validator2.addDataProvider(new JTableComboBoxEditorSelectedValueProvider<Object>(table));
-		validator2.addRule(new NotNullBooleanRule<Object>());
+	@Override
+	public void itemStateChanged(final ItemEvent evt) {
+		final CardLayout cl = (CardLayout) (cardContainer.getLayout());
+		cl.show(cardContainer, (String) evt.getItem());
 	}
 
 	public static void main(final String[] args) {
@@ -169,7 +170,7 @@ public class TableDemoApp extends JFrame {
 				}
 
 				// Show window
-				new TableDemoApp().setVisible(true);
+				new CardLayoutDemoApp().setVisible(true);
 			}
 		});
 	}

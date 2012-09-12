@@ -38,13 +38,16 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
 
 	private class ToolTipAdapter extends MouseAdapter {
 
-		/**
-		 * @see MouseAdapter#mouseEntered(MouseEvent)
-		 */
 		@Override
-		public void mouseEntered(final MouseEvent e) {
-			if (decorationPainter.isShowing()) {
-				toolTipDialog.setVisible(true);
+		public void mouseMoved(final MouseEvent e) {
+			if (!toolTipDialog.isVisible()) {
+				if (getDecoratedComponent().isShowing() && decorationPainter.getClipBounds().contains(e.getPoint())) {
+					toolTipDialog.setVisible(true);
+				}
+			} else {
+				if (!decorationPainter.getClipBounds().contains(e.getPoint())) {
+					toolTipDialog.setVisible(false);
+				}
 			}
 		}
 
@@ -84,6 +87,7 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
 		this.icon = icon;
 
 		decorationPainter.addMouseListener(new ToolTipAdapter());
+		decorationPainter.addMouseMotionListener(new ToolTipAdapter());
 	}
 
 	/**
