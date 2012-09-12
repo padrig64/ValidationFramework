@@ -65,6 +65,8 @@ public class NumberLessThanOrEqualToRule<T extends Number> implements Rule<T, Bo
 		}
 
 		return (Double.isNaN(comparableDataValue) && Double.isNaN(comparableRuleValue)) ||
-				(comparableDataValue <= comparableRuleValue);
+				(!Double.isNaN(comparableDataValue) && Double.isNaN(comparableRuleValue)) ||
+				(!Double.isNaN(comparableDataValue) && !Double.isNaN(comparableRuleValue) &&
+						(comparableDataValue <= comparableRuleValue));
 	}
 }

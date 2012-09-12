@@ -65,6 +65,8 @@ public class NumberGreaterThanRule<T extends Number> implements Rule<T, Boolean>
 		}
 
 		return (Double.isNaN(comparableDataValue) && Double.isNaN(comparableRuleValue)) ||
-				(comparableDataValue > comparableRuleValue);
+				(!Double.isNaN(comparableDataValue) && Double.isNaN(comparableRuleValue)) ||
+				(!Double.isNaN(comparableDataValue) && !Double.isNaN(comparableRuleValue) &&
+						(comparableDataValue > comparableRuleValue));
 	}
 }

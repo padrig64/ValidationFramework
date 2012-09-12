@@ -65,6 +65,8 @@ public class NumberGreaterThanOrEqualToRule<T extends Number> implements Rule<T,
 		}
 
 		return (Double.isNaN(comparableDataValue) && Double.isNaN(comparableRuleValue)) ||
-				(comparableDataValue >= comparableRuleValue);
+				(!Double.isNaN(comparableDataValue) && Double.isNaN(comparableRuleValue)) ||
+				(!Double.isNaN(comparableDataValue) && !Double.isNaN(comparableRuleValue) &&
+						(comparableDataValue >= comparableRuleValue));
 	}
 }
