@@ -25,47 +25,25 @@
 
 package com.github.validationframework.base.rule.number;
 
-import com.github.validationframework.api.rule.Rule;
+import junit.framework.Assert;
+import org.junit.Test;
 
-public class NumberLessThanRule<T extends Number> implements Rule<T, Boolean> {
+public class NumberGreaterThanOrEqualToRuleTest {
 
-	private T minimumValue = null;
+	@Test
+	public void testInteger() {
+		final NumberGreaterThanOrEqualToRule<Integer> rule = new NumberGreaterThanOrEqualToRule<Integer>(0);
 
-	/**
-	 * Default constructor.
-	 */
-	public NumberLessThanRule() {
-		// Nothing to be done
-	}
+		Assert.assertEquals(Boolean.TRUE, rule.validate(0));
+		Assert.assertEquals(Boolean.TRUE, rule.validate(5));
+		Assert.assertEquals(Boolean.FALSE, rule.validate(-1));
+		Assert.assertEquals(Boolean.FALSE, rule.validate(null));
 
-	public NumberLessThanRule(final T minimumValue) {
-		setMinimumValue(minimumValue);
-	}
+		final NumberGreaterThanOrEqualToRule<Integer> rule2 = new NumberGreaterThanOrEqualToRule<Integer>(null);
 
-	public Number getMinimumValue() {
-		return minimumValue;
-	}
-
-	public void setMinimumValue(final T minimumValue) {
-		this.minimumValue = minimumValue;
-	}
-
-	/**
-	 * @see Rule#validate(Object)
-	 */
-	@Override
-	public Boolean validate(final T data) {
-		double comparableDataValue = Double.NaN;
-		if (data != null) {
-			comparableDataValue = data.doubleValue();
-		}
-		double comparableRuleValue = Double.NaN;
-		if (minimumValue != null) {
-			comparableRuleValue = minimumValue.doubleValue();
-		}
-
-		return (!Double.isNaN(comparableDataValue) && Double.isNaN(comparableRuleValue)) ||
-				(!Double.isNaN(comparableDataValue) && !Double.isNaN(comparableRuleValue) &&
-						(comparableDataValue < comparableRuleValue));
+		Assert.assertEquals(Boolean.TRUE, rule2.validate(0));
+		Assert.assertEquals(Boolean.TRUE, rule2.validate(5));
+		Assert.assertEquals(Boolean.TRUE, rule2.validate(-1));
+		Assert.assertEquals(Boolean.TRUE, rule2.validate(null));
 	}
 }

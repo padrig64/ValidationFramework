@@ -64,8 +64,7 @@ public class NumberGreaterThanRule<T extends Number> implements Rule<T, Boolean>
 			comparableRuleValue = minimumValue.doubleValue();
 		}
 
-		return (Double.isNaN(comparableDataValue) && Double.isNaN(comparableRuleValue)) ||
-				(!Double.isNaN(comparableDataValue) && Double.isNaN(comparableRuleValue)) ||
+		return (!Double.isNaN(comparableDataValue) && Double.isNaN(comparableRuleValue)) ||
 				(!Double.isNaN(comparableDataValue) && !Double.isNaN(comparableRuleValue) &&
 						(comparableDataValue > comparableRuleValue));
 	}
