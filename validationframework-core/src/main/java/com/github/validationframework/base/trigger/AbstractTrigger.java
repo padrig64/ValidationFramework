@@ -33,8 +33,8 @@ import java.util.List;
 
 /**
  * Abstract implementation of a typical trigger.<br>It merely implements the methods to add and remove trigger
- * listeners, and provides a method to fire a trigger event to these listeners.<br>However, the call of this method is
- * left to the sub-classes.
+ * listeners, and provides the method {@link #fireTriggerEvent(TriggerEvent)} to fire a trigger event to these
+ * listeners.<br>However, the call of this method is left to the sub-classes.
  *
  * @see Trigger
  * @see TriggerListener

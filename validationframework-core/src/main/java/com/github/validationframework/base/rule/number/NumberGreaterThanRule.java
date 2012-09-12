@@ -27,8 +27,18 @@ package com.github.validationframework.base.rule.number;
 
 import com.github.validationframework.api.rule.Rule;
 
+/**
+ * Rule checking whether the data, being a number, is strictly greater than a specific value.<br>Note that if the data
+ * and the exact value are both null or NaN, they will be considered equal.
+ *
+ * @param <T> Type of number handled by this rule.<br>It also it is not really required for the internal logic of the
+ * rule, it helps in reducing compilation warnings and/or errors when add a rule in a validator.
+ */
 public class NumberGreaterThanRule<T extends Number> implements Rule<T, Boolean> {
 
+	/**
+	 * Exact value to which the data is to be compared.
+	 */
 	private T minimumValue = null;
 
 	/**
@@ -38,14 +48,29 @@ public class NumberGreaterThanRule<T extends Number> implements Rule<T, Boolean>
 		// Nothing to be done
 	}
 
+	/**
+	 * Constructor specifying the exact value to which the data is to be compared.
+	 *
+	 * @param minimumValue Exact value to which the data is to be compared.
+	 */
 	public NumberGreaterThanRule(final T minimumValue) {
 		setMinimumValue(minimumValue);
 	}
 
+	/**
+	 * Gets the exact value to which the data is compared.
+	 *
+	 * @return Exact value to which the data is compared.
+	 */
 	public Number getMinimumValue() {
 		return minimumValue;
 	}
 
+	/**
+	 * Sets the exact value to which the data is to be compared.
+	 *
+	 * @param minimumValue Exact value to which the data is to be compared.
+	 */
 	public void setMinimumValue(final T minimumValue) {
 		this.minimumValue = minimumValue;
 	}

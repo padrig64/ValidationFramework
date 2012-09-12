@@ -27,9 +27,19 @@ package com.github.validationframework.base.rule.number;
 
 import com.github.validationframework.api.rule.Rule;
 
+/**
+ * Rule checking whether the data, being a number, is strictly less than a specific value.<br>Note that if the data and
+ * the exact value are both null or NaN, they will be considered equal.
+ *
+ * @param <T> Type of number handled by this rule.<br>It also it is not really required for the internal logic of the
+ * rule, it helps in reducing compilation warnings and/or errors when add a rule in a validator.
+ */
 public class NumberLessThanRule<T extends Number> implements Rule<T, Boolean> {
 
-	private T minimumValue = null;
+	/**
+	 * Exact value to which the data is to be compared.
+	 */
+	private T maximumValue = null;
 
 	/**
 	 * Default constructor.
@@ -38,16 +48,31 @@ public class NumberLessThanRule<T extends Number> implements Rule<T, Boolean> {
 		// Nothing to be done
 	}
 
-	public NumberLessThanRule(final T minimumValue) {
-		setMinimumValue(minimumValue);
+	/**
+	 * Constructor specifying the exact value to which the data is to be compared.
+	 *
+	 * @param maximumValue Exact value to which the data is to be compared.
+	 */
+	public NumberLessThanRule(final T maximumValue) {
+		setMaximumValue(maximumValue);
 	}
 
-	public Number getMinimumValue() {
-		return minimumValue;
+	/**
+	 * Gets the exact value to which the data is compared.
+	 *
+	 * @return Exact value to which the data is compared.
+	 */
+	public Number getMaximumValue() {
+		return maximumValue;
 	}
 
-	public void setMinimumValue(final T minimumValue) {
-		this.minimumValue = minimumValue;
+	/**
+	 * Sets the exact value to which the data is to be compared.
+	 *
+	 * @param maximumValue Exact value to which the data is to be compared.
+	 */
+	public void setMaximumValue(final T maximumValue) {
+		this.maximumValue = maximumValue;
 	}
 
 	/**
@@ -60,8 +85,8 @@ public class NumberLessThanRule<T extends Number> implements Rule<T, Boolean> {
 			comparableDataValue = data.doubleValue();
 		}
 		double comparableRuleValue = Double.NaN;
-		if (minimumValue != null) {
-			comparableRuleValue = minimumValue.doubleValue();
+		if (maximumValue != null) {
+			comparableRuleValue = maximumValue.doubleValue();
 		}
 
 		return (!Double.isNaN(comparableDataValue) && Double.isNaN(comparableRuleValue)) ||
