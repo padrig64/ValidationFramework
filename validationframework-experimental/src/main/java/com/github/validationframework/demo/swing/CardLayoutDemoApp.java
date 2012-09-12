@@ -55,6 +55,7 @@ public class CardLayoutDemoApp extends JFrame implements ItemListener {
 	private static class Card extends JPanel {
 
 		private static final long serialVersionUID = -7961649303239986607L;
+		private static int count = 0;
 
 		public Card() {
 			super();
@@ -68,17 +69,19 @@ public class CardLayoutDemoApp extends JFrame implements ItemListener {
 
 			final JTextField textField = new JTextField();
 			textField.setColumns(8);
+			textField.setName("Textfield " + count);
 			add(textField);
 
 			installValidator(textField);
+			count++;
 		}
 
 		private void installValidator(final JTextField textField) {
 			SimpleValidatorBuilder.on(new JTextFieldDocumentChangedTrigger(textField))
 					.read(new JTextFieldTextProvider(textField))
-					.check(new StringLengthLessThanOrEqualToRule(5))
+					.check(new StringLengthLessThanOrEqualToRule(5 + count))
 					.handleWith(new IconBooleanFeedback(textField, null, null, IconBooleanFeedback.DEFAULT_INVALID_ICON,
-							"Should be less then 6 characters")).build();
+							"Should be less then " + (6 + count) + " characters")).build();
 		}
 	}
 

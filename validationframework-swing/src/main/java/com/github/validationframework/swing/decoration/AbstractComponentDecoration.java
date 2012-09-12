@@ -35,6 +35,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.HierarchyBoundsListener;
 import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
 import javax.swing.JComponent;
 import javax.swing.JLayeredPane;
 import javax.swing.SwingUtilities;
@@ -51,7 +52,8 @@ public abstract class AbstractComponentDecoration implements Disposable {
 	 * Entity responsible of tracking the changes on the decorated component and/or its ancestors that would require to
 	 * update the location and/or the clip bounds of the decoration.
 	 */
-	private final class ComponentTracker implements AncestorListener, HierarchyBoundsListener, ComponentListener {
+	private final class ComponentTracker implements AncestorListener, HierarchyBoundsListener, ComponentListener,
+			HierarchyListener {
 
 		/**
 		 * @see AncestorListener#ancestorAdded(AncestorEvent)
@@ -117,6 +119,13 @@ public abstract class AbstractComponentDecoration implements Disposable {
 		@Override
 		public void componentHidden(final ComponentEvent e) {
 			// Nothing to be done
+		}
+
+		@Override
+		public void hierarchyChanged(final HierarchyEvent e) {
+			if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 ) {
+				decorationPainter.setVisible(getDecoratedComponent().isShowing());
+			}
 		}
 	}
 
@@ -264,6 +273,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
 			decoratedComponent.addComponentListener(decoratedComponentTracker);
 			decoratedComponent.addAncestorListener(decoratedComponentTracker);
 			decoratedComponent.addHierarchyBoundsListener(decoratedComponentTracker);
+			decoratedComponent.addHierarchyListener(decoratedComponentTracker);
 
 			attachToLayeredPane();
 		}
@@ -277,6 +287,8 @@ public abstract class AbstractComponentDecoration implements Disposable {
 		if (decoratedComponent != null) {
 			decoratedComponent.removeComponentListener(decoratedComponentTracker);
 			decoratedComponent.removeAncestorListener(decoratedComponentTracker);
+			decoratedComponent.removeHierarchyBoundsListener(decoratedComponentTracker);
+			decoratedComponent.removeHierarchyListener(decoratedComponentTracker);
 
 			detachFromLayeredPane();
 		}
