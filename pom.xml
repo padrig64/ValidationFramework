@@ -4,7 +4,7 @@
 
     <groupId>validationframework</groupId>
     <artifactId>validationframework</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Validation Framework</name>
@@ -22,7 +22,7 @@
         <connection>scm:git:git@github.com:padrig64/ValidationFramework.git</connection>
         <url>scm:git:git@github.com:padrig64/ValidationFramework.git</url>
         <developerConnection>scm:git:git@github.com:padrig64/ValidationFramework.git</developerConnection>
-      <tag>validationframework-0.0.1</tag>
+      <tag>HEAD</tag>
   </scm>
 
     <properties>

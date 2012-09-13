@@ -5,7 +5,7 @@
     <parent>
         <artifactId>validationframework</artifactId>
         <groupId>validationframework</groupId>
-        <version>0.0.1</version>
+        <version>0.0.2-SNAPSHOT</version>
     </parent>
 
     <artifactId>validationframework-experimental</artifactId>
