@@ -29,14 +29,31 @@ import com.github.validationframework.api.dataprovider.TypedDataProvider;
 import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;
 
+/**
+ * Data provider retrieving the selected button model in a button group.
+ *
+ * @see TypedDataProvider
+ * @see ButtonGroup
+ */
 public class ButtonGroupSelectionProvider implements TypedDataProvider<ButtonModel> {
 
+	/**
+	 * Button group to retrieve the selected button model from.
+	 */
 	private final ButtonGroup buttonGroup;
 
+	/**
+	 * Constructor specifying the button group to retrieve the selected button model from.
+	 *
+	 * @param buttonGroup Button group to retrieve the selected button model from.
+	 */
 	public ButtonGroupSelectionProvider(final ButtonGroup buttonGroup) {
 		this.buttonGroup = buttonGroup;
 	}
 
+	/**
+	 * @see TypedDataProvider#getData()
+	 */
 	@Override
 	public ButtonModel getData() {
 		return buttonGroup.getSelection();

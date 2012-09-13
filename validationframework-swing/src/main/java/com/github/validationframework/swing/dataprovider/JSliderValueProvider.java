@@ -30,6 +30,9 @@ import javax.swing.JSlider;
 
 /**
  * Data provider reading the value from a slider.
+ *
+ * @see TypedDataProvider
+ * @see JSlider
  */
 public class JSliderValueProvider implements TypedDataProvider<Integer> {
 

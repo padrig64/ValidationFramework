@@ -52,8 +52,8 @@ public abstract class AbstractComponentDecoration implements Disposable {
 	 * Entity responsible of tracking the changes on the decorated component and/or its ancestors that would require to
 	 * update the location and/or the clip bounds of the decoration.
 	 */
-	private final class ComponentTracker implements AncestorListener, HierarchyBoundsListener, ComponentListener,
-			HierarchyListener {
+	private final class ComponentTracker
+			implements AncestorListener, HierarchyBoundsListener, ComponentListener, HierarchyListener {
 
 		/**
 		 * @see AncestorListener#ancestorAdded(AncestorEvent)
@@ -123,7 +123,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
 
 		@Override
 		public void hierarchyChanged(final HierarchyEvent e) {
-			if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 ) {
+			if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
 				decorationPainter.setVisible(getDecoratedComponent().isShowing());
 			}
 		}

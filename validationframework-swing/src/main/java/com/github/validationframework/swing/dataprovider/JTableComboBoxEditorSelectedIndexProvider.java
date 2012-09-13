@@ -33,8 +33,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Provider of the selected index of the current cmobobox editor component from a given table.<br>Note that if the table
+ * Provider of the selected index of the current combobox editor component from a given table.<br>Note that if the table
  * is not in editing, no index can be provided.
+ *
+ * @see TypedDataProvider
+ * @see JTable
+ * @see JTable#getCellEditor()
  */
 public class JTableComboBoxEditorSelectedIndexProvider implements TypedDataProvider<Integer> {
 

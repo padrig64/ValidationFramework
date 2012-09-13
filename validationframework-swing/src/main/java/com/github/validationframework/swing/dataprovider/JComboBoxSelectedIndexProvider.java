@@ -33,6 +33,7 @@ import javax.swing.JComboBox;
  *
  * @see TypedDataProvider
  * @see JComboBoxSelectedValueProvider
+ * @see JComboBox
  * @see JComboBox#getSelectedIndex()
  */
 public class JComboBoxSelectedIndexProvider implements TypedDataProvider<Integer> {

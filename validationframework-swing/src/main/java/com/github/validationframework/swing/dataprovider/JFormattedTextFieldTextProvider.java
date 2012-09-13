@@ -28,10 +28,12 @@ package com.github.validationframework.swing.dataprovider;
 import javax.swing.JFormattedTextField;
 
 /**
- * Data provider retrieving a formatted textfield component.<br>It is provided as for convenience over the {@link
+ * Data provider retrieving the text from a formatted textfield.<br>It is provided for convenience over the {@link
  * BaseJTextComponentTextProvider} to make it easier to find when building validators.
  *
  * @see BaseJTextComponentTextProvider
+ * @see JFormattedTextField
+ * @see JFormattedTextField#getText()
  */
 public class JFormattedTextFieldTextProvider extends BaseJTextComponentTextProvider<JFormattedTextField> {
 

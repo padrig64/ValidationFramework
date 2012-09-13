@@ -34,6 +34,9 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Data provider reading the text from the text editor of a spinner.
+ *
+ * @see TypedDataProvider
+ * @see JSpinner
  */
 public class JSpinnerEditorTextProvider implements TypedDataProvider<String> {
 

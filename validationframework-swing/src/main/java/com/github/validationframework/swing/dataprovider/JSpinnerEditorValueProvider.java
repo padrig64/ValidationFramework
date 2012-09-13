@@ -38,6 +38,9 @@ import org.slf4j.LoggerFactory;
 /**
  * Data provider reading the value from a spinner.<br>Note that the value is not read from the model, but instead
  * corresponds to the current text.
+ *
+ * @see TypedDataProvider
+ * @see JSpinner
  */
 public class JSpinnerEditorValueProvider<D> implements TypedDataProvider<D> {
 

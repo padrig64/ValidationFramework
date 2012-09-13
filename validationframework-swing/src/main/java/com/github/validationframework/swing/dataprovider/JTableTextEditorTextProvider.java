@@ -32,7 +32,11 @@ import javax.swing.text.JTextComponent;
 
 /**
  * Provider of the text of the current text editor component from a given table.<br>Note that if the table is not in
- * editing, no text can be provided.
+ * editing state, no text can be provided.
+ *
+ * @see TypedDataProvider
+ * @see JTable
+ * @see JTable#getCellEditor()
  */
 public class JTableTextEditorTextProvider implements TypedDataProvider<String> {
 

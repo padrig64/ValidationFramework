@@ -34,6 +34,10 @@ import javax.swing.JFormattedTextField;
 /**
  * Data provider reading the value from a formatted textfield.<br>Note that the value is not read from the model, but
  * instead corresponds to the current text.
+ *
+ * @see TypedDataProvider
+ * @see JFormattedTextField
+ * @see JFormattedTextField#getText()
  */
 public class JFormattedTextFieldValueProvider<D> implements TypedDataProvider<D> {
 

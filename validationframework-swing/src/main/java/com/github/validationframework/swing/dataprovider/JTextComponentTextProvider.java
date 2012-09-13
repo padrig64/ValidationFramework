@@ -28,10 +28,11 @@ package com.github.validationframework.swing.dataprovider;
 import javax.swing.text.JTextComponent;
 
 /**
- * Data provider retrieving a text component.<br>It is provided as for convenience over the {@link
+ * Data provider retrieving the text from a text component.<br>It is provided for convenience over the {@link
  * BaseJTextComponentTextProvider} to make it easier to find when building validators.
  *
  * @see BaseJTextComponentTextProvider
+ * @see JTextComponent
  */
 public class JTextComponentTextProvider extends BaseJTextComponentTextProvider<JTextComponent> {
 

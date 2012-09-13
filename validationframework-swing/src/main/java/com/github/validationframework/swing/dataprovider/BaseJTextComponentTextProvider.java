@@ -29,9 +29,12 @@ import com.github.validationframework.api.dataprovider.TypedDataProvider;
 import javax.swing.text.JTextComponent;
 
 /**
- * Data provider retrieving a text component.
+ * Data provider retrieving the text from a text component.
  *
  * @param <C> Type of text component to retrieve the text from.
+ *
+ * @see TypedDataProvider
+ * @see JTextComponent
  */
 public class BaseJTextComponentTextProvider<C extends JTextComponent> implements TypedDataProvider<String> {
 

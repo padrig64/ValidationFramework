@@ -28,14 +28,32 @@ package com.github.validationframework.swing.dataprovider;
 import com.github.validationframework.api.dataprovider.TypedDataProvider;
 import javax.swing.JFormattedTextField;
 
+/**
+ * Data provider retrieving the last valid value from a formatted textfield.
+ *
+ * @see TypedDataProvider
+ * @see JFormattedTextField
+ * @see JFormattedTextField#getValue()
+ */
 public class JFormattedTextFieldLastValidValueProvider implements TypedDataProvider<Object> {
 
+	/**
+	 * Formatted textfield to retrieve the last valid value from.
+	 */
 	private final JFormattedTextField formattedTextField;
 
+	/**
+	 * Constructor specifying the formatted textfield to retrieve the last valid value from.
+	 *
+	 * @param formattedTextField Formatted textfield to retrieve the last valid value from.
+	 */
 	public JFormattedTextFieldLastValidValueProvider(final JFormattedTextField formattedTextField) {
 		this.formattedTextField = formattedTextField;
 	}
 
+	/**
+	 * @see TypedDataProvider#getData()
+	 */
 	@Override
 	public Object getData() {
 		return formattedTextField.getValue();

@@ -27,8 +27,18 @@ package com.github.validationframework.swing.dataprovider;
 
 import javax.swing.JRadioButton;
 
+/**
+ * Data provider retrieving the selection state from a radio button.<br>It is provided for convenience over the {@link
+ * BaseJToggleButtonValueProvider} to make it easier to find when building validators.
+ *
+ * @see BaseJToggleButtonValueProvider
+ * @see JRadioButton
+ */
 public class JRadioButtonValueProvider extends BaseJToggleButtonValueProvider<JRadioButton> {
 
+	/**
+	 * @see BaseJToggleButtonValueProvider#BaseJToggleButtonValueProvider(javax.swing.JToggleButton)
+	 */
 	public JRadioButtonValueProvider(final JRadioButton toggleComponent) {
 		super(toggleComponent);
 	}

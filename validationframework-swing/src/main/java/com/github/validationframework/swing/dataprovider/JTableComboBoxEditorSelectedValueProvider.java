@@ -35,8 +35,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Provider of the selected value of the current cmobobox editor component from a given table.<br>Note that if the table
+ * Provider of the selected value of the current combobox editor component from a given table.<br>Note that if the table
  * is not in editing, no value can be provided.
+ *
+ * @see TypedDataProvider
+ * @see JTable
+ * @see JTable#getCellEditor()
  */
 public class JTableComboBoxEditorSelectedValueProvider<T> implements TypedDataProvider<T> {
 
@@ -50,6 +54,9 @@ public class JTableComboBoxEditorSelectedValueProvider<T> implements TypedDataPr
 	 */
 	private final JTable table;
 
+	/**
+	 * Transformer used to convert the selected object from the combobox editor component to the expected type.
+	 */
 	private final Transformer<Object, T> transformer;
 
 	/**
@@ -61,6 +68,14 @@ public class JTableComboBoxEditorSelectedValueProvider<T> implements TypedDataPr
 		this(table, new CastTransformer<Object, T>());
 	}
 
+	/**
+	 * Constructor specifying the table holding the editor component to get the text from and the transformer used to
+	 * convert the selected object from the combobox to the expected type.
+	 *
+	 * @param table Editable table.
+	 * @param transformer Transformer used to convert the selected object from the combobox editor component to the
+	 * expected type.
+	 */
 	public JTableComboBoxEditorSelectedValueProvider(final JTable table, final Transformer<Object, T> transformer) {
 		this.table = table;
 		this.transformer = transformer;

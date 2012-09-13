@@ -37,7 +37,11 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Provider of the value of the current formatted text editor component from a given table.<br>Note that if the table is
- * not in editing, no value can be provided.
+ * not in editing state, no value can be provided.
+ *
+ * @see TypedDataProvider
+ * @see JTable
+ * @see JTable#getCellEditor()
  */
 public class JTableTextEditorValueProvider<T> implements TypedDataProvider<T> {
 
@@ -51,10 +55,13 @@ public class JTableTextEditorValueProvider<T> implements TypedDataProvider<T> {
 	 */
 	private final JTable table;
 
+	/**
+	 * Transformer used to convert the object parsed from the formatted text editor component to the expected type.
+	 */
 	private final Transformer<Object, T> transformer;
 
 	/**
-	 * Constructor specifying the table holding the editor component to get the text from.
+	 * Constructor specifying the table holding the editor component to get the value from.
 	 *
 	 * @param table Editable table.
 	 */
@@ -62,6 +69,14 @@ public class JTableTextEditorValueProvider<T> implements TypedDataProvider<T> {
 		this(table, new CastTransformer<Object, T>());
 	}
 
+	/**
+	 * Constructor specifying the table holding the editor component to get the value from and the transformer to be used
+	 * to convert the text to convert the value to the required type.
+	 *
+	 * @param table Editable table.
+	 * @param transformer Transformer used to convert the object parsed from the formatted text editor component to the
+	 * expected type.
+	 */
 	public JTableTextEditorValueProvider(final JTable table, final Transformer<Object, T> transformer) {
 		this.table = table;
 		this.transformer = transformer;

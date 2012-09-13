@@ -35,6 +35,7 @@ import javax.swing.JList;
  * Data provider retrieving the selected values of a list.
  *
  * @see TypedDataProvider
+ * @see JList
  * @see JList#getSelectedValue()
  * @see JListSelectedIndexProvider
  * @see JListSelectedIndicesProvider

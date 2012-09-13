@@ -27,8 +27,18 @@ package com.github.validationframework.swing.dataprovider;
 
 import javax.swing.JToggleButton;
 
+/**
+ * Data provider retrieving the selection state from a toggle button.<br>It is provided for convenience over the {@link
+ * BaseJToggleButtonValueProvider} to make it easier to find when building validators.
+ *
+ * @see BaseJToggleButtonValueProvider
+ * @see JToggleButton
+ */
 public class JToggleButtonValueProvider extends BaseJToggleButtonValueProvider<JToggleButton> {
 
+	/**
+	 * @see BaseJToggleButtonValueProvider#BaseJToggleButtonValueProvider(javax.swing.JToggleButton)
+	 */
 	public JToggleButtonValueProvider(final JToggleButton toggleComponent) {
 		super(toggleComponent);
 	}

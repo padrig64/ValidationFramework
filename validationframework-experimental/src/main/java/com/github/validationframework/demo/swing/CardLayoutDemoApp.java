@@ -78,8 +78,7 @@ public class CardLayoutDemoApp extends JFrame implements ItemListener {
 
 		private void installValidator(final JTextField textField) {
 			SimpleValidatorBuilder.on(new JTextFieldDocumentChangedTrigger(textField))
-					.read(new JTextFieldTextProvider(textField))
-					.check(new StringLengthLessThanOrEqualToRule(5 + count))
+					.read(new JTextFieldTextProvider(textField)).check(new StringLengthLessThanOrEqualToRule(5 + count))
 					.handleWith(new IconBooleanFeedback(textField, null, null, IconBooleanFeedback.DEFAULT_INVALID_ICON,
 							"Should be less then " + (6 + count) + " characters")).build();
 		}

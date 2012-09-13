@@ -30,6 +30,9 @@ import javax.swing.JSpinner;
 
 /**
  * Data provider reading the value from the model of a spinner.
+ *
+ * @see TypedDataProvider
+ * @see JSpinner
  */
 public class JSpinnerModelValueProvider implements TypedDataProvider<Object> {
 

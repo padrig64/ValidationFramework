@@ -28,10 +28,11 @@ package com.github.validationframework.swing.dataprovider;
 import javax.swing.JEditorPane;
 
 /**
- * Data provider retrieving an editor pane component.<br>It is provided as for convenience over the {@link
+ * Data provider retrieving the text from an editor pane.<br>It is provided for convenience over the {@link
  * BaseJTextComponentTextProvider} to make it easier to find when building validators.
  *
  * @see BaseJTextComponentTextProvider
+ * @see JEditorPane
  */
 public class JEditorPaneTextProvider extends BaseJTextComponentTextProvider<JEditorPane> {
 

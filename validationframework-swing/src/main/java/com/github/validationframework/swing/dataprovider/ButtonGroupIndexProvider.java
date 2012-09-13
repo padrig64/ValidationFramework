@@ -31,14 +31,31 @@ import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;
 
+/**
+ * Data provider retrieving the selected index in a button group.
+ *
+ * @see TypedDataProvider
+ * @see ButtonGroup
+ */
 public class ButtonGroupIndexProvider implements TypedDataProvider<Integer> {
 
+	/**
+	 * Button group to retrieve the selected index from.
+	 */
 	private final ButtonGroup buttonGroup;
 
+	/**
+	 * Constructor specifying the button group to retrieve the selected index from.
+	 *
+	 * @param buttonGroup Button group to retrieve the selected index from.
+	 */
 	public ButtonGroupIndexProvider(final ButtonGroup buttonGroup) {
 		this.buttonGroup = buttonGroup;
 	}
 
+	/**
+	 * @see TypedDataProvider#getData()
+	 */
 	@Override
 	public Integer getData() {
 		int index = -1;

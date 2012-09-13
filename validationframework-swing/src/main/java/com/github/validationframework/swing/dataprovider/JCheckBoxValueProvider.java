@@ -27,8 +27,18 @@ package com.github.validationframework.swing.dataprovider;
 
 import javax.swing.JCheckBox;
 
+/**
+ * Data provider retrieving the selection state from a checkbox.<br>It is provided for convenience over the {@link
+ * BaseJToggleButtonValueProvider} to make it easier to find when building validators.
+ *
+ * @see BaseJToggleButtonValueProvider
+ * @see JCheckBox
+ */
 public class JCheckBoxValueProvider extends BaseJToggleButtonValueProvider<JCheckBox> {
 
+	/**
+	 * @see BaseJToggleButtonValueProvider#BaseJToggleButtonValueProvider(javax.swing.JToggleButton)
+	 */
 	public JCheckBoxValueProvider(final JCheckBox toggleComponent) {
 		super(toggleComponent);
 	}
