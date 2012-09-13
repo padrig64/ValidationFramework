@@ -26,13 +26,12 @@
 package com.github.validationframework.base.rule.bool;
 
 import com.github.validationframework.api.rule.Rule;
-import com.github.validationframework.base.transform.AndBooleanAggregator;
 import com.github.validationframework.base.transform.OrBooleanAggregator;
 import com.github.validationframework.base.transform.Transformer;
 import java.util.Collection;
 
 /**
- * Rule validating a collection of boolean values using the boolean AND operator.
+ * Rule validating a collection of boolean values using the boolean OR operator.
  *
  * @see AndBooleanRule
  */
@@ -69,7 +68,7 @@ public class OrBooleanRule implements Rule<Collection<Boolean>, Boolean> {
 	 * @param nullElementValid Boolean value for null elements.
 	 */
 	public OrBooleanRule(final boolean emptyCollectionValid, final boolean nullElementValid) {
-		aggregator = new AndBooleanAggregator(emptyCollectionValid, nullElementValid);
+		aggregator = new OrBooleanAggregator(emptyCollectionValid, nullElementValid);
 	}
 
 	/**
