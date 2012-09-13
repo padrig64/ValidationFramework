@@ -3,11 +3,11 @@
 *.iml
 *.ipr
 *.iws
-.idea/
+.idea
 
 ### Eclipse files
 
-.metadata/
+.metadata
 
 ### Package files
 
@@ -22,4 +22,4 @@ target/
 
 ### Mac OS files
 
-.DS_Store/
+.DS_Store
