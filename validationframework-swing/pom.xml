@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
+        <groupId>com.github.moawad</groupId>
         <artifactId>validationframework</artifactId>
-        <groupId>validationframework</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
@@ -18,7 +18,7 @@
         <!-- Validation Framework -->
 
         <dependency>
-            <groupId>validationframework</groupId>
+            <groupId>com.github.moawad</groupId>
             <artifactId>validationframework-core</artifactId>
         </dependency>
 
