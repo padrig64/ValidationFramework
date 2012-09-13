@@ -27,8 +27,17 @@ package com.github.validationframework.swing.trigger;
 
 import javax.swing.JToggleButton;
 
+/**
+ * Trigger initiating the validation whenever the model of a toggle button is changed.<br>It is provided for convenience
+ * over the {@link BaseToggleComponentModelChangedTrigger} to make it easier to find while building the validators.
+ *
+ * @see BaseToggleComponentModelChangedTrigger
+ */
 public class JToggleButtonModelChangedTrigger extends BaseToggleComponentModelChangedTrigger<JToggleButton> {
 
+	/**
+	 * @see BaseToggleComponentModelChangedTrigger#BaseToggleComponentModelChangedTrigger(JToggleButton)
+	 */
 	public JToggleButtonModelChangedTrigger(final JToggleButton source) {
 		super(source);
 	}

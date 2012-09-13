@@ -43,7 +43,7 @@ public final class ColorUtils {
 
 	/**
 	 * Blends the two colors taking into account their alpha.<br>If one of the two input colors implements the {@link
-	 * javax.swing.plaf.UIResource} interface, the result color will also implement this interface.
+	 * UIResource} interface, the result color will also implement this interface.
 	 *
 	 * @param src Source color to be blended into the destination color.
 	 * @param dst Destination color on which the source color is to be blended.
@@ -73,6 +73,13 @@ public final class ColorUtils {
 		return blend;
 	}
 
+	/**
+	 * Convenience to get a more readable string representation of a Color object.
+	 *
+	 * @param c Color to get the string representation for.
+	 *
+	 * @return String representation of the specified color.
+	 */
 	public static String toString(final Color c) {
 		final StringBuilder sb = new StringBuilder();
 

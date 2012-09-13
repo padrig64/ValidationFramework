@@ -27,8 +27,17 @@ package com.github.validationframework.swing.trigger;
 
 import javax.swing.JCheckBox;
 
+/**
+ * Trigger initiating the validation whenever the model of a checkbox is changed.<br>It is provided for convenience over
+ * the {@link BaseToggleComponentModelChangedTrigger} to make it easier to find while building the validators.
+ *
+ * @see BaseToggleComponentModelChangedTrigger
+ */
 public class JCheckBoxModelChangedTrigger extends BaseToggleComponentModelChangedTrigger<JCheckBox> {
 
+	/**
+	 * @see BaseToggleComponentModelChangedTrigger#BaseToggleComponentModelChangedTrigger(javax.swing.JToggleButton)
+	 */
 	public JCheckBoxModelChangedTrigger(final JCheckBox source) {
 		super(source);
 	}

@@ -27,8 +27,17 @@ package com.github.validationframework.swing.trigger;
 
 import javax.swing.JRadioButton;
 
+/**
+ * Trigger initiating the validation whenever the model of a radio button is changed.<br>It is provided for convenience
+ * over the {@link BaseToggleComponentModelChangedTrigger} to make it easier to find while building the validators.
+ *
+ * @see BaseToggleComponentModelChangedTrigger
+ */
 public class JRadioButtonModelChangedTrigger extends BaseToggleComponentModelChangedTrigger<JRadioButton> {
 
+	/**
+	 * @see BaseToggleComponentModelChangedTrigger#BaseToggleComponentModelChangedTrigger(javax.swing.JToggleButton)
+	 */
 	public JRadioButtonModelChangedTrigger(final JRadioButton source) {
 		super(source);
 	}

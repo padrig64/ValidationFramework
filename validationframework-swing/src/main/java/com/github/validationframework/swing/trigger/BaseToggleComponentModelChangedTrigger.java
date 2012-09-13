@@ -32,6 +32,14 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import javax.swing.JToggleButton;
 
+/**
+ * Trigger initiating the validation whenever the model of a toggle button is changed.
+ *
+ * @param <C> Type of toggle button component to be watched.
+ *
+ * @see AbstractTrigger
+ * @see Disposable
+ */
 public class BaseToggleComponentModelChangedTrigger<C extends JToggleButton> extends AbstractTrigger
 		implements Disposable {
 

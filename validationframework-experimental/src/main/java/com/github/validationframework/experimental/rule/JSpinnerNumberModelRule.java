@@ -23,7 +23,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.swing.rule;
+package com.github.validationframework.experimental.rule;
 
 import com.github.validationframework.api.rule.Rule;
 import javax.swing.AbstractSpinnerModel;

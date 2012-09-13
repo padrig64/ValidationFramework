@@ -29,6 +29,10 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Point;
 
+/**
+ * Pair of anchors.<br>Typically, this can be used to match an anchor point on a decorated component (master anchor) to
+ * an anchor point on its decoration (slave anchor).
+ */
 public class AnchorLink {
 
 	private Anchor masterAnchor;
