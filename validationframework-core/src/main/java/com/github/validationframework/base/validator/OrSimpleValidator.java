@@ -34,10 +34,10 @@ import com.github.validationframework.api.rule.Rule;
  * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
  * type of the component itself.
  *
- * @see SimpleValidator
+ * @see DefaultSimpleValidator
  * @see AndSimpleValidator
  */
-public class OrSimpleValidator<D> extends SimpleValidator<D, Boolean> {
+public class OrSimpleValidator<D> extends DefaultSimpleValidator<D, Boolean> {
 
 	/**
 	 * Checks the specified data against all the rules and aggregates all the boolean results to one single result using
@@ -45,7 +45,7 @@ public class OrSimpleValidator<D> extends SimpleValidator<D, Boolean> {
 	 *
 	 * @param data Data to be validated against all rules.
 	 *
-	 * @see SimpleValidator#processData(Object)
+	 * @see DefaultSimpleValidator#processData(Object)
 	 */
 	@Override
 	protected void processData(final D data) {
