@@ -34,8 +34,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Concrete implementation of a mappable validator.<br>A mappable validator is a validator whose data providers and
- * rules are bound to a known specific type of data, and whose result handlers are bound to a known specific type of
+ * Concrete default implementation of a mappable validator.<br>A mappable validator is a validator whose data providers
+ * and rules are bound to a known specific type of data, and whose result handlers are bound to a known specific type of
  * result.<br>When any of its triggers is initiated, the mappable validator will read all the data from the data
  * providers mapped to that trigger, check the data against the rules mapped to those data providers, and handles the
  * rule results using the result handlers that are mapped to those rules.
