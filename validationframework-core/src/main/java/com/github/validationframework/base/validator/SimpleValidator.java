@@ -25,72 +25,10 @@
 
 package com.github.validationframework.base.validator;
 
-import com.github.validationframework.api.dataprovider.TypedDataProvider;
-import com.github.validationframework.api.resulthandler.ResultHandler;
-import com.github.validationframework.api.rule.Rule;
-import com.github.validationframework.api.trigger.Trigger;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
- * Concrete implementation of a simple validator.<br>A simple validator has data providers and rules that are bound to a
- * known specific type of data, and result handlers that are bound to a known specific type of result.<br>When any of
- * its triggers is initiated, the simple validator will read all the data from all of its data providers, check them all
- * against all of its rules, and handles all the results using all of its result handlers.
- *
- * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
- * type of the component itself.
- * @param <O> Type of validation result.<br>It can be, for instance, an enumeration or just a boolean.
- *
- * @see AbstractSimpleValidator
- * @see Trigger
- * @see TypedDataProvider
- * @see Rule
- * @see ResultHandler
+ * @deprecated User {@link DefaultSimpleValidator} instead.
  */
-public class SimpleValidator<D, O>
-		extends AbstractSimpleValidator<Trigger, TypedDataProvider<D>, D, O, Rule<D, O>, O, ResultHandler<O>> {
-
-	/**
-	 * Logger for this class.
-	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(SimpleValidator.class);
-
-	/**
-	 * @see AbstractSimpleValidator#processTrigger(Trigger)
-	 */
-	@Override
-	protected void processTrigger(final Trigger trigger) {
-		if (dataProviders.isEmpty()) {
-			LOGGER.warn("No data providers in validator: " + this);
-		} else {
-			// Process data from all providers
-			for (final TypedDataProvider<D> dataProvider : dataProviders) {
-				processData(dataProvider.getData());
-			}
-		}
-	}
-
-	/**
-	 * Validates the specified data all rules.
-	 *
-	 * @param data Data to be validated against all rules.
-	 */
-	protected void processData(final D data) {
-		// Check data against all rules
-		for (final Rule<D, O> rule : rules) {
-			processResult(rule.validate(data));
-		}
-	}
-
-	/**
-	 * Handles the specified result using all result handlers.
-	 *
-	 * @param result Result to be processed by all result handlers.
-	 */
-	protected void processResult(final O result) {
-		for (final ResultHandler<O> resultHandler : resultHandlers) {
-			resultHandler.handleResult(result);
-		}
-	}
+@Deprecated
+public class SimpleValidator<D, O> extends DefaultSimpleValidator<D, O> {
+	// Nothing to be done
 }
