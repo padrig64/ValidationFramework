@@ -6,7 +6,7 @@
 
     <groupId>validationframework</groupId>
     <artifactId>validationframework</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Validation Framework</name>
@@ -21,7 +21,9 @@
     </licenses>
 
     <scm>
-        <url>https://github.com/padrig64/ValidationFramework</url>
+        <connection>scm:git:git@github.com:padrig64/ValidationFramework.git</connection>
+        <url>scm:git:git@github.com:padrig64/ValidationFramework.git</url>
+        <developerConnection>scm:git:git@github.com:padrig64/ValidationFramework.git</developerConnection>
     </scm>
 
     <properties>
@@ -31,8 +33,8 @@
 
         <mavencompilerplugin.version>2.5.1</mavencompilerplugin.version>
         <java.compiler.version>1.6</java.compiler.version>
-
         <mavengpgplugin.version>1.4</mavengpgplugin.version>
+        <mavenreleaseplugin.version>2.3.2</mavenreleaseplugin.version>
 
         <!-- Dependencies versions -->
 
@@ -141,7 +143,6 @@
         </dependencies>
     </dependencyManagement>
 
-    <!-- Better support in Eclipse -->
 
     <build>
         <plugins>
@@ -154,6 +155,12 @@
                     <target>${java.compiler.version}</target>
                     <compilerVersion>${java.compiler.version}</compilerVersion>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>${mavenreleaseplugin.version}</version>
             </plugin>
         </plugins>
     </build>
