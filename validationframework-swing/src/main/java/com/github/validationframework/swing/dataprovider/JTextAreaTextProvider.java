@@ -27,8 +27,17 @@ package com.github.validationframework.swing.dataprovider;
 
 import javax.swing.JTextArea;
 
+/**
+ * Data provider retrieving a text area component.<br>It is provided as for convenience over the {@link
+ * BaseJTextComponentTextProvider} to make it easier to find when building validators.
+ *
+ * @see BaseJTextComponentTextProvider
+ */
 public class JTextAreaTextProvider extends BaseJTextComponentTextProvider<JTextArea> {
 
+	/**
+	 * @see BaseJTextComponentTextProvider#BaseJTextComponentTextProvider(javax.swing.text.JTextComponent)
+	 */
 	public JTextAreaTextProvider(final JTextArea textComponent) {
 		super(textComponent);
 	}

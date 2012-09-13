@@ -27,8 +27,17 @@ package com.github.validationframework.swing.dataprovider;
 
 import javax.swing.JTextPane;
 
+/**
+ * Data provider retrieving a text pane component.<br>It is provided as for convenience over the {@link
+ * BaseJTextComponentTextProvider} to make it easier to find when building validators.
+ *
+ * @see BaseJTextComponentTextProvider
+ */
 public class JTextPaneTextProvider extends BaseJTextComponentTextProvider<JTextPane> {
 
+	/**
+	 * @see BaseJTextComponentTextProvider#BaseJTextComponentTextProvider(javax.swing.text.JTextComponent)
+	 */
 	public JTextPaneTextProvider(final JTextPane textComponent) {
 		super(textComponent);
 	}

@@ -27,8 +27,17 @@ package com.github.validationframework.swing.dataprovider;
 
 import javax.swing.text.JTextComponent;
 
+/**
+ * Data provider retrieving a text component.<br>It is provided as for convenience over the {@link
+ * BaseJTextComponentTextProvider} to make it easier to find when building validators.
+ *
+ * @see BaseJTextComponentTextProvider
+ */
 public class JTextComponentTextProvider extends BaseJTextComponentTextProvider<JTextComponent> {
 
+	/**
+	 * @see BaseJTextComponentTextProvider#BaseJTextComponentTextProvider(JTextComponent)
+	 */
 	public JTextComponentTextProvider(final JTextComponent textComponent) {
 		super(textComponent);
 	}

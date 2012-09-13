@@ -27,8 +27,17 @@ package com.github.validationframework.swing.dataprovider;
 
 import javax.swing.JTextField;
 
+/**
+ * Data provider retrieving a textfield component.<br>It is provided as for convenience over the {@link
+ * BaseJTextComponentTextProvider} to make it easier to find when building validators.
+ *
+ * @see BaseJTextComponentTextProvider
+ */
 public class JTextFieldTextProvider extends BaseJTextComponentTextProvider<JTextField> {
 
+	/**
+	 * @see BaseJTextComponentTextProvider#BaseJTextComponentTextProvider(javax.swing.text.JTextComponent)
+	 */
 	public JTextFieldTextProvider(final JTextField textComponent) {
 		super(textComponent);
 	}
