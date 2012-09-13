@@ -30,7 +30,7 @@ import com.github.validationframework.base.resulthandler.ResultCollector;
 import com.github.validationframework.base.rule.bool.AndBooleanRule;
 import com.github.validationframework.base.rule.string.StringRegexRule;
 import com.github.validationframework.base.transform.Transformer;
-import com.github.validationframework.base.validator.SimpleValidator;
+import com.github.validationframework.base.validator.DefaultSimpleValidator;
 import com.github.validationframework.swing.dataprovider.JFormattedTextFieldTextProvider;
 import com.github.validationframework.swing.dataprovider.JTextFieldTextProvider;
 import com.github.validationframework.swing.resulthandler.AbstractColorFeedback;
@@ -300,7 +300,8 @@ public class FeedbackDemoApp extends JFrame {
 
 	private Component createValidator1(final JTextField textField,
 									   final ResultCollector<InputFieldResult, Boolean> resultCollector) {
-		final SimpleValidator<String, InputFieldResult> validator = new SimpleValidator<String, InputFieldResult>();
+		final DefaultSimpleValidator<String, InputFieldResult> validator =
+				new DefaultSimpleValidator<String, InputFieldResult>();
 
 		validator.addTrigger(new JTextFieldDocumentChangedTrigger(textField));
 		validator.addDataProvider(new JTextFieldTextProvider(textField));
@@ -313,7 +314,8 @@ public class FeedbackDemoApp extends JFrame {
 
 	private Component createValidator2(final JTextField textField,
 									   final ResultCollector<InputFieldResult, Boolean> resultCollector) {
-		final SimpleValidator<String, InputFieldResult> validator = new SimpleValidator<String, InputFieldResult>();
+		final DefaultSimpleValidator<String, InputFieldResult> validator =
+				new DefaultSimpleValidator<String, InputFieldResult>();
 
 		validator.addTrigger(new JTextFieldDocumentChangedTrigger(textField));
 		validator.addDataProvider(new JTextFieldTextProvider(textField));
@@ -326,7 +328,8 @@ public class FeedbackDemoApp extends JFrame {
 
 	private Component createValidator3(final JTextField textField,
 									   final ResultCollector<InputFieldResult, Boolean> resultCollector) {
-		final SimpleValidator<String, InputFieldResult> validator = new SimpleValidator<String, InputFieldResult>();
+		final DefaultSimpleValidator<String, InputFieldResult> validator =
+				new DefaultSimpleValidator<String, InputFieldResult>();
 
 		validator.addTrigger(new JTextFieldDocumentChangedTrigger(textField));
 		validator.addDataProvider(new JTextFieldTextProvider(textField));

@@ -28,7 +28,7 @@ package com.github.validationframework.demo.swing;
 import com.github.validationframework.base.resulthandler.PrintStreamResultHandler;
 import com.github.validationframework.base.rule.object.NotNullBooleanRule;
 import com.github.validationframework.base.rule.string.StringLengthGreaterThanOrEqualToRule;
-import com.github.validationframework.base.validator.SimpleValidator;
+import com.github.validationframework.base.validator.DefaultSimpleValidator;
 import com.github.validationframework.swing.dataprovider.JTableComboBoxEditorSelectedValueProvider;
 import com.github.validationframework.swing.dataprovider.JTableTextEditorTextProvider;
 import com.github.validationframework.swing.resulthandler.bool.CellIconBooleanFeedback;
@@ -126,7 +126,7 @@ public class TableDemoApp extends JFrame {
 	}
 
 	private void installValidators(final JTable table, final JButton applyButton) {
-		final SimpleValidator<String, Boolean> validator = new SimpleValidator<String, Boolean>();
+		final DefaultSimpleValidator<String, Boolean> validator = new DefaultSimpleValidator<String, Boolean>();
 
 		validator.addTrigger(new JTableTextEditorDocumentChangedTrigger(table, 1, 1));
 		validator.addDataProvider(new JTableTextEditorTextProvider(table));
@@ -139,7 +139,7 @@ public class TableDemoApp extends JFrame {
 				new CellIconBooleanFeedback(table, 1, 1, null, null, CellIconBooleanFeedback.DEFAULT_INVALID_ICON,
 						"Invalid text"));
 
-		final SimpleValidator<Object, Boolean> validator2 = new SimpleValidator<Object, Boolean>();
+		final DefaultSimpleValidator<Object, Boolean> validator2 = new DefaultSimpleValidator<Object, Boolean>();
 		validator2.addTrigger(new JTableComboBoxEditorModelChangedTrigger(table));
 		validator2.addDataProvider(new JTableComboBoxEditorSelectedValueProvider<Object>(table));
 		validator2.addRule(new NotNullBooleanRule<Object>());

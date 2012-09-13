@@ -29,7 +29,7 @@ import com.github.validationframework.api.dataprovider.TypedDataProvider;
 import com.github.validationframework.api.resulthandler.ResultHandler;
 import com.github.validationframework.api.rule.Rule;
 import com.github.validationframework.api.trigger.Trigger;
-import com.github.validationframework.base.validator.SimpleValidator;
+import com.github.validationframework.base.validator.DefaultSimpleValidator;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -109,8 +109,8 @@ public class ValidatorContext<D, O> {
 	 *
 	 * @return Newly created and configured validator.
 	 */
-	public SimpleValidator<D, O> build() {
-		final SimpleValidator<D, O> validator = new SimpleValidator<D, O>();
+	public DefaultSimpleValidator<D, O> build() {
+		final DefaultSimpleValidator<D, O> validator = new DefaultSimpleValidator<D, O>();
 
 		for (final Trigger trigger : registeredTriggers) {
 			validator.addTrigger(trigger);
