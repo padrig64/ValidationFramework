@@ -11,7 +11,14 @@
 
     <name>Validation Framework</name>
     <description>Parent POM of Validation Framework components</description>
-    <url>https://github.com/padrig64/ValidationFramework.git</url>
+    <url>http://padrig64.github.com/ValidationFramework/</url>
+
+    <licenses>
+        <license>
+            <name>Simplified BSD License</name>
+            <url>https://raw.github.com/padrig64/ValidationFramework/master/LICENSE.txt</url>
+        </license>
+    </licenses>
 
     <scm>
         <url>https://github.com/padrig64/ValidationFramework</url>
