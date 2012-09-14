@@ -33,6 +33,8 @@ import com.github.validationframework.api.rule.Rule;
  *
  * @param <T> Type of number handled by this rule.<br>It also it is not really required for the internal logic of the
  * rule, it helps in reducing compilation warnings and/or errors when add a rule in a validator.
+ *
+ * @see Rule
  */
 public class NumberGreaterThanRule<T extends Number> implements Rule<T, Boolean> {
 

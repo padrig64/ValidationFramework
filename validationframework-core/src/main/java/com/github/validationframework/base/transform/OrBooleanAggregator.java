@@ -30,7 +30,7 @@ import java.util.Collection;
 /**
  * Transforms a collection of boolean values into a single boolean value by aggregating with the boolean OR operator.
  *
- * @see Transformer
+ * @see Aggregator
  */
 public class OrBooleanAggregator implements Aggregator<Boolean, Boolean> {
 

@@ -25,18 +25,18 @@
 
 package com.github.validationframework.swing.dataprovider;
 
-import com.github.validationframework.api.dataprovider.TypedDataProvider;
+import com.github.validationframework.api.dataprovider.DataProvider;
 import javax.swing.JComboBox;
 
 /**
  * Data provider retrieving the selected index of a combobox.
  *
- * @see TypedDataProvider
+ * @see DataProvider
  * @see JComboBoxSelectedValueProvider
  * @see JComboBox
  * @see JComboBox#getSelectedIndex()
  */
-public class JComboBoxSelectedIndexProvider implements TypedDataProvider<Integer> {
+public class JComboBoxSelectedIndexProvider implements DataProvider<Integer> {
 
 	/**
 	 * Combobox to get the selected index from.
@@ -53,7 +53,7 @@ public class JComboBoxSelectedIndexProvider implements TypedDataProvider<Integer
 	}
 
 	/**
-	 * @see TypedDataProvider#getData()
+	 * @see DataProvider#getData()
 	 */
 	@Override
 	public Integer getData() {

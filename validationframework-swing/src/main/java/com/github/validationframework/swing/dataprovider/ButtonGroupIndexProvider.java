@@ -25,7 +25,7 @@
 
 package com.github.validationframework.swing.dataprovider;
 
-import com.github.validationframework.api.dataprovider.TypedDataProvider;
+import com.github.validationframework.api.dataprovider.DataProvider;
 import java.util.Enumeration;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
@@ -34,10 +34,10 @@ import javax.swing.ButtonModel;
 /**
  * Data provider retrieving the selected index in a button group.
  *
- * @see TypedDataProvider
+ * @see DataProvider
  * @see ButtonGroup
  */
-public class ButtonGroupIndexProvider implements TypedDataProvider<Integer> {
+public class ButtonGroupIndexProvider implements DataProvider<Integer> {
 
 	/**
 	 * Button group to retrieve the selected index from.
@@ -54,7 +54,7 @@ public class ButtonGroupIndexProvider implements TypedDataProvider<Integer> {
 	}
 
 	/**
-	 * @see TypedDataProvider#getData()
+	 * @see DataProvider#getData()
 	 */
 	@Override
 	public Integer getData() {

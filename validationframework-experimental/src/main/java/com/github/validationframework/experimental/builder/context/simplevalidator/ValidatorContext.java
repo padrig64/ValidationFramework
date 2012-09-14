@@ -25,7 +25,7 @@
 
 package com.github.validationframework.experimental.builder.context.simplevalidator;
 
-import com.github.validationframework.api.dataprovider.TypedDataProvider;
+import com.github.validationframework.api.dataprovider.DataProvider;
 import com.github.validationframework.api.resulthandler.ResultHandler;
 import com.github.validationframework.api.rule.Rule;
 import com.github.validationframework.api.trigger.Trigger;
@@ -50,12 +50,11 @@ public class ValidatorContext<D, O> {
 	private static final String NEW_INSTANCE_ERROR_MSG = "Failed creating instance of class: ";
 
 	final List<Trigger> registeredTriggers;
-	final List<TypedDataProvider<D>> registeredDataProviders;
+	final List<DataProvider<D>> registeredDataProviders;
 	final List<Rule<D, O>> registeredRules;
 	final List<ResultHandler<O>> registeredResultHandlers;
 
-	public ValidatorContext(final List<Trigger> registeredTriggers,
-							final List<TypedDataProvider<D>> registeredDataProviders,
+	public ValidatorContext(final List<Trigger> registeredTriggers, final List<DataProvider<D>> registeredDataProviders,
 							final List<Rule<D, O>> registeredRules,
 							final List<ResultHandler<O>> registeredResultHandlers) {
 		this.registeredTriggers = registeredTriggers;
@@ -115,7 +114,7 @@ public class ValidatorContext<D, O> {
 		for (final Trigger trigger : registeredTriggers) {
 			validator.addTrigger(trigger);
 		}
-		for (final TypedDataProvider<D> dataProvider : registeredDataProviders) {
+		for (final DataProvider<D> dataProvider : registeredDataProviders) {
 			validator.addDataProvider(dataProvider);
 		}
 		for (final Rule<D, O> rule : registeredRules) {

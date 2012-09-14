@@ -25,7 +25,7 @@
 
 package com.github.validationframework.swing.dataprovider;
 
-import com.github.validationframework.api.dataprovider.TypedDataProvider;
+import com.github.validationframework.api.dataprovider.DataProvider;
 import javax.swing.JToggleButton;
 
 /**
@@ -33,10 +33,10 @@ import javax.swing.JToggleButton;
  *
  * @param <C> Type of toggle button to retrieve the selection state from.
  *
- * @see TypedDataProvider
+ * @see DataProvider
  * @see JToggleButton
  */
-public class BaseJToggleButtonValueProvider<C extends JToggleButton> implements TypedDataProvider<Boolean> {
+public class BaseJToggleButtonValueProvider<C extends JToggleButton> implements DataProvider<Boolean> {
 
 	/**
 	 * Toggle button to retrieve the selection state from.
@@ -53,7 +53,7 @@ public class BaseJToggleButtonValueProvider<C extends JToggleButton> implements 
 	}
 
 	/**
-	 * @see TypedDataProvider#getData()
+	 * @see DataProvider#getData()
 	 */
 	@Override
 	public Boolean getData() {

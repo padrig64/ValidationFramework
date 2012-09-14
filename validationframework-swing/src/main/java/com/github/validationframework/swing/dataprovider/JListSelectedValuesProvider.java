@@ -25,7 +25,7 @@
 
 package com.github.validationframework.swing.dataprovider;
 
-import com.github.validationframework.api.dataprovider.TypedDataProvider;
+import com.github.validationframework.api.dataprovider.DataProvider;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -34,14 +34,14 @@ import javax.swing.JList;
 /**
  * Data provider retrieving the selected values of a list.
  *
- * @see TypedDataProvider
+ * @see DataProvider
  * @see JList
  * @see JList#getSelectedValue()
  * @see JListSelectedIndexProvider
  * @see JListSelectedIndicesProvider
  * @see JListSelectedValueProvider
  */
-public class JListSelectedValuesProvider implements TypedDataProvider<Collection<Object>> {
+public class JListSelectedValuesProvider implements DataProvider<Collection<Object>> {
 
 	/**
 	 * List to get the selected values from.
@@ -58,7 +58,7 @@ public class JListSelectedValuesProvider implements TypedDataProvider<Collection
 	}
 
 	/**
-	 * @see TypedDataProvider#getData()
+	 * @see DataProvider#getData()
 	 */
 	@Override
 	public Collection<Object> getData() {

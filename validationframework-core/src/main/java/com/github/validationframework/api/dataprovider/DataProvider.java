@@ -26,11 +26,19 @@
 package com.github.validationframework.api.dataprovider;
 
 /**
- * Marker interface to be implemented by data providers.<br>Data providers provide the data typically used by validation
- * rules, upon validation trigger.
+ * Interface to be implemented by data providers.<br>Data providers provide data of a know specific type for the
+ * validation process.<br>The data provided by the data providers are typically used by rules when the validation
+ * process is triggered.
  *
- * @see TypedDataProvider
+ * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
+ * type of the component itself.
  */
-public interface DataProvider {
-	// Nothing to be done
+public interface DataProvider<D> {
+
+	/**
+	 * Retrieves the data to be used for validation.
+	 *
+	 * @return Data to be used for validation.
+	 */
+	public D getData();
 }

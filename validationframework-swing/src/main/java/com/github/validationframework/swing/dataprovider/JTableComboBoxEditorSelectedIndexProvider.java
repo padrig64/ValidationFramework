@@ -25,7 +25,7 @@
 
 package com.github.validationframework.swing.dataprovider;
 
-import com.github.validationframework.api.dataprovider.TypedDataProvider;
+import com.github.validationframework.api.dataprovider.DataProvider;
 import java.awt.Component;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
@@ -36,11 +36,11 @@ import org.slf4j.LoggerFactory;
  * Provider of the selected index of the current combobox editor component from a given table.<br>Note that if the table
  * is not in editing, no index can be provided.
  *
- * @see TypedDataProvider
+ * @see DataProvider
  * @see JTable
  * @see JTable#getCellEditor()
  */
-public class JTableComboBoxEditorSelectedIndexProvider implements TypedDataProvider<Integer> {
+public class JTableComboBoxEditorSelectedIndexProvider implements DataProvider<Integer> {
 
 	/**
 	 * Logger for this class.
@@ -62,7 +62,7 @@ public class JTableComboBoxEditorSelectedIndexProvider implements TypedDataProvi
 	}
 
 	/**
-	 * @see TypedDataProvider#getData()
+	 * @see DataProvider#getData()
 	 */
 	@Override
 	public Integer getData() {

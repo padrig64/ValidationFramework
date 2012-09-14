@@ -31,9 +31,9 @@ package com.github.validationframework.api.rule;
  *
  * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
  * type of the component itself.
- * @param <R> Type of validation result.<br>It can be, for instance, an enumeration or just a boolean.
+ * @param <O> Type of validation result.<br>It can be, for instance, an enumeration or just a boolean.
  */
-public interface Rule<D, R> {
+public interface Rule<D, O> {
 
 	/**
 	 * Checks the specified data.
@@ -42,5 +42,5 @@ public interface Rule<D, R> {
 	 *
 	 * @return Validation result.
 	 */
-	public R validate(D data);
+	public O validate(D data);
 }

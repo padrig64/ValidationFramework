@@ -5,9 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>validationframework</groupId>
+        <groupId>com.github</groupId>
         <artifactId>validationframework</artifactId>
-        <version>0.0.2</version>
+        <version>1.0.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>validationframework-swing</artifactId>
@@ -18,7 +18,7 @@
         <!-- Validation Framework -->
 
         <dependency>
-            <groupId>validationframework</groupId>
+            <groupId>com.github</groupId>
             <artifactId>validationframework-core</artifactId>
         </dependency>
 

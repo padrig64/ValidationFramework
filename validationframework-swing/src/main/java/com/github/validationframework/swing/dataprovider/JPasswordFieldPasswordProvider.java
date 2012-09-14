@@ -25,17 +25,17 @@
 
 package com.github.validationframework.swing.dataprovider;
 
-import com.github.validationframework.api.dataprovider.TypedDataProvider;
+import com.github.validationframework.api.dataprovider.DataProvider;
 import javax.swing.JPasswordField;
 
 /**
  * Data provider retrieving the text from a password field.<br>For stronger security, it is recommended that the
  * returned character array be cleared after use by the validation rules by setting each character to zero.
  *
- * @see TypedDataProvider
+ * @see DataProvider
  * @see JPasswordField
  */
-public class JPasswordFieldPasswordProvider implements TypedDataProvider<char[]> {
+public class JPasswordFieldPasswordProvider implements DataProvider<char[]> {
 
 	/**
 	 * Password field to get the text from.
@@ -52,7 +52,7 @@ public class JPasswordFieldPasswordProvider implements TypedDataProvider<char[]>
 	}
 
 	/**
-	 * @see TypedDataProvider
+	 * @see DataProvider
 	 * @see JPasswordField#getPassword()
 	 */
 	@Override

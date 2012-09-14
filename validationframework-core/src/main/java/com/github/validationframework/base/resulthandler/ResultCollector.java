@@ -25,9 +25,8 @@
 
 package com.github.validationframework.base.resulthandler;
 
-import com.github.validationframework.api.dataprovider.TypedDataProvider;
+import com.github.validationframework.api.dataprovider.DataProvider;
 import com.github.validationframework.api.resulthandler.ResultHandler;
-import com.github.validationframework.api.trigger.Trigger;
 import com.github.validationframework.api.trigger.TriggerEvent;
 import com.github.validationframework.base.transform.CastTransformer;
 import com.github.validationframework.base.transform.Transformer;
@@ -43,8 +42,11 @@ import com.github.validationframework.base.trigger.AbstractTrigger;
  * @param <D> Type of data provided by the collector.<br>It could be the same as {@link O}.
  *
  * @see com.github.validationframework.base.validator.ResultCollectorValidator
+ * @see ResultHandler
+ * @see AbstractTrigger
+ * @see DataProvider
  */
-public class ResultCollector<O, D> extends AbstractTrigger implements ResultHandler<O>, Trigger, TypedDataProvider<D> {
+public class ResultCollector<O, D> extends AbstractTrigger implements ResultHandler<O>, DataProvider<D> {
 
 	/**
 	 * Last collected result.
@@ -84,7 +86,7 @@ public class ResultCollector<O, D> extends AbstractTrigger implements ResultHand
 	}
 
 	/**
-	 * @see TypedDataProvider#getData()
+	 * @see DataProvider#getData()
 	 */
 	@Override
 	public D getData() {

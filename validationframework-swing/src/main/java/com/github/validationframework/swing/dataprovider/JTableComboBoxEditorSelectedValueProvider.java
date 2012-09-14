@@ -25,7 +25,7 @@
 
 package com.github.validationframework.swing.dataprovider;
 
-import com.github.validationframework.api.dataprovider.TypedDataProvider;
+import com.github.validationframework.api.dataprovider.DataProvider;
 import com.github.validationframework.base.transform.CastTransformer;
 import com.github.validationframework.base.transform.Transformer;
 import java.awt.Component;
@@ -38,11 +38,11 @@ import org.slf4j.LoggerFactory;
  * Provider of the selected value of the current combobox editor component from a given table.<br>Note that if the table
  * is not in editing, no value can be provided.
  *
- * @see TypedDataProvider
+ * @see DataProvider
  * @see JTable
  * @see JTable#getCellEditor()
  */
-public class JTableComboBoxEditorSelectedValueProvider<T> implements TypedDataProvider<T> {
+public class JTableComboBoxEditorSelectedValueProvider<T> implements DataProvider<T> {
 
 	/**
 	 * Logger for this class.
@@ -82,7 +82,7 @@ public class JTableComboBoxEditorSelectedValueProvider<T> implements TypedDataPr
 	}
 
 	/**
-	 * @see TypedDataProvider#getData()
+	 * @see DataProvider#getData()
 	 */
 	@Override
 	public T getData() {

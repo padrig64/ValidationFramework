@@ -25,7 +25,7 @@
 
 package com.github.validationframework.swing.dataprovider;
 
-import com.github.validationframework.api.dataprovider.TypedDataProvider;
+import com.github.validationframework.api.dataprovider.DataProvider;
 import java.awt.Component;
 import javax.swing.JTable;
 import javax.swing.text.JTextComponent;
@@ -34,11 +34,11 @@ import javax.swing.text.JTextComponent;
  * Provider of the text of the current text editor component from a given table.<br>Note that if the table is not in
  * editing state, no text can be provided.
  *
- * @see TypedDataProvider
+ * @see DataProvider
  * @see JTable
  * @see JTable#getCellEditor()
  */
-public class JTableTextEditorTextProvider implements TypedDataProvider<String> {
+public class JTableTextEditorTextProvider implements DataProvider<String> {
 
 	/**
 	 * Table holding the editor component to get the text from.
@@ -55,7 +55,7 @@ public class JTableTextEditorTextProvider implements TypedDataProvider<String> {
 	}
 
 	/**
-	 * @see TypedDataProvider#getData()
+	 * @see DataProvider#getData()
 	 */
 	@Override
 	public String getData() {

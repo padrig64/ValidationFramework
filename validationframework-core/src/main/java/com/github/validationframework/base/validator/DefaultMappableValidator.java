@@ -25,7 +25,7 @@
 
 package com.github.validationframework.base.validator;
 
-import com.github.validationframework.api.dataprovider.TypedDataProvider;
+import com.github.validationframework.api.dataprovider.DataProvider;
 import com.github.validationframework.api.resulthandler.ResultHandler;
 import com.github.validationframework.api.rule.Rule;
 import com.github.validationframework.api.trigger.Trigger;
@@ -46,12 +46,12 @@ import org.slf4j.LoggerFactory;
  *
  * @see AbstractMappableValidator
  * @see Trigger
- * @see TypedDataProvider
+ * @see DataProvider
  * @see Rule
  * @see ResultHandler
  */
 public class DefaultMappableValidator<D, O>
-		extends AbstractMappableValidator<Trigger, TypedDataProvider<D>, D, O, Rule<D, O>, O, ResultHandler<O>> {
+		extends AbstractMappableValidator<Trigger, DataProvider<D>, D, Rule<D, O>, D, O, ResultHandler<O>, O> {
 
 	/**
 	 * Logger for this class.
@@ -66,12 +66,12 @@ public class DefaultMappableValidator<D, O>
 	@Override
 	protected void processTrigger(final Trigger trigger) {
 		// Get data providers matching the trigger
-		final List<TypedDataProvider<D>> mappedDataProviders = triggersToDataProviders.get(trigger);
+		final List<DataProvider<D>> mappedDataProviders = triggersToDataProviders.get(trigger);
 		if ((mappedDataProviders == null) || mappedDataProviders.isEmpty()) {
 			LOGGER.warn("No matching data provider in mappable validator for trigger: " + trigger);
 		} else {
 			// Process all matching data providers
-			for (final TypedDataProvider<D> dataProvider : mappedDataProviders) {
+			for (final DataProvider<D> dataProvider : mappedDataProviders) {
 				processDataProvider(dataProvider);
 			}
 		}
@@ -82,7 +82,7 @@ public class DefaultMappableValidator<D, O>
 	 *
 	 * @param dataProvider Data provider to be processed.
 	 */
-	private void processDataProvider(final TypedDataProvider<D> dataProvider) {
+	private void processDataProvider(final DataProvider<D> dataProvider) {
 		// Get rules matching the data provider
 		final List<Rule<D, O>> mappedRules = dataProvidersToRules.get(dataProvider);
 		if ((mappedRules == null) || mappedRules.isEmpty()) {

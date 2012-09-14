@@ -25,7 +25,7 @@
 
 package com.github.validationframework.base.validator;
 
-import com.github.validationframework.api.dataprovider.TypedDataProvider;
+import com.github.validationframework.api.dataprovider.DataProvider;
 import com.github.validationframework.api.resulthandler.ResultHandler;
 import com.github.validationframework.api.rule.Rule;
 import com.github.validationframework.api.trigger.Trigger;
@@ -34,13 +34,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-/**
- * TODO
- *
- * @param <D> Type of data handled by this validator, that is to say, the transformed collected results from other validators.
- * @param <O> Typed of output of this validator.
- */
 
 /**
  * Concrete implementation of a simple validator that is collecting the results from other validators and performs
@@ -52,19 +45,19 @@ import org.slf4j.LoggerFactory;
  * collector validator can be useful to aggregate the validation from a group of components (for instance, from
  * different tabs) to enable/disable some buttons accordingly.
  *
- * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
- * type of the component itself.
- * @param <O> Type of validation result.<br>It can be, for instance, an enumeration or just a boolean.
+ * @param <D> Type of data handled by this validator, that is to say, the collected results from other validators.
+ * @param <O> Type of validation result of this validator.<br>It can be, for instance, an enumeration or just a
+ * boolean.
  *
  * @see AbstractSimpleValidator
- * @see com.github.validationframework.base.resulthandler.ResultCollector
+ * @see ResultCollector
  * @see Trigger
- * @see TypedDataProvider
+ * @see DataProvider
  * @see Rule
  * @see ResultHandler
  */
 public class ResultCollectorValidator<D, O> extends
-		AbstractSimpleValidator<Trigger, TypedDataProvider<D>, Collection<D>, O, Rule<Collection<D>, O>, O, ResultHandler<O>> {
+		AbstractSimpleValidator<Trigger, DataProvider<D>, D, Rule<Collection<D>, O>, Collection<D>, O, ResultHandler<O>, O> {
 
 	/**
 	 * Logger for this class.
@@ -101,7 +94,7 @@ public class ResultCollectorValidator<D, O> extends
 		} else {
 			// Collect results
 			final Collection<D> collectedResults = new ArrayList<D>();
-			for (final TypedDataProvider<D> dataProvider : dataProviders) {
+			for (final DataProvider<D> dataProvider : dataProviders) {
 				collectedResults.add(dataProvider.getData());
 			}
 

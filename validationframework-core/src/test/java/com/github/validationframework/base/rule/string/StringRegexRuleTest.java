@@ -15,7 +15,7 @@ import static org.junit.Assert.assertEquals;
 public class StringRegexRuleTest {
 	@Parameterized.Parameters
 	public static List<Object[]> getTestData() {
-		Object[][] data = new Object[][] {
+		final Object[][] data = new Object[][] {
 				//             Data             Pattern             Trim   Expected result
 				new Object[] { "123456", "^[0-9]*$", false, true }, new Object[] { "ABC", "^[ABC]*$", false, true },
 				new Object[] { " ABC ", "^[ABC]*$", false, false }, new Object[] { " ABC ", "^[ABC]*$", true, true },
@@ -30,7 +30,7 @@ public class StringRegexRuleTest {
 	private final boolean trim;
 	private final boolean result;
 
-	public StringRegexRuleTest(String input, String pattern, boolean trim, boolean result) {
+	public StringRegexRuleTest(final String input, final String pattern, final boolean trim, final boolean result) {
 		this.input = input;
 		this.pattern = pattern;
 		this.trim = trim;
@@ -39,7 +39,7 @@ public class StringRegexRuleTest {
 
 	@Test
 	public void testResult() {
-		StringRegexRule stringRegexRule = new StringRegexRule(pattern);
+		final StringRegexRule stringRegexRule = new StringRegexRule(pattern);
 		stringRegexRule.setTrimDataBeforeValidation(trim);
 		assertEquals(result, stringRegexRule.validate(input));
 	}
