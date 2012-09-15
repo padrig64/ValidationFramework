@@ -26,7 +26,6 @@
 package com.github.validationframework.base.rule;
 
 import com.github.validationframework.api.rule.Rule;
-import com.github.validationframework.base.transform.AndBooleanAggregator;
 import com.github.validationframework.base.transform.OrBooleanAggregator;
 import com.github.validationframework.base.transform.Transformer;
 import java.util.ArrayList;
@@ -45,9 +44,9 @@ import java.util.Collection;
 public class OrCompositeBooleanRule<D> extends AbstractCompositeRule<D, Boolean> {
 
 	/**
-	 * Boolean aggregator using the AND operator.
+	 * Boolean aggregator using the OR operator.
 	 *
-	 * @see AndBooleanAggregator
+	 * @see OrBooleanAggregator
 	 */
 	private final Transformer<Collection<Boolean>, Boolean> aggregator;
 

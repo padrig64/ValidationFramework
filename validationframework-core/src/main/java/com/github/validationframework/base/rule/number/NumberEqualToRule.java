@@ -91,7 +91,6 @@ public class NumberEqualToRule<T extends Number> implements Rule<T, Boolean> {
 			comparableRuleValue = exactValue.doubleValue();
 		}
 
-		return (Double.isNaN(comparableDataValue) && Double.isNaN(comparableRuleValue)) ||
-				(comparableDataValue == comparableRuleValue);
+		return (Double.compare(comparableDataValue, comparableRuleValue) == 0);
 	}
 }

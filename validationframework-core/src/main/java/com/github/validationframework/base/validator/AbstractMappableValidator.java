@@ -105,6 +105,12 @@ public abstract class AbstractMappableValidator<T extends Trigger, P extends Dat
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractMappableValidator.class);
 
 	/**
+	 * Warning message displayed when both input paramters are null when call the map methods.
+	 */
+	private static final String NULL_PARAMETERS_WARNING =
+			"Call to method will have no effect since both parameters are null";
+
+	/**
 	 * Mapping between triggers and data providers.
 	 */
 	protected final Map<T, List<P>> triggersToDataProviders = new HashMap<T, List<P>>();
@@ -157,7 +163,7 @@ public abstract class AbstractMappableValidator<T extends Trigger, P extends Dat
 	@Override
 	public void mapTriggerToDataProvider(final T trigger, final P dataProvider) {
 		if ((trigger == null) && (dataProvider == null)) {
-			LOGGER.warn("Call to method will have no effect since both parameters are null");
+			LOGGER.warn(NULL_PARAMETERS_WARNING);
 		} else if (trigger == null) {
 			unmapDataProviderFromAllTriggers(dataProvider);
 		} else if (dataProvider == null) {
@@ -207,7 +213,7 @@ public abstract class AbstractMappableValidator<T extends Trigger, P extends Dat
 	@Override
 	public void mapDataProviderToRule(final P dataProvider, final R rule) {
 		if ((dataProvider == null) && (rule == null)) {
-			LOGGER.warn("Call to method will have no effect since both parameters are null");
+			LOGGER.warn(NULL_PARAMETERS_WARNING);
 		} else if (dataProvider == null) {
 			unmapRuleFromAllDataProviders(rule);
 		} else if (rule == null) {
@@ -252,7 +258,7 @@ public abstract class AbstractMappableValidator<T extends Trigger, P extends Dat
 	@Override
 	public void mapRuleToResultHandler(final R rule, final H resultHandler) {
 		if ((rule == null) && (resultHandler == null)) {
-			LOGGER.warn("Call to method will have no effect since both parameters are null");
+			LOGGER.warn(NULL_PARAMETERS_WARNING);
 		} else if (rule == null) {
 			unmapResultHandlerFromAllRules(resultHandler);
 		} else if (resultHandler == null) {

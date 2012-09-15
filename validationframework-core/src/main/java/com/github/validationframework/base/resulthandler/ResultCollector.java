@@ -73,6 +73,7 @@ public class ResultCollector<O, D> extends AbstractTrigger implements ResultHand
 	 * @param transformer Transform to apply on the collected result.
 	 */
 	public ResultCollector(final Transformer<O, D> transformer) {
+		super();
 		this.transformer = transformer;
 	}
 
