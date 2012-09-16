@@ -42,20 +42,20 @@ public abstract class AbstractColorFeedback<O> implements ResultHandler<O> {
 	/**
 	 * Constructor specifying the component to attached to.
 	 *
-	 * @param owner Component to be colored to show the validation results.
+	 * @param componentToBeColored Component to be colored to show the validation results.
 	 */
-	public AbstractColorFeedback(final JComponent owner) {
-		attach(owner);
+	public AbstractColorFeedback(final JComponent componentToBeColored) {
+		attach(componentToBeColored);
 	}
 
 	/**
 	 * Attaches the feedback to the specified component.
 	 *
-	 * @param owner Component to be colored to show the validation results.
+	 * @param componentToBeColored Component to be colored to show the validation results.
 	 */
-	public void attach(final JComponent owner) {
+	public void attach(final JComponent componentToBeColored) {
 		detach();
-		this.owner = owner;
+		owner = componentToBeColored;
 		showColors();
 	}
 
@@ -71,7 +71,7 @@ public abstract class AbstractColorFeedback<O> implements ResultHandler<O> {
 	}
 
 	protected void setForeground(final Color foreground) {
-		this.resultForeground = foreground;
+		resultForeground = foreground;
 	}
 
 	protected Color getBackground() {
@@ -79,7 +79,7 @@ public abstract class AbstractColorFeedback<O> implements ResultHandler<O> {
 	}
 
 	protected void setBackground(final Color background) {
-		this.resultBackground = background;
+		resultBackground = background;
 	}
 
 	protected void showColors() {

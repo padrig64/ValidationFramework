@@ -472,7 +472,9 @@ public abstract class AbstractComponentDecoration implements Disposable {
 		final Rectangle decorationVisibleBoundsInAncestor =
 				ancestorVisibleRect.intersection(decorationBoundsInAncestor);
 
-		if ((decorationVisibleBoundsInAncestor.width != 0) && (decorationVisibleBoundsInAncestor.height != 0)) {
+		if ((decorationVisibleBoundsInAncestor.width == 0) || (decorationVisibleBoundsInAncestor.height == 0)) {
+			decorationPainter.setClipBounds(null);
+		} else {
 			final Rectangle decorationVisibleBoundsInLayeredPane =
 					SwingUtilities.convertRectangle(clippingComponent, decorationVisibleBoundsInAncestor, layeredPane);
 
@@ -481,8 +483,6 @@ public abstract class AbstractComponentDecoration implements Disposable {
 					.convertRectangle(decorationPainter.getParent(), decorationVisibleBoundsInLayeredPane,
 							decorationPainter);
 			decorationPainter.setClipBounds(clipBounds);
-		} else {
-			decorationPainter.setClipBounds(null);
 		}
 	}
 

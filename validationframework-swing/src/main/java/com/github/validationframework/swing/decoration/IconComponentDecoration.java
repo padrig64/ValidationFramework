@@ -40,13 +40,13 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
 
 		@Override
 		public void mouseMoved(final MouseEvent e) {
-			if (!toolTipDialog.isVisible()) {
-				if (getDecoratedComponent().isShowing() && decorationPainter.getClipBounds().contains(e.getPoint())) {
-					toolTipDialog.setVisible(true);
-				}
-			} else {
+			if (toolTipDialog.isVisible()) {
 				if (!decorationPainter.getClipBounds().contains(e.getPoint())) {
 					toolTipDialog.setVisible(false);
+				}
+			} else {
+				if (getDecoratedComponent().isShowing() && decorationPainter.getClipBounds().contains(e.getPoint())) {
+					toolTipDialog.setVisible(true);
 				}
 			}
 		}

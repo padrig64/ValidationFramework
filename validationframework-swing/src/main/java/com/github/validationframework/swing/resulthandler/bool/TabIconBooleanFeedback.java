@@ -177,13 +177,13 @@ public class TabIconBooleanFeedback implements ResultHandler<Boolean>, Disposabl
 		public void paint(final Graphics g) {
 			// Check if tab enabled state changed since last paint
 			final boolean tabEnabled = tabbedPane.isEnabledAt(tabIndex);
-			if (tabEnabled != titleEnabled) {
+			if (tabEnabled == titleEnabled) {
+				// No change in tab enabled state
+				super.paint(g);
+			} else {
 				titleEnabled = tabEnabled;
 				setEnabled(titleEnabled);
 				// Will paint later
-			} else {
-				// No change in tab enabled state
-				super.paint(g);
 			}
 		}
 	}

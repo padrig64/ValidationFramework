@@ -56,14 +56,7 @@ public class JTableComboBoxEditorModelChangedTrigger extends AbstractTrigger imp
 
 			// Attach to new only if it is the right cell
 			if (evt.getNewValue() instanceof DefaultCellEditor) {
-				final Component editorComponent = ((DefaultCellEditor) evt.getNewValue()).getComponent();
-				if (editorComponent instanceof JComboBox) {
-					final JComboBoxModelChangedTrigger trigger =
-							new JComboBoxModelChangedTrigger((JComboBox) editorComponent);
-					trigger.addTriggerListener(triggerForwarder);
-					editorToTrigger.put(evt.getNewValue(), trigger);
-					// TODO Check if already there?
-				}
+				attach((DefaultCellEditor) evt.getNewValue());
 			}
 		}
 
