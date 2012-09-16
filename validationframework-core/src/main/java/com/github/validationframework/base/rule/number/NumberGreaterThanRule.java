@@ -29,7 +29,8 @@ import com.github.validationframework.api.rule.Rule;
 
 /**
  * Rule checking whether the data, being a number, is strictly greater than a specific value.<br>Note that if the data
- * and the value are both null or NaN, they will be considered equal.
+ * and the specified value are both null, they will be considered equal. If they are by NaN, they will be considered
+ * equal. And everything is considered bigger than null.
  *
  * @param <T> Type of number handled by this rule.<br>It also it is not really required for the internal logic of the
  * rule, it helps in reducing compilation warnings and/or errors when add a rule in a validator.
@@ -82,17 +83,27 @@ public class NumberGreaterThanRule<T extends Number> implements Rule<T, Boolean>
 	 */
 	@Override
 	public Boolean validate(final T data) {
-		double comparableDataValue = Double.NaN;
-		if (data != null) {
-			comparableDataValue = data.doubleValue();
-		}
-		double comparableRuleValue = Double.NaN;
-		if (minimumValue != null) {
-			comparableRuleValue = minimumValue.doubleValue();
+		final boolean valid;
+
+		if ((data == null) && (minimumValue == null)) {
+			valid = false;
+		} else if (data == null) {
+			// exactValue is not null, everything is bigger than null
+			valid = false;
+		} else if (minimumValue == null) {
+			// data is not null, everything is bigger than null
+			valid = true;
+		} else if (data instanceof Comparable) {
+			// Both are not null
+			valid = (((Comparable) data).compareTo(minimumValue) > 0);
+		} else if (minimumValue instanceof Comparable<?>) {
+			// Both are not null
+			valid = (((Comparable) minimumValue).compareTo(data) < 0);
+		} else {
+			// Both are not null
+			valid = false;
 		}
 
-		return (!Double.isNaN(comparableDataValue) && Double.isNaN(comparableRuleValue)) ||
-				(!Double.isNaN(comparableDataValue) && !Double.isNaN(comparableRuleValue) &&
-						(comparableDataValue > comparableRuleValue));
+		return valid;
 	}
 }

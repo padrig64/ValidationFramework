@@ -31,19 +31,35 @@ import org.junit.Test;
 public class NumberGreaterThanRuleTest {
 
 	@Test
-	public void testInteger() {
-		final NumberGreaterThanRule<Integer> rule = new NumberGreaterThanRule<Integer>(0);
+	public void testDouble0() {
+		final NumberGreaterThanRule<Double> rule = new NumberGreaterThanRule<Double>(0.0);
 
-		Assert.assertEquals(Boolean.FALSE, rule.validate(0));
-		Assert.assertEquals(Boolean.TRUE, rule.validate(5));
-		Assert.assertEquals(Boolean.FALSE, rule.validate(-1));
+		Assert.assertEquals(Boolean.FALSE, rule.validate(0.0));
+		Assert.assertEquals(Boolean.TRUE, rule.validate(65.453));
+		Assert.assertEquals(Boolean.FALSE, rule.validate(-1.12));
+		Assert.assertEquals(Boolean.TRUE, rule.validate(Double.NaN)); // Default behavior of Double
 		Assert.assertEquals(Boolean.FALSE, rule.validate(null));
+	}
 
-		final NumberGreaterThanRule<Integer> rule2 = new NumberGreaterThanRule<Integer>(null);
+	@Test
+	public void testDoubleNaN() {
+		final NumberGreaterThanRule<Double> rule = new NumberGreaterThanRule<Double>(Double.NaN);
 
-		Assert.assertEquals(Boolean.TRUE, rule2.validate(0));
-		Assert.assertEquals(Boolean.TRUE, rule2.validate(5));
-		Assert.assertEquals(Boolean.TRUE, rule2.validate(-1));
-		Assert.assertEquals(Boolean.FALSE, rule2.validate(null));
+		Assert.assertEquals(Boolean.FALSE, rule.validate(0.0)); // Default behavior of Double
+		Assert.assertEquals(Boolean.FALSE, rule.validate(65.453)); // Default behavior of Double
+		Assert.assertEquals(Boolean.FALSE, rule.validate(-1.12)); // Default behavior of Double
+		Assert.assertEquals(Boolean.FALSE, rule.validate(Double.NaN)); // Default behavior of Double
+		Assert.assertEquals(Boolean.FALSE, rule.validate(null));
+	}
+
+	@Test
+	public void testDoubleNull() {
+		final NumberGreaterThanRule<Double> rule = new NumberGreaterThanRule<Double>(null);
+
+		Assert.assertEquals(Boolean.TRUE, rule.validate(0.0));
+		Assert.assertEquals(Boolean.TRUE, rule.validate(65.453));
+		Assert.assertEquals(Boolean.TRUE, rule.validate(-1.12));
+		Assert.assertEquals(Boolean.TRUE, rule.validate(Double.NaN));
+		Assert.assertEquals(Boolean.FALSE, rule.validate(null));
 	}
 }
