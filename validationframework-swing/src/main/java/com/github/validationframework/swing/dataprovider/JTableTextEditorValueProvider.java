@@ -103,7 +103,7 @@ public class JTableTextEditorValueProvider<T> implements DataProvider<T> {
 					dataValue = formatter.stringToValue(dataText);
 				}
 			} catch (ParseException e) {
-				// Nothing to be done
+				dataValue = null;
 			}
 
 			// Convert it to the required type

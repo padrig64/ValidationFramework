@@ -92,7 +92,7 @@ public class JFormattedTextFieldValueProvider<D> implements DataProvider<D> {
 				typedValue = transformer.transform(dataValue);
 			}
 		} catch (ParseException e) {
-			// Nothing to be done
+			typedValue = null;
 		}
 
 		return typedValue;

@@ -65,7 +65,7 @@ public class ButtonGroupIndexProvider implements DataProvider<Integer> {
 			final Enumeration<AbstractButton> buttons = buttonGroup.getElements();
 			int i = 0;
 			while (buttons.hasMoreElements()) {
-				if (buttons.nextElement().equals(selection)) {
+				if (buttons.nextElement().getModel().equals(selection)) {
 					index = i;
 					break;
 				}

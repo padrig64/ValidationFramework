@@ -146,6 +146,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
 		 * Default constructor.
 		 */
 		public DecorationPainter() {
+			super();
 			setFocusable(false);
 		}
 
@@ -186,15 +187,18 @@ public abstract class AbstractComponentDecoration implements Disposable {
 		 */
 		@Override
 		public void paintComponent(final Graphics g) {
-			if (decoratedComponent.isShowing() && isVisible() &&
-					(clipBounds != null) &&
-					(clipBounds.width > 0) && (clipBounds.height > 0)) {
+			if (super.isVisible() && decoratedComponent.isShowing() && areBoundsValid(clipBounds)) {
 				// Clip graphics
 				g.setClip(clipBounds);
 
 				// Paint decoration
 				AbstractComponentDecoration.this.paint(g);
 			}
+		}
+
+		private boolean areBoundsValid(final Rectangle bounds) {
+			return (bounds != null) &&
+					(bounds.width > 0) && (bounds.height > 0);
 		}
 	}
 
@@ -215,7 +219,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
 	 * Ancestor component that will be used to determine the clipping bounds of the decoration.<br>If the default null
 	 * value is specified, the parent component of the decorated component will be used.
 	 */
-	private JComponent decorationClippingAncestor = null;
+	private JComponent clippingAncestor = null;
 
 	/**
 	 * Anchor link between the decorated component and its decoration.
@@ -262,12 +266,12 @@ public abstract class AbstractComponentDecoration implements Disposable {
 	/**
 	 * Attaches the decoration to the specified component.
 	 *
-	 * @param decoratedComponent Component to be decorated.
+	 * @param componentToBeDecorated Component to be decorated.
 	 */
-	private void attach(final JComponent decoratedComponent) {
+	private void attach(final JComponent componentToBeDecorated) {
 		detach();
 
-		this.decoratedComponent = decoratedComponent;
+		decoratedComponent = componentToBeDecorated;
 
 		if (decoratedComponent != null) {
 			decoratedComponent.addComponentListener(decoratedComponentTracker);
@@ -348,7 +352,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
 	 * @return Clipping ancestor or null.
 	 */
 	public JComponent getClippingAncestor() {
-		return decorationClippingAncestor;
+		return clippingAncestor;
 	}
 
 	/**
@@ -359,7 +363,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
 	 * @param decorationClippingAncestor Clipping ancestor or null to
 	 */
 	public void setClippingAncestor(final JComponent decorationClippingAncestor) {
-		this.decorationClippingAncestor = decorationClippingAncestor;
+		clippingAncestor = decorationClippingAncestor;
 		followDecoratedComponent();
 	}
 
@@ -370,7 +374,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
 	 * @return Effective clipping ancester.
 	 */
 	private JComponent getEffectiveClippingAncestor() {
-		JComponent clippingComponent = decorationClippingAncestor;
+		JComponent clippingComponent = clippingAncestor;
 
 		if ((clippingComponent == null) && (decoratedComponent != null) &&
 				(decoratedComponent.getParent() instanceof JComponent)) {
@@ -431,42 +435,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
 			}
 			final Container layeredPane = SwingUtilities.getAncestorOfClass(JLayeredPane.class, decoratedComponent);
 			if (layeredPane instanceof JLayeredPane) {
-				final Point relativeLocationToOwner = anchorLink
-						.getRelativeSlaveLocation(decoratedComponent.getWidth(), decoratedComponent.getHeight(),
-								getWidth(), getHeight());
-
-				// Calculate decoration painter unclipped bounds
-				final Point ownerLocationInLayeredPane = SwingUtilities
-						.convertPoint(decoratedComponent.getParent(), decoratedComponent.getLocation(), layeredPane);
-				final Rectangle decorationBoundsInLayeredPane =
-						new Rectangle(ownerLocationInLayeredPane.x + relativeLocationToOwner.x,
-								ownerLocationInLayeredPane.y + relativeLocationToOwner.y, getWidth(), getHeight());
-				decorationPainter.setBounds(decorationBoundsInLayeredPane);
-
-				// Calculate decoration painter clipped bounds
-				final JComponent clippingComponent = getEffectiveClippingAncestor();
-				final Rectangle ownerBoundsInParent = decoratedComponent.getBounds();
-				final Rectangle decorationBoundsInParent =
-						new Rectangle(ownerBoundsInParent.x + relativeLocationToOwner.x,
-								ownerBoundsInParent.y + relativeLocationToOwner.y, getWidth(), getHeight());
-				final Rectangle decorationBoundsInAncestor = SwingUtilities
-						.convertRectangle(decoratedComponent.getParent(), decorationBoundsInParent, clippingComponent);
-				final Rectangle ancestorVisibleRect = clippingComponent.getVisibleRect();
-				final Rectangle decorationVisibleBoundsInAncestor =
-						ancestorVisibleRect.intersection(decorationBoundsInAncestor);
-
-				if ((decorationVisibleBoundsInAncestor.width != 0) && (decorationVisibleBoundsInAncestor.height != 0)) {
-					final Rectangle decorationVisibleBoundsInLayeredPane = SwingUtilities
-							.convertRectangle(clippingComponent, decorationVisibleBoundsInAncestor, layeredPane);
-
-					// Clip graphics context
-					final Rectangle clipBounds = SwingUtilities
-							.convertRectangle(decorationPainter.getParent(), decorationVisibleBoundsInLayeredPane,
-									decorationPainter);
-					decorationPainter.setClipBounds(clipBounds);
-				} else {
-					decorationPainter.setClipBounds(null);
-				}
+				followDecoratedComponent((JLayeredPane) layeredPane);
 			} else {
 				decorationPainter.setClipBounds(null);
 			}
@@ -476,6 +445,44 @@ public abstract class AbstractComponentDecoration implements Disposable {
 			if (layeredPane != null) {
 				layeredPane.repaint();
 			}
+		}
+	}
+
+	private void followDecoratedComponent(final JLayeredPane layeredPane) {
+		final Point relativeLocationToOwner = anchorLink
+				.getRelativeSlaveLocation(decoratedComponent.getWidth(), decoratedComponent.getHeight(), getWidth(),
+						getHeight());
+
+		// Calculate decoration painter unclipped bounds
+		final Point ownerLocationInLayeredPane = SwingUtilities
+				.convertPoint(decoratedComponent.getParent(), decoratedComponent.getLocation(), layeredPane);
+		final Rectangle decorationBoundsInLayeredPane =
+				new Rectangle(ownerLocationInLayeredPane.x + relativeLocationToOwner.x,
+						ownerLocationInLayeredPane.y + relativeLocationToOwner.y, getWidth(), getHeight());
+		decorationPainter.setBounds(decorationBoundsInLayeredPane);
+
+		// Calculate decoration painter clipped bounds
+		final JComponent clippingComponent = getEffectiveClippingAncestor();
+		final Rectangle ownerBoundsInParent = decoratedComponent.getBounds();
+		final Rectangle decorationBoundsInParent = new Rectangle(ownerBoundsInParent.x + relativeLocationToOwner.x,
+				ownerBoundsInParent.y + relativeLocationToOwner.y, getWidth(), getHeight());
+		final Rectangle decorationBoundsInAncestor = SwingUtilities
+				.convertRectangle(decoratedComponent.getParent(), decorationBoundsInParent, clippingComponent);
+		final Rectangle ancestorVisibleRect = clippingComponent.getVisibleRect();
+		final Rectangle decorationVisibleBoundsInAncestor =
+				ancestorVisibleRect.intersection(decorationBoundsInAncestor);
+
+		if ((decorationVisibleBoundsInAncestor.width != 0) && (decorationVisibleBoundsInAncestor.height != 0)) {
+			final Rectangle decorationVisibleBoundsInLayeredPane =
+					SwingUtilities.convertRectangle(clippingComponent, decorationVisibleBoundsInAncestor, layeredPane);
+
+			// Clip graphics context
+			final Rectangle clipBounds = SwingUtilities
+					.convertRectangle(decorationPainter.getParent(), decorationVisibleBoundsInLayeredPane,
+							decorationPainter);
+			decorationPainter.setClipBounds(clipBounds);
+		} else {
+			decorationPainter.setClipBounds(null);
 		}
 	}
 

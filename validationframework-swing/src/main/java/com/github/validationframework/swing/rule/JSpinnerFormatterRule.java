@@ -27,7 +27,7 @@ public class JSpinnerFormatterRule extends AbstractStringBooleanRule {
 	/**
 	 * Logger for this class.
 	 */
-	private final Logger LOGGER = LoggerFactory.getLogger(JSpinnerFormatterRule.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(JSpinnerFormatterRule.class);
 
 	/**
 	 * Spinner whose formatter is to be checked.
@@ -40,6 +40,7 @@ public class JSpinnerFormatterRule extends AbstractStringBooleanRule {
 	 * @param spinner Spinner whose formatter is to be checked.
 	 */
 	public JSpinnerFormatterRule(final JSpinner spinner) {
+		super();
 		this.spinner = spinner;
 	}
 
@@ -72,7 +73,7 @@ public class JSpinnerFormatterRule extends AbstractStringBooleanRule {
 					formatter.stringToValue(dataToBeValidated);
 					result = true;
 				} catch (ParseException e) {
-					// Nothing to be done
+					result = false;
 				}
 			}
 		}

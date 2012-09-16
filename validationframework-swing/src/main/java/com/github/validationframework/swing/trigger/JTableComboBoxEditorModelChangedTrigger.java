@@ -51,11 +51,7 @@ public class JTableComboBoxEditorModelChangedTrigger extends AbstractTrigger imp
 		public void propertyChange(final PropertyChangeEvent evt) {
 			// Detach from previous editor
 			if (evt.getOldValue() != null) {
-				final Disposable trigger = editorToTrigger.get(evt.getOldValue());
-				if (trigger != null) {
-					trigger.dispose();
-					editorToTrigger.remove(evt.getOldValue());
-				}
+				detach(evt.getOldValue());
 			}
 
 			// Attach to new only if it is the right cell
@@ -68,6 +64,25 @@ public class JTableComboBoxEditorModelChangedTrigger extends AbstractTrigger imp
 					editorToTrigger.put(evt.getNewValue(), trigger);
 					// TODO Check if already there?
 				}
+			}
+		}
+
+		private void attach(final DefaultCellEditor editor) {
+			final Component editorComponent = editor.getComponent();
+			if (editorComponent instanceof JComboBox) {
+				final JComboBoxModelChangedTrigger trigger =
+						new JComboBoxModelChangedTrigger((JComboBox) editorComponent);
+				trigger.addTriggerListener(triggerForwarder);
+				editorToTrigger.put(editor, trigger);
+				// TODO Check if already there?
+			}
+		}
+
+		private void detach(final Object editor) {
+			final Disposable trigger = editorToTrigger.get(editor);
+			if (trigger != null) {
+				trigger.dispose();
+				editorToTrigger.remove(editor);
 			}
 		}
 	}
@@ -83,7 +98,7 @@ public class JTableComboBoxEditorModelChangedTrigger extends AbstractTrigger imp
 			 * Check if trigger allowed here, because at the moment the trigger is registered (when the editor component
 			 * is set on the table), the editing row and editing column are not yet set in the table.
 			 */
-			if (triggerAllowed()) {
+			if (isTriggerAllowed()) {
 				fireTriggerEvent(event);
 			}
 		}
@@ -93,28 +108,60 @@ public class JTableComboBoxEditorModelChangedTrigger extends AbstractTrigger imp
 		 *
 		 * @return True if trigger is allowed, false otherwise.
 		 */
-		private boolean triggerAllowed() {
+		private boolean isTriggerAllowed() {
+			final boolean allow;
+
+			if ((modelRowIndex == ALL_ROWS) && (modelColumnIndex == ALL_COLUMNS)) {
+				allow = true;
+			} else if (modelRowIndex == ALL_ROWS) {
+				allow = isTriggerAllowedOnColumn();
+			} else if (modelColumnIndex == ALL_COLUMNS) {
+				allow = isTriggerAllowedOnRow();
+			} else {
+				allow = isTriggerAllowedOnCell();
+			}
+
+			return allow;
+		}
+
+		private boolean isTriggerAllowedOnRow() {
 			boolean allow = false;
 
 			try {
-				if ((modelRowIndex == ALL_ROWS) && (modelColumnIndex == ALL_COLUMNS)) {
+				final int viewRowIndex = table.convertRowIndexToView(modelRowIndex);
+				if (viewRowIndex == table.getEditingRow()) {
 					allow = true;
-				} else if (modelRowIndex == ALL_ROWS) {
-					final int viewColumnIndex = table.convertRowIndexToView(modelColumnIndex);
-					if (viewColumnIndex == table.getEditingColumn()) {
-						allow = true;
-					}
-				} else if (modelColumnIndex == ALL_COLUMNS) {
-					final int viewRowIndex = table.convertRowIndexToView(modelRowIndex);
-					if (viewRowIndex == table.getEditingRow()) {
-						allow = true;
-					}
-				} else {
-					final int viewRowIndex = table.convertRowIndexToView(modelRowIndex);
-					final int viewColumnIndex = table.convertRowIndexToView(modelColumnIndex);
-					if ((viewRowIndex == table.getEditingRow()) && (viewColumnIndex == table.getEditingColumn())) {
-						allow = true;
-					}
+				}
+			} catch (IndexOutOfBoundsException e) {
+				allow = false;
+			}
+
+			return allow;
+		}
+
+		private boolean isTriggerAllowedOnColumn() {
+			boolean allow = false;
+
+			try {
+				final int viewColumnIndex = table.convertColumnIndexToView(modelColumnIndex);
+				if (viewColumnIndex == table.getEditingColumn()) {
+					allow = true;
+				}
+			} catch (IndexOutOfBoundsException e) {
+				allow = false;
+			}
+
+			return allow;
+		}
+
+		private boolean isTriggerAllowedOnCell() {
+			boolean allow = false;
+
+			try {
+				final int viewRowIndex = table.convertRowIndexToView(modelRowIndex);
+				final int viewColumnIndex = table.convertColumnIndexToView(modelColumnIndex);
+				if ((viewRowIndex == table.getEditingRow()) && (viewColumnIndex == table.getEditingColumn())) {
+					allow = true;
 				}
 			} catch (IndexOutOfBoundsException e) {
 				allow = false;

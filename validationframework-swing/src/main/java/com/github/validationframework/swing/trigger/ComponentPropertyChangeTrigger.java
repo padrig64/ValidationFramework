@@ -69,6 +69,7 @@ public class ComponentPropertyChangeTrigger extends AbstractTrigger implements D
 	 * @param component Component whose property changes are to be listened to.
 	 */
 	public ComponentPropertyChangeTrigger(final Component component) {
+		super();
 		this.component = component;
 		component.addPropertyChangeListener(propertyChangeAdapter);
 	}
@@ -81,6 +82,7 @@ public class ComponentPropertyChangeTrigger extends AbstractTrigger implements D
 	 * specified, changes on any property will initiate the trigger.
 	 */
 	public ComponentPropertyChangeTrigger(final Component component, final String... propertyNames) {
+		super();
 		this.component = component;
 
 		if ((propertyNames == null) || (propertyNames.length == 0)) {
