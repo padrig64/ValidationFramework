@@ -27,8 +27,18 @@ package com.github.validationframework.swing.trigger;
 
 import javax.swing.JPasswordField;
 
+/**
+ * Convenience trigger that initiates the validation whenever the document of password field is modified.
+ *
+ * @see BaseTextComponentDocumentChangedTrigger
+ */
 public class JPasswordFieldDocumentChangedTrigger extends BaseTextComponentDocumentChangedTrigger<JPasswordField> {
 
+	/**
+	 * Constructor specifying the password field to listen to.
+	 *
+	 * @param source Password field to listen to
+	 */
 	public JPasswordFieldDocumentChangedTrigger(final JPasswordField source) {
 		super(source);
 	}

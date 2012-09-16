@@ -25,13 +25,14 @@
 
 package com.github.validationframework.swing.resulthandler;
 
+import com.github.validationframework.api.common.Disposable;
 import com.github.validationframework.api.resulthandler.ResultHandler;
 import com.github.validationframework.swing.decoration.IconComponentDecoration;
 import com.github.validationframework.swing.decoration.anchor.AnchorLink;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 
-public abstract class AbstractIconFeedback<O> implements ResultHandler<O> {
+public abstract class AbstractIconFeedback<O> implements ResultHandler<O>, Disposable {
 
 	private IconComponentDecoration decoration = null;
 
@@ -160,5 +161,13 @@ public abstract class AbstractIconFeedback<O> implements ResultHandler<O> {
 		if (decoration != null) {
 			decoration.setVisible(false);
 		}
+	}
+
+	/**
+	 * @see Disposable#dispose()
+	 */
+	@Override
+	public void dispose() {
+		detach();
 	}
 }

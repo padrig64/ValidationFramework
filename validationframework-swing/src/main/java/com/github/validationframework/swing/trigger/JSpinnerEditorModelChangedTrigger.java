@@ -25,6 +25,7 @@ public class JSpinnerEditorModelChangedTrigger extends JTextComponentDocumentCha
 
 	public JSpinnerEditorModelChangedTrigger(final JSpinner source) {
 		super(getEditorTextComponent(source));
+		// TODO Track editor component and document changes
 	}
 
 	private static JTextComponent getEditorTextComponent(final JSpinner spinner) {

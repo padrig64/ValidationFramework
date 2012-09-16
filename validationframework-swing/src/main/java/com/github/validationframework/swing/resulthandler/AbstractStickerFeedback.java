@@ -25,13 +25,14 @@
 
 package com.github.validationframework.swing.resulthandler;
 
+import com.github.validationframework.api.common.Disposable;
 import com.github.validationframework.api.resulthandler.ResultHandler;
 import com.github.validationframework.swing.decoration.anchor.Anchor;
 import com.github.validationframework.swing.decoration.anchor.AnchorLink;
 import com.github.validationframework.swing.decoration.support.TransparentToolTipDialog;
 import javax.swing.JComponent;
 
-public abstract class AbstractStickerFeedback<O> implements ResultHandler<O> {
+public abstract class AbstractStickerFeedback<O> implements ResultHandler<O>, Disposable {
 
 	private TransparentToolTipDialog toolTipDialog = null;
 
@@ -73,5 +74,13 @@ public abstract class AbstractStickerFeedback<O> implements ResultHandler<O> {
 
 	protected void hideToolTip() {
 		toolTipDialog.setVisible(false);
+	}
+
+	/**
+	 * @see Disposable#dispose()
+	 */
+	@Override
+	public void dispose() {
+		detach();
 	}
 }

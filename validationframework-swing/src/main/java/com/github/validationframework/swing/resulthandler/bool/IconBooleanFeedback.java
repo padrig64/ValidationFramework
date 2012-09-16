@@ -107,7 +107,7 @@ public class IconBooleanFeedback extends AbstractIconFeedback<Boolean> {
 	}
 
 	/**
-	 * @see com.github.validationframework.swing.resulthandler.AbstractIconFeedback#handleResult(Object)
+	 * @see AbstractIconFeedback#handleResult(Object)
 	 */
 	@Override
 	public void handleResult(final Boolean valid) {

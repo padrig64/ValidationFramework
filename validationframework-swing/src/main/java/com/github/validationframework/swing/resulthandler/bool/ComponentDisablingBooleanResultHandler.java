@@ -28,6 +28,10 @@ package com.github.validationframework.swing.resulthandler.bool;
 import com.github.validationframework.swing.resulthandler.AbstractComponentResultHandler;
 import java.awt.Component;
 
+/**
+ * Result handler disabling (respectively enabling) one or several components when the result is valid (respectively
+ * invalid).
+ */
 public class ComponentDisablingBooleanResultHandler extends AbstractComponentResultHandler<Boolean> {
 
 	/**

@@ -35,8 +35,8 @@ import com.github.validationframework.base.trigger.AbstractTrigger;
 /**
  * Result collector providing the result from one validator as validation input to another validator.<br>So this
  * collector is meant to be registered as a result handler to validator, and as a trigger and data provider to another
- * validator.<br> This can be useful to aggregate the validation results from a group in independent fields, for
- * instance to enable or disable an Apply button on a dialog.
+ * validator.<br>This can be useful to aggregate the validation results from a group in independent fields, for instance
+ * to enable or disable an Apply button on a dialog.
  *
  * @param <O> Type of result collected from other validators.
  * @param <D> Type of data provided by the collector.<br>It could be the same as {@link O}.
@@ -61,7 +61,7 @@ public class ResultCollector<O, D> extends AbstractTrigger implements ResultHand
 	/**
 	 * Default constructor using the simple cast transformer.
 	 *
-	 * @see com.github.validationframework.base.transform.CastTransformer
+	 * @see CastTransformer
 	 */
 	public ResultCollector() {
 		this(new CastTransformer<O, D>());
@@ -82,7 +82,7 @@ public class ResultCollector<O, D> extends AbstractTrigger implements ResultHand
 	 */
 	@Override
 	public void handleResult(final O result) {
-		lastResult = result; // We expect the method getData() to be called sub-sequently
+		lastResult = result; // We expect the method getData() to be called subsequently
 		fireTriggerEvent(new TriggerEvent(this));
 	}
 

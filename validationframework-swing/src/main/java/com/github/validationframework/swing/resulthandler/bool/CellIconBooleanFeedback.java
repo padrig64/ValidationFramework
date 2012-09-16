@@ -110,7 +110,7 @@ public class CellIconBooleanFeedback extends AbstractCellIconFeedback<Boolean> {
 	}
 
 	/**
-	 * @see com.github.validationframework.swing.resulthandler.AbstractCellIconFeedback#handleResult(Object)
+	 * @see AbstractCellIconFeedback#handleResult(Object)
 	 */
 	@Override
 	public void handleResult(final Boolean valid) {
