@@ -212,6 +212,16 @@ public abstract class AbstractCellIconFeedback<O> extends AbstractIconFeedback<O
 	}
 
 	/**
+	 * Tracks the decorated cell and repositions the decoration.
+	 *
+	 * @param dragOffsetX Dragged distance in case the column is being dragged, 0 otherwise.
+	 */
+	private void followerDecoratedCell(final int dragOffsetX) {
+		// Gets the absolute anchor link and update the decoration
+		super.setAnchorLink(getAbsoluteAnchorLinkWithCell(dragOffsetX));
+	}
+
+	/**
 	 * Retrieves the absolute anchor link to attach the decoration to the cell.
 	 *
 	 * @param dragOffsetX Dragged distance in case the column is being dragged, 0 otherwise.
@@ -232,20 +242,15 @@ public abstract class AbstractCellIconFeedback<O> extends AbstractIconFeedback<O
 					new Anchor(0.0f, cellBounds.x + dragOffsetX, 0.0f, cellBounds.y + cellBounds.height);
 			absoluteAnchorLink = new AnchorLink(cellMasterAnchor, anchorLinkWithCell.getSlaveAnchor());
 		} else {
-			LOGGER.warn("Invalid model row and/or column indices: (" + modelRowIndex + "," + modelColumnIndex + ")");
+			// Maybe the table has been emptied? or the row has been filtered out? or invalid row/column index?
+			LOGGER.debug("Cell at model row and/or column indices is not visible: (" + modelRowIndex + "," +
+					modelColumnIndex +
+					") for table dimensions (" + tableModel.getRowCount() + "," + tableModel.getColumnCount() + ")");
+
+			// Decoration will not be shown
 			absoluteAnchorLink = null;
 		}
 
 		return absoluteAnchorLink;
-	}
-
-	/**
-	 * Tracks the decorated cell and repositions the decoration.
-	 *
-	 * @param dragOffsetX Dragged distance in case the column is being dragged, 0 otherwise.
-	 */
-	private void followerDecoratedCell(final int dragOffsetX) {
-		// Gets the absolute anchor link and update the decoration
-		super.setAnchorLink(getAbsoluteAnchorLinkWithCell(dragOffsetX));
 	}
 }
