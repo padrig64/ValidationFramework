@@ -31,7 +31,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Rule checking string data against one or several regular expressions and returning a boolean a result.
+ * Rule checking string data against one or several regular expressions and returning a boolean a result.<br>The result
+ * will be valid if at least the data matches at least one pattern.
  *
  * @see AbstractStringBooleanRule
  * @see Pattern
@@ -106,12 +107,14 @@ public class StringRegexRule extends AbstractStringBooleanRule {
 	public Boolean validate(final String data) {
 		Boolean result = false;
 
-		final String dataToBeValidated = trimIfNeeded(data);
-
-		for (final Pattern pattern : patterns.values()) {
-			final Matcher matcher = pattern.matcher(dataToBeValidated);
-			if (matcher.find()) {
-				result = true;
+		if (data != null) {
+			final String dataToBeValidated = trimIfNeeded(data);
+			for (final Pattern pattern : patterns.values()) {
+				final Matcher matcher = pattern.matcher(dataToBeValidated);
+				if (matcher.find()) {
+					result = true;
+					break;
+				}
 			}
 		}
 
