@@ -3,11 +3,10 @@ package com.github.validationframework.base.utils;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
- * @author: arnoud
+ * @author arnoud
  */
 public class ValueUtilsTest {
 
@@ -27,19 +26,18 @@ public class ValueUtilsTest {
 	}
 
 	@Test
-	public void floatNanNotEqualToDoubleNaN() {
-		assertFalse(ValueUtils.areEqual(Double.NaN, Float.NaN));
+	public void floatNanEqualToDoubleNaN() {
+		assertTrue(ValueUtils.areEqual(Double.NaN, Float.NaN));
 	}
 
 	@Test
 	public void someStringAreEqualTo() {
-		String value1 = "Test";
-		String value2 = "Test";
-		String value3 = "test";
+		final String value1 = "Test";
+		final String value2 = "Test";
+		final String value3 = "test";
 
 		assertEquals(value1.equals(value2), ValueUtils.areEqual(value1, value2));
 		assertEquals(value1.equals(value2), ValueUtils.areEqual(value2, value1));
 		assertEquals(value3.equals(value2), ValueUtils.areEqual(value3, value2));
 	}
-
 }

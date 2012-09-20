@@ -9,7 +9,7 @@ import org.junit.runners.Parameterized;
 import static org.junit.Assert.assertEquals;
 
 /**
- * @author: arnoud
+ * @author arnoud
  */
 @RunWith(Parameterized.class)
 public class StringRegexRuleTest {
@@ -42,5 +42,7 @@ public class StringRegexRuleTest {
 		final StringRegexRule stringRegexRule = new StringRegexRule(pattern);
 		stringRegexRule.setTrimDataBeforeValidation(trim);
 		assertEquals(result, stringRegexRule.validate(input));
+
+		assertEquals(false, stringRegexRule.validate(null));
 	}
 }
