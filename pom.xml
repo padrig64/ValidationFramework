@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.github</groupId>
+    <groupId>validationframework</groupId>
     <artifactId>validationframework</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
@@ -59,17 +59,17 @@
             <!-- Validation Framework -->
 
             <dependency>
-                <groupId>com.github</groupId>
+                <groupId>validationframework</groupId>
                 <artifactId>validationframework-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.github</groupId>
+                <groupId>validationframework</groupId>
                 <artifactId>validationframework-swing</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.github</groupId>
+                <groupId>validationframework</groupId>
                 <artifactId>validationframework-experimental</artifactId>
                 <version>${project.version}</version>
             </dependency>
