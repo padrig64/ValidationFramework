@@ -82,7 +82,7 @@ public class TableDemoApp extends JFrame {
 		// Table
 		final JTable table = createTable();
 		contentPane.add(new JScrollPane(table), "grow");
-		installValidators(table, applyButton);
+		installValidators(table);
 
 		// Apply button
 		contentPane.add(applyButton, "align right");
@@ -125,7 +125,7 @@ public class TableDemoApp extends JFrame {
 		return table;
 	}
 
-	private void installValidators(final JTable table, final JButton applyButton) {
+	private void installValidators(final JTable table) {
 		final DefaultSimpleValidator<String, Boolean> validator = new DefaultSimpleValidator<String, Boolean>();
 
 		validator.addTrigger(new JTableTextEditorDocumentChangedTrigger(table, 1, 1));
