@@ -373,6 +373,11 @@ public class TabIconBooleanFeedback implements ResultHandler<Boolean>, Disposabl
 		this(tabbedPane, tabIndex, DEFAULT_VALID_ICON, null, DEFAULT_INVALID_ICON, null);
 	}
 
+	public TabIconBooleanFeedback(final JTabbedPane tabbedPane, final int tabIndex, final Icon invalidIcon,
+								  final String invalidText) {
+		this(tabbedPane, tabIndex, null, null, invalidIcon, invalidText, DEFAULT_ICON_POSITION, DEFAULT_ICON_TEXT_GAP);
+	}
+
 	/**
 	 * Constructor specifying the tabbed pane and the index of the tab to show the decoration on, as well as the icon and
 	 * tooltip text representing valid and invalid results.

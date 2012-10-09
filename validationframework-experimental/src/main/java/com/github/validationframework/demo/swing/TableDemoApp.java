@@ -32,11 +32,13 @@ import com.github.validationframework.base.validator.DefaultSimpleValidator;
 import com.github.validationframework.swing.dataprovider.JTableComboBoxEditorSelectedValueProvider;
 import com.github.validationframework.swing.dataprovider.JTableTextEditorTextProvider;
 import com.github.validationframework.swing.resulthandler.bool.CellIconBooleanFeedback;
-import com.github.validationframework.swing.resulthandler.bool.IconBooleanFeedback;
 import com.github.validationframework.swing.trigger.JTableComboBoxEditorModelChangedTrigger;
 import com.github.validationframework.swing.trigger.JTableTextEditorDocumentChangedTrigger;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.util.Random;
+import javax.swing.AbstractAction;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -49,16 +51,41 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import net.miginfocom.swing.MigLayout;
 
 public class TableDemoApp extends JFrame {
+
+	private class ChangeAction extends AbstractAction {
+
+		private static final long serialVersionUID = 3324532651113452622L;
+
+		public ChangeAction() {
+			super("Replace model");
+		}
+
+		@Override
+		public void actionPerformed(final ActionEvent e) {
+			table.setModel(createTableModel());
+
+			if(validator != null) {
+				validator.dispose();
+				validator.dispose();
+			}
+			installValidators(table);
+		}
+	}
 
 	/**
 	 * Generated serial UID.
 	 */
 	private static final long serialVersionUID = -7459554050305728899L;
 
-	final JButton applyButton = new JButton("Apply");
+	private final JButton changeButton = new JButton(new ChangeAction());
+
+	private final JTable table = createTable();
+
+	private DefaultSimpleValidator<String, Boolean> validator;
 
 	/**
 	 * Default constructor.
@@ -75,17 +102,13 @@ public class TableDemoApp extends JFrame {
 		setTitle("Validation Framework Test");
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-		// Create content pane
+		// Add contents
 		final JPanel contentPane = new JPanel(new MigLayout("fill, wrap 1", "[]", "[grow]unrelated[]"));
 		setContentPane(contentPane);
 
-		// Table
-		final JTable table = createTable();
 		contentPane.add(new JScrollPane(table), "grow");
 		installValidators(table);
-
-		// Apply button
-		contentPane.add(applyButton, "align right");
+		contentPane.add(changeButton, "align right");
 
 		// Set size
 		pack();
@@ -99,21 +122,7 @@ public class TableDemoApp extends JFrame {
 	}
 
 	private JTable createTable() {
-		final JTable table = new JTable();
-
-		// Create table model
-		final DefaultTableModel model = new DefaultTableModel();
-		table.setModel(model);
-
-		// Fill table model
-		model.addColumn("First column");
-		model.addColumn("Second column");
-		model.addColumn("Third column");
-		model.addColumn("Fourth column");
-
-		for (int i = 0; i < 50; i++) {
-			model.addRow(new String[] { "ABCD", "123456", "ZZ", "123.456" });
-		}
+		final JTable table = new JTable(createTableModel());
 
 		final JComboBox comboBoxEditorComponent = new JComboBox();
 		comboBoxEditorComponent.addItem("Option 1");
@@ -125,16 +134,31 @@ public class TableDemoApp extends JFrame {
 		return table;
 	}
 
+	private TableModel createTableModel() {
+		// Create table model
+		final DefaultTableModel model = new DefaultTableModel();
+
+		// Fill table model
+		model.addColumn("First column");
+		model.addColumn("Second column");
+		model.addColumn("Third column");
+		model.addColumn("Fourth column");
+
+		final Random random = new Random(System.currentTimeMillis());
+		for (int i = 0; i < 50; i++) {
+			model.addRow(new String[] { "ABCD", Integer.toString(random.nextInt()), "ZZ", "123.456" });
+		}
+
+		return model;
+	}
+
 	private void installValidators(final JTable table) {
-		final DefaultSimpleValidator<String, Boolean> validator = new DefaultSimpleValidator<String, Boolean>();
+		validator = new DefaultSimpleValidator<String, Boolean>();
 
 		validator.addTrigger(new JTableTextEditorDocumentChangedTrigger(table, 1, 1));
 		validator.addDataProvider(new JTableTextEditorTextProvider(table));
 		validator.addRule(new StringLengthGreaterThanOrEqualToRule(3));
 		validator.addResultHandler(new PrintStreamResultHandler<Boolean>("(1,1) => "));
-		validator.addResultHandler(
-				new IconBooleanFeedback(applyButton, null, null, IconBooleanFeedback.DEFAULT_INVALID_ICON,
-						"Cell should contain at least 3 characters"));
 		validator.addResultHandler(
 				new CellIconBooleanFeedback(table, 1, 1, null, null, CellIconBooleanFeedback.DEFAULT_INVALID_ICON,
 						"Invalid text"));

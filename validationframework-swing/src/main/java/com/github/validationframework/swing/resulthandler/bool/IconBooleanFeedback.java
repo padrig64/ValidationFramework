@@ -60,6 +60,10 @@ public class IconBooleanFeedback extends AbstractIconFeedback<Boolean> {
 		this(owner, DEFAULT_VALID_ICON, validText, DEFAULT_INVALID_ICON, invalidText);
 	}
 
+	public IconBooleanFeedback(final JComponent owner, final Icon invalidIcon, final String invalidText) {
+		this(owner, null, null, invalidIcon, invalidText);
+	}
+
 	public IconBooleanFeedback(final JComponent owner, final Icon validIcon, final String validText,
 							   final Icon invalidIcon, final String invalidText) {
 		super(owner);

@@ -63,6 +63,11 @@ public class CellIconBooleanFeedback extends AbstractCellIconFeedback<Boolean> {
 	}
 
 	public CellIconBooleanFeedback(final JTable table, final int modelRowIndex, final int modelColumnIndex,
+								   final Icon invalidIcon, final String invalidText) {
+		this(table, modelRowIndex, modelColumnIndex, null, null, DEFAULT_INVALID_ICON, invalidText);
+	}
+
+	public CellIconBooleanFeedback(final JTable table, final int modelRowIndex, final int modelColumnIndex,
 								   final Icon validIcon, final String validText, final Icon invalidIcon,
 								   final String invalidText) {
 		super(table, modelRowIndex, modelColumnIndex);
