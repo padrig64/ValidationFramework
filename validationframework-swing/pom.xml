@@ -52,5 +52,12 @@
             <artifactId>timingframework-swing</artifactId>
         </dependency>
 
+        <!-- Test -->
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+
     </dependencies>
 </project>

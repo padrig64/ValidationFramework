@@ -175,15 +175,17 @@ public class TabIconBooleanFeedback implements ResultHandler<Boolean>, Disposabl
 		 */
 		@Override
 		public void paint(final Graphics g) {
-			// Check if tab enabled state changed since last paint
-			final boolean tabEnabled = tabbedPane.isEnabledAt(tabIndex);
-			if (tabEnabled == titleEnabled) {
-				// No change in tab enabled state
-				super.paint(g);
-			} else {
-				titleEnabled = tabEnabled;
-				setEnabled(titleEnabled);
-				// Will paint later
+			if (tabbedPane != null) {
+				// Check if tab enabled state changed since last paint
+				final boolean tabEnabled = tabbedPane.isEnabledAt(tabIndex);
+				if (tabEnabled == titleEnabled) {
+					// No change in tab enabled state
+					super.paint(g);
+				} else {
+					titleEnabled = tabEnabled;
+					setEnabled(titleEnabled);
+					// Will paint later
+				}
 			}
 		}
 	}
@@ -281,17 +283,19 @@ public class TabIconBooleanFeedback implements ResultHandler<Boolean>, Disposabl
 		 */
 		@Override
 		public void propertyChange(final PropertyChangeEvent evt) {
-			if ("indexForTitle".equals(evt.getPropertyName())) {
-				// Update text label with the new title set on the tabbed pane
-				final Component title = tabbedPane.getTabComponentAt(tabIndex);
-				if (title instanceof TitleRenderer) {
-					((TitleRenderer) title).setTitle(tabbedPane.getTitleAt(tabIndex));
-				}
-			} else if ("enabled".equals(evt.getPropertyName())) {
-				// Update title renderers
-				for (int i = 0; i < tabbedPane.getTabCount(); i++) {
-					final Component title = tabbedPane.getTabComponentAt(i);
-					title.setEnabled(tabbedPane.isEnabled());
+			if (tabbedPane != null) {
+				if ("indexForTitle".equals(evt.getPropertyName())) {
+					// Update text label with the new title set on the tabbed pane
+					final Component title = tabbedPane.getTabComponentAt(tabIndex);
+					if (title instanceof TitleRenderer) {
+						((TitleRenderer) title).setTitle(tabbedPane.getTitleAt(tabIndex));
+					}
+				} else if ("enabled".equals(evt.getPropertyName())) {
+					// Update title renderers
+					for (int i = 0; i < tabbedPane.getTabCount(); i++) {
+						final Component title = tabbedPane.getTabComponentAt(i);
+						title.setEnabled(tabbedPane.isEnabled());
+					}
 				}
 			}
 		}
@@ -444,13 +448,15 @@ public class TabIconBooleanFeedback implements ResultHandler<Boolean>, Disposabl
 	 * @param toolTipText Tooltip text on the icon.
 	 */
 	private void showResult(final Icon icon, final String toolTipText) {
-		final Component title = tabbedPane.getTabComponentAt(tabIndex);
-		if (title instanceof TitleRenderer) {
-			// Set icon on the custom tab title renderer
-			((TitleRenderer) title).setIcon(icon);
-			((TitleRenderer) title).setIconToolTipText(toolTipText);
-		} else {
-			LOGGER.error("Nothing to set the icon on the tabbed pane: " + tabbedPane, icon);
+		if (tabbedPane != null) {
+			final Component title = tabbedPane.getTabComponentAt(tabIndex);
+			if (title instanceof TitleRenderer) {
+				// Set icon on the custom tab title renderer
+				((TitleRenderer) title).setIcon(icon);
+				((TitleRenderer) title).setIconToolTipText(toolTipText);
+			} else {
+				LOGGER.error("Nothing to set the icon on the tabbed pane: " + tabbedPane, icon);
+			}
 		}
 	}
 

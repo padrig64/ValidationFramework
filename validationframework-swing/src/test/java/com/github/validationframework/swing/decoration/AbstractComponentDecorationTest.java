@@ -23,68 +23,67 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.swing.resulthandler;
+package com.github.validationframework.swing.decoration;
 
-import com.github.validationframework.api.common.Disposable;
-import com.github.validationframework.api.resulthandler.ResultHandler;
 import com.github.validationframework.swing.decoration.anchor.Anchor;
 import com.github.validationframework.swing.decoration.anchor.AnchorLink;
-import com.github.validationframework.swing.decoration.support.TransparentToolTipDialog;
+import java.awt.Graphics;
 import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JTextField;
+import org.junit.Test;
 
-public abstract class AbstractStickerFeedback<O> implements ResultHandler<O>, Disposable {
+public class AbstractComponentDecorationTest {
 
-	private TransparentToolTipDialog toolTipDialog = null;
+	private static class DummyComponentDecoration extends AbstractComponentDecoration {
 
-	public AbstractStickerFeedback(final JComponent owner) {
-		attach(owner);
-	}
+		/**
+		 * @see AbstractComponentDecoration#AbstractComponentDecoration(JComponent, AnchorLink)
+		 */
+		public DummyComponentDecoration(final JComponent decoratedComponent, final AnchorLink anchorLink) {
+			super(decoratedComponent, anchorLink);
+		}
 
-	public void attach(final JComponent owner) {
-		detach();
-		toolTipDialog = new TransparentToolTipDialog(owner, new AnchorLink(Anchor.TOP_RIGHT, Anchor.TOP_LEFT));
-	}
+		/**
+		 * @see AbstractComponentDecoration#getWidth()
+		 */
+		@Override
+		protected int getWidth() {
+			return 16;
+		}
 
-	public void detach() {
-		if (toolTipDialog != null) {
-			toolTipDialog.dispose();
-			toolTipDialog = null;
+		/**
+		 * @see AbstractComponentDecoration#getHeight()
+		 */
+		@Override
+		protected int getHeight() {
+			return 16;
+		}
+
+		/**
+		 * @see AbstractComponentDecoration#paint(Graphics)
+		 */
+		@Override
+		public void paint(final Graphics g) {
+			// Nothing to be done
 		}
 	}
 
-	protected String getToolTipText() {
-		String tip = null;
+	@Test
+	public void testMultipleDispose() {
+		final JFrame frame = new JFrame();
+		final JTextField textField = new JTextField();
+		frame.setContentPane(textField);
 
-		if (toolTipDialog != null) {
-			tip = toolTipDialog.getText();
-		}
+		final DummyComponentDecoration decoration =
+				new DummyComponentDecoration(textField, new AnchorLink(Anchor.TOP_LEFT, Anchor.TOP_LEFT));
 
-		return tip;
-	}
-
-	protected void setToolTipText(final String text) {
-		if (toolTipDialog != null) {
-			toolTipDialog.setText(text);
-		}
-	}
-
-	protected void showToolTip() {
-		if (toolTipDialog != null) {
-			toolTipDialog.setVisible(true);
-		}
-	}
-
-	protected void hideToolTip() {
-		if (toolTipDialog != null) {
-			toolTipDialog.setVisible(false);
-		}
-	}
-
-	/**
-	 * @see Disposable#dispose()
-	 */
-	@Override
-	public void dispose() {
-		detach();
+		decoration.setVisible(false);
+		decoration.setVisible(true);
+		decoration.dispose();
+		decoration.dispose();
+		decoration.dispose();
+		decoration.setVisible(false);
+		decoration.setVisible(true);
 	}
 }

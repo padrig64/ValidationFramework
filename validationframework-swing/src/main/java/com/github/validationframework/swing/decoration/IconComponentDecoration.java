@@ -135,7 +135,7 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
 	public void setVisible(final boolean visible) {
 		super.setVisible(visible);
 
-		if ((toolTipDialog == null) && visible) {
+		if ((toolTipDialog == null) && visible && (decorationPainter != null)) {
 			toolTipDialog = new ToolTipDialog(decorationPainter, anchorLinkWithToolTip);
 			toolTipDialog.setText(toolTipText);
 		}
@@ -173,7 +173,7 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
 	 */
 	@Override
 	public void paint(final Graphics g) {
-		if (isVisible() && (icon != null)) {
+		if (isVisible() && (icon != null) && (decorationPainter != null)) {
 			icon.paintIcon(decorationPainter, g, 0, 0);
 		}
 	}

@@ -129,7 +129,7 @@
                 <version>${miglayout.version}</version>
             </dependency>
 
-            <!-- Test dependencies -->
+            <!-- Test -->
 
             <dependency>
                 <groupId>junit</groupId>

@@ -187,7 +187,8 @@ public abstract class AbstractComponentDecoration implements Disposable {
 		 */
 		@Override
 		public void paintComponent(final Graphics g) {
-			if (super.isVisible() && decoratedComponent.isShowing() && areBoundsValid(clipBounds)) {
+			if (super.isVisible() && (decoratedComponent != null) && decoratedComponent.isShowing() &&
+					areBoundsValid(clipBounds)) {
 				// Clip graphics
 				g.setClip(clipBounds);
 
@@ -293,6 +294,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
 			decoratedComponent.removeAncestorListener(decoratedComponentTracker);
 			decoratedComponent.removeHierarchyBoundsListener(decoratedComponentTracker);
 			decoratedComponent.removeHierarchyListener(decoratedComponentTracker);
+			decoratedComponent = null;
 
 			detachFromLayeredPane();
 		}
@@ -429,7 +431,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
 	 * etc.).<br>This method has been made protected so that it can be easily called from the implementating sub-classes.
 	 */
 	protected void followDecoratedComponent() {
-		if ((decorationPainter != null) && (anchorLink != null)) {
+		if ((decorationPainter != null) && (anchorLink != null) && (decoratedComponent != null)) {
 			if (attachedLayeredPane == null) {
 				attachToLayeredPane();
 			}

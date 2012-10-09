@@ -101,14 +101,20 @@ public abstract class AbstractIconFeedback<O> implements ResultHandler<O>, Dispo
 	 * @see IconComponentDecoration#getAnchorLink()
 	 */
 	public AnchorLink getAnchorLink() {
-		return decoration.getAnchorLink();
+		AnchorLink anchorLink = null;
+		if (decoration != null) {
+			anchorLink = decoration.getAnchorLink();
+		}
+		return anchorLink;
 	}
 
 	/**
 	 * @see IconComponentDecoration#setAnchorLink(AnchorLink)
 	 */
 	public void setAnchorLink(final AnchorLink anchorLink) {
-		decoration.setAnchorLink(anchorLink);
+		if (decoration != null) {
+			decoration.setAnchorLink(anchorLink);
+		}
 	}
 
 	/**
