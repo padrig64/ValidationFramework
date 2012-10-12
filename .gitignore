@@ -17,7 +17,7 @@
 
 ### Generated files
 
-target/
+target
 *.class
 
 ### Mac OS files
