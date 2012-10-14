@@ -29,6 +29,7 @@ NEW STUFF
  . No decoration on disabled components (config + listen to component state)
  . Avoid instantiation of result collectors (collect directly from validators, etc.)
  . Better icon tip anchoring for IconTipDecorator
+ . Alternative location of icon tip w.r.t. screen edge
  . Common implementation for the icon tip
  . Auto-scroll/jump to errors in case of scrollpanes, tabbedpane, etc.
  . Initial focus for JFormattedTextField helper
