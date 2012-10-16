@@ -3,8 +3,8 @@ FIXES
  . Check CellIconBooleanFeedback when sorting table
  . Icon tip decoration a bit more on the up and right when using Nimbus LAF
  . Fix moving panels on Linux when using the icon decoration on the tabbed pane
- . Remaining icontip's tooltips when quickly moving the mouse (in tables and outside tables)
- . Icontip's tooltips in some cases behind any other window.
+ . Remaining icontip's tooltips when quickly moving the mouse (in tables and outside tables): only on Linux?
+ . Icon decoration steals mouse event even outside clipping bounds
 
 NEW STUFF
  . Consistent comments (use of dispose(), cast transformers, default behaviors, what classes can be used for, etc.)
