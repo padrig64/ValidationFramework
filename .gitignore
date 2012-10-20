@@ -8,6 +8,8 @@
 ### Eclipse files
 
 .metadata
+.classpath
+.settings
 
 ### Package files
 
