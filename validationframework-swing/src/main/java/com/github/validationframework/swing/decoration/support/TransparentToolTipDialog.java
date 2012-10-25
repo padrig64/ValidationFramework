@@ -92,46 +92,53 @@ public class TransparentToolTipDialog extends JDialog {
 
 	private class TransparencyAdapter extends MouseAdapter implements TimingTarget {
 
-		private final float MIN_ALPHA = 0.25f;
-		private final float MAX_ALPHA = 1.0f;
-		private final float FADE_OUT_MAX_DURATION = 100;
-		private final float FADE_IN_MAX_DURATION = 55;
+		private static final float MIN_ALPHA = 0.25f;
+		private static final float MAX_ALPHA = 1.0f;
+		private static final float FADE_OUT_MAX_DURATION = 100;
+		private static final float FADE_IN_MAX_DURATION = 55;
 
 		private float currentAlpha = MAX_ALPHA;
 
-		private Animator animator = null;
+		private Animator transparencyAnimator = null;
 
 		public TransparencyAdapter() {
+			super();
 			final TimingSource ts = new SwingTimerTimingSource();
 			Animator.setDefaultTimingSource(ts);
 			ts.init();
 		}
 
+		/**
+		 * @see java.awt.event.MouseListener#mouseEntered(MouseEvent)
+		 */
 		@Override
 		public void mouseEntered(final MouseEvent e) {
 			if (isRolloverAnimated()) {
-				if ((animator != null) && (animator.isRunning())) {
-					animator.stop();
+				if ((transparencyAnimator != null) && (transparencyAnimator.isRunning())) {
+					transparencyAnimator.stop();
 				}
 				final long duration =
 						(long) ((currentAlpha - MIN_ALPHA) * FADE_OUT_MAX_DURATION / (MAX_ALPHA - MIN_ALPHA));
 				if (duration <= 0) {
 					timingEvent(null, 0.0);
 				} else {
-					animator = new Animator.Builder().setDuration(duration, TimeUnit.MILLISECONDS)
+					transparencyAnimator = new Animator.Builder().setDuration(duration, TimeUnit.MILLISECONDS)
 							.setInterpolator(new SplineInterpolator(0.8, 0.2, 0.2, 0.8)).addTarget(this).build();
-					animator.startReverse();
+					transparencyAnimator.startReverse();
 				}
 			} else {
 				WindowUtils.setWindowAlpha(TransparentToolTipDialog.this, MIN_ALPHA);
 			}
 		}
 
+		/**
+		 * @see java.awt.event.MouseListener#mouseExited(MouseEvent)
+		 */
 		@Override
 		public void mouseExited(final MouseEvent e) {
 			if (isRolloverAnimated()) {
-				if ((animator != null) && (animator.isRunning())) {
-					animator.stop();
+				if ((transparencyAnimator != null) && (transparencyAnimator.isRunning())) {
+					transparencyAnimator.stop();
 				}
 
 				final long duration =
@@ -139,35 +146,50 @@ public class TransparentToolTipDialog extends JDialog {
 				if (duration <= 0) {
 					timingEvent(null, 1.0);
 				} else {
-					animator = new Animator.Builder().setDuration(duration, TimeUnit.MILLISECONDS)
+					transparencyAnimator = new Animator.Builder().setDuration(duration, TimeUnit.MILLISECONDS)
 							.setInterpolator(new SplineInterpolator(0.8, 0.2, 0.2, 0.8)).addTarget(this).build();
-					animator.start();
+					transparencyAnimator.start();
 				}
 			} else {
 				WindowUtils.setWindowAlpha(TransparentToolTipDialog.this, MAX_ALPHA);
 			}
 		}
 
+		/**
+		 * @see TimingTarget#begin(Animator)
+		 */
 		@Override
 		public void begin(final Animator animator) {
 			// Nothing to be done because we stop the animation manually
 		}
 
+		/**
+		 * @see TimingTarget#end(Animator)
+		 */
 		@Override
 		public void end(final Animator animator) {
 			// Nothing to be done because we stop the animation manually
 		}
 
+		/**
+		 * @see TimingTarget#repeat(Animator)
+		 */
 		@Override
 		public void repeat(final Animator animator) {
 			// Nothing to be done
 		}
 
+		/**
+		 * @see TimingTarget#reverse(Animator)
+		 */
 		@Override
 		public void reverse(final Animator animator) {
 			// Nothing to be done
 		}
 
+		/**
+		 * @see TimingTarget#timingEvent(Animator, double)
+		 */
 		@Override
 		public void timingEvent(final Animator animator, final double v) {
 			currentAlpha = (float) (v * (MAX_ALPHA - MIN_ALPHA)) + MIN_ALPHA;
@@ -185,11 +207,11 @@ public class TransparentToolTipDialog extends JDialog {
 	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(TransparentToolTipDialog.class);
 
-	private JComponent owner = null;
+	private final JComponent owner;
 
 	private JToolTip toolTip = null;
 
-	private AnchorLink anchorLink = null;
+	private final AnchorLink anchorLink;
 
 	private final LocationAdapter locationAdapter = new LocationAdapter();
 

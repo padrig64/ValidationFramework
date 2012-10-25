@@ -25,20 +25,20 @@
 
 package com.github.validationframework.swing.dataprovider;
 
-import com.github.validationframework.api.dataprovider.TypedDataProvider;
+import com.github.validationframework.api.dataprovider.DataProvider;
 import javax.swing.JList;
 
 /**
  * Data provider retrieving the selected value of a list.
  *
- * @see TypedDataProvider
+ * @see DataProvider
  * @see JList
  * @see JList#getSelectedValue()
  * @see JListSelectedIndexProvider
  * @see JListSelectedIndicesProvider
  * @see JListSelectedValuesProvider
  */
-public class JListSelectedValueProvider implements TypedDataProvider<Object> {
+public class JListSelectedValueProvider implements DataProvider<Object> {
 
 	/**
 	 * List to get the selected value from.
@@ -55,7 +55,7 @@ public class JListSelectedValueProvider implements TypedDataProvider<Object> {
 	}
 
 	/**
-	 * @see TypedDataProvider#getData()
+	 * @see DataProvider#getData()
 	 */
 	@Override
 	public Object getData() {

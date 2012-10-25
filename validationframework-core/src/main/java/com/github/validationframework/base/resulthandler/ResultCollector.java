@@ -25,9 +25,8 @@
 
 package com.github.validationframework.base.resulthandler;
 
-import com.github.validationframework.api.dataprovider.TypedDataProvider;
+import com.github.validationframework.api.dataprovider.DataProvider;
 import com.github.validationframework.api.resulthandler.ResultHandler;
-import com.github.validationframework.api.trigger.Trigger;
 import com.github.validationframework.api.trigger.TriggerEvent;
 import com.github.validationframework.base.transform.CastTransformer;
 import com.github.validationframework.base.transform.Transformer;
@@ -36,15 +35,18 @@ import com.github.validationframework.base.trigger.AbstractTrigger;
 /**
  * Result collector providing the result from one validator as validation input to another validator.<br>So this
  * collector is meant to be registered as a result handler to validator, and as a trigger and data provider to another
- * validator.<br> This can be useful to aggregate the validation results from a group in independent fields, for
- * instance to enable or disable an Apply button on a dialog.
+ * validator.<br>This can be useful to aggregate the validation results from a group in independent fields, for instance
+ * to enable or disable an Apply button on a dialog.
  *
  * @param <O> Type of result collected from other validators.
  * @param <D> Type of data provided by the collector.<br>It could be the same as {@link O}.
  *
  * @see com.github.validationframework.base.validator.ResultCollectorValidator
+ * @see ResultHandler
+ * @see AbstractTrigger
+ * @see DataProvider
  */
-public class ResultCollector<O, D> extends AbstractTrigger implements ResultHandler<O>, Trigger, TypedDataProvider<D> {
+public class ResultCollector<O, D> extends AbstractTrigger implements ResultHandler<O>, DataProvider<D> {
 
 	/**
 	 * Last collected result.
@@ -59,7 +61,7 @@ public class ResultCollector<O, D> extends AbstractTrigger implements ResultHand
 	/**
 	 * Default constructor using the simple cast transformer.
 	 *
-	 * @see com.github.validationframework.base.transform.CastTransformer
+	 * @see CastTransformer
 	 */
 	public ResultCollector() {
 		this(new CastTransformer<O, D>());
@@ -71,6 +73,7 @@ public class ResultCollector<O, D> extends AbstractTrigger implements ResultHand
 	 * @param transformer Transform to apply on the collected result.
 	 */
 	public ResultCollector(final Transformer<O, D> transformer) {
+		super();
 		this.transformer = transformer;
 	}
 
@@ -79,12 +82,12 @@ public class ResultCollector<O, D> extends AbstractTrigger implements ResultHand
 	 */
 	@Override
 	public void handleResult(final O result) {
-		lastResult = result; // We expect the method getData() to be called sub-sequently
+		lastResult = result; // We expect the method getData() to be called subsequently
 		fireTriggerEvent(new TriggerEvent(this));
 	}
 
 	/**
-	 * @see TypedDataProvider#getData()
+	 * @see DataProvider#getData()
 	 */
 	@Override
 	public D getData() {

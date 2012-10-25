@@ -8,6 +8,8 @@
 ### Eclipse files
 
 .metadata
+.classpath
+.settings
 
 ### Package files
 
@@ -17,7 +19,7 @@
 
 ### Generated files
 
-target/
+target
 *.class
 
 ### Mac OS files

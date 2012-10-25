@@ -38,28 +38,28 @@ public final class ValueUtils {
 	}
 
 	/**
-	 * Compares the two given values by taking null and NaN values into account.
+	 * Compares the two given values by taking null and NaN values into account.<br>Two null values will be considered
+	 * equal. Two NaN values (either Double or Float) will be considered equal.
 	 *
-	 * @param val1 First value.
-	 * @param val2 Second value.
+	 * @param value1 First value.
+	 * @param value2 Second value.
 	 *
 	 * @return True if both values are equal or if both are null.
 	 */
-	public static boolean areEqual(final Object val1, final Object val2) {
-		boolean equal = false;
+	public static boolean areEqual(final Object value1, final Object value2) {
+		return ((value1 == null) && (value2 == null)) || (isNaN(value1) && isNaN(value2)) ||
+				((value1 != null) && value1.equals(value2));
+	}
 
-		if ((val1 == null) && (val2 == null)) {
-			equal = true;
-		} else if ((val1 instanceof Double) && (((Double) val1).isNaN()) && (val2 instanceof Double) &&
-				(((Double) val2).isNaN())) {
-			equal = true;
-		} else if ((val1 instanceof Float) && (((Float) val1).isNaN()) && (val2 instanceof Float) &&
-				(((Float) val2).isNaN())) {
-			equal = true;
-		} else if (val1 != null) {
-			equal = val1.equals(val2);
-		}
-
-		return equal;
+	/**
+	 * Checks if the specified value is either NaN.
+	 *
+	 * @param value Value to be checked.
+	 *
+	 * @return True if the value is NaN, false otherwise.
+	 */
+	private static boolean isNaN(final Object value) {
+		return ((value instanceof Float) && Float.isNaN((Float) value)) ||
+				((value instanceof Double) && Double.isNaN((Double) value));
 	}
 }

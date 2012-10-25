@@ -25,7 +25,7 @@
 
 package com.github.validationframework.experimental.builder.context.simplevalidator;
 
-import com.github.validationframework.api.dataprovider.TypedDataProvider;
+import com.github.validationframework.api.dataprovider.DataProvider;
 import com.github.validationframework.api.trigger.Trigger;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -89,8 +89,8 @@ public class DataProviderContext {
 		return this;
 	}
 
-	public <D> RuleContext<D> read(final Class<? extends TypedDataProvider<D>> dataProviderClass) {
-		TypedDataProvider<D> dataProvider = null;
+	public <D> RuleContext<D> read(final Class<? extends DataProvider<D>> dataProviderClass) {
+		DataProvider<D> dataProvider = null;
 		try {
 			dataProvider = dataProviderClass.newInstance();
 		} catch (InstantiationException e) {
@@ -101,8 +101,8 @@ public class DataProviderContext {
 		return read(dataProvider);
 	}
 
-	public <D> RuleContext<D> read(final TypedDataProvider<D> dataProvider) {
-		final List<TypedDataProvider<D>> registeredDataProviders = new ArrayList<TypedDataProvider<D>>();
+	public <D> RuleContext<D> read(final DataProvider<D> dataProvider) {
+		final List<DataProvider<D>> registeredDataProviders = new ArrayList<DataProvider<D>>();
 		if (dataProvider != null) {
 			registeredDataProviders.add(dataProvider);
 		}
@@ -118,16 +118,16 @@ public class DataProviderContext {
 	 *
 	 * @return Rule context allowing to add data providers and rules, but not triggers.
 	 */
-	public <D> RuleContext<D> read(final TypedDataProvider<D>... dataProviders) {
-		final List<TypedDataProvider<D>> registeredDataProviders = new ArrayList<TypedDataProvider<D>>();
+	public <D> RuleContext<D> read(final DataProvider<D>... dataProviders) {
+		final List<DataProvider<D>> registeredDataProviders = new ArrayList<DataProvider<D>>();
 		if (dataProviders != null) {
 			Collections.addAll(registeredDataProviders, dataProviders);
 		}
 		return new RuleContext<D>(registeredTriggers, registeredDataProviders);
 	}
 
-	public <D> RuleContext<D> read(final Collection<TypedDataProvider<D>> dataProviders) {
-		final List<TypedDataProvider<D>> registeredDataProviders = new ArrayList<TypedDataProvider<D>>();
+	public <D> RuleContext<D> read(final Collection<DataProvider<D>> dataProviders) {
+		final List<DataProvider<D>> registeredDataProviders = new ArrayList<DataProvider<D>>();
 		if (dataProviders != null) {
 			registeredDataProviders.addAll(dataProviders);
 		}

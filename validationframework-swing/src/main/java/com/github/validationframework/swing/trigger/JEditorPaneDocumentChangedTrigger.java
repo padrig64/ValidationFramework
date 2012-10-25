@@ -27,8 +27,18 @@ package com.github.validationframework.swing.trigger;
 
 import javax.swing.JEditorPane;
 
+/**
+ * Convenience trigger that initiates the validation whenever the document of an editor pane is modified.
+ *
+ * @see BaseTextComponentDocumentChangedTrigger
+ */
 public class JEditorPaneDocumentChangedTrigger extends BaseTextComponentDocumentChangedTrigger<JEditorPane> {
 
+	/**
+	 * Constructor specifying the editor pane to listen to.
+	 *
+	 * @param source Editor pane to listen to
+	 */
 	public JEditorPaneDocumentChangedTrigger(final JEditorPane source) {
 		super(source);
 	}

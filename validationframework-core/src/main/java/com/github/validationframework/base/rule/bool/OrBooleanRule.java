@@ -33,6 +33,7 @@ import java.util.Collection;
 /**
  * Rule validating a collection of boolean values using the boolean OR operator.
  *
+ * @see Rule
  * @see AndBooleanRule
  */
 public class OrBooleanRule implements Rule<Collection<Boolean>, Boolean> {

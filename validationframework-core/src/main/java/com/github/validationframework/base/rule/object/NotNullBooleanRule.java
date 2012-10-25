@@ -34,6 +34,8 @@ import com.github.validationframework.api.rule.Rule;
  *
  * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
  * type of the component itself.
+ *
+ * @see Rule
  */
 public class NotNullBooleanRule<D> implements Rule<D, Boolean> {
 

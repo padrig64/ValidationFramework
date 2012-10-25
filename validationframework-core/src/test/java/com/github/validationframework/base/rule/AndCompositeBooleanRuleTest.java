@@ -6,13 +6,13 @@ import java.util.List;
 import org.junit.runners.Parameterized;
 
 /**
- * @author: arnoud
+ * @author arnoud
  */
 public class AndCompositeBooleanRuleTest extends AbstractCompositeBooleanRuleTest {
 
 	@Parameterized.Parameters
 	public static List<Object[]> getTestData() {
-		Object[][] data = new Object[][] {
+		final Object[][] data = new Object[][] {
 				//             Rules (Object data, Boolean result)                                     Result
 				new Object[] { new Rule[] { createRule(true), createRule(true) }, true },
 				new Object[] { new Rule[] { createRule(true) }, true }, new Object[] { new Rule[] { }, true },
@@ -22,7 +22,7 @@ public class AndCompositeBooleanRuleTest extends AbstractCompositeBooleanRuleTes
 		return Arrays.asList(data);
 	}
 
-	public AndCompositeBooleanRuleTest(Rule<Object, Boolean>[] rules, boolean result) {
+	public AndCompositeBooleanRuleTest(final Rule<Object, Boolean>[] rules, final boolean result) {
 		super(rules, result);
 	}
 

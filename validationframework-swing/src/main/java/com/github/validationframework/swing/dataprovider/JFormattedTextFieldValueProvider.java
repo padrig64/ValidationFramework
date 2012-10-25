@@ -25,7 +25,7 @@
 
 package com.github.validationframework.swing.dataprovider;
 
-import com.github.validationframework.api.dataprovider.TypedDataProvider;
+import com.github.validationframework.api.dataprovider.DataProvider;
 import com.github.validationframework.base.transform.CastTransformer;
 import com.github.validationframework.base.transform.Transformer;
 import java.text.ParseException;
@@ -35,11 +35,11 @@ import javax.swing.JFormattedTextField;
  * Data provider reading the value from a formatted textfield.<br>Note that the value is not read from the model, but
  * instead corresponds to the current text.
  *
- * @see TypedDataProvider
+ * @see DataProvider
  * @see JFormattedTextField
  * @see JFormattedTextField#getText()
  */
-public class JFormattedTextFieldValueProvider<D> implements TypedDataProvider<D> {
+public class JFormattedTextFieldValueProvider<D> implements DataProvider<D> {
 
 	/**
 	 * Formatted textfield to get the data from.<br>Note that the text and the formatter are retrieved every time they are
@@ -75,7 +75,7 @@ public class JFormattedTextFieldValueProvider<D> implements TypedDataProvider<D>
 	}
 
 	/**
-	 * @see TypedDataProvider#getData()
+	 * @see DataProvider#getData()
 	 */
 	@Override
 	public D getData() {
@@ -92,7 +92,7 @@ public class JFormattedTextFieldValueProvider<D> implements TypedDataProvider<D>
 				typedValue = transformer.transform(dataValue);
 			}
 		} catch (ParseException e) {
-			// Nothing to be done
+			typedValue = null;
 		}
 
 		return typedValue;

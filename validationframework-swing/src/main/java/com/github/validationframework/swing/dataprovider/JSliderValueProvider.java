@@ -25,16 +25,16 @@
 
 package com.github.validationframework.swing.dataprovider;
 
-import com.github.validationframework.api.dataprovider.TypedDataProvider;
+import com.github.validationframework.api.dataprovider.DataProvider;
 import javax.swing.JSlider;
 
 /**
  * Data provider reading the value from a slider.
  *
- * @see TypedDataProvider
+ * @see DataProvider
  * @see JSlider
  */
-public class JSliderValueProvider implements TypedDataProvider<Integer> {
+public class JSliderValueProvider implements DataProvider<Integer> {
 
 	/**
 	 * Slider to get the value from.
@@ -51,7 +51,7 @@ public class JSliderValueProvider implements TypedDataProvider<Integer> {
 	}
 
 	/**
-	 * @see TypedDataProvider#getData()
+	 * @see DataProvider#getData()
 	 */
 	@Override
 	public Integer getData() {

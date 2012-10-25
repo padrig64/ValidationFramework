@@ -45,51 +45,78 @@ public abstract class AbstractCellIconFeedback<O> extends AbstractIconFeedback<O
 
 	private class CellTracker implements ComponentListener, TableColumnModelListener {
 
+		/**
+		 * @see ComponentListener#componentShown(ComponentEvent)
+		 */
 		@Override
 		public void componentShown(final ComponentEvent e) {
 			// Nothing to be done
 		}
 
+		/**
+		 * @see ComponentListener#componentHidden(ComponentEvent)
+		 */
 		@Override
 		public void componentHidden(final ComponentEvent e) {
 			// Nothing to be done
 		}
 
+		/**
+		 * @see ComponentListener#componentMoved(ComponentEvent)
+		 */
 		@Override
 		public void componentMoved(final ComponentEvent e) {
 			// Nothing to be done
 		}
 
+		/**
+		 * @see ComponentListener#componentResized(ComponentEvent)
+		 */
 		@Override
 		public void componentResized(final ComponentEvent e) {
 			// Cell bounds may have changed
 			followerDecoratedCell(0);
 		}
 
+		/**
+		 * @see TableColumnModelListener#columnAdded(TableColumnModelEvent)
+		 */
 		@Override
 		public void columnAdded(final TableColumnModelEvent e) {
 			// Cell bounds may have changed
 			followerDecoratedCell(0);
 		}
 
+		/**
+		 * @see TableColumnModelListener#columnRemoved(TableColumnModelEvent)
+		 */
 		@Override
 		public void columnRemoved(final TableColumnModelEvent e) {
 			// Cell bounds may have changed
 			followerDecoratedCell(0);
 		}
 
+		/**
+		 * @see TableColumnModelListener#columnMoved(TableColumnModelEvent)
+		 */
 		@Override
 		public void columnMoved(final TableColumnModelEvent e) {
 			// Cell may have moved
 			followerDecoratedCell(table.getTableHeader().getDraggedDistance());
 		}
 
+		/**
+		 * @see TableColumnModelListener#columnMarginChanged(ChangeEvent)
+		 */
 		@Override
 		public void columnMarginChanged(final ChangeEvent e) {
 			// Cell bounds may have changed
 			followerDecoratedCell(0);
 		}
 
+		/**
+		 * @see TableColumnModelListener#columnSelectionChanged(ListSelectionEvent)
+		 */
 		@Override
 		public void columnSelectionChanged(final ListSelectionEvent e) {
 			// Column ordering has changed, so cell may have moved
@@ -97,6 +124,9 @@ public abstract class AbstractCellIconFeedback<O> extends AbstractIconFeedback<O
 		}
 	}
 
+	/**
+	 * Logger for this class.
+	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractCellIconFeedback.class);
 
 	private JTable table = null;
@@ -144,6 +174,22 @@ public abstract class AbstractCellIconFeedback<O> extends AbstractIconFeedback<O
 		super.detach();
 	}
 
+	public int getCellRowIndex() {
+		return modelRowIndex;
+	}
+
+	public void setCellRowIndex(final int cellModelRowIndex) {
+		modelRowIndex = cellModelRowIndex;
+	}
+
+	public int getCellColumnIndex() {
+		return modelRowIndex;
+	}
+
+	public void setCellColumnIndex(final int cellModelColumnIndex) {
+		modelColumnIndex = cellModelColumnIndex;
+	}
+
 	/**
 	 * Gets the anchor link between the cell and its decoration.
 	 *
@@ -157,12 +203,22 @@ public abstract class AbstractCellIconFeedback<O> extends AbstractIconFeedback<O
 	/**
 	 * Sets the anchor link between the cell and its decoration.
 	 *
-	 * @param anchorLinkWithCell Anchor link between the cell and its decoration.
+	 * @param anchorLinkWithTableCell Anchor link between the cell and its decoration.
 	 */
 	@Override
-	public void setAnchorLink(final AnchorLink anchorLinkWithCell) {
-		this.anchorLinkWithCell = anchorLinkWithCell;
+	public void setAnchorLink(final AnchorLink anchorLinkWithTableCell) {
+		anchorLinkWithCell = anchorLinkWithTableCell;
 		followerDecoratedCell(0);
+	}
+
+	/**
+	 * Tracks the decorated cell and repositions the decoration.
+	 *
+	 * @param dragOffsetX Dragged distance in case the column is being dragged, 0 otherwise.
+	 */
+	private void followerDecoratedCell(final int dragOffsetX) {
+		// Gets the absolute anchor link and update the decoration
+		super.setAnchorLink(getAbsoluteAnchorLinkWithCell(dragOffsetX));
 	}
 
 	/**
@@ -186,20 +242,15 @@ public abstract class AbstractCellIconFeedback<O> extends AbstractIconFeedback<O
 					new Anchor(0.0f, cellBounds.x + dragOffsetX, 0.0f, cellBounds.y + cellBounds.height);
 			absoluteAnchorLink = new AnchorLink(cellMasterAnchor, anchorLinkWithCell.getSlaveAnchor());
 		} else {
-			LOGGER.warn("Invalid model row and/or column indices: (" + modelRowIndex + "," + modelColumnIndex + ")");
+			// Maybe the table has been emptied? or the row has been filtered out? or invalid row/column index?
+			LOGGER.debug("Cell at model row and/or column indices is not visible: (" + modelRowIndex + "," +
+					modelColumnIndex +
+					") for table dimensions (" + tableModel.getRowCount() + "," + tableModel.getColumnCount() + ")");
+
+			// Decoration will not be shown
 			absoluteAnchorLink = null;
 		}
 
 		return absoluteAnchorLink;
-	}
-
-	/**
-	 * Tracks the decorated cell and repositions the decoration.
-	 *
-	 * @param dragOffsetX Dragged distance in case the column is being dragged, 0 otherwise.
-	 */
-	private void followerDecoratedCell(final int dragOffsetX) {
-		// Gets the absolute anchor link and update the decoration
-		super.setAnchorLink(getAbsoluteAnchorLinkWithCell(dragOffsetX));
 	}
 }

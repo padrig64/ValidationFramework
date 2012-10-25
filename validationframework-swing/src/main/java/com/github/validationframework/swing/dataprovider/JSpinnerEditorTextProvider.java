@@ -25,7 +25,7 @@
 
 package com.github.validationframework.swing.dataprovider;
 
-import com.github.validationframework.api.dataprovider.TypedDataProvider;
+import com.github.validationframework.api.dataprovider.DataProvider;
 import javax.swing.JComponent;
 import javax.swing.JSpinner;
 import javax.swing.text.JTextComponent;
@@ -35,10 +35,10 @@ import org.slf4j.LoggerFactory;
 /**
  * Data provider reading the text from the text editor of a spinner.
  *
- * @see TypedDataProvider
+ * @see DataProvider
  * @see JSpinner
  */
-public class JSpinnerEditorTextProvider implements TypedDataProvider<String> {
+public class JSpinnerEditorTextProvider implements DataProvider<String> {
 
 	/**
 	 * Logger for this class.
@@ -60,7 +60,7 @@ public class JSpinnerEditorTextProvider implements TypedDataProvider<String> {
 	}
 
 	/**
-	 * @see TypedDataProvider#getData()
+	 * @see DataProvider#getData()
 	 */
 	@Override
 	public String getData() {

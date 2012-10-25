@@ -23,12 +23,36 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.base.validator;
+package com.github.validationframework.base.trigger;
+
+import com.github.validationframework.api.trigger.TriggerEvent;
 
 /**
- * @deprecated User {@link DefaultSimpleValidator} instead.
+ * Trigger allowing the programmer to fire trigger events using a single method call.<br>This is for convenience
+ * purposes as it allows to trigger validation at convenient times without having to implement a custom {@link
+ * com.github.validationframework.api.trigger.Trigger}. It can be used, for instance, to trigger an initial validation
+ * when a dialog pops up, or when some other events occur in the system.
  */
-@Deprecated
-public class SimpleValidator<D, O> extends DefaultSimpleValidator<D, O> {
-	// Nothing to be done
+public class ManualTrigger extends AbstractTrigger {
+
+	/**
+	 * Fires a default trigger event whose source is this trigger.
+	 *
+	 * @see #fireTriggerEvent(TriggerEvent)
+	 * @see TriggerEvent
+	 */
+	public void fireTriggerEvent() {
+		fireTriggerEvent(new TriggerEvent(this));
+	}
+
+	/**
+	 * Fires the specified trigger event.<br>This method, from the super class, has been made public for convenience.
+	 *
+	 * @see AbstractTrigger#fireTriggerEvent(TriggerEvent)
+	 * @see TriggerEvent
+	 */
+	@Override
+	public void fireTriggerEvent(final TriggerEvent event) {
+		super.fireTriggerEvent(event);
+	}
 }

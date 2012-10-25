@@ -6,7 +6,7 @@
 
     <groupId>validationframework</groupId>
     <artifactId>validationframework</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Validation Framework</name>
@@ -129,7 +129,7 @@
                 <version>${miglayout.version}</version>
             </dependency>
 
-            <!-- Test dependencies -->
+            <!-- Test -->
 
             <dependency>
                 <groupId>junit</groupId>

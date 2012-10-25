@@ -91,11 +91,11 @@ public class ToolTipDialog extends JDialog {
 	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(ToolTipDialog.class);
 
-	private JComponent owner = null;
+	private final JComponent owner;
 
 	private JToolTip toolTip = null;
 
-	private AnchorLink anchorLink = null;
+	private final AnchorLink anchorLink;
 
 	private final LocationAdapter locationAdapter = new LocationAdapter();
 

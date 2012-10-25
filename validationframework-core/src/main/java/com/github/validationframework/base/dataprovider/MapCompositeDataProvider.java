@@ -25,7 +25,7 @@
 
 package com.github.validationframework.base.dataprovider;
 
-import com.github.validationframework.api.dataprovider.TypedDataProvider;
+import com.github.validationframework.api.dataprovider.DataProvider;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,13 +34,15 @@ import java.util.Map;
  *
  * @param <K> Type of the keys to retrieve the data from the map.
  * @param <D> Type of data in the map.
+ *
+ * @see DataProvider
  */
-public class MapCompositeDataProvider<K, D> implements TypedDataProvider<Map<K, D>> {
+public class MapCompositeDataProvider<K, D> implements DataProvider<Map<K, D>> {
 
 	/**
 	 * Sub-data providers.
 	 */
-	private final Map<K, TypedDataProvider<D>> dataProviders = new HashMap<K, TypedDataProvider<D>>();
+	private final Map<K, DataProvider<D>> dataProviders = new HashMap<K, DataProvider<D>>();
 
 	/**
 	 * Adds the specified data provider with the specified key.
@@ -48,7 +50,7 @@ public class MapCompositeDataProvider<K, D> implements TypedDataProvider<Map<K, 
 	 * @param key Key associated to the data provider.
 	 * @param dataProvider Data provider associated to the key.
 	 */
-	public void addDataProvider(final K key, final TypedDataProvider<D> dataProvider) {
+	public void addDataProvider(final K key, final DataProvider<D> dataProvider) {
 		dataProviders.put(key, dataProvider);
 	}
 
@@ -62,14 +64,14 @@ public class MapCompositeDataProvider<K, D> implements TypedDataProvider<Map<K, 
 	}
 
 	/**
-	 * @see TypedDataProvider#getData()
+	 * @see DataProvider#getData()
 	 */
 	@Override
 	public Map<K, D> getData() {
 		final Map<K, D> dataList = new HashMap<K, D>();
 
 		// Read the data from all data providers and put them in the map
-		for (final Map.Entry<K, TypedDataProvider<D>> entry : dataProviders.entrySet()) {
+		for (final Map.Entry<K, DataProvider<D>> entry : dataProviders.entrySet()) {
 			dataList.put(entry.getKey(), entry.getValue().getData());
 		}
 

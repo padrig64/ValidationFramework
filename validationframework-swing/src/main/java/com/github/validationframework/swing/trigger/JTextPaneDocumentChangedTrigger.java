@@ -27,8 +27,18 @@ package com.github.validationframework.swing.trigger;
 
 import javax.swing.JTextPane;
 
+/**
+ * Convenience trigger that initiates the validation whenever the document of a text pane is modified.
+ *
+ * @see BaseTextComponentDocumentChangedTrigger
+ */
 public class JTextPaneDocumentChangedTrigger extends BaseTextComponentDocumentChangedTrigger<JTextPane> {
 
+	/**
+	 * Constructor specifying the text pane to listen to.
+	 *
+	 * @param source Text pane to listen to
+	 */
 	public JTextPaneDocumentChangedTrigger(final JTextPane source) {
 		super(source);
 	}

@@ -23,12 +23,29 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.base.validator;
+package com.github.validationframework.swing.decoration;
 
-/**
- * @deprecated Use {@link DefaultMappableValidator} instead.
- */
-@Deprecated
-public class MappableValidator<D, O> extends DefaultMappableValidator<D, O> {
-	// Nothing to be done
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JTextField;
+import org.junit.Test;
+
+public class IconComponentDecorationTest {
+
+	@Test
+	public void testMultipleDispose() {
+		final JFrame frame = new JFrame();
+		final JTextField textField = new JTextField();
+		frame.setContentPane(textField);
+
+		final IconComponentDecoration decoration = new IconComponentDecoration(textField, new ImageIcon());
+
+		decoration.setVisible(false);
+		decoration.setVisible(true);
+		decoration.dispose();
+		decoration.dispose();
+		decoration.dispose();
+		decoration.setVisible(false);
+		decoration.setVisible(true);
+	}
 }

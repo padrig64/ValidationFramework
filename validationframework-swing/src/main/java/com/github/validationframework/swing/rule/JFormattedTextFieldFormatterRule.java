@@ -45,6 +45,7 @@ public class JFormattedTextFieldFormatterRule extends AbstractStringBooleanRule 
 	 * @param formattedTextField Formatted textfield whose formatter is to be checked.
 	 */
 	public JFormattedTextFieldFormatterRule(final JFormattedTextField formattedTextField) {
+		super();
 		this.formattedTextField = formattedTextField;
 	}
 
@@ -62,7 +63,7 @@ public class JFormattedTextFieldFormatterRule extends AbstractStringBooleanRule 
 				formatter.stringToValue(dataToBeValidated);
 				result = true;
 			} catch (ParseException e) {
-				// Nothing to be done
+				result = false;
 			}
 		}
 

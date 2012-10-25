@@ -25,7 +25,7 @@
 
 package com.github.validationframework.experimental.builder.context.simplevalidator;
 
-import com.github.validationframework.api.dataprovider.TypedDataProvider;
+import com.github.validationframework.api.dataprovider.DataProvider;
 import com.github.validationframework.api.rule.Rule;
 import com.github.validationframework.api.trigger.Trigger;
 import java.util.ArrayList;
@@ -48,16 +48,15 @@ public class RuleContext<D> {
 	private static final String NEW_INSTANCE_ERROR_MSG = "Failed creating instance of class: ";
 
 	final List<Trigger> registeredTriggers;
-	final List<TypedDataProvider<D>> registeredDataProviders;
+	final List<DataProvider<D>> registeredDataProviders;
 
-	public RuleContext(final List<Trigger> registeredTriggers,
-					   final List<TypedDataProvider<D>> registeredDataProviders) {
+	public RuleContext(final List<Trigger> registeredTriggers, final List<DataProvider<D>> registeredDataProviders) {
 		this.registeredTriggers = registeredTriggers;
 		this.registeredDataProviders = registeredDataProviders;
 	}
 
-	public RuleContext<D> read(final Class<? extends TypedDataProvider<D>> dataProviderClass) {
-		TypedDataProvider<D> dataProvider = null;
+	public RuleContext<D> read(final Class<? extends DataProvider<D>> dataProviderClass) {
+		DataProvider<D> dataProvider = null;
 		try {
 			dataProvider = dataProviderClass.newInstance();
 		} catch (InstantiationException e) {
@@ -68,7 +67,7 @@ public class RuleContext<D> {
 		return read(dataProvider);
 	}
 
-	public RuleContext<D> read(final TypedDataProvider<D> dataProvider) {
+	public RuleContext<D> read(final DataProvider<D> dataProvider) {
 		if (dataProvider != null) {
 			registeredDataProviders.add(dataProvider);
 		}
@@ -82,14 +81,14 @@ public class RuleContext<D> {
 	 *
 	 * @return Same rule context.
 	 */
-	public RuleContext<D> read(final TypedDataProvider<D>... dataProviders) {
+	public RuleContext<D> read(final DataProvider<D>... dataProviders) {
 		if (dataProviders != null) {
 			Collections.addAll(registeredDataProviders, dataProviders);
 		}
 		return this;
 	}
 
-	public RuleContext<D> read(final Collection<TypedDataProvider<D>> dataProviders) {
+	public RuleContext<D> read(final Collection<DataProvider<D>> dataProviders) {
 		if (dataProviders != null) {
 			registeredDataProviders.addAll(dataProviders);
 		}

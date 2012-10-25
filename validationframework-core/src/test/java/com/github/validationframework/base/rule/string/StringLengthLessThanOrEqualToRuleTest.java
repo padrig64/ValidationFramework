@@ -5,13 +5,13 @@ import java.util.List;
 import org.junit.runners.Parameterized;
 
 /**
- * @author: arnoud
+ * @author arnoud
  */
 public class StringLengthLessThanOrEqualToRuleTest extends AbstractStringLengthRuleTest {
 
 	@Parameterized.Parameters
 	public static List<Object[]> getTestData() {
-		Object[][] data = new Object[][] {
+		final Object[][] data = new Object[][] {
 				//             Data             Length  Trim   Expected result
 				new Object[] { "", 10, false, true }, new Object[] { "0123456789", 10, false, true },
 				new Object[] { "012345", 5, false, false }, new Object[] { "01234 ", 5, true, true },
@@ -20,13 +20,14 @@ public class StringLengthLessThanOrEqualToRuleTest extends AbstractStringLengthR
 		return Arrays.asList(data);
 	}
 
-	public StringLengthLessThanOrEqualToRuleTest(String input, int length, boolean trimData, boolean result) {
+	public StringLengthLessThanOrEqualToRuleTest(final String input, final int length, final boolean trimData,
+												 final boolean result) {
 		super(input, length, trimData, result);
 	}
 
 	@Override
 	protected AbstractStringBooleanRule createStringLengthRule() {
-		StringLengthLessThanOrEqualToRule stringLengthLessThanOrEqualToRule =
+		final StringLengthLessThanOrEqualToRule stringLengthLessThanOrEqualToRule =
 				new StringLengthLessThanOrEqualToRule(length);
 		stringLengthLessThanOrEqualToRule.setTrimDataBeforeValidation(trimData);
 		return stringLengthLessThanOrEqualToRule;

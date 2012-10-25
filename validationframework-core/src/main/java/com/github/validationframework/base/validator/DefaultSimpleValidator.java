@@ -25,7 +25,7 @@
 
 package com.github.validationframework.base.validator;
 
-import com.github.validationframework.api.dataprovider.TypedDataProvider;
+import com.github.validationframework.api.dataprovider.DataProvider;
 import com.github.validationframework.api.resulthandler.ResultHandler;
 import com.github.validationframework.api.rule.Rule;
 import com.github.validationframework.api.trigger.Trigger;
@@ -44,12 +44,12 @@ import org.slf4j.LoggerFactory;
  *
  * @see AbstractSimpleValidator
  * @see Trigger
- * @see TypedDataProvider
+ * @see DataProvider
  * @see Rule
  * @see ResultHandler
  */
 public class DefaultSimpleValidator<D, O>
-		extends AbstractSimpleValidator<Trigger, TypedDataProvider<D>, D, O, Rule<D, O>, O, ResultHandler<O>> {
+		extends AbstractSimpleValidator<Trigger, DataProvider<D>, D, Rule<D, O>, D, O, ResultHandler<O>, O> {
 
 	/**
 	 * Logger for this class.
@@ -65,7 +65,7 @@ public class DefaultSimpleValidator<D, O>
 			LOGGER.warn("No data providers in validator: " + this);
 		} else {
 			// Process data from all providers
-			for (final TypedDataProvider<D> dataProvider : dataProviders) {
+			for (final DataProvider<D> dataProvider : dataProviders) {
 				processData(dataProvider.getData());
 			}
 		}

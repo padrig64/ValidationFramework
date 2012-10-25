@@ -11,7 +11,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * @author: arnoud
+ * @author arnoud
  */
 @RunWith(Parameterized.class)
 public abstract class AbstractCompositeBooleanRuleTest {
@@ -19,22 +19,22 @@ public abstract class AbstractCompositeBooleanRuleTest {
 	protected final Rule<Object, Boolean>[] rules;
 	protected final boolean result;
 
-	protected AbstractCompositeBooleanRuleTest(Rule<Object, Boolean>[] rules, boolean result) {
+	protected AbstractCompositeBooleanRuleTest(final Rule<Object, Boolean>[] rules, final boolean result) {
 		this.rules = rules;
 		this.result = result;
 	}
 
 	protected abstract AbstractCompositeRule<Object, Boolean> createCompositeBooleanRule();
 
-	public static Rule<Object, Boolean> createRule(boolean result) {
-		Rule<Object, Boolean> rule = mock(Rule.class);
+	public static Rule<Object, Boolean> createRule(final boolean result) {
+		final Rule<Object, Boolean> rule = mock(Rule.class);
 		when(rule.validate(any(Object.class))).thenReturn(result);
 		return rule;
 	}
 
 	@Test
 	public void testResult() {
-		AbstractCompositeRule<Object, Boolean> abstractCompositeRule = createCompositeBooleanRule();
+		final AbstractCompositeRule<Object, Boolean> abstractCompositeRule = createCompositeBooleanRule();
 		assertEquals(result, abstractCompositeRule.validate(new Object()));
 	}
 }

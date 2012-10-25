@@ -31,10 +31,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Rule checking string data against one or several regular expressions and returning a boolean a result.
+ * Rule checking string data against one or several regular expressions and returning a boolean as a result.<br>The
+ * result will be valid if the data matches at least one of the patterns (OR operation).<br>Note that the validation is
+ * based on the method {@link Matcher#find()} and not {@link Matcher#matches()}. As a result, if you need the matching
+ * to be done strictly on the whole input data, you should surround the patterns with the '^' and '$' characters.
  *
  * @see AbstractStringBooleanRule
  * @see Pattern
+ * @see Matcher
  */
 public class StringRegexRule extends AbstractStringBooleanRule {
 
@@ -51,11 +55,13 @@ public class StringRegexRule extends AbstractStringBooleanRule {
 	}
 
 	/**
-	 * Constructor specifying the pattern(s) to be added.
+	 * Constructor specifying the pattern(s) to be added.<br>Note that if you need the matching to be done strictly on the
+	 * whole input data, you should surround the patterns with the '^' and '$' characters.
 	 *
 	 * @param patterns Patterns to be added.
 	 *
 	 * @see #addPattern(String)
+	 * @see Matcher#find()
 	 */
 	public StringRegexRule(final String... patterns) {
 		super();
@@ -67,11 +73,14 @@ public class StringRegexRule extends AbstractStringBooleanRule {
 	}
 
 	/**
-	 * Adds the specified regular expression to be matched against the data to be validated.
+	 * Adds the specified regular expression to be matched against the data to be validated.<br>Note that if you need the
+	 * matching to be done strictly on the whole input data, you should surround the pattern with the '^' and '$'
+	 * characters.
 	 *
 	 * @param pattern Regular expression to be added.
 	 *
 	 * @see #addPattern(String, int)
+	 * @see Matcher#find()
 	 */
 	public void addPattern(final String pattern) {
 		addPattern(pattern, 0);
@@ -79,12 +88,14 @@ public class StringRegexRule extends AbstractStringBooleanRule {
 
 	/**
 	 * Adds the specified regular expression to be matched against the data to be validated, with the specified pattern
-	 * flags.
+	 * flags.<br>Note that if you need the matching to be done strictly on the whole input data, you should surround the
+	 * patterns with the '^' and '$' characters.
 	 *
 	 * @param pattern Regular expression to be added.
-	 * @param flags Regular expression pattern flags.<br>Refer to {@link Pattern#}
+	 * @param flags Regular expression pattern flags.<br>Refer to {@link Pattern#}.
 	 *
 	 * @see #addPattern(String)
+	 * @see Matcher#find()
 	 */
 	public void addPattern(final String pattern, final int flags) {
 		patterns.put(pattern, Pattern.compile(pattern, flags));
@@ -101,17 +112,20 @@ public class StringRegexRule extends AbstractStringBooleanRule {
 
 	/**
 	 * @see AbstractStringBooleanRule#validate(Object)
+	 * @see Matcher#find()
 	 */
 	@Override
 	public Boolean validate(final String data) {
 		Boolean result = false;
 
-		final String dataToBeValidated = trimIfNeeded(data);
-
-		for (final Pattern pattern : patterns.values()) {
-			final Matcher matcher = pattern.matcher(dataToBeValidated);
-			if (matcher.find()) {
-				result = true;
+		if (data != null) {
+			final String dataToBeValidated = trimIfNeeded(data);
+			for (final Pattern pattern : patterns.values()) {
+				final Matcher matcher = pattern.matcher(dataToBeValidated);
+				if (matcher.find()) {
+					result = true;
+					break;
+				}
 			}
 		}
 

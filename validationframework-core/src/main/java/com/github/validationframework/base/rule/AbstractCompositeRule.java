@@ -31,6 +31,8 @@ import java.util.List;
 
 /**
  * Abstraction of a composite rule composed of sub-rules.
+ *
+ * @see Rule
  */
 public abstract class AbstractCompositeRule<D, R> implements Rule<D, R> {
 

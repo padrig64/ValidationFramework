@@ -25,7 +25,7 @@
 
 package com.github.validationframework.swing.dataprovider;
 
-import com.github.validationframework.api.dataprovider.TypedDataProvider;
+import com.github.validationframework.api.dataprovider.DataProvider;
 import com.github.validationframework.base.transform.CastTransformer;
 import com.github.validationframework.base.transform.Transformer;
 import java.text.ParseException;
@@ -39,10 +39,10 @@ import org.slf4j.LoggerFactory;
  * Data provider reading the value from a spinner.<br>Note that the value is not read from the model, but instead
  * corresponds to the current text.
  *
- * @see TypedDataProvider
+ * @see DataProvider
  * @see JSpinner
  */
-public class JSpinnerEditorValueProvider<D> implements TypedDataProvider<D> {
+public class JSpinnerEditorValueProvider<D> implements DataProvider<D> {
 
 	/**
 	 * Logger for this class.
@@ -81,7 +81,7 @@ public class JSpinnerEditorValueProvider<D> implements TypedDataProvider<D> {
 	}
 
 	/**
-	 * @see TypedDataProvider#getData()
+	 * @see DataProvider#getData()
 	 */
 	@Override
 	public D getData() {
@@ -97,7 +97,7 @@ public class JSpinnerEditorValueProvider<D> implements TypedDataProvider<D> {
 				typedValue = transformer.transform(dataValue);
 			}
 		} catch (ParseException e) {
-			// Nothing to be done
+			typedValue = null;
 		}
 
 		return typedValue;

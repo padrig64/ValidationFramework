@@ -7,7 +7,7 @@
     <parent>
         <groupId>validationframework</groupId>
         <artifactId>validationframework</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>1.0.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>validationframework-swing</artifactId>
@@ -50,6 +50,13 @@
         <dependency>
             <groupId>net.java.timingframework</groupId>
             <artifactId>timingframework-swing</artifactId>
+        </dependency>
+
+        <!-- Test -->
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
         </dependency>
 
     </dependencies>

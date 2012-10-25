@@ -1,15 +1,15 @@
 FIXES
- . Implement Disposable wherever appropriate
- . Fixed display of tooltip and click forwarding when decoration is not showing when using the CardLayout
+ . Fix calls to setVisible() on icon decoration
  . Check CellIconBooleanFeedback when sorting table
- . More comments on the classes on the "what can it be used for"
- . Disabled decoration on tab?
- . Disabled decoration on cell?
  . Icon tip decoration a bit more on the up and right when using Nimbus LAF
- . Show icon tip tooltip only if mouse over visible rectangle (not on clipped out region)
+ . Fix moving panels on Linux when using the icon decoration on the tabbed pane
+ . Remaining icontip's tooltips when quickly moving the mouse (in tables and outside tables): only on Linux?
+ . Icon decoration steals mouse event even outside clipping bounds
 
 NEW STUFF
- . More comments
+ . Consistent comments (use of dispose(), cast transformers, default behaviors, what classes can be used for, etc.)
+ . Allow disabled decoration on tab?
+ . Allow disabled decoration on cell?
  . Table model change trigger
  . Table editing started/stopped/canceled triggers
  . Table checkbox editor trigger
@@ -29,6 +29,7 @@ NEW STUFF
  . No decoration on disabled components (config + listen to component state)
  . Avoid instantiation of result collectors (collect directly from validators, etc.)
  . Better icon tip anchoring for IconTipDecorator
+ . Alternative location of icon tip w.r.t. screen edge
  . Common implementation for the icon tip
  . Auto-scroll/jump to errors in case of scrollpanes, tabbedpane, etc.
  . Initial focus for JFormattedTextField helper

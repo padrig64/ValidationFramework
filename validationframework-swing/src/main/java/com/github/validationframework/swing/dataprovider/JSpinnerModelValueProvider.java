@@ -25,16 +25,16 @@
 
 package com.github.validationframework.swing.dataprovider;
 
-import com.github.validationframework.api.dataprovider.TypedDataProvider;
+import com.github.validationframework.api.dataprovider.DataProvider;
 import javax.swing.JSpinner;
 
 /**
  * Data provider reading the value from the model of a spinner.
  *
- * @see TypedDataProvider
+ * @see DataProvider
  * @see JSpinner
  */
-public class JSpinnerModelValueProvider implements TypedDataProvider<Object> {
+public class JSpinnerModelValueProvider implements DataProvider<Object> {
 
 	/**
 	 * Spinner to get the value from.
@@ -51,7 +51,7 @@ public class JSpinnerModelValueProvider implements TypedDataProvider<Object> {
 	}
 
 	/**
-	 * @see TypedDataProvider#getData()
+	 * @see DataProvider#getData()
 	 */
 	@Override
 	public Object getData() {

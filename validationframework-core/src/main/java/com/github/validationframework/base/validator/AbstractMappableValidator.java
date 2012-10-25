@@ -47,13 +47,14 @@ import org.slf4j.LoggerFactory;
  *
  * @param <T> Type of trigger initiating the validation.
  * @param <P> Type of data provider providing the input data to be validated.
+ * @param <I> Type of data provided by the data providers.
+ * @param <R> Type of validation rules to be used on the input data.
  * @param <D> Type of data the rules will check.
  * @param <O> Type of result the rules will produce.
- * @param <R> Type of validation rules to be used on the input data.
- * @param <A> Type of result the result handlers will handler.<br>It may or may not be the same as {@link O} depending
- * on the implementations. For instance, an implementation could aggregate/transform the results before using the result
- * handlers.
  * @param <H> Type of result handlers to be used on validation output.
+ * @param <A> Type of result the result handlers will handler.<br>It may or may not be the same as {@link O} depending
+ * on the implementations.<br>For instance, an implementation could aggregate/transform the results before using the
+ * result handlers.
  *
  * @see Trigger
  * @see DataProvider
@@ -61,8 +62,8 @@ import org.slf4j.LoggerFactory;
  * @see ResultHandler
  * @see Disposable
  */
-public abstract class AbstractMappableValidator<T extends Trigger, P extends DataProvider, D, O, R extends Rule<D, O>, A, H extends ResultHandler<A>>
-		implements MappableValidator<T, P, D, O, R, A, H>, Disposable {
+public abstract class AbstractMappableValidator<T extends Trigger, P extends DataProvider<I>, I, R extends Rule<D, O>, D, O, H extends ResultHandler<A>, A>
+		implements MappableValidator<T, P, I, R, D, O, H, A>, Disposable {
 
 	/**
 	 * Listener to all registered triggers, initiating the validation logic.
@@ -102,6 +103,12 @@ public abstract class AbstractMappableValidator<T extends Trigger, P extends Dat
 	 * Logger for this class.
 	 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractMappableValidator.class);
+
+	/**
+	 * Warning message displayed when both input paramters are null when call the map methods.
+	 */
+	private static final String NULL_PARAMETERS_WARNING =
+			"Call to method will have no effect since both parameters are null";
 
 	/**
 	 * Mapping between triggers and data providers.
@@ -156,7 +163,7 @@ public abstract class AbstractMappableValidator<T extends Trigger, P extends Dat
 	@Override
 	public void mapTriggerToDataProvider(final T trigger, final P dataProvider) {
 		if ((trigger == null) && (dataProvider == null)) {
-			LOGGER.warn("Call to method will have no effect since both parameters are null");
+			LOGGER.warn(NULL_PARAMETERS_WARNING);
 		} else if (trigger == null) {
 			unmapDataProviderFromAllTriggers(dataProvider);
 		} else if (dataProvider == null) {
@@ -206,7 +213,7 @@ public abstract class AbstractMappableValidator<T extends Trigger, P extends Dat
 	@Override
 	public void mapDataProviderToRule(final P dataProvider, final R rule) {
 		if ((dataProvider == null) && (rule == null)) {
-			LOGGER.warn("Call to method will have no effect since both parameters are null");
+			LOGGER.warn(NULL_PARAMETERS_WARNING);
 		} else if (dataProvider == null) {
 			unmapRuleFromAllDataProviders(rule);
 		} else if (rule == null) {
@@ -251,7 +258,7 @@ public abstract class AbstractMappableValidator<T extends Trigger, P extends Dat
 	@Override
 	public void mapRuleToResultHandler(final R rule, final H resultHandler) {
 		if ((rule == null) && (resultHandler == null)) {
-			LOGGER.warn("Call to method will have no effect since both parameters are null");
+			LOGGER.warn(NULL_PARAMETERS_WARNING);
 		} else if (rule == null) {
 			unmapResultHandlerFromAllRules(resultHandler);
 		} else if (resultHandler == null) {

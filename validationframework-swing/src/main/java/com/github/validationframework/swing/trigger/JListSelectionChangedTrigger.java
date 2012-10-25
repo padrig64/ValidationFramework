@@ -70,6 +70,7 @@ public class JListSelectionChangedTrigger extends AbstractTrigger implements Dis
 	 * @param list List whose selection changes are meant to trigger validation.
 	 */
 	public JListSelectionChangedTrigger(final JList list) {
+		super();
 		this.list = list;
 		this.list.addListSelectionListener(selectionAdapter);
 	}

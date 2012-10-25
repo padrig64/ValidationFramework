@@ -25,7 +25,7 @@
 
 package com.github.validationframework.swing.dataprovider;
 
-import com.github.validationframework.api.dataprovider.TypedDataProvider;
+import com.github.validationframework.api.dataprovider.DataProvider;
 import com.github.validationframework.base.transform.CastTransformer;
 import com.github.validationframework.base.transform.Transformer;
 import java.awt.Component;
@@ -39,11 +39,11 @@ import org.slf4j.LoggerFactory;
  * Provider of the value of the current formatted text editor component from a given table.<br>Note that if the table is
  * not in editing state, no value can be provided.
  *
- * @see TypedDataProvider
+ * @see DataProvider
  * @see JTable
  * @see JTable#getCellEditor()
  */
-public class JTableTextEditorValueProvider<T> implements TypedDataProvider<T> {
+public class JTableTextEditorValueProvider<T> implements DataProvider<T> {
 
 	/**
 	 * Logger for this class.
@@ -83,7 +83,7 @@ public class JTableTextEditorValueProvider<T> implements TypedDataProvider<T> {
 	}
 
 	/**
-	 * @see TypedDataProvider#getData()
+	 * @see DataProvider#getData()
 	 */
 	@Override
 	public T getData() {
@@ -103,7 +103,7 @@ public class JTableTextEditorValueProvider<T> implements TypedDataProvider<T> {
 					dataValue = formatter.stringToValue(dataText);
 				}
 			} catch (ParseException e) {
-				// Nothing to be done
+				dataValue = null;
 			}
 
 			// Convert it to the required type

@@ -25,17 +25,17 @@
 
 package com.github.validationframework.swing.dataprovider;
 
-import com.github.validationframework.api.dataprovider.TypedDataProvider;
+import com.github.validationframework.api.dataprovider.DataProvider;
 import javax.swing.JFormattedTextField;
 
 /**
  * Data provider retrieving the last valid value from a formatted textfield.
  *
- * @see TypedDataProvider
+ * @see DataProvider
  * @see JFormattedTextField
  * @see JFormattedTextField#getValue()
  */
-public class JFormattedTextFieldLastValidValueProvider implements TypedDataProvider<Object> {
+public class JFormattedTextFieldLastValidValueProvider implements DataProvider<Object> {
 
 	/**
 	 * Formatted textfield to retrieve the last valid value from.
@@ -52,7 +52,7 @@ public class JFormattedTextFieldLastValidValueProvider implements TypedDataProvi
 	}
 
 	/**
-	 * @see TypedDataProvider#getData()
+	 * @see DataProvider#getData()
 	 */
 	@Override
 	public Object getData() {

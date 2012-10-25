@@ -25,7 +25,7 @@
 
 package com.github.validationframework.base.dataprovider;
 
-import com.github.validationframework.api.dataprovider.TypedDataProvider;
+import com.github.validationframework.api.dataprovider.DataProvider;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,20 +33,22 @@ import java.util.List;
  * Composite data provider returning the data of all the sub-data providers in a list.
  *
  * @param <D> Type of data in the list.
+ *
+ * @see DataProvider
  */
-public class ListCompositeDataProvider<D> implements TypedDataProvider<List<D>> {
+public class ListCompositeDataProvider<D> implements DataProvider<List<D>> {
 
 	/**
 	 * Sub-data providers
 	 */
-	protected final List<TypedDataProvider<D>> dataProviders = new ArrayList<TypedDataProvider<D>>();
+	protected final List<DataProvider<D>> dataProviders = new ArrayList<DataProvider<D>>();
 
 	/**
 	 * Adds the specified data provider
 	 *
 	 * @param dataProvider Data provider to be added.
 	 */
-	public void addDataProvider(final TypedDataProvider<D> dataProvider) {
+	public void addDataProvider(final DataProvider<D> dataProvider) {
 		dataProviders.add(dataProvider);
 	}
 
@@ -55,19 +57,19 @@ public class ListCompositeDataProvider<D> implements TypedDataProvider<List<D>> 
 	 *
 	 * @param dataProvider Data provider to be removed.
 	 */
-	public void removeDataProvider(final TypedDataProvider<D> dataProvider) {
+	public void removeDataProvider(final DataProvider<D> dataProvider) {
 		dataProviders.remove(dataProvider);
 	}
 
 	/**
-	 * @see TypedDataProvider#getData()
+	 * @see DataProvider#getData()
 	 */
 	@Override
 	public List<D> getData() {
 		final List<D> dataList = new ArrayList<D>();
 
 		// Read data from all data providers and put them in the list
-		for (final TypedDataProvider<D> dataProvider : dataProviders) {
+		for (final DataProvider<D> dataProvider : dataProviders) {
 			dataList.add(dataProvider.getData());
 		}
 

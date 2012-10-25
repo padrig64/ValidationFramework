@@ -23,23 +23,30 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.api.dataprovider;
+package com.github.validationframework.swing.resulthandler.bool;
 
-/**
- * Interface to be implemented by entities providing data of a know specific type for the validation process.<br>Typed
- * data providers are typically used by typed data rules when the validation process is triggered.
- *
- * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
- * type of the component itself.
- *
- * @see DataProvider
- */
-public interface TypedDataProvider<D> extends DataProvider {
+import javax.swing.JFrame;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import org.junit.Test;
 
-	/**
-	 * Retrieves the data to be used for validation.
-	 *
-	 * @return Data to be used for validation.
-	 */
-	public D getData();
+public class CellIconBooleanFeedbackTest {
+
+	@Test
+	public void testMultipleDispose() {
+		final JFrame frame = new JFrame();
+		final DefaultTableModel tableModel = new DefaultTableModel(5, 5);
+		for (int i = 0; i < 5; i++) {
+			tableModel.insertRow(i, new String[] { "1", "2", "3", "4", "5" });
+		}
+		final JTable table = new JTable(tableModel);
+		frame.setContentPane(table);
+
+		final CellIconBooleanFeedback feedback = new CellIconBooleanFeedback(table, 2, 2);
+
+		feedback.handleResult(true);
+		feedback.dispose();
+		feedback.dispose();
+		feedback.dispose();
+	}
 }

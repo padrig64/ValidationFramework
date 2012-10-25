@@ -84,6 +84,7 @@ public class JListModelChangedTrigger extends AbstractTrigger implements Disposa
 	 * @param list List whose model changes are meant to trigger validation.
 	 */
 	public JListModelChangedTrigger(final JList list) {
+		super();
 		this.list = list;
 		this.list.getModel().addListDataListener(modelChangeAdapter);
 		// TODO Listen to model replacement

@@ -29,6 +29,8 @@ import com.github.validationframework.api.rule.Rule;
 
 /**
  * Abstract implementation of a rule validating strings and return a boolean as a result.
+ *
+ * @see Rule
  */
 public abstract class AbstractStringBooleanRule implements Rule<String, Boolean> {
 

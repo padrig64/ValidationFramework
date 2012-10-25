@@ -25,17 +25,17 @@
 
 package com.github.validationframework.swing.dataprovider;
 
-import com.github.validationframework.api.dataprovider.TypedDataProvider;
+import com.github.validationframework.api.dataprovider.DataProvider;
 import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;
 
 /**
  * Data provider retrieving the selected button model in a button group.
  *
- * @see TypedDataProvider
+ * @see DataProvider
  * @see ButtonGroup
  */
-public class ButtonGroupSelectionProvider implements TypedDataProvider<ButtonModel> {
+public class ButtonGroupSelectionProvider implements DataProvider<ButtonModel> {
 
 	/**
 	 * Button group to retrieve the selected button model from.
@@ -52,7 +52,7 @@ public class ButtonGroupSelectionProvider implements TypedDataProvider<ButtonMod
 	}
 
 	/**
-	 * @see TypedDataProvider#getData()
+	 * @see DataProvider#getData()
 	 */
 	@Override
 	public ButtonModel getData() {

@@ -30,6 +30,7 @@ import com.github.validationframework.base.resulthandler.ResultCollector;
 import com.github.validationframework.base.rule.bool.AndBooleanRule;
 import com.github.validationframework.base.rule.string.StringRegexRule;
 import com.github.validationframework.base.transform.Transformer;
+import com.github.validationframework.base.trigger.ManualTrigger;
 import com.github.validationframework.base.validator.DefaultSimpleValidator;
 import com.github.validationframework.swing.dataprovider.JFormattedTextFieldTextProvider;
 import com.github.validationframework.swing.dataprovider.JTextFieldTextProvider;
@@ -41,7 +42,6 @@ import com.github.validationframework.swing.resulthandler.bool.IconBooleanFeedba
 import com.github.validationframework.swing.rule.JFormattedTextFieldFormatterRule;
 import com.github.validationframework.swing.trigger.JFormattedTextFieldDocumentChangedTrigger;
 import com.github.validationframework.swing.trigger.JTextFieldDocumentChangedTrigger;
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -247,17 +247,27 @@ public class FeedbackDemoApp extends JFrame {
 		contentPane.add(textField3, "growx");
 		contentPane.add(new JLabel("Icon with tooltip:"));
 
-		final NumberFormat courseFormat = NumberFormat.getIntegerInstance();
+		NumberFormat courseFormat = NumberFormat.getIntegerInstance();
 		courseFormat.setMinimumIntegerDigits(3);
 		courseFormat.setMaximumIntegerDigits(4);
 		courseFormat.setMaximumFractionDigits(0);
-		final NumberFormatter courseFormatter = new NumberFormatter(courseFormat);
+		NumberFormatter courseFormatter = new NumberFormatter(courseFormat);
 		courseFormatter.setMinimum(0.0);
 		courseFormatter.setMaximum(359.0);
-		final JFormattedTextField formattedTextField = new JFormattedTextField(courseFormatter);
-		final JPanel panel = new JPanel(new BorderLayout());
-		panel.add(formattedTextField);
-		contentPane.add(panel, "growx");
+		final JFormattedTextField formattedTextField4 = new JFormattedTextField(courseFormatter);
+		contentPane.add(formattedTextField4, "growx");
+
+		contentPane.add(new JLabel("Icon with tooltip:"));
+
+		courseFormat = NumberFormat.getIntegerInstance();
+		courseFormat.setMinimumIntegerDigits(3);
+		courseFormat.setMaximumIntegerDigits(4);
+		courseFormat.setMaximumFractionDigits(0);
+		courseFormatter = new NumberFormatter(courseFormat);
+		courseFormatter.setMinimum(0.0);
+		courseFormatter.setMaximum(359.0);
+		final JFormattedTextField formattedTextField5 = new JFormattedTextField(courseFormatter);
+		contentPane.add(formattedTextField5, "growx");
 
 		// Apply button
 		final JButton applyButton = new JButton("Apply");
@@ -281,21 +291,17 @@ public class FeedbackDemoApp extends JFrame {
 		final ResultCollector<InputFieldResult, Boolean> resultCollector3 =
 				new ResultCollector<InputFieldResult, Boolean>(new InputFieldResultToBooleanTransformer());
 		final ResultCollector<Boolean, Boolean> resultCollector4 = new ResultCollector<Boolean, Boolean>();
+		final ResultCollector<Boolean, Boolean> resultCollector5 = new ResultCollector<Boolean, Boolean>();
 		createValidator1(textField1, resultCollector1);
 		createValidator2(textField2, resultCollector2);
 		createValidator3(textField3, resultCollector3);
-		createValidator4(formattedTextField, resultCollector4);
+		createValidator4(formattedTextField4, resultCollector4);
+		createValidator4(formattedTextField5, resultCollector5);
 
-		// Create global
-//		final IconBooleanFeedback jumpingFeedback = new IconBooleanFeedback(null);
-//		final IconFeedbackOnTrigger<Boolean> triggerFollower = new IconFeedbackOnTrigger<Boolean>(jumpingFeedback);
-//		triggerFollower.addTrigger(new JTextFieldDocumentChangedTrigger(textField1));
-//		triggerFollower.addTrigger(new JTextFieldDocumentChangedTrigger(textField2));
-//		triggerFollower.addTrigger(new JTextFieldDocumentChangedTrigger(textField3));
-//		triggerFollower.addTrigger(new JTextFieldDocumentChangedTrigger(formattedTextField));
-		collect(resultCollector1, resultCollector1).collect(resultCollector3, resultCollector4)
+		// Create global validator
+		collect(resultCollector1, resultCollector2).collect(resultCollector3, resultCollector4, resultCollector5)
 				.check(new AndBooleanRule()).handleWith(new ComponentEnablingBooleanResultHandler(applyButton)).
-				/*handleWith(jumpingFeedback).*/build();
+				build();
 	}
 
 	private Component createValidator1(final JTextField textField,
@@ -343,6 +349,7 @@ public class FeedbackDemoApp extends JFrame {
 	private Component createValidator4(final JFormattedTextField formattedTextField,
 									   final ResultCollector<Boolean, Boolean> resultCollector) {
 
+		final ManualTrigger manualTrigger = new ManualTrigger();
 		final JFormattedTextFieldDocumentChangedTrigger trigger =
 				new JFormattedTextFieldDocumentChangedTrigger(formattedTextField);
 		final JFormattedTextFieldTextProvider dataProvider = new JFormattedTextFieldTextProvider(formattedTextField);
@@ -355,8 +362,11 @@ public class FeedbackDemoApp extends JFrame {
 		// Example of decoration that would be clipped by the parent panel
 		resultHandler1.setClippingAncestor((JComponent) formattedTextField.getParent().getParent());
 
-		on(trigger).read(dataProvider).check(rule1, rule2).handleWith(resultHandler1).handleWith(resultCollector)
-				.build();
+		on(trigger, manualTrigger).read(dataProvider).check(rule1, rule2).handleWith(resultHandler1)
+				.handleWith(resultCollector).build();
+
+		// Test of triggering the validation even before the dialog is visible
+		manualTrigger.fireTriggerEvent();
 
 		return formattedTextField;
 	}

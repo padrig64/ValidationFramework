@@ -34,21 +34,43 @@ import java.awt.event.MouseEvent;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 
+/**
+ * Component decoration showing an icon, possibly with a tooltip.
+ */
 public class IconComponentDecoration extends AbstractComponentDecoration {
 
-	private class ToolTipAdapter extends MouseAdapter {
+	/**
+	 * Listener to mouse events on the icon and showing/hiding the associated tooltip.
+	 */
+	private class IconMouseAdapter extends MouseAdapter {
 
+		/**
+		 * @see MouseAdapter#mouseMoved(MouseEvent)
+		 */
 		@Override
 		public void mouseMoved(final MouseEvent e) {
-			if (!toolTipDialog.isVisible()) {
-				if (getDecoratedComponent().isShowing() && decorationPainter.getClipBounds().contains(e.getPoint())) {
-					toolTipDialog.setVisible(true);
-				}
-			} else {
+			if ((toolTipDialog != null) && toolTipDialog.isVisible()) {
 				if (!decorationPainter.getClipBounds().contains(e.getPoint())) {
 					toolTipDialog.setVisible(false);
 				}
+			} else if (getDecoratedComponent().isShowing() &&
+					decorationPainter.getClipBounds().contains(e.getPoint())) {
+				createToolTipDialogIfNeeded();
+				toolTipDialog.setVisible(true);
 			}
+		}
+
+		/**
+		 * Creates the dialog showing the tooltip if it is not created yet.<br>We do this only here to make sure that we have
+		 * a parent and to make sure that we actually have a window ancestor.<br>If we create the dialog before having a
+		 * window ancestor, it will have no owner (see {@link ToolTipDialog#ToolTipDialog(JComponent, AnchorLink)} and that
+		 * will result in having the tooltip behind the other windows of the application.
+		 */
+		private void createToolTipDialogIfNeeded() {
+			if (toolTipDialog == null) {
+				toolTipDialog = new ToolTipDialog(decorationPainter, anchorLinkWithToolTip);
+			}
+			toolTipDialog.setText(toolTipText);
 		}
 
 		/**
@@ -56,14 +78,16 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
 		 */
 		@Override
 		public void mouseExited(final MouseEvent e) {
-			toolTipDialog.setVisible(false);
+			if (toolTipDialog != null) {
+				toolTipDialog.setVisible(false);
+			}
 		}
 	}
 
+	// TODO Make this dependent on the LAF
 	/**
 	 * Default anchor link with the owner component on which the decorator will be attached.
 	 */
-	// TODO Make this dependent on the LAF
 	public static final AnchorLink DEFAULT_ANCHOR_LINK_WITH_OWNER =
 			new AnchorLink(new Anchor(0.0f, 3, 1.0f, -3), Anchor.CENTER);
 
@@ -72,7 +96,14 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
 	 */
 	private Icon icon = null;
 
-	private ToolTipDialog toolTipDialog = null; // Lazy initialization to make sure we will have a parent
+	/**
+	 * Dialog representing the tooltip.<br>The tooltip is not based on the general tooltip mechanism to make so that it
+	 * does not get influenced by the different timings and tricky mouse behavior (sometimes hard to make a real tooltip
+	 * appear).<br>It is lazy-initialized to make sure we will have a parent and a window ancestor (owner of the dialog).
+	 *
+	 * @see IconMouseAdapter#createToolTipDialogIfNeeded()
+	 */
+	private ToolTipDialog toolTipDialog = null;
 
 	private String toolTipText = null;
 
@@ -86,8 +117,8 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
 		super(decoratedComponent, DEFAULT_ANCHOR_LINK_WITH_OWNER);
 		this.icon = icon;
 
-		decorationPainter.addMouseListener(new ToolTipAdapter());
-		decorationPainter.addMouseMotionListener(new ToolTipAdapter());
+		decorationPainter.addMouseListener(new IconMouseAdapter());
+		decorationPainter.addMouseMotionListener(new IconMouseAdapter());
 	}
 
 	/**
@@ -134,11 +165,6 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
 	@Override
 	public void setVisible(final boolean visible) {
 		super.setVisible(visible);
-
-		if ((toolTipDialog == null) && visible) {
-			toolTipDialog = new ToolTipDialog(decorationPainter, anchorLinkWithToolTip);
-			toolTipDialog.setText(toolTipText);
-		}
 		if (!visible && (toolTipDialog != null)) {
 			toolTipDialog.setVisible(false);
 		}
@@ -173,7 +199,7 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
 	 */
 	@Override
 	public void paint(final Graphics g) {
-		if (isVisible() && (icon != null)) {
+		if (isVisible() && (icon != null) && (decorationPainter != null)) {
 			icon.paintIcon(decorationPainter, g, 0, 0);
 		}
 	}

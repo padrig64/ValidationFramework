@@ -7,7 +7,7 @@ import org.junit.runners.Parameterized;
 import static org.junit.Assert.assertEquals;
 
 /**
- * @author: arnoud
+ * @author arnoud
  */
 @RunWith(Parameterized.class)
 public abstract class AbstractStringLengthRuleTest {
@@ -17,7 +17,8 @@ public abstract class AbstractStringLengthRuleTest {
 	protected final boolean trimData;
 	protected final boolean result;
 
-	protected AbstractStringLengthRuleTest(String input, int length, boolean trimData, boolean result) {
+	protected AbstractStringLengthRuleTest(final String input, final int length, final boolean trimData,
+										   final boolean result) {
 		this.input = input;
 		this.length = length;
 		this.trimData = trimData;
@@ -28,7 +29,7 @@ public abstract class AbstractStringLengthRuleTest {
 
 	@Test
 	public void testResult() {
-		AbstractStringBooleanRule abstractStringBooleanRule = createStringLengthRule();
+		final AbstractStringBooleanRule abstractStringBooleanRule = createStringLengthRule();
 		assertEquals(result, abstractStringBooleanRule.validate(input));
 	}
 }
