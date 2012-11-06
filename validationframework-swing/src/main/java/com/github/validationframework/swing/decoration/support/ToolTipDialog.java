@@ -32,16 +32,16 @@ import java.awt.Point;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
 import javax.swing.JRootPane;
 import javax.swing.JToolTip;
+import javax.swing.JWindow;
 import javax.swing.SwingUtilities;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ToolTipDialog extends JDialog {
+public class ToolTipDialog extends JWindow {
 
 	private class LocationAdapter implements ComponentListener, AncestorListener {
 
@@ -114,11 +114,9 @@ public class ToolTipDialog extends JDialog {
 		owner.addComponentListener(locationAdapter);
 		owner.addAncestorListener(locationAdapter);
 
-		setUndecorated(true);
-		getRootPane().setWindowDecorationStyle(JRootPane.NONE); // Just in case new LAF provides decorations
+		getRootPane().setWindowDecorationStyle(JRootPane.NONE); // Just in case...
 		setFocusable(false); // Just in case...
 		setFocusableWindowState(false);
-		setResizable(false); // Just in case...
 		setContentPane(toolTip);
 	}
 
