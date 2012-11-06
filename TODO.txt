@@ -6,6 +6,7 @@ FIXES
  . Remaining icontip's tooltips when quickly moving the mouse (in tables and outside tables): only on Linux?
  . Icon decoration steals mouse event even outside clipping bounds
  . Icontip dialogs should be made JWindows or Popups (just like JPopupMenu or regular tooltips): more consistent and not mishandled by window managers
+ . Use latest JNA version
 
 NEW STUFF
  . IconResultHandler: dynamic message (maybe override the getInvalidText() method)
