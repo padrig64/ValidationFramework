@@ -37,8 +37,7 @@
         </dependency>
         <dependency>
             <groupId>net.java.dev.jna</groupId>
-            <artifactId>jna</artifactId>
-            <classifier>platform</classifier>
+            <artifactId>platform</artifactId>
         </dependency>
 
         <!-- Animation -->

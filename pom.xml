@@ -38,7 +38,7 @@
 
         <!-- Dependencies versions -->
 
-        <jna.version>3.3.0</jna.version>
+        <jna.version>3.5.1</jna.version>
         <junit.version>4.10</junit.version>
         <log4j.version>1.2.17</log4j.version>
         <miglayout.version>4.1</miglayout.version>
@@ -103,9 +103,8 @@
             </dependency>
             <dependency>
                 <groupId>net.java.dev.jna</groupId>
-                <artifactId>jna</artifactId>
+                <artifactId>platform</artifactId>
                 <version>${jna.version}</version>
-                <classifier>platform</classifier>
             </dependency>
 
             <!-- Animation -->
