@@ -39,7 +39,7 @@ import com.github.validationframework.base.trigger.AbstractTrigger;
  * to enable or disable an Apply button on a dialog.
  *
  * @param <O> Type of result collected from other validators.
- * @param <D> Type of data provided by the collector.<br>It could be the same as {@link O}.
+ * @param <D> Type of data provided by the collector.<br>It could be the same as O.
  *
  * @see com.github.validationframework.base.validator.ResultCollectorValidator
  * @see ResultHandler

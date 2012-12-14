@@ -34,10 +34,8 @@ import com.github.validationframework.swing.dataprovider.JTableTextEditorTextPro
 import com.github.validationframework.swing.resulthandler.bool.CellIconBooleanFeedback;
 import com.github.validationframework.swing.trigger.JTableComboBoxEditorModelChangedTrigger;
 import com.github.validationframework.swing.trigger.JTableTextEditorDocumentChangedTrigger;
-import java.awt.Dimension;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.util.Random;
+import net.miginfocom.swing.MigLayout;
+
 import javax.swing.AbstractAction;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
@@ -52,7 +50,10 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
-import net.miginfocom.swing.MigLayout;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.util.Random;
 
 public class TableDemoApp extends JFrame {
 
@@ -68,7 +69,7 @@ public class TableDemoApp extends JFrame {
 		public void actionPerformed(final ActionEvent e) {
 			table.setModel(createTableModel());
 
-			if(validator != null) {
+			if (validator != null) {
 				validator.dispose();
 				validator.dispose();
 			}
@@ -146,7 +147,7 @@ public class TableDemoApp extends JFrame {
 
 		final Random random = new Random(System.currentTimeMillis());
 		for (int i = 0; i < 50; i++) {
-			model.addRow(new String[] { "ABCD", Integer.toString(random.nextInt()), "ZZ", "123.456" });
+			model.addRow(new String[]{"ABCD", Integer.toString(random.nextInt()), "ZZ", "123.456"});
 		}
 
 		return model;
@@ -159,9 +160,8 @@ public class TableDemoApp extends JFrame {
 		validator.addDataProvider(new JTableTextEditorTextProvider(table));
 		validator.addRule(new StringLengthGreaterThanOrEqualToRule(3));
 		validator.addResultHandler(new PrintStreamResultHandler<Boolean>("(1,1) => "));
-		validator.addResultHandler(
-				new CellIconBooleanFeedback(table, 1, 1, null, null, CellIconBooleanFeedback.DEFAULT_INVALID_ICON,
-						"Invalid text"));
+		validator.addResultHandler(new CellIconBooleanFeedback(table, 1, 1,
+				CellIconBooleanFeedback.DEFAULT_INVALID_ICON, "Invalid text"));
 
 		final DefaultSimpleValidator<Object, Boolean> validator2 = new DefaultSimpleValidator<Object, Boolean>();
 		validator2.addTrigger(new JTableComboBoxEditorModelChangedTrigger(table));

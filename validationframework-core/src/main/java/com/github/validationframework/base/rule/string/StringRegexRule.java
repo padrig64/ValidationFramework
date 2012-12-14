@@ -92,7 +92,7 @@ public class StringRegexRule extends AbstractStringBooleanRule {
 	 * patterns with the '^' and '$' characters.
 	 *
 	 * @param pattern Regular expression to be added.
-	 * @param flags Regular expression pattern flags.<br>Refer to {@link Pattern#}.
+	 * @param flags Regular expression pattern flags.<br>Refer to {@link Pattern#compile(String, int)}.
 	 *
 	 * @see #addPattern(String)
 	 * @see Matcher#find()

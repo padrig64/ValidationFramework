@@ -33,12 +33,13 @@ import com.github.validationframework.api.trigger.Trigger;
 import com.github.validationframework.api.trigger.TriggerEvent;
 import com.github.validationframework.api.trigger.TriggerListener;
 import com.github.validationframework.api.validator.MappableValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Abstract implementation of a mappable validator.<br>It merely implements the methods to map triggers to data
@@ -52,9 +53,9 @@ import org.slf4j.LoggerFactory;
  * @param <D> Type of data the rules will check.
  * @param <O> Type of result the rules will produce.
  * @param <H> Type of result handlers to be used on validation output.
- * @param <A> Type of result the result handlers will handler.<br>It may or may not be the same as {@link O} depending
- * on the implementations.<br>For instance, an implementation could aggregate/transform the results before using the
- * result handlers.
+ * @param <A> Type of result the result handlers will handler.<br>It may or may not be the same as O depending on the
+ *            implementations.<br>For instance, an implementation could aggregate/transform the results before using the
+ *            result handlers.
  *
  * @see Trigger
  * @see DataProvider
@@ -62,8 +63,8 @@ import org.slf4j.LoggerFactory;
  * @see ResultHandler
  * @see Disposable
  */
-public abstract class AbstractMappableValidator<T extends Trigger, P extends DataProvider<I>, I, R extends Rule<D, O>, D, O, H extends ResultHandler<A>, A>
-		implements MappableValidator<T, P, I, R, D, O, H, A>, Disposable {
+public abstract class AbstractMappableValidator<T extends Trigger, P extends DataProvider<I>, I, R extends Rule<D,
+		O>, D, O, H extends ResultHandler<A>, A> implements MappableValidator<T, P, I, R, D, O, H, A>, Disposable {
 
 	/**
 	 * Listener to all registered triggers, initiating the validation logic.
@@ -107,8 +108,8 @@ public abstract class AbstractMappableValidator<T extends Trigger, P extends Dat
 	/**
 	 * Warning message displayed when both input paramters are null when call the map methods.
 	 */
-	private static final String NULL_PARAMETERS_WARNING =
-			"Call to method will have no effect since both parameters are null";
+	private static final String NULL_PARAMETERS_WARNING = "Call to method will have no effect since both parameters " +
+			"are null";
 
 	/**
 	 * Mapping between triggers and data providers.
@@ -337,7 +338,8 @@ public abstract class AbstractMappableValidator<T extends Trigger, P extends Dat
 	}
 
 	/**
-	 * Disposes all data providers and rules that are mapped to each other.<br>Note that some data providers may have been
+	 * Disposes all data providers and rules that are mapped to each other.<br>Note that some data providers may have
+	 * been
 	 * disposed already in the other disposal methods.
 	 */
 	private void disposeDataProvidersAndRules() {

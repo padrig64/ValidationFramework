@@ -33,6 +33,7 @@ import com.github.validationframework.api.trigger.Trigger;
 import com.github.validationframework.api.trigger.TriggerEvent;
 import com.github.validationframework.api.trigger.TriggerListener;
 import com.github.validationframework.api.validator.SimpleValidator;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -50,9 +51,9 @@ import java.util.Map;
  * @param <D> Type of data the rules will check.
  * @param <O> Type of result the rules will produce.
  * @param <H> Type of result handlers to be used on validation output.
- * @param <A> Type of result the result handlers will handler.<br>It may or may not be the same as {@link O} depending
- * on the implementations.<br>For instance, an implementation could aggregate/transform the results before using the
- * result handlers.
+ * @param <A> Type of result the result handlers will handler.<br>It may or may not be the same as O depending on the
+ *            implementations.<br>For instance, an implementation could aggregate/transform the results before using the
+ *            result handlers.
  *
  * @see Trigger
  * @see DataProvider
@@ -60,8 +61,8 @@ import java.util.Map;
  * @see ResultHandler
  * @see Disposable
  */
-public abstract class AbstractSimpleValidator<T extends Trigger, P extends DataProvider<I>, I, R extends Rule<D, O>, D, O, H extends ResultHandler<A>, A>
-		implements SimpleValidator<T, P, I, R, D, O, H, A>, Disposable {
+public abstract class AbstractSimpleValidator<T extends Trigger, P extends DataProvider<I>, I, R extends Rule<D, O>,
+		D, O, H extends ResultHandler<A>, A> implements SimpleValidator<T, P, I, R, D, O, H, A>, Disposable {
 
 	/**
 	 * Listener to all registered triggers, initiating the validation logic.
@@ -151,7 +152,7 @@ public abstract class AbstractSimpleValidator<T extends Trigger, P extends DataP
 	}
 
 	/**
-	 * @see SimpleValidator#addDataProvider(DataProvider
+	 * @see SimpleValidator#addDataProvider(DataProvider)
 	 */
 	@Override
 	public void addDataProvider(final P dataProvider) {

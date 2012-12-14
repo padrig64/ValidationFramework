@@ -47,9 +47,9 @@ import com.github.validationframework.api.trigger.Trigger;
  * @param <D> Type of data the rules will check.
  * @param <O> Type of result the rules will produce.
  * @param <H> Type of result handlers to be used on validation output.
- * @param <A> Type of result the result handlers will handler.<br>It may or may not be the same as {@link O} depending
- * on the implementations.<br>For instance, an implementation could aggregate/transform the results before using the
- * result handlers.
+ * @param <A> Type of result the result handlers will handler.<br>It may or may not be the same as O depending on the
+ *            implementations.<br>For instance, an implementation could aggregate/transform the results before using the
+ *            result handlers.
  *
  * @see Trigger
  * @see DataProvider
@@ -57,7 +57,8 @@ import com.github.validationframework.api.trigger.Trigger;
  * @see ResultHandler
  * @see MappableValidator
  */
-public interface SimpleValidator<T extends Trigger, P extends DataProvider<I>, I, R extends Rule<D, O>, D, O, H extends ResultHandler<A>, A> {
+public interface SimpleValidator<T extends Trigger, P extends DataProvider<I>, I, R extends Rule<D, O>, D, O,
+		H extends ResultHandler<A>, A> {
 
 	/**
 	 * Adds the specified validation trigger.

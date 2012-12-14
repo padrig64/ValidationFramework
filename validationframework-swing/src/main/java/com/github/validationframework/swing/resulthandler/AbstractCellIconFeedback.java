@@ -28,22 +28,33 @@ package com.github.validationframework.swing.resulthandler;
 import com.github.validationframework.swing.decoration.IconComponentDecoration;
 import com.github.validationframework.swing.decoration.anchor.Anchor;
 import com.github.validationframework.swing.decoration.anchor.AnchorLink;
-import java.awt.Rectangle;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import javax.swing.JComponent;
-import javax.swing.JTable;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.TableColumnModelEvent;
-import javax.swing.event.TableColumnModelListener;
-import javax.swing.table.TableModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.swing.JComponent;
+import javax.swing.JTable;
+import javax.swing.RowSorter;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.RowSorterEvent;
+import javax.swing.event.RowSorterListener;
+import javax.swing.event.TableColumnModelEvent;
+import javax.swing.event.TableColumnModelListener;
+import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
+import java.awt.Rectangle;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 public abstract class AbstractCellIconFeedback<O> extends AbstractIconFeedback<O> {
 
-	private class CellTracker implements ComponentListener, TableColumnModelListener {
+	/**
+	 * Entity responsible of tracking the location of the cell to which a feedback decoration is attached.
+	 */
+	private class CellTracker implements ComponentListener, TableColumnModelListener, PropertyChangeListener,
+			RowSorterListener {
 
 		/**
 		 * @see ComponentListener#componentShown(ComponentEvent)
@@ -122,6 +133,51 @@ public abstract class AbstractCellIconFeedback<O> extends AbstractIconFeedback<O
 			// Column ordering has changed, so cell may have moved
 			followerDecoratedCell(0);
 		}
+
+		/**
+		 * Tracks changes of the column model and row sorter on the table.<br>Every time the column model or row
+		 * sorter is
+		 * replaced, a listener is installed.
+		 *
+		 * @see PropertyChangeListener#propertyChange(PropertyChangeEvent)
+		 */
+		@Override
+		public void propertyChange(final PropertyChangeEvent e) {
+			if ("columnModel".equals(e.getPropertyName())) {
+				// Unhook from previous column model
+				final Object oldValue = e.getOldValue();
+				if (oldValue instanceof TableColumnModel) {
+					((TableColumnModel) oldValue).removeColumnModelListener(this);
+				}
+
+				// Hook to new column model
+				final Object newValue = e.getNewValue();
+				if (newValue instanceof TableColumnModel) {
+					((TableColumnModel) newValue).addColumnModelListener(this);
+				}
+
+			} else if ("sorter".equals(e.getPropertyName()) || "rowSorter".equals(e.getPropertyName())) {
+				// Unhook from previous row sorter
+				final Object oldValue = e.getOldValue();
+				if (oldValue instanceof RowSorter<?>) {
+					((RowSorter<?>) oldValue).removeRowSorterListener(this);
+				}
+
+				// Hook to new row sorter
+				final Object newValue = e.getNewValue();
+				if (newValue instanceof RowSorter<?>) {
+					((RowSorter<?>) newValue).addRowSorterListener(this);
+				}
+			}
+		}
+
+		/**
+		 * @see RowSorterListener#sorterChanged(RowSorterEvent)
+		 */
+		@Override
+		public void sorterChanged(final RowSorterEvent e) {
+			followerDecoratedCell(0);
+		}
 	}
 
 	/**
@@ -157,7 +213,15 @@ public abstract class AbstractCellIconFeedback<O> extends AbstractIconFeedback<O
 		if (decoratedComponent instanceof JTable) {
 			table = (JTable) decoratedComponent;
 			table.addComponentListener(cellTracker);
-			table.getColumnModel().addColumnModelListener(cellTracker);
+			table.addPropertyChangeListener("columnModel", cellTracker);
+			if (table.getColumnModel() != null) {
+				table.getColumnModel().addColumnModelListener(cellTracker);
+			}
+			table.addPropertyChangeListener("sorter", cellTracker);
+			table.addPropertyChangeListener("rowSorter", cellTracker);
+			if (table.getRowSorter() != null) {
+				table.getRowSorter().addRowSorterListener(cellTracker);
+			}
 		}
 	}
 
@@ -168,8 +232,15 @@ public abstract class AbstractCellIconFeedback<O> extends AbstractIconFeedback<O
 	public void detach() {
 		if (table != null) {
 			table.removeComponentListener(cellTracker);
-			table.getColumnModel().removeColumnModelListener(cellTracker);
-			// TODO Track column model replacement
+			table.removePropertyChangeListener("columnModel", cellTracker);
+			if (table.getColumnModel() != null) {
+				table.getColumnModel().removeColumnModelListener(cellTracker);
+			}
+			table.removePropertyChangeListener("sorter", cellTracker);
+			table.removePropertyChangeListener("rowSorter", cellTracker);
+			if (table.getRowSorter() != null) {
+				table.getRowSorter().removeRowSorterListener(cellTracker);
+			}
 		}
 		super.detach();
 	}
@@ -180,6 +251,7 @@ public abstract class AbstractCellIconFeedback<O> extends AbstractIconFeedback<O
 
 	public void setCellRowIndex(final int cellModelRowIndex) {
 		modelRowIndex = cellModelRowIndex;
+		followerDecoratedCell(0);
 	}
 
 	public int getCellColumnIndex() {
@@ -188,6 +260,7 @@ public abstract class AbstractCellIconFeedback<O> extends AbstractIconFeedback<O
 
 	public void setCellColumnIndex(final int cellModelColumnIndex) {
 		modelColumnIndex = cellModelColumnIndex;
+		followerDecoratedCell(0);
 	}
 
 	/**
@@ -238,8 +311,8 @@ public abstract class AbstractCellIconFeedback<O> extends AbstractIconFeedback<O
 			final int viewColumnIndex = table.convertColumnIndexToView(modelColumnIndex);
 
 			final Rectangle cellBounds = table.getCellRect(viewRowIndex, viewColumnIndex, true);
-			final Anchor cellMasterAnchor =
-					new Anchor(0.0f, cellBounds.x + dragOffsetX, 0.0f, cellBounds.y + cellBounds.height);
+			final Anchor cellMasterAnchor = new Anchor(0.0f, cellBounds.x + dragOffsetX, 0.0f,
+					cellBounds.y + cellBounds.height);
 			absoluteAnchorLink = new AnchorLink(cellMasterAnchor, anchorLinkWithCell.getSlaveAnchor());
 		} else {
 			// Maybe the table has been emptied? or the row has been filtered out? or invalid row/column index?
