@@ -6,7 +6,7 @@
 
     <groupId>validationframework</groupId>
     <artifactId>validationframework</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.4-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Validation Framework</name>
@@ -44,7 +44,7 @@
         <miglayout.version>4.1</miglayout.version>
         <mockito.version>1.9.0</mockito.version>
         <slf4j.version>1.6.6</slf4j.version>
-        <timingframework.version>5.1.0</timingframework.version>
+        <timingframework.version>5.5.0</timingframework.version>
     </properties>
 
     <modules>
