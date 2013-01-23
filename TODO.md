@@ -40,6 +40,8 @@
 
 # THINK ABOUT
 
+* Thread-safety (triggers from multiple-threads)
+* Make triggers not trigger until the whole validator is ready
 * Remove data provider marker interface (check validation of heterogeneous groups first)
 * Property data provider
 * Check licenses again
