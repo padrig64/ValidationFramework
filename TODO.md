@@ -1,15 +1,15 @@
 # FIXES
 
 * Fix calls to setVisible() on icon decoration
-* Check CellIconBooleanFeedback when sorting table
 * Icon tip decoration a bit more on the up and right when using Nimbus LAF
 * Fix moving panels on Linux when using the icon decoration on the tabbed pane
 * Remaining icontip's tooltips when quickly moving the mouse (in tables and outside tables): only on Linux?
 * Icon decoration steals mouse event even outside clipping bounds
-* Icontip dialogs should be made Popups (just like JPopupMenu or regular tooltips): not mishandled by some window managers
+* Icontip dialogs can be made Popups (just like JPopupMenu or regular tooltips): not mishandled by some window managers?
 
 # NEW STUFF
 
+* User-modification trigger for (formatted) textfields
 * IconResultHandler: dynamic message (maybe override the getInvalidText() method)
 * Consistent comments (use of dispose(), cast transformers, default behaviors, what classes can be used for, etc.)
 * Allow disabled decoration on tab?
