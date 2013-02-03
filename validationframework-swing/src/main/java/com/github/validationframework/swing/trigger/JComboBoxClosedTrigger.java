@@ -28,46 +28,47 @@ package com.github.validationframework.swing.trigger;
 import com.github.validationframework.api.common.Disposable;
 import com.github.validationframework.api.trigger.TriggerEvent;
 import com.github.validationframework.base.trigger.AbstractTrigger;
+
 import javax.swing.JComboBox;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
 public class JComboBoxClosedTrigger extends AbstractTrigger implements Disposable {
 
-	private class SourceAdapter implements PopupMenuListener {
+    private class SourceAdapter implements PopupMenuListener {
 
-		@Override
-		public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
-			// Nothing to be done
-		}
+        @Override
+        public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
+            // Nothing to be done
+        }
 
-		@Override
-		public void popupMenuWillBecomeInvisible(final PopupMenuEvent e) {
-			fireTriggerEvent(new TriggerEvent(source));
-		}
+        @Override
+        public void popupMenuWillBecomeInvisible(final PopupMenuEvent e) {
+            fireTriggerEvent(new TriggerEvent(source));
+        }
 
-		@Override
-		public void popupMenuCanceled(final PopupMenuEvent e) {
-			// Nothing to be done
-		}
-	}
+        @Override
+        public void popupMenuCanceled(final PopupMenuEvent e) {
+            // Nothing to be done
+        }
+    }
 
-	private JComboBox source = null;
+    private JComboBox source = null;
 
-	private final PopupMenuListener sourceAdapter = new SourceAdapter();
+    private final PopupMenuListener sourceAdapter = new SourceAdapter();
 
-	public JComboBoxClosedTrigger(final JComboBox source) {
-		super();
-		this.source = source;
-		source.addPopupMenuListener(sourceAdapter);
-	}
+    public JComboBoxClosedTrigger(final JComboBox source) {
+        super();
+        this.source = source;
+        source.addPopupMenuListener(sourceAdapter);
+    }
 
-	/**
-	 * @see Disposable#dispose()
-	 */
-	@Override
-	public void dispose() {
-		source.removePopupMenuListener(sourceAdapter);
-		source = null;
-	}
+    /**
+     * @see Disposable#dispose()
+     */
+    @Override
+    public void dispose() {
+        source.removePopupMenuListener(sourceAdapter);
+        source = null;
+    }
 }

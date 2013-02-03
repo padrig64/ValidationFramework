@@ -32,35 +32,35 @@ import com.github.validationframework.api.rule.Rule;
  * operation.
  *
  * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
- * type of the component itself.
+ *            type of the component itself.
  *
  * @see DefaultSimpleValidator
  * @see AndSimpleValidator
  */
 public class OrSimpleValidator<D> extends DefaultSimpleValidator<D, Boolean> {
 
-	/**
-	 * Checks the specified data against all the rules and aggregates all the boolean results to one single result using
-	 * the OR operation.<br>If there are no rules, the default result will be false.
-	 *
-	 * @param data Data to be validated against all rules.
-	 *
-	 * @see DefaultSimpleValidator#processData(Object)
-	 */
-	@Override
-	protected void processData(final D data) {
-		boolean aggregatedResult = false;
+    /**
+     * Checks the specified data against all the rules and aggregates all the boolean results to one single result using
+     * the OR operation.<br>If there are no rules, the default result will be false.
+     *
+     * @param data Data to be validated against all rules.
+     *
+     * @see DefaultSimpleValidator#processData(Object)
+     */
+    @Override
+    protected void processData(final D data) {
+        boolean aggregatedResult = false;
 
-		// Check data against all rules
-		for (final Rule<D, Boolean> rule : rules) {
-			Boolean result = rule.validate(data);
-			if (result == null) {
-				result = false;
-			}
-			aggregatedResult |= result;
-		}
+        // Check data against all rules
+        for (final Rule<D, Boolean> rule : rules) {
+            Boolean result = rule.validate(data);
+            if (result == null) {
+                result = false;
+            }
+            aggregatedResult |= result;
+        }
 
-		// Process overall result
-		processResult(aggregatedResult);
-	}
+        // Process overall result
+        processResult(aggregatedResult);
+    }
 }

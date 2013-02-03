@@ -29,6 +29,7 @@ import com.github.validationframework.api.resulthandler.ResultHandler;
 import com.github.validationframework.api.rule.Rule;
 import com.github.validationframework.base.resulthandler.ResultCollector;
 import com.github.validationframework.base.validator.ResultCollectorValidator;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -37,69 +38,69 @@ import java.util.List;
  * Context to add more result handlers and to create the validator.
  *
  * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
- * type of the component itself.
+ *            type of the component itself.
  * @param <O> Type of validation result.<br>It can be, for instance, an enumeration or just a boolean.
  */
 public class ValidatorContext<D, O> {
 
-	final List<ResultCollector<?, D>> registeredResultCollectors;
-	final List<Rule<Collection<D>, O>> registeredRules;
-	final List<ResultHandler<O>> registeredResultHandlers;
+    final List<ResultCollector<?, D>> registeredResultCollectors;
+    final List<Rule<Collection<D>, O>> registeredRules;
+    final List<ResultHandler<O>> registeredResultHandlers;
 
-	public ValidatorContext(final List<ResultCollector<?, D>> registeredResultCollectors,
-							final List<Rule<Collection<D>, O>> registeredRules,
-							final List<ResultHandler<O>> registeredResultHandlers) {
-		this.registeredResultCollectors = registeredResultCollectors;
-		this.registeredRules = registeredRules;
-		this.registeredResultHandlers = registeredResultHandlers;
-	}
+    public ValidatorContext(final List<ResultCollector<?, D>> registeredResultCollectors,
+                            final List<Rule<Collection<D>, O>> registeredRules,
+                            final List<ResultHandler<O>> registeredResultHandlers) {
+        this.registeredResultCollectors = registeredResultCollectors;
+        this.registeredRules = registeredRules;
+        this.registeredResultHandlers = registeredResultHandlers;
+    }
 
-	public ValidatorContext<D, O> handleWith(final ResultHandler<O> resultHandler) {
-		if (resultHandler != null) {
-			registeredResultHandlers.add(resultHandler);
-		}
-		return this;
-	}
+    public ValidatorContext<D, O> handleWith(final ResultHandler<O> resultHandler) {
+        if (resultHandler != null) {
+            registeredResultHandlers.add(resultHandler);
+        }
+        return this;
+    }
 
-	/**
-	 * Adds more result handlers to the validator.
-	 *
-	 * @param resultHandlers Result handlers to be added.
-	 *
-	 * @return Same validator context.
-	 */
-	public ValidatorContext<D, O> handleWith(final ResultHandler<O>... resultHandlers) {
-		if (resultHandlers != null) {
-			Collections.addAll(registeredResultHandlers, resultHandlers);
-		}
-		return this;
-	}
+    /**
+     * Adds more result handlers to the validator.
+     *
+     * @param resultHandlers Result handlers to be added.
+     *
+     * @return Same validator context.
+     */
+    public ValidatorContext<D, O> handleWith(final ResultHandler<O>... resultHandlers) {
+        if (resultHandlers != null) {
+            Collections.addAll(registeredResultHandlers, resultHandlers);
+        }
+        return this;
+    }
 
-	public ValidatorContext<D, O> handleWith(final Collection<ResultHandler<O>> resultHandlers) {
-		if (resultHandlers != null) {
-			registeredResultHandlers.addAll(resultHandlers);
-		}
-		return this;
-	}
+    public ValidatorContext<D, O> handleWith(final Collection<ResultHandler<O>> resultHandlers) {
+        if (resultHandlers != null) {
+            registeredResultHandlers.addAll(resultHandlers);
+        }
+        return this;
+    }
 
-	/**
-	 * Creates the validator and makes all the connections.
-	 *
-	 * @return Newly created and configured validator.
-	 */
-	public ResultCollectorValidator<D, O> build() {
-		final ResultCollectorValidator<D, O> validator = new ResultCollectorValidator<D, O>();
+    /**
+     * Creates the validator and makes all the connections.
+     *
+     * @return Newly created and configured validator.
+     */
+    public ResultCollectorValidator<D, O> build() {
+        final ResultCollectorValidator<D, O> validator = new ResultCollectorValidator<D, O>();
 
-		for (final ResultCollector<?, D> resultCollector : registeredResultCollectors) {
-			validator.addResultCollector(resultCollector);
-		}
-		for (final Rule<Collection<D>, O> rule : registeredRules) {
-			validator.addRule(rule);
-		}
-		for (final ResultHandler<O> resultHandler : registeredResultHandlers) {
-			validator.addResultHandler(resultHandler);
-		}
+        for (final ResultCollector<?, D> resultCollector : registeredResultCollectors) {
+            validator.addResultCollector(resultCollector);
+        }
+        for (final Rule<Collection<D>, O> rule : registeredRules) {
+            validator.addRule(rule);
+        }
+        for (final ResultHandler<O> resultHandler : registeredResultHandlers) {
+            validator.addResultHandler(resultHandler);
+        }
 
-		return validator;
-	}
+        return validator;
+    }
 }

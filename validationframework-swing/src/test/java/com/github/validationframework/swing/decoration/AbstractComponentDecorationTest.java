@@ -27,63 +27,64 @@ package com.github.validationframework.swing.decoration;
 
 import com.github.validationframework.swing.decoration.anchor.Anchor;
 import com.github.validationframework.swing.decoration.anchor.AnchorLink;
-import java.awt.Graphics;
+import org.junit.Test;
+
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
-import org.junit.Test;
+import java.awt.Graphics;
 
 public class AbstractComponentDecorationTest {
 
-	private static class DummyComponentDecoration extends AbstractComponentDecoration {
+    private static class DummyComponentDecoration extends AbstractComponentDecoration {
 
-		/**
-		 * @see AbstractComponentDecoration#AbstractComponentDecoration(JComponent, AnchorLink)
-		 */
-		public DummyComponentDecoration(final JComponent decoratedComponent, final AnchorLink anchorLink) {
-			super(decoratedComponent, anchorLink);
-		}
+        /**
+         * @see AbstractComponentDecoration#AbstractComponentDecoration(JComponent, AnchorLink)
+         */
+        public DummyComponentDecoration(final JComponent decoratedComponent, final AnchorLink anchorLink) {
+            super(decoratedComponent, anchorLink);
+        }
 
-		/**
-		 * @see AbstractComponentDecoration#getWidth()
-		 */
-		@Override
-		protected int getWidth() {
-			return 16;
-		}
+        /**
+         * @see AbstractComponentDecoration#getWidth()
+         */
+        @Override
+        protected int getWidth() {
+            return 16;
+        }
 
-		/**
-		 * @see AbstractComponentDecoration#getHeight()
-		 */
-		@Override
-		protected int getHeight() {
-			return 16;
-		}
+        /**
+         * @see AbstractComponentDecoration#getHeight()
+         */
+        @Override
+        protected int getHeight() {
+            return 16;
+        }
 
-		/**
-		 * @see AbstractComponentDecoration#paint(Graphics)
-		 */
-		@Override
-		public void paint(final Graphics g) {
-			// Nothing to be done
-		}
-	}
+        /**
+         * @see AbstractComponentDecoration#paint(Graphics)
+         */
+        @Override
+        public void paint(final Graphics g) {
+            // Nothing to be done
+        }
+    }
 
-	@Test
-	public void testMultipleDispose() {
-		final JFrame frame = new JFrame();
-		final JTextField textField = new JTextField();
-		frame.setContentPane(textField);
+    @Test
+    public void testMultipleDispose() {
+        final JFrame frame = new JFrame();
+        final JTextField textField = new JTextField();
+        frame.setContentPane(textField);
 
-		final DummyComponentDecoration decoration =
-				new DummyComponentDecoration(textField, new AnchorLink(Anchor.TOP_LEFT, Anchor.TOP_LEFT));
+        final DummyComponentDecoration decoration = new DummyComponentDecoration(textField,
+                new AnchorLink(Anchor.TOP_LEFT, Anchor.TOP_LEFT));
 
-		decoration.setVisible(false);
-		decoration.setVisible(true);
-		decoration.dispose();
-		decoration.dispose();
-		decoration.dispose();
-		decoration.setVisible(false);
-		decoration.setVisible(true);
-	}
+        decoration.setVisible(false);
+        decoration.setVisible(true);
+        decoration.dispose();
+        decoration.dispose();
+        decoration.dispose();
+        decoration.setVisible(false);
+        decoration.setVisible(true);
+    }
 }

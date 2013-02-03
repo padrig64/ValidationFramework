@@ -28,6 +28,7 @@ package com.github.validationframework.swing.trigger;
 import com.github.validationframework.api.common.Disposable;
 import com.github.validationframework.api.trigger.TriggerEvent;
 import com.github.validationframework.base.trigger.AbstractTrigger;
+
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -39,45 +40,45 @@ import javax.swing.text.JTextComponent;
  * @see AbstractTrigger
  * @see Disposable
  */
-public class BaseTextComponentDocumentChangedTrigger<C extends JTextComponent> extends AbstractTrigger
-		implements Disposable {
+public class BaseTextComponentDocumentChangedTrigger<C extends JTextComponent> extends AbstractTrigger implements
+        Disposable {
 
-	/**
-	 * Listener to changes in the document of the source text component.
-	 */
-	private class SourceAdapter implements DocumentListener {
+    /**
+     * Listener to changes in the document of the source text component.
+     */
+    private class SourceAdapter implements DocumentListener {
 
-		/**
-		 * Flag indicating whether a pending remove update should be ignored.
-		 *
-		 * @see #removeUpdate(DocumentEvent)
-		 * @see #insertUpdate(DocumentEvent)
-		 */
-		private boolean skipPendingRemove = false;
+        /**
+         * Flag indicating whether a pending remove update should be ignored.
+         *
+         * @see #removeUpdate(DocumentEvent)
+         * @see #insertUpdate(DocumentEvent)
+         */
+        private boolean skipPendingRemove = false;
 
-		/**
-		 * @see DocumentListener#insertUpdate(DocumentEvent)
-		 * @see #skipPendingRemove
-		 * @see #removeUpdate(DocumentEvent)
-		 */
-		@Override
-		public void insertUpdate(final DocumentEvent e) {
-			// Inhibit the pending remove update if any
-			skipPendingRemove = true;
+        /**
+         * @see DocumentListener#insertUpdate(DocumentEvent)
+         * @see #skipPendingRemove
+         * @see #removeUpdate(DocumentEvent)
+         */
+        @Override
+        public void insertUpdate(final DocumentEvent e) {
+            // Inhibit the pending remove update if any
+            skipPendingRemove = true;
 
-			// Fire trigger event (once for both remove and insert updates)
-			fireTriggerEvent(new TriggerEvent(source));
-		}
+            // Fire trigger event (once for both remove and insert updates)
+            fireTriggerEvent(new TriggerEvent(source));
+        }
 
-		/**
-		 * @see DocumentListener#removeUpdate(DocumentEvent)
-		 * @see #skipPendingRemove
-		 * @see #insertUpdate(DocumentEvent)
-		 */
-		@Override
-		public void removeUpdate(final DocumentEvent e) {
-			/*
-			 * Reschedule the remove update later and fire the associated event only if there is no subsequent insert
+        /**
+         * @see DocumentListener#removeUpdate(DocumentEvent)
+         * @see #skipPendingRemove
+         * @see #insertUpdate(DocumentEvent)
+         */
+        @Override
+        public void removeUpdate(final DocumentEvent e) {
+            /*
+             * Reschedule the remove update later and fire the associated event only if there is no subsequent insert
 			 * update.<br>This is done because, very often, when the text is replace by another text (or if the focus
 			 * leaves a formatted textfield that has a valid value with the COMMIT focus lost behavior), the original
 			 * text is first removed (leaving the text component empty), and then the new text is added. So two document
@@ -89,55 +90,55 @@ public class BaseTextComponentDocumentChangedTrigger<C extends JTextComponent> e
 			 * would fire an insert update, what would make the validation re-enable the Apply button; but disabling the
 			 * button would actually disarm it while it is being pressed.
 			 */
-			skipPendingRemove = false;
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					// Check if it is has not been inhibited by a sub-sequent insert update
-					if (!skipPendingRemove) {
-						fireTriggerEvent(new TriggerEvent(source));
-					}
-				}
-			});
-		}
+            skipPendingRemove = false;
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    // Check if it is has not been inhibited by a sub-sequent insert update
+                    if (!skipPendingRemove) {
+                        fireTriggerEvent(new TriggerEvent(source));
+                    }
+                }
+            });
+        }
 
-		/**
-		 * @see DocumentListener#changedUpdate(DocumentEvent)
-		 */
-		@Override
-		public void changedUpdate(final DocumentEvent e) {
-			fireTriggerEvent(new TriggerEvent(source));
-		}
-	}
+        /**
+         * @see DocumentListener#changedUpdate(DocumentEvent)
+         */
+        @Override
+        public void changedUpdate(final DocumentEvent e) {
+            fireTriggerEvent(new TriggerEvent(source));
+        }
+    }
 
-	/**
-	 * Text component that is the source of the trigger.
-	 */
-	protected C source = null;
+    /**
+     * Text component that is the source of the trigger.
+     */
+    protected C source = null;
 
-	/**
-	 * Listener to changes in the document of the text component.
-	 */
-	private final DocumentListener sourceAdapter = new SourceAdapter();
+    /**
+     * Listener to changes in the document of the text component.
+     */
+    private final DocumentListener sourceAdapter = new SourceAdapter();
 
-	/**
-	 * Constructor specifying the text component to listen to.
-	 *
-	 * @param source Text component to listen to.
-	 */
-	public BaseTextComponentDocumentChangedTrigger(final C source) {
-		super();
-		this.source = source;
-		source.getDocument().addDocumentListener(sourceAdapter);
-		// TODO Track document replacement
-	}
+    /**
+     * Constructor specifying the text component to listen to.
+     *
+     * @param source Text component to listen to.
+     */
+    public BaseTextComponentDocumentChangedTrigger(final C source) {
+        super();
+        this.source = source;
+        source.getDocument().addDocumentListener(sourceAdapter);
+        // TODO Track document replacement
+    }
 
-	/**
-	 * @see Disposable#dispose()
-	 */
-	@Override
-	public void dispose() {
-		source.getDocument().removeDocumentListener(sourceAdapter);
-		source = null;
-	}
+    /**
+     * @see Disposable#dispose()
+     */
+    @Override
+    public void dispose() {
+        source.getDocument().removeDocumentListener(sourceAdapter);
+        source = null;
+    }
 }

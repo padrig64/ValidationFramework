@@ -34,12 +34,12 @@ import javax.swing.JTextArea;
  */
 public class JTextAreaDocumentChangedTrigger extends BaseTextComponentDocumentChangedTrigger<JTextArea> {
 
-	/**
-	 * Constructor specifying the text area to listen to.
-	 *
-	 * @param source Text area to listen to
-	 */
-	public JTextAreaDocumentChangedTrigger(final JTextArea source) {
-		super(source);
-	}
+    /**
+     * Constructor specifying the text area to listen to.
+     *
+     * @param source Text area to listen to
+     */
+    public JTextAreaDocumentChangedTrigger(final JTextArea source) {
+        super(source);
+    }
 }

@@ -26,6 +26,7 @@
 package com.github.validationframework.base.rule;
 
 import com.github.validationframework.api.rule.Rule;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,48 +37,48 @@ import java.util.List;
  */
 public abstract class AbstractCompositeRule<D, R> implements Rule<D, R> {
 
-	/**
-	 * Sub-rules to be checked.
-	 */
-	protected final List<Rule<D, R>> rules = new ArrayList<Rule<D, R>>();
+    /**
+     * Sub-rules to be checked.
+     */
+    protected final List<Rule<D, R>> rules = new ArrayList<Rule<D, R>>();
 
-	/**
-	 * Default constructor.
-	 */
-	public AbstractCompositeRule() {
-		// Nothing to be done
-	}
+    /**
+     * Default constructor.
+     */
+    public AbstractCompositeRule() {
+        // Nothing to be done
+    }
 
-	/**
-	 * Constructor specifying the sub-rule(s) to be added.
-	 *
-	 * @param rules Sub-rule(s) to be added.
-	 *
-	 * @see #addRule(Rule)
-	 */
-	public AbstractCompositeRule(final Rule<D, R>... rules) {
-		if (rules != null) {
-			for (final Rule<D, R> rule : rules) {
-				addRule(rule);
-			}
-		}
-	}
+    /**
+     * Constructor specifying the sub-rule(s) to be added.
+     *
+     * @param rules Sub-rule(s) to be added.
+     *
+     * @see #addRule(Rule)
+     */
+    public AbstractCompositeRule(final Rule<D, R>... rules) {
+        if (rules != null) {
+            for (final Rule<D, R> rule : rules) {
+                addRule(rule);
+            }
+        }
+    }
 
-	/**
-	 * Adds the specified sub-rule to be checked.
-	 *
-	 * @param rule Sub-rule to be added.
-	 */
-	public void addRule(final Rule<D, R> rule) {
-		rules.add(rule);
-	}
+    /**
+     * Adds the specified sub-rule to be checked.
+     *
+     * @param rule Sub-rule to be added.
+     */
+    public void addRule(final Rule<D, R> rule) {
+        rules.add(rule);
+    }
 
-	/**
-	 * Removes the specified sub-rule to be checked.
-	 *
-	 * @param rule Sub-rule tobe removed
-	 */
-	public void removeRule(final Rule<D, R> rule) {
-		rules.remove(rule);
-	}
+    /**
+     * Removes the specified sub-rule to be checked.
+     *
+     * @param rule Sub-rule tobe removed
+     */
+    public void removeRule(final Rule<D, R> rule) {
+        rules.remove(rule);
+    }
 }

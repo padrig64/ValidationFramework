@@ -26,31 +26,32 @@
 package com.github.validationframework.experimental.transform;
 
 import com.github.validationframework.base.transform.Transformer;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
 public class AggregatableValueAggregator<I, O> implements Transformer<Collection<Aggregatable<I>>, O> {
 
-	private final Transformer<Collection<I>, O> delegate;
+    private final Transformer<Collection<I>, O> delegate;
 
-	public AggregatableValueAggregator(final Transformer<Collection<I>, O> delegate) {
-		this.delegate = delegate;
-	}
+    public AggregatableValueAggregator(final Transformer<Collection<I>, O> delegate) {
+        this.delegate = delegate;
+    }
 
-	/**
-	 * @see Transformer#transform(Object)
-	 */
-	@Override
-	public O transform(final Collection<Aggregatable<I>> elements) {
-		Collection<I> aggregatableValues = null;
+    /**
+     * @see Transformer#transform(Object)
+     */
+    @Override
+    public O transform(final Collection<Aggregatable<I>> elements) {
+        Collection<I> aggregatableValues = null;
 
-		if (elements != null) {
-			aggregatableValues = new ArrayList<I>();
-			for (final Aggregatable<I> element : elements) {
-				aggregatableValues.add(element.getAggregatableValue());
-			}
-		}
+        if (elements != null) {
+            aggregatableValues = new ArrayList<I>();
+            for (final Aggregatable<I> element : elements) {
+                aggregatableValues.add(element.getAggregatableValue());
+            }
+        }
 
-		return delegate.transform(aggregatableValues);
-	}
+        return delegate.transform(aggregatableValues);
+    }
 }

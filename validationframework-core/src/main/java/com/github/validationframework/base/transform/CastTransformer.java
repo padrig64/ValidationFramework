@@ -38,85 +38,85 @@ import org.slf4j.LoggerFactory;
  */
 public class CastTransformer<I, O> implements Transformer<I, O> {
 
-	/**
-	 * Type of behavior in case of an error while casting.
-	 */
-	public enum CastErrorBehavior {
+    /**
+     * Type of behavior in case of an error while casting.
+     */
+    public enum CastErrorBehavior {
 
-		/**
-		 * Just return null.
-		 */
-		IGNORE,
+        /**
+         * Just return null.
+         */
+        IGNORE,
 
-		/**
-		 * Log a warning and return null.
-		 */
-		LOG_WARNING,
+        /**
+         * Log a warning and return null.
+         */
+        LOG_WARNING,
 
-		/**
-		 * Log an error and return null.
-		 */
-		LOG_ERROR,
+        /**
+         * Log an error and return null.
+         */
+        LOG_ERROR,
 
-		/**
-		 * Throw a ClassCastException.
-		 */
-		TRHOW_EXCEPTION
-	}
+        /**
+         * Throw a ClassCastException.
+         */
+        TRHOW_EXCEPTION
+    }
 
-	/**
-	 * Logger for this class.
-	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(CastTransformer.class);
+    /**
+     * Logger for this class.
+     */
+    private static final Logger LOGGER = LoggerFactory.getLogger(CastTransformer.class);
 
-	/**
-	 * Behavior in case of an error while casting.
-	 */
-	private final CastErrorBehavior castErrorBehavior;
+    /**
+     * Behavior in case of an error while casting.
+     */
+    private final CastErrorBehavior castErrorBehavior;
 
-	/**
-	 * Default constructor
-	 */
-	public CastTransformer() {
-		this(CastErrorBehavior.IGNORE);
-	}
+    /**
+     * Default constructor
+     */
+    public CastTransformer() {
+        this(CastErrorBehavior.IGNORE);
+    }
 
-	/**
-	 * Constructor specifying the behavior in case of an error while casting.
-	 *
-	 * @param castErrorBehavior Behavior in case of an error while casting.
-	 */
-	public CastTransformer(final CastErrorBehavior castErrorBehavior) {
-		super();
-		this.castErrorBehavior = castErrorBehavior;
-	}
+    /**
+     * Constructor specifying the behavior in case of an error while casting.
+     *
+     * @param castErrorBehavior Behavior in case of an error while casting.
+     */
+    public CastTransformer(final CastErrorBehavior castErrorBehavior) {
+        super();
+        this.castErrorBehavior = castErrorBehavior;
+    }
 
-	/**
-	 * @see Transformer#transform(Object)
-	 */
-	@Override
-	public O transform(final I input) {
-		O output;
+    /**
+     * @see Transformer#transform(Object)
+     */
+    @Override
+    public O transform(final I input) {
+        O output;
 
-		try {
-			// Cast
-			output = (O) input;
-		} catch (ClassCastException e) {
-			switch (castErrorBehavior) {
-				case LOG_WARNING:
-					LOGGER.warn("Failed transforming input: " + input, e);
-					break;
-				case LOG_ERROR:
-					LOGGER.error("Failed transforming input: " + input, e);
-					break;
-				case TRHOW_EXCEPTION:
-					throw e;
-				case IGNORE:
-				default:
-			}
-			output = null;
-		}
+        try {
+            // Cast
+            output = (O) input;
+        } catch (ClassCastException e) {
+            switch (castErrorBehavior) {
+                case LOG_WARNING:
+                    LOGGER.warn("Failed transforming input: " + input, e);
+                    break;
+                case LOG_ERROR:
+                    LOGGER.error("Failed transforming input: " + input, e);
+                    break;
+                case TRHOW_EXCEPTION:
+                    throw e;
+                case IGNORE:
+                default:
+            }
+            output = null;
+        }
 
-		return output;
-	}
+        return output;
+    }
 }

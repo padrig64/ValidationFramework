@@ -35,10 +35,10 @@ import javax.swing.JToggleButton;
  */
 public class JToggleButtonModelChangedTrigger extends BaseToggleComponentModelChangedTrigger<JToggleButton> {
 
-	/**
-	 * @see BaseToggleComponentModelChangedTrigger#BaseToggleComponentModelChangedTrigger(JToggleButton)
-	 */
-	public JToggleButtonModelChangedTrigger(final JToggleButton source) {
-		super(source);
-	}
+    /**
+     * @see BaseToggleComponentModelChangedTrigger#BaseToggleComponentModelChangedTrigger(JToggleButton)
+     */
+    public JToggleButtonModelChangedTrigger(final JToggleButton source) {
+        super(source);
+    }
 }

@@ -30,36 +30,36 @@ import org.junit.Test;
 
 public class NumberGreaterThanOrEqualToRuleTest {
 
-	@Test
-	public void testDouble0() {
-		final NumberGreaterThanOrEqualToRule<Double> rule = new NumberGreaterThanOrEqualToRule<Double>(0.0);
+    @Test
+    public void testDouble0() {
+        final NumberGreaterThanOrEqualToRule<Double> rule = new NumberGreaterThanOrEqualToRule<Double>(0.0);
 
-		Assert.assertEquals(Boolean.TRUE, rule.validate(0.0));
-		Assert.assertEquals(Boolean.TRUE, rule.validate(65.453));
-		Assert.assertEquals(Boolean.FALSE, rule.validate(-1.12));
-		Assert.assertEquals(Boolean.TRUE, rule.validate(Double.NaN)); // Default behavior of Double
-		Assert.assertEquals(Boolean.FALSE, rule.validate(null));
-	}
+        Assert.assertEquals(Boolean.TRUE, rule.validate(0.0));
+        Assert.assertEquals(Boolean.TRUE, rule.validate(65.453));
+        Assert.assertEquals(Boolean.FALSE, rule.validate(-1.12));
+        Assert.assertEquals(Boolean.TRUE, rule.validate(Double.NaN)); // Default behavior of Double
+        Assert.assertEquals(Boolean.FALSE, rule.validate(null));
+    }
 
-	@Test
-	public void testDoubleNaN() {
-		final NumberGreaterThanOrEqualToRule<Double> rule = new NumberGreaterThanOrEqualToRule<Double>(Double.NaN);
+    @Test
+    public void testDoubleNaN() {
+        final NumberGreaterThanOrEqualToRule<Double> rule = new NumberGreaterThanOrEqualToRule<Double>(Double.NaN);
 
-		Assert.assertEquals(Boolean.FALSE, rule.validate(0.0)); // Default behavior of Double
-		Assert.assertEquals(Boolean.FALSE, rule.validate(65.453)); // Default behavior of Double
-		Assert.assertEquals(Boolean.FALSE, rule.validate(-1.12)); // Default behavior of Double
-		Assert.assertEquals(Boolean.TRUE, rule.validate(Double.NaN)); // Default behavior of Double
-		Assert.assertEquals(Boolean.FALSE, rule.validate(null));
-	}
+        Assert.assertEquals(Boolean.FALSE, rule.validate(0.0)); // Default behavior of Double
+        Assert.assertEquals(Boolean.FALSE, rule.validate(65.453)); // Default behavior of Double
+        Assert.assertEquals(Boolean.FALSE, rule.validate(-1.12)); // Default behavior of Double
+        Assert.assertEquals(Boolean.TRUE, rule.validate(Double.NaN)); // Default behavior of Double
+        Assert.assertEquals(Boolean.FALSE, rule.validate(null));
+    }
 
-	@Test
-	public void testDoubleNull() {
-		final NumberGreaterThanOrEqualToRule<Double> rule = new NumberGreaterThanOrEqualToRule<Double>(null);
+    @Test
+    public void testDoubleNull() {
+        final NumberGreaterThanOrEqualToRule<Double> rule = new NumberGreaterThanOrEqualToRule<Double>(null);
 
-		Assert.assertEquals(Boolean.TRUE, rule.validate(0.0));
-		Assert.assertEquals(Boolean.TRUE, rule.validate(65.453));
-		Assert.assertEquals(Boolean.TRUE, rule.validate(-1.12));
-		Assert.assertEquals(Boolean.TRUE, rule.validate(Double.NaN));
-		Assert.assertEquals(Boolean.TRUE, rule.validate(null));
-	}
+        Assert.assertEquals(Boolean.TRUE, rule.validate(0.0));
+        Assert.assertEquals(Boolean.TRUE, rule.validate(65.453));
+        Assert.assertEquals(Boolean.TRUE, rule.validate(-1.12));
+        Assert.assertEquals(Boolean.TRUE, rule.validate(Double.NaN));
+        Assert.assertEquals(Boolean.TRUE, rule.validate(null));
+    }
 }

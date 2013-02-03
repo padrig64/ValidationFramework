@@ -27,87 +27,88 @@ package com.github.validationframework.swing.resulthandler;
 
 import com.github.validationframework.api.resulthandler.ResultHandler;
 import com.github.validationframework.swing.utils.ColorUtils;
-import java.awt.Color;
+
 import javax.swing.JComponent;
+import java.awt.Color;
 
 public abstract class AbstractColorFeedback<O> implements ResultHandler<O> {
 
-	private JComponent owner = null;
-	private Color origForeground = null;
-	private Color origBackground = null;
-	private Color resultForeground = null;
-	private Color resultBackground = null;
-	private boolean showing = false;
+    private JComponent owner = null;
+    private Color origForeground = null;
+    private Color origBackground = null;
+    private Color resultForeground = null;
+    private Color resultBackground = null;
+    private boolean showing = false;
 
-	/**
-	 * Constructor specifying the component to attached to.
-	 *
-	 * @param componentToBeColored Component to be colored to show the validation results.
-	 */
-	public AbstractColorFeedback(final JComponent componentToBeColored) {
-		attach(componentToBeColored);
-	}
+    /**
+     * Constructor specifying the component to attached to.
+     *
+     * @param componentToBeColored Component to be colored to show the validation results.
+     */
+    public AbstractColorFeedback(final JComponent componentToBeColored) {
+        attach(componentToBeColored);
+    }
 
-	/**
-	 * Attaches the feedback to the specified component.
-	 *
-	 * @param componentToBeColored Component to be colored to show the validation results.
-	 */
-	public void attach(final JComponent componentToBeColored) {
-		detach();
-		owner = componentToBeColored;
-		showColors();
-	}
+    /**
+     * Attaches the feedback to the specified component.
+     *
+     * @param componentToBeColored Component to be colored to show the validation results.
+     */
+    public void attach(final JComponent componentToBeColored) {
+        detach();
+        owner = componentToBeColored;
+        showColors();
+    }
 
-	/**
-	 * Detaches the feedback from the previously attached component.
-	 */
-	public void detach() {
-		this.owner = null;
-	}
+    /**
+     * Detaches the feedback from the previously attached component.
+     */
+    public void detach() {
+        this.owner = null;
+    }
 
-	protected Color getForeground() {
-		return resultForeground;
-	}
+    protected Color getForeground() {
+        return resultForeground;
+    }
 
-	protected void setForeground(final Color foreground) {
-		resultForeground = foreground;
-	}
+    protected void setForeground(final Color foreground) {
+        resultForeground = foreground;
+    }
 
-	protected Color getBackground() {
-		return resultBackground;
-	}
+    protected Color getBackground() {
+        return resultBackground;
+    }
 
-	protected void setBackground(final Color background) {
-		resultBackground = background;
-	}
+    protected void setBackground(final Color background) {
+        resultBackground = background;
+    }
 
-	protected void showColors() {
-		if (!showing) {
-			origForeground = owner.getForeground();
-			origBackground = owner.getBackground();
-		}
+    protected void showColors() {
+        if (!showing) {
+            origForeground = owner.getForeground();
+            origBackground = owner.getBackground();
+        }
 
-		if (resultForeground == null) {
-			owner.setForeground(origForeground);
-		} else {
-			owner.setForeground(ColorUtils.alphaBlend(resultForeground, origForeground));
-		}
-		if (resultBackground == null) {
-			owner.setBackground(origBackground);
-		} else {
-			owner.setBackground(ColorUtils.alphaBlend(resultBackground, origBackground));
-		}
-		owner.getParent().repaint();
+        if (resultForeground == null) {
+            owner.setForeground(origForeground);
+        } else {
+            owner.setForeground(ColorUtils.alphaBlend(resultForeground, origForeground));
+        }
+        if (resultBackground == null) {
+            owner.setBackground(origBackground);
+        } else {
+            owner.setBackground(ColorUtils.alphaBlend(resultBackground, origBackground));
+        }
+        owner.getParent().repaint();
 
-		showing = true;
-	}
+        showing = true;
+    }
 
-	protected void hideColors() {
-		if (showing) {
-			owner.setForeground(origForeground);
-			owner.setBackground(origBackground);
-		}
-		showing = false;
-	}
+    protected void hideColors() {
+        if (showing) {
+            owner.setForeground(origForeground);
+            owner.setBackground(origBackground);
+        }
+        showing = false;
+    }
 }

@@ -36,10 +36,10 @@ import javax.swing.JCheckBox;
  */
 public class JCheckBoxValueProvider extends BaseJToggleButtonValueProvider<JCheckBox> {
 
-	/**
-	 * @see BaseJToggleButtonValueProvider#BaseJToggleButtonValueProvider(javax.swing.JToggleButton)
-	 */
-	public JCheckBoxValueProvider(final JCheckBox toggleComponent) {
-		super(toggleComponent);
-	}
+    /**
+     * @see BaseJToggleButtonValueProvider#BaseJToggleButtonValueProvider(javax.swing.JToggleButton)
+     */
+    public JCheckBoxValueProvider(final JCheckBox toggleComponent) {
+        super(toggleComponent);
+    }
 }

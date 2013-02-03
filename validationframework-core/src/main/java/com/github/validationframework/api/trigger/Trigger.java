@@ -33,17 +33,17 @@ package com.github.validationframework.api.trigger;
  */
 public interface Trigger {
 
-	/**
-	 * Adds the specified validation trigger listener.
-	 *
-	 * @param listener Listener to validation trigger to be added.
-	 */
-	public void addTriggerListener(TriggerListener listener);
+    /**
+     * Adds the specified validation trigger listener.
+     *
+     * @param listener Listener to validation trigger to be added.
+     */
+    public void addTriggerListener(TriggerListener listener);
 
-	/**
-	 * Removes the specified validation trigger listener.
-	 *
-	 * @param listener Listener to validation trigger to be removed.
-	 */
-	public void removeTriggerListener(TriggerListener listener);
+    /**
+     * Removes the specified validation trigger listener.
+     *
+     * @param listener Listener to validation trigger to be removed.
+     */
+    public void removeTriggerListener(TriggerListener listener);
 }

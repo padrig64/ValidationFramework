@@ -32,56 +32,56 @@ package com.github.validationframework.base.rule.string;
  */
 public class StringLengthLessThanRule extends AbstractStringBooleanRule {
 
-	/**
-	 * String length to which the data string length is to be compared.
-	 */
-	private int lengthLimit = Integer.MAX_VALUE;
+    /**
+     * String length to which the data string length is to be compared.
+     */
+    private int lengthLimit = Integer.MAX_VALUE;
 
-	/**
-	 * Default constructor.
-	 */
-	public StringLengthLessThanRule() {
-		super();
-	}
+    /**
+     * Default constructor.
+     */
+    public StringLengthLessThanRule() {
+        super();
+    }
 
-	/**
-	 * Constructor specifying the string length to which the data string length is to be compared.
-	 *
-	 * @param lengthLimit String length to which the data string length is to be compared.
-	 */
-	public StringLengthLessThanRule(final int lengthLimit) {
-		super();
-		setLengthLimit(lengthLimit);
-	}
+    /**
+     * Constructor specifying the string length to which the data string length is to be compared.
+     *
+     * @param lengthLimit String length to which the data string length is to be compared.
+     */
+    public StringLengthLessThanRule(final int lengthLimit) {
+        super();
+        setLengthLimit(lengthLimit);
+    }
 
-	/**
-	 * Gets the string length to which the data string length is compared.
-	 *
-	 * @return String length to which the data string length is compared.
-	 */
-	public int getLengthLimit() {
-		return lengthLimit;
-	}
+    /**
+     * Gets the string length to which the data string length is compared.
+     *
+     * @return String length to which the data string length is compared.
+     */
+    public int getLengthLimit() {
+        return lengthLimit;
+    }
 
-	/**
-	 * Sets the string length to which the data string length is compared.
-	 *
-	 * @param lengthLimit String length to which the data string length is compared.
-	 */
-	public void setLengthLimit(final int lengthLimit) {
-		this.lengthLimit = lengthLimit;
-	}
+    /**
+     * Sets the string length to which the data string length is compared.
+     *
+     * @param lengthLimit String length to which the data string length is compared.
+     */
+    public void setLengthLimit(final int lengthLimit) {
+        this.lengthLimit = lengthLimit;
+    }
 
-	/**
-	 * @see AbstractStringBooleanRule#validate(Object)
-	 */
-	@Override
-	public Boolean validate(final String data) {
-		int length = 0;
-		if (data != null) {
-			length = trimIfNeeded(data).length();
-		}
+    /**
+     * @see AbstractStringBooleanRule#validate(Object)
+     */
+    @Override
+    public Boolean validate(final String data) {
+        int length = 0;
+        if (data != null) {
+            length = trimIfNeeded(data).length();
+        }
 
-		return (length < lengthLimit);
-	}
+        return (length < lengthLimit);
+    }
 }

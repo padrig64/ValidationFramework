@@ -26,12 +26,13 @@
 package com.github.validationframework.experimental.rule;
 
 import com.github.validationframework.api.rule.Rule;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.swing.AbstractSpinnerModel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Convenience rule that will check if the data is within the bounds of the spinner model.<br>Note that the model of the
@@ -39,50 +40,50 @@ import org.slf4j.LoggerFactory;
  */
 public class JSpinnerNumberModelRule<D extends Number> implements Rule<Comparable<D>, Boolean> {
 
-	/**
-	 * Logger for this class.
-	 */
-	private final Logger LOGGER = LoggerFactory.getLogger(JSpinnerNumberModelRule.class);
+    /**
+     * Logger for this class.
+     */
+    private final Logger LOGGER = LoggerFactory.getLogger(JSpinnerNumberModelRule.class);
 
-	/**
-	 * Spinner whose {@link SpinnerNumberModel} is to be checked.
-	 */
-	private final JSpinner spinner;
+    /**
+     * Spinner whose {@link SpinnerNumberModel} is to be checked.
+     */
+    private final JSpinner spinner;
 
-	/**
-	 * Constructor specifying the spinner whose {@link SpinnerNumberModel} is to be checked.
-	 *
-	 * @param spinner Spinner whose {@link SpinnerNumberModel} is to be checked.
-	 */
-	public JSpinnerNumberModelRule(final JSpinner spinner) {
-		this.spinner = spinner;
-	}
+    /**
+     * Constructor specifying the spinner whose {@link SpinnerNumberModel} is to be checked.
+     *
+     * @param spinner Spinner whose {@link SpinnerNumberModel} is to be checked.
+     */
+    public JSpinnerNumberModelRule(final JSpinner spinner) {
+        this.spinner = spinner;
+    }
 
-	/**
-	 * @see Rule#validate(Object)
-	 */
-	@Override
-	public Boolean validate(final Comparable<D> data) {
-		Boolean result = true;
+    /**
+     * @see Rule#validate(Object)
+     */
+    @Override
+    public Boolean validate(final Comparable<D> data) {
+        Boolean result = true;
 
-		final SpinnerModel model = spinner.getModel();
-		if (model instanceof SpinnerNumberModel) {
-			final SpinnerNumberModel numberModel = (SpinnerNumberModel) model;
+        final SpinnerModel model = spinner.getModel();
+        if (model instanceof SpinnerNumberModel) {
+            final SpinnerNumberModel numberModel = (SpinnerNumberModel) model;
 
-			// Check min bound
-			if (numberModel.getMinimum() != null) {
+            // Check min bound
+            if (numberModel.getMinimum() != null) {
 
-			}
+            }
 
-			// Check max bound
-			if (result && (numberModel.getMaximum() != null)) {
+            // Check max bound
+            if (result && (numberModel.getMaximum() != null)) {
 
-			}
-		} else {
-			LOGGER.error("Spinner model is not an AbstractSpinnerModel: " + spinner);
-			result = false;
-		}
+            }
+        } else {
+            LOGGER.error("Spinner model is not an AbstractSpinnerModel: " + spinner);
+            result = false;
+        }
 
-		return result;
-	}
+        return result;
+    }
 }

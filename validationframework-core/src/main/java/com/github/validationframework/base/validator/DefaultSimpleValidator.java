@@ -39,7 +39,7 @@ import org.slf4j.LoggerFactory;
  * providers, check them all against all of its rules, and handles all the results using all of its result handlers.
  *
  * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
- * type of the component itself.
+ *            type of the component itself.
  * @param <O> Type of validation result.<br>It can be, for instance, an enumeration or just a boolean.
  *
  * @see AbstractSimpleValidator
@@ -48,49 +48,49 @@ import org.slf4j.LoggerFactory;
  * @see Rule
  * @see ResultHandler
  */
-public class DefaultSimpleValidator<D, O>
-		extends AbstractSimpleValidator<Trigger, DataProvider<D>, D, Rule<D, O>, D, O, ResultHandler<O>, O> {
+public class DefaultSimpleValidator<D, O> extends AbstractSimpleValidator<Trigger, DataProvider<D>, D, Rule<D, O>, D,
+        O, ResultHandler<O>, O> {
 
-	/**
-	 * Logger for this class.
-	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(DefaultSimpleValidator.class);
+    /**
+     * Logger for this class.
+     */
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultSimpleValidator.class);
 
-	/**
-	 * @see AbstractSimpleValidator#processTrigger(Trigger)
-	 */
-	@Override
-	protected void processTrigger(final Trigger trigger) {
-		if (dataProviders.isEmpty()) {
-			LOGGER.warn("No data providers in validator: " + this);
-		} else {
-			// Process data from all providers
-			for (final DataProvider<D> dataProvider : dataProviders) {
-				processData(dataProvider.getData());
-			}
-		}
-	}
+    /**
+     * @see AbstractSimpleValidator#processTrigger(Trigger)
+     */
+    @Override
+    protected void processTrigger(final Trigger trigger) {
+        if (dataProviders.isEmpty()) {
+            LOGGER.warn("No data providers in validator: " + this);
+        } else {
+            // Process data from all providers
+            for (final DataProvider<D> dataProvider : dataProviders) {
+                processData(dataProvider.getData());
+            }
+        }
+    }
 
-	/**
-	 * Validates the specified data all rules.
-	 *
-	 * @param data Data to be validated against all rules.
-	 */
-	protected void processData(final D data) {
-		// Check data against all rules
-		for (final Rule<D, O> rule : rules) {
-			processResult(rule.validate(data));
-		}
-	}
+    /**
+     * Validates the specified data all rules.
+     *
+     * @param data Data to be validated against all rules.
+     */
+    protected void processData(final D data) {
+        // Check data against all rules
+        for (final Rule<D, O> rule : rules) {
+            processResult(rule.validate(data));
+        }
+    }
 
-	/**
-	 * Handles the specified result using all result handlers.
-	 *
-	 * @param result Result to be processed by all result handlers.
-	 */
-	protected void processResult(final O result) {
-		for (final ResultHandler<O> resultHandler : resultHandlers) {
-			resultHandler.handleResult(result);
-		}
-	}
+    /**
+     * Handles the specified result using all result handlers.
+     *
+     * @param result Result to be processed by all result handlers.
+     */
+    protected void processResult(final O result) {
+        for (final ResultHandler<O> resultHandler : resultHandlers) {
+            resultHandler.handleResult(result);
+        }
+    }
 }

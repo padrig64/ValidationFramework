@@ -32,56 +32,56 @@ package com.github.validationframework.base.rule.string;
  */
 public class StringLengthGreaterThanOrEqualToRule extends AbstractStringBooleanRule {
 
-	/**
-	 * String length to which the data string length is to be compared.
-	 */
-	private int minLength = Integer.MIN_VALUE;
+    /**
+     * String length to which the data string length is to be compared.
+     */
+    private int minLength = Integer.MIN_VALUE;
 
-	/**
-	 * Default constructor.
-	 */
-	public StringLengthGreaterThanOrEqualToRule() {
-		super();
-	}
+    /**
+     * Default constructor.
+     */
+    public StringLengthGreaterThanOrEqualToRule() {
+        super();
+    }
 
-	/**
-	 * Constructor specifying the string length to which the data string length is to be compared.
-	 *
-	 * @param minLength String length to which the data string length is to be compared.
-	 */
-	public StringLengthGreaterThanOrEqualToRule(final int minLength) {
-		super();
-		setMinLength(minLength);
-	}
+    /**
+     * Constructor specifying the string length to which the data string length is to be compared.
+     *
+     * @param minLength String length to which the data string length is to be compared.
+     */
+    public StringLengthGreaterThanOrEqualToRule(final int minLength) {
+        super();
+        setMinLength(minLength);
+    }
 
-	/**
-	 * Gets the string length to which the data string length is compared.
-	 *
-	 * @return String length to which the data string length is compared.
-	 */
-	public int getMinLength() {
-		return minLength;
-	}
+    /**
+     * Gets the string length to which the data string length is compared.
+     *
+     * @return String length to which the data string length is compared.
+     */
+    public int getMinLength() {
+        return minLength;
+    }
 
-	/**
-	 * Sets the string length to which the data string length is compared.
-	 *
-	 * @param minLength String length to which the data string length is compared.
-	 */
-	public void setMinLength(final int minLength) {
-		this.minLength = minLength;
-	}
+    /**
+     * Sets the string length to which the data string length is compared.
+     *
+     * @param minLength String length to which the data string length is compared.
+     */
+    public void setMinLength(final int minLength) {
+        this.minLength = minLength;
+    }
 
-	/**
-	 * @see AbstractStringBooleanRule#validate(Object)
-	 */
-	@Override
-	public Boolean validate(final String data) {
-		int length = 0;
-		if (data != null) {
-			length = trimIfNeeded(data).length();
-		}
+    /**
+     * @see AbstractStringBooleanRule#validate(Object)
+     */
+    @Override
+    public Boolean validate(final String data) {
+        int length = 0;
+        if (data != null) {
+            length = trimIfNeeded(data).length();
+        }
 
-		return (length >= minLength);
-	}
+        return (length >= minLength);
+    }
 }

@@ -29,9 +29,10 @@ import com.github.validationframework.api.dataprovider.DataProvider;
 import com.github.validationframework.api.resulthandler.ResultHandler;
 import com.github.validationframework.api.rule.Rule;
 import com.github.validationframework.api.trigger.Trigger;
-import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 /**
  * Concrete default implementation of a mappable validator.<br>A mappable validator is a validator whose data providers
@@ -41,7 +42,7 @@ import org.slf4j.LoggerFactory;
  * rule results using the result handlers that are mapped to those rules.
  *
  * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
- * type of the component itself.
+ *            type of the component itself.
  * @param <O> Type of validation result.<br>It can be, for instance, an enumeration or just a boolean.
  *
  * @see AbstractMappableValidator
@@ -50,84 +51,85 @@ import org.slf4j.LoggerFactory;
  * @see Rule
  * @see ResultHandler
  */
-public class DefaultMappableValidator<D, O>
-		extends AbstractMappableValidator<Trigger, DataProvider<D>, D, Rule<D, O>, D, O, ResultHandler<O>, O> {
+public class DefaultMappableValidator<D, O> extends AbstractMappableValidator<Trigger, DataProvider<D>, D, Rule<D,
+        O>, D, O, ResultHandler<O>, O> {
 
-	/**
-	 * Logger for this class.
-	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(DefaultMappableValidator.class);
+    /**
+     * Logger for this class.
+     */
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultMappableValidator.class);
 
-	/**
-	 * Processes the specified trigger by finding all the mapped data providers, and so on.
-	 *
-	 * @see AbstractMappableValidator#processTrigger(Trigger)
-	 */
-	@Override
-	protected void processTrigger(final Trigger trigger) {
-		// Get data providers matching the trigger
-		final List<DataProvider<D>> mappedDataProviders = triggersToDataProviders.get(trigger);
-		if ((mappedDataProviders == null) || mappedDataProviders.isEmpty()) {
-			LOGGER.warn("No matching data provider in mappable validator for trigger: " + trigger);
-		} else {
-			// Process all matching data providers
-			for (final DataProvider<D> dataProvider : mappedDataProviders) {
-				processDataProvider(dataProvider);
-			}
-		}
-	}
+    /**
+     * Processes the specified trigger by finding all the mapped data providers, and so on.
+     *
+     * @see AbstractMappableValidator#processTrigger(Trigger)
+     */
+    @Override
+    protected void processTrigger(final Trigger trigger) {
+        // Get data providers matching the trigger
+        final List<DataProvider<D>> mappedDataProviders = triggersToDataProviders.get(trigger);
+        if ((mappedDataProviders == null) || mappedDataProviders.isEmpty()) {
+            LOGGER.warn("No matching data provider in mappable validator for trigger: " + trigger);
+        } else {
+            // Process all matching data providers
+            for (final DataProvider<D> dataProvider : mappedDataProviders) {
+                processDataProvider(dataProvider);
+            }
+        }
+    }
 
-	/**
-	 * Process the specified data provider by finding all the mapped rules, and so on.
-	 *
-	 * @param dataProvider Data provider to be processed.
-	 */
-	private void processDataProvider(final DataProvider<D> dataProvider) {
-		// Get rules matching the data provider
-		final List<Rule<D, O>> mappedRules = dataProvidersToRules.get(dataProvider);
-		if ((mappedRules == null) || mappedRules.isEmpty()) {
-			LOGGER.warn("No matching rule in mappable validator for data provider: " + dataProvider);
-		} else {
-			// Get data to be validated
-			final D data = dataProvider.getData();
+    /**
+     * Process the specified data provider by finding all the mapped rules, and so on.
+     *
+     * @param dataProvider Data provider to be processed.
+     */
+    private void processDataProvider(final DataProvider<D> dataProvider) {
+        // Get rules matching the data provider
+        final List<Rule<D, O>> mappedRules = dataProvidersToRules.get(dataProvider);
+        if ((mappedRules == null) || mappedRules.isEmpty()) {
+            LOGGER.warn("No matching rule in mappable validator for data provider: " + dataProvider);
+        } else {
+            // Get data to be validated
+            final D data = dataProvider.getData();
 
-			// Process all matching rules
-			for (final Rule<D, O> rule : mappedRules) {
-				processRule(rule, data);
-			}
-		}
-	}
+            // Process all matching rules
+            for (final Rule<D, O> rule : mappedRules) {
+                processRule(rule, data);
+            }
+        }
+    }
 
-	/**
-	 * Processes the specified rule by finding all the mapped results handlers, checking the rule and processing the rule
-	 * result using all found result handlers.
-	 *
-	 * @param rule Rule to be processed.
-	 * @param data Data to be checked against the rule.
-	 */
-	private void processRule(final Rule<D, O> rule, final D data) {
-		// Get result handlers matching the rule
-		final List<ResultHandler<O>> mappedResultHandlers = rulesToResultHandlers.get(rule);
-		if ((mappedResultHandlers == null) || mappedResultHandlers.isEmpty()) {
-			LOGGER.warn("No matching result handler in mappable validator for rule: " + rule);
-		} else {
-			// Check rule
-			final O result = rule.validate(data);
+    /**
+     * Processes the specified rule by finding all the mapped results handlers, checking the rule and processing the
+     * rule
+     * result using all found result handlers.
+     *
+     * @param rule Rule to be processed.
+     * @param data Data to be checked against the rule.
+     */
+    private void processRule(final Rule<D, O> rule, final D data) {
+        // Get result handlers matching the rule
+        final List<ResultHandler<O>> mappedResultHandlers = rulesToResultHandlers.get(rule);
+        if ((mappedResultHandlers == null) || mappedResultHandlers.isEmpty()) {
+            LOGGER.warn("No matching result handler in mappable validator for rule: " + rule);
+        } else {
+            // Check rule
+            final O result = rule.validate(data);
 
-			// Process result with all matching result handlers
-			for (final ResultHandler<O> resultHandler : mappedResultHandlers) {
-				processResultHandler(resultHandler, result);
-			}
-		}
-	}
+            // Process result with all matching result handlers
+            for (final ResultHandler<O> resultHandler : mappedResultHandlers) {
+                processResultHandler(resultHandler, result);
+            }
+        }
+    }
 
-	/**
-	 * Processes the specified result by the specified result handler.
-	 *
-	 * @param resultHandler Result handler to be used to process the result.
-	 * @param result Result to be processed by the result handler.
-	 */
-	private void processResultHandler(final ResultHandler<O> resultHandler, final O result) {
-		resultHandler.handleResult(result);
-	}
+    /**
+     * Processes the specified result by the specified result handler.
+     *
+     * @param resultHandler Result handler to be used to process the result.
+     * @param result        Result to be processed by the result handler.
+     */
+    private void processResultHandler(final ResultHandler<O> resultHandler, final O result) {
+        resultHandler.handleResult(result);
+    }
 }

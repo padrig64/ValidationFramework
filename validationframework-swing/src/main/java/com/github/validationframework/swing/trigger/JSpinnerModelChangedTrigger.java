@@ -28,36 +28,37 @@ package com.github.validationframework.swing.trigger;
 import com.github.validationframework.api.common.Disposable;
 import com.github.validationframework.api.trigger.TriggerEvent;
 import com.github.validationframework.base.trigger.AbstractTrigger;
+
 import javax.swing.JSpinner;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 public class JSpinnerModelChangedTrigger extends AbstractTrigger implements Disposable {
 
-	private class SourceAdapter implements ChangeListener {
+    private class SourceAdapter implements ChangeListener {
 
-		@Override
-		public void stateChanged(final ChangeEvent e) {
-			fireTriggerEvent(new TriggerEvent(source));
-		}
-	}
+        @Override
+        public void stateChanged(final ChangeEvent e) {
+            fireTriggerEvent(new TriggerEvent(source));
+        }
+    }
 
-	private JSpinner source = null;
+    private JSpinner source = null;
 
-	private final ChangeListener sourceAdapter = new SourceAdapter();
+    private final ChangeListener sourceAdapter = new SourceAdapter();
 
-	public JSpinnerModelChangedTrigger(final JSpinner source) {
-		super();
-		this.source = source;
-		source.addChangeListener(sourceAdapter);
-	}
+    public JSpinnerModelChangedTrigger(final JSpinner source) {
+        super();
+        this.source = source;
+        source.addChangeListener(sourceAdapter);
+    }
 
-	/**
-	 * @see Disposable#dispose()
-	 */
-	@Override
-	public void dispose() {
-		source.removeChangeListener(sourceAdapter);
-		source = null;
-	}
+    /**
+     * @see Disposable#dispose()
+     */
+    @Override
+    public void dispose() {
+        source.removeChangeListener(sourceAdapter);
+        source = null;
+    }
 }

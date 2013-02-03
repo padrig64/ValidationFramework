@@ -26,38 +26,39 @@
 package com.github.validationframework.experimental.resulthandler;
 
 import com.github.validationframework.api.resulthandler.ResultHandler;
+
 import javax.swing.JLabel;
 
 public class JLabelBooleanFeedback implements ResultHandler<Boolean> {
 
-	private JLabel label = new JLabel();
+    private JLabel label = new JLabel();
 
-	private Boolean lastResult = null;
+    private Boolean lastResult = null;
 
-	public JLabelBooleanFeedback() {
-		super();
-	}
+    public JLabelBooleanFeedback() {
+        super();
+    }
 
-	public JLabel getLabel() {
-		return label;
-	}
+    public JLabel getLabel() {
+        return label;
+    }
 
-	public void setLabel(final JLabel label) {
-		this.label = label;
+    public void setLabel(final JLabel label) {
+        this.label = label;
 
-		if (this.label == null) {
-			this.label = new JLabel();
-			showResult(lastResult);
-		}
-	}
+        if (this.label == null) {
+            this.label = new JLabel();
+            showResult(lastResult);
+        }
+    }
 
-	@Override
-	public void handleResult(final Boolean result) {
-		lastResult = result;
-		showResult(result);
-	}
+    @Override
+    public void handleResult(final Boolean result) {
+        lastResult = result;
+        showResult(result);
+    }
 
-	private void showResult(final Boolean result) {
-		// TODO
-	}
+    private void showResult(final Boolean result) {
+        // TODO
+    }
 }

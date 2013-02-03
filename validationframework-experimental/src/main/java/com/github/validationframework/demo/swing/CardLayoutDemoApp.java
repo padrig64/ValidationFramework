@@ -30,12 +30,8 @@ import com.github.validationframework.experimental.builder.SimpleValidatorBuilde
 import com.github.validationframework.swing.dataprovider.JTextFieldTextProvider;
 import com.github.validationframework.swing.resulthandler.bool.IconBooleanFeedback;
 import com.github.validationframework.swing.trigger.JTextFieldDocumentChangedTrigger;
-import java.awt.CardLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Toolkit;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import net.miginfocom.swing.MigLayout;
+
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -48,132 +44,138 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
-import net.miginfocom.swing.MigLayout;
+import java.awt.CardLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Toolkit;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 public class CardLayoutDemoApp extends JFrame implements ItemListener {
 
-	private static class Card extends JPanel {
+    private static class Card extends JPanel {
 
-		private static final long serialVersionUID = -7961649303239986607L;
-		private static int count = 0;
+        private static final long serialVersionUID = -7961649303239986607L;
+        private static int count = 0;
 
-		public Card() {
-			super();
-			init();
-		}
+        public Card() {
+            super();
+            init();
+        }
 
-		private void init() {
-			setLayout(new FlowLayout());
+        private void init() {
+            setLayout(new FlowLayout());
 
-			add(new JLabel("Field: "));
+            add(new JLabel("Field: "));
 
-			final JTextField textField = new JTextField();
-			textField.setColumns(8);
-			textField.setName("Textfield " + count);
-			add(textField);
+            final JTextField textField = new JTextField();
+            textField.setColumns(8);
+            textField.setName("Textfield " + count);
+            add(textField);
 
-			installValidator(textField);
-			count++;
-		}
+            installValidator(textField);
+            count++;
+        }
 
-		private void installValidator(final JTextField textField) {
-			SimpleValidatorBuilder.on(new JTextFieldDocumentChangedTrigger(textField))
-					.read(new JTextFieldTextProvider(textField)).check(new StringLengthLessThanOrEqualToRule(5 + count))
-					.handleWith(new IconBooleanFeedback(textField, null, null, IconBooleanFeedback.DEFAULT_INVALID_ICON,
-							"Should be less then " + (6 + count) + " characters")).build();
-		}
-	}
+        private void installValidator(final JTextField textField) {
+            SimpleValidatorBuilder.on(new JTextFieldDocumentChangedTrigger(textField)).read(new
+                    JTextFieldTextProvider(textField)).check(new StringLengthLessThanOrEqualToRule(5 + count))
+                    .handleWith(new IconBooleanFeedback(textField, null, null,
+                            IconBooleanFeedback.DEFAULT_INVALID_ICON, "Should be less then " + (6 + count) + " " +
+                    "characters")).build();
+        }
+    }
 
-	/**
-	 * Generated serial UID.
-	 */
-	private static final long serialVersionUID = -7459554050305728899L;
+    /**
+     * Generated serial UID.
+     */
+    private static final long serialVersionUID = -7459554050305728899L;
 
-	private final JButton applyButton = new JButton("Apply");
+    private final JButton applyButton = new JButton("Apply");
 
-	private JPanel cardContainer = null;
+    private JPanel cardContainer = null;
 
-	/**
-	 * Default constructor.
-	 */
-	public CardLayoutDemoApp() {
-		super();
-		init();
-	}
+    /**
+     * Default constructor.
+     */
+    public CardLayoutDemoApp() {
+        super();
+        init();
+    }
 
-	/**
-	 * Initializes the frame by creating its contents.
-	 */
-	private void init() {
-		setTitle("Validation Framework Test");
-		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    /**
+     * Initializes the frame by creating its contents.
+     */
+    private void init() {
+        setTitle("Validation Framework Test");
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-		// Create content pane
-		final JPanel contentPane = new JPanel(new MigLayout("fill, wrap 1", "[]", "[grow]unrelated[]"));
-		setContentPane(contentPane);
+        // Create content pane
+        final JPanel contentPane = new JPanel(new MigLayout("fill, wrap 1", "[]", "[grow]unrelated[]"));
+        setContentPane(contentPane);
 
-		// Combobox
-		final JComboBox comboBox = new JComboBox();
-		contentPane.add(comboBox, "grow");
-		comboBox.addItem("First");
-		comboBox.addItem("Second");
-		comboBox.addItem("Third");
-		comboBox.addItemListener(this);
+        // Combobox
+        final JComboBox comboBox = new JComboBox();
+        contentPane.add(comboBox, "grow");
+        comboBox.addItem("First");
+        comboBox.addItem("Second");
+        comboBox.addItem("Third");
+        comboBox.addItemListener(this);
 
-		// Panels
-		cardContainer = new JPanel(new CardLayout());
-		cardContainer.setBorder(new EmptyBorder(30, 30, 30, 30));
-		cardContainer.add(new Card(), "First");
-		cardContainer.add(new Card(), "Second");
-		cardContainer.add(new Card(), "Third");
-		contentPane.add(new JScrollPane(cardContainer));
+        // Panels
+        cardContainer = new JPanel(new CardLayout());
+        cardContainer.setBorder(new EmptyBorder(30, 30, 30, 30));
+        cardContainer.add(new Card(), "First");
+        cardContainer.add(new Card(), "Second");
+        cardContainer.add(new Card(), "Third");
+        contentPane.add(new JScrollPane(cardContainer));
 
-		// Apply button
-		contentPane.add(applyButton, "align right");
+        // Apply button
+        contentPane.add(applyButton, "align right");
 
-		// Set size
-		pack();
-		final Dimension size = getSize();
+        // Set size
+        pack();
+        final Dimension size = getSize();
 //		size.width += 100;
 //		setMinimumSize(size);
 
-		// Set location
-		final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		setLocation((screenSize.width - size.width) / 2, (screenSize.height - size.height) / 3);
-	}
+        // Set location
+        final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        setLocation((screenSize.width - size.width) / 2, (screenSize.height - size.height) / 3);
+    }
 
-	@Override
-	public void itemStateChanged(final ItemEvent evt) {
-		final CardLayout cl = (CardLayout) (cardContainer.getLayout());
-		cl.show(cardContainer, (String) evt.getItem());
-	}
+    @Override
+    public void itemStateChanged(final ItemEvent evt) {
+        final CardLayout cl = (CardLayout) (cardContainer.getLayout());
+        cl.show(cardContainer, (String) evt.getItem());
+    }
 
-	public static void main(final String[] args) {
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
+    public static void main(final String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
 
-				// Set look-and-feel
-				try {
-					for (final UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-						if ("Nimbus".equals(info.getName())) {
-							UIManager.setLookAndFeel(info.getClassName());
-							break;
-						}
-					}
-				} catch (UnsupportedLookAndFeelException e) {
-					// handle exception
-				} catch (ClassNotFoundException e) {
-					// handle exception
-				} catch (InstantiationException e) {
-					// handle exception
-				} catch (IllegalAccessException e) {
-					// handle exception
-				}
+                // Set look-and-feel
+                try {
+                    for (final UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+                        if ("Nimbus".equals(info.getName())) {
+                            UIManager.setLookAndFeel(info.getClassName());
+                            break;
+                        }
+                    }
+                } catch (UnsupportedLookAndFeelException e) {
+                    // handle exception
+                } catch (ClassNotFoundException e) {
+                    // handle exception
+                } catch (InstantiationException e) {
+                    // handle exception
+                } catch (IllegalAccessException e) {
+                    // handle exception
+                }
 
-				// Show window
-				new CardLayoutDemoApp().setVisible(true);
-			}
-		});
-	}
+                // Show window
+                new CardLayoutDemoApp().setVisible(true);
+            }
+        });
+    }
 }

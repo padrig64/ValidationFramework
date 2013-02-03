@@ -25,67 +25,67 @@
 
 package com.github.validationframework.experimental.utils.swing;
 
+import javax.swing.JFormattedTextField;
+import javax.swing.text.JTextComponent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.text.ParseException;
 import java.util.HashSet;
 import java.util.Set;
-import javax.swing.JFormattedTextField;
-import javax.swing.text.JTextComponent;
 
 // TODO
 public class FormatAndSelectOnEnterFeature {
 
-	private class EnterKeyAdapter extends KeyAdapter {
+    private class EnterKeyAdapter extends KeyAdapter {
 
-		/**
-		 * @see KeyListener#keyTyped(KeyEvent)
-		 */
-		@Override
-		public void keyTyped(final KeyEvent event) {
-			final Object source = event.getSource();
+        /**
+         * @see KeyListener#keyTyped(KeyEvent)
+         */
+        @Override
+        public void keyTyped(final KeyEvent event) {
+            final Object source = event.getSource();
 
-			// Format
-			if (source instanceof JFormattedTextField) {
-				final JFormattedTextField formattedTextField = (JFormattedTextField) source;
-				final String text = formattedTextField.getText();
-				final JFormattedTextField.AbstractFormatter formatter = formattedTextField.getFormatter();
-				if (formatter != null) {
-					try {
-						final Object value = formatter.stringToValue(text);
-						formattedTextField.setValue(value);
-					} catch (ParseException e) {
-						System.err.println("FormatAndSelectOnEnterFeature$EnterKeyAdapter.keyTyped: \"" + text + "\"");
-						e.printStackTrace();
-					}
-				}
-			}
+            // Format
+            if (source instanceof JFormattedTextField) {
+                final JFormattedTextField formattedTextField = (JFormattedTextField) source;
+                final String text = formattedTextField.getText();
+                final JFormattedTextField.AbstractFormatter formatter = formattedTextField.getFormatter();
+                if (formatter != null) {
+                    try {
+                        final Object value = formatter.stringToValue(text);
+                        formattedTextField.setValue(value);
+                    } catch (ParseException e) {
+                        System.err.println("FormatAndSelectOnEnterFeature$EnterKeyAdapter.keyTyped: \"" + text + "\"");
+                        e.printStackTrace();
+                    }
+                }
+            }
 
-			// Select all
-			if (source instanceof JTextComponent) {
-				((JTextComponent) source).selectAll();
-			}
-		}
-	}
+            // Select all
+            if (source instanceof JTextComponent) {
+                ((JTextComponent) source).selectAll();
+            }
+        }
+    }
 
-	private final Set<JTextComponent> textComponents = new HashSet<JTextComponent>();
+    private final Set<JTextComponent> textComponents = new HashSet<JTextComponent>();
 
-	private final KeyListener enterKeyAdapter = new EnterKeyAdapter();
+    private final KeyListener enterKeyAdapter = new EnterKeyAdapter();
 
-	public FormatAndSelectOnEnterFeature(final JTextComponent textComponent) {
-		attach(textComponent);
-	}
+    public FormatAndSelectOnEnterFeature(final JTextComponent textComponent) {
+        attach(textComponent);
+    }
 
-	public void attach(final JTextComponent textComponent) {
-		if (!textComponents.contains(textComponent)) {
-			textComponent.addKeyListener(enterKeyAdapter);
-			textComponents.add(textComponent);
-		}
-	}
+    public void attach(final JTextComponent textComponent) {
+        if (!textComponents.contains(textComponent)) {
+            textComponent.addKeyListener(enterKeyAdapter);
+            textComponents.add(textComponent);
+        }
+    }
 
-	public void detach(final JTextComponent textComponent) {
-		textComponents.remove(textComponent);
-		textComponent.removeKeyListener(enterKeyAdapter);
-	}
+    public void detach(final JTextComponent textComponent) {
+        textComponents.remove(textComponent);
+        textComponent.removeKeyListener(enterKeyAdapter);
+    }
 }

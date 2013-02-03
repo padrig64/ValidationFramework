@@ -28,38 +28,39 @@ package com.github.validationframework.swing.trigger;
 import com.github.validationframework.api.common.Disposable;
 import com.github.validationframework.api.trigger.TriggerEvent;
 import com.github.validationframework.base.trigger.AbstractTrigger;
+
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 public class JSliderModelChangedTrigger extends AbstractTrigger implements Disposable {
 
-	private class SourceAdapter implements ChangeListener {
+    private class SourceAdapter implements ChangeListener {
 
-		@Override
-		public void stateChanged(final ChangeEvent e) {
-			if ((e.getSource() instanceof JSlider) && !(((JSlider) e.getSource()).getValueIsAdjusting())) {
-				fireTriggerEvent(new TriggerEvent(source));
-			}
-		}
-	}
+        @Override
+        public void stateChanged(final ChangeEvent e) {
+            if ((e.getSource() instanceof JSlider) && !(((JSlider) e.getSource()).getValueIsAdjusting())) {
+                fireTriggerEvent(new TriggerEvent(source));
+            }
+        }
+    }
 
-	private JSlider source = null;
+    private JSlider source = null;
 
-	private final ChangeListener sourceAdapter = new SourceAdapter();
+    private final ChangeListener sourceAdapter = new SourceAdapter();
 
-	public JSliderModelChangedTrigger(final JSlider source) {
-		super();
-		this.source = source;
-		source.addChangeListener(sourceAdapter);
-	}
+    public JSliderModelChangedTrigger(final JSlider source) {
+        super();
+        this.source = source;
+        source.addChangeListener(sourceAdapter);
+    }
 
-	/**
-	 * @see Disposable#dispose()
-	 */
-	@Override
-	public void dispose() {
-		source.removeChangeListener(sourceAdapter);
-		source = null;
-	}
+    /**
+     * @see Disposable#dispose()
+     */
+    @Override
+    public void dispose() {
+        source.removeChangeListener(sourceAdapter);
+        source = null;
+    }
 }

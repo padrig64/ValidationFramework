@@ -28,12 +28,13 @@ package com.github.validationframework.swing.dataprovider;
 import com.github.validationframework.api.dataprovider.DataProvider;
 import com.github.validationframework.base.transform.CastTransformer;
 import com.github.validationframework.base.transform.Transformer;
-import java.text.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.swing.JFormattedTextField;
 import javax.swing.JSpinner;
 import javax.swing.text.JTextComponent;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.text.ParseException;
 
 /**
  * Data provider reading the value from a spinner.<br>Note that the value is not read from the model, but instead
@@ -44,118 +45,119 @@ import org.slf4j.LoggerFactory;
  */
 public class JSpinnerEditorValueProvider<D> implements DataProvider<D> {
 
-	/**
-	 * Logger for this class.
-	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(JSpinnerEditorValueProvider.class);
+    /**
+     * Logger for this class.
+     */
+    private static final Logger LOGGER = LoggerFactory.getLogger(JSpinnerEditorValueProvider.class);
 
-	/**
-	 * Spinner to get the data from.<br>Note that the text and the formatter are retrieved every time they are needed so
-	 * that we do not have to listener to changes in the spinner to track them.
-	 */
-	private final JSpinner spinner;
+    /**
+     * Spinner to get the data from.<br>Note that the text and the formatter are retrieved every time they are needed so
+     * that we do not have to listener to changes in the spinner to track them.
+     */
+    private final JSpinner spinner;
 
-	/**
-	 * Transformer used to convert the object parsed from the spinner to the expected type.
-	 */
-	private final Transformer<Object, D> transformer;
+    /**
+     * Transformer used to convert the object parsed from the spinner to the expected type.
+     */
+    private final Transformer<Object, D> transformer;
 
-	/**
-	 * Constructor specifying the spinner to get the value from.
-	 *
-	 * @param spinner Spinner to get the value from.
-	 */
-	public JSpinnerEditorValueProvider(final JSpinner spinner) {
-		this(spinner, new CastTransformer<Object, D>());
-	}
+    /**
+     * Constructor specifying the spinner to get the value from.
+     *
+     * @param spinner Spinner to get the value from.
+     */
+    public JSpinnerEditorValueProvider(final JSpinner spinner) {
+        this(spinner, new CastTransformer<Object, D>());
+    }
 
-	/**
-	 * Constructor specifying the spinner to get the value from and the transformer to convert it to the required type.
-	 *
-	 * @param spinner Spinner to get the value from.
-	 * @param transformer Transformer used to convert the object parsed from the spinner to the expected type.
-	 */
-	public JSpinnerEditorValueProvider(final JSpinner spinner, final Transformer<Object, D> transformer) {
-		this.spinner = spinner;
-		this.transformer = transformer;
-	}
+    /**
+     * Constructor specifying the spinner to get the value from and the transformer to convert it to the required type.
+     *
+     * @param spinner     Spinner to get the value from.
+     * @param transformer Transformer used to convert the object parsed from the spinner to the expected type.
+     */
+    public JSpinnerEditorValueProvider(final JSpinner spinner, final Transformer<Object, D> transformer) {
+        this.spinner = spinner;
+        this.transformer = transformer;
+    }
 
-	/**
-	 * @see DataProvider#getData()
-	 */
-	@Override
-	public D getData() {
-		D typedValue = null;
+    /**
+     * @see DataProvider#getData()
+     */
+    @Override
+    public D getData() {
+        D typedValue = null;
 
-		try {
-			// Parse text
-			final JFormattedTextField.AbstractFormatter formatter = getFormatter();
-			if (formatter != null) {
-				final Object dataValue = formatter.stringToValue(getText());
+        try {
+            // Parse text
+            final JFormattedTextField.AbstractFormatter formatter = getFormatter();
+            if (formatter != null) {
+                final Object dataValue = formatter.stringToValue(getText());
 
-				// Convert it to the required type
-				typedValue = transformer.transform(dataValue);
-			}
-		} catch (ParseException e) {
-			typedValue = null;
-		}
+                // Convert it to the required type
+                typedValue = transformer.transform(dataValue);
+            }
+        } catch (ParseException e) {
+            typedValue = null;
+        }
 
-		return typedValue;
-	}
+        return typedValue;
+    }
 
-	/**
-	 * Retrieves the text currently in the text component of the spinner, if any.<br>Note that if editor of the spinner has
-	 * been customized, this method may need to be adapted in a sub-class.
-	 *
-	 * @return Spinner text or null if not found.
-	 */
-	protected String getText() {
-		String text = null;
+    /**
+     * Retrieves the text currently in the text component of the spinner, if any.<br>Note that if editor of the
+     * spinner has
+     * been customized, this method may need to be adapted in a sub-class.
+     *
+     * @return Spinner text or null if not found.
+     */
+    protected String getText() {
+        String text = null;
 
-		// Try to find a text component in the spinner
-		final JTextComponent textEditorComponent;
-		if (spinner.getEditor() instanceof JTextComponent) {
-			textEditorComponent = (JTextComponent) spinner.getEditor();
-		} else if (spinner.getEditor() instanceof JSpinner.DefaultEditor) {
-			textEditorComponent = ((JSpinner.DefaultEditor) spinner.getEditor()).getTextField();
-		} else {
-			LOGGER.error("No text component can be found in the spinner to get the text: " + spinner);
-			textEditorComponent = null;
-		}
+        // Try to find a text component in the spinner
+        final JTextComponent textEditorComponent;
+        if (spinner.getEditor() instanceof JTextComponent) {
+            textEditorComponent = (JTextComponent) spinner.getEditor();
+        } else if (spinner.getEditor() instanceof JSpinner.DefaultEditor) {
+            textEditorComponent = ((JSpinner.DefaultEditor) spinner.getEditor()).getTextField();
+        } else {
+            LOGGER.error("No text component can be found in the spinner to get the text: " + spinner);
+            textEditorComponent = null;
+        }
 
-		// Read text from text component
-		if (textEditorComponent != null) {
-			text = textEditorComponent.getText();
-		}
+        // Read text from text component
+        if (textEditorComponent != null) {
+            text = textEditorComponent.getText();
+        }
 
-		return text;
-	}
+        return text;
+    }
 
-	/**
-	 * Retrieves the formatter currently in the text component of the spinner, if any.<br>Note that if editor of the
-	 * spinner has been customized, this method may need to be adapted in a sub-class.
-	 *
-	 * @return Spinner formatter or null if not found.
-	 */
-	protected JFormattedTextField.AbstractFormatter getFormatter() {
-		JFormattedTextField.AbstractFormatter formatter = null;
+    /**
+     * Retrieves the formatter currently in the text component of the spinner, if any.<br>Note that if editor of the
+     * spinner has been customized, this method may need to be adapted in a sub-class.
+     *
+     * @return Spinner formatter or null if not found.
+     */
+    protected JFormattedTextField.AbstractFormatter getFormatter() {
+        JFormattedTextField.AbstractFormatter formatter = null;
 
-		// Try to find a text component in the spinner
-		final JFormattedTextField textEditorComponent;
-		if (spinner.getEditor() instanceof JFormattedTextField) {
-			textEditorComponent = (JFormattedTextField) spinner.getEditor();
-		} else if (spinner.getEditor() instanceof JSpinner.DefaultEditor) {
-			textEditorComponent = ((JSpinner.DefaultEditor) spinner.getEditor()).getTextField();
-		} else {
-			LOGGER.error("No formatted textfield can be found in the spinner to get the formatter: " + spinner);
-			textEditorComponent = null;
-		}
+        // Try to find a text component in the spinner
+        final JFormattedTextField textEditorComponent;
+        if (spinner.getEditor() instanceof JFormattedTextField) {
+            textEditorComponent = (JFormattedTextField) spinner.getEditor();
+        } else if (spinner.getEditor() instanceof JSpinner.DefaultEditor) {
+            textEditorComponent = ((JSpinner.DefaultEditor) spinner.getEditor()).getTextField();
+        } else {
+            LOGGER.error("No formatted textfield can be found in the spinner to get the formatter: " + spinner);
+            textEditorComponent = null;
+        }
 
-		// Read text from text component
-		if (textEditorComponent != null) {
-			formatter = textEditorComponent.getFormatter();
-		}
+        // Read text from text component
+        if (textEditorComponent != null) {
+            formatter = textEditorComponent.getFormatter();
+        }
 
-		return formatter;
-	}
+        return formatter;
+    }
 }

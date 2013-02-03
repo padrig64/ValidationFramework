@@ -26,6 +26,7 @@
 package com.github.validationframework.swing.dataprovider;
 
 import com.github.validationframework.api.dataprovider.DataProvider;
+
 import javax.swing.JList;
 
 /**
@@ -40,25 +41,25 @@ import javax.swing.JList;
  */
 public class JListSelectedValueProvider implements DataProvider<Object> {
 
-	/**
-	 * List to get the selected value from.
-	 */
-	private final JList list;
+    /**
+     * List to get the selected value from.
+     */
+    private final JList list;
 
-	/**
-	 * Constructor specifying the list to get the selected value from.
-	 *
-	 * @param list List to get the selected value from.
-	 */
-	public JListSelectedValueProvider(final JList list) {
-		this.list = list;
-	}
+    /**
+     * Constructor specifying the list to get the selected value from.
+     *
+     * @param list List to get the selected value from.
+     */
+    public JListSelectedValueProvider(final JList list) {
+        this.list = list;
+    }
 
-	/**
-	 * @see DataProvider#getData()
-	 */
-	@Override
-	public Object getData() {
-		return list.getSelectedValue();
-	}
+    /**
+     * @see DataProvider#getData()
+     */
+    @Override
+    public Object getData() {
+        return list.getSelectedValue();
+    }
 }

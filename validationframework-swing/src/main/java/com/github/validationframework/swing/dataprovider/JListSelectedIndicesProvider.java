@@ -26,9 +26,10 @@
 package com.github.validationframework.swing.dataprovider;
 
 import com.github.validationframework.api.dataprovider.DataProvider;
+
+import javax.swing.JList;
 import java.util.ArrayList;
 import java.util.Collection;
-import javax.swing.JList;
 
 /**
  * Data provider retrieving the selected indices of a list.
@@ -42,29 +43,29 @@ import javax.swing.JList;
  */
 public class JListSelectedIndicesProvider implements DataProvider<Collection<Integer>> {
 
-	/**
-	 * List to get the selected indices from.
-	 */
-	private final JList list;
+    /**
+     * List to get the selected indices from.
+     */
+    private final JList list;
 
-	/**
-	 * Constructor specifying the list to get the selected indices from.
-	 *
-	 * @param list List to get the selected index from.
-	 */
-	public JListSelectedIndicesProvider(final JList list) {
-		this.list = list;
-	}
+    /**
+     * Constructor specifying the list to get the selected indices from.
+     *
+     * @param list List to get the selected index from.
+     */
+    public JListSelectedIndicesProvider(final JList list) {
+        this.list = list;
+    }
 
-	/**
-	 * @see DataProvider#getData()
-	 */
-	@Override
-	public Collection<Integer> getData() {
-		final Collection<Integer> indices = new ArrayList<Integer>();
-		for (final int index : list.getSelectedIndices()) {
-			indices.add(index);
-		}
-		return indices;
-	}
+    /**
+     * @see DataProvider#getData()
+     */
+    @Override
+    public Collection<Integer> getData() {
+        final Collection<Integer> indices = new ArrayList<Integer>();
+        for (final int index : list.getSelectedIndices()) {
+            indices.add(index);
+        }
+        return indices;
+    }
 }

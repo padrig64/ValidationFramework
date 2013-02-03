@@ -34,137 +34,139 @@ import java.awt.Point;
  */
 public class Anchor {
 
-	/**
-	 * Convenience anchor representing a point at the top left hand corner.
-	 */
-	public static final Anchor TOP_LEFT = new Anchor(0.0f, 0.0f);
+    /**
+     * Convenience anchor representing a point at the top left hand corner.
+     */
+    public static final Anchor TOP_LEFT = new Anchor(0.0f, 0.0f);
 
-	/**
-	 * Convenience anchor representing a point at the top right hand corner.
-	 */
-	public static final Anchor TOP_RIGHT = new Anchor(1.0f, 0.0f);
+    /**
+     * Convenience anchor representing a point at the top right hand corner.
+     */
+    public static final Anchor TOP_RIGHT = new Anchor(1.0f, 0.0f);
 
-	/**
-	 * Convenience anchor representing a point at the bottom left hand corner.
-	 */
-	public static final Anchor BOTTOM_LEFT = new Anchor(0.0f, 1.0f);
+    /**
+     * Convenience anchor representing a point at the bottom left hand corner.
+     */
+    public static final Anchor BOTTOM_LEFT = new Anchor(0.0f, 1.0f);
 
-	/**
-	 * Convenience anchor representing a point at the bottom right hand corner.
-	 */
-	public static final Anchor BOTTOM_RIGHT = new Anchor(1.0f, 1.0f);
+    /**
+     * Convenience anchor representing a point at the bottom right hand corner.
+     */
+    public static final Anchor BOTTOM_RIGHT = new Anchor(1.0f, 1.0f);
 
-	/**
-	 * Convenience anchor representing a point at the center.
-	 */
-	public static final Anchor CENTER = new Anchor(0.5F, 0.5f);
+    /**
+     * Convenience anchor representing a point at the center.
+     */
+    public static final Anchor CENTER = new Anchor(0.5F, 0.5f);
 
-	/**
-	 * Relative position in percentage relatively to the origin and length on the X axis.<br>For instance, on a component
-	 * whose bounds are defined by the rectangle [X,Y,W,H], a value of 0.0f would represent X, and a value of 1.0f would
-	 * represent X+W.
-	 */
-	private final float relativeX;
+    /**
+     * Relative position in percentage relatively to the origin and length on the X axis.<br>For instance,
+     * on a component
+     * whose bounds are defined by the rectangle [X,Y,W,H], a value of 0.0f would represent X, and a value of 1.0f would
+     * represent X+W.
+     */
+    private final float relativeX;
 
-	/**
-	 * Relative position in percentage relatively to the origin and length on the Y axis.<br>For instance, on a component
-	 * whose bounds are defined by the rectangle [X,Y,W,H], a value of 0.0f would represent Y, and a value of 1.0f would
-	 * represent Y+H.
-	 */
-	private final float relativeY;
+    /**
+     * Relative position in percentage relatively to the origin and length on the Y axis.<br>For instance,
+     * on a component
+     * whose bounds are defined by the rectangle [X,Y,W,H], a value of 0.0f would represent Y, and a value of 1.0f would
+     * represent Y+H.
+     */
+    private final float relativeY;
 
-	/**
-	 * Offset in pixels on the X axis, relatively to {@link #relativeX}.
-	 */
-	private final int offsetX;
+    /**
+     * Offset in pixels on the X axis, relatively to {@link #relativeX}.
+     */
+    private final int offsetX;
 
-	/**
-	 * Offset in pixels on the Y axis, relatively to {@link #relativeY}.
-	 */
-	private final int offsetY;
+    /**
+     * Offset in pixels on the Y axis, relatively to {@link #relativeY}.
+     */
+    private final int offsetY;
 
-	/**
-	 * Constructor specifying an anchor to copy from.
-	 *
-	 * @param anchor Anchor to copy from.
-	 */
-	public Anchor(final Anchor anchor) {
-		this(anchor.getRelativeX(), anchor.getOffsetX(), anchor.getRelativeY(), anchor.getOffsetY());
-	}
+    /**
+     * Constructor specifying an anchor to copy from.
+     *
+     * @param anchor Anchor to copy from.
+     */
+    public Anchor(final Anchor anchor) {
+        this(anchor.getRelativeX(), anchor.getOffsetX(), anchor.getRelativeY(), anchor.getOffsetY());
+    }
 
-	/**
-	 * Anchor specifying the relative positions on the X axis and Y axis.
-	 *
-	 * @param relativeX Relative position on the X axis.
-	 * @param relativeY Relative position on the Y axis.
-	 *
-	 * @see #relativeX
-	 * @see #relativeY
-	 */
-	public Anchor(final float relativeX, final float relativeY) {
-		this(relativeX, 0, relativeY, 0);
-	}
+    /**
+     * Anchor specifying the relative positions on the X axis and Y axis.
+     *
+     * @param relativeX Relative position on the X axis.
+     * @param relativeY Relative position on the Y axis.
+     *
+     * @see #relativeX
+     * @see #relativeY
+     */
+    public Anchor(final float relativeX, final float relativeY) {
+        this(relativeX, 0, relativeY, 0);
+    }
 
-	/**
-	 * Anchor specifying the relative positions and offsets on the X axis and Y axis.
-	 *
-	 * @param relativeX Relative position on the X axis.
-	 * @param offsetX Position offset on the X axis.
-	 * @param relativeY Relative position on the Y axis.
-	 * @param offsetY Position offset on the Y axis.
-	 *
-	 * @see #relativeX
-	 * @see #offsetX
-	 * @see #relativeY
-	 * @see #offsetY
-	 */
-	public Anchor(final float relativeX, final int offsetX, final float relativeY, final int offsetY) {
-		this.relativeX = relativeX;
-		this.offsetX = offsetX;
-		this.relativeY = relativeY;
-		this.offsetY = offsetY;
-	}
+    /**
+     * Anchor specifying the relative positions and offsets on the X axis and Y axis.
+     *
+     * @param relativeX Relative position on the X axis.
+     * @param offsetX   Position offset on the X axis.
+     * @param relativeY Relative position on the Y axis.
+     * @param offsetY   Position offset on the Y axis.
+     *
+     * @see #relativeX
+     * @see #offsetX
+     * @see #relativeY
+     * @see #offsetY
+     */
+    public Anchor(final float relativeX, final int offsetX, final float relativeY, final int offsetY) {
+        this.relativeX = relativeX;
+        this.offsetX = offsetX;
+        this.relativeY = relativeY;
+        this.offsetY = offsetY;
+    }
 
-	public float getRelativeX() {
-		return relativeX;
-	}
+    public float getRelativeX() {
+        return relativeX;
+    }
 
-	public float getRelativeY() {
-		return relativeY;
-	}
+    public float getRelativeY() {
+        return relativeY;
+    }
 
-	public int getOffsetX() {
-		return offsetX;
-	}
+    public int getOffsetX() {
+        return offsetX;
+    }
 
-	public int getOffsetY() {
-		return offsetY;
-	}
+    public int getOffsetY() {
+        return offsetY;
+    }
 
-	/**
-	 * Retrieves a point on an object of the specified size.
-	 *
-	 * @param size Size of the object to get the anchor point for.
-	 *
-	 * @return Anchor point.
-	 *
-	 * @see #getAnchorPoint(int, int)
-	 */
-	public Point getAnchorPoint(final Dimension size) {
-		return getAnchorPoint(size.width, size.height);
-	}
+    /**
+     * Retrieves a point on an object of the specified size.
+     *
+     * @param size Size of the object to get the anchor point for.
+     *
+     * @return Anchor point.
+     *
+     * @see #getAnchorPoint(int, int)
+     */
+    public Point getAnchorPoint(final Dimension size) {
+        return getAnchorPoint(size.width, size.height);
+    }
 
-	/**
-	 * Retrieves a point on an object of the specified size.
-	 *
-	 * @param width Width of the object to get the anchor point for.
-	 * @param height Height of the object to get the anchor point for.
-	 *
-	 * @return Anchor point.
-	 *
-	 * @see #getAnchorPoint(Dimension)
-	 */
-	public Point getAnchorPoint(final int width, final int height) {
-		return new Point((int) (relativeX * width + offsetX), (int) (relativeY * height + offsetY));
-	}
+    /**
+     * Retrieves a point on an object of the specified size.
+     *
+     * @param width  Width of the object to get the anchor point for.
+     * @param height Height of the object to get the anchor point for.
+     *
+     * @return Anchor point.
+     *
+     * @see #getAnchorPoint(Dimension)
+     */
+    public Point getAnchorPoint(final int width, final int height) {
+        return new Point((int) (relativeX * width + offsetX), (int) (relativeY * height + offsetY));
+    }
 }

@@ -33,17 +33,17 @@ import com.github.validationframework.api.rule.Rule;
  * makes it more convenient to reduce compilation warnings and errors.
  *
  * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
- * type of the component itself.
+ *            type of the component itself.
  *
  * @see Rule
  */
 public class NullBooleanRule<D> implements Rule<D, Boolean> {
 
-	/**
-	 * @see Rule#validate(Object)
-	 */
-	@Override
-	public Boolean validate(final D data) {
-		return (data == null);
-	}
+    /**
+     * @see Rule#validate(Object)
+     */
+    @Override
+    public Boolean validate(final D data) {
+        return (data == null);
+    }
 }

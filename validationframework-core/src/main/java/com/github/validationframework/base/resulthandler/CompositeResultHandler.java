@@ -26,6 +26,7 @@
 package com.github.validationframework.base.resulthandler;
 
 import com.github.validationframework.api.resulthandler.ResultHandler;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,62 +39,62 @@ import java.util.List;
  */
 public class CompositeResultHandler<R> implements ResultHandler<R> {
 
-	/**
-	 * Delegate result handlers.
-	 */
-	private final List<ResultHandler<R>> resultHandlers = new ArrayList<ResultHandler<R>>();
+    /**
+     * Delegate result handlers.
+     */
+    private final List<ResultHandler<R>> resultHandlers = new ArrayList<ResultHandler<R>>();
 
-	/**
-	 * Default constructor.
-	 */
-	public CompositeResultHandler() {
-		// Nothing to be done
-	}
+    /**
+     * Default constructor.
+     */
+    public CompositeResultHandler() {
+        // Nothing to be done
+    }
 
-	/**
-	 * Constructor specifying the delegate result handler(s).
-	 *
-	 * @param resultHandlers Delegate result handler(s).
-	 *
-	 * @see #addResultHandler(ResultHandler)
-	 */
-	public CompositeResultHandler(final ResultHandler<R>... resultHandlers) {
-		if (resultHandlers != null) {
-			for (final ResultHandler<R> resultHandler : resultHandlers) {
-				addResultHandler(resultHandler);
-			}
-		}
-	}
+    /**
+     * Constructor specifying the delegate result handler(s).
+     *
+     * @param resultHandlers Delegate result handler(s).
+     *
+     * @see #addResultHandler(ResultHandler)
+     */
+    public CompositeResultHandler(final ResultHandler<R>... resultHandlers) {
+        if (resultHandlers != null) {
+            for (final ResultHandler<R> resultHandler : resultHandlers) {
+                addResultHandler(resultHandler);
+            }
+        }
+    }
 
-	/**
-	 * Adds the specified delegate result handler.
-	 *
-	 * @param resultHandler Delegate result handler to be added.
-	 */
-	public void addResultHandler(final ResultHandler<R> resultHandler) {
-		resultHandlers.add(resultHandler);
-	}
+    /**
+     * Adds the specified delegate result handler.
+     *
+     * @param resultHandler Delegate result handler to be added.
+     */
+    public void addResultHandler(final ResultHandler<R> resultHandler) {
+        resultHandlers.add(resultHandler);
+    }
 
-	/**
-	 * Removes the specified delegate result handler.
-	 *
-	 * @param resultHandler Delegate result handler to be removed.
-	 */
-	public void removeResultHandler(final ResultHandler<R> resultHandler) {
-		resultHandlers.remove(resultHandler);
-	}
+    /**
+     * Removes the specified delegate result handler.
+     *
+     * @param resultHandler Delegate result handler to be removed.
+     */
+    public void removeResultHandler(final ResultHandler<R> resultHandler) {
+        resultHandlers.remove(resultHandler);
+    }
 
-	/**
-	 * Processes the specified result using all delegate result handlers.
-	 *
-	 * @param result Validation result to be handled.
-	 *
-	 * @see ResultHandler#handleResult(Object)
-	 */
-	@Override
-	public void handleResult(final R result) {
-		for (final ResultHandler<R> resultHandler : resultHandlers) {
-			resultHandler.handleResult(result);
-		}
-	}
+    /**
+     * Processes the specified result using all delegate result handlers.
+     *
+     * @param result Validation result to be handled.
+     *
+     * @see ResultHandler#handleResult(Object)
+     */
+    @Override
+    public void handleResult(final R result) {
+        for (final ResultHandler<R> resultHandler : resultHandlers) {
+            resultHandler.handleResult(result);
+        }
+    }
 }

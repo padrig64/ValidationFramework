@@ -29,151 +29,152 @@ import com.github.validationframework.api.common.Disposable;
 import com.github.validationframework.api.resulthandler.ResultHandler;
 import com.github.validationframework.swing.decoration.IconComponentDecoration;
 import com.github.validationframework.swing.decoration.anchor.AnchorLink;
+
 import javax.swing.Icon;
 import javax.swing.JComponent;
 
 public abstract class AbstractIconFeedback<O> implements ResultHandler<O>, Disposable {
 
-	private IconComponentDecoration decoration = null;
+    private IconComponentDecoration decoration = null;
 
-	public AbstractIconFeedback(final JComponent decoratedComponent) {
-		attach(decoratedComponent);
-	}
+    public AbstractIconFeedback(final JComponent decoratedComponent) {
+        attach(decoratedComponent);
+    }
 
-	public void attach(final JComponent decoratedComponent) {
-		attach(decoratedComponent, IconComponentDecoration.DEFAULT_ANCHOR_LINK_WITH_OWNER);
-	}
+    public void attach(final JComponent decoratedComponent) {
+        attach(decoratedComponent, IconComponentDecoration.DEFAULT_ANCHOR_LINK_WITH_OWNER);
+    }
 
-	public void attach(final JComponent decoratedComponent, final AnchorLink anchorLinkWithOwner) {
-		boolean wasVisible = false;
-		if (decoration != null) {
-			wasVisible = decoration.isVisible();
-		}
+    public void attach(final JComponent decoratedComponent, final AnchorLink anchorLinkWithOwner) {
+        boolean wasVisible = false;
+        if (decoration != null) {
+            wasVisible = decoration.isVisible();
+        }
 
-		detach();
+        detach();
 
-		if (decoratedComponent != null) {
-			decoration = new IconComponentDecoration(decoratedComponent);
-			decoration.setAnchorLink(anchorLinkWithOwner);
-			decoration.setVisible(wasVisible);
-		}
-	}
+        if (decoratedComponent != null) {
+            decoration = new IconComponentDecoration(decoratedComponent);
+            decoration.setAnchorLink(anchorLinkWithOwner);
+            decoration.setVisible(wasVisible);
+        }
+    }
 
-	public void detach() {
-		if (decoration != null) {
-			decoration.dispose();
-			decoration = null;
-		}
-	}
+    public void detach() {
+        if (decoration != null) {
+            decoration.dispose();
+            decoration = null;
+        }
+    }
 
-	/**
-	 * @see IconComponentDecoration#getDecoratedComponent()
-	 */
-	public JComponent getDecoratedComponent() {
-		JComponent component = null;
-		if (decoration != null) {
-			component = decoration.getDecoratedComponent();
-		}
-		return component;
-	}
+    /**
+     * @see IconComponentDecoration#getDecoratedComponent()
+     */
+    public JComponent getDecoratedComponent() {
+        JComponent component = null;
+        if (decoration != null) {
+            component = decoration.getDecoratedComponent();
+        }
+        return component;
+    }
 
-	/**
-	 * @see IconComponentDecoration#getClippingAncestor()
-	 */
-	public JComponent getClippingAncestor() {
-		JComponent component = null;
-		if (decoration != null) {
-			component = decoration.getClippingAncestor();
-		}
-		return component;
-	}
+    /**
+     * @see IconComponentDecoration#getClippingAncestor()
+     */
+    public JComponent getClippingAncestor() {
+        JComponent component = null;
+        if (decoration != null) {
+            component = decoration.getClippingAncestor();
+        }
+        return component;
+    }
 
-	/**
-	 * @see IconComponentDecoration#setClippingAncestor(JComponent)
-	 */
-	public void setClippingAncestor(final JComponent decorationClippingAncestor) {
-		if (decoration != null) {
-			decoration.setClippingAncestor(decorationClippingAncestor);
-		}
-	}
+    /**
+     * @see IconComponentDecoration#setClippingAncestor(JComponent)
+     */
+    public void setClippingAncestor(final JComponent decorationClippingAncestor) {
+        if (decoration != null) {
+            decoration.setClippingAncestor(decorationClippingAncestor);
+        }
+    }
 
-	/**
-	 * @see IconComponentDecoration#getAnchorLink()
-	 */
-	public AnchorLink getAnchorLink() {
-		AnchorLink anchorLink = null;
-		if (decoration != null) {
-			anchorLink = decoration.getAnchorLink();
-		}
-		return anchorLink;
-	}
+    /**
+     * @see IconComponentDecoration#getAnchorLink()
+     */
+    public AnchorLink getAnchorLink() {
+        AnchorLink anchorLink = null;
+        if (decoration != null) {
+            anchorLink = decoration.getAnchorLink();
+        }
+        return anchorLink;
+    }
 
-	/**
-	 * @see IconComponentDecoration#setAnchorLink(AnchorLink)
-	 */
-	public void setAnchorLink(final AnchorLink anchorLink) {
-		if (decoration != null) {
-			decoration.setAnchorLink(anchorLink);
-		}
-	}
+    /**
+     * @see IconComponentDecoration#setAnchorLink(AnchorLink)
+     */
+    public void setAnchorLink(final AnchorLink anchorLink) {
+        if (decoration != null) {
+            decoration.setAnchorLink(anchorLink);
+        }
+    }
 
-	/**
-	 * @see IconComponentDecoration#getIcon()
-	 */
-	protected Icon getIcon() {
-		Icon icon = null;
-		if (decoration != null) {
-			icon = decoration.getIcon();
-		}
-		return icon;
-	}
+    /**
+     * @see IconComponentDecoration#getIcon()
+     */
+    protected Icon getIcon() {
+        Icon icon = null;
+        if (decoration != null) {
+            icon = decoration.getIcon();
+        }
+        return icon;
+    }
 
-	/**
-	 * @see IconComponentDecoration#setIcon(Icon)
-	 */
-	protected void setIcon(final Icon icon) {
-		if (decoration != null) {
-			decoration.setIcon(icon);
-		}
-	}
+    /**
+     * @see IconComponentDecoration#setIcon(Icon)
+     */
+    protected void setIcon(final Icon icon) {
+        if (decoration != null) {
+            decoration.setIcon(icon);
+        }
+    }
 
-	/**
-	 * @see IconComponentDecoration#getToolTipText()
-	 */
-	protected String getToolTipText() {
-		String tip = null;
-		if (decoration != null) {
-			tip = decoration.getToolTipText();
-		}
-		return tip;
-	}
+    /**
+     * @see IconComponentDecoration#getToolTipText()
+     */
+    protected String getToolTipText() {
+        String tip = null;
+        if (decoration != null) {
+            tip = decoration.getToolTipText();
+        }
+        return tip;
+    }
 
-	/**
-	 * @see IconComponentDecoration#setToolTipText(String)
-	 */
-	protected void setToolTipText(final String text) {
-		if (decoration != null) {
-			decoration.setToolTipText(text);
-		}
-	}
+    /**
+     * @see IconComponentDecoration#setToolTipText(String)
+     */
+    protected void setToolTipText(final String text) {
+        if (decoration != null) {
+            decoration.setToolTipText(text);
+        }
+    }
 
-	protected void showIcon() {
-		if (decoration != null) {
-			decoration.setVisible(true);
-		}
-	}
+    protected void showIcon() {
+        if (decoration != null) {
+            decoration.setVisible(true);
+        }
+    }
 
-	protected void hideIcon() {
-		if (decoration != null) {
-			decoration.setVisible(false);
-		}
-	}
+    protected void hideIcon() {
+        if (decoration != null) {
+            decoration.setVisible(false);
+        }
+    }
 
-	/**
-	 * @see Disposable#dispose()
-	 */
-	@Override
-	public void dispose() {
-		detach();
-	}
+    /**
+     * @see Disposable#dispose()
+     */
+    @Override
+    public void dispose() {
+        detach();
+    }
 }

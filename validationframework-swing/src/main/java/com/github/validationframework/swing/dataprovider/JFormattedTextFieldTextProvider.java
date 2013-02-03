@@ -37,10 +37,10 @@ import javax.swing.JFormattedTextField;
  */
 public class JFormattedTextFieldTextProvider extends BaseJTextComponentTextProvider<JFormattedTextField> {
 
-	/**
-	 * @see BaseJTextComponentTextProvider#BaseJTextComponentTextProvider(javax.swing.text.JTextComponent)
-	 */
-	public JFormattedTextFieldTextProvider(final JFormattedTextField textComponent) {
-		super(textComponent);
-	}
+    /**
+     * @see BaseJTextComponentTextProvider#BaseJTextComponentTextProvider(javax.swing.text.JTextComponent)
+     */
+    public JFormattedTextFieldTextProvider(final JFormattedTextField textComponent) {
+        super(textComponent);
+    }
 }

@@ -26,6 +26,7 @@
 package com.github.validationframework.swing.dataprovider;
 
 import com.github.validationframework.api.dataprovider.DataProvider;
+
 import javax.swing.JComboBox;
 
 /**
@@ -38,25 +39,25 @@ import javax.swing.JComboBox;
  */
 public class JComboBoxSelectedValueProvider implements DataProvider<Object> {
 
-	/**
-	 * Combobox to get the selected value from.
-	 */
-	private final JComboBox comboBox;
+    /**
+     * Combobox to get the selected value from.
+     */
+    private final JComboBox comboBox;
 
-	/**
-	 * Constructor specifying the combobox to get the selected value from.
-	 *
-	 * @param comboBox Combobox to get the selected value from.
-	 */
-	public JComboBoxSelectedValueProvider(final JComboBox comboBox) {
-		this.comboBox = comboBox;
-	}
+    /**
+     * Constructor specifying the combobox to get the selected value from.
+     *
+     * @param comboBox Combobox to get the selected value from.
+     */
+    public JComboBoxSelectedValueProvider(final JComboBox comboBox) {
+        this.comboBox = comboBox;
+    }
 
-	/**
-	 * @see DataProvider#getData()
-	 */
-	@Override
-	public Object getData() {
-		return comboBox.getSelectedItem();
-	}
+    /**
+     * @see DataProvider#getData()
+     */
+    @Override
+    public Object getData() {
+        return comboBox.getSelectedItem();
+    }
 }

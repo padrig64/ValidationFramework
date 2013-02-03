@@ -34,5 +34,5 @@ import java.util.Collection;
  * @param <O> Type of the output object after aggregation.
  */
 public interface Aggregator<I, O> extends Transformer<Collection<I>, O> {
-	// Nothing to be done
+    // Nothing to be done
 }

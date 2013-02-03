@@ -64,338 +64,338 @@ import java.util.Map;
  * @see Disposable
  */
 public abstract class AbstractMappableValidator<T extends Trigger, P extends DataProvider<I>, I, R extends Rule<D,
-		O>, D, O, H extends ResultHandler<A>, A> implements MappableValidator<T, P, I, R, D, O, H, A>, Disposable {
+        O>, D, O, H extends ResultHandler<A>, A> implements MappableValidator<T, P, I, R, D, O, H, A>, Disposable {
 
-	/**
-	 * Listener to all registered triggers, initiating the validation logic.
-	 */
-	private class TriggerAdapter implements TriggerListener {
+    /**
+     * Listener to all registered triggers, initiating the validation logic.
+     */
+    private class TriggerAdapter implements TriggerListener {
 
-		/**
-		 * Trigger that is listened to.
-		 */
-		private final T trigger;
+        /**
+         * Trigger that is listened to.
+         */
+        private final T trigger;
 
-		/**
-		 * Constructor specifying the trigger that is listened to.
-		 *
-		 * @param trigger Trigger that is listened to.
-		 */
-		public TriggerAdapter(final T trigger) {
-			this.trigger = trigger;
-		}
+        /**
+         * Constructor specifying the trigger that is listened to.
+         *
+         * @param trigger Trigger that is listened to.
+         */
+        public TriggerAdapter(final T trigger) {
+            this.trigger = trigger;
+        }
 
-		/**
-		 * @see TriggerListener#triggerValidation(TriggerEvent)
-		 */
-		@Override
-		public void triggerValidation(final TriggerEvent event) {
-			// Start validation logic
-			processTrigger(trigger);
-		}
-	}
+        /**
+         * @see TriggerListener#triggerValidation(TriggerEvent)
+         */
+        @Override
+        public void triggerValidation(final TriggerEvent event) {
+            // Start validation logic
+            processTrigger(trigger);
+        }
+    }
 
-	/**
-	 * Listeners to all registered validation triggers.
-	 */
-	protected final Map<T, TriggerListener> triggersToTriggerAdapters = new HashMap<T, TriggerListener>();
+    /**
+     * Listeners to all registered validation triggers.
+     */
+    protected final Map<T, TriggerListener> triggersToTriggerAdapters = new HashMap<T, TriggerListener>();
 
-	/**
-	 * Logger for this class.
-	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractMappableValidator.class);
+    /**
+     * Logger for this class.
+     */
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractMappableValidator.class);
 
-	/**
-	 * Warning message displayed when both input paramters are null when call the map methods.
-	 */
-	private static final String NULL_PARAMETERS_WARNING = "Call to method will have no effect since both parameters " +
-			"are null";
+    /**
+     * Warning message displayed when both input paramters are null when call the map methods.
+     */
+    private static final String NULL_PARAMETERS_WARNING = "Call to method will have no effect since both parameters "
+            + "are null";
 
-	/**
-	 * Mapping between triggers and data providers.
-	 */
-	protected final Map<T, List<P>> triggersToDataProviders = new HashMap<T, List<P>>();
+    /**
+     * Mapping between triggers and data providers.
+     */
+    protected final Map<T, List<P>> triggersToDataProviders = new HashMap<T, List<P>>();
 
-	/**
-	 * Mapping between data providers and rules.
-	 */
-	protected final Map<P, List<R>> dataProvidersToRules = new HashMap<P, List<R>>();
+    /**
+     * Mapping between data providers and rules.
+     */
+    protected final Map<P, List<R>> dataProvidersToRules = new HashMap<P, List<R>>();
 
-	/**
-	 * Mapping between rules and result handlers.
-	 */
-	protected final Map<R, List<H>> rulesToResultHandlers = new HashMap<R, List<H>>();
+    /**
+     * Mapping between rules and result handlers.
+     */
+    protected final Map<R, List<H>> rulesToResultHandlers = new HashMap<R, List<H>>();
 
-	/**
-	 * Registers a trigger listener to start the validation flow.<br>If a trigger listener was already previously
-	 * registered, calling this method will have no effect.
-	 *
-	 * @param trigger Trigger to hook to.
-	 */
-	private void hookToTrigger(final T trigger) {
-		// Hook to trigger only if not already done (the same trigger adatper will be used if it was already hooked)
-		if (!triggersToTriggerAdapters.containsKey(trigger)) {
-			final TriggerListener triggerAdapter = new TriggerAdapter(trigger);
-			triggersToTriggerAdapters.put(trigger, triggerAdapter);
-			trigger.addTriggerListener(triggerAdapter);
-		}
-	}
+    /**
+     * Registers a trigger listener to start the validation flow.<br>If a trigger listener was already previously
+     * registered, calling this method will have no effect.
+     *
+     * @param trigger Trigger to hook to.
+     */
+    private void hookToTrigger(final T trigger) {
+        // Hook to trigger only if not already done (the same trigger adatper will be used if it was already hooked)
+        if (!triggersToTriggerAdapters.containsKey(trigger)) {
+            final TriggerListener triggerAdapter = new TriggerAdapter(trigger);
+            triggersToTriggerAdapters.put(trigger, triggerAdapter);
+            trigger.addTriggerListener(triggerAdapter);
+        }
+    }
 
-	/**
-	 * De-registers the trigger listener.
-	 *
-	 * @param trigger Trigger to unhook from.
-	 */
-	private void unhookFromTrigger(final T trigger) {
-		// Unhook from trigger
-		final TriggerListener triggerAdapter = triggersToTriggerAdapters.get(trigger);
-		trigger.removeTriggerListener(triggerAdapter);
+    /**
+     * De-registers the trigger listener.
+     *
+     * @param trigger Trigger to unhook from.
+     */
+    private void unhookFromTrigger(final T trigger) {
+        // Unhook from trigger
+        final TriggerListener triggerAdapter = triggersToTriggerAdapters.get(trigger);
+        trigger.removeTriggerListener(triggerAdapter);
 
-		// Check if trigger was added several times
-		if (!triggersToTriggerAdapters.containsKey(trigger)) {
-			// All occurrences of the same trigger have been removed
-			triggersToTriggerAdapters.remove(trigger);
-		}
-	}
+        // Check if trigger was added several times
+        if (!triggersToTriggerAdapters.containsKey(trigger)) {
+            // All occurrences of the same trigger have been removed
+            triggersToTriggerAdapters.remove(trigger);
+        }
+    }
 
-	/**
-	 * @see MappableValidator#mapTriggerToDataProvider(Trigger, DataProvider)
-	 */
-	@Override
-	public void mapTriggerToDataProvider(final T trigger, final P dataProvider) {
-		if ((trigger == null) && (dataProvider == null)) {
-			LOGGER.warn(NULL_PARAMETERS_WARNING);
-		} else if (trigger == null) {
-			unmapDataProviderFromAllTriggers(dataProvider);
-		} else if (dataProvider == null) {
-			unmapTriggerFromAllDataProviders(trigger);
-		} else {
-			// Hook trigger
-			hookToTrigger(trigger);
+    /**
+     * @see MappableValidator#mapTriggerToDataProvider(Trigger, DataProvider)
+     */
+    @Override
+    public void mapTriggerToDataProvider(final T trigger, final P dataProvider) {
+        if ((trigger == null) && (dataProvider == null)) {
+            LOGGER.warn(NULL_PARAMETERS_WARNING);
+        } else if (trigger == null) {
+            unmapDataProviderFromAllTriggers(dataProvider);
+        } else if (dataProvider == null) {
+            unmapTriggerFromAllDataProviders(trigger);
+        } else {
+            // Hook trigger
+            hookToTrigger(trigger);
 
-			// Do the mapping
-			List<P> mappedDataProviders = triggersToDataProviders.get(trigger);
-			if (mappedDataProviders == null) {
-				mappedDataProviders = new ArrayList<P>();
-				triggersToDataProviders.put(trigger, mappedDataProviders);
-			}
-			mappedDataProviders.add(dataProvider);
-		}
-	}
+            // Do the mapping
+            List<P> mappedDataProviders = triggersToDataProviders.get(trigger);
+            if (mappedDataProviders == null) {
+                mappedDataProviders = new ArrayList<P>();
+                triggersToDataProviders.put(trigger, mappedDataProviders);
+            }
+            mappedDataProviders.add(dataProvider);
+        }
+    }
 
-	/**
-	 * Disconnects the specified trigger from all data providers.
-	 *
-	 * @param trigger Trigger to be unmapped.
-	 */
-	private void unmapTriggerFromAllDataProviders(final T trigger) {
-		if (trigger != null) {
-			unhookFromTrigger(trigger);
-			triggersToDataProviders.remove(trigger);
-		}
-	}
+    /**
+     * Disconnects the specified trigger from all data providers.
+     *
+     * @param trigger Trigger to be unmapped.
+     */
+    private void unmapTriggerFromAllDataProviders(final T trigger) {
+        if (trigger != null) {
+            unhookFromTrigger(trigger);
+            triggersToDataProviders.remove(trigger);
+        }
+    }
 
-	/**
-	 * Disconnects the specified data providers from all triggers.
-	 *
-	 * @param dataProvider Data provider to be unmapped.
-	 */
-	private void unmapDataProviderFromAllTriggers(final P dataProvider) {
-		if (dataProvider != null) {
-			for (final List<P> mappedDataProviders : triggersToDataProviders.values()) {
-				mappedDataProviders.remove(dataProvider);
-			}
-		}
-	}
+    /**
+     * Disconnects the specified data providers from all triggers.
+     *
+     * @param dataProvider Data provider to be unmapped.
+     */
+    private void unmapDataProviderFromAllTriggers(final P dataProvider) {
+        if (dataProvider != null) {
+            for (final List<P> mappedDataProviders : triggersToDataProviders.values()) {
+                mappedDataProviders.remove(dataProvider);
+            }
+        }
+    }
 
-	/**
-	 * @see MappableValidator#mapDataProviderToRule(DataProvider, Rule)
-	 */
-	@Override
-	public void mapDataProviderToRule(final P dataProvider, final R rule) {
-		if ((dataProvider == null) && (rule == null)) {
-			LOGGER.warn(NULL_PARAMETERS_WARNING);
-		} else if (dataProvider == null) {
-			unmapRuleFromAllDataProviders(rule);
-		} else if (rule == null) {
-			unmapDataProviderFromAllRules(dataProvider);
-		} else {
-			List<R> mappedRules = dataProvidersToRules.get(dataProvider);
-			if (mappedRules == null) {
-				mappedRules = new ArrayList<R>();
-				dataProvidersToRules.put(dataProvider, mappedRules);
-			}
-			mappedRules.add(rule);
-		}
-	}
+    /**
+     * @see MappableValidator#mapDataProviderToRule(DataProvider, Rule)
+     */
+    @Override
+    public void mapDataProviderToRule(final P dataProvider, final R rule) {
+        if ((dataProvider == null) && (rule == null)) {
+            LOGGER.warn(NULL_PARAMETERS_WARNING);
+        } else if (dataProvider == null) {
+            unmapRuleFromAllDataProviders(rule);
+        } else if (rule == null) {
+            unmapDataProviderFromAllRules(dataProvider);
+        } else {
+            List<R> mappedRules = dataProvidersToRules.get(dataProvider);
+            if (mappedRules == null) {
+                mappedRules = new ArrayList<R>();
+                dataProvidersToRules.put(dataProvider, mappedRules);
+            }
+            mappedRules.add(rule);
+        }
+    }
 
-	/**
-	 * Disconnects the specified data provider from all rules.
-	 *
-	 * @param dataProvider Data provider to be unmapped.
-	 */
-	private void unmapDataProviderFromAllRules(final P dataProvider) {
-		if (dataProvider != null) {
-			dataProvidersToRules.remove(dataProvider);
-		}
-	}
+    /**
+     * Disconnects the specified data provider from all rules.
+     *
+     * @param dataProvider Data provider to be unmapped.
+     */
+    private void unmapDataProviderFromAllRules(final P dataProvider) {
+        if (dataProvider != null) {
+            dataProvidersToRules.remove(dataProvider);
+        }
+    }
 
-	/**
-	 * Disconnects the specified rule from all data providers.
-	 *
-	 * @param rule Rule to be unmapped.
-	 */
-	private void unmapRuleFromAllDataProviders(final R rule) {
-		if (rule != null) {
-			for (final List<R> mappedRules : dataProvidersToRules.values()) {
-				mappedRules.remove(rule);
-			}
-		}
-	}
+    /**
+     * Disconnects the specified rule from all data providers.
+     *
+     * @param rule Rule to be unmapped.
+     */
+    private void unmapRuleFromAllDataProviders(final R rule) {
+        if (rule != null) {
+            for (final List<R> mappedRules : dataProvidersToRules.values()) {
+                mappedRules.remove(rule);
+            }
+        }
+    }
 
-	/**
-	 * @see MappableValidator#mapRuleToResultHandler(Rule, ResultHandler)
-	 */
-	@Override
-	public void mapRuleToResultHandler(final R rule, final H resultHandler) {
-		if ((rule == null) && (resultHandler == null)) {
-			LOGGER.warn(NULL_PARAMETERS_WARNING);
-		} else if (rule == null) {
-			unmapResultHandlerFromAllRules(resultHandler);
-		} else if (resultHandler == null) {
-			unmapRuleFromAllResultHandlers(rule);
-		} else {
-			List<H> mappedResultHandlers = rulesToResultHandlers.get(rule);
-			if (mappedResultHandlers == null) {
-				mappedResultHandlers = new ArrayList<H>();
-				rulesToResultHandlers.put(rule, mappedResultHandlers);
-			}
-			mappedResultHandlers.add(resultHandler);
-		}
-	}
+    /**
+     * @see MappableValidator#mapRuleToResultHandler(Rule, ResultHandler)
+     */
+    @Override
+    public void mapRuleToResultHandler(final R rule, final H resultHandler) {
+        if ((rule == null) && (resultHandler == null)) {
+            LOGGER.warn(NULL_PARAMETERS_WARNING);
+        } else if (rule == null) {
+            unmapResultHandlerFromAllRules(resultHandler);
+        } else if (resultHandler == null) {
+            unmapRuleFromAllResultHandlers(rule);
+        } else {
+            List<H> mappedResultHandlers = rulesToResultHandlers.get(rule);
+            if (mappedResultHandlers == null) {
+                mappedResultHandlers = new ArrayList<H>();
+                rulesToResultHandlers.put(rule, mappedResultHandlers);
+            }
+            mappedResultHandlers.add(resultHandler);
+        }
+    }
 
-	/**
-	 * Disconnects the specified rule from all result handlers.
-	 *
-	 * @param rule Rule to be unmapped.
-	 */
-	private void unmapRuleFromAllResultHandlers(final R rule) {
-		if (rule != null) {
-			rulesToResultHandlers.remove(rule);
-		}
-	}
+    /**
+     * Disconnects the specified rule from all result handlers.
+     *
+     * @param rule Rule to be unmapped.
+     */
+    private void unmapRuleFromAllResultHandlers(final R rule) {
+        if (rule != null) {
+            rulesToResultHandlers.remove(rule);
+        }
+    }
 
-	/**
-	 * Disconnects the specified result handler from all rules.
-	 *
-	 * @param resultHandler Result handler to be unmapped.
-	 */
-	private void unmapResultHandlerFromAllRules(final H resultHandler) {
-		if (resultHandler != null) {
-			for (final List<H> mappedResultHandlers : rulesToResultHandlers.values()) {
-				mappedResultHandlers.remove(resultHandler);
-			}
-		}
-	}
+    /**
+     * Disconnects the specified result handler from all rules.
+     *
+     * @param resultHandler Result handler to be unmapped.
+     */
+    private void unmapResultHandlerFromAllRules(final H resultHandler) {
+        if (resultHandler != null) {
+            for (final List<H> mappedResultHandlers : rulesToResultHandlers.values()) {
+                mappedResultHandlers.remove(resultHandler);
+            }
+        }
+    }
 
-	/**
-	 * @see Disposable#dispose()
-	 */
-	@Override
-	public void dispose() {
-		disposeTriggersAndDataProviders();
-		disposeDataProvidersAndRules();
-		disposeRulesAndResultHandlers();
-	}
+    /**
+     * @see Disposable#dispose()
+     */
+    @Override
+    public void dispose() {
+        disposeTriggersAndDataProviders();
+        disposeDataProvidersAndRules();
+        disposeRulesAndResultHandlers();
+    }
 
-	/**
-	 * Disposes all triggers and data providers that are mapped to each other.
-	 */
-	private void disposeTriggersAndDataProviders() {
-		for (final Map.Entry<T, List<P>> entry : triggersToDataProviders.entrySet()) {
-			// Disconnect from trigger
-			unhookFromTrigger(entry.getKey());
+    /**
+     * Disposes all triggers and data providers that are mapped to each other.
+     */
+    private void disposeTriggersAndDataProviders() {
+        for (final Map.Entry<T, List<P>> entry : triggersToDataProviders.entrySet()) {
+            // Disconnect from trigger
+            unhookFromTrigger(entry.getKey());
 
-			// Dispose trigger itself
-			final T trigger = entry.getKey();
-			if (trigger instanceof Disposable) {
-				((Disposable) trigger).dispose();
-			}
+            // Dispose trigger itself
+            final T trigger = entry.getKey();
+            if (trigger instanceof Disposable) {
+                ((Disposable) trigger).dispose();
+            }
 
-			// Dispose data providers
-			final List<P> dataProviders = entry.getValue();
-			if (dataProviders != null) {
-				for (final P dataProvider : dataProviders) {
-					if (dataProvider instanceof Disposable) {
-						((Disposable) dataProvider).dispose();
-					}
-				}
-			}
-		}
+            // Dispose data providers
+            final List<P> dataProviders = entry.getValue();
+            if (dataProviders != null) {
+                for (final P dataProvider : dataProviders) {
+                    if (dataProvider instanceof Disposable) {
+                        ((Disposable) dataProvider).dispose();
+                    }
+                }
+            }
+        }
 
-		// Clears all triggers
-		triggersToDataProviders.clear();
-	}
+        // Clears all triggers
+        triggersToDataProviders.clear();
+    }
 
-	/**
-	 * Disposes all data providers and rules that are mapped to each other.<br>Note that some data providers may have
-	 * been
-	 * disposed already in the other disposal methods.
-	 */
-	private void disposeDataProvidersAndRules() {
-		for (final Map.Entry<P, List<R>> entry : dataProvidersToRules.entrySet()) {
-			// Dispose data provider
-			final P dataProvider = entry.getKey();
-			if (dataProvider instanceof Disposable) {
-				((Disposable) dataProvider).dispose();
-			}
+    /**
+     * Disposes all data providers and rules that are mapped to each other.<br>Note that some data providers may have
+     * been
+     * disposed already in the other disposal methods.
+     */
+    private void disposeDataProvidersAndRules() {
+        for (final Map.Entry<P, List<R>> entry : dataProvidersToRules.entrySet()) {
+            // Dispose data provider
+            final P dataProvider = entry.getKey();
+            if (dataProvider instanceof Disposable) {
+                ((Disposable) dataProvider).dispose();
+            }
 
-			// Dispose rules
-			final List<R> rules = entry.getValue();
-			if (rules != null) {
-				for (final R rule : rules) {
-					if (rule instanceof Disposable) {
-						((Disposable) rule).dispose();
-					}
-				}
-			}
-		}
+            // Dispose rules
+            final List<R> rules = entry.getValue();
+            if (rules != null) {
+                for (final R rule : rules) {
+                    if (rule instanceof Disposable) {
+                        ((Disposable) rule).dispose();
+                    }
+                }
+            }
+        }
 
-		// Clears all triggers
-		dataProvidersToRules.clear();
-	}
+        // Clears all triggers
+        dataProvidersToRules.clear();
+    }
 
-	/**
-	 * Disposes all rules and result handlers that are mapped to each other.
-	 */
-	private void disposeRulesAndResultHandlers() {
-		for (final Map.Entry<R, List<H>> entry : rulesToResultHandlers.entrySet()) {
-			// Dispose rule
-			final R rule = entry.getKey();
-			if (rule instanceof Disposable) {
-				((Disposable) rule).dispose();
-			}
+    /**
+     * Disposes all rules and result handlers that are mapped to each other.
+     */
+    private void disposeRulesAndResultHandlers() {
+        for (final Map.Entry<R, List<H>> entry : rulesToResultHandlers.entrySet()) {
+            // Dispose rule
+            final R rule = entry.getKey();
+            if (rule instanceof Disposable) {
+                ((Disposable) rule).dispose();
+            }
 
-			// Dispose result handlers
-			final List<H> resultHandlers = entry.getValue();
-			if (resultHandlers != null) {
-				for (final H resultHandler : resultHandlers) {
-					if (resultHandler instanceof Disposable) {
-						((Disposable) resultHandler).dispose();
-					}
-				}
-			}
-		}
+            // Dispose result handlers
+            final List<H> resultHandlers = entry.getValue();
+            if (resultHandlers != null) {
+                for (final H resultHandler : resultHandlers) {
+                    if (resultHandler instanceof Disposable) {
+                        ((Disposable) resultHandler).dispose();
+                    }
+                }
+            }
+        }
 
-		// Clears all triggers
-		rulesToResultHandlers.clear();
-	}
+        // Clears all triggers
+        rulesToResultHandlers.clear();
+    }
 
-	/**
-	 * Performs the whole validation logic for the specified trigger.<br>Typically, data will be read from the data
-	 * providers and passed to the rules, and the rule results will be processed by the result handlers.
-	 *
-	 * @param trigger Trigger actually initiated.
-	 */
-	protected abstract void processTrigger(final T trigger);
+    /**
+     * Performs the whole validation logic for the specified trigger.<br>Typically, data will be read from the data
+     * providers and passed to the rules, and the rule results will be processed by the result handlers.
+     *
+     * @param trigger Trigger actually initiated.
+     */
+    protected abstract void processTrigger(final T trigger);
 }

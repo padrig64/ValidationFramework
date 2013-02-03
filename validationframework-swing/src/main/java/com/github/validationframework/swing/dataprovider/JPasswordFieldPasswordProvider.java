@@ -26,6 +26,7 @@
 package com.github.validationframework.swing.dataprovider;
 
 import com.github.validationframework.api.dataprovider.DataProvider;
+
 import javax.swing.JPasswordField;
 
 /**
@@ -37,26 +38,26 @@ import javax.swing.JPasswordField;
  */
 public class JPasswordFieldPasswordProvider implements DataProvider<char[]> {
 
-	/**
-	 * Password field to get the text from.
-	 */
-	private final JPasswordField passwordField;
+    /**
+     * Password field to get the text from.
+     */
+    private final JPasswordField passwordField;
 
-	/**
-	 * Constructor specifying the password field to get the text from.
-	 *
-	 * @param passwordField Password field to get the text from.
-	 */
-	public JPasswordFieldPasswordProvider(final JPasswordField passwordField) {
-		this.passwordField = passwordField;
-	}
+    /**
+     * Constructor specifying the password field to get the text from.
+     *
+     * @param passwordField Password field to get the text from.
+     */
+    public JPasswordFieldPasswordProvider(final JPasswordField passwordField) {
+        this.passwordField = passwordField;
+    }
 
-	/**
-	 * @see DataProvider
-	 * @see JPasswordField#getPassword()
-	 */
-	@Override
-	public char[] getData() {
-		return passwordField.getPassword();
-	}
+    /**
+     * @see DataProvider
+     * @see JPasswordField#getPassword()
+     */
+    @Override
+    public char[] getData() {
+        return passwordField.getPassword();
+    }
 }

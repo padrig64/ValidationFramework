@@ -34,12 +34,12 @@ import javax.swing.text.JTextComponent;
  */
 public class JTextComponentDocumentChangedTrigger extends BaseTextComponentDocumentChangedTrigger<JTextComponent> {
 
-	/**
-	 * Constructor specifying the text component to listen to.
-	 *
-	 * @param source Text component to listen to
-	 */
-	public JTextComponentDocumentChangedTrigger(final JTextComponent source) {
-		super(source);
-	}
+    /**
+     * Constructor specifying the text component to listen to.
+     *
+     * @param source Text component to listen to
+     */
+    public JTextComponentDocumentChangedTrigger(final JTextComponent source) {
+        super(source);
+    }
 }

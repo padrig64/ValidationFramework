@@ -25,49 +25,50 @@
 
 package com.github.validationframework.swing.decoration.utils;
 
-import java.net.URL;
-import javax.swing.ImageIcon;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.swing.ImageIcon;
+import java.net.URL;
 
 /**
  * Utility class for handling icons.
  */
 public final class IconUtils {
 
-	/**
-	 * Logger for this class.
-	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(IconUtils.class);
+    /**
+     * Logger for this class.
+     */
+    private static final Logger LOGGER = LoggerFactory.getLogger(IconUtils.class);
 
-	/**
-	 * Private constructor for utility class.
-	 */
-	private IconUtils() {
-		// Nothing to be done
-	}
+    /**
+     * Private constructor for utility class.
+     */
+    private IconUtils() {
+        // Nothing to be done
+    }
 
-	/**
-	 * Loads an image icon from a resource file.
-	 *
-	 * @param iconName Name of the resource file to be loaded.
-	 * @param clazz Class for which the resource exists.
-	 *
-	 * @return Image icon if it could be loaded, null otherwise.
-	 */
-	public static ImageIcon loadImageIcon(final String iconName, final Class<?> clazz) {
-		ImageIcon icon = null;
+    /**
+     * Loads an image icon from a resource file.
+     *
+     * @param iconName Name of the resource file to be loaded.
+     * @param clazz    Class for which the resource exists.
+     *
+     * @return Image icon if it could be loaded, null otherwise.
+     */
+    public static ImageIcon loadImageIcon(final String iconName, final Class<?> clazz) {
+        ImageIcon icon = null;
 
-		if (iconName != null) {
-			final URL iconResource = clazz.getResource(iconName);
-			if (iconResource == null) {
-				LOGGER.error("Icon could not be loaded: '" + iconName);
-				icon = null;
-			} else {
-				icon = new ImageIcon(iconResource);
-			}
-		}
+        if (iconName != null) {
+            final URL iconResource = clazz.getResource(iconName);
+            if (iconResource == null) {
+                LOGGER.error("Icon could not be loaded: '" + iconName);
+                icon = null;
+            } else {
+                icon = new ImageIcon(iconResource);
+            }
+        }
 
-		return icon;
-	}
+        return icon;
+    }
 }

@@ -36,15 +36,16 @@ import javax.swing.JComponent;
  */
 public class JComponentFocusGainedTrigger extends BaseComponentFocusGainedTrigger<JComponent> {
 
-	/**
-	 * Constructor specified the component whose focus is to be tracked.<br>A focus listener will be installed. So you may
-	 * need to call {@link #dispose()} when trigger is no longer needed.
-	 *
-	 * @param source Component whose focus is to be tracked.
-	 *
-	 * @see #dispose()
-	 */
-	public JComponentFocusGainedTrigger(final JComponent source) {
-		super(source);
-	}
+    /**
+     * Constructor specified the component whose focus is to be tracked.<br>A focus listener will be installed. So
+     * you may
+     * need to call {@link #dispose()} when trigger is no longer needed.
+     *
+     * @param source Component whose focus is to be tracked.
+     *
+     * @see #dispose()
+     */
+    public JComponentFocusGainedTrigger(final JComponent source) {
+        super(source);
+    }
 }

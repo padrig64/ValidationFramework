@@ -30,61 +30,62 @@ import com.github.validationframework.api.resulthandler.ResultHandler;
 import com.github.validationframework.swing.decoration.anchor.Anchor;
 import com.github.validationframework.swing.decoration.anchor.AnchorLink;
 import com.github.validationframework.swing.decoration.support.TransparentToolTipDialog;
+
 import javax.swing.JComponent;
 
 public abstract class AbstractStickerFeedback<O> implements ResultHandler<O>, Disposable {
 
-	private TransparentToolTipDialog toolTipDialog = null;
+    private TransparentToolTipDialog toolTipDialog = null;
 
-	public AbstractStickerFeedback(final JComponent owner) {
-		attach(owner);
-	}
+    public AbstractStickerFeedback(final JComponent owner) {
+        attach(owner);
+    }
 
-	public void attach(final JComponent owner) {
-		detach();
-		toolTipDialog = new TransparentToolTipDialog(owner, new AnchorLink(Anchor.TOP_RIGHT, Anchor.TOP_LEFT));
-	}
+    public void attach(final JComponent owner) {
+        detach();
+        toolTipDialog = new TransparentToolTipDialog(owner, new AnchorLink(Anchor.TOP_RIGHT, Anchor.TOP_LEFT));
+    }
 
-	public void detach() {
-		if (toolTipDialog != null) {
-			toolTipDialog.dispose();
-			toolTipDialog = null;
-		}
-	}
+    public void detach() {
+        if (toolTipDialog != null) {
+            toolTipDialog.dispose();
+            toolTipDialog = null;
+        }
+    }
 
-	protected String getToolTipText() {
-		String tip = null;
+    protected String getToolTipText() {
+        String tip = null;
 
-		if (toolTipDialog != null) {
-			tip = toolTipDialog.getText();
-		}
+        if (toolTipDialog != null) {
+            tip = toolTipDialog.getText();
+        }
 
-		return tip;
-	}
+        return tip;
+    }
 
-	protected void setToolTipText(final String text) {
-		if (toolTipDialog != null) {
-			toolTipDialog.setText(text);
-		}
-	}
+    protected void setToolTipText(final String text) {
+        if (toolTipDialog != null) {
+            toolTipDialog.setText(text);
+        }
+    }
 
-	protected void showToolTip() {
-		if (toolTipDialog != null) {
-			toolTipDialog.setVisible(true);
-		}
-	}
+    protected void showToolTip() {
+        if (toolTipDialog != null) {
+            toolTipDialog.setVisible(true);
+        }
+    }
 
-	protected void hideToolTip() {
-		if (toolTipDialog != null) {
-			toolTipDialog.setVisible(false);
-		}
-	}
+    protected void hideToolTip() {
+        if (toolTipDialog != null) {
+            toolTipDialog.setVisible(false);
+        }
+    }
 
-	/**
-	 * @see Disposable#dispose()
-	 */
-	@Override
-	public void dispose() {
-		detach();
-	}
+    /**
+     * @see Disposable#dispose()
+     */
+    @Override
+    public void dispose() {
+        detach();
+    }
 }

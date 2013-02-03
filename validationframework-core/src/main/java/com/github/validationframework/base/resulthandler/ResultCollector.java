@@ -48,49 +48,49 @@ import com.github.validationframework.base.trigger.AbstractTrigger;
  */
 public class ResultCollector<O, D> extends AbstractTrigger implements ResultHandler<O>, DataProvider<D> {
 
-	/**
-	 * Last collected result.
-	 */
-	protected O lastResult = null;
+    /**
+     * Last collected result.
+     */
+    protected O lastResult = null;
 
-	/**
-	 * Transformer to apply on the collected result before providing it.
-	 */
-	protected final Transformer<O, D> transformer;
+    /**
+     * Transformer to apply on the collected result before providing it.
+     */
+    protected final Transformer<O, D> transformer;
 
-	/**
-	 * Default constructor using the simple cast transformer.
-	 *
-	 * @see CastTransformer
-	 */
-	public ResultCollector() {
-		this(new CastTransformer<O, D>());
-	}
+    /**
+     * Default constructor using the simple cast transformer.
+     *
+     * @see CastTransformer
+     */
+    public ResultCollector() {
+        this(new CastTransformer<O, D>());
+    }
 
-	/**
-	 * Constructor specifying the transformer to apply on the collected result before providing it.
-	 *
-	 * @param transformer Transform to apply on the collected result.
-	 */
-	public ResultCollector(final Transformer<O, D> transformer) {
-		super();
-		this.transformer = transformer;
-	}
+    /**
+     * Constructor specifying the transformer to apply on the collected result before providing it.
+     *
+     * @param transformer Transform to apply on the collected result.
+     */
+    public ResultCollector(final Transformer<O, D> transformer) {
+        super();
+        this.transformer = transformer;
+    }
 
-	/**
-	 * @see ResultHandler#handleResult(Object)
-	 */
-	@Override
-	public void handleResult(final O result) {
-		lastResult = result; // We expect the method getData() to be called subsequently
-		fireTriggerEvent(new TriggerEvent(this));
-	}
+    /**
+     * @see ResultHandler#handleResult(Object)
+     */
+    @Override
+    public void handleResult(final O result) {
+        lastResult = result; // We expect the method getData() to be called subsequently
+        fireTriggerEvent(new TriggerEvent(this));
+    }
 
-	/**
-	 * @see DataProvider#getData()
-	 */
-	@Override
-	public D getData() {
-		return transformer.transform(lastResult);
-	}
+    /**
+     * @see DataProvider#getData()
+     */
+    @Override
+    public D getData() {
+        return transformer.transform(lastResult);
+    }
 }

@@ -26,6 +26,7 @@
 package com.github.validationframework.base.dataprovider;
 
 import com.github.validationframework.api.dataprovider.DataProvider;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,42 +40,42 @@ import java.util.Map;
  */
 public class MapCompositeDataProvider<K, D> implements DataProvider<Map<K, D>> {
 
-	/**
-	 * Sub-data providers.
-	 */
-	private final Map<K, DataProvider<D>> dataProviders = new HashMap<K, DataProvider<D>>();
+    /**
+     * Sub-data providers.
+     */
+    private final Map<K, DataProvider<D>> dataProviders = new HashMap<K, DataProvider<D>>();
 
-	/**
-	 * Adds the specified data provider with the specified key.
-	 *
-	 * @param key Key associated to the data provider.
-	 * @param dataProvider Data provider associated to the key.
-	 */
-	public void addDataProvider(final K key, final DataProvider<D> dataProvider) {
-		dataProviders.put(key, dataProvider);
-	}
+    /**
+     * Adds the specified data provider with the specified key.
+     *
+     * @param key          Key associated to the data provider.
+     * @param dataProvider Data provider associated to the key.
+     */
+    public void addDataProvider(final K key, final DataProvider<D> dataProvider) {
+        dataProviders.put(key, dataProvider);
+    }
 
-	/**
-	 * Results the data provider associated to the specified key.
-	 *
-	 * @param key Key associated to the data provider to be remove.
-	 */
-	public void removeDataProvider(final K key) {
-		dataProviders.remove(key);
-	}
+    /**
+     * Results the data provider associated to the specified key.
+     *
+     * @param key Key associated to the data provider to be remove.
+     */
+    public void removeDataProvider(final K key) {
+        dataProviders.remove(key);
+    }
 
-	/**
-	 * @see DataProvider#getData()
-	 */
-	@Override
-	public Map<K, D> getData() {
-		final Map<K, D> dataList = new HashMap<K, D>();
+    /**
+     * @see DataProvider#getData()
+     */
+    @Override
+    public Map<K, D> getData() {
+        final Map<K, D> dataList = new HashMap<K, D>();
 
-		// Read the data from all data providers and put them in the map
-		for (final Map.Entry<K, DataProvider<D>> entry : dataProviders.entrySet()) {
-			dataList.put(entry.getKey(), entry.getValue().getData());
-		}
+        // Read the data from all data providers and put them in the map
+        for (final Map.Entry<K, DataProvider<D>> entry : dataProviders.entrySet()) {
+            dataList.put(entry.getKey(), entry.getValue().getData());
+        }
 
-		return dataList;
-	}
+        return dataList;
+    }
 }

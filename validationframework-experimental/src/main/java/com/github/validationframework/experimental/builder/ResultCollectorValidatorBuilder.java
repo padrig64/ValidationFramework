@@ -28,21 +28,22 @@ package com.github.validationframework.experimental.builder;
 import com.github.validationframework.base.resulthandler.ResultCollector;
 import com.github.validationframework.experimental.builder.context.resultcollectorvalidator.ResultCollectorContext;
 import com.github.validationframework.experimental.builder.context.resultcollectorvalidator.RuleContext;
+
 import java.util.Collection;
 
 public class ResultCollectorValidatorBuilder {
 
-	public static <D> RuleContext<D> collect(final ResultCollector<?, D> resultCollector) {
-		return new ResultCollectorContext().collect(resultCollector);
-	}
+    public static <D> RuleContext<D> collect(final ResultCollector<?, D> resultCollector) {
+        return new ResultCollectorContext().collect(resultCollector);
+    }
 
-	public static <D> RuleContext<D> collect(final ResultCollector<?, D>... resultCollectors) {
-		return new ResultCollectorContext().collect(resultCollectors);
-	}
+    public static <D> RuleContext<D> collect(final ResultCollector<?, D>... resultCollectors) {
+        return new ResultCollectorContext().collect(resultCollectors);
+    }
 
-	public static <D> RuleContext<D> collect(final Collection<ResultCollector<?, D>> resultCollectors) {
-		return new ResultCollectorContext().collect(resultCollectors);
-	}
+    public static <D> RuleContext<D> collect(final Collection<ResultCollector<?, D>> resultCollectors) {
+        return new ResultCollectorContext().collect(resultCollectors);
+    }
 
-	// TODO Collect from validator
+    // TODO Collect from validator
 }

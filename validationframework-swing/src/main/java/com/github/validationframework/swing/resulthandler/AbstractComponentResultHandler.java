@@ -26,34 +26,35 @@
 package com.github.validationframework.swing.resulthandler;
 
 import com.github.validationframework.api.resulthandler.ResultHandler;
+
 import java.awt.Component;
 import java.util.HashSet;
 import java.util.Set;
 
 public abstract class AbstractComponentResultHandler<O> implements ResultHandler<O> {
 
-	protected Set<Component> components = new HashSet<Component>();
+    protected Set<Component> components = new HashSet<Component>();
 
-	/**
-	 * Default constructor.
-	 */
-	public AbstractComponentResultHandler() {
-		// Nothing to be done
-	}
+    /**
+     * Default constructor.
+     */
+    public AbstractComponentResultHandler() {
+        // Nothing to be done
+    }
 
-	public AbstractComponentResultHandler(final Component... components) {
-		if (components != null) {
-			for (final Component component : components) {
-				addComponent(component);
-			}
-		}
-	}
+    public AbstractComponentResultHandler(final Component... components) {
+        if (components != null) {
+            for (final Component component : components) {
+                addComponent(component);
+            }
+        }
+    }
 
-	public void addComponent(final Component component) {
-		components.add(component);
-	}
+    public void addComponent(final Component component) {
+        components.add(component);
+    }
 
-	public void removeComponent(final Component component) {
-		components.remove(component);
-	}
+    public void removeComponent(final Component component) {
+        components.remove(component);
+    }
 }

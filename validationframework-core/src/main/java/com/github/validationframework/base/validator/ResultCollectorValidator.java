@@ -30,10 +30,11 @@ import com.github.validationframework.api.resulthandler.ResultHandler;
 import com.github.validationframework.api.rule.Rule;
 import com.github.validationframework.api.trigger.Trigger;
 import com.github.validationframework.base.resulthandler.ResultCollector;
-import java.util.ArrayList;
-import java.util.Collection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Concrete implementation of a simple validator that is collecting the results from other validators and performs
@@ -47,7 +48,7 @@ import org.slf4j.LoggerFactory;
  *
  * @param <D> Type of data handled by this validator, that is to say, the collected results from other validators.
  * @param <O> Type of validation result of this validator.<br>It can be, for instance, an enumeration or just a
- * boolean.
+ *            boolean.
  *
  * @see AbstractSimpleValidator
  * @see ResultCollector
@@ -56,73 +57,73 @@ import org.slf4j.LoggerFactory;
  * @see Rule
  * @see ResultHandler
  */
-public class ResultCollectorValidator<D, O> extends
-		AbstractSimpleValidator<Trigger, DataProvider<D>, D, Rule<Collection<D>, O>, Collection<D>, O, ResultHandler<O>, O> {
+public class ResultCollectorValidator<D, O> extends AbstractSimpleValidator<Trigger, DataProvider<D>, D,
+        Rule<Collection<D>, O>, Collection<D>, O, ResultHandler<O>, O> {
 
-	/**
-	 * Logger for this class.
-	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(ResultCollectorValidator.class);
+    /**
+     * Logger for this class.
+     */
+    private static final Logger LOGGER = LoggerFactory.getLogger(ResultCollectorValidator.class);
 
-	/**
-	 * Adds the specified result collector as trigger and data provider for this validator.
-	 *
-	 * @param resultCollector Result collector being a result handler for another validator.
-	 */
-	public void addResultCollector(final ResultCollector<?, D> resultCollector) {
-		addTrigger(resultCollector);
-		addDataProvider(resultCollector);
-	}
+    /**
+     * Adds the specified result collector as trigger and data provider for this validator.
+     *
+     * @param resultCollector Result collector being a result handler for another validator.
+     */
+    public void addResultCollector(final ResultCollector<?, D> resultCollector) {
+        addTrigger(resultCollector);
+        addDataProvider(resultCollector);
+    }
 
-	/**
-	 * Removes the specified result collector as trigger and data provider for this validator.
-	 *
-	 * @param resultCollector Result collector being a result handler for another validator.
-	 */
-	public void removeResultCollector(final ResultCollector<?, D> resultCollector) {
-		removeTrigger(resultCollector);
-		removeDataProvider(resultCollector);
-	}
+    /**
+     * Removes the specified result collector as trigger and data provider for this validator.
+     *
+     * @param resultCollector Result collector being a result handler for another validator.
+     */
+    public void removeResultCollector(final ResultCollector<?, D> resultCollector) {
+        removeTrigger(resultCollector);
+        removeDataProvider(resultCollector);
+    }
 
-	/**
-	 * @see AbstractSimpleValidator#processTrigger(Trigger)
-	 */
-	@Override
-	protected void processTrigger(final Trigger trigger) {
-		if (dataProviders.isEmpty()) {
-			LOGGER.warn("No data providers in validator: " + this);
-		} else {
-			// Collect results
-			final Collection<D> collectedResults = new ArrayList<D>();
-			for (final DataProvider<D> dataProvider : dataProviders) {
-				collectedResults.add(dataProvider.getData());
-			}
+    /**
+     * @see AbstractSimpleValidator#processTrigger(Trigger)
+     */
+    @Override
+    protected void processTrigger(final Trigger trigger) {
+        if (dataProviders.isEmpty()) {
+            LOGGER.warn("No data providers in validator: " + this);
+        } else {
+            // Collect results
+            final Collection<D> collectedResults = new ArrayList<D>();
+            for (final DataProvider<D> dataProvider : dataProviders) {
+                collectedResults.add(dataProvider.getData());
+            }
 
-			// Process results
-			processData(collectedResults);
-		}
-	}
+            // Process results
+            processData(collectedResults);
+        }
+    }
 
-	/**
-	 * Validates the specified data all rules.
-	 *
-	 * @param data Data to be validated against all rules.
-	 */
-	protected void processData(final Collection<D> data) {
-		// Check data against all rules
-		for (final Rule<Collection<D>, O> rule : rules) {
-			processResult(rule.validate(data));
-		}
-	}
+    /**
+     * Validates the specified data all rules.
+     *
+     * @param data Data to be validated against all rules.
+     */
+    protected void processData(final Collection<D> data) {
+        // Check data against all rules
+        for (final Rule<Collection<D>, O> rule : rules) {
+            processResult(rule.validate(data));
+        }
+    }
 
-	/**
-	 * Handles the specified result using all result handlers.
-	 *
-	 * @param result Result to be processed by all result handlers.
-	 */
-	protected void processResult(final O result) {
-		for (final ResultHandler<O> resultHandler : resultHandlers) {
-			resultHandler.handleResult(result);
-		}
-	}
+    /**
+     * Handles the specified result using all result handlers.
+     *
+     * @param result Result to be processed by all result handlers.
+     */
+    protected void processResult(final O result) {
+        for (final ResultHandler<O> resultHandler : resultHandlers) {
+            resultHandler.handleResult(result);
+        }
+    }
 }

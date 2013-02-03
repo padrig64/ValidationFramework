@@ -36,10 +36,10 @@ import javax.swing.JTextField;
  */
 public class JTextFieldTextProvider extends BaseJTextComponentTextProvider<JTextField> {
 
-	/**
-	 * @see BaseJTextComponentTextProvider#BaseJTextComponentTextProvider(javax.swing.text.JTextComponent)
-	 */
-	public JTextFieldTextProvider(final JTextField textComponent) {
-		super(textComponent);
-	}
+    /**
+     * @see BaseJTextComponentTextProvider#BaseJTextComponentTextProvider(javax.swing.text.JTextComponent)
+     */
+    public JTextFieldTextProvider(final JTextField textComponent) {
+        super(textComponent);
+    }
 }

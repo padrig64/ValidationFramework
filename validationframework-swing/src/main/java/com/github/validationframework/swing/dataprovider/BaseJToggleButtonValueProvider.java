@@ -26,6 +26,7 @@
 package com.github.validationframework.swing.dataprovider;
 
 import com.github.validationframework.api.dataprovider.DataProvider;
+
 import javax.swing.JToggleButton;
 
 /**
@@ -38,25 +39,25 @@ import javax.swing.JToggleButton;
  */
 public class BaseJToggleButtonValueProvider<C extends JToggleButton> implements DataProvider<Boolean> {
 
-	/**
-	 * Toggle button to retrieve the selection state from.
-	 */
-	private final C toggleComponent;
+    /**
+     * Toggle button to retrieve the selection state from.
+     */
+    private final C toggleComponent;
 
-	/**
-	 * Constructor specifying the toggle button to retrieve the selection state from.
-	 *
-	 * @param toggleComponent Toggle button to retrieve the selection state from.
-	 */
-	public BaseJToggleButtonValueProvider(final C toggleComponent) {
-		this.toggleComponent = toggleComponent;
-	}
+    /**
+     * Constructor specifying the toggle button to retrieve the selection state from.
+     *
+     * @param toggleComponent Toggle button to retrieve the selection state from.
+     */
+    public BaseJToggleButtonValueProvider(final C toggleComponent) {
+        this.toggleComponent = toggleComponent;
+    }
 
-	/**
-	 * @see DataProvider#getData()
-	 */
-	@Override
-	public Boolean getData() {
-		return toggleComponent.isSelected();
-	}
+    /**
+     * @see DataProvider#getData()
+     */
+    @Override
+    public Boolean getData() {
+        return toggleComponent.isSelected();
+    }
 }

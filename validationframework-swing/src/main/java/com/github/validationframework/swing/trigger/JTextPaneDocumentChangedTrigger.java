@@ -34,12 +34,12 @@ import javax.swing.JTextPane;
  */
 public class JTextPaneDocumentChangedTrigger extends BaseTextComponentDocumentChangedTrigger<JTextPane> {
 
-	/**
-	 * Constructor specifying the text pane to listen to.
-	 *
-	 * @param source Text pane to listen to
-	 */
-	public JTextPaneDocumentChangedTrigger(final JTextPane source) {
-		super(source);
-	}
+    /**
+     * Constructor specifying the text pane to listen to.
+     *
+     * @param source Text pane to listen to
+     */
+    public JTextPaneDocumentChangedTrigger(final JTextPane source) {
+        super(source);
+    }
 }

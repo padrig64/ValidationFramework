@@ -34,12 +34,12 @@ import javax.swing.JPasswordField;
  */
 public class JPasswordFieldDocumentChangedTrigger extends BaseTextComponentDocumentChangedTrigger<JPasswordField> {
 
-	/**
-	 * Constructor specifying the password field to listen to.
-	 *
-	 * @param source Password field to listen to
-	 */
-	public JPasswordFieldDocumentChangedTrigger(final JPasswordField source) {
-		super(source);
-	}
+    /**
+     * Constructor specifying the password field to listen to.
+     *
+     * @param source Password field to listen to
+     */
+    public JPasswordFieldDocumentChangedTrigger(final JPasswordField source) {
+        super(source);
+    }
 }

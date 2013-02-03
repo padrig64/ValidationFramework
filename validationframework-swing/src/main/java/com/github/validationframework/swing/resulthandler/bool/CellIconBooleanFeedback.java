@@ -27,118 +27,119 @@ package com.github.validationframework.swing.resulthandler.bool;
 
 import com.github.validationframework.swing.decoration.utils.IconUtils;
 import com.github.validationframework.swing.resulthandler.AbstractCellIconFeedback;
+
 import javax.swing.Icon;
 import javax.swing.JTable;
 
 public class CellIconBooleanFeedback extends AbstractCellIconFeedback<Boolean> {
 
-	public static final Icon DEFAULT_VALID_ICON =
-			IconUtils.loadImageIcon("/images/defaults/valid.png", IconBooleanFeedback.class);
+    public static final Icon DEFAULT_VALID_ICON = IconUtils.loadImageIcon("/images/defaults/valid.png",
+            IconBooleanFeedback.class);
 
-	public static final Icon DEFAULT_INVALID_ICON =
-			IconUtils.loadImageIcon("/images/defaults/invalid.png", IconBooleanFeedback.class);
+    public static final Icon DEFAULT_INVALID_ICON = IconUtils.loadImageIcon("/images/defaults/invalid.png",
+            IconBooleanFeedback.class);
 
-	private Icon validIcon = null;
+    private Icon validIcon = null;
 
-	private Icon invalidIcon = null;
+    private Icon invalidIcon = null;
 
-	private String validText = null;
+    private String validText = null;
 
-	private String invalidText = null;
+    private String invalidText = null;
 
-	private Boolean lastResult = null;
+    private Boolean lastResult = null;
 
-	public CellIconBooleanFeedback(final JTable table, final int modelRowIndex, final int modelColumnIndex) {
-		this(table, modelRowIndex, modelColumnIndex, DEFAULT_VALID_ICON, DEFAULT_INVALID_ICON);
-	}
+    public CellIconBooleanFeedback(final JTable table, final int modelRowIndex, final int modelColumnIndex) {
+        this(table, modelRowIndex, modelColumnIndex, DEFAULT_VALID_ICON, DEFAULT_INVALID_ICON);
+    }
 
-	public CellIconBooleanFeedback(final JTable table, final int modelRowIndex, final int modelColumnIndex,
-								   final Icon validIcon, final Icon invalidIcon) {
-		this(table, modelRowIndex, modelColumnIndex, validIcon, null, invalidIcon, null);
-	}
+    public CellIconBooleanFeedback(final JTable table, final int modelRowIndex, final int modelColumnIndex,
+                                   final Icon validIcon, final Icon invalidIcon) {
+        this(table, modelRowIndex, modelColumnIndex, validIcon, null, invalidIcon, null);
+    }
 
-	public CellIconBooleanFeedback(final JTable table, final int modelRowIndex, final int modelColumnIndex,
-								   final String validText, final String invalidText) {
-		this(table, modelRowIndex, modelColumnIndex, DEFAULT_VALID_ICON, validText, DEFAULT_INVALID_ICON, invalidText);
-	}
+    public CellIconBooleanFeedback(final JTable table, final int modelRowIndex, final int modelColumnIndex,
+                                   final String validText, final String invalidText) {
+        this(table, modelRowIndex, modelColumnIndex, DEFAULT_VALID_ICON, validText, DEFAULT_INVALID_ICON, invalidText);
+    }
 
-	public CellIconBooleanFeedback(final JTable table, final int modelRowIndex, final int modelColumnIndex,
-								   final Icon invalidIcon, final String invalidText) {
-		this(table, modelRowIndex, modelColumnIndex, null, null, DEFAULT_INVALID_ICON, invalidText);
-	}
+    public CellIconBooleanFeedback(final JTable table, final int modelRowIndex, final int modelColumnIndex,
+                                   final Icon invalidIcon, final String invalidText) {
+        this(table, modelRowIndex, modelColumnIndex, null, null, DEFAULT_INVALID_ICON, invalidText);
+    }
 
-	public CellIconBooleanFeedback(final JTable table, final int modelRowIndex, final int modelColumnIndex,
-								   final Icon validIcon, final String validText, final Icon invalidIcon,
-								   final String invalidText) {
-		super(table, modelRowIndex, modelColumnIndex);
+    public CellIconBooleanFeedback(final JTable table, final int modelRowIndex, final int modelColumnIndex,
+                                   final Icon validIcon, final String validText, final Icon invalidIcon,
+                                   final String invalidText) {
+        super(table, modelRowIndex, modelColumnIndex);
 
-		setValidIcon(validIcon);
-		setValidText(validText);
-		setInvalidIcon(invalidIcon);
-		setInvalidText(invalidText);
-	}
+        setValidIcon(validIcon);
+        setValidText(validText);
+        setInvalidIcon(invalidIcon);
+        setInvalidText(invalidText);
+    }
 
-	public Icon getValidIcon() {
-		return validIcon;
-	}
+    public Icon getValidIcon() {
+        return validIcon;
+    }
 
-	public void setValidIcon(final Icon validIcon) {
-		this.validIcon = validIcon;
-		updateDecoration();
-	}
+    public void setValidIcon(final Icon validIcon) {
+        this.validIcon = validIcon;
+        updateDecoration();
+    }
 
-	public String getValidText() {
-		return validText;
-	}
+    public String getValidText() {
+        return validText;
+    }
 
-	public void setValidText(final String validText) {
-		this.validText = validText;
-		updateDecoration();
-	}
+    public void setValidText(final String validText) {
+        this.validText = validText;
+        updateDecoration();
+    }
 
-	public Icon getInvalidIcon() {
-		return invalidIcon;
-	}
+    public Icon getInvalidIcon() {
+        return invalidIcon;
+    }
 
-	public void setInvalidIcon(final Icon invalidIcon) {
-		this.invalidIcon = invalidIcon;
-		updateDecoration();
-	}
+    public void setInvalidIcon(final Icon invalidIcon) {
+        this.invalidIcon = invalidIcon;
+        updateDecoration();
+    }
 
-	public String getInvalidText() {
-		return invalidText;
-	}
+    public String getInvalidText() {
+        return invalidText;
+    }
 
-	public void setInvalidText(final String invalidText) {
-		this.invalidText = invalidText;
-		updateDecoration();
-	}
+    public void setInvalidText(final String invalidText) {
+        this.invalidText = invalidText;
+        updateDecoration();
+    }
 
-	/**
-	 * @see AbstractCellIconFeedback#handleResult(Object)
-	 */
-	@Override
-	public void handleResult(final Boolean valid) {
-		lastResult = valid;
+    /**
+     * @see AbstractCellIconFeedback#handleResult(Object)
+     */
+    @Override
+    public void handleResult(final Boolean valid) {
+        lastResult = valid;
 
-		updateDecoration();
+        updateDecoration();
 
-		if ((valid && (validIcon != null)) || (!valid && (invalidIcon != null))) {
-			showIcon();
-		} else {
-			hideIcon();
-		}
-	}
+        if ((valid && (validIcon != null)) || (!valid && (invalidIcon != null))) {
+            showIcon();
+        } else {
+            hideIcon();
+        }
+    }
 
-	private void updateDecoration() {
-		if (lastResult != null) {
-			if (lastResult) {
-				setIcon(validIcon);
-				setToolTipText(validText);
-			} else {
-				setIcon(invalidIcon);
-				setToolTipText(invalidText);
-			}
-		}
-	}
+    private void updateDecoration() {
+        if (lastResult != null) {
+            if (lastResult) {
+                setIcon(validIcon);
+                setToolTipText(validText);
+            } else {
+                setIcon(invalidIcon);
+                setToolTipText(invalidText);
+            }
+        }
+    }
 }

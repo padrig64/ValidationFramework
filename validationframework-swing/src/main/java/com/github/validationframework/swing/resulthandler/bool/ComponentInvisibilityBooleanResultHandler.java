@@ -26,6 +26,7 @@
 package com.github.validationframework.swing.resulthandler.bool;
 
 import com.github.validationframework.swing.resulthandler.AbstractComponentResultHandler;
+
 import java.awt.Component;
 
 /**
@@ -34,32 +35,32 @@ import java.awt.Component;
  */
 public class ComponentInvisibilityBooleanResultHandler extends AbstractComponentResultHandler<Boolean> {
 
-	/**
-	 * @see AbstractComponentResultHandler#AbstractComponentResultHandler()
-	 */
-	public ComponentInvisibilityBooleanResultHandler() {
-		super();
-	}
+    /**
+     * @see AbstractComponentResultHandler#AbstractComponentResultHandler()
+     */
+    public ComponentInvisibilityBooleanResultHandler() {
+        super();
+    }
 
-	/**
-	 * @see AbstractComponentResultHandler#AbstractComponentResultHandler(Component...)
-	 */
-	public ComponentInvisibilityBooleanResultHandler(final Component... components) {
-		super(components);
-	}
+    /**
+     * @see AbstractComponentResultHandler#AbstractComponentResultHandler(Component...)
+     */
+    public ComponentInvisibilityBooleanResultHandler(final Component... components) {
+        super(components);
+    }
 
-	/**
-	 * @see AbstractComponentResultHandler#handleResult(Object)
-	 */
-	@Override
-	public void handleResult(final Boolean result) {
-		boolean visible = true;
-		if (result != null) {
-			visible = !result;
-		}
+    /**
+     * @see AbstractComponentResultHandler#handleResult(Object)
+     */
+    @Override
+    public void handleResult(final Boolean result) {
+        boolean visible = true;
+        if (result != null) {
+            visible = !result;
+        }
 
-		for (final Component component : components) {
-			component.setEnabled(visible);
-		}
-	}
+        for (final Component component : components) {
+            component.setEnabled(visible);
+        }
+    }
 }

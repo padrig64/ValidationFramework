@@ -27,6 +27,7 @@ package com.github.validationframework.experimental.builder.context.resultcollec
 
 import com.github.validationframework.api.rule.Rule;
 import com.github.validationframework.base.resulthandler.ResultCollector;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -34,54 +35,54 @@ import java.util.List;
 
 public class RuleContext<D> {
 
-	final List<ResultCollector<?, D>> registeredResultCollectors;
+    final List<ResultCollector<?, D>> registeredResultCollectors;
 
-	public RuleContext(final List<ResultCollector<?, D>> registeredResultCollectors) {
-		this.registeredResultCollectors = registeredResultCollectors;
-	}
+    public RuleContext(final List<ResultCollector<?, D>> registeredResultCollectors) {
+        this.registeredResultCollectors = registeredResultCollectors;
+    }
 
-	public RuleContext<D> collect(final ResultCollector<?, D> resultCollector) {
-		if (resultCollector != null) {
-			registeredResultCollectors.add(resultCollector);
-		}
-		return this;
-	}
+    public RuleContext<D> collect(final ResultCollector<?, D> resultCollector) {
+        if (resultCollector != null) {
+            registeredResultCollectors.add(resultCollector);
+        }
+        return this;
+    }
 
-	public RuleContext<D> collect(final ResultCollector<?, D>... resultCollectors) {
-		if (resultCollectors != null) {
-			Collections.addAll(registeredResultCollectors, resultCollectors);
-		}
-		return this;
-	}
+    public RuleContext<D> collect(final ResultCollector<?, D>... resultCollectors) {
+        if (resultCollectors != null) {
+            Collections.addAll(registeredResultCollectors, resultCollectors);
+        }
+        return this;
+    }
 
-	public RuleContext<D> collect(final Collection<ResultCollector<?, D>> resultCollectors) {
-		if (resultCollectors != null) {
-			registeredResultCollectors.addAll(resultCollectors);
-		}
-		return this;
-	}
+    public RuleContext<D> collect(final Collection<ResultCollector<?, D>> resultCollectors) {
+        if (resultCollectors != null) {
+            registeredResultCollectors.addAll(resultCollectors);
+        }
+        return this;
+    }
 
-	public <O> ResultHandlerContext<D, O> check(final Rule<Collection<D>, O> rule) {
-		final List<Rule<Collection<D>, O>> registeredRules = new ArrayList<Rule<Collection<D>, O>>();
-		if (rule != null) {
-			registeredRules.add(rule);
-		}
-		return new ResultHandlerContext<D, O>(registeredResultCollectors, registeredRules);
-	}
+    public <O> ResultHandlerContext<D, O> check(final Rule<Collection<D>, O> rule) {
+        final List<Rule<Collection<D>, O>> registeredRules = new ArrayList<Rule<Collection<D>, O>>();
+        if (rule != null) {
+            registeredRules.add(rule);
+        }
+        return new ResultHandlerContext<D, O>(registeredResultCollectors, registeredRules);
+    }
 
-	public <O> ResultHandlerContext<D, O> check(final Rule<Collection<D>, O>... rules) {
-		final List<Rule<Collection<D>, O>> registeredRules = new ArrayList<Rule<Collection<D>, O>>();
-		if (rules != null) {
-			Collections.addAll(registeredRules, rules);
-		}
-		return new ResultHandlerContext<D, O>(registeredResultCollectors, registeredRules);
-	}
+    public <O> ResultHandlerContext<D, O> check(final Rule<Collection<D>, O>... rules) {
+        final List<Rule<Collection<D>, O>> registeredRules = new ArrayList<Rule<Collection<D>, O>>();
+        if (rules != null) {
+            Collections.addAll(registeredRules, rules);
+        }
+        return new ResultHandlerContext<D, O>(registeredResultCollectors, registeredRules);
+    }
 
-	public <O> ResultHandlerContext<D, O> check(final Collection<Rule<Collection<D>, O>> rules) {
-		final List<Rule<Collection<D>, O>> registeredRules = new ArrayList<Rule<Collection<D>, O>>();
-		if (rules != null) {
-			registeredRules.addAll(rules);
-		}
-		return new ResultHandlerContext<D, O>(registeredResultCollectors, registeredRules);
-	}
+    public <O> ResultHandlerContext<D, O> check(final Collection<Rule<Collection<D>, O>> rules) {
+        final List<Rule<Collection<D>, O>> registeredRules = new ArrayList<Rule<Collection<D>, O>>();
+        if (rules != null) {
+            registeredRules.addAll(rules);
+        }
+        return new ResultHandlerContext<D, O>(registeredResultCollectors, registeredRules);
+    }
 }

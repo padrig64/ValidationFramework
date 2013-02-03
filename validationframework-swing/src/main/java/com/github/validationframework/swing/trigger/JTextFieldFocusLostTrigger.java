@@ -36,15 +36,16 @@ import javax.swing.JTextField;
  */
 public class JTextFieldFocusLostTrigger extends BaseComponentFocusLostTrigger<JTextField> {
 
-	/**
-	 * Constructor specified the textfield whose focus is to be tracked.<br>A focus listener will be installed. So you may
-	 * need to call {@link #dispose()} when trigger is no longer needed.
-	 *
-	 * @param source Component whose focus is to be tracked.
-	 *
-	 * @see #dispose()
-	 */
-	public JTextFieldFocusLostTrigger(final JTextField source) {
-		super(source);
-	}
+    /**
+     * Constructor specified the textfield whose focus is to be tracked.<br>A focus listener will be installed. So
+     * you may
+     * need to call {@link #dispose()} when trigger is no longer needed.
+     *
+     * @param source Component whose focus is to be tracked.
+     *
+     * @see #dispose()
+     */
+    public JTextFieldFocusLostTrigger(final JTextField source) {
+        super(source);
+    }
 }

@@ -36,15 +36,15 @@ import java.util.EventObject;
  */
 public class TriggerEvent extends EventObject {
 
-	/**
-	 * Generated serial UID.
-	 */
-	private static final long serialVersionUID = 1598246986663737227L;
+    /**
+     * Generated serial UID.
+     */
+    private static final long serialVersionUID = 1598246986663737227L;
 
-	/**
-	 * @see EventObject#EventObject(Object)
-	 */
-	public TriggerEvent(final Object source) {
-		super(source);
-	}
+    /**
+     * @see EventObject#EventObject(Object)
+     */
+    public TriggerEvent(final Object source) {
+        super(source);
+    }
 }

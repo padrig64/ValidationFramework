@@ -25,28 +25,29 @@
 
 package com.github.validationframework.swing.resulthandler.bool;
 
+import org.junit.Test;
+
 import javax.swing.JFrame;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import org.junit.Test;
 
 public class CellIconBooleanFeedbackTest {
 
-	@Test
-	public void testMultipleDispose() {
-		final JFrame frame = new JFrame();
-		final DefaultTableModel tableModel = new DefaultTableModel(5, 5);
-		for (int i = 0; i < 5; i++) {
-			tableModel.insertRow(i, new String[] { "1", "2", "3", "4", "5" });
-		}
-		final JTable table = new JTable(tableModel);
-		frame.setContentPane(table);
+    @Test
+    public void testMultipleDispose() {
+        final JFrame frame = new JFrame();
+        final DefaultTableModel tableModel = new DefaultTableModel(5, 5);
+        for (int i = 0; i < 5; i++) {
+            tableModel.insertRow(i, new String[]{"1", "2", "3", "4", "5"});
+        }
+        final JTable table = new JTable(tableModel);
+        frame.setContentPane(table);
 
-		final CellIconBooleanFeedback feedback = new CellIconBooleanFeedback(table, 2, 2);
+        final CellIconBooleanFeedback feedback = new CellIconBooleanFeedback(table, 2, 2);
 
-		feedback.handleResult(true);
-		feedback.dispose();
-		feedback.dispose();
-		feedback.dispose();
-	}
+        feedback.handleResult(true);
+        feedback.dispose();
+        feedback.dispose();
+        feedback.dispose();
+    }
 }

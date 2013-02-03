@@ -28,23 +28,24 @@ package com.github.validationframework.experimental.builder;
 import com.github.validationframework.api.trigger.Trigger;
 import com.github.validationframework.experimental.builder.context.simplevalidator.DataProviderContext;
 import com.github.validationframework.experimental.builder.context.simplevalidator.TriggerContext;
+
 import java.util.Collection;
 
 public class SimpleValidatorBuilder {
 
-	public static DataProviderContext on(final Trigger trigger) {
-		return new TriggerContext().on(trigger);
-	}
+    public static DataProviderContext on(final Trigger trigger) {
+        return new TriggerContext().on(trigger);
+    }
 
-	public static DataProviderContext on(final Trigger... triggers) {
-		return new TriggerContext().on(triggers);
-	}
+    public static DataProviderContext on(final Trigger... triggers) {
+        return new TriggerContext().on(triggers);
+    }
 
-	public static DataProviderContext on(final Collection<Trigger> triggers) {
-		return new TriggerContext().on(triggers);
-	}
+    public static DataProviderContext on(final Collection<Trigger> triggers) {
+        return new TriggerContext().on(triggers);
+    }
 
-	public static DataProviderContext on(final Class<? extends Trigger> triggerClass) {
-		return new TriggerContext().on(triggerClass);
-	}
+    public static DataProviderContext on(final Class<? extends Trigger> triggerClass) {
+        return new TriggerContext().on(triggerClass);
+    }
 }

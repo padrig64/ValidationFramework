@@ -28,11 +28,12 @@ package com.github.validationframework.swing.dataprovider;
 import com.github.validationframework.api.dataprovider.DataProvider;
 import com.github.validationframework.base.transform.CastTransformer;
 import com.github.validationframework.base.transform.Transformer;
-import java.awt.Component;
-import javax.swing.JComboBox;
-import javax.swing.JTable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.swing.JComboBox;
+import javax.swing.JTable;
+import java.awt.Component;
 
 /**
  * Provider of the selected value of the current combobox editor component from a given table.<br>Note that if the table
@@ -44,64 +45,64 @@ import org.slf4j.LoggerFactory;
  */
 public class JTableComboBoxEditorSelectedValueProvider<T> implements DataProvider<T> {
 
-	/**
-	 * Logger for this class.
-	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(JTableComboBoxEditorSelectedValueProvider.class);
+    /**
+     * Logger for this class.
+     */
+    private static final Logger LOGGER = LoggerFactory.getLogger(JTableComboBoxEditorSelectedValueProvider.class);
 
-	/**
-	 * Table holding the editor component to get the text from.
-	 */
-	private final JTable table;
+    /**
+     * Table holding the editor component to get the text from.
+     */
+    private final JTable table;
 
-	/**
-	 * Transformer used to convert the selected object from the combobox editor component to the expected type.
-	 */
-	private final Transformer<Object, T> transformer;
+    /**
+     * Transformer used to convert the selected object from the combobox editor component to the expected type.
+     */
+    private final Transformer<Object, T> transformer;
 
-	/**
-	 * Constructor specifying the table holding the editor component to get the text from.
-	 *
-	 * @param table Editable table.
-	 */
-	public JTableComboBoxEditorSelectedValueProvider(final JTable table) {
-		this(table, new CastTransformer<Object, T>());
-	}
+    /**
+     * Constructor specifying the table holding the editor component to get the text from.
+     *
+     * @param table Editable table.
+     */
+    public JTableComboBoxEditorSelectedValueProvider(final JTable table) {
+        this(table, new CastTransformer<Object, T>());
+    }
 
-	/**
-	 * Constructor specifying the table holding the editor component to get the text from and the transformer used to
-	 * convert the selected object from the combobox to the expected type.
-	 *
-	 * @param table Editable table.
-	 * @param transformer Transformer used to convert the selected object from the combobox editor component to the
-	 * expected type.
-	 */
-	public JTableComboBoxEditorSelectedValueProvider(final JTable table, final Transformer<Object, T> transformer) {
-		this.table = table;
-		this.transformer = transformer;
-	}
+    /**
+     * Constructor specifying the table holding the editor component to get the text from and the transformer used to
+     * convert the selected object from the combobox to the expected type.
+     *
+     * @param table       Editable table.
+     * @param transformer Transformer used to convert the selected object from the combobox editor component to the
+     *                    expected type.
+     */
+    public JTableComboBoxEditorSelectedValueProvider(final JTable table, final Transformer<Object, T> transformer) {
+        this.table = table;
+        this.transformer = transformer;
+    }
 
-	/**
-	 * @see DataProvider#getData()
-	 */
-	@Override
-	public T getData() {
-		T typedValue = null;
+    /**
+     * @see DataProvider#getData()
+     */
+    @Override
+    public T getData() {
+        T typedValue = null;
 
-		// Get the combobox editor from the table, if any
-		final Component editorComponent = table.getEditorComponent();
-		if (editorComponent instanceof JComboBox) {
-			final JComboBox comboBox = (JComboBox) editorComponent;
+        // Get the combobox editor from the table, if any
+        final Component editorComponent = table.getEditorComponent();
+        if (editorComponent instanceof JComboBox) {
+            final JComboBox comboBox = (JComboBox) editorComponent;
 
-			// Get the selected value from the combobox
-			final Object dataValue = comboBox.getSelectedItem();
+            // Get the selected value from the combobox
+            final Object dataValue = comboBox.getSelectedItem();
 
-			// Convert it to the required type
-			typedValue = transformer.transform(dataValue);
-		} else {
-			LOGGER.warn("Table editor component is not a JComboBox: " + editorComponent);
-		}
+            // Convert it to the required type
+            typedValue = transformer.transform(dataValue);
+        } else {
+            LOGGER.warn("Table editor component is not a JComboBox: " + editorComponent);
+        }
 
-		return typedValue;
-	}
+        return typedValue;
+    }
 }

@@ -42,93 +42,95 @@ import java.util.regex.Pattern;
  */
 public class StringRegexRule extends AbstractStringBooleanRule {
 
-	/**
-	 * Mapping between regex expression string and compiled patterns.
-	 */
-	private final Map<String, Pattern> patterns = new HashMap<String, Pattern>();
+    /**
+     * Mapping between regex expression string and compiled patterns.
+     */
+    private final Map<String, Pattern> patterns = new HashMap<String, Pattern>();
 
-	/**
-	 * Default constructor.
-	 */
-	public StringRegexRule() {
-		super();
-	}
+    /**
+     * Default constructor.
+     */
+    public StringRegexRule() {
+        super();
+    }
 
-	/**
-	 * Constructor specifying the pattern(s) to be added.<br>Note that if you need the matching to be done strictly on the
-	 * whole input data, you should surround the patterns with the '^' and '$' characters.
-	 *
-	 * @param patterns Patterns to be added.
-	 *
-	 * @see #addPattern(String)
-	 * @see Matcher#find()
-	 */
-	public StringRegexRule(final String... patterns) {
-		super();
-		if (patterns != null) {
-			for (final String pattern : patterns) {
-				addPattern(pattern);
-			}
-		}
-	}
+    /**
+     * Constructor specifying the pattern(s) to be added.<br>Note that if you need the matching to be done strictly
+     * on the
+     * whole input data, you should surround the patterns with the '^' and '$' characters.
+     *
+     * @param patterns Patterns to be added.
+     *
+     * @see #addPattern(String)
+     * @see Matcher#find()
+     */
+    public StringRegexRule(final String... patterns) {
+        super();
+        if (patterns != null) {
+            for (final String pattern : patterns) {
+                addPattern(pattern);
+            }
+        }
+    }
 
-	/**
-	 * Adds the specified regular expression to be matched against the data to be validated.<br>Note that if you need the
-	 * matching to be done strictly on the whole input data, you should surround the pattern with the '^' and '$'
-	 * characters.
-	 *
-	 * @param pattern Regular expression to be added.
-	 *
-	 * @see #addPattern(String, int)
-	 * @see Matcher#find()
-	 */
-	public void addPattern(final String pattern) {
-		addPattern(pattern, 0);
-	}
+    /**
+     * Adds the specified regular expression to be matched against the data to be validated.<br>Note that if you need
+     * the
+     * matching to be done strictly on the whole input data, you should surround the pattern with the '^' and '$'
+     * characters.
+     *
+     * @param pattern Regular expression to be added.
+     *
+     * @see #addPattern(String, int)
+     * @see Matcher#find()
+     */
+    public void addPattern(final String pattern) {
+        addPattern(pattern, 0);
+    }
 
-	/**
-	 * Adds the specified regular expression to be matched against the data to be validated, with the specified pattern
-	 * flags.<br>Note that if you need the matching to be done strictly on the whole input data, you should surround the
-	 * patterns with the '^' and '$' characters.
-	 *
-	 * @param pattern Regular expression to be added.
-	 * @param flags Regular expression pattern flags.<br>Refer to {@link Pattern#compile(String, int)}.
-	 *
-	 * @see #addPattern(String)
-	 * @see Matcher#find()
-	 */
-	public void addPattern(final String pattern, final int flags) {
-		patterns.put(pattern, Pattern.compile(pattern, flags));
-	}
+    /**
+     * Adds the specified regular expression to be matched against the data to be validated, with the specified pattern
+     * flags.<br>Note that if you need the matching to be done strictly on the whole input data, you should surround the
+     * patterns with the '^' and '$' characters.
+     *
+     * @param pattern Regular expression to be added.
+     * @param flags   Regular expression pattern flags.<br>Refer to {@link Pattern#compile(String, int)}.
+     *
+     * @see #addPattern(String)
+     * @see Matcher#find()
+     */
+    public void addPattern(final String pattern, final int flags) {
+        patterns.put(pattern, Pattern.compile(pattern, flags));
+    }
 
-	/**
-	 * Removes the specified regular expression.
-	 *
-	 * @param pattern Regular expression to be removed.
-	 */
-	public void removePattern(final String pattern) {
-		patterns.remove(pattern);
-	}
+    /**
+     * Removes the specified regular expression.
+     *
+     * @param pattern Regular expression to be removed.
+     */
+    public void removePattern(final String pattern) {
+        patterns.remove(pattern);
+    }
 
-	/**
-	 * @see AbstractStringBooleanRule#validate(Object)
-	 * @see Matcher#find()
-	 */
-	@Override
-	public Boolean validate(final String data) {
-		Boolean result = false;
+    /**
+     * @see AbstractStringBooleanRule#validate(Object)
+     * @see Matcher#find()
+     */
+    @Override
+    public Boolean validate(final String data) {
+        Boolean result = false;
 
-		if (data != null) {
-			final String dataToBeValidated = trimIfNeeded(data);
-			for (final Pattern pattern : patterns.values()) {
-				final Matcher matcher = pattern.matcher(dataToBeValidated);
-				if (matcher.find()) {
-					result = true;
-					break;
-				}
-			}
-		}
+        if (data != null) {
+            final String dataToBeValidated = trimIfNeeded(data);
+            for (final Pattern pattern : patterns.values()) {
+                final Matcher matcher = pattern.matcher(dataToBeValidated);
+                if (matcher.find()) {
+                    result = true;
+                    break;
+                }
+            }
+        }
 
-		return result;
-	}
+        return result;
+    }
 }

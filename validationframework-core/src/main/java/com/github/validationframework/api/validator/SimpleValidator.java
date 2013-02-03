@@ -58,61 +58,61 @@ import com.github.validationframework.api.trigger.Trigger;
  * @see MappableValidator
  */
 public interface SimpleValidator<T extends Trigger, P extends DataProvider<I>, I, R extends Rule<D, O>, D, O,
-		H extends ResultHandler<A>, A> {
+        H extends ResultHandler<A>, A> {
 
-	/**
-	 * Adds the specified validation trigger.
-	 *
-	 * @param trigger Validation trigger to be added.
-	 */
-	public void addTrigger(final T trigger);
+    /**
+     * Adds the specified validation trigger.
+     *
+     * @param trigger Validation trigger to be added.
+     */
+    public void addTrigger(final T trigger);
 
-	/**
-	 * Removes the specified validation trigger.
-	 *
-	 * @param trigger Validation trigger to be removed.
-	 */
-	public void removeTrigger(final T trigger);
+    /**
+     * Removes the specified validation trigger.
+     *
+     * @param trigger Validation trigger to be removed.
+     */
+    public void removeTrigger(final T trigger);
 
-	/**
-	 * Adds the specified validation trigger.
-	 *
-	 * @param dataProvider Validation data provider to be added.
-	 */
-	public void addDataProvider(final P dataProvider);
+    /**
+     * Adds the specified validation trigger.
+     *
+     * @param dataProvider Validation data provider to be added.
+     */
+    public void addDataProvider(final P dataProvider);
 
-	/**
-	 * Removes the specified validation trigger.
-	 *
-	 * @param dataProvider Validation data provider to be removed.
-	 */
-	public void removeDataProvider(final P dataProvider);
+    /**
+     * Removes the specified validation trigger.
+     *
+     * @param dataProvider Validation data provider to be removed.
+     */
+    public void removeDataProvider(final P dataProvider);
 
-	/**
-	 * Adds the specified validation rule.
-	 *
-	 * @param rule Validation rule to be added.
-	 */
-	public void addRule(final R rule);
+    /**
+     * Adds the specified validation rule.
+     *
+     * @param rule Validation rule to be added.
+     */
+    public void addRule(final R rule);
 
-	/**
-	 * Removes the specified validation rule.
-	 *
-	 * @param rule Validation rule to be removed.
-	 */
-	public void removeRule(final R rule);
+    /**
+     * Removes the specified validation rule.
+     *
+     * @param rule Validation rule to be removed.
+     */
+    public void removeRule(final R rule);
 
-	/**
-	 * Adds the specified validation result handler.
-	 *
-	 * @param resultHandler Validation result handler to be added.
-	 */
-	public void addResultHandler(final H resultHandler);
+    /**
+     * Adds the specified validation result handler.
+     *
+     * @param resultHandler Validation result handler to be added.
+     */
+    public void addResultHandler(final H resultHandler);
 
-	/**
-	 * Removes the specified validation result handler.
-	 *
-	 * @param resultHandler Validation result handler to be removed.
-	 */
-	public void removeResultHandler(final H resultHandler);
+    /**
+     * Removes the specified validation result handler.
+     *
+     * @param resultHandler Validation result handler to be removed.
+     */
+    public void removeResultHandler(final H resultHandler);
 }

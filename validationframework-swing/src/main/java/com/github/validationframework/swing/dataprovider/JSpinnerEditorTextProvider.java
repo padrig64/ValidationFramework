@@ -26,11 +26,12 @@
 package com.github.validationframework.swing.dataprovider;
 
 import com.github.validationframework.api.dataprovider.DataProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.swing.JComponent;
 import javax.swing.JSpinner;
 import javax.swing.text.JTextComponent;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Data provider reading the text from the text editor of a spinner.
@@ -40,51 +41,51 @@ import org.slf4j.LoggerFactory;
  */
 public class JSpinnerEditorTextProvider implements DataProvider<String> {
 
-	/**
-	 * Logger for this class.
-	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(JSpinnerEditorTextProvider.class);
+    /**
+     * Logger for this class.
+     */
+    private static final Logger LOGGER = LoggerFactory.getLogger(JSpinnerEditorTextProvider.class);
 
-	/**
-	 * Spinner to get the text from.
-	 */
-	private final JSpinner spinner;
+    /**
+     * Spinner to get the text from.
+     */
+    private final JSpinner spinner;
 
-	/**
-	 * Constructor specifying the spinner to get the text from.
-	 *
-	 * @param spinner Spinner to get the text from.
-	 */
-	public JSpinnerEditorTextProvider(final JSpinner spinner) {
-		this.spinner = spinner;
-	}
+    /**
+     * Constructor specifying the spinner to get the text from.
+     *
+     * @param spinner Spinner to get the text from.
+     */
+    public JSpinnerEditorTextProvider(final JSpinner spinner) {
+        this.spinner = spinner;
+    }
 
-	/**
-	 * @see DataProvider#getData()
-	 */
-	@Override
-	public String getData() {
-		final String data;
+    /**
+     * @see DataProvider#getData()
+     */
+    @Override
+    public String getData() {
+        final String data;
 
-		// Try to find a text component in the spinner
-		final JTextComponent textComponent;
-		final JComponent spinnerEditor = spinner.getEditor();
-		if (spinnerEditor instanceof JTextComponent) {
-			textComponent = (JTextComponent) spinnerEditor;
-		} else if (spinnerEditor instanceof JSpinner.DefaultEditor) {
-			textComponent = ((JSpinner.DefaultEditor) spinnerEditor).getTextField();
-		} else {
-			textComponent = null;
-		}
+        // Try to find a text component in the spinner
+        final JTextComponent textComponent;
+        final JComponent spinnerEditor = spinner.getEditor();
+        if (spinnerEditor instanceof JTextComponent) {
+            textComponent = (JTextComponent) spinnerEditor;
+        } else if (spinnerEditor instanceof JSpinner.DefaultEditor) {
+            textComponent = ((JSpinner.DefaultEditor) spinnerEditor).getTextField();
+        } else {
+            textComponent = null;
+        }
 
-		// Read text from the text component if found
-		if (textComponent == null) {
-			LOGGER.warn("Cannot read text from spinner editor component: " + spinnerEditor);
-			data = null;
-		} else {
-			data = textComponent.getText();
-		}
+        // Read text from the text component if found
+        if (textComponent == null) {
+            LOGGER.warn("Cannot read text from spinner editor component: " + spinnerEditor);
+            data = null;
+        } else {
+            data = textComponent.getText();
+        }
 
-		return data;
-	}
+        return data;
+    }
 }

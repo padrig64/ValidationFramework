@@ -34,12 +34,12 @@ package com.github.validationframework.base.transform;
  */
 public interface Transformer<I, O> {
 
-	/**
-	 * Transforms the specified input.
-	 *
-	 * @param input Input to be transformed.
-	 *
-	 * @return Transformation result.
-	 */
-	public O transform(I input);
+    /**
+     * Transforms the specified input.
+     *
+     * @param input Input to be transformed.
+     *
+     * @return Transformation result.
+     */
+    public O transform(I input);
 }

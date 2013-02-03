@@ -28,36 +28,37 @@ package com.github.validationframework.swing.trigger;
 import com.github.validationframework.api.common.Disposable;
 import com.github.validationframework.api.trigger.TriggerEvent;
 import com.github.validationframework.base.trigger.AbstractTrigger;
+
+import javax.swing.JComboBox;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JComboBox;
 
 public class JComboBoxModelChangedTrigger extends AbstractTrigger implements Disposable {
 
-	private class SourceAdapter implements ActionListener {
+    private class SourceAdapter implements ActionListener {
 
-		@Override
-		public void actionPerformed(final ActionEvent e) {
-			fireTriggerEvent(new TriggerEvent(source));
-		}
-	}
+        @Override
+        public void actionPerformed(final ActionEvent e) {
+            fireTriggerEvent(new TriggerEvent(source));
+        }
+    }
 
-	private JComboBox source = null;
+    private JComboBox source = null;
 
-	private final ActionListener sourceAdapter = new SourceAdapter();
+    private final ActionListener sourceAdapter = new SourceAdapter();
 
-	public JComboBoxModelChangedTrigger(final JComboBox source) {
-		super();
-		this.source = source;
-		source.addActionListener(sourceAdapter);
-	}
+    public JComboBoxModelChangedTrigger(final JComboBox source) {
+        super();
+        this.source = source;
+        source.addActionListener(sourceAdapter);
+    }
 
-	/**
-	 * @see Disposable#dispose()
-	 */
-	@Override
-	public void dispose() {
-		source.removeActionListener(sourceAdapter);
-		source = null;
-	}
+    /**
+     * @see Disposable#dispose()
+     */
+    @Override
+    public void dispose() {
+        source.removeActionListener(sourceAdapter);
+        source = null;
+    }
 }

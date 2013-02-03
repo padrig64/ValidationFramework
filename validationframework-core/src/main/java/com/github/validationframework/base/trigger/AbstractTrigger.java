@@ -28,6 +28,7 @@ package com.github.validationframework.base.trigger;
 import com.github.validationframework.api.trigger.Trigger;
 import com.github.validationframework.api.trigger.TriggerEvent;
 import com.github.validationframework.api.trigger.TriggerListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,35 +43,35 @@ import java.util.List;
  */
 public abstract class AbstractTrigger implements Trigger {
 
-	/**
-	 * Trigger listeners.
-	 */
-	protected final List<TriggerListener> listeners = new ArrayList<TriggerListener>();
+    /**
+     * Trigger listeners.
+     */
+    protected final List<TriggerListener> listeners = new ArrayList<TriggerListener>();
 
-	/**
-	 * @see Trigger#addTriggerListener(TriggerListener)
-	 */
-	@Override
-	public void addTriggerListener(final TriggerListener listener) {
-		listeners.add(listener);
-	}
+    /**
+     * @see Trigger#addTriggerListener(TriggerListener)
+     */
+    @Override
+    public void addTriggerListener(final TriggerListener listener) {
+        listeners.add(listener);
+    }
 
-	/**
-	 * @see Trigger#removeTriggerListener(TriggerListener)
-	 */
-	@Override
-	public void removeTriggerListener(final TriggerListener listener) {
-		listeners.remove(listener);
-	}
+    /**
+     * @see Trigger#removeTriggerListener(TriggerListener)
+     */
+    @Override
+    public void removeTriggerListener(final TriggerListener listener) {
+        listeners.remove(listener);
+    }
 
-	/**
-	 * Fires the specified trigger event.<br>Calling this method is left to the sub-classes.
-	 *
-	 * @param event Trigger event to be fired.
-	 */
-	protected void fireTriggerEvent(final TriggerEvent event) {
-		for (final TriggerListener listener : listeners) {
-			listener.triggerValidation(event);
-		}
-	}
+    /**
+     * Fires the specified trigger event.<br>Calling this method is left to the sub-classes.
+     *
+     * @param event Trigger event to be fired.
+     */
+    protected void fireTriggerEvent(final TriggerEvent event) {
+        for (final TriggerListener listener : listeners) {
+            listener.triggerValidation(event);
+        }
+    }
 }

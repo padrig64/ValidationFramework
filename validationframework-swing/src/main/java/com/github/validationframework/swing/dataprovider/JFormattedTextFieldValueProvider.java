@@ -28,8 +28,9 @@ package com.github.validationframework.swing.dataprovider;
 import com.github.validationframework.api.dataprovider.DataProvider;
 import com.github.validationframework.base.transform.CastTransformer;
 import com.github.validationframework.base.transform.Transformer;
-import java.text.ParseException;
+
 import javax.swing.JFormattedTextField;
+import java.text.ParseException;
 
 /**
  * Data provider reading the value from a formatted textfield.<br>Note that the value is not read from the model, but
@@ -41,60 +42,61 @@ import javax.swing.JFormattedTextField;
  */
 public class JFormattedTextFieldValueProvider<D> implements DataProvider<D> {
 
-	/**
-	 * Formatted textfield to get the data from.<br>Note that the text and the formatter are retrieved every time they are
-	 * needed so that we do not have to listener to changes in the formatted textfield to track them.
-	 */
-	private final JFormattedTextField formattedTextField;
+    /**
+     * Formatted textfield to get the data from.<br>Note that the text and the formatter are retrieved every time
+     * they are
+     * needed so that we do not have to listener to changes in the formatted textfield to track them.
+     */
+    private final JFormattedTextField formattedTextField;
 
-	/**
-	 * Transformer used to convert the object parsed from the formatted textfield to the expected type.
-	 */
-	private final Transformer<Object, D> transformer;
+    /**
+     * Transformer used to convert the object parsed from the formatted textfield to the expected type.
+     */
+    private final Transformer<Object, D> transformer;
 
-	/**
-	 * Constructor specifying the formatted textfield to get the value from.
-	 *
-	 * @param formattedTextField Formatted textfield to get the value from.
-	 */
-	public JFormattedTextFieldValueProvider(final JFormattedTextField formattedTextField) {
-		this(formattedTextField, new CastTransformer<Object, D>());
-	}
+    /**
+     * Constructor specifying the formatted textfield to get the value from.
+     *
+     * @param formattedTextField Formatted textfield to get the value from.
+     */
+    public JFormattedTextFieldValueProvider(final JFormattedTextField formattedTextField) {
+        this(formattedTextField, new CastTransformer<Object, D>());
+    }
 
-	/**
-	 * Constructor specifying the formatted textfield to get the value from and the transformer to convert it to the
-	 * required type.
-	 *
-	 * @param formattedTextField Formatted textfield to get the value from.
-	 * @param transformer Transformer used to convert the object parsed from the spinner to the expected type.
-	 */
-	public JFormattedTextFieldValueProvider(final JFormattedTextField formattedTextField,
-											final Transformer<Object, D> transformer) {
-		this.formattedTextField = formattedTextField;
-		this.transformer = transformer;
-	}
+    /**
+     * Constructor specifying the formatted textfield to get the value from and the transformer to convert it to the
+     * required type.
+     *
+     * @param formattedTextField Formatted textfield to get the value from.
+     * @param transformer        Transformer used to convert the object parsed from the spinner to the expected type.
+     */
+    public JFormattedTextFieldValueProvider(final JFormattedTextField formattedTextField, final Transformer<Object,
+            D> transformer) {
+        this.formattedTextField = formattedTextField;
+        this.transformer = transformer;
+    }
 
-	/**
-	 * @see DataProvider#getData()
-	 */
-	@Override
-	public D getData() {
-		D typedValue = null;
+    /**
+     * @see DataProvider#getData()
+     */
+    @Override
+    public D getData() {
+        D typedValue = null;
 
-		try {
-			// Parse text
-			final String dataText = formattedTextField.getText();
-			final JFormattedTextField.AbstractFormatter formatter = formattedTextField.getFormatter();
-			if (formatter != null) {
-				final Object dataValue = formatter.stringToValue(dataText);
+        try {
+            // Parse text
+            final String dataText = formattedTextField.getText();
+            final JFormattedTextField.AbstractFormatter formatter = formattedTextField.getFormatter();
+            if (formatter != null) {
+                final Object dataValue = formatter.stringToValue(dataText);
 
-				// Convert it to the required type
-				typedValue = transformer.transform(dataValue);
-			}
-		} catch (ParseException e) {
-			typedValue = null;
-		}
+                // Convert it to the required type
+                typedValue = transformer.transform(dataValue);
+            }
+        } catch (ParseException e) {
+            typedValue = null;
+        }
 
-		return typedValue;
-	}
+        return typedValue;
+    }
 }

@@ -36,10 +36,10 @@ import javax.swing.JRadioButton;
  */
 public class JRadioButtonValueProvider extends BaseJToggleButtonValueProvider<JRadioButton> {
 
-	/**
-	 * @see BaseJToggleButtonValueProvider#BaseJToggleButtonValueProvider(javax.swing.JToggleButton)
-	 */
-	public JRadioButtonValueProvider(final JRadioButton toggleComponent) {
-		super(toggleComponent);
-	}
+    /**
+     * @see BaseJToggleButtonValueProvider#BaseJToggleButtonValueProvider(javax.swing.JToggleButton)
+     */
+    public JRadioButtonValueProvider(final JRadioButton toggleComponent) {
+        super(toggleComponent);
+    }
 }

@@ -33,10 +33,10 @@ package com.github.validationframework.api.resulthandler;
  */
 public interface ResultHandler<O> {
 
-	/**
-	 * Handles the specified validation result.
-	 *
-	 * @param result Validation result to be handled.
-	 */
-	public void handleResult(O result);
+    /**
+     * Handles the specified validation result.
+     *
+     * @param result Validation result to be handled.
+     */
+    public void handleResult(O result);
 }

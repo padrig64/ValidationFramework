@@ -28,6 +28,7 @@ package com.github.validationframework.swing.trigger;
 import com.github.validationframework.api.common.Disposable;
 import com.github.validationframework.api.trigger.TriggerEvent;
 import com.github.validationframework.base.trigger.AbstractTrigger;
+
 import javax.swing.JList;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -37,49 +38,50 @@ import javax.swing.event.ListSelectionListener;
  */
 public class JListSelectionChangedTrigger extends AbstractTrigger implements Disposable {
 
-	/**
-	 * Listener to selection changes in the selection model of the list, triggering the validation.<br>Note that there is
-	 * no need to track replacement of the selection model in the list as this is already done in {@link JList}.
-	 */
-	private class SelectionAdapter implements ListSelectionListener {
+    /**
+     * Listener to selection changes in the selection model of the list, triggering the validation.<br>Note that
+     * there is
+     * no need to track replacement of the selection model in the list as this is already done in {@link JList}.
+     */
+    private class SelectionAdapter implements ListSelectionListener {
 
-		/**
-		 * @see ListSelectionListener#valueChanged(ListSelectionEvent)
-		 */
-		@Override
-		public void valueChanged(final ListSelectionEvent e) {
-			if (!e.getValueIsAdjusting()) {
-				fireTriggerEvent(new TriggerEvent(list));
-			}
-		}
-	}
+        /**
+         * @see ListSelectionListener#valueChanged(ListSelectionEvent)
+         */
+        @Override
+        public void valueChanged(final ListSelectionEvent e) {
+            if (!e.getValueIsAdjusting()) {
+                fireTriggerEvent(new TriggerEvent(list));
+            }
+        }
+    }
 
-	/**
-	 * List to track selection changes.
-	 */
-	private final JList list;
+    /**
+     * List to track selection changes.
+     */
+    private final JList list;
 
-	/**
-	 * Listener to selection changes.
-	 */
-	private final SelectionAdapter selectionAdapter = new SelectionAdapter();
+    /**
+     * Listener to selection changes.
+     */
+    private final SelectionAdapter selectionAdapter = new SelectionAdapter();
 
-	/**
-	 * Constructor specifying the list whose selection changes are meant to trigger validation.
-	 *
-	 * @param list List whose selection changes are meant to trigger validation.
-	 */
-	public JListSelectionChangedTrigger(final JList list) {
-		super();
-		this.list = list;
-		this.list.addListSelectionListener(selectionAdapter);
-	}
+    /**
+     * Constructor specifying the list whose selection changes are meant to trigger validation.
+     *
+     * @param list List whose selection changes are meant to trigger validation.
+     */
+    public JListSelectionChangedTrigger(final JList list) {
+        super();
+        this.list = list;
+        this.list.addListSelectionListener(selectionAdapter);
+    }
 
-	/**
-	 * @see Disposable#dispose()
-	 */
-	@Override
-	public void dispose() {
-		list.removeListSelectionListener(selectionAdapter);
-	}
+    /**
+     * @see Disposable#dispose()
+     */
+    @Override
+    public void dispose() {
+        list.removeListSelectionListener(selectionAdapter);
+    }
 }

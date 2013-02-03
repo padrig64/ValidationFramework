@@ -26,6 +26,7 @@
 package com.github.validationframework.swing.dataprovider;
 
 import com.github.validationframework.api.dataprovider.DataProvider;
+
 import javax.swing.JSpinner;
 
 /**
@@ -36,25 +37,25 @@ import javax.swing.JSpinner;
  */
 public class JSpinnerModelValueProvider implements DataProvider<Object> {
 
-	/**
-	 * Spinner to get the value from.
-	 */
-	private final JSpinner spinner;
+    /**
+     * Spinner to get the value from.
+     */
+    private final JSpinner spinner;
 
-	/**
-	 * Constructor specifying the spinner to get the value from.
-	 *
-	 * @param spinner Spinner to get the value from.
-	 */
-	public JSpinnerModelValueProvider(final JSpinner spinner) {
-		this.spinner = spinner;
-	}
+    /**
+     * Constructor specifying the spinner to get the value from.
+     *
+     * @param spinner Spinner to get the value from.
+     */
+    public JSpinnerModelValueProvider(final JSpinner spinner) {
+        this.spinner = spinner;
+    }
 
-	/**
-	 * @see DataProvider#getData()
-	 */
-	@Override
-	public Object getData() {
-		return spinner.getValue();
-	}
+    /**
+     * @see DataProvider#getData()
+     */
+    @Override
+    public Object getData() {
+        return spinner.getValue();
+    }
 }

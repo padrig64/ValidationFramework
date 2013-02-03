@@ -26,10 +26,11 @@
 package com.github.validationframework.swing.dataprovider;
 
 import com.github.validationframework.api.dataprovider.DataProvider;
-import java.util.Enumeration;
+
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;
+import java.util.Enumeration;
 
 /**
  * Data provider retrieving the selected index in a button group.
@@ -39,40 +40,40 @@ import javax.swing.ButtonModel;
  */
 public class ButtonGroupIndexProvider implements DataProvider<Integer> {
 
-	/**
-	 * Button group to retrieve the selected index from.
-	 */
-	private final ButtonGroup buttonGroup;
+    /**
+     * Button group to retrieve the selected index from.
+     */
+    private final ButtonGroup buttonGroup;
 
-	/**
-	 * Constructor specifying the button group to retrieve the selected index from.
-	 *
-	 * @param buttonGroup Button group to retrieve the selected index from.
-	 */
-	public ButtonGroupIndexProvider(final ButtonGroup buttonGroup) {
-		this.buttonGroup = buttonGroup;
-	}
+    /**
+     * Constructor specifying the button group to retrieve the selected index from.
+     *
+     * @param buttonGroup Button group to retrieve the selected index from.
+     */
+    public ButtonGroupIndexProvider(final ButtonGroup buttonGroup) {
+        this.buttonGroup = buttonGroup;
+    }
 
-	/**
-	 * @see DataProvider#getData()
-	 */
-	@Override
-	public Integer getData() {
-		int index = -1;
+    /**
+     * @see DataProvider#getData()
+     */
+    @Override
+    public Integer getData() {
+        int index = -1;
 
-		final ButtonModel selection = buttonGroup.getSelection();
-		if (selection != null) {
-			final Enumeration<AbstractButton> buttons = buttonGroup.getElements();
-			int i = 0;
-			while (buttons.hasMoreElements()) {
-				if (buttons.nextElement().getModel().equals(selection)) {
-					index = i;
-					break;
-				}
-				i++;
-			}
-		}
+        final ButtonModel selection = buttonGroup.getSelection();
+        if (selection != null) {
+            final Enumeration<AbstractButton> buttons = buttonGroup.getElements();
+            int i = 0;
+            while (buttons.hasMoreElements()) {
+                if (buttons.nextElement().getModel().equals(selection)) {
+                    index = i;
+                    break;
+                }
+                i++;
+            }
+        }
 
-		return index;
-	}
+        return index;
+    }
 }

@@ -34,69 +34,69 @@ import java.util.Collection;
  */
 public class OrBooleanAggregator implements Aggregator<Boolean, Boolean> {
 
-	/**
-	 * Default boolean value to be used when transforming an empty or null collection.
-	 */
-	public static final boolean DEFAULT_EMPTY_COLLECTION_VALUE = true;
+    /**
+     * Default boolean value to be used when transforming an empty or null collection.
+     */
+    public static final boolean DEFAULT_EMPTY_COLLECTION_VALUE = true;
 
-	/**
-	 * Default boolean value to be used when transforming a null value from the collection.
-	 */
-	public static final boolean DEFAULT_NULL_ELEMENT_VALUE = false;
+    /**
+     * Default boolean value to be used when transforming a null value from the collection.
+     */
+    public static final boolean DEFAULT_NULL_ELEMENT_VALUE = false;
 
-	/**
-	 * Boolean value to be used when transforming an empty collection.
-	 */
-	private final boolean emptyCollectionValid;
+    /**
+     * Boolean value to be used when transforming an empty collection.
+     */
+    private final boolean emptyCollectionValid;
 
-	/**
-	 * Boolean value to be used when transforming a null value from the collection.
-	 */
-	private final boolean nullElementValid;
+    /**
+     * Boolean value to be used when transforming a null value from the collection.
+     */
+    private final boolean nullElementValid;
 
-	/**
-	 * Default constructor using values for empty and null collections, and null elements.
-	 *
-	 * @see #DEFAULT_EMPTY_COLLECTION_VALUE
-	 * @see #DEFAULT_NULL_ELEMENT_VALUE
-	 */
-	public OrBooleanAggregator() {
-		this(DEFAULT_EMPTY_COLLECTION_VALUE, DEFAULT_NULL_ELEMENT_VALUE);
-	}
+    /**
+     * Default constructor using values for empty and null collections, and null elements.
+     *
+     * @see #DEFAULT_EMPTY_COLLECTION_VALUE
+     * @see #DEFAULT_NULL_ELEMENT_VALUE
+     */
+    public OrBooleanAggregator() {
+        this(DEFAULT_EMPTY_COLLECTION_VALUE, DEFAULT_NULL_ELEMENT_VALUE);
+    }
 
-	/**
-	 * Constructor specifying the boolean values for empty and null collections, and null elements.
-	 *
-	 * @param emptyCollectionValue Value for empty and null collections.
-	 * @param nullElementValue Value for null elements in the transformed collection.
-	 */
-	public OrBooleanAggregator(final boolean emptyCollectionValue, final boolean nullElementValue) {
-		this.emptyCollectionValid = emptyCollectionValue;
-		this.nullElementValid = nullElementValue;
-	}
+    /**
+     * Constructor specifying the boolean values for empty and null collections, and null elements.
+     *
+     * @param emptyCollectionValue Value for empty and null collections.
+     * @param nullElementValue     Value for null elements in the transformed collection.
+     */
+    public OrBooleanAggregator(final boolean emptyCollectionValue, final boolean nullElementValue) {
+        this.emptyCollectionValid = emptyCollectionValue;
+        this.nullElementValid = nullElementValue;
+    }
 
-	/**
-	 * @see Transformer#transform(Object)
-	 */
-	@Override
-	public Boolean transform(final Collection<Boolean> elements) {
-		Boolean aggregation = false;
+    /**
+     * @see Transformer#transform(Object)
+     */
+    @Override
+    public Boolean transform(final Collection<Boolean> elements) {
+        Boolean aggregation = false;
 
-		if ((elements == null) || elements.isEmpty()) {
-			aggregation = emptyCollectionValid;
-		} else {
-			for (final Boolean element : elements) {
-				Boolean result = element;
-				if (result == null) {
-					result = nullElementValid;
-				}
-				aggregation |= result;
-				if (aggregation) {
-					break;
-				}
-			}
-		}
+        if ((elements == null) || elements.isEmpty()) {
+            aggregation = emptyCollectionValid;
+        } else {
+            for (final Boolean element : elements) {
+                Boolean result = element;
+                if (result == null) {
+                    result = nullElementValid;
+                }
+                aggregation |= result;
+                if (aggregation) {
+                    break;
+                }
+            }
+        }
 
-		return aggregation;
-	}
+        return aggregation;
+    }
 }

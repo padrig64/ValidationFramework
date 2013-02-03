@@ -33,77 +33,77 @@ import com.github.validationframework.api.rule.Rule;
  * And everything is considered bigger than null.
  *
  * @param <T> Type of number handled by this rule.<br>It also it is not really required for the internal logic of the
- * rule, it helps in reducing compilation warnings and/or errors when add a rule in a validator.
+ *            rule, it helps in reducing compilation warnings and/or errors when add a rule in a validator.
  *
  * @see Rule
  */
 public class NumberLessThanRule<T extends Number> implements Rule<T, Boolean> {
 
-	/**
-	 * Value to which the data is to be compared.
-	 */
-	private T maximumValue = null;
+    /**
+     * Value to which the data is to be compared.
+     */
+    private T maximumValue = null;
 
-	/**
-	 * Default constructor.
-	 */
-	public NumberLessThanRule() {
-		// Nothing to be done
-	}
+    /**
+     * Default constructor.
+     */
+    public NumberLessThanRule() {
+        // Nothing to be done
+    }
 
-	/**
-	 * Constructor specifying the value to which the data is to be compared.
-	 *
-	 * @param maximumValue Value to which the data is to be compared.
-	 */
-	public NumberLessThanRule(final T maximumValue) {
-		setMaximumValue(maximumValue);
-	}
+    /**
+     * Constructor specifying the value to which the data is to be compared.
+     *
+     * @param maximumValue Value to which the data is to be compared.
+     */
+    public NumberLessThanRule(final T maximumValue) {
+        setMaximumValue(maximumValue);
+    }
 
-	/**
-	 * Gets the value to which the data is compared.
-	 *
-	 * @return Value to which the data is compared.
-	 */
-	public Number getMaximumValue() {
-		return maximumValue;
-	}
+    /**
+     * Gets the value to which the data is compared.
+     *
+     * @return Value to which the data is compared.
+     */
+    public Number getMaximumValue() {
+        return maximumValue;
+    }
 
-	/**
-	 * Sets the value to which the data is to be compared.
-	 *
-	 * @param maximumValue Value to which the data is to be compared.
-	 */
-	public void setMaximumValue(final T maximumValue) {
-		this.maximumValue = maximumValue;
-	}
+    /**
+     * Sets the value to which the data is to be compared.
+     *
+     * @param maximumValue Value to which the data is to be compared.
+     */
+    public void setMaximumValue(final T maximumValue) {
+        this.maximumValue = maximumValue;
+    }
 
-	/**
-	 * @see Rule#validate(Object)
-	 */
-	@Override
-	public Boolean validate(final T data) {
-		final boolean valid;
+    /**
+     * @see Rule#validate(Object)
+     */
+    @Override
+    public Boolean validate(final T data) {
+        final boolean valid;
 
-		if ((data == null) && (maximumValue == null)) {
-			valid = false;
-		} else if (data == null) {
-			// exactValue is not null, everything is bigger than null
-			valid = true;
-		} else if (maximumValue == null) {
-			// data is not null, everything is bigger than null
-			valid = false;
-		} else if (data instanceof Comparable) {
-			// Both are not null
-			valid = (((Comparable) data).compareTo(maximumValue) < 0);
-		} else if (maximumValue instanceof Comparable<?>) {
-			// Both are not null
-			valid = (((Comparable) maximumValue).compareTo(data) > 0);
-		} else {
-			// Both are not null
-			valid = false;
-		}
+        if ((data == null) && (maximumValue == null)) {
+            valid = false;
+        } else if (data == null) {
+            // exactValue is not null, everything is bigger than null
+            valid = true;
+        } else if (maximumValue == null) {
+            // data is not null, everything is bigger than null
+            valid = false;
+        } else if (data instanceof Comparable) {
+            // Both are not null
+            valid = (((Comparable) data).compareTo(maximumValue) < 0);
+        } else if (maximumValue instanceof Comparable<?>) {
+            // Both are not null
+            valid = (((Comparable) maximumValue).compareTo(data) > 0);
+        } else {
+            // Both are not null
+            valid = false;
+        }
 
-		return valid;
-	}
+        return valid;
+    }
 }

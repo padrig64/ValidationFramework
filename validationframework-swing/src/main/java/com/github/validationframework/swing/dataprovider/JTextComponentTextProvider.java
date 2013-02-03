@@ -36,10 +36,10 @@ import javax.swing.text.JTextComponent;
  */
 public class JTextComponentTextProvider extends BaseJTextComponentTextProvider<JTextComponent> {
 
-	/**
-	 * @see BaseJTextComponentTextProvider#BaseJTextComponentTextProvider(JTextComponent)
-	 */
-	public JTextComponentTextProvider(final JTextComponent textComponent) {
-		super(textComponent);
-	}
+    /**
+     * @see BaseJTextComponentTextProvider#BaseJTextComponentTextProvider(JTextComponent)
+     */
+    public JTextComponentTextProvider(final JTextComponent textComponent) {
+        super(textComponent);
+    }
 }

@@ -36,10 +36,10 @@ import javax.swing.JTextArea;
  */
 public class JTextAreaTextProvider extends BaseJTextComponentTextProvider<JTextArea> {
 
-	/**
-	 * @see BaseJTextComponentTextProvider#BaseJTextComponentTextProvider(javax.swing.text.JTextComponent)
-	 */
-	public JTextAreaTextProvider(final JTextArea textComponent) {
-		super(textComponent);
-	}
+    /**
+     * @see BaseJTextComponentTextProvider#BaseJTextComponentTextProvider(javax.swing.text.JTextComponent)
+     */
+    public JTextAreaTextProvider(final JTextArea textComponent) {
+        super(textComponent);
+    }
 }

@@ -35,10 +35,10 @@ import javax.swing.JRadioButton;
  */
 public class JRadioButtonModelChangedTrigger extends BaseToggleComponentModelChangedTrigger<JRadioButton> {
 
-	/**
-	 * @see BaseToggleComponentModelChangedTrigger#BaseToggleComponentModelChangedTrigger(javax.swing.JToggleButton)
-	 */
-	public JRadioButtonModelChangedTrigger(final JRadioButton source) {
-		super(source);
-	}
+    /**
+     * @see BaseToggleComponentModelChangedTrigger#BaseToggleComponentModelChangedTrigger(javax.swing.JToggleButton)
+     */
+    public JRadioButtonModelChangedTrigger(final JRadioButton source) {
+        super(source);
+    }
 }

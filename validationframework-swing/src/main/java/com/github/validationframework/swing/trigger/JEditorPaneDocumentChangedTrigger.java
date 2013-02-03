@@ -34,12 +34,12 @@ import javax.swing.JEditorPane;
  */
 public class JEditorPaneDocumentChangedTrigger extends BaseTextComponentDocumentChangedTrigger<JEditorPane> {
 
-	/**
-	 * Constructor specifying the editor pane to listen to.
-	 *
-	 * @param source Editor pane to listen to
-	 */
-	public JEditorPaneDocumentChangedTrigger(final JEditorPane source) {
-		super(source);
-	}
+    /**
+     * Constructor specifying the editor pane to listen to.
+     *
+     * @param source Editor pane to listen to
+     */
+    public JEditorPaneDocumentChangedTrigger(final JEditorPane source) {
+        super(source);
+    }
 }

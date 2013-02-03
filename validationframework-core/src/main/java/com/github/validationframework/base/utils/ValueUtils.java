@@ -30,36 +30,36 @@ package com.github.validationframework.base.utils;
  */
 public final class ValueUtils {
 
-	/**
-	 * Private constructor for utility class.
-	 */
-	private ValueUtils() {
-		// Nothing to be done
-	}
+    /**
+     * Private constructor for utility class.
+     */
+    private ValueUtils() {
+        // Nothing to be done
+    }
 
-	/**
-	 * Compares the two given values by taking null and NaN values into account.<br>Two null values will be considered
-	 * equal. Two NaN values (either Double or Float) will be considered equal.
-	 *
-	 * @param value1 First value.
-	 * @param value2 Second value.
-	 *
-	 * @return True if both values are equal or if both are null.
-	 */
-	public static boolean areEqual(final Object value1, final Object value2) {
-		return ((value1 == null) && (value2 == null)) || (isNaN(value1) && isNaN(value2)) ||
-				((value1 != null) && value1.equals(value2));
-	}
+    /**
+     * Compares the two given values by taking null and NaN values into account.<br>Two null values will be considered
+     * equal. Two NaN values (either Double or Float) will be considered equal.
+     *
+     * @param value1 First value.
+     * @param value2 Second value.
+     *
+     * @return True if both values are equal or if both are null.
+     */
+    public static boolean areEqual(final Object value1, final Object value2) {
+        return ((value1 == null) && (value2 == null)) || (isNaN(value1) && isNaN(value2)) ||
+                ((value1 != null) && value1.equals(value2));
+    }
 
-	/**
-	 * Checks if the specified value is either NaN.
-	 *
-	 * @param value Value to be checked.
-	 *
-	 * @return True if the value is NaN, false otherwise.
-	 */
-	private static boolean isNaN(final Object value) {
-		return ((value instanceof Float) && Float.isNaN((Float) value)) ||
-				((value instanceof Double) && Double.isNaN((Double) value));
-	}
+    /**
+     * Checks if the specified value is either NaN.
+     *
+     * @param value Value to be checked.
+     *
+     * @return True if the value is NaN, false otherwise.
+     */
+    private static boolean isNaN(final Object value) {
+        return ((value instanceof Float) && Float.isNaN((Float) value)) || ((value instanceof Double) && Double.isNaN
+                ((Double) value));
+    }
 }

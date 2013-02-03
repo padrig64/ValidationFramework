@@ -35,10 +35,10 @@ import javax.swing.JCheckBox;
  */
 public class JCheckBoxModelChangedTrigger extends BaseToggleComponentModelChangedTrigger<JCheckBox> {
 
-	/**
-	 * @see BaseToggleComponentModelChangedTrigger#BaseToggleComponentModelChangedTrigger(javax.swing.JToggleButton)
-	 */
-	public JCheckBoxModelChangedTrigger(final JCheckBox source) {
-		super(source);
-	}
+    /**
+     * @see BaseToggleComponentModelChangedTrigger#BaseToggleComponentModelChangedTrigger(javax.swing.JToggleButton)
+     */
+    public JCheckBoxModelChangedTrigger(final JCheckBox source) {
+        super(source);
+    }
 }

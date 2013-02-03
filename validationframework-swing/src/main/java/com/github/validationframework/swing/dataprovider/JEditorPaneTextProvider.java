@@ -36,10 +36,10 @@ import javax.swing.JEditorPane;
  */
 public class JEditorPaneTextProvider extends BaseJTextComponentTextProvider<JEditorPane> {
 
-	/**
-	 * @see BaseJTextComponentTextProvider#BaseJTextComponentTextProvider(javax.swing.text.JTextComponent)
-	 */
-	public JEditorPaneTextProvider(final JEditorPane textComponent) {
-		super(textComponent);
-	}
+    /**
+     * @see BaseJTextComponentTextProvider#BaseJTextComponentTextProvider(javax.swing.text.JTextComponent)
+     */
+    public JEditorPaneTextProvider(final JEditorPane textComponent) {
+        super(textComponent);
+    }
 }

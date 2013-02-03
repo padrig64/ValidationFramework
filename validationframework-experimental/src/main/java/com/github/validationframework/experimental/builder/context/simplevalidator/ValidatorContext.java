@@ -30,100 +30,101 @@ import com.github.validationframework.api.resulthandler.ResultHandler;
 import com.github.validationframework.api.rule.Rule;
 import com.github.validationframework.api.trigger.Trigger;
 import com.github.validationframework.base.validator.DefaultSimpleValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Context to add more result handlers and to create the validator.
  *
  * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
- * type of the component itself.
+ *            type of the component itself.
  * @param <O> Type of validation result.<br>It can be, for instance, an enumeration or just a boolean.
  */
 public class ValidatorContext<D, O> {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(ValidatorContext.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ValidatorContext.class);
 
-	private static final String NEW_INSTANCE_ERROR_MSG = "Failed creating instance of class: ";
+    private static final String NEW_INSTANCE_ERROR_MSG = "Failed creating instance of class: ";
 
-	final List<Trigger> registeredTriggers;
-	final List<DataProvider<D>> registeredDataProviders;
-	final List<Rule<D, O>> registeredRules;
-	final List<ResultHandler<O>> registeredResultHandlers;
+    final List<Trigger> registeredTriggers;
+    final List<DataProvider<D>> registeredDataProviders;
+    final List<Rule<D, O>> registeredRules;
+    final List<ResultHandler<O>> registeredResultHandlers;
 
-	public ValidatorContext(final List<Trigger> registeredTriggers, final List<DataProvider<D>> registeredDataProviders,
-							final List<Rule<D, O>> registeredRules,
-							final List<ResultHandler<O>> registeredResultHandlers) {
-		this.registeredTriggers = registeredTriggers;
-		this.registeredDataProviders = registeredDataProviders;
-		this.registeredRules = registeredRules;
-		this.registeredResultHandlers = registeredResultHandlers;
-	}
+    public ValidatorContext(final List<Trigger> registeredTriggers, final List<DataProvider<D>>
+            registeredDataProviders, final List<Rule<D, O>> registeredRules,
+                            final List<ResultHandler<O>> registeredResultHandlers) {
+        this.registeredTriggers = registeredTriggers;
+        this.registeredDataProviders = registeredDataProviders;
+        this.registeredRules = registeredRules;
+        this.registeredResultHandlers = registeredResultHandlers;
+    }
 
-	public ValidatorContext<D, O> read(final Class<? extends ResultHandler<O>> resultHandlerClass) {
-		ResultHandler<O> resultHandler = null;
-		try {
-			resultHandler = resultHandlerClass.newInstance();
-		} catch (InstantiationException e) {
-			LOGGER.error(NEW_INSTANCE_ERROR_MSG + resultHandlerClass, e);
-		} catch (IllegalAccessException e) {
-			LOGGER.error(NEW_INSTANCE_ERROR_MSG + resultHandlerClass, e);
-		}
-		return handleWith(resultHandler);
-	}
+    public ValidatorContext<D, O> read(final Class<? extends ResultHandler<O>> resultHandlerClass) {
+        ResultHandler<O> resultHandler = null;
+        try {
+            resultHandler = resultHandlerClass.newInstance();
+        } catch (InstantiationException e) {
+            LOGGER.error(NEW_INSTANCE_ERROR_MSG + resultHandlerClass, e);
+        } catch (IllegalAccessException e) {
+            LOGGER.error(NEW_INSTANCE_ERROR_MSG + resultHandlerClass, e);
+        }
+        return handleWith(resultHandler);
+    }
 
-	public ValidatorContext<D, O> handleWith(final ResultHandler<O> resultHandler) {
-		if (resultHandler != null) {
-			registeredResultHandlers.add(resultHandler);
-		}
-		return this;
-	}
+    public ValidatorContext<D, O> handleWith(final ResultHandler<O> resultHandler) {
+        if (resultHandler != null) {
+            registeredResultHandlers.add(resultHandler);
+        }
+        return this;
+    }
 
-	/**
-	 * Adds more result handlers to the validator.
-	 *
-	 * @param resultHandlers Result handlers to be added.
-	 *
-	 * @return Same validator context.
-	 */
-	public ValidatorContext<D, O> handleWith(final ResultHandler<O>... resultHandlers) {
-		if (resultHandlers != null) {
-			Collections.addAll(registeredResultHandlers, resultHandlers);
-		}
-		return this;
-	}
+    /**
+     * Adds more result handlers to the validator.
+     *
+     * @param resultHandlers Result handlers to be added.
+     *
+     * @return Same validator context.
+     */
+    public ValidatorContext<D, O> handleWith(final ResultHandler<O>... resultHandlers) {
+        if (resultHandlers != null) {
+            Collections.addAll(registeredResultHandlers, resultHandlers);
+        }
+        return this;
+    }
 
-	public ValidatorContext<D, O> handleWith(final Collection<ResultHandler<O>> resultHandlers) {
-		if (resultHandlers != null) {
-			registeredResultHandlers.addAll(resultHandlers);
-		}
-		return this;
-	}
+    public ValidatorContext<D, O> handleWith(final Collection<ResultHandler<O>> resultHandlers) {
+        if (resultHandlers != null) {
+            registeredResultHandlers.addAll(resultHandlers);
+        }
+        return this;
+    }
 
-	/**
-	 * Creates the validator and makes all the connections.
-	 *
-	 * @return Newly created and configured validator.
-	 */
-	public DefaultSimpleValidator<D, O> build() {
-		final DefaultSimpleValidator<D, O> validator = new DefaultSimpleValidator<D, O>();
+    /**
+     * Creates the validator and makes all the connections.
+     *
+     * @return Newly created and configured validator.
+     */
+    public DefaultSimpleValidator<D, O> build() {
+        final DefaultSimpleValidator<D, O> validator = new DefaultSimpleValidator<D, O>();
 
-		for (final Trigger trigger : registeredTriggers) {
-			validator.addTrigger(trigger);
-		}
-		for (final DataProvider<D> dataProvider : registeredDataProviders) {
-			validator.addDataProvider(dataProvider);
-		}
-		for (final Rule<D, O> rule : registeredRules) {
-			validator.addRule(rule);
-		}
-		for (final ResultHandler<O> resultHandler : registeredResultHandlers) {
-			validator.addResultHandler(resultHandler);
-		}
+        for (final Trigger trigger : registeredTriggers) {
+            validator.addTrigger(trigger);
+        }
+        for (final DataProvider<D> dataProvider : registeredDataProviders) {
+            validator.addDataProvider(dataProvider);
+        }
+        for (final Rule<D, O> rule : registeredRules) {
+            validator.addRule(rule);
+        }
+        for (final ResultHandler<O> resultHandler : registeredResultHandlers) {
+            validator.addResultHandler(resultHandler);
+        }
 
-		return validator;
-	}
+        return validator;
+    }
 }

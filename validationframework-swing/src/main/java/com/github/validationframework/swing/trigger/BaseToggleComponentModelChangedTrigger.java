@@ -28,9 +28,10 @@ package com.github.validationframework.swing.trigger;
 import com.github.validationframework.api.common.Disposable;
 import com.github.validationframework.api.trigger.TriggerEvent;
 import com.github.validationframework.base.trigger.AbstractTrigger;
+
+import javax.swing.JToggleButton;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import javax.swing.JToggleButton;
 
 /**
  * Trigger initiating the validation whenever the model of a toggle button is changed.
@@ -40,33 +41,33 @@ import javax.swing.JToggleButton;
  * @see AbstractTrigger
  * @see Disposable
  */
-public class BaseToggleComponentModelChangedTrigger<C extends JToggleButton> extends AbstractTrigger
-		implements Disposable {
+public class BaseToggleComponentModelChangedTrigger<C extends JToggleButton> extends AbstractTrigger implements
+        Disposable {
 
-	private class SourceAdapter implements ItemListener {
+    private class SourceAdapter implements ItemListener {
 
-		@Override
-		public void itemStateChanged(final ItemEvent e) {
-			fireTriggerEvent(new TriggerEvent(source));
-		}
-	}
+        @Override
+        public void itemStateChanged(final ItemEvent e) {
+            fireTriggerEvent(new TriggerEvent(source));
+        }
+    }
 
-	private C source = null;
+    private C source = null;
 
-	private final ItemListener sourceAdapter = new SourceAdapter();
+    private final ItemListener sourceAdapter = new SourceAdapter();
 
-	public BaseToggleComponentModelChangedTrigger(final C source) {
-		super();
-		this.source = source;
-		source.addItemListener(sourceAdapter);
-	}
+    public BaseToggleComponentModelChangedTrigger(final C source) {
+        super();
+        this.source = source;
+        source.addItemListener(sourceAdapter);
+    }
 
-	/**
-	 * @see Disposable#dispose()
-	 */
-	@Override
-	public void dispose() {
-		source.removeItemListener(sourceAdapter);
-		source = null;
-	}
+    /**
+     * @see Disposable#dispose()
+     */
+    @Override
+    public void dispose() {
+        source.removeItemListener(sourceAdapter);
+        source = null;
+    }
 }

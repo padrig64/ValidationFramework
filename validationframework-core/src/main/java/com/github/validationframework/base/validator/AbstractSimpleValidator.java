@@ -62,229 +62,229 @@ import java.util.Map;
  * @see Disposable
  */
 public abstract class AbstractSimpleValidator<T extends Trigger, P extends DataProvider<I>, I, R extends Rule<D, O>,
-		D, O, H extends ResultHandler<A>, A> implements SimpleValidator<T, P, I, R, D, O, H, A>, Disposable {
+        D, O, H extends ResultHandler<A>, A> implements SimpleValidator<T, P, I, R, D, O, H, A>, Disposable {
 
-	/**
-	 * Listener to all registered triggers, initiating the validation logic.
-	 */
-	private class TriggerAdapter implements TriggerListener {
+    /**
+     * Listener to all registered triggers, initiating the validation logic.
+     */
+    private class TriggerAdapter implements TriggerListener {
 
-		/**
-		 * Trigger that is listened to.
-		 */
-		private final T trigger;
+        /**
+         * Trigger that is listened to.
+         */
+        private final T trigger;
 
-		/**
-		 * Constructor specifying the trigger that is listened to.
-		 *
-		 * @param trigger Trigger that is listened to.
-		 */
-		public TriggerAdapter(final T trigger) {
-			this.trigger = trigger;
-		}
+        /**
+         * Constructor specifying the trigger that is listened to.
+         *
+         * @param trigger Trigger that is listened to.
+         */
+        public TriggerAdapter(final T trigger) {
+            this.trigger = trigger;
+        }
 
-		/**
-		 * @see TriggerListener#triggerValidation(TriggerEvent)
-		 */
-		@Override
-		public void triggerValidation(final TriggerEvent event) {
-			// Start validation logic
-			processTrigger(trigger);
-		}
-	}
+        /**
+         * @see TriggerListener#triggerValidation(TriggerEvent)
+         */
+        @Override
+        public void triggerValidation(final TriggerEvent event) {
+            // Start validation logic
+            processTrigger(trigger);
+        }
+    }
 
-	/**
-	 * Listeners to all registered validation triggers.
-	 */
-	private final Map<T, TriggerListener> triggersToTriggerAdapters = new HashMap<T, TriggerListener>();
+    /**
+     * Listeners to all registered validation triggers.
+     */
+    private final Map<T, TriggerListener> triggersToTriggerAdapters = new HashMap<T, TriggerListener>();
 
-	/**
-	 * Registered validation triggers.
-	 */
-	protected final List<T> triggers = new ArrayList<T>();
+    /**
+     * Registered validation triggers.
+     */
+    protected final List<T> triggers = new ArrayList<T>();
 
-	/**
-	 * Registered validation data providers.
-	 */
-	protected final List<P> dataProviders = new ArrayList<P>();
+    /**
+     * Registered validation data providers.
+     */
+    protected final List<P> dataProviders = new ArrayList<P>();
 
-	/**
-	 * Registered validation rules.
-	 */
-	protected List<R> rules = new ArrayList<R>();
+    /**
+     * Registered validation rules.
+     */
+    protected List<R> rules = new ArrayList<R>();
 
-	/**
-	 * Registered validation result handlers.
-	 */
-	protected final List<H> resultHandlers = new ArrayList<H>();
+    /**
+     * Registered validation result handlers.
+     */
+    protected final List<H> resultHandlers = new ArrayList<H>();
 
-	/**
-	 * @see SimpleValidator#addTrigger(Trigger)
-	 */
-	@Override
-	public void addTrigger(final T trigger) {
-		triggers.add(trigger);
+    /**
+     * @see SimpleValidator#addTrigger(Trigger)
+     */
+    @Override
+    public void addTrigger(final T trigger) {
+        triggers.add(trigger);
 
-		// Hook to trigger only if not already done (the same trigger listener will be used if it was already hooked)
-		if (!triggersToTriggerAdapters.containsKey(trigger)) {
-			final TriggerListener triggerAdapter = new TriggerAdapter(trigger);
-			triggersToTriggerAdapters.put(trigger, triggerAdapter);
-			trigger.addTriggerListener(triggerAdapter);
-		}
-	}
+        // Hook to trigger only if not already done (the same trigger listener will be used if it was already hooked)
+        if (!triggersToTriggerAdapters.containsKey(trigger)) {
+            final TriggerListener triggerAdapter = new TriggerAdapter(trigger);
+            triggersToTriggerAdapters.put(trigger, triggerAdapter);
+            trigger.addTriggerListener(triggerAdapter);
+        }
+    }
 
-	/**
-	 * @see SimpleValidator#removeTrigger(Trigger)
-	 */
-	@Override
-	public void removeTrigger(final T trigger) {
-		triggers.remove(trigger);
+    /**
+     * @see SimpleValidator#removeTrigger(Trigger)
+     */
+    @Override
+    public void removeTrigger(final T trigger) {
+        triggers.remove(trigger);
 
-		// Unhook from trigger
-		final TriggerListener triggerAdapter = triggersToTriggerAdapters.get(trigger);
-		trigger.removeTriggerListener(triggerAdapter);
+        // Unhook from trigger
+        final TriggerListener triggerAdapter = triggersToTriggerAdapters.get(trigger);
+        trigger.removeTriggerListener(triggerAdapter);
 
-		// Check if trigger was added several times
-		if (!triggers.contains(trigger)) {
-			// All occurrences of the same trigger have been removed
-			triggersToTriggerAdapters.remove(trigger);
-		}
-	}
+        // Check if trigger was added several times
+        if (!triggers.contains(trigger)) {
+            // All occurrences of the same trigger have been removed
+            triggersToTriggerAdapters.remove(trigger);
+        }
+    }
 
-	/**
-	 * @see SimpleValidator#addDataProvider(DataProvider)
-	 */
-	@Override
-	public void addDataProvider(final P dataProvider) {
-		dataProviders.add(dataProvider);
-	}
+    /**
+     * @see SimpleValidator#addDataProvider(DataProvider)
+     */
+    @Override
+    public void addDataProvider(final P dataProvider) {
+        dataProviders.add(dataProvider);
+    }
 
-	/**
-	 * @see SimpleValidator#removeDataProvider(DataProvider)
-	 */
-	@Override
-	public void removeDataProvider(final P dataProvider) {
-		dataProviders.remove(dataProvider);
-	}
+    /**
+     * @see SimpleValidator#removeDataProvider(DataProvider)
+     */
+    @Override
+    public void removeDataProvider(final P dataProvider) {
+        dataProviders.remove(dataProvider);
+    }
 
-	/**
-	 * @see SimpleValidator#addRule(Rule)
-	 */
-	@Override
-	public void addRule(final R rule) {
-		rules.add(rule);
-	}
+    /**
+     * @see SimpleValidator#addRule(Rule)
+     */
+    @Override
+    public void addRule(final R rule) {
+        rules.add(rule);
+    }
 
-	/**
-	 * @see SimpleValidator#removeRule(Rule)
-	 */
-	@Override
-	public void removeRule(final R rule) {
-		rules.remove(rule);
-	}
+    /**
+     * @see SimpleValidator#removeRule(Rule)
+     */
+    @Override
+    public void removeRule(final R rule) {
+        rules.remove(rule);
+    }
 
-	/**
-	 * @see SimpleValidator#addResultHandler(ResultHandler)
-	 */
-	@Override
-	public void addResultHandler(final H resultHandler) {
-		resultHandlers.add(resultHandler);
-	}
+    /**
+     * @see SimpleValidator#addResultHandler(ResultHandler)
+     */
+    @Override
+    public void addResultHandler(final H resultHandler) {
+        resultHandlers.add(resultHandler);
+    }
 
-	/**
-	 * @see SimpleValidator#removeResultHandler(ResultHandler)
-	 */
-	@Override
-	public void removeResultHandler(final H resultHandler) {
-		resultHandlers.remove(resultHandler);
-	}
+    /**
+     * @see SimpleValidator#removeResultHandler(ResultHandler)
+     */
+    @Override
+    public void removeResultHandler(final H resultHandler) {
+        resultHandlers.remove(resultHandler);
+    }
 
-	/**
-	 * @see Disposable#dispose()
-	 */
-	@Override
-	public void dispose() {
-		disposeTriggers();
-		disposeDataProviders();
-		disposeRules();
-		disposeResultHandlers();
-	}
+    /**
+     * @see Disposable#dispose()
+     */
+    @Override
+    public void dispose() {
+        disposeTriggers();
+        disposeDataProviders();
+        disposeRules();
+        disposeResultHandlers();
+    }
 
-	/**
-	 * Clears all triggers.
-	 */
-	private void disposeTriggers() {
-		// Browse through all triggers
-		for (final T trigger : triggers) {
-			// Disconnect installed trigger adapter and forget about the trigger
-			final TriggerListener triggerAdapter = triggersToTriggerAdapters.remove(trigger);
-			if (triggerAdapter != null) {
-				trigger.removeTriggerListener(triggerAdapter);
-			}
+    /**
+     * Clears all triggers.
+     */
+    private void disposeTriggers() {
+        // Browse through all triggers
+        for (final T trigger : triggers) {
+            // Disconnect installed trigger adapter and forget about the trigger
+            final TriggerListener triggerAdapter = triggersToTriggerAdapters.remove(trigger);
+            if (triggerAdapter != null) {
+                trigger.removeTriggerListener(triggerAdapter);
+            }
 
-			// Dispose trigger itself
-			if (trigger instanceof Disposable) {
-				((Disposable) trigger).dispose();
-			}
-		}
+            // Dispose trigger itself
+            if (trigger instanceof Disposable) {
+                ((Disposable) trigger).dispose();
+            }
+        }
 
-		// Clears all triggers
-		triggers.clear();
-	}
+        // Clears all triggers
+        triggers.clear();
+    }
 
-	/**
-	 * Clears all data providers.
-	 */
-	private void disposeDataProviders() {
-		// Browse through all data providers
-		for (final P dataProvider : dataProviders) {
-			// Dispose data provider itself
-			if (dataProvider instanceof Disposable) {
-				((Disposable) dataProvider).dispose();
-			}
-		}
+    /**
+     * Clears all data providers.
+     */
+    private void disposeDataProviders() {
+        // Browse through all data providers
+        for (final P dataProvider : dataProviders) {
+            // Dispose data provider itself
+            if (dataProvider instanceof Disposable) {
+                ((Disposable) dataProvider).dispose();
+            }
+        }
 
-		// Clear all data providers
-		dataProviders.clear();
-	}
+        // Clear all data providers
+        dataProviders.clear();
+    }
 
-	/**
-	 * Clears all rules.
-	 */
-	private void disposeRules() {
-		// Browse through all rules
-		for (final R rule : rules) {
-			// Dispose rule itself
-			if (rule instanceof Disposable) {
-				((Disposable) rule).dispose();
-			}
-		}
+    /**
+     * Clears all rules.
+     */
+    private void disposeRules() {
+        // Browse through all rules
+        for (final R rule : rules) {
+            // Dispose rule itself
+            if (rule instanceof Disposable) {
+                ((Disposable) rule).dispose();
+            }
+        }
 
-		// Clear all data providers
-		rules.clear();
-	}
+        // Clear all data providers
+        rules.clear();
+    }
 
-	/**
-	 * Clears all result handlers.
-	 */
-	private void disposeResultHandlers() {
-		// Browse through all rules
-		for (final H resultHandler : resultHandlers) {
-			// Dispose rule itself
-			if (resultHandler instanceof Disposable) {
-				((Disposable) resultHandler).dispose();
-			}
-		}
+    /**
+     * Clears all result handlers.
+     */
+    private void disposeResultHandlers() {
+        // Browse through all rules
+        for (final H resultHandler : resultHandlers) {
+            // Dispose rule itself
+            if (resultHandler instanceof Disposable) {
+                ((Disposable) resultHandler).dispose();
+            }
+        }
 
-		// Clear all data providers
-		resultHandlers.clear();
-	}
+        // Clear all data providers
+        resultHandlers.clear();
+    }
 
-	/**
-	 * Performs the whole validation logic for the specified trigger.<br>Typically, data will be read from the data
-	 * providers and passed to the rules, and the rule results will be processed by the result handlers.
-	 *
-	 * @param trigger Trigger actually initiated.
-	 */
-	protected abstract void processTrigger(final T trigger);
+    /**
+     * Performs the whole validation logic for the specified trigger.<br>Typically, data will be read from the data
+     * providers and passed to the rules, and the rule results will be processed by the result handlers.
+     *
+     * @param trigger Trigger actually initiated.
+     */
+    protected abstract void processTrigger(final T trigger);
 }

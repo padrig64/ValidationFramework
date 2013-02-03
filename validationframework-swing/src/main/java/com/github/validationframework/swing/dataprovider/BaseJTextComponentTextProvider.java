@@ -26,6 +26,7 @@
 package com.github.validationframework.swing.dataprovider;
 
 import com.github.validationframework.api.dataprovider.DataProvider;
+
 import javax.swing.text.JTextComponent;
 
 /**
@@ -38,25 +39,25 @@ import javax.swing.text.JTextComponent;
  */
 public class BaseJTextComponentTextProvider<C extends JTextComponent> implements DataProvider<String> {
 
-	/**
-	 * Text component to retrieve the text from.
-	 */
-	private final C textComponent;
+    /**
+     * Text component to retrieve the text from.
+     */
+    private final C textComponent;
 
-	/**
-	 * Constructor specifying the text component to retrieve the text from.
-	 *
-	 * @param textComponent Text component to retrieve the text from.
-	 */
-	public BaseJTextComponentTextProvider(final C textComponent) {
-		this.textComponent = textComponent;
-	}
+    /**
+     * Constructor specifying the text component to retrieve the text from.
+     *
+     * @param textComponent Text component to retrieve the text from.
+     */
+    public BaseJTextComponentTextProvider(final C textComponent) {
+        this.textComponent = textComponent;
+    }
 
-	/**
-	 * @see DataProvider#getData()
-	 */
-	@Override
-	public String getData() {
-		return textComponent.getText();
-	}
+    /**
+     * @see DataProvider#getData()
+     */
+    @Override
+    public String getData() {
+        return textComponent.getText();
+    }
 }

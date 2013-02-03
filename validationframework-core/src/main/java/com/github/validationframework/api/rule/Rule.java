@@ -30,17 +30,17 @@ package com.github.validationframework.api.rule;
  * result of a specific type.<br>Typically, a rule uses data from the data providers and return a validation result.
  *
  * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
- * type of the component itself.
+ *            type of the component itself.
  * @param <O> Type of validation result.<br>It can be, for instance, an enumeration or just a boolean.
  */
 public interface Rule<D, O> {
 
-	/**
-	 * Checks the specified data.
-	 *
-	 * @param data Data to be validated.
-	 *
-	 * @return Validation result.
-	 */
-	public O validate(D data);
+    /**
+     * Checks the specified data.
+     *
+     * @param data Data to be validated.
+     *
+     * @return Validation result.
+     */
+    public O validate(D data);
 }

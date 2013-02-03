@@ -26,6 +26,7 @@
 package com.github.validationframework.base.dataprovider;
 
 import com.github.validationframework.api.dataprovider.DataProvider;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,41 +39,41 @@ import java.util.List;
  */
 public class ListCompositeDataProvider<D> implements DataProvider<List<D>> {
 
-	/**
-	 * Sub-data providers
-	 */
-	protected final List<DataProvider<D>> dataProviders = new ArrayList<DataProvider<D>>();
+    /**
+     * Sub-data providers
+     */
+    protected final List<DataProvider<D>> dataProviders = new ArrayList<DataProvider<D>>();
 
-	/**
-	 * Adds the specified data provider
-	 *
-	 * @param dataProvider Data provider to be added.
-	 */
-	public void addDataProvider(final DataProvider<D> dataProvider) {
-		dataProviders.add(dataProvider);
-	}
+    /**
+     * Adds the specified data provider
+     *
+     * @param dataProvider Data provider to be added.
+     */
+    public void addDataProvider(final DataProvider<D> dataProvider) {
+        dataProviders.add(dataProvider);
+    }
 
-	/**
-	 * Removes the specified data provider.
-	 *
-	 * @param dataProvider Data provider to be removed.
-	 */
-	public void removeDataProvider(final DataProvider<D> dataProvider) {
-		dataProviders.remove(dataProvider);
-	}
+    /**
+     * Removes the specified data provider.
+     *
+     * @param dataProvider Data provider to be removed.
+     */
+    public void removeDataProvider(final DataProvider<D> dataProvider) {
+        dataProviders.remove(dataProvider);
+    }
 
-	/**
-	 * @see DataProvider#getData()
-	 */
-	@Override
-	public List<D> getData() {
-		final List<D> dataList = new ArrayList<D>();
+    /**
+     * @see DataProvider#getData()
+     */
+    @Override
+    public List<D> getData() {
+        final List<D> dataList = new ArrayList<D>();
 
-		// Read data from all data providers and put them in the list
-		for (final DataProvider<D> dataProvider : dataProviders) {
-			dataList.add(dataProvider.getData());
-		}
+        // Read data from all data providers and put them in the list
+        for (final DataProvider<D> dataProvider : dataProviders) {
+            dataList.add(dataProvider.getData());
+        }
 
-		return dataList;
-	}
+        return dataList;
+    }
 }

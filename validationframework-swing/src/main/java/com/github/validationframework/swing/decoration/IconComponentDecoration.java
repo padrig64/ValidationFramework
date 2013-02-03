@@ -28,179 +28,183 @@ package com.github.validationframework.swing.decoration;
 import com.github.validationframework.swing.decoration.anchor.Anchor;
 import com.github.validationframework.swing.decoration.anchor.AnchorLink;
 import com.github.validationframework.swing.decoration.support.ToolTipDialog;
+
+import javax.swing.Icon;
+import javax.swing.JComponent;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.Icon;
-import javax.swing.JComponent;
 
 /**
  * Component decoration showing an icon, possibly with a tooltip.
  */
 public class IconComponentDecoration extends AbstractComponentDecoration {
 
-	/**
-	 * Listener to mouse events on the icon and showing/hiding the associated tooltip.
-	 */
-	private class IconMouseAdapter extends MouseAdapter {
+    /**
+     * Listener to mouse events on the icon and showing/hiding the associated tooltip.
+     */
+    private class IconMouseAdapter extends MouseAdapter {
 
-		/**
-		 * @see MouseAdapter#mouseMoved(MouseEvent)
-		 */
-		@Override
-		public void mouseMoved(final MouseEvent e) {
-			if ((toolTipDialog != null) && toolTipDialog.isVisible()) {
-				if (!decorationPainter.getClipBounds().contains(e.getPoint())) {
-					toolTipDialog.setVisible(false);
-				}
-			} else if (getDecoratedComponent().isShowing() &&
-					decorationPainter.getClipBounds().contains(e.getPoint())) {
-				createToolTipDialogIfNeeded();
-				toolTipDialog.setVisible(true);
-			}
-		}
+        /**
+         * @see MouseAdapter#mouseMoved(MouseEvent)
+         */
+        @Override
+        public void mouseMoved(final MouseEvent e) {
+            if ((toolTipDialog != null) && toolTipDialog.isVisible()) {
+                if (!decorationPainter.getClipBounds().contains(e.getPoint())) {
+                    toolTipDialog.setVisible(false);
+                }
+            } else if (getDecoratedComponent().isShowing() && decorationPainter.getClipBounds().contains(e.getPoint()
+            )) {
+                createToolTipDialogIfNeeded();
+                toolTipDialog.setVisible(true);
+            }
+        }
 
-		/**
-		 * Creates the dialog showing the tooltip if it is not created yet.<br>We do this only here to make sure that we have
-		 * a parent and to make sure that we actually have a window ancestor.<br>If we create the dialog before having a
-		 * window ancestor, it will have no owner (see {@link ToolTipDialog#ToolTipDialog(JComponent, AnchorLink)} and that
-		 * will result in having the tooltip behind the other windows of the application.
-		 */
-		private void createToolTipDialogIfNeeded() {
-			if (toolTipDialog == null) {
-				toolTipDialog = new ToolTipDialog(decorationPainter, anchorLinkWithToolTip);
-			}
-			toolTipDialog.setText(toolTipText);
-		}
+        /**
+         * Creates the dialog showing the tooltip if it is not created yet.<br>We do this only here to make sure that
+         * we have
+         * a parent and to make sure that we actually have a window ancestor.<br>If we create the dialog before having a
+         * window ancestor, it will have no owner (see {@link ToolTipDialog#ToolTipDialog(JComponent,
+         * AnchorLink)} and that
+         * will result in having the tooltip behind the other windows of the application.
+         */
+        private void createToolTipDialogIfNeeded() {
+            if (toolTipDialog == null) {
+                toolTipDialog = new ToolTipDialog(decorationPainter, anchorLinkWithToolTip);
+            }
+            toolTipDialog.setText(toolTipText);
+        }
 
-		/**
-		 * @see MouseAdapter#mouseExited(MouseEvent)
-		 */
-		@Override
-		public void mouseExited(final MouseEvent e) {
-			if (toolTipDialog != null) {
-				toolTipDialog.setVisible(false);
-			}
-		}
-	}
+        /**
+         * @see MouseAdapter#mouseExited(MouseEvent)
+         */
+        @Override
+        public void mouseExited(final MouseEvent e) {
+            if (toolTipDialog != null) {
+                toolTipDialog.setVisible(false);
+            }
+        }
+    }
 
-	// TODO Make this dependent on the LAF
-	/**
-	 * Default anchor link with the owner component on which the decorator will be attached.
-	 */
-	public static final AnchorLink DEFAULT_ANCHOR_LINK_WITH_OWNER =
-			new AnchorLink(new Anchor(0.0f, 3, 1.0f, -3), Anchor.CENTER);
+    // TODO Make this dependent on the LAF
+    /**
+     * Default anchor link with the owner component on which the decorator will be attached.
+     */
+    public static final AnchorLink DEFAULT_ANCHOR_LINK_WITH_OWNER = new AnchorLink(new Anchor(0.0f, 3, 1.0f, -3),
+            Anchor.CENTER);
 
-	/**
-	 * Icon to be displayed as decoration on the owner component.
-	 */
-	private Icon icon = null;
+    /**
+     * Icon to be displayed as decoration on the owner component.
+     */
+    private Icon icon = null;
 
-	/**
-	 * Dialog representing the tooltip.<br>The tooltip is not based on the general tooltip mechanism to make so that it
-	 * does not get influenced by the different timings and tricky mouse behavior (sometimes hard to make a real tooltip
-	 * appear).<br>It is lazy-initialized to make sure we will have a parent and a window ancestor (owner of the dialog).
-	 *
-	 * @see IconMouseAdapter#createToolTipDialogIfNeeded()
-	 */
-	private ToolTipDialog toolTipDialog = null;
+    /**
+     * Dialog representing the tooltip.<br>The tooltip is not based on the general tooltip mechanism to make so that it
+     * does not get influenced by the different timings and tricky mouse behavior (sometimes hard to make a real tooltip
+     * appear).<br>It is lazy-initialized to make sure we will have a parent and a window ancestor (owner of the
+     * dialog).
+     *
+     * @see IconMouseAdapter#createToolTipDialogIfNeeded()
+     */
+    private ToolTipDialog toolTipDialog = null;
 
-	private String toolTipText = null;
+    private String toolTipText = null;
 
-	private AnchorLink anchorLinkWithToolTip = new AnchorLink(Anchor.BOTTOM_RIGHT, Anchor.TOP_LEFT);
+    private AnchorLink anchorLinkWithToolTip = new AnchorLink(Anchor.BOTTOM_RIGHT, Anchor.TOP_LEFT);
 
-	public IconComponentDecoration(final JComponent decoratedComponent) {
-		this(decoratedComponent, null);
-	}
+    public IconComponentDecoration(final JComponent decoratedComponent) {
+        this(decoratedComponent, null);
+    }
 
-	public IconComponentDecoration(final JComponent decoratedComponent, final Icon icon) {
-		super(decoratedComponent, DEFAULT_ANCHOR_LINK_WITH_OWNER);
-		this.icon = icon;
+    public IconComponentDecoration(final JComponent decoratedComponent, final Icon icon) {
+        super(decoratedComponent, DEFAULT_ANCHOR_LINK_WITH_OWNER);
+        this.icon = icon;
 
-		decorationPainter.addMouseListener(new IconMouseAdapter());
-		decorationPainter.addMouseMotionListener(new IconMouseAdapter());
-	}
+        decorationPainter.addMouseListener(new IconMouseAdapter());
+        decorationPainter.addMouseMotionListener(new IconMouseAdapter());
+    }
 
-	/**
-	 * Gets the decoration icon.
-	 *
-	 * @return Decoration icon attached to the owner component.
-	 */
-	public Icon getIcon() {
-		return icon;
-	}
+    /**
+     * Gets the decoration icon.
+     *
+     * @return Decoration icon attached to the owner component.
+     */
+    public Icon getIcon() {
+        return icon;
+    }
 
-	/**
-	 * Sets the decoration.
-	 *
-	 * @param icon Decoration icon to be attached to the owner component.
-	 */
-	public void setIcon(final Icon icon) {
-		this.icon = icon;
-		followDecoratedComponent();
-	}
+    /**
+     * Sets the decoration.
+     *
+     * @param icon Decoration icon to be attached to the owner component.
+     */
+    public void setIcon(final Icon icon) {
+        this.icon = icon;
+        followDecoratedComponent();
+    }
 
-	public String getToolTipText() {
-		return toolTipText;
-	}
+    public String getToolTipText() {
+        return toolTipText;
+    }
 
-	public void setToolTipText(final String text) {
-		this.toolTipText = text;
-		if (toolTipDialog != null) {
-			toolTipDialog.setText(text);
-		}
-	}
+    public void setToolTipText(final String text) {
+        this.toolTipText = text;
+        if (toolTipDialog != null) {
+            toolTipDialog.setText(text);
+        }
+    }
 
-	public AnchorLink getAnchorLinkWithToolTip() {
-		return anchorLinkWithToolTip;
-	}
+    public AnchorLink getAnchorLinkWithToolTip() {
+        return anchorLinkWithToolTip;
+    }
 
-	public void setAnchorLinkWithToolTip(final AnchorLink anchorLinkWithToolTip) {
-		this.anchorLinkWithToolTip = anchorLinkWithToolTip;
-	}
+    public void setAnchorLinkWithToolTip(final AnchorLink anchorLinkWithToolTip) {
+        this.anchorLinkWithToolTip = anchorLinkWithToolTip;
+    }
 
-	/**
-	 * @see AbstractComponentDecoration#setVisible(boolean)
-	 */
-	@Override
-	public void setVisible(final boolean visible) {
-		super.setVisible(visible);
-		if (!visible && (toolTipDialog != null)) {
-			toolTipDialog.setVisible(false);
-		}
-	}
+    /**
+     * @see AbstractComponentDecoration#setVisible(boolean)
+     */
+    @Override
+    public void setVisible(final boolean visible) {
+        super.setVisible(visible);
+        if (!visible && (toolTipDialog != null)) {
+            toolTipDialog.setVisible(false);
+        }
+    }
 
-	/**
-	 * @see AbstractComponentDecoration#getWidth()
-	 */
-	@Override
-	protected int getWidth() {
-		int width = 0;
-		if (icon != null) {
-			width = icon.getIconWidth();
-		}
-		return width;
-	}
+    /**
+     * @see AbstractComponentDecoration#getWidth()
+     */
+    @Override
+    protected int getWidth() {
+        int width = 0;
+        if (icon != null) {
+            width = icon.getIconWidth();
+        }
+        return width;
+    }
 
-	/**
-	 * @see AbstractComponentDecoration#getHeight()
-	 */
-	@Override
-	protected int getHeight() {
-		int height = 0;
-		if (icon != null) {
-			height = icon.getIconHeight();
-		}
-		return height;
-	}
+    /**
+     * @see AbstractComponentDecoration#getHeight()
+     */
+    @Override
+    protected int getHeight() {
+        int height = 0;
+        if (icon != null) {
+            height = icon.getIconHeight();
+        }
+        return height;
+    }
 
-	/**
-	 * @see AbstractComponentDecoration#paint(Graphics)
-	 */
-	@Override
-	public void paint(final Graphics g) {
-		if (isVisible() && (icon != null) && (decorationPainter != null)) {
-			icon.paintIcon(decorationPainter, g, 0, 0);
-		}
-	}
+    /**
+     * @see AbstractComponentDecoration#paint(Graphics)
+     */
+    @Override
+    public void paint(final Graphics g) {
+        if (isVisible() && (icon != null) && (decorationPainter != null)) {
+            icon.paintIcon(decorationPainter, g, 0, 0);
+        }
+    }
 }

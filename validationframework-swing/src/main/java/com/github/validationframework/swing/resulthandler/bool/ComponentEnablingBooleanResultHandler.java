@@ -26,6 +26,7 @@
 package com.github.validationframework.swing.resulthandler.bool;
 
 import com.github.validationframework.swing.resulthandler.AbstractComponentResultHandler;
+
 import java.awt.Component;
 
 /**
@@ -34,32 +35,32 @@ import java.awt.Component;
  */
 public class ComponentEnablingBooleanResultHandler extends AbstractComponentResultHandler<Boolean> {
 
-	/**
-	 * @see AbstractComponentResultHandler#AbstractComponentResultHandler()
-	 */
-	public ComponentEnablingBooleanResultHandler() {
-		super();
-	}
+    /**
+     * @see AbstractComponentResultHandler#AbstractComponentResultHandler()
+     */
+    public ComponentEnablingBooleanResultHandler() {
+        super();
+    }
 
-	/**
-	 * @see AbstractComponentResultHandler#AbstractComponentResultHandler(Component...)
-	 */
-	public ComponentEnablingBooleanResultHandler(final Component... components) {
-		super(components);
-	}
+    /**
+     * @see AbstractComponentResultHandler#AbstractComponentResultHandler(Component...)
+     */
+    public ComponentEnablingBooleanResultHandler(final Component... components) {
+        super(components);
+    }
 
-	/**
-	 * @see AbstractComponentResultHandler#handleResult(Object)
-	 */
-	@Override
-	public void handleResult(final Boolean result) {
-		boolean enabled = false;
-		if (result != null) {
-			enabled = result;
-		}
+    /**
+     * @see AbstractComponentResultHandler#handleResult(Object)
+     */
+    @Override
+    public void handleResult(final Boolean result) {
+        boolean enabled = false;
+        if (result != null) {
+            enabled = result;
+        }
 
-		for (final Component component : components) {
-			component.setEnabled(enabled);
-		}
-	}
+        for (final Component component : components) {
+            component.setEnabled(enabled);
+        }
+    }
 }

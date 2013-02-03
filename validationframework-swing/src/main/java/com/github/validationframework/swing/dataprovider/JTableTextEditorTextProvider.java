@@ -26,9 +26,10 @@
 package com.github.validationframework.swing.dataprovider;
 
 import com.github.validationframework.api.dataprovider.DataProvider;
-import java.awt.Component;
+
 import javax.swing.JTable;
 import javax.swing.text.JTextComponent;
+import java.awt.Component;
 
 /**
  * Provider of the text of the current text editor component from a given table.<br>Note that if the table is not in
@@ -40,32 +41,32 @@ import javax.swing.text.JTextComponent;
  */
 public class JTableTextEditorTextProvider implements DataProvider<String> {
 
-	/**
-	 * Table holding the editor component to get the text from.
-	 */
-	private final JTable table;
+    /**
+     * Table holding the editor component to get the text from.
+     */
+    private final JTable table;
 
-	/**
-	 * Constructor specifying the table holding the editor component to get the text from.
-	 *
-	 * @param table Editable table.
-	 */
-	public JTableTextEditorTextProvider(final JTable table) {
-		this.table = table;
-	}
+    /**
+     * Constructor specifying the table holding the editor component to get the text from.
+     *
+     * @param table Editable table.
+     */
+    public JTableTextEditorTextProvider(final JTable table) {
+        this.table = table;
+    }
 
-	/**
-	 * @see DataProvider#getData()
-	 */
-	@Override
-	public String getData() {
-		String data = null;
+    /**
+     * @see DataProvider#getData()
+     */
+    @Override
+    public String getData() {
+        String data = null;
 
-		final Component editorComponent = table.getEditorComponent();
-		if (editorComponent instanceof JTextComponent) {
-			data = ((JTextComponent) editorComponent).getText();
-		}
+        final Component editorComponent = table.getEditorComponent();
+        if (editorComponent instanceof JTextComponent) {
+            data = ((JTextComponent) editorComponent).getText();
+        }
 
-		return data;
-	}
+        return data;
+    }
 }

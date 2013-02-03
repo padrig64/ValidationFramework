@@ -32,9 +32,9 @@ package com.github.validationframework.api.common;
  */
 public interface Disposable {
 
-	/**
-	 * Disposes the component by disconnecting any listener and any reference that would prevent garbage collection.<br>
-	 * Note that calling this method a second time should have no effect (and certainly not generate an exception).
-	 */
-	public void dispose();
+    /**
+     * Disposes the component by disconnecting any listener and any reference that would prevent garbage collection.<br>
+     * Note that calling this method a second time should have no effect (and certainly not generate an exception).
+     */
+    public void dispose();
 }

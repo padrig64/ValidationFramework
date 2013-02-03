@@ -34,10 +34,10 @@ package com.github.validationframework.api.trigger;
  */
 public interface TriggerListener {
 
-	/**
-	 * Starts the validation process.
-	 *
-	 * @param event Trigger event.
-	 */
-	public void triggerValidation(TriggerEvent event);
+    /**
+     * Starts the validation process.
+     *
+     * @param event Trigger event.
+     */
+    public void triggerValidation(TriggerEvent event);
 }

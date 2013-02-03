@@ -34,12 +34,12 @@ import javax.swing.JTextField;
  */
 public class JTextFieldDocumentChangedTrigger extends BaseTextComponentDocumentChangedTrigger<JTextField> {
 
-	/**
-	 * Constructor specifying the textfield to listen to.
-	 *
-	 * @param source Textfield to listen to
-	 */
-	public JTextFieldDocumentChangedTrigger(final JTextField source) {
-		super(source);
-	}
+    /**
+     * Constructor specifying the textfield to listen to.
+     *
+     * @param source Textfield to listen to
+     */
+    public JTextFieldDocumentChangedTrigger(final JTextField source) {
+        super(source);
+    }
 }

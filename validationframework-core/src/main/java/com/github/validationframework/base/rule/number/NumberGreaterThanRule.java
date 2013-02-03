@@ -33,77 +33,77 @@ import com.github.validationframework.api.rule.Rule;
  * equal. And everything is considered bigger than null.
  *
  * @param <T> Type of number handled by this rule.<br>It also it is not really required for the internal logic of the
- * rule, it helps in reducing compilation warnings and/or errors when add a rule in a validator.
+ *            rule, it helps in reducing compilation warnings and/or errors when add a rule in a validator.
  *
  * @see Rule
  */
 public class NumberGreaterThanRule<T extends Number> implements Rule<T, Boolean> {
 
-	/**
-	 * Value to which the data is to be compared.
-	 */
-	private T minimumValue = null;
+    /**
+     * Value to which the data is to be compared.
+     */
+    private T minimumValue = null;
 
-	/**
-	 * Default constructor.
-	 */
-	public NumberGreaterThanRule() {
-		// Nothing to be done
-	}
+    /**
+     * Default constructor.
+     */
+    public NumberGreaterThanRule() {
+        // Nothing to be done
+    }
 
-	/**
-	 * Constructor specifying the value to which the data is to be compared.
-	 *
-	 * @param minimumValue Value to which the data is to be compared.
-	 */
-	public NumberGreaterThanRule(final T minimumValue) {
-		setMinimumValue(minimumValue);
-	}
+    /**
+     * Constructor specifying the value to which the data is to be compared.
+     *
+     * @param minimumValue Value to which the data is to be compared.
+     */
+    public NumberGreaterThanRule(final T minimumValue) {
+        setMinimumValue(minimumValue);
+    }
 
-	/**
-	 * Gets the value to which the data is compared.
-	 *
-	 * @return Value to which the data is compared.
-	 */
-	public Number getMinimumValue() {
-		return minimumValue;
-	}
+    /**
+     * Gets the value to which the data is compared.
+     *
+     * @return Value to which the data is compared.
+     */
+    public Number getMinimumValue() {
+        return minimumValue;
+    }
 
-	/**
-	 * Sets the value to which the data is to be compared.
-	 *
-	 * @param minimumValue Value to which the data is to be compared.
-	 */
-	public void setMinimumValue(final T minimumValue) {
-		this.minimumValue = minimumValue;
-	}
+    /**
+     * Sets the value to which the data is to be compared.
+     *
+     * @param minimumValue Value to which the data is to be compared.
+     */
+    public void setMinimumValue(final T minimumValue) {
+        this.minimumValue = minimumValue;
+    }
 
-	/**
-	 * @see Rule#validate(Object)
-	 */
-	@Override
-	public Boolean validate(final T data) {
-		final boolean valid;
+    /**
+     * @see Rule#validate(Object)
+     */
+    @Override
+    public Boolean validate(final T data) {
+        final boolean valid;
 
-		if ((data == null) && (minimumValue == null)) {
-			valid = false;
-		} else if (data == null) {
-			// exactValue is not null, everything is bigger than null
-			valid = false;
-		} else if (minimumValue == null) {
-			// data is not null, everything is bigger than null
-			valid = true;
-		} else if (data instanceof Comparable) {
-			// Both are not null
-			valid = (((Comparable) data).compareTo(minimumValue) > 0);
-		} else if (minimumValue instanceof Comparable<?>) {
-			// Both are not null
-			valid = (((Comparable) minimumValue).compareTo(data) < 0);
-		} else {
-			// Both are not null
-			valid = false;
-		}
+        if ((data == null) && (minimumValue == null)) {
+            valid = false;
+        } else if (data == null) {
+            // exactValue is not null, everything is bigger than null
+            valid = false;
+        } else if (minimumValue == null) {
+            // data is not null, everything is bigger than null
+            valid = true;
+        } else if (data instanceof Comparable) {
+            // Both are not null
+            valid = (((Comparable) data).compareTo(minimumValue) > 0);
+        } else if (minimumValue instanceof Comparable<?>) {
+            // Both are not null
+            valid = (((Comparable) minimumValue).compareTo(data) < 0);
+        } else {
+            // Both are not null
+            valid = false;
+        }
 
-		return valid;
-	}
+        return valid;
+    }
 }

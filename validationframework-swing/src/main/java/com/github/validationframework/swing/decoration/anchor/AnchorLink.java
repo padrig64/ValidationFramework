@@ -35,49 +35,48 @@ import java.awt.Point;
  */
 public class AnchorLink {
 
-	private Anchor masterAnchor;
-	private Anchor slaveAnchor;
+    private Anchor masterAnchor;
+    private Anchor slaveAnchor;
 
-	public AnchorLink(final AnchorLink anchorLink) {
-		this(new Anchor(anchorLink.getMasterAnchor()), new Anchor(anchorLink.getSlaveAnchor()));
-	}
+    public AnchorLink(final AnchorLink anchorLink) {
+        this(new Anchor(anchorLink.getMasterAnchor()), new Anchor(anchorLink.getSlaveAnchor()));
+    }
 
-	public AnchorLink(final Anchor masterAnchor, final Anchor slaveAnchor) {
-		this.masterAnchor = masterAnchor;
-		this.slaveAnchor = slaveAnchor;
-	}
+    public AnchorLink(final Anchor masterAnchor, final Anchor slaveAnchor) {
+        this.masterAnchor = masterAnchor;
+        this.slaveAnchor = slaveAnchor;
+    }
 
-	public Anchor getMasterAnchor() {
-		return masterAnchor;
-	}
+    public Anchor getMasterAnchor() {
+        return masterAnchor;
+    }
 
-	public void setMasterAnchor(final Anchor masterAnchor) {
-		this.masterAnchor = masterAnchor;
-	}
+    public void setMasterAnchor(final Anchor masterAnchor) {
+        this.masterAnchor = masterAnchor;
+    }
 
-	public Anchor getSlaveAnchor() {
-		return slaveAnchor;
-	}
+    public Anchor getSlaveAnchor() {
+        return slaveAnchor;
+    }
 
-	public void setSlaveAnchor(final Anchor slaveAnchor) {
-		this.slaveAnchor = slaveAnchor;
-	}
+    public void setSlaveAnchor(final Anchor slaveAnchor) {
+        this.slaveAnchor = slaveAnchor;
+    }
 
-	public Point getRelativeSlaveLocation(final Component masterComponent, final Component slaveComponent) {
-		return getRelativeSlaveLocation(masterComponent.getWidth(), masterComponent.getHeight(),
-				slaveComponent.getWidth(), slaveComponent.getHeight());
-	}
+    public Point getRelativeSlaveLocation(final Component masterComponent, final Component slaveComponent) {
+        return getRelativeSlaveLocation(masterComponent.getWidth(), masterComponent.getHeight(),
+                slaveComponent.getWidth(), slaveComponent.getHeight());
+    }
 
-	public Point getRelativeSlaveLocation(final Dimension masterSize, final Dimension slaveSize) {
-		return getRelativeSlaveLocation(masterSize.width, masterSize.height, slaveSize.width, slaveSize.height);
-	}
+    public Point getRelativeSlaveLocation(final Dimension masterSize, final Dimension slaveSize) {
+        return getRelativeSlaveLocation(masterSize.width, masterSize.height, slaveSize.width, slaveSize.height);
+    }
 
-	public Point getRelativeSlaveLocation(final int masterWidth, final int masterHeight, final int slaveWidth,
-										  final int slaveHeight) {
-		final Point masterAnchorPoint = masterAnchor.getAnchorPoint(masterWidth, masterHeight);
-		final Point slaveAnchorPoint = slaveAnchor.getAnchorPoint(slaveWidth, slaveHeight);
+    public Point getRelativeSlaveLocation(final int masterWidth, final int masterHeight, final int slaveWidth,
+                                          final int slaveHeight) {
+        final Point masterAnchorPoint = masterAnchor.getAnchorPoint(masterWidth, masterHeight);
+        final Point slaveAnchorPoint = slaveAnchor.getAnchorPoint(slaveWidth, slaveHeight);
 
-		return new Point((int) (masterAnchorPoint.getX() - slaveAnchorPoint.getX()),
-				(int) (masterAnchorPoint.getY() - slaveAnchorPoint.getY()));
-	}
+        return new Point((int) (masterAnchorPoint.getX() - slaveAnchorPoint.getX()), (int) (masterAnchorPoint.getY() - slaveAnchorPoint.getY()));
+    }
 }

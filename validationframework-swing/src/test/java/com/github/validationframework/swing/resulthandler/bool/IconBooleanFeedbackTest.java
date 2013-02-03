@@ -25,23 +25,24 @@
 
 package com.github.validationframework.swing.resulthandler.bool;
 
+import org.junit.Test;
+
 import javax.swing.JFrame;
 import javax.swing.JTextField;
-import org.junit.Test;
 
 public class IconBooleanFeedbackTest {
 
-	@Test
-	public void testMultipleDispose() {
-		final JFrame frame = new JFrame();
-		final JTextField textField = new JTextField();
-		frame.setContentPane(textField);
+    @Test
+    public void testMultipleDispose() {
+        final JFrame frame = new JFrame();
+        final JTextField textField = new JTextField();
+        frame.setContentPane(textField);
 
-		final IconBooleanFeedback feedback = new IconBooleanFeedback(textField);
+        final IconBooleanFeedback feedback = new IconBooleanFeedback(textField);
 
-		feedback.handleResult(true);
-		feedback.dispose();
-		feedback.dispose();
-		feedback.dispose();
-	}
+        feedback.handleResult(true);
+        feedback.dispose();
+        feedback.dispose();
+        feedback.dispose();
+    }
 }

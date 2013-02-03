@@ -28,6 +28,7 @@ package com.github.validationframework.base.rule;
 import com.github.validationframework.api.rule.Rule;
 import com.github.validationframework.base.transform.AndBooleanAggregator;
 import com.github.validationframework.base.transform.Transformer;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -36,49 +37,49 @@ import java.util.Collection;
  * the boolean results from its sub-rules.
  *
  * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
- * type of the component itself.
+ *            type of the component itself.
  *
  * @see AbstractCompositeRule
  * @see OrCompositeBooleanRule
  */
 public class AndCompositeBooleanRule<D> extends AbstractCompositeRule<D, Boolean> {
 
-	/**
-	 * Boolean aggregator using the AND operator.
-	 *
-	 * @see AndBooleanAggregator
-	 */
-	private final Transformer<Collection<Boolean>, Boolean> aggregator;
+    /**
+     * Boolean aggregator using the AND operator.
+     *
+     * @see AndBooleanAggregator
+     */
+    private final Transformer<Collection<Boolean>, Boolean> aggregator;
 
-	/**
-	 * @see AbstractCompositeRule#AbstractCompositeRule()
-	 */
-	public AndCompositeBooleanRule() {
-		super();
-		aggregator = new AndBooleanAggregator();
-	}
+    /**
+     * @see AbstractCompositeRule#AbstractCompositeRule()
+     */
+    public AndCompositeBooleanRule() {
+        super();
+        aggregator = new AndBooleanAggregator();
+    }
 
-	/**
-	 * @see AbstractCompositeRule#AbstractCompositeRule(Rule[])
-	 */
-	public AndCompositeBooleanRule(final Rule<D, Boolean>... rules) {
-		super(rules);
-		aggregator = new AndBooleanAggregator();
-	}
+    /**
+     * @see AbstractCompositeRule#AbstractCompositeRule(Rule[])
+     */
+    public AndCompositeBooleanRule(final Rule<D, Boolean>... rules) {
+        super(rules);
+        aggregator = new AndBooleanAggregator();
+    }
 
-	/**
-	 * @see AbstractCompositeRule#validate(Object)
-	 */
-	@Override
-	public Boolean validate(final D data) {
-		// Collect results
-		final Collection<Boolean> results = new ArrayList<Boolean>();
-		for (final Rule<D, Boolean> rule : rules) {
-			final Boolean result = rule.validate(data);
-			results.add(result);
-		}
+    /**
+     * @see AbstractCompositeRule#validate(Object)
+     */
+    @Override
+    public Boolean validate(final D data) {
+        // Collect results
+        final Collection<Boolean> results = new ArrayList<Boolean>();
+        for (final Rule<D, Boolean> rule : rules) {
+            final Boolean result = rule.validate(data);
+            results.add(result);
+        }
 
-		// Aggregate results
-		return aggregator.transform(results);
-	}
+        // Aggregate results
+        return aggregator.transform(results);
+    }
 }

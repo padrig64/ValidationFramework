@@ -28,12 +28,13 @@ package com.github.validationframework.swing.dataprovider;
 import com.github.validationframework.api.dataprovider.DataProvider;
 import com.github.validationframework.base.transform.CastTransformer;
 import com.github.validationframework.base.transform.Transformer;
-import java.awt.Component;
-import java.text.ParseException;
-import javax.swing.JFormattedTextField;
-import javax.swing.JTable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.swing.JFormattedTextField;
+import javax.swing.JTable;
+import java.awt.Component;
+import java.text.ParseException;
 
 /**
  * Provider of the value of the current formatted text editor component from a given table.<br>Note that if the table is
@@ -45,73 +46,74 @@ import org.slf4j.LoggerFactory;
  */
 public class JTableTextEditorValueProvider<T> implements DataProvider<T> {
 
-	/**
-	 * Logger for this class.
-	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(JTableTextEditorValueProvider.class);
+    /**
+     * Logger for this class.
+     */
+    private static final Logger LOGGER = LoggerFactory.getLogger(JTableTextEditorValueProvider.class);
 
-	/**
-	 * Table holding the editor component to get the text from.
-	 */
-	private final JTable table;
+    /**
+     * Table holding the editor component to get the text from.
+     */
+    private final JTable table;
 
-	/**
-	 * Transformer used to convert the object parsed from the formatted text editor component to the expected type.
-	 */
-	private final Transformer<Object, T> transformer;
+    /**
+     * Transformer used to convert the object parsed from the formatted text editor component to the expected type.
+     */
+    private final Transformer<Object, T> transformer;
 
-	/**
-	 * Constructor specifying the table holding the editor component to get the value from.
-	 *
-	 * @param table Editable table.
-	 */
-	public JTableTextEditorValueProvider(final JTable table) {
-		this(table, new CastTransformer<Object, T>());
-	}
+    /**
+     * Constructor specifying the table holding the editor component to get the value from.
+     *
+     * @param table Editable table.
+     */
+    public JTableTextEditorValueProvider(final JTable table) {
+        this(table, new CastTransformer<Object, T>());
+    }
 
-	/**
-	 * Constructor specifying the table holding the editor component to get the value from and the transformer to be used
-	 * to convert the text to convert the value to the required type.
-	 *
-	 * @param table Editable table.
-	 * @param transformer Transformer used to convert the object parsed from the formatted text editor component to the
-	 * expected type.
-	 */
-	public JTableTextEditorValueProvider(final JTable table, final Transformer<Object, T> transformer) {
-		this.table = table;
-		this.transformer = transformer;
-	}
+    /**
+     * Constructor specifying the table holding the editor component to get the value from and the transformer to be
+     * used
+     * to convert the text to convert the value to the required type.
+     *
+     * @param table       Editable table.
+     * @param transformer Transformer used to convert the object parsed from the formatted text editor component to the
+     *                    expected type.
+     */
+    public JTableTextEditorValueProvider(final JTable table, final Transformer<Object, T> transformer) {
+        this.table = table;
+        this.transformer = transformer;
+    }
 
-	/**
-	 * @see DataProvider#getData()
-	 */
-	@Override
-	public T getData() {
-		T typedValue = null;
+    /**
+     * @see DataProvider#getData()
+     */
+    @Override
+    public T getData() {
+        T typedValue = null;
 
-		// Get the formatted textfield editor from the table, if any
-		final Component editorComponent = table.getEditorComponent();
-		if (editorComponent instanceof JFormattedTextField) {
-			final JFormattedTextField formattedTextField = (JFormattedTextField) editorComponent;
+        // Get the formatted textfield editor from the table, if any
+        final Component editorComponent = table.getEditorComponent();
+        if (editorComponent instanceof JFormattedTextField) {
+            final JFormattedTextField formattedTextField = (JFormattedTextField) editorComponent;
 
-			// Parse text
-			Object dataValue = null;
-			try {
-				final String dataText = formattedTextField.getText();
-				final JFormattedTextField.AbstractFormatter formatter = formattedTextField.getFormatter();
-				if (formatter != null) {
-					dataValue = formatter.stringToValue(dataText);
-				}
-			} catch (ParseException e) {
-				dataValue = null;
-			}
+            // Parse text
+            Object dataValue = null;
+            try {
+                final String dataText = formattedTextField.getText();
+                final JFormattedTextField.AbstractFormatter formatter = formattedTextField.getFormatter();
+                if (formatter != null) {
+                    dataValue = formatter.stringToValue(dataText);
+                }
+            } catch (ParseException e) {
+                dataValue = null;
+            }
 
-			// Convert it to the required type
-			typedValue = transformer.transform(dataValue);
-		} else {
-			LOGGER.warn("Table editor component is not a JFormattedTextField: " + editorComponent);
-		}
+            // Convert it to the required type
+            typedValue = transformer.transform(dataValue);
+        } else {
+            LOGGER.warn("Table editor component is not a JFormattedTextField: " + editorComponent);
+        }
 
-		return typedValue;
-	}
+        return typedValue;
+    }
 }

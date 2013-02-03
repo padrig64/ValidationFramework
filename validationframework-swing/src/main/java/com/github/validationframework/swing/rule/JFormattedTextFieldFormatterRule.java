@@ -26,47 +26,48 @@
 package com.github.validationframework.swing.rule;
 
 import com.github.validationframework.base.rule.string.AbstractStringBooleanRule;
-import java.text.ParseException;
+
 import javax.swing.JFormattedTextField;
+import java.text.ParseException;
 
 /**
  * Convenience rule that will check if the formatter of a formatted textfield can successfully parse the input text.
  */
 public class JFormattedTextFieldFormatterRule extends AbstractStringBooleanRule {
 
-	/**
-	 * Formatted textfield whose formatter is to be checked.
-	 */
-	private final JFormattedTextField formattedTextField;
+    /**
+     * Formatted textfield whose formatter is to be checked.
+     */
+    private final JFormattedTextField formattedTextField;
 
-	/**
-	 * Constructor specifying the formatted textfield whose formatter is to be checked.
-	 *
-	 * @param formattedTextField Formatted textfield whose formatter is to be checked.
-	 */
-	public JFormattedTextFieldFormatterRule(final JFormattedTextField formattedTextField) {
-		super();
-		this.formattedTextField = formattedTextField;
-	}
+    /**
+     * Constructor specifying the formatted textfield whose formatter is to be checked.
+     *
+     * @param formattedTextField Formatted textfield whose formatter is to be checked.
+     */
+    public JFormattedTextFieldFormatterRule(final JFormattedTextField formattedTextField) {
+        super();
+        this.formattedTextField = formattedTextField;
+    }
 
-	/**
-	 * @see AbstractStringBooleanRule#validate(Object)
-	 */
-	@Override
-	public Boolean validate(final String data) {
-		Boolean result = false;
+    /**
+     * @see AbstractStringBooleanRule#validate(Object)
+     */
+    @Override
+    public Boolean validate(final String data) {
+        Boolean result = false;
 
-		final JFormattedTextField.AbstractFormatter formatter = formattedTextField.getFormatter();
-		if (formatter != null) {
-			final String dataToBeValidated = trimIfNeeded(data);
-			try {
-				formatter.stringToValue(dataToBeValidated);
-				result = true;
-			} catch (ParseException e) {
-				result = false;
-			}
-		}
+        final JFormattedTextField.AbstractFormatter formatter = formattedTextField.getFormatter();
+        if (formatter != null) {
+            final String dataToBeValidated = trimIfNeeded(data);
+            try {
+                formatter.stringToValue(dataToBeValidated);
+                result = true;
+            } catch (ParseException e) {
+                result = false;
+            }
+        }
 
-		return result;
-	}
+        return result;
+    }
 }

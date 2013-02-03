@@ -28,6 +28,7 @@ package com.github.validationframework.base.rule.bool;
 import com.github.validationframework.api.rule.Rule;
 import com.github.validationframework.base.transform.AndBooleanAggregator;
 import com.github.validationframework.base.transform.Transformer;
+
 import java.util.Collection;
 
 /**
@@ -38,45 +39,45 @@ import java.util.Collection;
  */
 public class AndBooleanRule implements Rule<Collection<Boolean>, Boolean> {
 
-	/**
-	 * Default boolean result for empty or null collections.
-	 */
-	public static final boolean DEFAULT_EMPTY_COLLECTION_VALID = AndBooleanAggregator.DEFAULT_EMPTY_COLLECTION_VALUE;
+    /**
+     * Default boolean result for empty or null collections.
+     */
+    public static final boolean DEFAULT_EMPTY_COLLECTION_VALID = AndBooleanAggregator.DEFAULT_EMPTY_COLLECTION_VALUE;
 
-	/**
-	 * Default boolean value for null elements in the collections.
-	 */
-	public static final boolean DEFAULT_NULL_ELEMENT_VALID = AndBooleanAggregator.DEFAULT_NULL_ELEMENT_VALUE;
+    /**
+     * Default boolean value for null elements in the collections.
+     */
+    public static final boolean DEFAULT_NULL_ELEMENT_VALID = AndBooleanAggregator.DEFAULT_NULL_ELEMENT_VALUE;
 
-	/**
-	 * Boolean aggregator using the AND operator.
-	 *
-	 * @see AndBooleanAggregator
-	 */
-	private final Transformer<Collection<Boolean>, Boolean> aggregator;
+    /**
+     * Boolean aggregator using the AND operator.
+     *
+     * @see AndBooleanAggregator
+     */
+    private final Transformer<Collection<Boolean>, Boolean> aggregator;
 
-	/**
-	 * Default constructor using default results for empty collections and null elements.
-	 */
-	public AndBooleanRule() {
-		this(DEFAULT_EMPTY_COLLECTION_VALID, DEFAULT_NULL_ELEMENT_VALID);
-	}
+    /**
+     * Default constructor using default results for empty collections and null elements.
+     */
+    public AndBooleanRule() {
+        this(DEFAULT_EMPTY_COLLECTION_VALID, DEFAULT_NULL_ELEMENT_VALID);
+    }
 
-	/**
-	 * Constructor specifying the results for empty and null collections, and null elements.
-	 *
-	 * @param emptyCollectionValid Result for empty and null collections.
-	 * @param nullElementValid Boolean value for null elements.
-	 */
-	public AndBooleanRule(final boolean emptyCollectionValid, final boolean nullElementValid) {
-		aggregator = new AndBooleanAggregator(emptyCollectionValid, nullElementValid);
-	}
+    /**
+     * Constructor specifying the results for empty and null collections, and null elements.
+     *
+     * @param emptyCollectionValid Result for empty and null collections.
+     * @param nullElementValid     Boolean value for null elements.
+     */
+    public AndBooleanRule(final boolean emptyCollectionValid, final boolean nullElementValid) {
+        aggregator = new AndBooleanAggregator(emptyCollectionValid, nullElementValid);
+    }
 
-	/**
-	 * @see Rule#validate(Object)
-	 */
-	@Override
-	public Boolean validate(final Collection<Boolean> elements) {
-		return aggregator.transform(elements);
-	}
+    /**
+     * @see Rule#validate(Object)
+     */
+    @Override
+    public Boolean validate(final Collection<Boolean> elements) {
+        return aggregator.transform(elements);
+    }
 }

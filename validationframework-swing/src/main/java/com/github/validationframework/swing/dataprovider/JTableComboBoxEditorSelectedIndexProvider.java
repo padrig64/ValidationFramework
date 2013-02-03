@@ -26,11 +26,12 @@
 package com.github.validationframework.swing.dataprovider;
 
 import com.github.validationframework.api.dataprovider.DataProvider;
-import java.awt.Component;
-import javax.swing.JComboBox;
-import javax.swing.JTable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.swing.JComboBox;
+import javax.swing.JTable;
+import java.awt.Component;
 
 /**
  * Provider of the selected index of the current combobox editor component from a given table.<br>Note that if the table
@@ -42,41 +43,41 @@ import org.slf4j.LoggerFactory;
  */
 public class JTableComboBoxEditorSelectedIndexProvider implements DataProvider<Integer> {
 
-	/**
-	 * Logger for this class.
-	 */
-	private static final Logger LOGGER = LoggerFactory.getLogger(JTableComboBoxEditorSelectedIndexProvider.class);
+    /**
+     * Logger for this class.
+     */
+    private static final Logger LOGGER = LoggerFactory.getLogger(JTableComboBoxEditorSelectedIndexProvider.class);
 
-	/**
-	 * Table holding the editor component to get the text from.
-	 */
-	private final JTable table;
+    /**
+     * Table holding the editor component to get the text from.
+     */
+    private final JTable table;
 
-	/**
-	 * Constructor specifying the table holding the editor component to get the text from.
-	 *
-	 * @param table Editable table.
-	 */
-	public JTableComboBoxEditorSelectedIndexProvider(final JTable table) {
-		this.table = table;
-	}
+    /**
+     * Constructor specifying the table holding the editor component to get the text from.
+     *
+     * @param table Editable table.
+     */
+    public JTableComboBoxEditorSelectedIndexProvider(final JTable table) {
+        this.table = table;
+    }
 
-	/**
-	 * @see DataProvider#getData()
-	 */
-	@Override
-	public Integer getData() {
-		Integer selectedIndex = null;
+    /**
+     * @see DataProvider#getData()
+     */
+    @Override
+    public Integer getData() {
+        Integer selectedIndex = null;
 
-		// Get the combobox editor from the table, if any
-		final Component editorComponent = table.getEditorComponent();
-		if (editorComponent instanceof JComboBox) {
-			// Get the selected index from the combobox
-			selectedIndex = ((JComboBox) editorComponent).getSelectedIndex();
-		} else {
-			LOGGER.warn("Table editor component is not a JComboBox: " + editorComponent);
-		}
+        // Get the combobox editor from the table, if any
+        final Component editorComponent = table.getEditorComponent();
+        if (editorComponent instanceof JComboBox) {
+            // Get the selected index from the combobox
+            selectedIndex = ((JComboBox) editorComponent).getSelectedIndex();
+        } else {
+            LOGGER.warn("Table editor component is not a JComboBox: " + editorComponent);
+        }
 
-		return selectedIndex;
-	}
+        return selectedIndex;
+    }
 }

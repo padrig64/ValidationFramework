@@ -25,27 +25,28 @@
 
 package com.github.validationframework.swing.decoration;
 
+import org.junit.Test;
+
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
-import org.junit.Test;
 
 public class IconComponentDecorationTest {
 
-	@Test
-	public void testMultipleDispose() {
-		final JFrame frame = new JFrame();
-		final JTextField textField = new JTextField();
-		frame.setContentPane(textField);
+    @Test
+    public void testMultipleDispose() {
+        final JFrame frame = new JFrame();
+        final JTextField textField = new JTextField();
+        frame.setContentPane(textField);
 
-		final IconComponentDecoration decoration = new IconComponentDecoration(textField, new ImageIcon());
+        final IconComponentDecoration decoration = new IconComponentDecoration(textField, new ImageIcon());
 
-		decoration.setVisible(false);
-		decoration.setVisible(true);
-		decoration.dispose();
-		decoration.dispose();
-		decoration.dispose();
-		decoration.setVisible(false);
-		decoration.setVisible(true);
-	}
+        decoration.setVisible(false);
+        decoration.setVisible(true);
+        decoration.dispose();
+        decoration.dispose();
+        decoration.dispose();
+        decoration.setVisible(false);
+        decoration.setVisible(true);
+    }
 }

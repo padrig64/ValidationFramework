@@ -26,6 +26,7 @@
 package com.github.validationframework.swing.dataprovider;
 
 import com.github.validationframework.api.dataprovider.DataProvider;
+
 import javax.swing.JSlider;
 
 /**
@@ -36,25 +37,25 @@ import javax.swing.JSlider;
  */
 public class JSliderValueProvider implements DataProvider<Integer> {
 
-	/**
-	 * Slider to get the value from.
-	 */
-	private final JSlider slider;
+    /**
+     * Slider to get the value from.
+     */
+    private final JSlider slider;
 
-	/**
-	 * Constructor specifying the slider to get the value from.
-	 *
-	 * @param slider Slider to get the value from.
-	 */
-	public JSliderValueProvider(final JSlider slider) {
-		this.slider = slider;
-	}
+    /**
+     * Constructor specifying the slider to get the value from.
+     *
+     * @param slider Slider to get the value from.
+     */
+    public JSliderValueProvider(final JSlider slider) {
+        this.slider = slider;
+    }
 
-	/**
-	 * @see DataProvider#getData()
-	 */
-	@Override
-	public Integer getData() {
-		return slider.getValue();
-	}
+    /**
+     * @see DataProvider#getData()
+     */
+    @Override
+    public Integer getData() {
+        return slider.getValue();
+    }
 }

@@ -29,173 +29,174 @@ import com.github.validationframework.api.common.Disposable;
 import com.github.validationframework.api.trigger.TriggerEvent;
 import com.github.validationframework.api.trigger.TriggerListener;
 import com.github.validationframework.base.trigger.AbstractTrigger;
+
+import javax.swing.DefaultCellEditor;
+import javax.swing.JTable;
+import javax.swing.text.JTextComponent;
 import java.awt.Component;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.HashMap;
 import java.util.Map;
-import javax.swing.DefaultCellEditor;
-import javax.swing.JTable;
-import javax.swing.text.JTextComponent;
 
 public class JTableTextEditorDocumentChangedTrigger extends AbstractTrigger implements Disposable {
 
-	private class SourceAdapter implements PropertyChangeListener {
+    private class SourceAdapter implements PropertyChangeListener {
 
-		private final Map<Object, Disposable> editorToTrigger = new HashMap<Object, Disposable>();
+        private final Map<Object, Disposable> editorToTrigger = new HashMap<Object, Disposable>();
 
-		/**
-		 * @see PropertyChangeListener#propertyChange(PropertyChangeEvent)
-		 */
-		@Override
-		public void propertyChange(final PropertyChangeEvent evt) {
-			// Detach from previous editor
-			if (evt.getOldValue() != null) {
-				detach(evt.getOldValue());
-			}
+        /**
+         * @see PropertyChangeListener#propertyChange(PropertyChangeEvent)
+         */
+        @Override
+        public void propertyChange(final PropertyChangeEvent evt) {
+            // Detach from previous editor
+            if (evt.getOldValue() != null) {
+                detach(evt.getOldValue());
+            }
 
-			// Attach to new only if it is the right cell
-			if (evt.getNewValue() instanceof DefaultCellEditor) {
-				attach((DefaultCellEditor) evt.getNewValue());
-			}
-		}
+            // Attach to new only if it is the right cell
+            if (evt.getNewValue() instanceof DefaultCellEditor) {
+                attach((DefaultCellEditor) evt.getNewValue());
+            }
+        }
 
-		private void attach(final DefaultCellEditor editor) {
-			final Component editorComponent = editor.getComponent();
-			if (editorComponent instanceof JTextComponent) {
-				final JTextComponentDocumentChangedTrigger trigger =
-						new JTextComponentDocumentChangedTrigger((JTextComponent) editorComponent);
-				trigger.addTriggerListener(triggerForwarder);
-				editorToTrigger.put(editor, trigger);
-				// TODO Check if already there?
-			}
-		}
+        private void attach(final DefaultCellEditor editor) {
+            final Component editorComponent = editor.getComponent();
+            if (editorComponent instanceof JTextComponent) {
+                final JTextComponentDocumentChangedTrigger trigger = new JTextComponentDocumentChangedTrigger(
+                        (JTextComponent) editorComponent);
+                trigger.addTriggerListener(triggerForwarder);
+                editorToTrigger.put(editor, trigger);
+                // TODO Check if already there?
+            }
+        }
 
-		private void detach(final Object editor) {
-			final Disposable trigger = editorToTrigger.get(editor);
-			if (trigger != null) {
-				trigger.dispose();
-				editorToTrigger.remove(editor);
-			}
-		}
-	}
+        private void detach(final Object editor) {
+            final Disposable trigger = editorToTrigger.get(editor);
+            if (trigger != null) {
+                trigger.dispose();
+                editorToTrigger.remove(editor);
+            }
+        }
+    }
 
-	private class TriggerForwarder implements TriggerListener {
+    private class TriggerForwarder implements TriggerListener {
 
-		/**
-		 * @see TriggerListener#triggerValidation(TriggerEvent)
-		 */
-		@Override
-		public void triggerValidation(final TriggerEvent event) {
-			/*
-			 * Check if trigger allowed here, because at the moment the trigger is registered (when the editor component
+        /**
+         * @see TriggerListener#triggerValidation(TriggerEvent)
+         */
+        @Override
+        public void triggerValidation(final TriggerEvent event) {
+            /*
+             * Check if trigger allowed here, because at the moment the trigger is registered (when the editor component
 			 * is set on the table), the editing row and editing column are not yet set in the table.
 			 */
-			if (isTriggerAllowed()) {
-				fireTriggerEvent(event);
-			}
-		}
+            if (isTriggerAllowed()) {
+                fireTriggerEvent(event);
+            }
+        }
 
-		/**
-		 * Checks whether the trigger event is allowed to be fired according the row and column model indices.
-		 *
-		 * @return True if trigger is allowed, false otherwise.
-		 */
-		private boolean isTriggerAllowed() {
-			final boolean allow;
+        /**
+         * Checks whether the trigger event is allowed to be fired according the row and column model indices.
+         *
+         * @return True if trigger is allowed, false otherwise.
+         */
+        private boolean isTriggerAllowed() {
+            final boolean allow;
 
-			if ((modelRowIndex == ALL_ROWS) && (modelColumnIndex == ALL_COLUMNS)) {
-				allow = true;
-			} else if (modelRowIndex == ALL_ROWS) {
-				allow = isTriggerAllowedOnColumn();
-			} else if (modelColumnIndex == ALL_COLUMNS) {
-				allow = isTriggerAllowedOnRow();
-			} else {
-				allow = isTriggerAllowedOnCell();
-			}
+            if ((modelRowIndex == ALL_ROWS) && (modelColumnIndex == ALL_COLUMNS)) {
+                allow = true;
+            } else if (modelRowIndex == ALL_ROWS) {
+                allow = isTriggerAllowedOnColumn();
+            } else if (modelColumnIndex == ALL_COLUMNS) {
+                allow = isTriggerAllowedOnRow();
+            } else {
+                allow = isTriggerAllowedOnCell();
+            }
 
-			return allow;
-		}
+            return allow;
+        }
 
-		private boolean isTriggerAllowedOnRow() {
-			boolean allow = false;
+        private boolean isTriggerAllowedOnRow() {
+            boolean allow = false;
 
-			try {
-				final int viewRowIndex = table.convertRowIndexToView(modelRowIndex);
-				if (viewRowIndex == table.getEditingRow()) {
-					allow = true;
-				}
-			} catch (IndexOutOfBoundsException e) {
-				allow = false;
-			}
+            try {
+                final int viewRowIndex = table.convertRowIndexToView(modelRowIndex);
+                if (viewRowIndex == table.getEditingRow()) {
+                    allow = true;
+                }
+            } catch (IndexOutOfBoundsException e) {
+                allow = false;
+            }
 
-			return allow;
-		}
+            return allow;
+        }
 
-		private boolean isTriggerAllowedOnColumn() {
-			boolean allow = false;
+        private boolean isTriggerAllowedOnColumn() {
+            boolean allow = false;
 
-			try {
-				final int viewColumnIndex = table.convertColumnIndexToView(modelColumnIndex);
-				if (viewColumnIndex == table.getEditingColumn()) {
-					allow = true;
-				}
-			} catch (IndexOutOfBoundsException e) {
-				allow = false;
-			}
+            try {
+                final int viewColumnIndex = table.convertColumnIndexToView(modelColumnIndex);
+                if (viewColumnIndex == table.getEditingColumn()) {
+                    allow = true;
+                }
+            } catch (IndexOutOfBoundsException e) {
+                allow = false;
+            }
 
-			return allow;
-		}
+            return allow;
+        }
 
-		private boolean isTriggerAllowedOnCell() {
-			boolean allow = false;
+        private boolean isTriggerAllowedOnCell() {
+            boolean allow = false;
 
-			try {
-				final int viewRowIndex = table.convertRowIndexToView(modelRowIndex);
-				final int viewColumnIndex = table.convertColumnIndexToView(modelColumnIndex);
-				if ((viewRowIndex == table.getEditingRow()) && (viewColumnIndex == table.getEditingColumn())) {
-					allow = true;
-				}
-			} catch (IndexOutOfBoundsException e) {
-				allow = false;
-			}
+            try {
+                final int viewRowIndex = table.convertRowIndexToView(modelRowIndex);
+                final int viewColumnIndex = table.convertColumnIndexToView(modelColumnIndex);
+                if ((viewRowIndex == table.getEditingRow()) && (viewColumnIndex == table.getEditingColumn())) {
+                    allow = true;
+                }
+            } catch (IndexOutOfBoundsException e) {
+                allow = false;
+            }
 
-			return allow;
-		}
-	}
+            return allow;
+        }
+    }
 
-	public static final int ALL_ROWS = -1;
-	public static final int ALL_COLUMNS = -1;
+    public static final int ALL_ROWS = -1;
+    public static final int ALL_COLUMNS = -1;
 
-	private JTable table = null;
+    private JTable table = null;
 
-	private final int modelRowIndex;
+    private final int modelRowIndex;
 
-	private final int modelColumnIndex;
+    private final int modelColumnIndex;
 
-	private final SourceAdapter sourceAdapter = new SourceAdapter();
+    private final SourceAdapter sourceAdapter = new SourceAdapter();
 
-	private final TriggerListener triggerForwarder = new TriggerForwarder();
+    private final TriggerListener triggerForwarder = new TriggerForwarder();
 
-	public JTableTextEditorDocumentChangedTrigger(final JTable table) {
-		this(table, ALL_ROWS, ALL_COLUMNS);
-	}
+    public JTableTextEditorDocumentChangedTrigger(final JTable table) {
+        this(table, ALL_ROWS, ALL_COLUMNS);
+    }
 
-	public JTableTextEditorDocumentChangedTrigger(final JTable table, final int modelRowIndex,
-												  final int modelColumnIndex) {
-		super();
-		this.table = table;
-		this.modelRowIndex = modelRowIndex;
-		this.modelColumnIndex = modelColumnIndex;
-		table.addPropertyChangeListener("tableCellEditor", sourceAdapter);
-	}
+    public JTableTextEditorDocumentChangedTrigger(final JTable table, final int modelRowIndex,
+                                                  final int modelColumnIndex) {
+        super();
+        this.table = table;
+        this.modelRowIndex = modelRowIndex;
+        this.modelColumnIndex = modelColumnIndex;
+        table.addPropertyChangeListener("tableCellEditor", sourceAdapter);
+    }
 
-	/**
-	 * @see Disposable#dispose()
-	 */
-	@Override
-	public void dispose() {
-		table.removePropertyChangeListener("tableCellEditor", sourceAdapter);
-		table = null;
-	}
+    /**
+     * @see Disposable#dispose()
+     */
+    @Override
+    public void dispose() {
+        table.removePropertyChangeListener("tableCellEditor", sourceAdapter);
+        table = null;
+    }
 }

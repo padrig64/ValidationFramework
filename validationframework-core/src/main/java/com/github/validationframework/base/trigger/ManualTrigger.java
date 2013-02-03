@@ -35,24 +35,24 @@ import com.github.validationframework.api.trigger.TriggerEvent;
  */
 public class ManualTrigger extends AbstractTrigger {
 
-	/**
-	 * Fires a default trigger event whose source is this trigger.
-	 *
-	 * @see #fireTriggerEvent(TriggerEvent)
-	 * @see TriggerEvent
-	 */
-	public void fireTriggerEvent() {
-		fireTriggerEvent(new TriggerEvent(this));
-	}
+    /**
+     * Fires a default trigger event whose source is this trigger.
+     *
+     * @see #fireTriggerEvent(TriggerEvent)
+     * @see TriggerEvent
+     */
+    public void fireTriggerEvent() {
+        fireTriggerEvent(new TriggerEvent(this));
+    }
 
-	/**
-	 * Fires the specified trigger event.<br>This method, from the super class, has been made public for convenience.
-	 *
-	 * @see AbstractTrigger#fireTriggerEvent(TriggerEvent)
-	 * @see TriggerEvent
-	 */
-	@Override
-	public void fireTriggerEvent(final TriggerEvent event) {
-		super.fireTriggerEvent(event);
-	}
+    /**
+     * Fires the specified trigger event.<br>This method, from the super class, has been made public for convenience.
+     *
+     * @see AbstractTrigger#fireTriggerEvent(TriggerEvent)
+     * @see TriggerEvent
+     */
+    @Override
+    public void fireTriggerEvent(final TriggerEvent event) {
+        super.fireTriggerEvent(event);
+    }
 }

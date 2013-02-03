@@ -28,6 +28,7 @@ package com.github.validationframework.swing.trigger;
 import com.github.validationframework.api.common.Disposable;
 import com.github.validationframework.api.trigger.TriggerEvent;
 import com.github.validationframework.base.trigger.AbstractTrigger;
+
 import java.awt.Component;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
@@ -44,50 +45,51 @@ import java.awt.event.FocusListener;
  */
 public class BaseComponentFocusGainedTrigger<C extends Component> extends AbstractTrigger implements Disposable {
 
-	/**
-	 * Focus listener firing a trigger event to the trigger listeners.
-	 */
-	private class SourceAdapter extends FocusAdapter {
+    /**
+     * Focus listener firing a trigger event to the trigger listeners.
+     */
+    private class SourceAdapter extends FocusAdapter {
 
-		/**
-		 * @see FocusListener#focusGained(FocusEvent)
-		 */
-		@Override
-		public void focusGained(final FocusEvent e) {
-			fireTriggerEvent(new TriggerEvent(source));
-		}
-	}
+        /**
+         * @see FocusListener#focusGained(FocusEvent)
+         */
+        @Override
+        public void focusGained(final FocusEvent e) {
+            fireTriggerEvent(new TriggerEvent(source));
+        }
+    }
 
-	/**
-	 * Component whose focus is to be tracked.
-	 */
-	private C source = null;
+    /**
+     * Component whose focus is to be tracked.
+     */
+    private C source = null;
 
-	/**
-	 * Focus listener installed on the component.
-	 */
-	private final FocusListener sourceAdapter = new SourceAdapter();
+    /**
+     * Focus listener installed on the component.
+     */
+    private final FocusListener sourceAdapter = new SourceAdapter();
 
-	/**
-	 * Constructor specified the component whose focus is to be tracked.<br>A focus listener will be installed. So you may
-	 * need to call {@link #dispose()} when trigger is no longer needed.
-	 *
-	 * @param source Component whose focus is to be tracked.
-	 *
-	 * @see #dispose()
-	 */
-	public BaseComponentFocusGainedTrigger(final C source) {
-		super();
-		this.source = source;
-		source.addFocusListener(sourceAdapter);
-	}
+    /**
+     * Constructor specified the component whose focus is to be tracked.<br>A focus listener will be installed. So
+     * you may
+     * need to call {@link #dispose()} when trigger is no longer needed.
+     *
+     * @param source Component whose focus is to be tracked.
+     *
+     * @see #dispose()
+     */
+    public BaseComponentFocusGainedTrigger(final C source) {
+        super();
+        this.source = source;
+        source.addFocusListener(sourceAdapter);
+    }
 
-	/**
-	 * @see Disposable#dispose()
-	 */
-	@Override
-	public void dispose() {
-		source.removeFocusListener(sourceAdapter);
-		source = null;
-	}
+    /**
+     * @see Disposable#dispose()
+     */
+    @Override
+    public void dispose() {
+        source.removeFocusListener(sourceAdapter);
+        source = null;
+    }
 }

@@ -28,36 +28,37 @@ package com.github.validationframework.swing.trigger;
 import com.github.validationframework.api.common.Disposable;
 import com.github.validationframework.api.trigger.TriggerEvent;
 import com.github.validationframework.base.trigger.AbstractTrigger;
+
+import javax.swing.JButton;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JButton;
 
 public class JButtonActionTrigger extends AbstractTrigger implements Disposable {
 
-	private class SourceAdapter implements ActionListener {
+    private class SourceAdapter implements ActionListener {
 
-		@Override
-		public void actionPerformed(final ActionEvent e) {
-			fireTriggerEvent(new TriggerEvent(source));
-		}
-	}
+        @Override
+        public void actionPerformed(final ActionEvent e) {
+            fireTriggerEvent(new TriggerEvent(source));
+        }
+    }
 
-	private JButton source = null;
+    private JButton source = null;
 
-	private final ActionListener sourceAdapter = new SourceAdapter();
+    private final ActionListener sourceAdapter = new SourceAdapter();
 
-	public JButtonActionTrigger(final JButton source) {
-		super();
-		this.source = source;
-		source.addActionListener(sourceAdapter);
-	}
+    public JButtonActionTrigger(final JButton source) {
+        super();
+        this.source = source;
+        source.addActionListener(sourceAdapter);
+    }
 
-	/**
-	 * @see Disposable#dispose()
-	 */
-	@Override
-	public void dispose() {
-		source.removeActionListener(sourceAdapter);
-		source = null;
-	}
+    /**
+     * @see Disposable#dispose()
+     */
+    @Override
+    public void dispose() {
+        source.removeActionListener(sourceAdapter);
+        source = null;
+    }
 }

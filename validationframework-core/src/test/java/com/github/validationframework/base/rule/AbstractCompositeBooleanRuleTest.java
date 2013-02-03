@@ -16,25 +16,25 @@ import static org.mockito.Mockito.when;
 @RunWith(Parameterized.class)
 public abstract class AbstractCompositeBooleanRuleTest {
 
-	protected final Rule<Object, Boolean>[] rules;
-	protected final boolean result;
+    protected final Rule<Object, Boolean>[] rules;
+    protected final boolean result;
 
-	protected AbstractCompositeBooleanRuleTest(final Rule<Object, Boolean>[] rules, final boolean result) {
-		this.rules = rules;
-		this.result = result;
-	}
+    protected AbstractCompositeBooleanRuleTest(final Rule<Object, Boolean>[] rules, final boolean result) {
+        this.rules = rules;
+        this.result = result;
+    }
 
-	protected abstract AbstractCompositeRule<Object, Boolean> createCompositeBooleanRule();
+    protected abstract AbstractCompositeRule<Object, Boolean> createCompositeBooleanRule();
 
-	public static Rule<Object, Boolean> createRule(final boolean result) {
-		final Rule<Object, Boolean> rule = mock(Rule.class);
-		when(rule.validate(any(Object.class))).thenReturn(result);
-		return rule;
-	}
+    public static Rule<Object, Boolean> createRule(final boolean result) {
+        final Rule<Object, Boolean> rule = mock(Rule.class);
+        when(rule.validate(any(Object.class))).thenReturn(result);
+        return rule;
+    }
 
-	@Test
-	public void testResult() {
-		final AbstractCompositeRule<Object, Boolean> abstractCompositeRule = createCompositeBooleanRule();
-		assertEquals(result, abstractCompositeRule.validate(new Object()));
-	}
+    @Test
+    public void testResult() {
+        final AbstractCompositeRule<Object, Boolean> abstractCompositeRule = createCompositeBooleanRule();
+        assertEquals(result, abstractCompositeRule.validate(new Object()));
+    }
 }

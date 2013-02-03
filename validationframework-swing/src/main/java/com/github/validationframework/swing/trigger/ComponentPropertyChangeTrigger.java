@@ -28,6 +28,7 @@ package com.github.validationframework.swing.trigger;
 import com.github.validationframework.api.common.Disposable;
 import com.github.validationframework.api.trigger.TriggerEvent;
 import com.github.validationframework.base.trigger.AbstractTrigger;
+
 import java.awt.Component;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -37,68 +38,69 @@ import java.beans.PropertyChangeListener;
  */
 public class ComponentPropertyChangeTrigger extends AbstractTrigger implements Disposable {
 
-	/**
-	 * Listener to component property changes triggering the validation.
-	 */
-	private class PropertyChangeAdapter implements PropertyChangeListener {
+    /**
+     * Listener to component property changes triggering the validation.
+     */
+    private class PropertyChangeAdapter implements PropertyChangeListener {
 
-		/**
-		 * @see PropertyChangeListener#propertyChange(PropertyChangeEvent)
-		 */
-		@Override
-		public void propertyChange(final PropertyChangeEvent evt) {
-			// Trigger validation
-			fireTriggerEvent(new TriggerEvent(component));
-		}
-	}
+        /**
+         * @see PropertyChangeListener#propertyChange(PropertyChangeEvent)
+         */
+        @Override
+        public void propertyChange(final PropertyChangeEvent evt) {
+            // Trigger validation
+            fireTriggerEvent(new TriggerEvent(component));
+        }
+    }
 
-	/**
-	 * Component whose property changes are to be listened to.
-	 */
-	private final Component component;
+    /**
+     * Component whose property changes are to be listened to.
+     */
+    private final Component component;
 
-	/**
-	 * Listener to component property changes.
-	 */
-	private final PropertyChangeListener propertyChangeAdapter = new PropertyChangeAdapter();
+    /**
+     * Listener to component property changes.
+     */
+    private final PropertyChangeListener propertyChangeAdapter = new PropertyChangeAdapter();
 
-	/**
-	 * Constructor specifying the component whose property changes are to be watched.<br>Using this constructor will be the
-	 * trigger initiate the validation upon any property change.
-	 *
-	 * @param component Component whose property changes are to be listened to.
-	 */
-	public ComponentPropertyChangeTrigger(final Component component) {
-		super();
-		this.component = component;
-		component.addPropertyChangeListener(propertyChangeAdapter);
-	}
+    /**
+     * Constructor specifying the component whose property changes are to be watched.<br>Using this constructor will
+     * be the
+     * trigger initiate the validation upon any property change.
+     *
+     * @param component Component whose property changes are to be listened to.
+     */
+    public ComponentPropertyChangeTrigger(final Component component) {
+        super();
+        this.component = component;
+        component.addPropertyChangeListener(propertyChangeAdapter);
+    }
 
-	/**
-	 * Constructor specifying the component for which the specified property changes are to be watched.
-	 *
-	 * @param component Component whose property changes are to be listened to.
-	 * @param propertyNames Optional names of the properties of the component to listen to.<br>If no property name is
-	 * specified, changes on any property will initiate the trigger.
-	 */
-	public ComponentPropertyChangeTrigger(final Component component, final String... propertyNames) {
-		super();
-		this.component = component;
+    /**
+     * Constructor specifying the component for which the specified property changes are to be watched.
+     *
+     * @param component     Component whose property changes are to be listened to.
+     * @param propertyNames Optional names of the properties of the component to listen to.<br>If no property name is
+     *                      specified, changes on any property will initiate the trigger.
+     */
+    public ComponentPropertyChangeTrigger(final Component component, final String... propertyNames) {
+        super();
+        this.component = component;
 
-		if ((propertyNames == null) || (propertyNames.length == 0)) {
-			component.addPropertyChangeListener(propertyChangeAdapter);
-		} else {
-			for (final String propertyName : propertyNames) {
-				component.addPropertyChangeListener(propertyName, propertyChangeAdapter);
-			}
-		}
-	}
+        if ((propertyNames == null) || (propertyNames.length == 0)) {
+            component.addPropertyChangeListener(propertyChangeAdapter);
+        } else {
+            for (final String propertyName : propertyNames) {
+                component.addPropertyChangeListener(propertyName, propertyChangeAdapter);
+            }
+        }
+    }
 
-	/**
-	 * @see Disposable#dispose()
-	 */
-	@Override
-	public void dispose() {
-		component.removePropertyChangeListener(propertyChangeAdapter);
-	}
+    /**
+     * @see Disposable#dispose()
+     */
+    @Override
+    public void dispose() {
+        component.removePropertyChangeListener(propertyChangeAdapter);
+    }
 }

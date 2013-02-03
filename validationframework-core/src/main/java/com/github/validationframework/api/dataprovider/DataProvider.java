@@ -31,14 +31,14 @@ package com.github.validationframework.api.dataprovider;
  * process is triggered.
  *
  * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
- * type of the component itself.
+ *            type of the component itself.
  */
 public interface DataProvider<D> {
 
-	/**
-	 * Retrieves the data to be used for validation.
-	 *
-	 * @return Data to be used for validation.
-	 */
-	public D getData();
+    /**
+     * Retrieves the data to be used for validation.
+     *
+     * @return Data to be used for validation.
+     */
+    public D getData();
 }

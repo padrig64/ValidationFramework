@@ -26,6 +26,7 @@
 package com.github.validationframework.base.resulthandler;
 
 import com.github.validationframework.api.resulthandler.ResultHandler;
+
 import java.io.PrintStream;
 
 /**
@@ -37,88 +38,89 @@ import java.io.PrintStream;
  */
 public class PrintStreamResultHandler<O> implements ResultHandler<O> {
 
-	/**
-	 * Default output print stream.
-	 */
-	private static final PrintStream DEFAULT_STREAM = System.out;
+    /**
+     * Default output print stream.
+     */
+    private static final PrintStream DEFAULT_STREAM = System.out;
 
-	/**
-	 * Default prefix to be prepended to the result.
-	 */
-	private static final String DEFAULT_PREFIX = "";
+    /**
+     * Default prefix to be prepended to the result.
+     */
+    private static final String DEFAULT_PREFIX = "";
 
-	/**
-	 * Default suffix to be appended to the result.
-	 */
-	private static final String DEFAULT_SUFFIX = "";
+    /**
+     * Default suffix to be appended to the result.
+     */
+    private static final String DEFAULT_SUFFIX = "";
 
-	/**
-	 * Output print stream.
-	 */
-	private final PrintStream stream;
+    /**
+     * Output print stream.
+     */
+    private final PrintStream stream;
 
-	/**
-	 * Prefix to be prepended to the result.
-	 */
-	private final String prefix;
+    /**
+     * Prefix to be prepended to the result.
+     */
+    private final String prefix;
 
-	/**
-	 * Suffix to be appended to the result.
-	 */
-	private final String suffix;
+    /**
+     * Suffix to be appended to the result.
+     */
+    private final String suffix;
 
-	/**
-	 * Default constructor making the result handler print the results to the standard output, with no prefix and no
-	 * suffix.
-	 */
-	public PrintStreamResultHandler() {
-		this(DEFAULT_STREAM, DEFAULT_PREFIX, DEFAULT_SUFFIX);
-	}
+    /**
+     * Default constructor making the result handler print the results to the standard output, with no prefix and no
+     * suffix.
+     */
+    public PrintStreamResultHandler() {
+        this(DEFAULT_STREAM, DEFAULT_PREFIX, DEFAULT_SUFFIX);
+    }
 
-	/**
-	 * Constructor making the result handler write the results to the specified print stream, with no prefix and no
-	 * suffix.
-	 *
-	 * @param stream Print stream to write the results to.
-	 */
-	public PrintStreamResultHandler(final PrintStream stream) {
-		this(stream, DEFAULT_PREFIX, DEFAULT_SUFFIX);
-	}
+    /**
+     * Constructor making the result handler write the results to the specified print stream, with no prefix and no
+     * suffix.
+     *
+     * @param stream Print stream to write the results to.
+     */
+    public PrintStreamResultHandler(final PrintStream stream) {
+        this(stream, DEFAULT_PREFIX, DEFAULT_SUFFIX);
+    }
 
-	/**
-	 * Default constructor making the result handler print the results to the standard output, with the specified prefix
-	 * but no suffix.
-	 *
-	 * @param prefix Prefix to be prepended to the result.
-	 */
-	public PrintStreamResultHandler(final String prefix) {
-		this(DEFAULT_STREAM, prefix, DEFAULT_SUFFIX);
-	}
+    /**
+     * Default constructor making the result handler print the results to the standard output, with the specified prefix
+     * but no suffix.
+     *
+     * @param prefix Prefix to be prepended to the result.
+     */
+    public PrintStreamResultHandler(final String prefix) {
+        this(DEFAULT_STREAM, prefix, DEFAULT_SUFFIX);
+    }
 
-	/**
-	 * Constructor making the result handler write the results to the specified print stream, with the specified prefix and
-	 * suffix.
-	 *
-	 * @param stream Print stream to write the results to.
-	 * @param prefix Prefix to be prepended to the result.
-	 * @param suffix Suffix to be appened to the result.
-	 */
-	public PrintStreamResultHandler(final PrintStream stream, final String prefix, final String suffix) {
-		this.stream = stream;
-		this.prefix = prefix;
-		this.suffix = suffix;
-	}
+    /**
+     * Constructor making the result handler write the results to the specified print stream,
+     * with the specified prefix and
+     * suffix.
+     *
+     * @param stream Print stream to write the results to.
+     * @param prefix Prefix to be prepended to the result.
+     * @param suffix Suffix to be appened to the result.
+     */
+    public PrintStreamResultHandler(final PrintStream stream, final String prefix, final String suffix) {
+        this.stream = stream;
+        this.prefix = prefix;
+        this.suffix = suffix;
+    }
 
-	/**
-	 * @see ResultHandler#handleResult(Object)
-	 */
-	@Override
-	public void handleResult(final O result) {
-		final StringBuilder builder = new StringBuilder();
-		builder.append(prefix);
-		builder.append(result);
-		builder.append(suffix);
+    /**
+     * @see ResultHandler#handleResult(Object)
+     */
+    @Override
+    public void handleResult(final O result) {
+        final StringBuilder builder = new StringBuilder();
+        builder.append(prefix);
+        builder.append(result);
+        builder.append(suffix);
 
-		stream.println(builder);
-	}
+        stream.println(builder);
+    }
 }
