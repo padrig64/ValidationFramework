@@ -31,10 +31,10 @@ import javax.swing.JFormattedTextField;
  * Convenience class for triggers on focus gain by a {@link JFormattedTextField}.<br>When this trigger is not longer
  * required, do not forget to call {@link #dispose()}.
  *
- * @see BaseComponentFocusGainedTrigger
+ * @see BaseJComponentFocusGainedTrigger
  * @see #dispose()
  */
-public class JFormattedTextFieldFocusGainedTrigger extends BaseComponentFocusGainedTrigger<JFormattedTextField> {
+public class JFormattedTextFieldFocusGainedTrigger extends BaseJComponentFocusGainedTrigger<JFormattedTextField> {
 
     /**
      * Constructor specified the formatted textfield whose focus is to be tracked.<br>A focus listener will be

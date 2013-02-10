@@ -30,9 +30,9 @@ import javax.swing.JTextField;
 /**
  * Convenience trigger that initiates the validation whenever the document of a textfield is modified.
  *
- * @see BaseTextComponentDocumentChangedTrigger
+ * @see BaseJTextComponentDocumentChangedTrigger
  */
-public class JTextFieldDocumentChangedTrigger extends BaseTextComponentDocumentChangedTrigger<JTextField> {
+public class JTextFieldDocumentChangedTrigger extends BaseJTextComponentDocumentChangedTrigger<JTextField> {
 
     /**
      * Constructor specifying the textfield to listen to.

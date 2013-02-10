@@ -440,7 +440,7 @@
    <object id="ClassNode29" class="com.horstmann.violet.ClassNode"> 
     <void property="name"> 
      <void property="text"> 
-      <string>BaseComponentFocusGainedTrigger&lt;C&gt;</string> 
+      <string>BaseJComponentFocusGainedTrigger&lt;C&gt;</string> 
      </void> 
     </void> 
    </object> 
@@ -455,7 +455,7 @@
    <object id="ClassNode30" class="com.horstmann.violet.ClassNode"> 
     <void property="name"> 
      <void property="text"> 
-      <string>BaseComponentFocusLostTrigger&lt;C&gt;</string> 
+      <string>BaseJComponentFocusLostTrigger&lt;C&gt;</string> 
      </void> 
     </void> 
    </object> 
@@ -470,7 +470,7 @@
    <object id="ClassNode31" class="com.horstmann.violet.ClassNode"> 
     <void property="name"> 
      <void property="text"> 
-      <string>BaseTextComponentDocumentChangedTrigger&lt;C&gt;</string> 
+      <string>BaseJTextComponentDocumentChangedTrigger&lt;C&gt;</string> 
      </void> 
     </void> 
    </object> 
@@ -485,7 +485,7 @@
    <object id="ClassNode32" class="com.horstmann.violet.ClassNode"> 
     <void property="name"> 
      <void property="text"> 
-      <string>BaseToggleComponentModelChangedTrigger&lt;C&gt;</string> 
+      <string>BaseJToggleButtonModelChangedTrigger&lt;C&gt;</string> 
      </void> 
     </void> 
    </object> 

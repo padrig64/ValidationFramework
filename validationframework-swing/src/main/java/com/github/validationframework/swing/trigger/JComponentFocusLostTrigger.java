@@ -31,10 +31,10 @@ import javax.swing.JComponent;
  * Convenience class for triggers on focus loss by a {@link JComponent}.<br>When this trigger is not longer required, do
  * not forget to call {@link #dispose()}.
  *
- * @see BaseComponentFocusGainedTrigger
+ * @see BaseJComponentFocusGainedTrigger
  * @see #dispose()
  */
-public class JComponentFocusLostTrigger extends BaseComponentFocusLostTrigger<JComponent> {
+public class JComponentFocusLostTrigger extends BaseJComponentFocusLostTrigger<JComponent> {
 
     /**
      * Constructor specified the component whose focus is to be tracked.<br>A focus listener will be installed. So

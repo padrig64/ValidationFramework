@@ -34,8 +34,7 @@ Trigger</string>
     </void> 
     <void property="name"> 
      <void property="text"> 
-      <string>&lt;&lt;abstract&gt;&gt;
-AbstractTrigger</string> 
+      <string>AbstractTrigger</string> 
      </void> 
     </void> 
    </object> 

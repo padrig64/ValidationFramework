@@ -29,14 +29,14 @@ import javax.swing.JRadioButton;
 
 /**
  * Trigger initiating the validation whenever the model of a radio button is changed.<br>It is provided for convenience
- * over the {@link BaseToggleComponentModelChangedTrigger} to make it easier to find while building the validators.
+ * over the {@link BaseJToggleButtonModelChangedTrigger} to make it easier to find while building the validators.
  *
- * @see BaseToggleComponentModelChangedTrigger
+ * @see BaseJToggleButtonModelChangedTrigger
  */
-public class JRadioButtonModelChangedTrigger extends BaseToggleComponentModelChangedTrigger<JRadioButton> {
+public class JRadioButtonModelChangedTrigger extends BaseJToggleButtonModelChangedTrigger<JRadioButton> {
 
     /**
-     * @see BaseToggleComponentModelChangedTrigger#BaseToggleComponentModelChangedTrigger(javax.swing.JToggleButton)
+     * @see BaseJToggleButtonModelChangedTrigger#BaseJToggleButtonModelChangedTrigger(javax.swing.JToggleButton)
      */
     public JRadioButtonModelChangedTrigger(final JRadioButton source) {
         super(source);

@@ -31,10 +31,10 @@ import javax.swing.JTextField;
  * Convenience class for triggers on focus loss by a {@link JTextField}.<br>When this trigger is not longer required, do
  * not forget to call {@link #dispose()}.
  *
- * @see BaseComponentFocusGainedTrigger
+ * @see BaseJComponentFocusGainedTrigger
  * @see #dispose()
  */
-public class JTextFieldFocusLostTrigger extends BaseComponentFocusLostTrigger<JTextField> {
+public class JTextFieldFocusLostTrigger extends BaseJComponentFocusLostTrigger<JTextField> {
 
     /**
      * Constructor specified the textfield whose focus is to be tracked.<br>A focus listener will be installed. So

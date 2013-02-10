@@ -29,14 +29,14 @@ import javax.swing.JCheckBox;
 
 /**
  * Trigger initiating the validation whenever the model of a checkbox is changed.<br>It is provided for convenience over
- * the {@link BaseToggleComponentModelChangedTrigger} to make it easier to find while building the validators.
+ * the {@link BaseJToggleButtonModelChangedTrigger} to make it easier to find while building the validators.
  *
- * @see BaseToggleComponentModelChangedTrigger
+ * @see BaseJToggleButtonModelChangedTrigger
  */
-public class JCheckBoxModelChangedTrigger extends BaseToggleComponentModelChangedTrigger<JCheckBox> {
+public class JCheckBoxModelChangedTrigger extends BaseJToggleButtonModelChangedTrigger<JCheckBox> {
 
     /**
-     * @see BaseToggleComponentModelChangedTrigger#BaseToggleComponentModelChangedTrigger(javax.swing.JToggleButton)
+     * @see BaseJToggleButtonModelChangedTrigger#BaseJToggleButtonModelChangedTrigger(javax.swing.JToggleButton)
      */
     public JCheckBoxModelChangedTrigger(final JCheckBox source) {
         super(source);

@@ -30,10 +30,9 @@ import javax.swing.JFormattedTextField;
 /**
  * Convenience trigger that initiates the validation whenever the document of a formatted textfield is modified.
  *
- * @see BaseTextComponentDocumentChangedTrigger
+ * @see BaseJTextComponentDocumentChangedTrigger
  */
-public class JFormattedTextFieldDocumentChangedTrigger extends
-        BaseTextComponentDocumentChangedTrigger<JFormattedTextField> {
+public class JFormattedTextFieldDocumentChangedTrigger extends BaseJTextComponentDocumentChangedTrigger<JFormattedTextField> {
 
     /**
      * Constructor specifying the formatted textfield to listen to.

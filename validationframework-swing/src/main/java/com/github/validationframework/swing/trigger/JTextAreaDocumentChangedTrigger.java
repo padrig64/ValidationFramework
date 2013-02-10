@@ -30,9 +30,9 @@ import javax.swing.JTextArea;
 /**
  * Convenience trigger that initiates the validation whenever the document of a text area is modified.
  *
- * @see BaseTextComponentDocumentChangedTrigger
+ * @see BaseJTextComponentDocumentChangedTrigger
  */
-public class JTextAreaDocumentChangedTrigger extends BaseTextComponentDocumentChangedTrigger<JTextArea> {
+public class JTextAreaDocumentChangedTrigger extends BaseJTextComponentDocumentChangedTrigger<JTextArea> {
 
     /**
      * Constructor specifying the text area to listen to.

@@ -30,9 +30,9 @@ import javax.swing.text.JTextComponent;
 /**
  * Convenience trigger that initiates the validation whenever the document of a text component is modified.
  *
- * @see BaseTextComponentDocumentChangedTrigger
+ * @see BaseJTextComponentDocumentChangedTrigger
  */
-public class JTextComponentDocumentChangedTrigger extends BaseTextComponentDocumentChangedTrigger<JTextComponent> {
+public class JTextComponentDocumentChangedTrigger extends BaseJTextComponentDocumentChangedTrigger<JTextComponent> {
 
     /**
      * Constructor specifying the text component to listen to.

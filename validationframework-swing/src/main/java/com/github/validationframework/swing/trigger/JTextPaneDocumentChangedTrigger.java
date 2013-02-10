@@ -30,9 +30,9 @@ import javax.swing.JTextPane;
 /**
  * Convenience trigger that initiates the validation whenever the document of a text pane is modified.
  *
- * @see BaseTextComponentDocumentChangedTrigger
+ * @see BaseJTextComponentDocumentChangedTrigger
  */
-public class JTextPaneDocumentChangedTrigger extends BaseTextComponentDocumentChangedTrigger<JTextPane> {
+public class JTextPaneDocumentChangedTrigger extends BaseJTextComponentDocumentChangedTrigger<JTextPane> {
 
     /**
      * Constructor specifying the text pane to listen to.

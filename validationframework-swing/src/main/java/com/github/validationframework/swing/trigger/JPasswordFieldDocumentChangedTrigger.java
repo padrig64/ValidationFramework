@@ -30,9 +30,9 @@ import javax.swing.JPasswordField;
 /**
  * Convenience trigger that initiates the validation whenever the document of password field is modified.
  *
- * @see BaseTextComponentDocumentChangedTrigger
+ * @see BaseJTextComponentDocumentChangedTrigger
  */
-public class JPasswordFieldDocumentChangedTrigger extends BaseTextComponentDocumentChangedTrigger<JPasswordField> {
+public class JPasswordFieldDocumentChangedTrigger extends BaseJTextComponentDocumentChangedTrigger<JPasswordField> {
 
     /**
      * Constructor specifying the password field to listen to.
