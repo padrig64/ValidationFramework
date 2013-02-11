@@ -33,7 +33,8 @@ DataProvider&lt;D&gt;</string>
     </void> 
     <void property="name"> 
      <void property="text"> 
-      <string>ListCompositeDataProvider&lt;D&gt;</string> 
+      <string>[D -&gt; List&lt;D&gt;]
+ListCompositeDataProvider&lt;D&gt;</string> 
      </void> 
     </void> 
    </object> 
@@ -55,7 +56,8 @@ DataProvider&lt;D&gt;</string>
     </void> 
     <void property="name"> 
      <void property="text"> 
-      <string>MapCompositeDataProvider&lt;K,D&gt;</string> 
+      <string>[D -&gt; Map&lt;K,D&gt;]
+MapCompositeDataProvider&lt;K,D&gt;</string> 
      </void> 
     </void> 
    </object> 
@@ -74,6 +76,9 @@ DataProvider&lt;D&gt;</string>
     <void property="endArrowHead"> 
      <object class="com.horstmann.violet.ArrowHead" field="TRIANGLE"/> 
     </void> 
+    <void property="lineStyle"> 
+     <object class="com.horstmann.violet.LineStyle" field="DOTTED"/> 
+    </void> 
    </object> 
    <object idref="ClassNode0"/> 
    <object idref="InterfaceNode0"/> 
@@ -85,6 +90,9 @@ DataProvider&lt;D&gt;</string>
     </void> 
     <void property="endArrowHead"> 
      <object class="com.horstmann.violet.ArrowHead" field="TRIANGLE"/> 
+    </void> 
+    <void property="lineStyle"> 
+     <object class="com.horstmann.violet.LineStyle" field="DOTTED"/> 
     </void> 
    </object> 
    <object idref="ClassNode1"/> 

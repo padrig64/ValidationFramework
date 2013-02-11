@@ -6,6 +6,7 @@
 * Remaining icontip's tooltips when quickly moving the mouse (in tables and outside tables): only on Linux?
 * Icon decoration steals mouse event even outside clipping bounds
 * Icontip dialogs can be made Popups (just like JPopupMenu or regular tooltips): not mishandled by some window managers?
+* Make consistent use of generics for Swing data providers
 
 # NEW STUFF
 
