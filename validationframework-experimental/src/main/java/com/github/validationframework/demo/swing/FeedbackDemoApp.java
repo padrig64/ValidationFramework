@@ -69,8 +69,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.NumberFormat;
 
-import static com.github.validationframework.experimental.builder.ResultCollectorValidatorBuilder.collect;
-import static com.github.validationframework.experimental.builder.SimpleValidatorBuilder.on;
+import static com.github.validationframework.base.validator.builder.ResultCollectorValidatorBuilder.collect;
+import static com.github.validationframework.base.validator.builder.SimpleValidatorBuilder.on;
 
 public class FeedbackDemoApp extends JFrame {
 

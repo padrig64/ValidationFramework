@@ -26,7 +26,7 @@
 package com.github.validationframework.demo.swing;
 
 import com.github.validationframework.base.rule.string.StringLengthLessThanOrEqualToRule;
-import com.github.validationframework.experimental.builder.SimpleValidatorBuilder;
+import com.github.validationframework.base.validator.builder.SimpleValidatorBuilder;
 import com.github.validationframework.swing.dataprovider.JTextFieldTextProvider;
 import com.github.validationframework.swing.resulthandler.bool.IconBooleanFeedback;
 import com.github.validationframework.swing.trigger.JTextFieldDocumentChangedTrigger;
