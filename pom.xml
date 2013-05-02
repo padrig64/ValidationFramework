@@ -51,6 +51,7 @@
         <module>validationframework-core</module>
         <module>validationframework-swing</module>
         <module>validationframework-experimental</module>
+        <module>validationframework-demo</module>
     </modules>
 
     <dependencyManagement>
@@ -71,6 +72,11 @@
             <dependency>
                 <groupId>validationframework</groupId>
                 <artifactId>validationframework-experimental</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>validationframework</groupId>
+                <artifactId>validationframework-demo</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -146,7 +152,6 @@
         </dependencies>
     </dependencyManagement>
 
-
     <build>
         <plugins>
             <plugin>
@@ -199,5 +204,4 @@
             </build>
         </profile>
     </profiles>
-
 </project>

@@ -10,8 +10,8 @@
         <version>1.1.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>validationframework-experimental</artifactId>
-    <name>Validation Framework Experiments</name>
+    <artifactId>validationframework-demo</artifactId>
+    <name>Validation Framework Demo</name>
 
     <dependencies>
 
@@ -25,12 +25,33 @@
             <groupId>validationframework</groupId>
             <artifactId>validationframework-swing</artifactId>
         </dependency>
+        <dependency>
+            <groupId>validationframework</groupId>
+            <artifactId>validationframework-experimental</artifactId>
+        </dependency>
 
         <!-- Logging -->
 
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- Layout -->
+
+        <dependency>
+            <groupId>com.miglayout</groupId>
+            <artifactId>miglayout-swing</artifactId>
         </dependency>
 
     </dependencies>
