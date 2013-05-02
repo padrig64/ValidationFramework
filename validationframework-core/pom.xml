@@ -12,6 +12,7 @@
 
     <artifactId>validationframework-core</artifactId>
     <name>Validation Framework Core</name>
+    <packaging>bundle</packaging>
 
     <dependencies>
 

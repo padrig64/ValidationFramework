@@ -12,6 +12,7 @@
 
     <artifactId>validationframework-swing</artifactId>
     <name>Validation Framework Swing Support</name>
+    <packaging>bundle</packaging>
 
     <dependencies>
 

@@ -12,6 +12,7 @@
 
     <artifactId>validationframework-experimental</artifactId>
     <name>Validation Framework Experiments</name>
+    <packaging>bundle</packaging>
 
     <dependencies>
 

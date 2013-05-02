@@ -12,6 +12,7 @@
 
     <artifactId>validationframework-demo</artifactId>
     <name>Validation Framework Demo</name>
+    <packaging>bundle</packaging>
 
     <dependencies>
 
