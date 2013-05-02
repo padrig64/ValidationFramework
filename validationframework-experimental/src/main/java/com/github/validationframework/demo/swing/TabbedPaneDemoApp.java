@@ -54,8 +54,8 @@ import java.text.DecimalFormat;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.github.validationframework.base.validator.builder.ResultCollectorValidatorBuilder.collect;
-import static com.github.validationframework.base.validator.builder.SimpleValidatorBuilder.on;
+import static com.github.validationframework.experimental.builder.ResultCollectorValidatorBuilder.collect;
+import static com.github.validationframework.experimental.builder.SimpleValidatorBuilder.on;
 
 public class TabbedPaneDemoApp extends JFrame {
 
