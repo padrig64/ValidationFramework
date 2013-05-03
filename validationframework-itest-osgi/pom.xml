@@ -2,17 +2,21 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <artifactId>validationframework</artifactId>
-        <groupId>validationframework</groupId>
-        <version>1.1.1-SNAPSHOT</version>
-    </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>validationframework</groupId>
+        <artifactId>validationframework</artifactId>
+        <version>1.1.1-SNAPSHOT</version>
+    </parent>
+
     <artifactId>validationframework-itest-osgi</artifactId>
-    <name>Validation Framework OSGi integration tests</name>
+    <name>Validation Framework OSGi Integration Tests</name>
 
     <dependencies>
+
+        <!-- Validation Framework dependencies -->
+
         <dependency>
             <groupId>validationframework</groupId>
             <artifactId>validationframework-core</artifactId>
@@ -25,6 +29,9 @@
             <groupId>validationframework</groupId>
             <artifactId>validationframework-experimental</artifactId>
         </dependency>
+
+        <!-- Test dependencies -->
+
         <dependency>
             <groupId>org.eclipse</groupId>
             <artifactId>org.eclipse.osgi</artifactId>
@@ -57,10 +64,6 @@
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-        </dependency>
     </dependencies>
 
     <build>
@@ -70,6 +73,7 @@
                 <filtering>true</filtering>
             </testResource>
         </testResources>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -99,5 +103,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
