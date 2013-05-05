@@ -23,51 +23,42 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.swing.trigger;
+package com.github.validationframework.base.validator;
 
-import com.github.validationframework.api.common.Disposable;
-import com.github.validationframework.api.trigger.TriggerEvent;
-import com.github.validationframework.base.trigger.AbstractTrigger;
-
-import javax.swing.JToggleButton;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import com.github.validationframework.base.transform.AndBooleanAggregator;
 
 /**
- * Trigger initiating the validation whenever the model of a toggle button is changed.
+ * Simple validator using boolean results and aggregating all results from the rules into a single result using the AND
+ * operation.
  *
- * @param <C> Type of toggle button component to be watched.
+ * @param <PO> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
+ *             type of the component itself.
  *
- * @see AbstractTrigger
- * @see Disposable
+ * @see ResultAggregationValidator
+ * @see AndBooleanAggregator
+ * @see OrValidatorResult
  */
-public class BaseJToggleButtonModelChangedTrigger<C extends JToggleButton> extends AbstractTrigger implements
-        Disposable {
+public class AndValidatorResult<PO> extends ResultAggregationValidator<PO, Boolean, Boolean> {
 
-    private class SourceAdapter implements ItemListener {
-
-        @Override
-        public void itemStateChanged(final ItemEvent e) {
-            fireTriggerEvent(new TriggerEvent(source));
-        }
-    }
-
-    private C source = null;
-
-    private final ItemListener sourceAdapter = new SourceAdapter();
-
-    public BaseJToggleButtonModelChangedTrigger(final C source) {
-        super();
-        this.source = source;
-        source.addItemListener(sourceAdapter);
+    /**
+     * Default constructor using the default constructor of {@link AndBooleanAggregator}.
+     *
+     * @see AndBooleanAggregator
+     */
+    public AndValidatorResult() {
+        super(new AndBooleanAggregator());
     }
 
     /**
-     * @see Disposable#dispose()
+     * Constructor specifying the boolean values for empty and null collections, and null elements, to be used when
+     * aggregating the results from all the rules.
+     *
+     * @param emptyCollectionValue Value for empty and null collections of results.
+     * @param nullElementValue     Value for null elements in the transformed collections of results.
+     *
+     * @see AndBooleanAggregator
      */
-    @Override
-    public void dispose() {
-        source.removeItemListener(sourceAdapter);
-        source = null;
+    public AndValidatorResult(final boolean emptyCollectionValue, final boolean nullElementValue) {
+        super(new AndBooleanAggregator(emptyCollectionValue, nullElementValue));
     }
 }

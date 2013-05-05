@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, Patrick Moawad
+ * Copyright (c) 2013, Patrick Moawad
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -46,9 +46,9 @@ import java.util.Collection;
  * collector validator can be useful to aggregate the validation from a group of components (for instance, from
  * different tabs) to enable/disable some buttons accordingly.
  *
- * @param <D> Type of data handled by this validator, that is to say, the collected results from other validators.
- * @param <O> Type of validation result of this validator.<br>It can be, for instance, an enumeration or just a
- *            boolean.
+ * @param <RI> Type of data handled by this validator, that is to say, the collected results from other validators.
+ * @param <RO> Type of validation result of this validator.<br>It can be, for instance, an enumeration or just a
+ *             boolean.
  *
  * @see AbstractSimpleValidator
  * @see ResultCollector
@@ -57,8 +57,8 @@ import java.util.Collection;
  * @see Rule
  * @see ResultHandler
  */
-public class ResultCollectorValidator<D, O> extends AbstractSimpleValidator<Trigger, DataProvider<D>, D,
-        Rule<Collection<D>, O>, Collection<D>, O, ResultHandler<O>, O> {
+public class ResultCollectorValidator<RI, RO> extends AbstractSimpleValidator<Trigger, DataProvider<RI>, RI,
+        Rule<Collection<RI>, RO>, Collection<RI>, RO, ResultHandler<RO>, RO> {
 
     /**
      * Logger for this class.
@@ -70,7 +70,7 @@ public class ResultCollectorValidator<D, O> extends AbstractSimpleValidator<Trig
      *
      * @param resultCollector Result collector being a result handler for another validator.
      */
-    public void addResultCollector(final ResultCollector<?, D> resultCollector) {
+    public void addResultCollector(final ResultCollector<?, RI> resultCollector) {
         addTrigger(resultCollector);
         addDataProvider(resultCollector);
     }
@@ -80,7 +80,7 @@ public class ResultCollectorValidator<D, O> extends AbstractSimpleValidator<Trig
      *
      * @param resultCollector Result collector being a result handler for another validator.
      */
-    public void removeResultCollector(final ResultCollector<?, D> resultCollector) {
+    public void removeResultCollector(final ResultCollector<?, RI> resultCollector) {
         removeTrigger(resultCollector);
         removeDataProvider(resultCollector);
     }
@@ -94,8 +94,8 @@ public class ResultCollectorValidator<D, O> extends AbstractSimpleValidator<Trig
             LOGGER.warn("No data providers in validator: " + this);
         } else {
             // Collect results
-            final Collection<D> collectedResults = new ArrayList<D>();
-            for (final DataProvider<D> dataProvider : dataProviders) {
+            final Collection<RI> collectedResults = new ArrayList<RI>();
+            for (final DataProvider<RI> dataProvider : dataProviders) {
                 collectedResults.add(dataProvider.getData());
             }
 
@@ -109,9 +109,9 @@ public class ResultCollectorValidator<D, O> extends AbstractSimpleValidator<Trig
      *
      * @param data Data to be validated against all rules.
      */
-    protected void processData(final Collection<D> data) {
+    protected void processData(final Collection<RI> data) {
         // Check data against all rules
-        for (final Rule<Collection<D>, O> rule : rules) {
+        for (final Rule<Collection<RI>, RO> rule : rules) {
             processResult(rule.validate(data));
         }
     }
@@ -121,8 +121,8 @@ public class ResultCollectorValidator<D, O> extends AbstractSimpleValidator<Trig
      *
      * @param result Result to be processed by all result handlers.
      */
-    protected void processResult(final O result) {
-        for (final ResultHandler<O> resultHandler : resultHandlers) {
+    protected void processResult(final RO result) {
+        for (final ResultHandler<RO> resultHandler : resultHandlers) {
             resultHandler.handleResult(result);
         }
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, Patrick Moawad
+ * Copyright (c) 2013, Patrick Moawad
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -38,9 +38,9 @@ import org.slf4j.LoggerFactory;
  * result.<br>When any of its triggers is initiated, the simple validator will read all the data from all of its data
  * providers, check them all against all of its rules, and handles all the results using all of its result handlers.
  *
- * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
- *            type of the component itself.
- * @param <O> Type of validation result.<br>It can be, for instance, an enumeration or just a boolean.
+ * @param <RI> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
+ *             type of the component itself.
+ * @param <RO> Type of validation result.<br>It can be, for instance, an enumeration or just a boolean.
  *
  * @see AbstractSimpleValidator
  * @see Trigger
@@ -48,8 +48,8 @@ import org.slf4j.LoggerFactory;
  * @see Rule
  * @see ResultHandler
  */
-public class DefaultSimpleValidator<D, O> extends AbstractSimpleValidator<Trigger, DataProvider<D>, D, Rule<D, O>, D,
-        O, ResultHandler<O>, O> {
+public class DefaultSimpleValidator<RI, RO> extends AbstractSimpleValidator<Trigger, DataProvider<RI>, RI, Rule<RI,
+        RO>, RI, RO, ResultHandler<RO>, RO> {
 
     /**
      * Logger for this class.
@@ -65,7 +65,7 @@ public class DefaultSimpleValidator<D, O> extends AbstractSimpleValidator<Trigge
             LOGGER.warn("No data providers in validator: " + this);
         } else {
             // Process data from all providers
-            for (final DataProvider<D> dataProvider : dataProviders) {
+            for (final DataProvider<RI> dataProvider : dataProviders) {
                 processData(dataProvider.getData());
             }
         }
@@ -76,9 +76,9 @@ public class DefaultSimpleValidator<D, O> extends AbstractSimpleValidator<Trigge
      *
      * @param data Data to be validated against all rules.
      */
-    protected void processData(final D data) {
+    protected void processData(final RI data) {
         // Check data against all rules
-        for (final Rule<D, O> rule : rules) {
+        for (final Rule<RI, RO> rule : rules) {
             processResult(rule.validate(data));
         }
     }
@@ -88,8 +88,8 @@ public class DefaultSimpleValidator<D, O> extends AbstractSimpleValidator<Trigge
      *
      * @param result Result to be processed by all result handlers.
      */
-    protected void processResult(final O result) {
-        for (final ResultHandler<O> resultHandler : resultHandlers) {
+    protected void processResult(final RO result) {
+        for (final ResultHandler<RO> resultHandler : resultHandlers) {
             resultHandler.handleResult(result);
         }
     }

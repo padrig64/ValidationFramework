@@ -23,22 +23,40 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.validationframework.base.rule;
+package com.github.validationframework.base.validator;
 
-import com.github.validationframework.base.transform.Aggregator;
-import com.github.validationframework.base.transform.Transformer;
-
-import java.util.Collection;
+import com.github.validationframework.base.transform.OrBooleanAggregator;
 
 /**
- * Rule making use of an {@link Aggregator} to produce the results.
+ * Simple validator using boolean results and aggregating all results from the rules into a single result using the OR
+ * operation.
+ *
+ * @param <PO> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
+ *             type of the component itself.
+ *
+ * @see ResultAggregationValidator
+ * @see OrBooleanAggregator
+ * @see AndValidatorResult
  */
-public class AggregatorRule<D, R> extends TransformerRule<Collection<D>, R> {
+public class OrValidatorResult<PO> extends ResultAggregationValidator<PO, Boolean, Boolean> {
 
     /**
-     * @see TransformerRule#TransformerRule(Transformer)
+     * Default constructor using the default constructor of {@link OrBooleanAggregator}.
+     *
+     * @see OrBooleanAggregator
      */
-    public AggregatorRule(final Aggregator<D, R> transformer) {
-        super(transformer);
+    public OrValidatorResult() {
+        super(new OrBooleanAggregator());
+    }
+
+    /**
+     * Constructor specifying the boolean values for empty and null collections, and null elements, to be used when
+     * aggregating the results from all the rules.
+     *
+     * @param emptyCollectionValue Value for empty and null collections of results.
+     * @param nullElementValue     Value for null elements in the transformed collections of results.
+     */
+    public OrValidatorResult(final boolean emptyCollectionValue, final boolean nullElementValue) {
+        super(new OrBooleanAggregator(emptyCollectionValue, nullElementValue));
     }
 }

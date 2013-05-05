@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, Patrick Moawad
+ * Copyright (c) 2013, Patrick Moawad
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,9 +41,9 @@ import java.util.List;
  * providers mapped to that trigger, check the data against the rules mapped to those data providers, and handles the
  * rule results using the result handlers that are mapped to those rules.
  *
- * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
- *            type of the component itself.
- * @param <O> Type of validation result.<br>It can be, for instance, an enumeration or just a boolean.
+ * @param <RI> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
+ *             type of the component itself.
+ * @param <RO> Type of validation result.<br>It can be, for instance, an enumeration or just a boolean.
  *
  * @see AbstractMappableValidator
  * @see Trigger
@@ -51,8 +51,8 @@ import java.util.List;
  * @see Rule
  * @see ResultHandler
  */
-public class DefaultMappableValidator<D, O> extends AbstractMappableValidator<Trigger, DataProvider<D>, D, Rule<D,
-        O>, D, O, ResultHandler<O>, O> {
+public class DefaultMappableValidator<RI, RO> extends AbstractMappableValidator<Trigger, DataProvider<RI>, RI,
+        Rule<RI, RO>, RI, RO, ResultHandler<RO>, RO> {
 
     /**
      * Logger for this class.
@@ -67,12 +67,12 @@ public class DefaultMappableValidator<D, O> extends AbstractMappableValidator<Tr
     @Override
     protected void processTrigger(final Trigger trigger) {
         // Get data providers matching the trigger
-        final List<DataProvider<D>> mappedDataProviders = triggersToDataProviders.get(trigger);
+        final List<DataProvider<RI>> mappedDataProviders = triggersToDataProviders.get(trigger);
         if ((mappedDataProviders == null) || mappedDataProviders.isEmpty()) {
             LOGGER.warn("No matching data provider in mappable validator for trigger: " + trigger);
         } else {
             // Process all matching data providers
-            for (final DataProvider<D> dataProvider : mappedDataProviders) {
+            for (final DataProvider<RI> dataProvider : mappedDataProviders) {
                 processDataProvider(dataProvider);
             }
         }
@@ -83,17 +83,17 @@ public class DefaultMappableValidator<D, O> extends AbstractMappableValidator<Tr
      *
      * @param dataProvider Data provider to be processed.
      */
-    private void processDataProvider(final DataProvider<D> dataProvider) {
+    private void processDataProvider(final DataProvider<RI> dataProvider) {
         // Get rules matching the data provider
-        final List<Rule<D, O>> mappedRules = dataProvidersToRules.get(dataProvider);
+        final List<Rule<RI, RO>> mappedRules = dataProvidersToRules.get(dataProvider);
         if ((mappedRules == null) || mappedRules.isEmpty()) {
             LOGGER.warn("No matching rule in mappable validator for data provider: " + dataProvider);
         } else {
             // Get data to be validated
-            final D data = dataProvider.getData();
+            final RI data = dataProvider.getData();
 
             // Process all matching rules
-            for (final Rule<D, O> rule : mappedRules) {
+            for (final Rule<RI, RO> rule : mappedRules) {
                 processRule(rule, data);
             }
         }
@@ -107,17 +107,17 @@ public class DefaultMappableValidator<D, O> extends AbstractMappableValidator<Tr
      * @param rule Rule to be processed.
      * @param data Data to be checked against the rule.
      */
-    private void processRule(final Rule<D, O> rule, final D data) {
+    private void processRule(final Rule<RI, RO> rule, final RI data) {
         // Get result handlers matching the rule
-        final List<ResultHandler<O>> mappedResultHandlers = rulesToResultHandlers.get(rule);
+        final List<ResultHandler<RO>> mappedResultHandlers = rulesToResultHandlers.get(rule);
         if ((mappedResultHandlers == null) || mappedResultHandlers.isEmpty()) {
             LOGGER.warn("No matching result handler in mappable validator for rule: " + rule);
         } else {
             // Check rule
-            final O result = rule.validate(data);
+            final RO result = rule.validate(data);
 
             // Process result with all matching result handlers
-            for (final ResultHandler<O> resultHandler : mappedResultHandlers) {
+            for (final ResultHandler<RO> resultHandler : mappedResultHandlers) {
                 processResultHandler(resultHandler, result);
             }
         }
@@ -129,7 +129,7 @@ public class DefaultMappableValidator<D, O> extends AbstractMappableValidator<Tr
      * @param resultHandler Result handler to be used to process the result.
      * @param result        Result to be processed by the result handler.
      */
-    private void processResultHandler(final ResultHandler<O> resultHandler, final O result) {
+    private void processResultHandler(final ResultHandler<RO> resultHandler, final RO result) {
         resultHandler.handleResult(result);
     }
 }

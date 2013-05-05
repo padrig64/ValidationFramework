@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, Patrick Moawad
+ * Copyright (c) 2013, Patrick Moawad
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -55,7 +55,7 @@ public class OrBooleanAggregator implements Aggregator<Boolean, Boolean> {
     private final boolean nullElementValid;
 
     /**
-     * Default constructor using values for empty and null collections, and null elements.
+     * Default constructor using default boolean values for empty and null collections, and null elements.
      *
      * @see #DEFAULT_EMPTY_COLLECTION_VALUE
      * @see #DEFAULT_NULL_ELEMENT_VALUE

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, Patrick Moawad
+ * Copyright (c) 2013, Patrick Moawad
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,16 +41,16 @@ import com.github.validationframework.api.trigger.Trigger;
  * data providers to rules, and rules to result handlers.<br>It can be used, for example, to build validation of a group
  * of components.
  *
- * @param <T> Type of trigger initiating the validation.
- * @param <P> Type of data provider providing the input data to be validated.
- * @param <I> Type of data provided by the data providers.
- * @param <R> Type of validation rules to be used on the input data.
- * @param <D> Type of data the rules will check.
- * @param <O> Type of result the rules will produce.
- * @param <H> Type of result handlers to be used on validation output.
- * @param <A> Type of result the result handlers will handler.<br>It may or may not be the same as O depending on the
- *            implementations.<br>For instance, an implementation could aggregate/transform the results before using the
- *            result handlers.
+ * @param <T>  Type of trigger initiating the validation.
+ * @param <P>  Type of data provider providing the input data to be validated.
+ * @param <PO> Type of data provided by the data providers.
+ * @param <R>  Type of validation rules to be used on the input data.
+ * @param <RI> Type of data the rules will check.
+ * @param <RO> Type of result the rules will produce.
+ * @param <H>  Type of result handlers to be used on validation output.
+ * @param <HI> Type of result the result handlers will handler.<br>It may or may not be the same as {@link RO}
+ *             depending on the implementations.<br>For instance, an implementation could aggregate/transform the
+ *             results before using the result handlers.
  *
  * @see Trigger
  * @see DataProvider
@@ -58,19 +58,16 @@ import com.github.validationframework.api.trigger.Trigger;
  * @see ResultHandler
  * @see SimpleValidator
  */
-public interface MappableValidator<T extends Trigger, P extends DataProvider<I>, I, R extends Rule<D, O>, D, O,
-        H extends ResultHandler<A>, A> {
+public interface MappableValidator<T extends Trigger, P extends DataProvider<PO>, PO, R extends Rule<RI, RO>, RI, RO,
+        H extends ResultHandler<HI>, HI> {
 
     /**
      * Maps the specified trigger to the specified data provider.<br>This means that whenever the specified trigger is
      * initiated, the specified data provider will be use to read the data, which will be passed to the rules that are
      * mapped to the this data provider.<br>Specifying null for the trigger will unmap the specified data provider
-     * from all
-     * triggers. This means that the specified data provider will no longer be used upon any trigger.<br>Specifying
-     * null
-     * for the data provider will unmap the specified trigger from all data providers. This means that the trigger
-     * will no
-     * longer have effect on the validation.
+     * from all triggers. This means that the specified data provider will no longer be used upon any
+     * trigger.<br>Specifying null for the data provider will unmap the specified trigger from all data providers.
+     * This means that the trigger will no longer have effect on the validation.
      *
      * @param trigger      Trigger to be mapped to the data provider.
      * @param dataProvider Data provider to be mapped to the trigger.
@@ -78,17 +75,12 @@ public interface MappableValidator<T extends Trigger, P extends DataProvider<I>,
     public void mapTriggerToDataProvider(final T trigger, final P dataProvider);
 
     /**
-     * Maps the specified data provider to the specified rule.<br>This means that whenever the specified data
-     * provider is
-     * used, the specified rule will be used to validate the data, and the validation result will be passed to the
-     * result
-     * handlers that are mapped to this rule.<br>Specifying null for the data provider will unmap the specified rule
-     * from
-     * all data providers. This means that the rule will no longer be part of the validation.<br>Specifying null for
-     * the
-     * rule will unmap the specified data provider from all rules. This means that the data from this data provider
-     * will no
-     * longer be validated.
+     * Maps the specified data provider to the specified rule.<br>This means that whenever the specified data provider
+     * is used, the specified rule will be used to validate the data, and the validation result will be passed to the
+     * result handlers that are mapped to this rule.<br>Specifying null for the data provider will unmap the
+     * specified rule from all data providers. This means that the rule will no longer be part of the
+     * validation.<br>Specifying null for the rule will unmap the specified data provider from all rules. This means
+     * that the data from this data provider will no longer be validated.
      *
      * @param dataProvider Data provider to be mapped to the rule.
      * @param rule         Rule to be mapped to the data provider.
@@ -97,13 +89,10 @@ public interface MappableValidator<T extends Trigger, P extends DataProvider<I>,
 
     /**
      * Maps the specified rule to the specified result handler.<br>This means that whenever the specified rule is
-     * used, the
-     * specified result handler will be used to process its result.<br>Specifying null for the rule will unmap the
-     * specified result handlers from all rules, This means that the result handler will no longer be used to process
-     * any
-     * result.<br>Specifying null for the result handler will unmap the specified rule from all result handlers. This
-     * means
-     * that the rule will no longer be processed.
+     * used, the specified result handler will be used to process its result.<br>Specifying null for the rule will
+     * unmap the specified result handlers from all rules, This means that the result handler will no longer be used
+     * to process any result.<br>Specifying null for the result handler will unmap the specified rule from all result
+     * handlers. This means that the rule will no longer be processed.
      *
      * @param rule          Rule to be mapped to the result handler.
      * @param resultHandler Result handler to be mapped to the rule.

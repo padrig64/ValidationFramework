@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, Patrick Moawad
+ * Copyright (c) 2013, Patrick Moawad
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,16 +40,16 @@ import com.github.validationframework.api.trigger.Trigger;
  * example, a popup dialog, an error icon, etc.).<br>A simple validator allows to add and remove triggers, data
  * providers, rules and result handlers.
  *
- * @param <T> Type of trigger initiating the validation.
- * @param <P> Type of data provider providing the input data to be validated.
- * @param <I> Type of data provided by the data providers.
- * @param <R> Type of validation rules to be used on the input data.
- * @param <D> Type of data the rules will check.
- * @param <O> Type of result the rules will produce.
- * @param <H> Type of result handlers to be used on validation output.
- * @param <A> Type of result the result handlers will handler.<br>It may or may not be the same as O depending on the
- *            implementations.<br>For instance, an implementation could aggregate/transform the results before using the
- *            result handlers.
+ * @param <T>  Type of trigger initiating the validation.
+ * @param <P>  Type of data provider providing the input data to be validated.
+ * @param <PO> Type of data provided by the data providers.
+ * @param <R>  Type of validation rules to be used on the input data.
+ * @param <RI> Type of data the rules will check.
+ * @param <RO> Type of result the rules will produce.
+ * @param <H>  Type of result handlers to be used on validation output.
+ * @param <HI> Type of result the result handlers will handler.<br>It may or may not be the same as {@link RO}
+ *             depending on the implementations.<br>For instance, an implementation could aggregate/transform the
+ *             results before using the result handlers.
  *
  * @see Trigger
  * @see DataProvider
@@ -57,8 +57,8 @@ import com.github.validationframework.api.trigger.Trigger;
  * @see ResultHandler
  * @see MappableValidator
  */
-public interface SimpleValidator<T extends Trigger, P extends DataProvider<I>, I, R extends Rule<D, O>, D, O,
-        H extends ResultHandler<A>, A> {
+public interface SimpleValidator<T extends Trigger, P extends DataProvider<PO>, PO, R extends Rule<RI, RO>, RI, RO,
+        H extends ResultHandler<HI>, HI> {
 
     /**
      * Adds the specified validation trigger.
