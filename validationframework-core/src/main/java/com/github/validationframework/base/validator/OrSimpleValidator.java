@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, Patrick Moawad
+ * Copyright (c) 2013, Patrick Moawad
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,42 +25,38 @@
 
 package com.github.validationframework.base.validator;
 
-import com.github.validationframework.api.rule.Rule;
+import com.github.validationframework.base.transform.OrBooleanAggregator;
 
 /**
  * Simple validator using boolean results and aggregating all results from the rules into a single result using the OR
  * operation.
  *
- * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
- *            type of the component itself.
+ * @param <PO> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
+ *             type of the component itself.
  *
- * @see DefaultSimpleValidator
+ * @see ResultAggregationValidator
+ * @see OrBooleanAggregator
  * @see AndSimpleValidator
  */
-public class OrSimpleValidator<D> extends DefaultSimpleValidator<D, Boolean> {
+public class OrSimpleValidator<PO> extends ResultAggregationValidator<PO, Boolean, Boolean> {
 
     /**
-     * Checks the specified data against all the rules and aggregates all the boolean results to one single result using
-     * the OR operation.<br>If there are no rules, the default result will be false.
+     * Default constructor using the default constructor of {@link OrBooleanAggregator}.
      *
-     * @param data Data to be validated against all rules.
-     *
-     * @see DefaultSimpleValidator#processData(Object)
+     * @see OrBooleanAggregator
      */
-    @Override
-    protected void processData(final D data) {
-        boolean aggregatedResult = false;
+    public OrSimpleValidator() {
+        super(new OrBooleanAggregator());
+    }
 
-        // Check data against all rules
-        for (final Rule<D, Boolean> rule : rules) {
-            Boolean result = rule.validate(data);
-            if (result == null) {
-                result = false;
-            }
-            aggregatedResult |= result;
-        }
-
-        // Process overall result
-        processResult(aggregatedResult);
+    /**
+     * Constructor specifying the boolean values for empty and null collections, and null elements, to be used when
+     * aggregating the results from all the rules.
+     *
+     * @param emptyCollectionValue Value for empty and null collections of results.
+     * @param nullElementValue     Value for null elements in the transformed collections of results.
+     */
+    public OrSimpleValidator(final boolean emptyCollectionValue, final boolean nullElementValue) {
+        super(new OrBooleanAggregator(emptyCollectionValue, nullElementValue));
     }
 }

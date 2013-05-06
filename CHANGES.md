@@ -2,7 +2,7 @@
 
 * Made validationframework-core, validationframework-swing and validationframework-experimental OSGI-compliant
 * Extracted demo files validationframework-experimental to reduce dependencies
-* Introduced the experimental ResultAggregationValidator
+* Introduced the ResultAggregationValidator that will be soon used in builders
 
 # Version 1.1.0
 
