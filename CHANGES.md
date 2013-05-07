@@ -1,4 +1,8 @@
-# Version 1.1.1 (to be released)
+# Version 1.1.2 (to be released)
+
+* TODO
+
+# Version 1.1.1
 
 * Made validationframework-core, validationframework-swing and validationframework-experimental OSGI-compliant
 * Extracted demo files validationframework-experimental to reduce dependencies
