@@ -61,17 +61,15 @@ public class Anchor {
 
     /**
      * Relative position in percentage relatively to the origin and length on the X axis.<br>For instance,
-     * on a component
-     * whose bounds are defined by the rectangle [X,Y,W,H], a value of 0.0f would represent X, and a value of 1.0f would
-     * represent X+W.
+     * on a component whose bounds are defined by the rectangle [X,Y,W,H], a value of 0.0f would represent X,
+     * and a value of 1.0f would represent X+W.
      */
     private final float relativeX;
 
     /**
      * Relative position in percentage relatively to the origin and length on the Y axis.<br>For instance,
-     * on a component
-     * whose bounds are defined by the rectangle [X,Y,W,H], a value of 0.0f would represent Y, and a value of 1.0f would
-     * represent Y+H.
+     * on a component whose bounds are defined by the rectangle [X,Y,W,H], a value of 0.0f would represent Y,
+     * and a value of 1.0f would represent Y+H.
      */
     private final float relativeY;
 
@@ -127,18 +125,30 @@ public class Anchor {
         this.offsetY = offsetY;
     }
 
+    /**
+     * Gets the relative position in percentage relatively to the origin and length on the X axis.
+     */
     public float getRelativeX() {
         return relativeX;
     }
 
+    /**
+     * Gets the relative position in percentage relatively to the origin and length on the Y axis.
+     */
     public float getRelativeY() {
         return relativeY;
     }
 
+    /**
+     * Gets the offset in pixels on the X axis, relatively to {@link #relativeX}.
+     */
     public int getOffsetX() {
         return offsetX;
     }
 
+    /**
+     * Gets the offset in pixels on the Y axis, relatively to {@link #relativeY}.
+     */
     public int getOffsetY() {
         return offsetY;
     }

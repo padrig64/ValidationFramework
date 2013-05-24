@@ -35,43 +35,110 @@ import java.awt.Point;
  */
 public class AnchorLink {
 
+    /**
+     * Anchor to which the other anchor will slaved.
+     */
     private Anchor masterAnchor;
+
+    /**
+     * Anchor that will be slaved to the master anchor.
+     */
     private Anchor slaveAnchor;
 
+    /**
+     * Constructor specifying the anchor link to get the master and slave anchors from.
+     *
+     * @param anchorLink Anchor link to get the master and slave anchors from.
+     */
     public AnchorLink(final AnchorLink anchorLink) {
         this(new Anchor(anchorLink.getMasterAnchor()), new Anchor(anchorLink.getSlaveAnchor()));
     }
 
+    /**
+     * Constructor specifying the master and slave anchors.
+     *
+     * @param masterAnchor Master anchor.
+     * @param slaveAnchor  Slave anchor.
+     */
     public AnchorLink(final Anchor masterAnchor, final Anchor slaveAnchor) {
         this.masterAnchor = masterAnchor;
         this.slaveAnchor = slaveAnchor;
     }
 
+    /**
+     * Gets the master anchor.
+     *
+     * @return Master anchor.
+     */
     public Anchor getMasterAnchor() {
         return masterAnchor;
     }
 
+    /**
+     * Sets the master anchor.
+     *
+     * @param masterAnchor Master anchor.
+     */
     public void setMasterAnchor(final Anchor masterAnchor) {
         this.masterAnchor = masterAnchor;
     }
 
+    /**
+     * Gets the slave anchor.
+     *
+     * @return Slave anchor.
+     */
     public Anchor getSlaveAnchor() {
         return slaveAnchor;
     }
 
+    /**
+     * Sets the slave anchor.
+     *
+     * @param slaveAnchor Slave anchor.
+     */
     public void setSlaveAnchor(final Anchor slaveAnchor) {
         this.slaveAnchor = slaveAnchor;
     }
 
+    /**
+     * Computes the location of the specified component that is slaved to the specified master component using this
+     * anchor link.
+     *
+     * @param masterComponent Master component to which the other component is slaved.
+     * @param slaveComponent  Slave component that is slaved to the master component.
+     *
+     * @return Location where the slave component should be.
+     */
     public Point getRelativeSlaveLocation(final Component masterComponent, final Component slaveComponent) {
         return getRelativeSlaveLocation(masterComponent.getWidth(), masterComponent.getHeight(),
                 slaveComponent.getWidth(), slaveComponent.getHeight());
     }
 
+    /**
+     * Computes the location of the slave component (whose size is specified) that is slaved to the master component
+     * (whose size is specified) using this anchor link.
+     *
+     * @param masterSize Size of the master component to which the other component is slaved.
+     * @param slaveSize  Size of the slave component that is slaved to the master component.
+     *
+     * @return Location where the slave component should be.
+     */
     public Point getRelativeSlaveLocation(final Dimension masterSize, final Dimension slaveSize) {
         return getRelativeSlaveLocation(masterSize.width, masterSize.height, slaveSize.width, slaveSize.height);
     }
 
+    /**
+     * Computes the location of the slave component (whose size is specified) that is slaved to the master component
+     * (whose size is specified) using this anchor link.
+     *
+     * @param masterWidth  Width of the master component to which the other component is slaved.
+     * @param masterHeight Height of the master component to which the other component is slaved.
+     * @param slaveWidth   Width of the slave component that is slaved to the master component.
+     * @param slaveHeight  Height of the slave component that is slaved to the master component.
+     *
+     * @return Location where the slave component should be.
+     */
     public Point getRelativeSlaveLocation(final int masterWidth, final int masterHeight, final int slaveWidth,
                                           final int slaveHeight) {
         final Point masterAnchorPoint = masterAnchor.getAnchorPoint(masterWidth, masterHeight);
