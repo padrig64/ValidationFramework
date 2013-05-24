@@ -28,6 +28,7 @@ package com.github.validationframework.base.dataprovider;
 import com.github.validationframework.api.dataprovider.DataProvider;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -43,6 +44,39 @@ public class ListCompositeDataProvider<D> implements DataProvider<List<D>> {
      * Sub-data providers
      */
     protected final List<DataProvider<D>> dataProviders = new ArrayList<DataProvider<D>>();
+
+    /**
+     * Default constructor.
+     */
+    public ListCompositeDataProvider() {
+        // Nothing to be done
+    }
+
+    /**
+     * Constructor specifying the first data providers to be added.
+     *
+     * @param dataProviders First data providers to be added.
+     */
+    public ListCompositeDataProvider(final DataProvider<D>... dataProviders) {
+        if (dataProviders != null) {
+            for (final DataProvider<D> dataProvider : dataProviders) {
+                addDataProvider(dataProvider);
+            }
+        }
+    }
+
+    /**
+     * Constructor specifying the first data providers to be added.
+     *
+     * @param dataProviders First data providers to be added.
+     */
+    public ListCompositeDataProvider(final Collection<DataProvider<D>> dataProviders) {
+        if (dataProviders != null) {
+            for (final DataProvider<D> dataProvider : dataProviders) {
+                addDataProvider(dataProvider);
+            }
+        }
+    }
 
     /**
      * Adds the specified data provider
