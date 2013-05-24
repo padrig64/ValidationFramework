@@ -31,14 +31,14 @@ import com.github.validationframework.base.transform.AndBooleanAggregator;
  * Simple validator using boolean results and aggregating all results from the rules into a single result using the AND
  * operation.
  *
- * @param <PO> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
+ * @param <RI> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
  *             type of the component itself.
  *
  * @see ResultAggregationValidator
  * @see AndBooleanAggregator
  * @see OrSimpleValidator
  */
-public class AndSimpleValidator<PO> extends ResultAggregationValidator<PO, Boolean, Boolean> {
+public class AndSimpleValidator<RI> extends ResultAggregationValidator<RI, Boolean, Boolean> {
 
     /**
      * Default constructor using the default constructor of {@link AndBooleanAggregator}.
