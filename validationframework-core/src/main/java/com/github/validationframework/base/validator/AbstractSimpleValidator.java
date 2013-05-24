@@ -44,16 +44,16 @@ import java.util.Map;
  * providers, rules and result handlers. However, the use the connection between triggers, data providers, rules and
  * result handlers, as well as all the validation logic is left to the sub-classes.
  *
- * @param <T>  Type of trigger initiating the validation.
- * @param <P>  Type of data provider providing the input data to be validated.
- * @param <PO> Type of data provided by the data providers.
- * @param <R>  Type of validation rules to be used on the input data.
- * @param <RI> Type of data the rules will check.
- * @param <RO> Type of result the rules will produce.
- * @param <H>  Type of result handlers to be used on validation output.
- * @param <HI> Type of result the result handlers will handler.<br>It may or may not be the same as {@link RO}
- *             depending on the implementations.<br>For instance, an implementation could aggregate/transform the
- *             results before using the result handlers.
+ * @param <T>   Type of trigger initiating the validation.
+ * @param <DP>  Type of data provider providing the input data to be validated.
+ * @param <DPO> Type of data provided by the data providers.
+ * @param <R>   Type of validation rules to be used on the input data.
+ * @param <RI>  Type of data the rules will check.
+ * @param <RO>  Type of result the rules will produce.
+ * @param <RH>  Type of result handlers to be used on validation output.
+ * @param <RHI> Type of result the result handlers will handler.<br>It may or may not be the same as {@link RO}
+ *              depending on the implementations.<br>For instance, an implementation could aggregate/transform the
+ *              results before using the result handlers.
  *
  * @see Trigger
  * @see DataProvider
@@ -61,9 +61,9 @@ import java.util.Map;
  * @see ResultHandler
  * @see Disposable
  */
-public abstract class AbstractSimpleValidator<T extends Trigger, P extends DataProvider<PO>, PO, R extends Rule<RI,
-        RO>, RI, RO, H extends ResultHandler<HI>, HI> implements SimpleValidator<T, P, PO, R, RI, RO, H, HI>,
-        Disposable {
+public abstract class AbstractSimpleValidator<T extends Trigger, DP extends DataProvider<DPO>, DPO,
+        R extends Rule<RI, RO>, RI, RO, RH extends ResultHandler<RHI>, RHI> implements SimpleValidator<T, DP, DPO, R,
+        RI, RO, RH, RHI>, Disposable {
 
     /**
      * Listener to all registered triggers, initiating the validation logic.
@@ -107,7 +107,7 @@ public abstract class AbstractSimpleValidator<T extends Trigger, P extends DataP
     /**
      * Registered validation data providers.
      */
-    protected final List<P> dataProviders = new ArrayList<P>();
+    protected final List<DP> dataProviders = new ArrayList<DP>();
 
     /**
      * Registered validation rules.
@@ -117,7 +117,7 @@ public abstract class AbstractSimpleValidator<T extends Trigger, P extends DataP
     /**
      * Registered validation result handlers.
      */
-    protected final List<H> resultHandlers = new ArrayList<H>();
+    protected final List<RH> resultHandlers = new ArrayList<RH>();
 
     /**
      * @see SimpleValidator#addTrigger(Trigger)
@@ -156,7 +156,7 @@ public abstract class AbstractSimpleValidator<T extends Trigger, P extends DataP
      * @see SimpleValidator#addDataProvider(DataProvider)
      */
     @Override
-    public void addDataProvider(final P dataProvider) {
+    public void addDataProvider(final DP dataProvider) {
         dataProviders.add(dataProvider);
     }
 
@@ -164,7 +164,7 @@ public abstract class AbstractSimpleValidator<T extends Trigger, P extends DataP
      * @see SimpleValidator#removeDataProvider(DataProvider)
      */
     @Override
-    public void removeDataProvider(final P dataProvider) {
+    public void removeDataProvider(final DP dataProvider) {
         dataProviders.remove(dataProvider);
     }
 
@@ -188,7 +188,7 @@ public abstract class AbstractSimpleValidator<T extends Trigger, P extends DataP
      * @see SimpleValidator#addResultHandler(ResultHandler)
      */
     @Override
-    public void addResultHandler(final H resultHandler) {
+    public void addResultHandler(final RH resultHandler) {
         resultHandlers.add(resultHandler);
     }
 
@@ -196,7 +196,7 @@ public abstract class AbstractSimpleValidator<T extends Trigger, P extends DataP
      * @see SimpleValidator#removeResultHandler(ResultHandler)
      */
     @Override
-    public void removeResultHandler(final H resultHandler) {
+    public void removeResultHandler(final RH resultHandler) {
         resultHandlers.remove(resultHandler);
     }
 
@@ -238,7 +238,7 @@ public abstract class AbstractSimpleValidator<T extends Trigger, P extends DataP
      */
     private void disposeDataProviders() {
         // Browse through all data providers
-        for (final P dataProvider : dataProviders) {
+        for (final DP dataProvider : dataProviders) {
             // Dispose data provider itself
             if (dataProvider instanceof Disposable) {
                 ((Disposable) dataProvider).dispose();
@@ -270,7 +270,7 @@ public abstract class AbstractSimpleValidator<T extends Trigger, P extends DataP
      */
     private void disposeResultHandlers() {
         // Browse through all rules
-        for (final H resultHandler : resultHandlers) {
+        for (final RH resultHandler : resultHandlers) {
             // Dispose rule itself
             if (resultHandler instanceof Disposable) {
                 ((Disposable) resultHandler).dispose();

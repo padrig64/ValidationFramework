@@ -48,7 +48,7 @@ import java.awt.event.ComponentListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-public abstract class AbstractCellIconFeedback<O> extends AbstractIconFeedback<O> {
+public abstract class AbstractCellIconFeedback<RHI> extends AbstractIconFeedback<RHI> {
 
     /**
      * Entity responsible of tracking the location of the cell to which a feedback decoration is attached.

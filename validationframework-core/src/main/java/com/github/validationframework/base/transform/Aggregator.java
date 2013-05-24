@@ -30,9 +30,9 @@ import java.util.Collection;
 /**
  * Convenience interface that can be implemented by transformers aggregating a collection of input data.
  *
- * @param <I> Type of the input object to be transformed.
+ * @param <E> Type of the element object to be aggregated.
  * @param <O> Type of the output object after aggregation.
  */
-public interface Aggregator<I, O> extends Transformer<Collection<I>, O> {
+public interface Aggregator<E, O> extends Transformer<Collection<E>, O> {
     // Nothing to be done
 }

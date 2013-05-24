@@ -52,17 +52,17 @@ import java.util.Collection;
  * @see Rule
  * @see ResultHandler
  */
-public class ResultAggregationValidator<RI, RO, HI> extends AbstractSimpleValidator<Trigger, DataProvider<RI>, RI,
-        Rule<RI, RO>, RI, RO, ResultHandler<HI>, HI> {
+public class ResultAggregationValidator<RI, RO, RHI> extends AbstractSimpleValidator<Trigger, DataProvider<RI>, RI,
+        Rule<RI, RO>, RI, RO, ResultHandler<RHI>, RHI> {
 
     /**
      * Logger for this class.
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(ResultAggregationValidator.class);
 
-    private Aggregator<RO, HI> resultAggregator = null;
+    private Aggregator<RO, RHI> resultAggregator = null;
 
-    public ResultAggregationValidator(final Aggregator<RO, HI> resultAggregator) {
+    public ResultAggregationValidator(final Aggregator<RO, RHI> resultAggregator) {
         this.resultAggregator = resultAggregator;
     }
 
@@ -94,7 +94,7 @@ public class ResultAggregationValidator<RI, RO, HI> extends AbstractSimpleValida
         }
 
         // Aggregate all results and process the output
-        final HI aggregatedResult = resultAggregator.transform(results);
+        final RHI aggregatedResult = resultAggregator.transform(results);
         processResult(aggregatedResult);
     }
 
@@ -103,9 +103,9 @@ public class ResultAggregationValidator<RI, RO, HI> extends AbstractSimpleValida
      *
      * @param aggregatedResult Aggregated result to be processed by all result handlers.
      */
-    protected void processResult(final HI aggregatedResult) {
+    protected void processResult(final RHI aggregatedResult) {
         // Process the result with all result handlers
-        for (final ResultHandler<HI> resultHandler : resultHandlers) {
+        for (final ResultHandler<RHI> resultHandler : resultHandlers) {
             resultHandler.handleResult(aggregatedResult);
         }
     }

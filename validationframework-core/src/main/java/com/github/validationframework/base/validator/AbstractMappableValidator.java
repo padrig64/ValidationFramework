@@ -46,16 +46,16 @@ import java.util.Map;
  * providers, data providers to rules, and rules to result handlers. However, the use triggers, data providers, rules
  * and result handlers, as well as all the validation logic is left to the sub-classes.
  *
- * @param <T>  Type of trigger initiating the validation.
- * @param <P>  Type of data provider providing the input data to be validated.
- * @param <PO> Type of data provided by the data providers.
- * @param <R>  Type of validation rules to be used on the input data.
- * @param <RI> Type of data the rules will check.
- * @param <RO> Type of result the rules will produce.
- * @param <H>  Type of result handlers to be used on validation output.
- * @param <HI> Type of result the result handlers will handler.<br>It may or may not be the same as {@link RO}
- *             depending on the implementations.<br>For instance, an implementation could aggregate/transform the
- *             results before using the result handlers.
+ * @param <T>   Type of trigger initiating the validation.
+ * @param <DP>  Type of data provider providing the input data to be validated.
+ * @param <DPO> Type of data provided by the data providers.
+ * @param <R>   Type of validation rules to be used on the input data.
+ * @param <RI>  Type of data the rules will check.
+ * @param <RO>  Type of result the rules will produce.
+ * @param <RH>  Type of result handlers to be used on validation output.
+ * @param <RHI> Type of result the result handlers will handler.<br>It may or may not be the same as {@link RO}
+ *              depending on the implementations.<br>For instance, an implementation could aggregate/transform the
+ *              results before using the result handlers.
  *
  * @see Trigger
  * @see DataProvider
@@ -63,9 +63,9 @@ import java.util.Map;
  * @see ResultHandler
  * @see Disposable
  */
-public abstract class AbstractMappableValidator<T extends Trigger, P extends DataProvider<PO>, PO, R extends Rule<RI,
-        RO>, RI, RO, H extends ResultHandler<HI>, HI> implements MappableValidator<T, P, PO, R, RI, RO, H, HI>,
-        Disposable {
+public abstract class AbstractMappableValidator<T extends Trigger, DP extends DataProvider<DPO>, DPO,
+        R extends Rule<RI, RO>, RI, RO, RH extends ResultHandler<RHI>, RHI> implements MappableValidator<T, DP, DPO,
+        R, RI, RO, RH, RHI>, Disposable {
 
     /**
      * Listener to all registered triggers, initiating the validation logic.
@@ -115,17 +115,17 @@ public abstract class AbstractMappableValidator<T extends Trigger, P extends Dat
     /**
      * Mapping between triggers and data providers.
      */
-    protected final Map<T, List<P>> triggersToDataProviders = new HashMap<T, List<P>>();
+    protected final Map<T, List<DP>> triggersToDataProviders = new HashMap<T, List<DP>>();
 
     /**
      * Mapping between data providers and rules.
      */
-    protected final Map<P, List<R>> dataProvidersToRules = new HashMap<P, List<R>>();
+    protected final Map<DP, List<R>> dataProvidersToRules = new HashMap<DP, List<R>>();
 
     /**
      * Mapping between rules and result handlers.
      */
-    protected final Map<R, List<H>> rulesToResultHandlers = new HashMap<R, List<H>>();
+    protected final Map<R, List<RH>> rulesToResultHandlers = new HashMap<R, List<RH>>();
 
     /**
      * Registers a trigger listener to start the validation flow.<br>If a trigger listener was already previously
@@ -163,7 +163,7 @@ public abstract class AbstractMappableValidator<T extends Trigger, P extends Dat
      * @see MappableValidator#mapTriggerToDataProvider(Trigger, DataProvider)
      */
     @Override
-    public void mapTriggerToDataProvider(final T trigger, final P dataProvider) {
+    public void mapTriggerToDataProvider(final T trigger, final DP dataProvider) {
         if ((trigger == null) && (dataProvider == null)) {
             LOGGER.warn(NULL_PARAMETERS_WARNING);
         } else if (trigger == null) {
@@ -175,9 +175,9 @@ public abstract class AbstractMappableValidator<T extends Trigger, P extends Dat
             hookToTrigger(trigger);
 
             // Do the mapping
-            List<P> mappedDataProviders = triggersToDataProviders.get(trigger);
+            List<DP> mappedDataProviders = triggersToDataProviders.get(trigger);
             if (mappedDataProviders == null) {
-                mappedDataProviders = new ArrayList<P>();
+                mappedDataProviders = new ArrayList<DP>();
                 triggersToDataProviders.put(trigger, mappedDataProviders);
             }
             mappedDataProviders.add(dataProvider);
@@ -201,9 +201,9 @@ public abstract class AbstractMappableValidator<T extends Trigger, P extends Dat
      *
      * @param dataProvider Data provider to be unmapped.
      */
-    private void unmapDataProviderFromAllTriggers(final P dataProvider) {
+    private void unmapDataProviderFromAllTriggers(final DP dataProvider) {
         if (dataProvider != null) {
-            for (final List<P> mappedDataProviders : triggersToDataProviders.values()) {
+            for (final List<DP> mappedDataProviders : triggersToDataProviders.values()) {
                 mappedDataProviders.remove(dataProvider);
             }
         }
@@ -213,7 +213,7 @@ public abstract class AbstractMappableValidator<T extends Trigger, P extends Dat
      * @see MappableValidator#mapDataProviderToRule(DataProvider, Rule)
      */
     @Override
-    public void mapDataProviderToRule(final P dataProvider, final R rule) {
+    public void mapDataProviderToRule(final DP dataProvider, final R rule) {
         if ((dataProvider == null) && (rule == null)) {
             LOGGER.warn(NULL_PARAMETERS_WARNING);
         } else if (dataProvider == null) {
@@ -235,7 +235,7 @@ public abstract class AbstractMappableValidator<T extends Trigger, P extends Dat
      *
      * @param dataProvider Data provider to be unmapped.
      */
-    private void unmapDataProviderFromAllRules(final P dataProvider) {
+    private void unmapDataProviderFromAllRules(final DP dataProvider) {
         if (dataProvider != null) {
             dataProvidersToRules.remove(dataProvider);
         }
@@ -258,7 +258,7 @@ public abstract class AbstractMappableValidator<T extends Trigger, P extends Dat
      * @see MappableValidator#mapRuleToResultHandler(Rule, ResultHandler)
      */
     @Override
-    public void mapRuleToResultHandler(final R rule, final H resultHandler) {
+    public void mapRuleToResultHandler(final R rule, final RH resultHandler) {
         if ((rule == null) && (resultHandler == null)) {
             LOGGER.warn(NULL_PARAMETERS_WARNING);
         } else if (rule == null) {
@@ -266,9 +266,9 @@ public abstract class AbstractMappableValidator<T extends Trigger, P extends Dat
         } else if (resultHandler == null) {
             unmapRuleFromAllResultHandlers(rule);
         } else {
-            List<H> mappedResultHandlers = rulesToResultHandlers.get(rule);
+            List<RH> mappedResultHandlers = rulesToResultHandlers.get(rule);
             if (mappedResultHandlers == null) {
-                mappedResultHandlers = new ArrayList<H>();
+                mappedResultHandlers = new ArrayList<RH>();
                 rulesToResultHandlers.put(rule, mappedResultHandlers);
             }
             mappedResultHandlers.add(resultHandler);
@@ -291,9 +291,9 @@ public abstract class AbstractMappableValidator<T extends Trigger, P extends Dat
      *
      * @param resultHandler Result handler to be unmapped.
      */
-    private void unmapResultHandlerFromAllRules(final H resultHandler) {
+    private void unmapResultHandlerFromAllRules(final RH resultHandler) {
         if (resultHandler != null) {
-            for (final List<H> mappedResultHandlers : rulesToResultHandlers.values()) {
+            for (final List<RH> mappedResultHandlers : rulesToResultHandlers.values()) {
                 mappedResultHandlers.remove(resultHandler);
             }
         }
@@ -313,7 +313,7 @@ public abstract class AbstractMappableValidator<T extends Trigger, P extends Dat
      * Disposes all triggers and data providers that are mapped to each other.
      */
     private void disposeTriggersAndDataProviders() {
-        for (final Map.Entry<T, List<P>> entry : triggersToDataProviders.entrySet()) {
+        for (final Map.Entry<T, List<DP>> entry : triggersToDataProviders.entrySet()) {
             // Disconnect from trigger
             unhookFromTrigger(entry.getKey());
 
@@ -324,9 +324,9 @@ public abstract class AbstractMappableValidator<T extends Trigger, P extends Dat
             }
 
             // Dispose data providers
-            final List<P> dataProviders = entry.getValue();
+            final List<DP> dataProviders = entry.getValue();
             if (dataProviders != null) {
-                for (final P dataProvider : dataProviders) {
+                for (final DP dataProvider : dataProviders) {
                     if (dataProvider instanceof Disposable) {
                         ((Disposable) dataProvider).dispose();
                     }
@@ -344,9 +344,9 @@ public abstract class AbstractMappableValidator<T extends Trigger, P extends Dat
      * disposed already in the other disposal methods.
      */
     private void disposeDataProvidersAndRules() {
-        for (final Map.Entry<P, List<R>> entry : dataProvidersToRules.entrySet()) {
+        for (final Map.Entry<DP, List<R>> entry : dataProvidersToRules.entrySet()) {
             // Dispose data provider
-            final P dataProvider = entry.getKey();
+            final DP dataProvider = entry.getKey();
             if (dataProvider instanceof Disposable) {
                 ((Disposable) dataProvider).dispose();
             }
@@ -370,7 +370,7 @@ public abstract class AbstractMappableValidator<T extends Trigger, P extends Dat
      * Disposes all rules and result handlers that are mapped to each other.
      */
     private void disposeRulesAndResultHandlers() {
-        for (final Map.Entry<R, List<H>> entry : rulesToResultHandlers.entrySet()) {
+        for (final Map.Entry<R, List<RH>> entry : rulesToResultHandlers.entrySet()) {
             // Dispose rule
             final R rule = entry.getKey();
             if (rule instanceof Disposable) {
@@ -378,9 +378,9 @@ public abstract class AbstractMappableValidator<T extends Trigger, P extends Dat
             }
 
             // Dispose result handlers
-            final List<H> resultHandlers = entry.getValue();
+            final List<RH> resultHandlers = entry.getValue();
             if (resultHandlers != null) {
-                for (final H resultHandler : resultHandlers) {
+                for (final RH resultHandler : resultHandlers) {
                     if (resultHandler instanceof Disposable) {
                         ((Disposable) resultHandler).dispose();
                     }

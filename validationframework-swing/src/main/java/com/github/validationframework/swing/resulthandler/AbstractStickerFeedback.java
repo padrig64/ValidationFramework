@@ -33,7 +33,7 @@ import com.github.validationframework.swing.decoration.support.TransparentToolTi
 
 import javax.swing.JComponent;
 
-public abstract class AbstractStickerFeedback<O> implements ResultHandler<O>, Disposable {
+public abstract class AbstractStickerFeedback<RHI> implements ResultHandler<RHI>, Disposable {
 
     private TransparentToolTipDialog toolTipDialog = null;
 

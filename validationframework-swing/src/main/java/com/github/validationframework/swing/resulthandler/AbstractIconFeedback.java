@@ -33,7 +33,7 @@ import com.github.validationframework.swing.decoration.anchor.AnchorLink;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 
-public abstract class AbstractIconFeedback<O> implements ResultHandler<O>, Disposable {
+public abstract class AbstractIconFeedback<RHI> implements ResultHandler<RHI>, Disposable {
 
     private IconComponentDecoration decoration = null;
 
