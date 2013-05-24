@@ -31,21 +31,21 @@ import com.github.validationframework.base.transform.OrBooleanAggregator;
  * Simple validator using boolean results and aggregating all results from the rules into a single result using the OR
  * operation.
  *
- * @param <RI> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
+ * @param <PO> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
  *             type of the component itself.
  *
  * @see ResultAggregationValidator
  * @see OrBooleanAggregator
- * @see AndValidator
+ * @see AndSimpleValidator
  */
-public class OrValidator<RI> extends ResultAggregationValidator<RI, Boolean, Boolean> {
+public class OrSimpleValidator<PO> extends ResultAggregationValidator<PO, Boolean, Boolean> {
 
     /**
      * Default constructor using the default constructor of {@link OrBooleanAggregator}.
      *
      * @see OrBooleanAggregator
      */
-    public OrValidator() {
+    public OrSimpleValidator() {
         super(new OrBooleanAggregator());
     }
 
@@ -56,7 +56,7 @@ public class OrValidator<RI> extends ResultAggregationValidator<RI, Boolean, Boo
      * @param emptyCollectionValue Value for empty and null collections of results.
      * @param nullElementValue     Value for null elements in the transformed collections of results.
      */
-    public OrValidator(final boolean emptyCollectionValue, final boolean nullElementValue) {
+    public OrSimpleValidator(final boolean emptyCollectionValue, final boolean nullElementValue) {
         super(new OrBooleanAggregator(emptyCollectionValue, nullElementValue));
     }
 }
