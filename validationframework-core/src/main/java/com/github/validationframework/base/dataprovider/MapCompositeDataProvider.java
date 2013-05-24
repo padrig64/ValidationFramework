@@ -33,17 +33,17 @@ import java.util.Map;
 /**
  * Composite data provider returning the data of all the sub-data providers in a map.
  *
- * @param <K> Type of the keys to retrieve the data from the map.
- * @param <D> Type of data in the map.
+ * @param <K>   Type of the keys to retrieve the data from the map.
+ * @param <DPO> Type of data in the map.
  *
  * @see DataProvider
  */
-public class MapCompositeDataProvider<K, D> implements DataProvider<Map<K, D>> {
+public class MapCompositeDataProvider<K, DPO> implements DataProvider<Map<K, DPO>> {
 
     /**
      * Sub-data providers.
      */
-    private final Map<K, DataProvider<D>> dataProviders = new HashMap<K, DataProvider<D>>();
+    private final Map<K, DataProvider<DPO>> dataProviders = new HashMap<K, DataProvider<DPO>>();
 
     /**
      * Adds the specified data provider with the specified key.
@@ -51,7 +51,7 @@ public class MapCompositeDataProvider<K, D> implements DataProvider<Map<K, D>> {
      * @param key          Key associated to the data provider.
      * @param dataProvider Data provider associated to the key.
      */
-    public void addDataProvider(final K key, final DataProvider<D> dataProvider) {
+    public void addDataProvider(final K key, final DataProvider<DPO> dataProvider) {
         dataProviders.put(key, dataProvider);
     }
 
@@ -68,11 +68,11 @@ public class MapCompositeDataProvider<K, D> implements DataProvider<Map<K, D>> {
      * @see DataProvider#getData()
      */
     @Override
-    public Map<K, D> getData() {
-        final Map<K, D> dataList = new HashMap<K, D>();
+    public Map<K, DPO> getData() {
+        final Map<K, DPO> dataList = new HashMap<K, DPO>();
 
         // Read the data from all data providers and put them in the map
-        for (final Map.Entry<K, DataProvider<D>> entry : dataProviders.entrySet()) {
+        for (final Map.Entry<K, DataProvider<DPO>> entry : dataProviders.entrySet()) {
             dataList.put(entry.getKey(), entry.getValue().getData());
         }
 

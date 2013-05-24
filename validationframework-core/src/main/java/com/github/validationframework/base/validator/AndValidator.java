@@ -36,16 +36,16 @@ import com.github.validationframework.base.transform.AndBooleanAggregator;
  *
  * @see ResultAggregationValidator
  * @see AndBooleanAggregator
- * @see OrValidatorResult
+ * @see OrValidator
  */
-public class AndValidatorResult<PO> extends ResultAggregationValidator<PO, Boolean, Boolean> {
+public class AndValidator<PO> extends ResultAggregationValidator<PO, Boolean, Boolean> {
 
     /**
      * Default constructor using the default constructor of {@link AndBooleanAggregator}.
      *
      * @see AndBooleanAggregator
      */
-    public AndValidatorResult() {
+    public AndValidator() {
         super(new AndBooleanAggregator());
     }
 
@@ -58,7 +58,7 @@ public class AndValidatorResult<PO> extends ResultAggregationValidator<PO, Boole
      *
      * @see AndBooleanAggregator
      */
-    public AndValidatorResult(final boolean emptyCollectionValue, final boolean nullElementValue) {
+    public AndValidator(final boolean emptyCollectionValue, final boolean nullElementValue) {
         super(new AndBooleanAggregator(emptyCollectionValue, nullElementValue));
     }
 }

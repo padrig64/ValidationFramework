@@ -32,17 +32,17 @@ import com.github.validationframework.api.rule.Rule;
  * data and the specified value are both null, they will be considered equal. If they are by NaN, they will be
  * considered equal. And everything is considered bigger than null.
  *
- * @param <T> Type of number handled by this rule.<br>It also it is not really required for the internal logic of the
- *            rule, it helps in reducing compilation warnings and/or errors when add a rule in a validator.
+ * @param <RI> Type of number handled by this rule.<br>It also it is not really required for the internal logic of the
+ *             rule, it helps in reducing compilation warnings and/or errors when add a rule in a validator.
  *
  * @see Rule
  */
-public class NumberGreaterThanOrEqualToRule<T extends Number> implements Rule<T, Boolean> {
+public class NumberGreaterThanOrEqualToRule<RI extends Number> implements Rule<RI, Boolean> {
 
     /**
      * Value to which the data is to be compared.
      */
-    private T minimumValue = null;
+    private RI minimumValue = null;
 
     /**
      * Default constructor.
@@ -56,7 +56,7 @@ public class NumberGreaterThanOrEqualToRule<T extends Number> implements Rule<T,
      *
      * @param minimumValue Value to which the data is to be compared.
      */
-    public NumberGreaterThanOrEqualToRule(final T minimumValue) {
+    public NumberGreaterThanOrEqualToRule(final RI minimumValue) {
         setMinimumValue(minimumValue);
     }
 
@@ -74,7 +74,7 @@ public class NumberGreaterThanOrEqualToRule<T extends Number> implements Rule<T,
      *
      * @param minimumValue Value to which the data is to be compared.
      */
-    public void setMinimumValue(final T minimumValue) {
+    public void setMinimumValue(final RI minimumValue) {
         this.minimumValue = minimumValue;
     }
 
@@ -82,7 +82,7 @@ public class NumberGreaterThanOrEqualToRule<T extends Number> implements Rule<T,
      * @see Rule#validate(Object)
      */
     @Override
-    public Boolean validate(final T data) {
+    public Boolean validate(final RI data) {
         final boolean valid;
 
         if ((data == null) && (minimumValue == null)) {

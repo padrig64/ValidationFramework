@@ -41,16 +41,16 @@ import com.github.validationframework.api.trigger.Trigger;
  * data providers to rules, and rules to result handlers.<br>It can be used, for example, to build validation of a group
  * of components.
  *
- * @param <T>  Type of trigger initiating the validation.
- * @param <P>  Type of data provider providing the input data to be validated.
- * @param <PO> Type of data provided by the data providers.
- * @param <R>  Type of validation rules to be used on the input data.
- * @param <RI> Type of data the rules will check.
- * @param <RO> Type of result the rules will produce.
- * @param <H>  Type of result handlers to be used on validation output.
- * @param <HI> Type of result the result handlers will handler.<br>It may or may not be the same as {@link RO}
- *             depending on the implementations.<br>For instance, an implementation could aggregate/transform the
- *             results before using the result handlers.
+ * @param <T>   Type of trigger initiating the validation.
+ * @param <DP>  Type of data provider providing the input data to be validated.
+ * @param <DPO> Type of data provided by the data providers.
+ * @param <R>   Type of validation rules to be used on the input data.
+ * @param <RI>  Type of data the rules will check.
+ * @param <RO>  Type of result the rules will produce.
+ * @param <RH>  Type of result handlers to be used on validation output.
+ * @param <RHI> Type of result the result handlers will handler.<br>It may or may not be the same as {@link RO}
+ *              depending on the implementations.<br>For instance, an implementation could aggregate/transform the
+ *              results before using the result handlers.
  *
  * @see Trigger
  * @see DataProvider
@@ -58,8 +58,8 @@ import com.github.validationframework.api.trigger.Trigger;
  * @see ResultHandler
  * @see SimpleValidator
  */
-public interface MappableValidator<T extends Trigger, P extends DataProvider<PO>, PO, R extends Rule<RI, RO>, RI, RO,
-        H extends ResultHandler<HI>, HI> {
+public interface MappableValidator<T extends Trigger, DP extends DataProvider<DPO>, DPO, R extends Rule<RI, RO>, RI,
+        RO, RH extends ResultHandler<RHI>, RHI> {
 
     /**
      * Maps the specified trigger to the specified data provider.<br>This means that whenever the specified trigger is
@@ -72,7 +72,7 @@ public interface MappableValidator<T extends Trigger, P extends DataProvider<PO>
      * @param trigger      Trigger to be mapped to the data provider.
      * @param dataProvider Data provider to be mapped to the trigger.
      */
-    public void mapTriggerToDataProvider(final T trigger, final P dataProvider);
+    public void mapTriggerToDataProvider(final T trigger, final DP dataProvider);
 
     /**
      * Maps the specified data provider to the specified rule.<br>This means that whenever the specified data provider
@@ -85,7 +85,7 @@ public interface MappableValidator<T extends Trigger, P extends DataProvider<PO>
      * @param dataProvider Data provider to be mapped to the rule.
      * @param rule         Rule to be mapped to the data provider.
      */
-    public void mapDataProviderToRule(final P dataProvider, final R rule);
+    public void mapDataProviderToRule(final DP dataProvider, final R rule);
 
     /**
      * Maps the specified rule to the specified result handler.<br>This means that whenever the specified rule is
@@ -97,5 +97,5 @@ public interface MappableValidator<T extends Trigger, P extends DataProvider<PO>
      * @param rule          Rule to be mapped to the result handler.
      * @param resultHandler Result handler to be mapped to the rule.
      */
-    public void mapRuleToResultHandler(final R rule, final H resultHandler);
+    public void mapRuleToResultHandler(final R rule, final RH resultHandler);
 }

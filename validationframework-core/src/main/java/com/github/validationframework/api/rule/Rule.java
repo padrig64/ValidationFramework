@@ -29,11 +29,11 @@ package com.github.validationframework.api.rule;
  * Interface to be implemented by validation rules.<br>Rules are passed data of a known specific type, and return a
  * result of a specific type.<br>Typically, a rule uses data from the data providers and return a validation result.
  *
- * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
- *            type of the component itself.
- * @param <O> Type of validation result.<br>It can be, for instance, an enumeration or just a boolean.
+ * @param <RI> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
+ *             type of the component itself.
+ * @param <RO> Type of validation result.<br>It can be, for instance, an enumeration or just a boolean.
  */
-public interface Rule<D, O> {
+public interface Rule<RI, RO> {
 
     /**
      * Checks the specified data.
@@ -42,5 +42,5 @@ public interface Rule<D, O> {
      *
      * @return Validation result.
      */
-    public O validate(D data);
+    public RO validate(RI data);
 }

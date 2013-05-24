@@ -30,20 +30,23 @@ import com.github.validationframework.base.transform.Transformer;
 
 /**
  * Rule making use of a {@link Transformer} to produce the results.
+ *
+ * @param <RI> Type of data to be transformed to {@link RO}.
+ * @param <RO> Type of data transformed form {@link RI}.
  */
-public class TransformerRule<D, R> implements Rule<D, R> {
+public class TransformerRule<RI, RO> implements Rule<RI, RO> {
 
     /**
      * Transformer that will transform the data under validation to a result.
      */
-    private final Transformer<D, R> transformer;
+    private final Transformer<RI, RO> transformer;
 
     /**
      * Constructor specifying the {@link Transformer} to be used to produce the results.
      *
      * @param transformer Transformer to be used to produce the results.
      */
-    public TransformerRule(final Transformer<D, R> transformer) {
+    public TransformerRule(final Transformer<RI, RO> transformer) {
         this.transformer = transformer;
     }
 
@@ -51,7 +54,7 @@ public class TransformerRule<D, R> implements Rule<D, R> {
      * @see Rule#validate(Object)
      */
     @Override
-    public R validate(final D data) {
+    public RO validate(final RI data) {
         return transformer.transform(data);
     }
 }

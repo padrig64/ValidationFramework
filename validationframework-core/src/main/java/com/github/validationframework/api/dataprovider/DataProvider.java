@@ -30,15 +30,15 @@ package com.github.validationframework.api.dataprovider;
  * validation process.<br>The data provided by the data providers are typically used by rules when the validation
  * process is triggered.
  *
- * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
- *            type of the component itself.
+ * @param <DPO> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component,
+ *              or the type of the component itself.
  */
-public interface DataProvider<D> {
+public interface DataProvider<DPO> {
 
     /**
      * Retrieves the data to be used for validation.
      *
      * @return Data to be used for validation.
      */
-    public D getData();
+    public DPO getData();
 }

@@ -33,16 +33,16 @@ import java.util.List;
 /**
  * Composite result handler that will process results using all delegate result handlers.
  *
- * @param <R> Type of validation result.<br>It can be, for instance, an enumeration or just a boolean.
+ * @param <RHI> Type of validation result.<br>It can be, for instance, an enumeration or just a boolean.
  *
  * @see ResultHandler
  */
-public class CompositeResultHandler<R> implements ResultHandler<R> {
+public class CompositeResultHandler<RHI> implements ResultHandler<RHI> {
 
     /**
      * Delegate result handlers.
      */
-    private final List<ResultHandler<R>> resultHandlers = new ArrayList<ResultHandler<R>>();
+    private final List<ResultHandler<RHI>> resultHandlers = new ArrayList<ResultHandler<RHI>>();
 
     /**
      * Default constructor.
@@ -58,9 +58,9 @@ public class CompositeResultHandler<R> implements ResultHandler<R> {
      *
      * @see #addResultHandler(ResultHandler)
      */
-    public CompositeResultHandler(final ResultHandler<R>... resultHandlers) {
+    public CompositeResultHandler(final ResultHandler<RHI>... resultHandlers) {
         if (resultHandlers != null) {
-            for (final ResultHandler<R> resultHandler : resultHandlers) {
+            for (final ResultHandler<RHI> resultHandler : resultHandlers) {
                 addResultHandler(resultHandler);
             }
         }
@@ -71,7 +71,7 @@ public class CompositeResultHandler<R> implements ResultHandler<R> {
      *
      * @param resultHandler Delegate result handler to be added.
      */
-    public void addResultHandler(final ResultHandler<R> resultHandler) {
+    public void addResultHandler(final ResultHandler<RHI> resultHandler) {
         resultHandlers.add(resultHandler);
     }
 
@@ -80,7 +80,7 @@ public class CompositeResultHandler<R> implements ResultHandler<R> {
      *
      * @param resultHandler Delegate result handler to be removed.
      */
-    public void removeResultHandler(final ResultHandler<R> resultHandler) {
+    public void removeResultHandler(final ResultHandler<RHI> resultHandler) {
         resultHandlers.remove(resultHandler);
     }
 
@@ -92,8 +92,8 @@ public class CompositeResultHandler<R> implements ResultHandler<R> {
      * @see ResultHandler#handleResult(Object)
      */
     @Override
-    public void handleResult(final R result) {
-        for (final ResultHandler<R> resultHandler : resultHandlers) {
+    public void handleResult(final RHI result) {
+        for (final ResultHandler<RHI> resultHandler : resultHandlers) {
             resultHandler.handleResult(result);
         }
     }

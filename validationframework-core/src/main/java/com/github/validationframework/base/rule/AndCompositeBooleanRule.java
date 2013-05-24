@@ -36,13 +36,13 @@ import java.util.Collection;
  * Composite rule checking data of a known specific type using sub-rules, and returning a boolean as an aggregation of
  * the boolean results from its sub-rules.
  *
- * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
- *            type of the component itself.
+ * @param <RI> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
+ *             type of the component itself.
  *
  * @see AbstractCompositeRule
  * @see OrCompositeBooleanRule
  */
-public class AndCompositeBooleanRule<D> extends AbstractCompositeRule<D, Boolean> {
+public class AndCompositeBooleanRule<RI> extends AbstractCompositeRule<RI, Boolean> {
 
     /**
      * Boolean aggregator using the AND operator.
@@ -62,7 +62,7 @@ public class AndCompositeBooleanRule<D> extends AbstractCompositeRule<D, Boolean
     /**
      * @see AbstractCompositeRule#AbstractCompositeRule(Rule[])
      */
-    public AndCompositeBooleanRule(final Rule<D, Boolean>... rules) {
+    public AndCompositeBooleanRule(final Rule<RI, Boolean>... rules) {
         super(rules);
         aggregator = new AndBooleanAggregator();
     }
@@ -71,10 +71,10 @@ public class AndCompositeBooleanRule<D> extends AbstractCompositeRule<D, Boolean
      * @see AbstractCompositeRule#validate(Object)
      */
     @Override
-    public Boolean validate(final D data) {
+    public Boolean validate(final RI data) {
         // Collect results
         final Collection<Boolean> results = new ArrayList<Boolean>();
-        for (final Rule<D, Boolean> rule : rules) {
+        for (final Rule<RI, Boolean> rule : rules) {
             final Boolean result = rule.validate(data);
             results.add(result);
         }

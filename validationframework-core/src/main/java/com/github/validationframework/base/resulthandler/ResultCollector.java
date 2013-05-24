@@ -34,29 +34,29 @@ import com.github.validationframework.base.trigger.AbstractTrigger;
 
 /**
  * Result collector providing the result from one validator as validation input to another validator.<br>So this
- * collector is meant to be registered as a result handler to validator, and as a trigger and data provider to another
- * validator.<br>This can be useful to aggregate the validation results from a group in independent fields, for instance
- * to enable or disable an Apply button on a dialog.
+ * collector is meant to be registered as a result handler to one validator, and as a trigger and data provider to
+ * one or several other validators.<br>This can be useful to aggregate the validation results from a group in
+ * independent fields, for instance to enable or disable an Apply button on a dialog.
  *
- * @param <O> Type of result collected from other validators.
- * @param <D> Type of data provided by the collector.<br>It could be the same as O.
+ * @param <VO>  Type of result collected from another validator.
+ * @param <DPO> Type of data provided by the collector.<br>It could be the same as {@link VO}.
  *
  * @see com.github.validationframework.base.validator.ResultCollectorValidator
  * @see ResultHandler
  * @see AbstractTrigger
  * @see DataProvider
  */
-public class ResultCollector<O, D> extends AbstractTrigger implements ResultHandler<O>, DataProvider<D> {
+public class ResultCollector<VO, DPO> extends AbstractTrigger implements ResultHandler<VO>, DataProvider<DPO> {
 
     /**
      * Last collected result.
      */
-    protected O lastResult = null;
+    protected VO lastResult = null;
 
     /**
      * Transformer to apply on the collected result before providing it.
      */
-    protected final Transformer<O, D> transformer;
+    protected final Transformer<VO, DPO> transformer;
 
     /**
      * Default constructor using the simple cast transformer.
@@ -64,7 +64,7 @@ public class ResultCollector<O, D> extends AbstractTrigger implements ResultHand
      * @see CastTransformer
      */
     public ResultCollector() {
-        this(new CastTransformer<O, D>());
+        this(new CastTransformer<VO, DPO>());
     }
 
     /**
@@ -72,7 +72,7 @@ public class ResultCollector<O, D> extends AbstractTrigger implements ResultHand
      *
      * @param transformer Transform to apply on the collected result.
      */
-    public ResultCollector(final Transformer<O, D> transformer) {
+    public ResultCollector(final Transformer<VO, DPO> transformer) {
         super();
         this.transformer = transformer;
     }
@@ -81,7 +81,7 @@ public class ResultCollector<O, D> extends AbstractTrigger implements ResultHand
      * @see ResultHandler#handleResult(Object)
      */
     @Override
-    public void handleResult(final O result) {
+    public void handleResult(final VO result) {
         lastResult = result; // We expect the method getData() to be called subsequently
         fireTriggerEvent(new TriggerEvent(this));
     }
@@ -90,7 +90,7 @@ public class ResultCollector<O, D> extends AbstractTrigger implements ResultHand
      * @see DataProvider#getData()
      */
     @Override
-    public D getData() {
+    public DPO getData() {
         return transformer.transform(lastResult);
     }
 }

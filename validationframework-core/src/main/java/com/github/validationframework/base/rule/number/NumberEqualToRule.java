@@ -31,17 +31,17 @@ import com.github.validationframework.api.rule.Rule;
  * Rule checking whether the data, being a number, is equal to a specific value.<br>Note that if the data and the
  * specified value are both null, they will be considered equal. And if they are by NaN, they will be considered equal.
  *
- * @param <T> Type of number handled by this rule.<br>It also it is not really required for the internal logic of the
- *            rule, it helps in reducing compilation warnings and/or errors when add a rule in a validator.
+ * @param <RI> Type of number handled by this rule.<br>It also it is not really required for the internal logic of the
+ *             rule, it helps in reducing compilation warnings and/or errors when add a rule in a validator.
  *
  * @see Rule
  */
-public class NumberEqualToRule<T extends Number> implements Rule<T, Boolean> {
+public class NumberEqualToRule<RI extends Number> implements Rule<RI, Boolean> {
 
     /**
      * Value to which the data is to be compared.
      */
-    private T exactValue = null;
+    private RI exactValue = null;
 
     /**
      * Default constructor.
@@ -55,7 +55,7 @@ public class NumberEqualToRule<T extends Number> implements Rule<T, Boolean> {
      *
      * @param exactValue Value to which the data is to be compared.
      */
-    public NumberEqualToRule(final T exactValue) {
+    public NumberEqualToRule(final RI exactValue) {
         setExactValue(exactValue);
     }
 
@@ -64,7 +64,7 @@ public class NumberEqualToRule<T extends Number> implements Rule<T, Boolean> {
      *
      * @return Value to which the data is compared.
      */
-    public T getExactValue() {
+    public RI getExactValue() {
         return exactValue;
     }
 
@@ -73,7 +73,7 @@ public class NumberEqualToRule<T extends Number> implements Rule<T, Boolean> {
      *
      * @param exactValue Value to which the data is to be compared.
      */
-    public void setExactValue(final T exactValue) {
+    public void setExactValue(final RI exactValue) {
         this.exactValue = exactValue;
     }
 
@@ -81,7 +81,7 @@ public class NumberEqualToRule<T extends Number> implements Rule<T, Boolean> {
      * @see Rule#validate(Object)
      */
     @Override
-    public Boolean validate(final T data) {
+    public Boolean validate(final RI data) {
         final boolean valid;
 
         if ((data == null) && (exactValue == null)) {

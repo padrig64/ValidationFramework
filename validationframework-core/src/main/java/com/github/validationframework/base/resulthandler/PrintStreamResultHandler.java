@@ -32,11 +32,11 @@ import java.io.PrintStream;
 /**
  * Result handler writing the result on a printing stream.<br>This can be useful for logging and/or debugging.
  *
- * @param <O> Type of validation result.<br>It can be, for instance, an enumeration or just a boolean.
+ * @param <RHI> Type of validation result.<br>It can be, for instance, an enumeration or just a boolean.
  *
  * @see ResultHandler
  */
-public class PrintStreamResultHandler<O> implements ResultHandler<O> {
+public class PrintStreamResultHandler<RHI> implements ResultHandler<RHI> {
 
     /**
      * Default output print stream.
@@ -115,7 +115,7 @@ public class PrintStreamResultHandler<O> implements ResultHandler<O> {
      * @see ResultHandler#handleResult(Object)
      */
     @Override
-    public void handleResult(final O result) {
+    public void handleResult(final RHI result) {
         final StringBuilder builder = new StringBuilder();
         builder.append(prefix);
         builder.append(result);

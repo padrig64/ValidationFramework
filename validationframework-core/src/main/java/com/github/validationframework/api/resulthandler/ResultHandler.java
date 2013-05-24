@@ -29,14 +29,14 @@ package com.github.validationframework.api.resulthandler;
  * Interface to be implemented by handlers of validation results.<br>Result handles may give feedback to the user,
  * enable/disable other components based on conditional logic, trigger other validators, etc.
  *
- * @param <O> Type of validation result.<br>It can be, for instance, an enumeration or just a boolean.
+ * @param <RHI> Type of validation result.<br>It can be, for instance, an enumeration or just a boolean.
  */
-public interface ResultHandler<O> {
+public interface ResultHandler<RHI> {
 
     /**
      * Handles the specified validation result.
      *
      * @param result Validation result to be handled.
      */
-    public void handleResult(O result);
+    public void handleResult(RHI result);
 }

@@ -36,16 +36,16 @@ import com.github.validationframework.base.transform.OrBooleanAggregator;
  *
  * @see ResultAggregationValidator
  * @see OrBooleanAggregator
- * @see AndValidatorResult
+ * @see AndValidator
  */
-public class OrValidatorResult<PO> extends ResultAggregationValidator<PO, Boolean, Boolean> {
+public class OrValidator<PO> extends ResultAggregationValidator<PO, Boolean, Boolean> {
 
     /**
      * Default constructor using the default constructor of {@link OrBooleanAggregator}.
      *
      * @see OrBooleanAggregator
      */
-    public OrValidatorResult() {
+    public OrValidator() {
         super(new OrBooleanAggregator());
     }
 
@@ -56,7 +56,7 @@ public class OrValidatorResult<PO> extends ResultAggregationValidator<PO, Boolea
      * @param emptyCollectionValue Value for empty and null collections of results.
      * @param nullElementValue     Value for null elements in the transformed collections of results.
      */
-    public OrValidatorResult(final boolean emptyCollectionValue, final boolean nullElementValue) {
+    public OrValidator(final boolean emptyCollectionValue, final boolean nullElementValue) {
         super(new OrBooleanAggregator(emptyCollectionValue, nullElementValue));
     }
 }

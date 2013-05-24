@@ -33,14 +33,18 @@ import java.util.List;
 /**
  * Abstraction of a composite rule composed of sub-rules.
  *
+ * @param <RI> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
+ *             type of the component itself.
+ * @param <RO> Type of validation result.<br>It can be, for instance, an enumeration or just a boolean.
+ *
  * @see Rule
  */
-public abstract class AbstractCompositeRule<D, R> implements Rule<D, R> {
+public abstract class AbstractCompositeRule<RI, RO> implements Rule<RI, RO> {
 
     /**
      * Sub-rules to be checked.
      */
-    protected final List<Rule<D, R>> rules = new ArrayList<Rule<D, R>>();
+    protected final List<Rule<RI, RO>> rules = new ArrayList<Rule<RI, RO>>();
 
     /**
      * Default constructor.
@@ -56,9 +60,9 @@ public abstract class AbstractCompositeRule<D, R> implements Rule<D, R> {
      *
      * @see #addRule(Rule)
      */
-    public AbstractCompositeRule(final Rule<D, R>... rules) {
+    public AbstractCompositeRule(final Rule<RI, RO>... rules) {
         if (rules != null) {
-            for (final Rule<D, R> rule : rules) {
+            for (final Rule<RI, RO> rule : rules) {
                 addRule(rule);
             }
         }
@@ -69,7 +73,7 @@ public abstract class AbstractCompositeRule<D, R> implements Rule<D, R> {
      *
      * @param rule Sub-rule to be added.
      */
-    public void addRule(final Rule<D, R> rule) {
+    public void addRule(final Rule<RI, RO> rule) {
         rules.add(rule);
     }
 
@@ -78,7 +82,7 @@ public abstract class AbstractCompositeRule<D, R> implements Rule<D, R> {
      *
      * @param rule Sub-rule tobe removed
      */
-    public void removeRule(final Rule<D, R> rule) {
+    public void removeRule(final Rule<RI, RO> rule) {
         rules.remove(rule);
     }
 }

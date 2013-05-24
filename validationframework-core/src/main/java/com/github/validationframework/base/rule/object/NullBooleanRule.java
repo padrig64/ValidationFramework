@@ -32,18 +32,18 @@ import com.github.validationframework.api.rule.Rule;
  * otherwise.<br>Note that even though generics are not needed in the logic of this class, providing a specific type
  * makes it more convenient to reduce compilation warnings and errors.
  *
- * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
- *            type of the component itself.
+ * @param <RI> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
+ *             type of the component itself.
  *
  * @see Rule
  */
-public class NullBooleanRule<D> implements Rule<D, Boolean> {
+public class NullBooleanRule<RI> implements Rule<RI, Boolean> {
 
     /**
      * @see Rule#validate(Object)
      */
     @Override
-    public Boolean validate(final D data) {
+    public Boolean validate(final RI data) {
         return (data == null);
     }
 }

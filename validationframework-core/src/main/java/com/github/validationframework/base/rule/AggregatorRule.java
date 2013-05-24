@@ -32,13 +32,16 @@ import java.util.Collection;
 
 /**
  * Rule making use of an {@link Aggregator} to produce the results.
+ *
+ * @param <RI> Type of data to be aggregated into a {@link RO}.
+ * @param <RO> Type of aggregation of elements of type {@link RI}.
  */
-public class AggregatorRule<D, R> extends TransformerRule<Collection<D>, R> {
+public class AggregatorRule<RI, RO> extends TransformerRule<Collection<RI>, RO> {
 
     /**
      * @see TransformerRule#TransformerRule(Transformer)
      */
-    public AggregatorRule(final Aggregator<D, R> transformer) {
+    public AggregatorRule(final Aggregator<RI, RO> transformer) {
         super(transformer);
     }
 }
