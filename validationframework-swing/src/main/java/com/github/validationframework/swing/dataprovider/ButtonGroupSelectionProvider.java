@@ -25,38 +25,15 @@
 
 package com.github.validationframework.swing.dataprovider;
 
-import com.github.validationframework.api.dataprovider.DataProvider;
-
 import javax.swing.ButtonGroup;
-import javax.swing.ButtonModel;
 
 /**
- * Data provider retrieving the selected button model in a button group.
- *
- * @see DataProvider
- * @see ButtonGroup
+ * @deprecated Use {@link ButtonGroupSelectedButtonModelProvider} instead.
  */
-public class ButtonGroupSelectionProvider implements DataProvider<ButtonModel> {
+@Deprecated
+public class ButtonGroupSelectionProvider extends ButtonGroupSelectedButtonModelProvider {
 
-    /**
-     * Button group to retrieve the selected button model from.
-     */
-    private final ButtonGroup buttonGroup;
-
-    /**
-     * Constructor specifying the button group to retrieve the selected button model from.
-     *
-     * @param buttonGroup Button group to retrieve the selected button model from.
-     */
     public ButtonGroupSelectionProvider(final ButtonGroup buttonGroup) {
-        this.buttonGroup = buttonGroup;
-    }
-
-    /**
-     * @see DataProvider#getData()
-     */
-    @Override
-    public ButtonModel getData() {
-        return buttonGroup.getSelection();
+        super(buttonGroup);
     }
 }
