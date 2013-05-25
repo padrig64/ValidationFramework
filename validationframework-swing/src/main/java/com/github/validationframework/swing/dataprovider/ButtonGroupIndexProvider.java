@@ -33,6 +33,10 @@ import javax.swing.ButtonGroup;
 @Deprecated
 public class ButtonGroupIndexProvider extends ButtonGroupSelectedIndexProvider {
 
+    /**
+     * @deprecated Use {@link ButtonGroupSelectedIndexProvider#ButtonGroupSelectedIndexProvider(ButtonGroup)} instead.
+     */
+    @Deprecated
     public ButtonGroupIndexProvider(final ButtonGroup buttonGroup) {
         super(buttonGroup);
     }

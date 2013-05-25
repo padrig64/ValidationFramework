@@ -63,11 +63,9 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
 
         /**
          * Creates the dialog showing the tooltip if it is not created yet.<br>We do this only here to make sure that
-         * we have
-         * a parent and to make sure that we actually have a window ancestor.<br>If we create the dialog before having a
-         * window ancestor, it will have no owner (see {@link ToolTipDialog#ToolTipDialog(JComponent,
-         * AnchorLink)} and that
-         * will result in having the tooltip behind the other windows of the application.
+         * we have a parent and to make sure that we actually have a window ancestor.<br>If we create the dialog
+         * before having a window ancestor, it will have no owner (see {@link ToolTipDialog#ToolTipDialog(JComponent,
+         * AnchorLink)} and that will result in having the tooltip behind the other windows of the application.
          */
         private void createToolTipDialogIfNeeded() {
             if (toolTipDialog == null) {
@@ -144,10 +142,20 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
         followDecoratedComponent();
     }
 
+    /**
+     * Gets the text for the tooltip to be used on this decoration.
+     *
+     * @return Tooltip text for this decoration, or null.
+     */
     public String getToolTipText() {
         return toolTipText;
     }
 
+    /**
+     * Sets the text for the tooltip to be used on this decoration.
+     *
+     * @param text Tooltip text for this decoration, or null if this decoration should have no tooltip.
+     */
     public void setToolTipText(final String text) {
         this.toolTipText = text;
         if (toolTipDialog != null) {
@@ -155,10 +163,20 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
         }
     }
 
+    /**
+     * Gets the anchor link used to slave the tooltip to this decoration.
+     *
+     * @return Anchor link used to slave the tooltip to this decoration.
+     */
     public AnchorLink getAnchorLinkWithToolTip() {
         return anchorLinkWithToolTip;
     }
 
+    /**
+     * Sets the anchor link used to slave the tooltip to this decoration.
+     *
+     * @param anchorLinkWithToolTip Anchor link to be used to slave the tooltip to this decoration.
+     */
     public void setAnchorLinkWithToolTip(final AnchorLink anchorLinkWithToolTip) {
         this.anchorLinkWithToolTip = anchorLinkWithToolTip;
     }

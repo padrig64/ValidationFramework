@@ -33,6 +33,11 @@ import javax.swing.ButtonGroup;
 @Deprecated
 public class ButtonGroupSelectionProvider extends ButtonGroupSelectedButtonModelProvider {
 
+    /**
+     * @deprecated Use {@link ButtonGroupSelectedButtonModelProvider#ButtonGroupSelectedButtonModelProvider
+     *             (ButtonGroup)} instead.
+     */
+    @Deprecated
     public ButtonGroupSelectionProvider(final ButtonGroup buttonGroup) {
         super(buttonGroup);
     }
