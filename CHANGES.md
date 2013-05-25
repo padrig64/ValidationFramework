@@ -2,7 +2,9 @@
 
 * TODO Add transformers to Swing data providers providing Objects
 * Improved javadoc
-* Added convenience constructor to IconBooleanFeedback
+* Updated names of generic types for better consistency and understanding
+* Added convenience constructor to IconBooleanFeedback and ListCompositeDataProvider
+* Renamed ButtonGroup-related data providers
 
 # Version 1.1.1
 
