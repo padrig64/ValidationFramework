@@ -37,14 +37,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Concrete default implementation of a simple validator.<br>A simple validator has data providers and rules that are
- * bound to a known specific type of data, and result handlers that are bound to a known specific type of
- * result.<br>When any of its triggers is initiated, the simple validator will read all the data from all of its data
- * providers, check them all against all of its rules, and handles all the results using all of its result handlers.
+ * Concrete implementation of a simple validator that aggregates the results of all the rules into a single result
+ * before passing it to the results handlers.<br>This can be useful, for instance, to combine boolean results using the
+ * AND or OR operations.
  *
- * @param <RI> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
- *             type of the component itself.
- * @param <RO> Type of validation result.<br>It can be, for instance, an enumeration or just a boolean.
+ * @param <RI>  Type of data to be validated.<br>It can be, for instance, the type of data handled by a component,
+ *              or the type of the component itself.
+ * @param <RO>  Type of validation result produced by the rules.<br>It can be, for instance, an enumeration or just a
+ *              boolean.
+ * @param <RHI> Type of aggregated result.
  *
  * @see AbstractSimpleValidator
  * @see Trigger
@@ -60,8 +61,17 @@ public class ResultAggregationValidator<RI, RO, RHI> extends AbstractSimpleValid
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(ResultAggregationValidator.class);
 
+    /**
+     * Transformer aggregating the rule results into a single result to be passed to the result handlers.
+     */
     private Aggregator<RO, RHI> resultAggregator = null;
 
+    /**
+     * Constructor specifying the transformer aggregating the rule results into a single result to be passed to the
+     * result handlers.
+     *
+     * @param resultAggregator Transformer aggregating the rule results into a single result.
+     */
     public ResultAggregationValidator(final Aggregator<RO, RHI> resultAggregator) {
         this.resultAggregator = resultAggregator;
     }
