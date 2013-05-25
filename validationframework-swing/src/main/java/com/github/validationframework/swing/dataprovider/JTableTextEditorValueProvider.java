@@ -44,7 +44,7 @@ import java.text.ParseException;
  * @see JTable
  * @see JTable#getCellEditor()
  */
-public class JTableTextEditorValueProvider<T> implements DataProvider<T> {
+public class JTableTextEditorValueProvider<DPO> implements DataProvider<DPO> {
 
     /**
      * Logger for this class.
@@ -59,7 +59,7 @@ public class JTableTextEditorValueProvider<T> implements DataProvider<T> {
     /**
      * Transformer used to convert the object parsed from the formatted text editor component to the expected type.
      */
-    private final Transformer<Object, T> transformer;
+    private final Transformer<Object, DPO> transformer;
 
     /**
      * Constructor specifying the table holding the editor component to get the value from.
@@ -67,7 +67,7 @@ public class JTableTextEditorValueProvider<T> implements DataProvider<T> {
      * @param table Editable table.
      */
     public JTableTextEditorValueProvider(final JTable table) {
-        this(table, new CastTransformer<Object, T>());
+        this(table, new CastTransformer<Object, DPO>());
     }
 
     /**
@@ -79,7 +79,7 @@ public class JTableTextEditorValueProvider<T> implements DataProvider<T> {
      * @param transformer Transformer used to convert the object parsed from the formatted text editor component to the
      *                    expected type.
      */
-    public JTableTextEditorValueProvider(final JTable table, final Transformer<Object, T> transformer) {
+    public JTableTextEditorValueProvider(final JTable table, final Transformer<Object, DPO> transformer) {
         this.table = table;
         this.transformer = transformer;
     }
@@ -88,8 +88,8 @@ public class JTableTextEditorValueProvider<T> implements DataProvider<T> {
      * @see DataProvider#getData()
      */
     @Override
-    public T getData() {
-        T typedValue = null;
+    public DPO getData() {
+        DPO typedValue = null;
 
         // Get the formatted textfield editor from the table, if any
         final Component editorComponent = table.getEditorComponent();

@@ -43,7 +43,7 @@ import java.text.ParseException;
  * @see DataProvider
  * @see JSpinner
  */
-public class JSpinnerEditorValueProvider<D> implements DataProvider<D> {
+public class JSpinnerEditorValueProvider<DPO> implements DataProvider<DPO> {
 
     /**
      * Logger for this class.
@@ -59,7 +59,7 @@ public class JSpinnerEditorValueProvider<D> implements DataProvider<D> {
     /**
      * Transformer used to convert the object parsed from the spinner to the expected type.
      */
-    private final Transformer<Object, D> transformer;
+    private final Transformer<Object, DPO> transformer;
 
     /**
      * Constructor specifying the spinner to get the value from.
@@ -67,7 +67,7 @@ public class JSpinnerEditorValueProvider<D> implements DataProvider<D> {
      * @param spinner Spinner to get the value from.
      */
     public JSpinnerEditorValueProvider(final JSpinner spinner) {
-        this(spinner, new CastTransformer<Object, D>());
+        this(spinner, new CastTransformer<Object, DPO>());
     }
 
     /**
@@ -76,7 +76,7 @@ public class JSpinnerEditorValueProvider<D> implements DataProvider<D> {
      * @param spinner     Spinner to get the value from.
      * @param transformer Transformer used to convert the object parsed from the spinner to the expected type.
      */
-    public JSpinnerEditorValueProvider(final JSpinner spinner, final Transformer<Object, D> transformer) {
+    public JSpinnerEditorValueProvider(final JSpinner spinner, final Transformer<Object, DPO> transformer) {
         this.spinner = spinner;
         this.transformer = transformer;
     }
@@ -85,8 +85,8 @@ public class JSpinnerEditorValueProvider<D> implements DataProvider<D> {
      * @see DataProvider#getData()
      */
     @Override
-    public D getData() {
-        D typedValue = null;
+    public DPO getData() {
+        DPO typedValue = null;
 
         try {
             // Parse text
@@ -106,8 +106,7 @@ public class JSpinnerEditorValueProvider<D> implements DataProvider<D> {
 
     /**
      * Retrieves the text currently in the text component of the spinner, if any.<br>Note that if editor of the
-     * spinner has
-     * been customized, this method may need to be adapted in a sub-class.
+     * spinner has been customized, this method may need to be adapted in a sub-class.
      *
      * @return Spinner text or null if not found.
      */

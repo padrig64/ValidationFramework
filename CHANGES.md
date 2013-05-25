@@ -1,6 +1,8 @@
 # Version 1.1.2 (to be released)
 
-* TODO
+* TODO Add transformers to Swing data providers providing Objects
+* Improved javadoc
+* Added convenience constructor to IconBooleanFeedback
 
 # Version 1.1.1
 

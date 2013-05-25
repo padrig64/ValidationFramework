@@ -37,7 +37,7 @@ import javax.swing.JToggleButton;
 public class JToggleButtonValueProvider extends BaseJToggleButtonValueProvider<JToggleButton> {
 
     /**
-     * @see BaseJToggleButtonValueProvider#BaseJToggleButtonValueProvider(javax.swing.JToggleButton)
+     * @see BaseJToggleButtonValueProvider#BaseJToggleButtonValueProvider(JToggleButton)
      */
     public JToggleButtonValueProvider(final JToggleButton toggleComponent) {
         super(toggleComponent);

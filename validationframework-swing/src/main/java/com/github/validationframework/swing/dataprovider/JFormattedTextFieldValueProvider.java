@@ -40,19 +40,18 @@ import java.text.ParseException;
  * @see JFormattedTextField
  * @see JFormattedTextField#getText()
  */
-public class JFormattedTextFieldValueProvider<D> implements DataProvider<D> {
+public class JFormattedTextFieldValueProvider<DPO> implements DataProvider<DPO> {
 
     /**
      * Formatted textfield to get the data from.<br>Note that the text and the formatter are retrieved every time
-     * they are
-     * needed so that we do not have to listener to changes in the formatted textfield to track them.
+     * they are needed so that we do not have to listener to changes in the formatted textfield to track them.
      */
     private final JFormattedTextField formattedTextField;
 
     /**
      * Transformer used to convert the object parsed from the formatted textfield to the expected type.
      */
-    private final Transformer<Object, D> transformer;
+    private final Transformer<Object, DPO> transformer;
 
     /**
      * Constructor specifying the formatted textfield to get the value from.
@@ -60,7 +59,7 @@ public class JFormattedTextFieldValueProvider<D> implements DataProvider<D> {
      * @param formattedTextField Formatted textfield to get the value from.
      */
     public JFormattedTextFieldValueProvider(final JFormattedTextField formattedTextField) {
-        this(formattedTextField, new CastTransformer<Object, D>());
+        this(formattedTextField, new CastTransformer<Object, DPO>());
     }
 
     /**
@@ -71,7 +70,7 @@ public class JFormattedTextFieldValueProvider<D> implements DataProvider<D> {
      * @param transformer        Transformer used to convert the object parsed from the spinner to the expected type.
      */
     public JFormattedTextFieldValueProvider(final JFormattedTextField formattedTextField, final Transformer<Object,
-            D> transformer) {
+            DPO> transformer) {
         this.formattedTextField = formattedTextField;
         this.transformer = transformer;
     }
@@ -80,8 +79,8 @@ public class JFormattedTextFieldValueProvider<D> implements DataProvider<D> {
      * @see DataProvider#getData()
      */
     @Override
-    public D getData() {
-        D typedValue = null;
+    public DPO getData() {
+        DPO typedValue = null;
 
         try {
             // Parse text

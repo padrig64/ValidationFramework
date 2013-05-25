@@ -43,7 +43,7 @@ import java.awt.Component;
  * @see JTable
  * @see JTable#getCellEditor()
  */
-public class JTableComboBoxEditorSelectedValueProvider<T> implements DataProvider<T> {
+public class JTableComboBoxEditorSelectedValueProvider<DPO> implements DataProvider<DPO> {
 
     /**
      * Logger for this class.
@@ -58,7 +58,7 @@ public class JTableComboBoxEditorSelectedValueProvider<T> implements DataProvide
     /**
      * Transformer used to convert the selected object from the combobox editor component to the expected type.
      */
-    private final Transformer<Object, T> transformer;
+    private final Transformer<Object, DPO> transformer;
 
     /**
      * Constructor specifying the table holding the editor component to get the text from.
@@ -66,7 +66,7 @@ public class JTableComboBoxEditorSelectedValueProvider<T> implements DataProvide
      * @param table Editable table.
      */
     public JTableComboBoxEditorSelectedValueProvider(final JTable table) {
-        this(table, new CastTransformer<Object, T>());
+        this(table, new CastTransformer<Object, DPO>());
     }
 
     /**
@@ -77,7 +77,7 @@ public class JTableComboBoxEditorSelectedValueProvider<T> implements DataProvide
      * @param transformer Transformer used to convert the selected object from the combobox editor component to the
      *                    expected type.
      */
-    public JTableComboBoxEditorSelectedValueProvider(final JTable table, final Transformer<Object, T> transformer) {
+    public JTableComboBoxEditorSelectedValueProvider(final JTable table, final Transformer<Object, DPO> transformer) {
         this.table = table;
         this.transformer = transformer;
     }
@@ -86,8 +86,8 @@ public class JTableComboBoxEditorSelectedValueProvider<T> implements DataProvide
      * @see DataProvider#getData()
      */
     @Override
-    public T getData() {
-        T typedValue = null;
+    public DPO getData() {
+        DPO typedValue = null;
 
         // Get the combobox editor from the table, if any
         final Component editorComponent = table.getEditorComponent();
