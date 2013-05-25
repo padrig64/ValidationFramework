@@ -40,6 +40,8 @@ import java.text.ParseException;
  * Provider of the value of the current formatted text editor component from a given table.<br>Note that if the table is
  * not in editing state, no value can be provided.
  *
+ * @param <DPO> Type of data in the text editor.<br>You may use {@link Object}.
+ *
  * @see DataProvider
  * @see JTable
  * @see JTable#getCellEditor()

@@ -26,16 +26,20 @@
 package com.github.validationframework.swing.dataprovider;
 
 import com.github.validationframework.api.dataprovider.DataProvider;
+import com.github.validationframework.base.transform.CastTransformer;
+import com.github.validationframework.base.transform.Transformer;
 
 import javax.swing.JSpinner;
 
 /**
  * Data provider reading the value from the model of a spinner.
  *
+ * @param <DPO> Type of data in the spinner.<br>You may use {@link Object}.
+ *
  * @see DataProvider
  * @see JSpinner
  */
-public class JSpinnerModelValueProvider implements DataProvider<Object> {
+public class JSpinnerModelValueProvider<DPO> implements DataProvider<DPO> {
 
     /**
      * Spinner to get the value from.
@@ -43,19 +47,37 @@ public class JSpinnerModelValueProvider implements DataProvider<Object> {
     private final JSpinner spinner;
 
     /**
-     * Constructor specifying the spinner to get the value from.
+     * Transformer to convert the spinner value.
+     */
+    private final Transformer<Object, DPO> transformer;
+
+    /**
+     * Constructor specifying the spinner to get the value from.<br>By default, the spinner value will be cast to
+     * {@link DPO}.
      *
      * @param spinner Spinner to get the value from.
      */
     public JSpinnerModelValueProvider(final JSpinner spinner) {
+        this(spinner, new CastTransformer<Object, DPO>(CastTransformer.CastErrorBehavior.IGNORE));
+    }
+
+    /**
+     * Constructor specifying the spinner to get the value from, and the transformer to convert the spinner value to
+     * {@link DPO}.
+     *
+     * @param spinner     Spinner to get the value from.
+     * @param transformer Transformer to convert the spinner value.
+     */
+    public JSpinnerModelValueProvider(final JSpinner spinner, final Transformer<Object, DPO> transformer) {
         this.spinner = spinner;
+        this.transformer = transformer;
     }
 
     /**
      * @see DataProvider#getData()
      */
     @Override
-    public Object getData() {
-        return spinner.getValue();
+    public DPO getData() {
+        return transformer.transform(spinner.getValue());
     }
 }

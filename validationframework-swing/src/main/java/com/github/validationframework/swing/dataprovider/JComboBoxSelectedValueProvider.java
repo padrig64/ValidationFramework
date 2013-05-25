@@ -26,18 +26,22 @@
 package com.github.validationframework.swing.dataprovider;
 
 import com.github.validationframework.api.dataprovider.DataProvider;
+import com.github.validationframework.base.transform.CastTransformer;
+import com.github.validationframework.base.transform.Transformer;
 
 import javax.swing.JComboBox;
 
 /**
  * Data provider retrieving the selected value of a combobox.
  *
+ * @param <DPO> Type of data in the combobox.<br>You may use {@link Object}.
+ *
  * @see DataProvider
  * @see JComboBoxSelectedIndexProvider
  * @see JComboBox
  * @see JComboBox#getSelectedItem()
  */
-public class JComboBoxSelectedValueProvider implements DataProvider<Object> {
+public class JComboBoxSelectedValueProvider<DPO> implements DataProvider<DPO> {
 
     /**
      * Combobox to get the selected value from.
@@ -45,19 +49,37 @@ public class JComboBoxSelectedValueProvider implements DataProvider<Object> {
     private final JComboBox comboBox;
 
     /**
-     * Constructor specifying the combobox to get the selected value from.
+     * Transformer to convert the combobox value.
+     */
+    private final Transformer<Object, DPO> transformer;
+
+    /**
+     * Constructor specifying the combobox to get the selected value from.<br>By default, the combobox value will be
+     * cast to {@link DPO}.
      *
      * @param comboBox Combobox to get the selected value from.
      */
     public JComboBoxSelectedValueProvider(final JComboBox comboBox) {
+        this(comboBox, new CastTransformer<Object, DPO>(CastTransformer.CastErrorBehavior.IGNORE));
+    }
+
+    /**
+     * Constructor specifying the combobox to get the selected value from, and the transformer to convert the combobox
+     * value to {@link DPO}.
+     *
+     * @param comboBox    Combobox to get the selected value from.
+     * @param transformer Transformer to convert the combobox value.
+     */
+    public JComboBoxSelectedValueProvider(final JComboBox comboBox, final Transformer<Object, DPO> transformer) {
         this.comboBox = comboBox;
+        this.transformer = transformer;
     }
 
     /**
      * @see DataProvider#getData()
      */
     @Override
-    public Object getData() {
-        return comboBox.getSelectedItem();
+    public DPO getData() {
+        return transformer.transform(comboBox.getSelectedItem());
     }
 }

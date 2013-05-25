@@ -26,17 +26,21 @@
 package com.github.validationframework.swing.dataprovider;
 
 import com.github.validationframework.api.dataprovider.DataProvider;
+import com.github.validationframework.base.transform.CastTransformer;
+import com.github.validationframework.base.transform.Transformer;
 
 import javax.swing.JFormattedTextField;
 
 /**
  * Data provider retrieving the last valid value from a formatted textfield.
  *
+ * @param <DPO> Type of data in the formatted textfield.<br>You may use {@link Object}.
+ *
  * @see DataProvider
  * @see JFormattedTextField
  * @see JFormattedTextField#getValue()
  */
-public class JFormattedTextFieldLastValidValueProvider implements DataProvider<Object> {
+public class JFormattedTextFieldLastValidValueProvider<DPO> implements DataProvider<DPO> {
 
     /**
      * Formatted textfield to retrieve the last valid value from.
@@ -44,19 +48,38 @@ public class JFormattedTextFieldLastValidValueProvider implements DataProvider<O
     private final JFormattedTextField formattedTextField;
 
     /**
-     * Constructor specifying the formatted textfield to retrieve the last valid value from.
+     * Transformer to convert the formatted textfield value.
+     */
+    private final Transformer<Object, DPO> transformer;
+
+    /**
+     * Constructor specifying the formatted textfield to retrieve the last valid value from.<br>By default, the
+     * formatted textfield will be cast to {@link DPO}.
      *
      * @param formattedTextField Formatted textfield to retrieve the last valid value from.
      */
     public JFormattedTextFieldLastValidValueProvider(final JFormattedTextField formattedTextField) {
+        this(formattedTextField, new CastTransformer<Object, DPO>(CastTransformer.CastErrorBehavior.IGNORE));
+    }
+
+    /**
+     * Constructor specifying the formatted textfield to retrieve the last valid value from, and the transformer to
+     * convert the formatted textfield value to {@link DPO}.
+     *
+     * @param formattedTextField Formatted textfield to retrieve the last valid value from.
+     * @param transformer        Transformer to convert the formatted textfield value.
+     */
+    public JFormattedTextFieldLastValidValueProvider(final JFormattedTextField formattedTextField,
+                                                     final Transformer<Object, DPO> transformer) {
         this.formattedTextField = formattedTextField;
+        this.transformer = transformer;
     }
 
     /**
      * @see DataProvider#getData()
      */
     @Override
-    public Object getData() {
-        return formattedTextField.getValue();
+    public DPO getData() {
+        return transformer.transform(formattedTextField.getValue());
     }
 }

@@ -26,14 +26,17 @@
 package com.github.validationframework.swing.dataprovider;
 
 import com.github.validationframework.api.dataprovider.DataProvider;
+import com.github.validationframework.base.transform.CastTransformer;
+import com.github.validationframework.base.transform.Transformer;
 
 import javax.swing.JList;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 
 /**
  * Data provider retrieving the selected values of a list.
+ *
+ * @param <DPO> Type of data in the list.<br>You may use {@link Object}.
  *
  * @see DataProvider
  * @see JList
@@ -42,7 +45,7 @@ import java.util.Collections;
  * @see JListSelectedIndicesProvider
  * @see JListSelectedValueProvider
  */
-public class JListSelectedValuesProvider implements DataProvider<Collection<Object>> {
+public class JListSelectedValuesProvider<DPO> implements DataProvider<Collection<DPO>> {
 
     /**
      * List to get the selected values from.
@@ -50,21 +53,43 @@ public class JListSelectedValuesProvider implements DataProvider<Collection<Obje
     private final JList list;
 
     /**
-     * Constructor specifying the list to get the selected values from.
+     * Transformer to convert the list values.
+     */
+    private final Transformer<Object, DPO> transformer;
+
+    /**
+     * Constructor specifying the list to get the selected values from.<br>By default, the list values will be cast to
+     * {@link DPO}.
      *
      * @param list List to get the selected values from.
      */
     public JListSelectedValuesProvider(final JList list) {
+        this(list, new CastTransformer<Object, DPO>(CastTransformer.CastErrorBehavior.IGNORE));
+    }
+
+    /**
+     * Constructor specifying the list to get the selected values from, and the transformer to convert the list values
+     * to {@link DPO}.
+     *
+     * @param list        List to get the selected values from.
+     * @param transformer Transformer to convert the list values.
+     */
+    public JListSelectedValuesProvider(final JList list, final Transformer<Object, DPO> transformer) {
         this.list = list;
+        this.transformer = transformer;
     }
 
     /**
      * @see DataProvider#getData()
      */
     @Override
-    public Collection<Object> getData() {
-        final Collection<Object> values = new ArrayList<Object>();
-        Collections.addAll(values, list.getSelectedValues());
+    public Collection<DPO> getData() {
+        final Collection<DPO> values = new ArrayList<DPO>();
+
+        for (final Object value : list.getSelectedValues()) {
+            values.add(transformer.transform(value));
+        }
+
         return values;
     }
 }

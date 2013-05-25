@@ -26,11 +26,15 @@
 package com.github.validationframework.swing.dataprovider;
 
 import com.github.validationframework.api.dataprovider.DataProvider;
+import com.github.validationframework.base.transform.CastTransformer;
+import com.github.validationframework.base.transform.Transformer;
 
 import javax.swing.JList;
 
 /**
  * Data provider retrieving the selected value of a list.
+ *
+ * @param <DPO> Type of data in the list.<br>You may use {@link Object}.
  *
  * @see DataProvider
  * @see JList
@@ -39,7 +43,7 @@ import javax.swing.JList;
  * @see JListSelectedIndicesProvider
  * @see JListSelectedValuesProvider
  */
-public class JListSelectedValueProvider implements DataProvider<Object> {
+public class JListSelectedValueProvider<DPO> implements DataProvider<DPO> {
 
     /**
      * List to get the selected value from.
@@ -47,19 +51,37 @@ public class JListSelectedValueProvider implements DataProvider<Object> {
     private final JList list;
 
     /**
-     * Constructor specifying the list to get the selected value from.
+     * Transformer to convert the list value.
+     */
+    private final Transformer<Object, DPO> transformer;
+
+    /**
+     * Constructor specifying the list to get the selected value from.<br>By default, the list value will be cast to
+     * {@link DPO}.
      *
      * @param list List to get the selected value from.
      */
     public JListSelectedValueProvider(final JList list) {
+        this(list, new CastTransformer<Object, DPO>(CastTransformer.CastErrorBehavior.IGNORE));
+    }
+
+    /**
+     * Constructor specifying the list to get the selected value from, and the transformer to convert the list value to
+     * {@link DPO}.
+     *
+     * @param list        List to get the selected value from.
+     * @param transformer Transformer to convert the list value.
+     */
+    public JListSelectedValueProvider(final JList list, final Transformer<Object, DPO> transformer) {
         this.list = list;
+        this.transformer = transformer;
     }
 
     /**
      * @see DataProvider#getData()
      */
     @Override
-    public Object getData() {
-        return list.getSelectedValue();
+    public DPO getData() {
+        return transformer.transform(list.getSelectedValue());
     }
 }

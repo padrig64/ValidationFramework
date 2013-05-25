@@ -40,6 +40,8 @@ import java.text.ParseException;
  * Data provider reading the value from a spinner.<br>Note that the value is not read from the model, but instead
  * corresponds to the current text.
  *
+ * @param <DPO> Type of data in the spinner editor.<br>You may use {@link Object}.
+ *
  * @see DataProvider
  * @see JSpinner
  */

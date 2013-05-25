@@ -39,6 +39,8 @@ import java.awt.Component;
  * Provider of the selected value of the current combobox editor component from a given table.<br>Note that if the table
  * is not in editing, no value can be provided.
  *
+ * @param <DPO> Type of data in the combobox editor.<br>You may use {@link Object}.
+ *
  * @see DataProvider
  * @see JTable
  * @see JTable#getCellEditor()

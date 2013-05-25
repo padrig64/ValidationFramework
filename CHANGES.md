@@ -1,6 +1,6 @@
 # Version 1.1.2 (to be released)
 
-* TODO Add transformers to Swing data providers providing Objects
+* Added transformers data providers based on the Swing components that use Object in their interface
 * Improved javadoc
 * Updated names of generic types for better consistency and understanding
 * Added convenience constructor to IconBooleanFeedback and ListCompositeDataProvider
