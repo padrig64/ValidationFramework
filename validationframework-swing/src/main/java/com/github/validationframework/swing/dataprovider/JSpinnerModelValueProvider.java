@@ -58,7 +58,7 @@ public class JSpinnerModelValueProvider<DPO> implements DataProvider<DPO> {
      * @param spinner Spinner to get the value from.
      */
     public JSpinnerModelValueProvider(final JSpinner spinner) {
-        this(spinner, new CastTransformer<Object, DPO>(CastTransformer.CastErrorBehavior.IGNORE));
+        this(spinner, new CastTransformer<Object, DPO>());
     }
 
     /**

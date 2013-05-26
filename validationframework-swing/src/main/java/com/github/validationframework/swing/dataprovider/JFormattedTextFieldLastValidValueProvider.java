@@ -59,7 +59,7 @@ public class JFormattedTextFieldLastValidValueProvider<DPO> implements DataProvi
      * @param formattedTextField Formatted textfield to retrieve the last valid value from.
      */
     public JFormattedTextFieldLastValidValueProvider(final JFormattedTextField formattedTextField) {
-        this(formattedTextField, new CastTransformer<Object, DPO>(CastTransformer.CastErrorBehavior.IGNORE));
+        this(formattedTextField, new CastTransformer<Object, DPO>());
     }
 
     /**

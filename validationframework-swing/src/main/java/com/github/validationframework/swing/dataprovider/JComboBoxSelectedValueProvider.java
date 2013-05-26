@@ -60,7 +60,7 @@ public class JComboBoxSelectedValueProvider<DPO> implements DataProvider<DPO> {
      * @param comboBox Combobox to get the selected value from.
      */
     public JComboBoxSelectedValueProvider(final JComboBox comboBox) {
-        this(comboBox, new CastTransformer<Object, DPO>(CastTransformer.CastErrorBehavior.IGNORE));
+        this(comboBox, new CastTransformer<Object, DPO>());
     }
 
     /**

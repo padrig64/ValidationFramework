@@ -62,7 +62,7 @@ public class JListSelectedValueProvider<DPO> implements DataProvider<DPO> {
      * @param list List to get the selected value from.
      */
     public JListSelectedValueProvider(final JList list) {
-        this(list, new CastTransformer<Object, DPO>(CastTransformer.CastErrorBehavior.IGNORE));
+        this(list, new CastTransformer<Object, DPO>());
     }
 
     /**
