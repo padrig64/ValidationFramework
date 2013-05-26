@@ -1,6 +1,7 @@
 # Version 1.2.0 (to be released)
 
 * Improved javadoc
+* Migrated to JNA 3.5.2, MigLayout 4.2 and SLF4J 1.7.5
 * Added transformers data providers based on the Swing components that use Object in their interface
 * Updated names of generic types for better consistency and understanding
 * Added convenience constructor to IconBooleanFeedback and ListCompositeDataProvider
