@@ -1,4 +1,4 @@
-# Version 1.1.2 (to be released)
+# Version 1.2.0 (to be released)
 
 * Improved javadoc
 * Added transformers data providers based on the Swing components that use Object in their interface

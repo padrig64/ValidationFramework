@@ -7,7 +7,7 @@
     <parent>
         <groupId>validationframework</groupId>
         <artifactId>validationframework</artifactId>
-        <version>1.1.2-SNAPSHOT</version>
+        <version>1.2.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>validationframework-demo</artifactId>
