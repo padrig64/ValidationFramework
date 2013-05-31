@@ -10,6 +10,7 @@
 
 # NEW STUFF
 
+* JFormattedTextFieldKeyboardTrigger
 * User-modification trigger for (formatted) textfields
 * IconResultHandler: dynamic message (maybe override the getInvalidText() method)
 * Consistent comments (use of dispose(), cast transformers, default behaviors, what classes can be used for, etc.)
