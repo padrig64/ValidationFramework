@@ -35,24 +35,25 @@ import java.util.Collection;
 public class OrBooleanAggregator implements Aggregator<Boolean, Boolean> {
 
     /**
-     * Default boolean value to be used when transforming an empty or null collection.
+     * Default boolean value to be used when transforming an empty or null collection.<br>This value can be null.
      */
-    public static final boolean DEFAULT_EMPTY_COLLECTION_VALUE = true;
+    public static final Boolean DEFAULT_EMPTY_COLLECTION_VALUE = true;
 
     /**
-     * Default boolean value to be used when transforming a null value from the collection.
+     * Default boolean value to be used when transforming a null value from the collection.<br>This value can be null.
      */
-    public static final boolean DEFAULT_NULL_ELEMENT_VALUE = false;
+    public static final Boolean DEFAULT_NULL_ELEMENT_VALUE = false;
 
     /**
-     * Boolean value to be used when transforming an empty collection.
+     * Boolean value to be used when transforming an empty collection.<br>This value can be null.
      */
-    private final boolean emptyCollectionValid;
+    private final Boolean emptyCollectionValid;
 
     /**
-     * Boolean value to be used when transforming a null value from the collection.
+     * Boolean value to be used when transforming a null value from the collection.<br>If this value is set to null,
+     * then the element will be ignored from the aggregation.
      */
-    private final boolean nullElementValid;
+    private final Boolean nullElementValid;
 
     /**
      * Default constructor using default boolean values for empty and null collections, and null elements.
@@ -76,6 +77,17 @@ public class OrBooleanAggregator implements Aggregator<Boolean, Boolean> {
     }
 
     /**
+     * Constructor specifying the boolean values for empty and null collections, and null elements.
+     *
+     * @param emptyCollectionValue Value for empty and null collections.
+     * @param nullElementValue     Value for null elements in the transformed collection.<br>It can be null.
+     */
+    public OrBooleanAggregator(final Boolean emptyCollectionValue, final Boolean nullElementValue) {
+        this.emptyCollectionValid = emptyCollectionValue;
+        this.nullElementValid = nullElementValue;
+    }
+
+    /**
      * @see Transformer#transform(Object)
      */
     @Override
@@ -90,9 +102,13 @@ public class OrBooleanAggregator implements Aggregator<Boolean, Boolean> {
                 if (result == null) {
                     result = nullElementValid;
                 }
-                aggregation |= result;
-                if (aggregation) {
-                    break;
+
+                // Ignore if null
+                if (result != null) {
+                    aggregation |= result;
+                    if (aggregation) {
+                        break;
+                    }
                 }
             }
         }

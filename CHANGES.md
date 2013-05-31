@@ -5,6 +5,7 @@
 * Added transformers data providers based on the Swing components that use Object in their interface
 * Updated names of generic types for better consistency and understanding
 * Added convenience constructor to IconBooleanFeedback and ListCompositeDataProvider
+* Added convenience in AndBooleanAggregator and OrBooleanAggregator to better support null values
 * Renamed ButtonGroup-related data providers
 
 # Version 1.1.1
