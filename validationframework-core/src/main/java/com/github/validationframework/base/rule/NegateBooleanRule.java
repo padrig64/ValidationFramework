@@ -27,18 +27,44 @@ package com.github.validationframework.base.rule;
 
 import com.github.validationframework.api.rule.Rule;
 
+/**
+ * Rule wrapper to negate/invert the result of a provided rule.
+ *
+ * @param <RHI> Type of data to be validated by the wrapped rule.
+ */
 public class NegateBooleanRule<RHI> implements Rule<RHI, Boolean> {
 
+    /**
+     * Default value returned when the result of the wrapped rule is null.
+     */
     private static final Boolean DEFAULT_NULL_RESULT_NEGATION = true;
 
+    /**
+     * Wrapped rule whose boolean result is to be negated/inverted.
+     */
     private final Rule<RHI, Boolean> wrappedRule;
 
+    /**
+     * Value to be returned when the result of the wrapped rule is null.
+     */
     private final Boolean nullResultNegation;
 
+    /**
+     * Constructor specifying the wrapped rule whose result is to be negated.
+     *
+     * @param wrappedRule Rule whose result is to be negated.
+     */
     public NegateBooleanRule(final Rule<RHI, Boolean> wrappedRule) {
         this(wrappedRule, DEFAULT_NULL_RESULT_NEGATION);
     }
 
+    /**
+     * Constructor specifying the wrapped rule whose result is to be negated and the default value to return in case
+     * the wrapped rule's result is null.
+     *
+     * @param wrappedRule        Wrapped rule whose boolean result is to be negated/inverted.
+     * @param nullResultNegation Value to be returned when the result of the wrapped rule is null.
+     */
     public NegateBooleanRule(final Rule<RHI, Boolean> wrappedRule, final Boolean nullResultNegation) {
         this.wrappedRule = wrappedRule;
         this.nullResultNegation = nullResultNegation;
