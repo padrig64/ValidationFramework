@@ -6,6 +6,7 @@
 * Updated names of generic types for better consistency and understanding
 * Added convenience constructor to IconBooleanFeedback and ListCompositeDataProvider
 * Added convenience in AndBooleanAggregator and OrBooleanAggregator to better support null values
+* Added convenience getComponent() method to Swing triggers, data providers and rules
 * Renamed ButtonGroup-related data providers
 
 # Version 1.1.1
