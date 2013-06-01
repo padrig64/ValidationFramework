@@ -54,6 +54,15 @@ public class JButtonActionTrigger extends AbstractTrigger implements Disposable 
     }
 
     /**
+     * Gets the source component.
+     *
+     * @return Source component.
+     */
+    public JButton getComponent() {
+        return source;
+    }
+
+    /**
      * @see Disposable#dispose()
      */
     @Override

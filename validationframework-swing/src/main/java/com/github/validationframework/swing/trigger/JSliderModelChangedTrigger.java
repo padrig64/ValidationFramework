@@ -56,6 +56,15 @@ public class JSliderModelChangedTrigger extends AbstractTrigger implements Dispo
     }
 
     /**
+     * Gets the source component.
+     *
+     * @return Source component.
+     */
+    public JSlider getComponent() {
+        return source;
+    }
+
+    /**
      * @see Disposable#dispose()
      */
     @Override

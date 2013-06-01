@@ -53,6 +53,15 @@ public class JPasswordFieldPasswordProvider implements DataProvider<char[]> {
     }
 
     /**
+     * Gets the component providing the data to be validated.
+     *
+     * @return Component providing the data to be validated.
+     */
+    public JPasswordField getComponent() {
+        return passwordField;
+    }
+
+    /**
      * @see DataProvider
      * @see JPasswordField#getPassword()
      */

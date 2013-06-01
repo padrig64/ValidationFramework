@@ -17,6 +17,7 @@ import javax.swing.JComponent;
 import javax.swing.JSpinner;
 import javax.swing.text.JTextComponent;
 
+// TODO Don't extend from JTextComponentDocumentChangedTrigger
 public class JSpinnerEditorModelChangedTrigger extends JTextComponentDocumentChangedTrigger {
 
     /**

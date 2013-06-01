@@ -52,6 +52,15 @@ public class JSliderValueProvider implements DataProvider<Integer> {
     }
 
     /**
+     * Gets the component providing the data to be validated.
+     *
+     * @return Component providing the data to be validated.
+     */
+    public JSlider getComponent() {
+        return slider;
+    }
+
+    /**
      * @see DataProvider#getData()
      */
     @Override

@@ -61,6 +61,15 @@ public class JSpinnerEditorTextProvider implements DataProvider<String> {
     }
 
     /**
+     * Gets the component providing the data to be validated.
+     *
+     * @return Component providing the data to be validated.
+     */
+    public JSpinner getComponent() {
+        return spinner;
+    }
+
+    /**
      * @see DataProvider#getData()
      */
     @Override

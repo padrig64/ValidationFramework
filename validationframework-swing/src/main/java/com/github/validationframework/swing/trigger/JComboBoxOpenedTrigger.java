@@ -64,6 +64,15 @@ public class JComboBoxOpenedTrigger extends AbstractTrigger implements Disposabl
     }
 
     /**
+     * Gets the source component.
+     *
+     * @return Source component.
+     */
+    public JComboBox getComponent() {
+        return source;
+    }
+
+    /**
      * @see Disposable#dispose()
      */
     @Override

@@ -80,6 +80,15 @@ public class JListSelectedValuesProvider<DPO> implements DataProvider<Collection
     }
 
     /**
+     * Gets the component providing the data to be validated.
+     *
+     * @return Component providing the data to be validated.
+     */
+    public JList getComponent() {
+        return list;
+    }
+
+    /**
      * @see DataProvider#getData()
      */
     @Override

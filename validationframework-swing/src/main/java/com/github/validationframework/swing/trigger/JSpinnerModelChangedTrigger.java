@@ -54,6 +54,15 @@ public class JSpinnerModelChangedTrigger extends AbstractTrigger implements Disp
     }
 
     /**
+     * Gets the source component.
+     *
+     * @return Source component.
+     */
+    public JSpinner getComponent() {
+        return source;
+    }
+
+    /**
      * @see Disposable#dispose()
      */
     @Override

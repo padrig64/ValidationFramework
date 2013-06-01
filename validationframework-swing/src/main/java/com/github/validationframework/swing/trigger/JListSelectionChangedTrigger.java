@@ -51,7 +51,7 @@ public class JListSelectionChangedTrigger extends AbstractTrigger implements Dis
         @Override
         public void valueChanged(final ListSelectionEvent e) {
             if (!e.getValueIsAdjusting()) {
-                fireTriggerEvent(new TriggerEvent(list));
+                fireTriggerEvent(new TriggerEvent(source));
             }
         }
     }
@@ -59,7 +59,7 @@ public class JListSelectionChangedTrigger extends AbstractTrigger implements Dis
     /**
      * List to track selection changes.
      */
-    private final JList list;
+    private final JList source;
 
     /**
      * Listener to selection changes.
@@ -69,12 +69,21 @@ public class JListSelectionChangedTrigger extends AbstractTrigger implements Dis
     /**
      * Constructor specifying the list whose selection changes are meant to trigger validation.
      *
-     * @param list List whose selection changes are meant to trigger validation.
+     * @param source List whose selection changes are meant to trigger validation.
      */
-    public JListSelectionChangedTrigger(final JList list) {
+    public JListSelectionChangedTrigger(final JList source) {
         super();
-        this.list = list;
-        this.list.addListSelectionListener(selectionAdapter);
+        this.source = source;
+        this.source.addListSelectionListener(selectionAdapter);
+    }
+
+    /**
+     * Gets the source component.
+     *
+     * @return Source component.
+     */
+    public JList getComponent() {
+        return source;
     }
 
     /**
@@ -82,6 +91,6 @@ public class JListSelectionChangedTrigger extends AbstractTrigger implements Dis
      */
     @Override
     public void dispose() {
-        list.removeListSelectionListener(selectionAdapter);
+        source.removeListSelectionListener(selectionAdapter);
     }
 }

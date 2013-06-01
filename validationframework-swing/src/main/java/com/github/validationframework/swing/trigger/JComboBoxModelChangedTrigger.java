@@ -54,6 +54,15 @@ public class JComboBoxModelChangedTrigger extends AbstractTrigger implements Dis
     }
 
     /**
+     * Gets the source component.
+     *
+     * @return Source component.
+     */
+    public JComboBox getComponent() {
+        return source;
+    }
+
+    /**
      * @see Disposable#dispose()
      */
     @Override

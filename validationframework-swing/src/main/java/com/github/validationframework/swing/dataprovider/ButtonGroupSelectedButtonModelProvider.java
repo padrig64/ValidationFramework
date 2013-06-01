@@ -53,6 +53,15 @@ public class ButtonGroupSelectedButtonModelProvider implements DataProvider<Butt
     }
 
     /**
+     * Gets the component providing the data to be validated.
+     *
+     * @return Component providing the data to be validated.
+     */
+    public ButtonGroup getComponent() {
+        return buttonGroup;
+    }
+
+    /**
      * @see DataProvider#getData()
      */
     @Override

@@ -64,6 +64,15 @@ public class JComboBoxCanceledTrigger extends AbstractTrigger implements Disposa
     }
 
     /**
+     * Gets the source component.
+     *
+     * @return Source component.
+     */
+    public JComboBox getComponent() {
+        return source;
+    }
+
+    /**
      * @see Disposable#dispose()
      */
     @Override

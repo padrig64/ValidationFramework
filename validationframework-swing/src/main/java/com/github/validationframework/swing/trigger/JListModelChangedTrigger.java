@@ -49,7 +49,7 @@ public class JListModelChangedTrigger extends AbstractTrigger implements Disposa
          */
         @Override
         public void intervalAdded(final ListDataEvent e) {
-            fireTriggerEvent(new TriggerEvent(list));
+            fireTriggerEvent(new TriggerEvent(source));
         }
 
         /**
@@ -57,7 +57,7 @@ public class JListModelChangedTrigger extends AbstractTrigger implements Disposa
          */
         @Override
         public void intervalRemoved(final ListDataEvent e) {
-            fireTriggerEvent(new TriggerEvent(list));
+            fireTriggerEvent(new TriggerEvent(source));
         }
 
         /**
@@ -65,14 +65,14 @@ public class JListModelChangedTrigger extends AbstractTrigger implements Disposa
          */
         @Override
         public void contentsChanged(final ListDataEvent e) {
-            fireTriggerEvent(new TriggerEvent(list));
+            fireTriggerEvent(new TriggerEvent(source));
         }
     }
 
     /**
      * List to track model changes.
      */
-    private final JList list;
+    private final JList source;
 
     /**
      * Listener to model changes.
@@ -82,13 +82,22 @@ public class JListModelChangedTrigger extends AbstractTrigger implements Disposa
     /**
      * Constructor specifying the list whose model changes are meant to trigger validation.
      *
-     * @param list List whose model changes are meant to trigger validation.
+     * @param source List whose model changes are meant to trigger validation.
      */
-    public JListModelChangedTrigger(final JList list) {
+    public JListModelChangedTrigger(final JList source) {
         super();
-        this.list = list;
-        this.list.getModel().addListDataListener(modelChangeAdapter);
+        this.source = source;
+        this.source.getModel().addListDataListener(modelChangeAdapter);
         // TODO Listen to model replacement
+    }
+
+    /**
+     * Gets the source component.
+     *
+     * @return Source component.
+     */
+    public JList getComponent() {
+        return source;
     }
 
     /**
@@ -96,6 +105,6 @@ public class JListModelChangedTrigger extends AbstractTrigger implements Disposa
      */
     @Override
     public void dispose() {
-        list.getModel().removeListDataListener((modelChangeAdapter));
+        source.getModel().removeListDataListener((modelChangeAdapter));
     }
 }

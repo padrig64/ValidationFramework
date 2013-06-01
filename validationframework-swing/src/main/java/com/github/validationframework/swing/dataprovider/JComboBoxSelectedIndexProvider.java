@@ -54,6 +54,15 @@ public class JComboBoxSelectedIndexProvider implements DataProvider<Integer> {
     }
 
     /**
+     * Gets the component providing the data to be validated.
+     *
+     * @return Component providing the data to be validated.
+     */
+    public JComboBox getComponent() {
+        return comboBox;
+    }
+
+    /**
      * @see DataProvider#getData()
      */
     @Override

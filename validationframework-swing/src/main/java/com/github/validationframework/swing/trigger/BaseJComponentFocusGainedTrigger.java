@@ -85,6 +85,15 @@ public class BaseJComponentFocusGainedTrigger<C extends Component> extends Abstr
     }
 
     /**
+     * Gets the source component.
+     *
+     * @return Source component.
+     */
+    public C getComponent() {
+        return source;
+    }
+
+    /**
      * @see Disposable#dispose()
      */
     @Override

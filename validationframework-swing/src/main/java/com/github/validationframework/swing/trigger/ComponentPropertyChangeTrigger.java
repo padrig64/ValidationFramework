@@ -49,14 +49,14 @@ public class ComponentPropertyChangeTrigger extends AbstractTrigger implements D
         @Override
         public void propertyChange(final PropertyChangeEvent evt) {
             // Trigger validation
-            fireTriggerEvent(new TriggerEvent(component));
+            fireTriggerEvent(new TriggerEvent(source));
         }
     }
 
     /**
      * Component whose property changes are to be listened to.
      */
-    private final Component component;
+    private final Component source;
 
     /**
      * Listener to component property changes.
@@ -68,12 +68,12 @@ public class ComponentPropertyChangeTrigger extends AbstractTrigger implements D
      * be the
      * trigger initiate the validation upon any property change.
      *
-     * @param component Component whose property changes are to be listened to.
+     * @param source Component whose property changes are to be listened to.
      */
-    public ComponentPropertyChangeTrigger(final Component component) {
+    public ComponentPropertyChangeTrigger(final Component source) {
         super();
-        this.component = component;
-        component.addPropertyChangeListener(propertyChangeAdapter);
+        this.source = source;
+        source.addPropertyChangeListener(propertyChangeAdapter);
     }
 
     /**
@@ -85,7 +85,7 @@ public class ComponentPropertyChangeTrigger extends AbstractTrigger implements D
      */
     public ComponentPropertyChangeTrigger(final Component component, final String... propertyNames) {
         super();
-        this.component = component;
+        this.source = component;
 
         if ((propertyNames == null) || (propertyNames.length == 0)) {
             component.addPropertyChangeListener(propertyChangeAdapter);
@@ -97,10 +97,19 @@ public class ComponentPropertyChangeTrigger extends AbstractTrigger implements D
     }
 
     /**
+     * Gets the source component.
+     *
+     * @return Source component.
+     */
+    public Component getComponent() {
+        return source;
+    }
+
+    /**
      * @see Disposable#dispose()
      */
     @Override
     public void dispose() {
-        component.removePropertyChangeListener(propertyChangeAdapter);
+        source.removePropertyChangeListener(propertyChangeAdapter);
     }
 }

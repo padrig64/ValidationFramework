@@ -46,6 +46,15 @@ public class JSpinnerFormatterRule extends AbstractStringBooleanRule {
     }
 
     /**
+     * Gets the spinner whose formatter is to be checked.
+     *
+     * @return Spinner whose formatter is to be checked.
+     */
+    public JSpinner getComponent() {
+        return spinner;
+    }
+
+    /**
      * @see AbstractStringBooleanRule#validate(Object)
      */
     @Override

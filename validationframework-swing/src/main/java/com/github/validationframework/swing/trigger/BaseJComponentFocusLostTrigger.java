@@ -85,6 +85,15 @@ public class BaseJComponentFocusLostTrigger<C extends JComponent> extends Abstra
     }
 
     /**
+     * Gets the source component.
+     *
+     * @return Source component.
+     */
+    public C getComponent() {
+        return source;
+    }
+
+    /**
      * @see Disposable#dispose()
      */
     @Override

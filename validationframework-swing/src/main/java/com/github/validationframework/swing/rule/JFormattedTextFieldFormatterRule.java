@@ -51,6 +51,15 @@ public class JFormattedTextFieldFormatterRule extends AbstractStringBooleanRule 
     }
 
     /**
+     * Gets the formatted textfield whose formatter is to be checked.
+     *
+     * @return Formatted textfield whose formatter is to be checked.
+     */
+    public JFormattedTextField getComponent() {
+        return formattedTextField;
+    }
+
+    /**
      * @see AbstractStringBooleanRule#validate(Object)
      */
     @Override

@@ -79,17 +79,17 @@ public class BaseJTextComponentDocumentChangedTrigger<C extends JTextComponent> 
         public void removeUpdate(final DocumentEvent e) {
             /*
              * Reschedule the remove update later and fire the associated event only if there is no subsequent insert
-			 * update.<br>This is done because, very often, when the text is replace by another text (or if the focus
-			 * leaves a formatted textfield that has a valid value with the COMMIT focus lost behavior), the original
-			 * text is first removed (leaving the text component empty), and then the new text is added. So two document
-			 * change events are fired what would trigger the validation twice. Here is an example where it becomes
-			 * annoying: a formatted textfield validating numbers should consider an empty field to be invalid; an Apply
-			 * button gets disabled when the field is invalid: if the user enters a valid number and then clicks the
-			 * Apply button, the focus lost behavior set on the formatted textfield would make it reformat the value,
-			 * what would first fire a remove update, what would make the validation disable the Apply button, and then
-			 * would fire an insert update, what would make the validation re-enable the Apply button; but disabling the
-			 * button would actually disarm it while it is being pressed.
-			 */
+             * update.<br>This is done because, very often, when the text is replace by another text (or if the focus
+             * leaves a formatted textfield that has a valid value with the COMMIT focus lost behavior), the original
+             * text is first removed (leaving the text component empty), and then the new text is added. So two document
+             * change events are fired what would trigger the validation twice. Here is an example where it becomes
+             * annoying: a formatted textfield validating numbers should consider an empty field to be invalid; an Apply
+             * button gets disabled when the field is invalid: if the user enters a valid number and then clicks the
+             * Apply button, the focus lost behavior set on the formatted textfield would make it reformat the value,
+             * what would first fire a remove update, what would make the validation disable the Apply button, and then
+             * would fire an insert update, what would make the validation re-enable the Apply button; but disabling the
+             * button would actually disarm it while it is being pressed.
+             */
             skipPendingRemove = false;
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
@@ -131,6 +131,15 @@ public class BaseJTextComponentDocumentChangedTrigger<C extends JTextComponent> 
         this.source = source;
         source.getDocument().addDocumentListener(sourceAdapter);
         // TODO Track document replacement
+    }
+
+    /**
+     * Gets the source component.
+     *
+     * @return Source component.
+     */
+    public C getComponent() {
+        return source;
     }
 
     /**

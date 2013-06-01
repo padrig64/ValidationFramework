@@ -63,6 +63,15 @@ public class BaseJToggleButtonModelChangedTrigger<C extends JToggleButton> exten
     }
 
     /**
+     * Gets the source component.
+     *
+     * @return Source component.
+     */
+    public C getComponent() {
+        return source;
+    }
+
+    /**
      * @see Disposable#dispose()
      */
     @Override

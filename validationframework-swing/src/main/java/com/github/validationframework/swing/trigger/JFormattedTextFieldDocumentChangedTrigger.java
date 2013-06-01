@@ -32,7 +32,8 @@ import javax.swing.JFormattedTextField;
  *
  * @see BaseJTextComponentDocumentChangedTrigger
  */
-public class JFormattedTextFieldDocumentChangedTrigger extends BaseJTextComponentDocumentChangedTrigger<JFormattedTextField> {
+public class JFormattedTextFieldDocumentChangedTrigger extends
+        BaseJTextComponentDocumentChangedTrigger<JFormattedTextField> {
 
     /**
      * Constructor specifying the formatted textfield to listen to.

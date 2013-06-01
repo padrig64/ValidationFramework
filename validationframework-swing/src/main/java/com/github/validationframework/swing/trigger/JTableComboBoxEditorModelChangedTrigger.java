@@ -90,8 +90,8 @@ public class JTableComboBoxEditorModelChangedTrigger extends AbstractTrigger imp
         public void triggerValidation(final TriggerEvent event) {
             /*
              * Check if trigger allowed here, because at the moment the trigger is registered (when the editor component
-			 * is set on the table), the editing row and editing column are not yet set in the table.
-			 */
+             * is set on the table), the editing row and editing column are not yet set in the table.
+             */
             if (isTriggerAllowed()) {
                 fireTriggerEvent(event);
             }
@@ -189,6 +189,15 @@ public class JTableComboBoxEditorModelChangedTrigger extends AbstractTrigger imp
         this.modelRowIndex = modelRowIndex;
         this.modelColumnIndex = modelColumnIndex;
         table.addPropertyChangeListener("tableCellEditor", sourceAdapter);
+    }
+
+    /**
+     * Gets the source component.
+     *
+     * @return Source component.
+     */
+    public JTable getComponent() {
+        return table;
     }
 
     /**

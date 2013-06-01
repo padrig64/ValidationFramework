@@ -54,6 +54,15 @@ public class BaseJTextComponentTextProvider<C extends JTextComponent> implements
     }
 
     /**
+     * Gets the component providing the data to be validated.
+     *
+     * @return Component providing the data to be validated.
+     */
+    public C getComponent() {
+        return textComponent;
+    }
+
+    /**
      * @see DataProvider#getData()
      */
     @Override

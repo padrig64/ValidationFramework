@@ -87,6 +87,15 @@ public class JTableTextEditorValueProvider<DPO> implements DataProvider<DPO> {
     }
 
     /**
+     * Gets the component providing the data to be validated.
+     *
+     * @return Component providing the data to be validated.
+     */
+    public JTable getComponent() {
+        return table;
+    }
+
+    /**
      * @see DataProvider#getData()
      */
     @Override
