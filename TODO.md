@@ -42,6 +42,9 @@
 
 # THINK ABOUT
 
+* Initial state for result handler before any validation has been performed yet
+* Differentiate between model changes due to user action and system action
+* General-purpose conditional logic
 * Thread-safety (triggers from multiple-threads)
 * Make triggers not trigger until the whole validator is ready
 * Remove data provider marker interface (check validation of heterogeneous groups first)
