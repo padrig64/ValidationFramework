@@ -1,5 +1,6 @@
 # Version 1.2.0 (to be released)
 
+* Changed groupid from validationframework to com.google.code.validation for future availability in Maven Central
 * Improved javadoc
 * Migrated to JNA 3.5.2, MigLayout 4.2 and SLF4J 1.7.5
 * Added transformers data providers based on the Swing components that use Object in their interface
@@ -7,6 +8,7 @@
 * Added convenience constructor to IconBooleanFeedback and ListCompositeDataProvider
 * Added convenience in AndBooleanAggregator and OrBooleanAggregator to better support null values
 * Added convenience getComponent() method to Swing triggers, data providers and rules
+* Added InvokeLaterTrigger wrapper to re-schedule a trigger later on the Event Dispatch Thread
 * Renamed ButtonGroup-related data providers
 
 # Version 1.1.1
