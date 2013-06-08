@@ -40,10 +40,22 @@ import javax.swing.SwingUtilities;
  */
 public class InvokeLaterTrigger extends AbstractTrigger {
 
+    /**
+     * Listener to the wrapped trigger and that will re-schedule on the EDT as required.
+     */
     private class TriggerRescheduler implements TriggerListener, Runnable {
 
+        /**
+         * Flag indicating whether to re-schedule only if the wrapped trigger was initiated outside the EDT.
+         */
         private final boolean onlyIfNotOnEDT;
 
+        /**
+         * Constructor specifying whether to re-schedule only if the wrapped trigger was initiated outside the EDT.
+         *
+         * @param onlyIfNotOnEDT Flag indicating whether to re-schedule only if the wrapped trigger was initiated
+         *                       outside the EDT.
+         */
         public TriggerRescheduler(final boolean onlyIfNotOnEDT) {
             this.onlyIfNotOnEDT = onlyIfNotOnEDT;
         }
@@ -71,10 +83,27 @@ public class InvokeLaterTrigger extends AbstractTrigger {
         }
     }
 
+    /**
+     * Constructor specifying the wrapped trigger and whether to re-schedule on the EDT only if the wrapped trigger was
+     * initiated outside the EDT.<br>By default, the trigger will always be re-scheduled later on the EDT, even if it
+     * was on the EDT.
+     *
+     * @param wrappedTrigger Wrapped trigger to re-schedule later on the EDT.
+     *
+     * @see #InvokeLaterTrigger(Trigger, boolean)
+     */
     public InvokeLaterTrigger(final Trigger wrappedTrigger) {
         this(wrappedTrigger, false);
     }
 
+    /**
+     * Constructor specifying the wrapped trigger and whether to re-schedule on the EDT only if the wrapped trigger was
+     * initiated outside the EDT.
+     *
+     * @param wrappedTrigger Wrapped trigger to re-schedule later on the EDT.
+     * @param onlyIfNotOnEDT Flag indicating whether to re-schedule only if the wrapped trigger was initiated outside
+     *                       the EDT.
+     */
     public InvokeLaterTrigger(final Trigger wrappedTrigger, final boolean onlyIfNotOnEDT) {
         wrappedTrigger.addTriggerListener(new TriggerRescheduler(onlyIfNotOnEDT));
     }
