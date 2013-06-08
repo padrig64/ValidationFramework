@@ -31,8 +31,8 @@ import com.github.validationframework.base.transform.Transformer;
 /**
  * Rule making use of a {@link Transformer} to produce the results.
  *
- * @param <RI> Type of data to be transformed to {@link RO}.
- * @param <RO> Type of data transformed form {@link RI}.
+ * @param <RI> Type of data to be transformed to RO.
+ * @param <RO> Type of data transformed form RI.
  */
 public class TransformerRule<RI, RO> implements Rule<RI, RO> {
 

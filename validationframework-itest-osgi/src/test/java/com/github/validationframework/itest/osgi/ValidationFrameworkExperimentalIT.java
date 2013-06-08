@@ -30,7 +30,7 @@ public class ValidationFrameworkExperimentalIT {
             return data;
         }
 
-        public void fireTriggerEvent(String data) {
+        public void fireTriggerEvent(final String data) {
             this.data = data;
             super.fireTriggerEvent();
         }
@@ -45,12 +45,13 @@ public class ValidationFrameworkExperimentalIT {
         );
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void simpleValidatorBuilder() {
-        DataTrigger dataTrigger = new DataTrigger();
-        ResultHandler<Boolean> mockResultHandler = Mockito.mock(ResultHandler.class);
+        final DataTrigger dataTrigger = new DataTrigger();
+        final ResultHandler<Boolean> mockResultHandler = Mockito.mock(ResultHandler.class);
 
-        DefaultSimpleValidator<String, Boolean> validator =
+        final DefaultSimpleValidator<String, Boolean> validator =
                 SimpleValidatorBuilder
                         .on(dataTrigger)
                         .read(dataTrigger)

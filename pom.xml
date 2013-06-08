@@ -5,14 +5,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>validationframework</groupId>
-    <artifactId>validationframework</artifactId>
+    <groupId>com.google.code.validationframework</groupId>
+    <artifactId>validationframework-parent</artifactId>
     <version>1.2.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Validation Framework</name>
     <description>Parent POM of Validation Framework components</description>
-    <url>http://padrig64.github.com/ValidationFramework/</url>
+    <url>http://code.google.com/p/validationframework/</url>
 
     <licenses>
         <license>
@@ -27,18 +27,27 @@
         <developerConnection>scm:git:git@github.com:padrig64/ValidationFramework.git</developerConnection>
     </scm>
 
+    <developers>
+        <developer>
+            <id>padrig64</id>
+            <name>Patrick Moawad</name>
+        </developer>
+    </developers>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <!-- Maven plugins versions -->
 
-        <mavencompilerplugin.version>3.1</mavencompilerplugin.version>
-        <java.compiler.version>1.6</java.compiler.version>
-        <mavengpgplugin.version>1.4</mavengpgplugin.version>
-        <mavenreleaseplugin.version>2.3.2</mavenreleaseplugin.version>
-        <mavenbundleplugin.version>2.3.7</mavenbundleplugin.version>
-        <failsafeplugin.version>2.14.1</failsafeplugin.version>
         <dependsmavenplugin.version>1.2</dependsmavenplugin.version>
+        <failsafeplugin.version>2.14.1</failsafeplugin.version>
+        <java.compiler.version>1.6</java.compiler.version>
+        <mavenbundleplugin.version>2.3.7</mavenbundleplugin.version>
+        <mavencompilerplugin.version>3.1</mavencompilerplugin.version>
+        <mavengpgplugin.version>1.4</mavengpgplugin.version>
+        <mavenjavadocplugin.version>2.9</mavenjavadocplugin.version>
+        <mavensourceplugin.version>2.2.1</mavensourceplugin.version>
+        <mavenreleaseplugin.version>2.3.2</mavenreleaseplugin.version>
 
         <!-- Dependencies versions -->
 
@@ -68,22 +77,22 @@
             <!-- Validation Framework -->
 
             <dependency>
-                <groupId>validationframework</groupId>
+                <groupId>com.google.code.validationframework</groupId>
                 <artifactId>validationframework-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>validationframework</groupId>
+                <groupId>com.google.code.validationframework</groupId>
                 <artifactId>validationframework-swing</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>validationframework</groupId>
+                <groupId>com.google.code.validationframework</groupId>
                 <artifactId>validationframework-experimental</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>validationframework</groupId>
+                <groupId>com.google.code.validationframework</groupId>
                 <artifactId>validationframework-demo</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -203,6 +212,36 @@
     </dependencyManagement>
 
     <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${mavensourceplugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${mavenjavadocplugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -213,6 +252,10 @@
                         <source>${java.compiler.version}</source>
                         <target>${java.compiler.version}</target>
                         <compilerVersion>${java.compiler.version}</compilerVersion>
+                        <compilerArgs>
+                            <arg>-Xlint:unchecked</arg>
+                            <arg>-Xlint:deprecation</arg>
+                        </compilerArgs>
                     </configuration>
                 </plugin>
 

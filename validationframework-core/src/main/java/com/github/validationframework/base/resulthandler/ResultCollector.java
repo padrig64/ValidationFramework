@@ -39,7 +39,7 @@ import com.github.validationframework.base.trigger.AbstractTrigger;
  * independent fields, for instance to enable or disable an Apply button on a dialog.
  *
  * @param <VO>  Type of result collected from another validator.
- * @param <DPO> Type of data provided by the collector.<br>It could be the same as {@link VO}.
+ * @param <DPO> Type of data provided by the collector.<br>It could be the same as VO.
  *
  * @see com.github.validationframework.base.validator.ResultCollectorValidator
  * @see ResultHandler

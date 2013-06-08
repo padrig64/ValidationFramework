@@ -26,6 +26,7 @@ public abstract class AbstractCompositeBooleanRuleTest {
 
     protected abstract AbstractCompositeRule<Object, Boolean> createCompositeBooleanRule();
 
+    @SuppressWarnings("unchecked")
     public static Rule<Object, Boolean> createRule(final boolean result) {
         final Rule<Object, Boolean> rule = mock(Rule.class);
         when(rule.validate(any(Object.class))).thenReturn(result);

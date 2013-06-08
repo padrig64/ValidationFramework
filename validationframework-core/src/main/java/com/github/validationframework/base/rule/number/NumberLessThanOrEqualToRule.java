@@ -81,6 +81,7 @@ public class NumberLessThanOrEqualToRule<RI extends Number> implements Rule<RI, 
     /**
      * @see Rule#validate(Object)
      */
+    @SuppressWarnings("unchecked")
     @Override
     public Boolean validate(final RI data) {
         final boolean valid;

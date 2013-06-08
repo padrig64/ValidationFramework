@@ -52,8 +52,7 @@ public class JSpinnerModelValueProvider<DPO> implements DataProvider<DPO> {
     private final Transformer<Object, DPO> transformer;
 
     /**
-     * Constructor specifying the spinner to get the value from.<br>By default, the spinner value will be cast to
-     * {@link DPO}.
+     * Constructor specifying the spinner to get the value from.<br>By default, the spinner value will be cast to DPO.
      *
      * @param spinner Spinner to get the value from.
      */
@@ -63,7 +62,7 @@ public class JSpinnerModelValueProvider<DPO> implements DataProvider<DPO> {
 
     /**
      * Constructor specifying the spinner to get the value from, and the transformer to convert the spinner value to
-     * {@link DPO}.
+     * DPO.
      *
      * @param spinner     Spinner to get the value from.
      * @param transformer Transformer to convert the spinner value.

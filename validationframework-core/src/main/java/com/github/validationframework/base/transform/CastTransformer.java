@@ -94,6 +94,7 @@ public class CastTransformer<I, O> implements Transformer<I, O> {
     /**
      * @see Transformer#transform(Object)
      */
+    @SuppressWarnings("unchecked")
     @Override
     public O transform(final I input) {
         O output;

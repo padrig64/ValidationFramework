@@ -6,28 +6,28 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>validationframework</groupId>
-        <artifactId>validationframework</artifactId>
+        <groupId>com.google.code.validationframework</groupId>
+        <artifactId>validationframework-parent</artifactId>
         <version>1.2.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>validationframework-itest-osgi</artifactId>
-    <name>Validation Framework OSGi Integration Tests</name>
+    <name>Validation Framework :: OSGi Integration Tests</name>
 
     <dependencies>
 
         <!-- Validation Framework dependencies -->
 
         <dependency>
-            <groupId>validationframework</groupId>
+            <groupId>com.google.code.validationframework</groupId>
             <artifactId>validationframework-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>validationframework</groupId>
+            <groupId>com.google.code.validationframework</groupId>
             <artifactId>validationframework-swing</artifactId>
         </dependency>
         <dependency>
-            <groupId>validationframework</groupId>
+            <groupId>com.google.code.validationframework</groupId>
             <artifactId>validationframework-experimental</artifactId>
         </dependency>
 

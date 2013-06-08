@@ -33,8 +33,8 @@ import java.util.Collection;
 /**
  * Rule making use of an {@link Aggregator} to produce the results.
  *
- * @param <RI> Type of data to be aggregated into a {@link RO}.
- * @param <RO> Type of aggregation of elements of type {@link RI}.
+ * @param <RI> Type of data to be aggregated into a RO.
+ * @param <RO> Type of aggregation of elements of type RI.
  */
 public class AggregatorRule<RI, RO> extends TransformerRule<Collection<RI>, RO> {
 

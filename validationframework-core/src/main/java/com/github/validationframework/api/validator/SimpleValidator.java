@@ -47,9 +47,9 @@ import com.github.validationframework.api.trigger.Trigger;
  * @param <RI>  Type of data the rules will check.
  * @param <RO>  Type of result the rules will produce.
  * @param <RH>  Type of result handlers to be used on validation output.
- * @param <RHI> Type of result the result handlers will handler.<br>It may or may not be the same as {@link RO}
- *              depending on the implementations.<br>For instance, an implementation could aggregate/transform the
- *              results before using the result handlers.
+ * @param <RHI> Type of result the result handlers will handler.<br>It may or may not be the same as RO depending on the
+ *              implementations.<br>For instance, an implementation could aggregate/transform the results before using
+ *              the result handlers.
  *
  * @see Trigger
  * @see DataProvider

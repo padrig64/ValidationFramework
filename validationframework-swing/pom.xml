@@ -6,13 +6,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>validationframework</groupId>
-        <artifactId>validationframework</artifactId>
+        <groupId>com.google.code.validationframework</groupId>
+        <artifactId>validationframework-parent</artifactId>
         <version>1.2.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>validationframework-swing</artifactId>
-    <name>Validation Framework Swing Support</name>
+    <name>Validation Framework :: Swing Support</name>
     <packaging>bundle</packaging>
 
     <dependencies>
@@ -20,7 +20,7 @@
         <!-- Validation Framework -->
 
         <dependency>
-            <groupId>validationframework</groupId>
+            <groupId>com.google.code.validationframework</groupId>
             <artifactId>validationframework-core</artifactId>
         </dependency>
 

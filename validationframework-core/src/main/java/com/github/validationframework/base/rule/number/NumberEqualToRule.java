@@ -80,6 +80,7 @@ public class NumberEqualToRule<RI extends Number> implements Rule<RI, Boolean> {
     /**
      * @see Rule#validate(Object)
      */
+    @SuppressWarnings("unchecked")
     @Override
     public Boolean validate(final RI data) {
         final boolean valid;

@@ -81,6 +81,7 @@ public class NumberGreaterThanRule<RI extends Number> implements Rule<RI, Boolea
     /**
      * @see Rule#validate(Object)
      */
+    @SuppressWarnings("unchecked")
     @Override
     public Boolean validate(final RI data) {
         final boolean valid;
