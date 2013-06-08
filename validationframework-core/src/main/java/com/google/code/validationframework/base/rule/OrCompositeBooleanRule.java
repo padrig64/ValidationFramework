@@ -47,7 +47,7 @@ public class OrCompositeBooleanRule<RI> extends AbstractCompositeRule<RI, Boolea
     /**
      * Boolean aggregator using the OR operator.
      *
-     * @see com.google.code.validationframework.base.transform.OrBooleanAggregator
+     * @see OrBooleanAggregator
      */
     private final Transformer<Collection<Boolean>, Boolean> aggregator;
 

@@ -52,7 +52,7 @@ import com.google.code.validationframework.api.trigger.Trigger;
  *              the result handlers.
  *
  * @see Trigger
- * @see com.google.code.validationframework.api.dataprovider.DataProvider
+ * @see DataProvider
  * @see Rule
  * @see ResultHandler
  * @see MappableValidator

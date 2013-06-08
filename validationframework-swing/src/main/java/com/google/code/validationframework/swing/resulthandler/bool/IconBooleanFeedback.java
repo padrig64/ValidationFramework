@@ -34,7 +34,7 @@ import javax.swing.JComponent;
 /**
  * Concrete implementation of an icon feedback result handler handling boolean results.
  *
- * @see com.google.code.validationframework.swing.resulthandler.AbstractIconFeedback
+ * @see AbstractIconFeedback
  */
 public class IconBooleanFeedback extends AbstractIconFeedback<Boolean> {
 

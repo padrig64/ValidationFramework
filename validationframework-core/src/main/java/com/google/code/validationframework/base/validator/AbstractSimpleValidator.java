@@ -85,7 +85,7 @@ public abstract class AbstractSimpleValidator<T extends Trigger, DP extends Data
         }
 
         /**
-         * @see TriggerListener#triggerValidation(com.google.code.validationframework.api.trigger.TriggerEvent)
+         * @see TriggerListener#triggerValidation(TriggerEvent)
          */
         @Override
         public void triggerValidation(final TriggerEvent event) {
