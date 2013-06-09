@@ -26,61 +26,28 @@
 package com.google.code.validationframework.base.validator.context;
 
 import com.google.code.validationframework.api.dataprovider.DataProvider;
-import com.google.code.validationframework.api.resulthandler.ResultHandler;
 import com.google.code.validationframework.api.rule.Rule;
 import com.google.code.validationframework.api.trigger.Trigger;
 import com.google.code.validationframework.base.validator.GeneralValidator;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class ResultHandlerContext<DPO, RI, RO, RHI> {
+public class DataProviderToRuleMappingContext<DPO> {
 
     private final List<Trigger> registeredTriggers;
     private final List<DataProvider<DPO>> registeredDataProviders;
     private final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping;
-    private final List<Rule<RI, RO>> registeredRules;
-    private final GeneralValidator.RuleToResultHandlerMapping ruleToResultHandlerMapping;
-    private final List<ResultHandler<RHI>> registeredResultHandlers;
 
-    public ResultHandlerContext(final List<Trigger> registeredTriggers, final List<DataProvider<DPO>>
-            registeredDataProviders, final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping,
-                                final List<Rule<RI, RO>> registeredRules,
-                                final GeneralValidator.RuleToResultHandlerMapping ruleToResultHandlerMapping,
-                                final ResultHandler<RHI> resultHandler) {
+    public DataProviderToRuleMappingContext(final List<Trigger> registeredTriggers,
+                                            final List<DataProvider<DPO>> registeredDataProviders,
+                                            final GeneralValidator.DataProviderToRuleMapping
+                                                    dataProviderToRuleMapping) {
         this.registeredTriggers = registeredTriggers;
         this.registeredDataProviders = registeredDataProviders;
         this.dataProviderToRuleMapping = dataProviderToRuleMapping;
-        this.registeredRules = registeredRules;
-        this.registeredResultHandlers = new ArrayList<ResultHandler<RHI>>();
-        this.ruleToResultHandlerMapping = ruleToResultHandlerMapping;
-        this.registeredResultHandlers.add(resultHandler);
     }
 
-    public ResultHandlerContext<DPO, RI, RO, RHI> handleWith(final ResultHandler<RHI> resultHandler) {
-        if (resultHandler != null) {
-            registeredResultHandlers.add(resultHandler);
-        }
-        return this;
-    }
-
-    public GeneralValidator<DPO, RI, RO, RHI> build() {
-        final GeneralValidator<DPO, RI, RO, RHI> validator = new GeneralValidator<DPO, RI, RO,
-                RHI>(dataProviderToRuleMapping, ruleToResultHandlerMapping);
-
-        for (final Trigger trigger : registeredTriggers) {
-            validator.addTrigger(trigger);
-        }
-        for (final DataProvider<DPO> dataProvider : registeredDataProviders) {
-            validator.addDataProvider(dataProvider);
-        }
-        for (final Rule<RI, RO> rule : registeredRules) {
-            validator.addRule(rule);
-        }
-        for (final ResultHandler<RHI> resultHandler : registeredResultHandlers) {
-            validator.addResultHandler(resultHandler);
-        }
-
-        return validator;
+    public <RI, RO> RuleContext<DPO, RI, RO> check(final Rule<RI, RO> rule) {
+        return new RuleContext<DPO, RI, RO>(registeredTriggers, registeredDataProviders, dataProviderToRuleMapping, rule);
     }
 }

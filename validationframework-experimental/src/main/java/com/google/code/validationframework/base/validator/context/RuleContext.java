@@ -28,115 +28,37 @@ package com.google.code.validationframework.base.validator.context;
 import com.google.code.validationframework.api.dataprovider.DataProvider;
 import com.google.code.validationframework.api.rule.Rule;
 import com.google.code.validationframework.api.trigger.Trigger;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.google.code.validationframework.base.validator.GeneralValidator;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
-/**
- * Context to add more data providers and the first rules.
- *
- * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
- *            type of the component itself.
- */
-public class RuleContext<D> {
+public class RuleContext<DPO, RI, RO> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RuleContext.class);
+    private final List<Trigger> registeredTriggers;
+    private final List<DataProvider<DPO>> registeredDataProviders;
+    private final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping;
+    private final List<Rule<RI, RO>> registeredRules;
 
-    private static final String NEW_INSTANCE_ERROR_MSG = "Failed creating instance of class: ";
-
-    final List<Trigger> registeredTriggers;
-    final List<DataProvider<D>> registeredDataProviders;
-
-    public RuleContext(final List<Trigger> registeredTriggers, final List<DataProvider<D>> registeredDataProviders) {
+    public RuleContext(final List<Trigger> registeredTriggers, final List<DataProvider<DPO>> registeredDataProviders,
+                       final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping, final Rule<RI,
+            RO> rule) {
         this.registeredTriggers = registeredTriggers;
         this.registeredDataProviders = registeredDataProviders;
+        this.dataProviderToRuleMapping = dataProviderToRuleMapping;
+        this.registeredRules = new ArrayList<Rule<RI, RO>>();
+        this.registeredRules.add(rule);
     }
 
-    public RuleContext<D> read(final Class<? extends DataProvider<D>> dataProviderClass) {
-        DataProvider<D> dataProvider = null;
-        try {
-            dataProvider = dataProviderClass.newInstance();
-        } catch (InstantiationException e) {
-            LOGGER.error(NEW_INSTANCE_ERROR_MSG + dataProviderClass, e);
-        } catch (IllegalAccessException e) {
-            LOGGER.error(NEW_INSTANCE_ERROR_MSG + dataProviderClass, e);
-        }
-        return read(dataProvider);
-    }
-
-    public RuleContext<D> read(final DataProvider<D> dataProvider) {
-        if (dataProvider != null) {
-            registeredDataProviders.add(dataProvider);
-        }
-        return this;
-    }
-
-    /**
-     * Adds more data providers to the validator.
-     *
-     * @param dataProviders Data providers to be added.
-     *
-     * @return Same rule context.
-     */
-    public RuleContext<D> read(final DataProvider<D>... dataProviders) {
-        if (dataProviders != null) {
-            Collections.addAll(registeredDataProviders, dataProviders);
-        }
-        return this;
-    }
-
-    public RuleContext<D> read(final Collection<DataProvider<D>> dataProviders) {
-        if (dataProviders != null) {
-            registeredDataProviders.addAll(dataProviders);
-        }
-        return this;
-    }
-
-    public <O> ResultHandlerContext<D, O> check(final Class<? extends Rule<D, O>> ruleClass) {
-        Rule<D, O> rule = null;
-        try {
-            rule = ruleClass.newInstance();
-        } catch (InstantiationException e) {
-            LOGGER.error(NEW_INSTANCE_ERROR_MSG + ruleClass, e);
-        } catch (IllegalAccessException e) {
-            LOGGER.error(NEW_INSTANCE_ERROR_MSG + ruleClass, e);
-        }
-        return check(rule);
-    }
-
-    public <O> ResultHandlerContext<D, O> check(final Rule<D, O> rule) {
-        final List<Rule<D, O>> registeredRules = new ArrayList<Rule<D, O>>();
+    public RuleContext<DPO, RI, RO> check(final Rule<RI, RO> rule) {
         if (rule != null) {
             registeredRules.add(rule);
         }
-        return new ResultHandlerContext<D, O>(registeredTriggers, registeredDataProviders, registeredRules);
+        return this;
     }
 
-    /**
-     * Adds the first rules to the validator.
-     *
-     * @param rules Rules to be added.
-     * @param <O>   Type of validation result.<br>It can be, for instance, an enumeration or just a boolean.
-     *
-     * @return Result handler context allowing to add rules and result handlers, but not data providers.
-     */
-    public <O> ResultHandlerContext<D, O> check(final Rule<D, O>... rules) {
-        final List<Rule<D, O>> registeredRules = new ArrayList<Rule<D, O>>();
-        if (rules != null) {
-            Collections.addAll(registeredRules, rules);
-        }
-        return new ResultHandlerContext<D, O>(registeredTriggers, registeredDataProviders, registeredRules);
-    }
-
-    public <O> ResultHandlerContext<D, O> check(final Collection<Rule<D, O>> rules) {
-        final List<Rule<D, O>> registeredRules = new ArrayList<Rule<D, O>>();
-        if (rules != null) {
-            registeredRules.addAll(rules);
-        }
-        return new ResultHandlerContext<D, O>(registeredTriggers, registeredDataProviders, registeredRules);
+    public RuleToResultHandlerMappingContext<DPO, RI, RO> map(final GeneralValidator.RuleToResultHandlerMapping
+                                                                      ruleToResultHandlerMapping) {
+        return new RuleToResultHandlerMappingContext<DPO, RI, RO>(registeredTriggers, registeredDataProviders, dataProviderToRuleMapping, registeredRules, ruleToResultHandlerMapping);
     }
 }

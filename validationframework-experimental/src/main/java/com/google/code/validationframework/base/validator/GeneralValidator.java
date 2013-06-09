@@ -37,8 +37,8 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GeneralValidator<T extends Trigger, DP extends DataProvider<DPO>, DPO, R extends Rule<RI, RO>, RI, RO,
-        RH extends ResultHandler<RHI>, RHI> extends AbstractSimpleValidator<T, DP, DPO, R, RI, RO, RH, RHI> {
+public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<Trigger, DataProvider<DPO>, DPO,
+        Rule<RI, RO>, RI, RO, ResultHandler<RHI>, RHI> {
 
     public enum DataProviderToRuleMapping {
         EACH_TO_ALL,
@@ -52,11 +52,11 @@ public class GeneralValidator<T extends Trigger, DP extends DataProvider<DPO>, D
 
     private final Logger LOGGER = LoggerFactory.getLogger(GeneralValidator.class);
 
-    private final DataProviderToRuleMapping dataProviderToRuleMapping;
+    private DataProviderToRuleMapping dataProviderToRuleMapping = DataProviderToRuleMapping.ALL_TO_EACH;
 
     private final Transformer<Object, RI> dataProviderOutputToRuleInputTransformer = new CastTransformer<Object, RI>();
 
-    private final RuleToResultHandlerMapping ruleToResultHandlerMapping;
+    private RuleToResultHandlerMapping ruleToResultHandlerMapping = RuleToResultHandlerMapping.ALL_TO_EACH;
 
     private final Transformer<Object, RHI> ruleOutputToResultHandlerInputTransformer = new CastTransformer<Object,
             RHI>();
@@ -79,8 +79,24 @@ public class GeneralValidator<T extends Trigger, DP extends DataProvider<DPO>, D
         this.ruleToResultHandlerMapping = ruleToResultHandlerMapping;
     }
 
+    public DataProviderToRuleMapping getDataProviderToRuleMapping() {
+        return dataProviderToRuleMapping;
+    }
+
+    public void setDataProviderToRuleMapping(final DataProviderToRuleMapping dataProviderToRuleMapping) {
+        this.dataProviderToRuleMapping = dataProviderToRuleMapping;
+    }
+
+    public RuleToResultHandlerMapping getRuleToResultHandlerMapping() {
+        return ruleToResultHandlerMapping;
+    }
+
+    public void setRuleToResultHandlerMapping(final RuleToResultHandlerMapping ruleToResultHandlerMapping) {
+        this.ruleToResultHandlerMapping = ruleToResultHandlerMapping;
+    }
+
     @Override
-    protected void processTrigger(final T trigger) {
+    protected void processTrigger(final Trigger trigger) {
         switch (dataProviderToRuleMapping) {
             case EACH_TO_ALL:
                 for (final DataProvider<DPO> dataProvider : dataProviders) {

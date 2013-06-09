@@ -26,26 +26,11 @@
 package com.google.code.validationframework.base.validator;
 
 import com.google.code.validationframework.api.trigger.Trigger;
-import com.google.code.validationframework.base.validator.context.DataProviderContext;
 import com.google.code.validationframework.base.validator.context.TriggerContext;
-
-import java.util.Collection;
 
 public class GeneralValidatorBuilder {
 
-    public static DataProviderContext on(final Trigger trigger) {
-        return new TriggerContext().on(trigger);
-    }
-
-    public static DataProviderContext on(final Trigger... triggers) {
-        return new TriggerContext().on(triggers);
-    }
-
-    public static DataProviderContext on(final Collection<Trigger> triggers) {
-        return new TriggerContext().on(triggers);
-    }
-
-    public static DataProviderContext on(final Class<? extends Trigger> triggerClass) {
-        return new TriggerContext().on(triggerClass);
+    public static TriggerContext on(final Trigger trigger) {
+        return new TriggerContext(trigger);
     }
 }
