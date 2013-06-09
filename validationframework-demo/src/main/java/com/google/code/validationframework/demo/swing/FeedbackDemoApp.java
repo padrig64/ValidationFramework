@@ -300,10 +300,14 @@ public class FeedbackDemoApp extends JFrame {
         createValidator4(formattedTextField5, resultCollector5);
 
         // Create global validator
-        collect(resultCollector1, resultCollector2).collect(resultCollector3, resultCollector4,
-                resultCollector5).check(new AndBooleanRule()).handleWith(new ComponentEnablingBooleanResultHandler
-                (applyButton)).
-                build();
+        collect(resultCollector1) //
+                .collect(resultCollector2) //
+                .collect(resultCollector3) //
+                .collect(resultCollector4) //
+                .collect(resultCollector5) //
+                .check(new AndBooleanRule()) //
+                .handleWith(new ComponentEnablingBooleanResultHandler(applyButton)) //
+                .build();
     }
 
     private Component createValidator1(final JTextField textField, final ResultCollector<InputFieldResult,
@@ -363,8 +367,13 @@ public class FeedbackDemoApp extends JFrame {
         // Example of decoration that would be clipped by the parent panel
         resultHandler1.setClippingAncestor((JComponent) formattedTextField.getParent().getParent());
 
-        on(trigger, manualTrigger).read(dataProvider).check(rule1, rule2).handleWith(resultHandler1).handleWith
-                (resultCollector).build();
+        on(trigger, manualTrigger) //
+                .read(dataProvider) //
+                .check(rule1) //
+                .check(rule2) //
+                .handleWith(resultHandler1) //
+                .handleWith(resultCollector) //
+                .build();
 
         // Test of triggering the validation even before the dialog is visible
         manualTrigger.fireTriggerEvent();
