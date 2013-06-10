@@ -33,9 +33,9 @@ public class ValidationFrameworkSwingIT {
     @Configuration
     public Option[] config() {
         return options(
-                mavenBundle("validationframework", "validationframework-core").versionAsInProject(),
-                mavenBundle("validationframework", "validationframework-experimental").versionAsInProject(),
-                mavenBundle("validationframework", "validationframework-swing").versionAsInProject(),
+                mavenBundle("com.google.code.validationframework", "validationframework-core").versionAsInProject(),
+                mavenBundle("com.google.code.validationframework", "validationframework-experimental").versionAsInProject(),
+                mavenBundle("com.google.code.validationframework", "validationframework-swing").versionAsInProject(),
                 wrappedBundle(mavenBundle("net.java.timingframework", "timingframework-core").versionAsInProject()),
                 wrappedBundle(mavenBundle("net.java.timingframework", "timingframework-swing").versionAsInProject()),
                 mavenBundle("net.java.dev.jna", "jna").versionAsInProject(),
