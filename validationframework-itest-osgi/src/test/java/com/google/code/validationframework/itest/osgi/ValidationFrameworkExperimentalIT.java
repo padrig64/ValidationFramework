@@ -39,8 +39,8 @@ public class ValidationFrameworkExperimentalIT {
     @Configuration
     public Option[] config() {
         return options(
-                mavenBundle("validationframework", "validationframework-core").versionAsInProject(),
-                mavenBundle("validationframework", "validationframework-experimental").versionAsInProject(),
+                mavenBundle("com.google.code.validationframework", "validationframework-core").versionAsInProject(),
+                mavenBundle("com.google.code.validationframework", "validationframework-experimental").versionAsInProject(),
                 TestOptions.junitAndMockitoBundles()
         );
     }
