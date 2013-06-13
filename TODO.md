@@ -10,6 +10,7 @@
 
 # NEW STUFF
 
+* Make validation of min + max + min/max group + global easier
 * Implement Disposable where appropriate
 * JFormattedTextFieldKeyboardTrigger
 * User-modification trigger for (formatted) textfields
