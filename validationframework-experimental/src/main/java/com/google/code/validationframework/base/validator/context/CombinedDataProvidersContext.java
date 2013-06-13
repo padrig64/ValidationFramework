@@ -30,24 +30,23 @@ import com.google.code.validationframework.api.rule.Rule;
 import com.google.code.validationframework.api.trigger.Trigger;
 import com.google.code.validationframework.base.validator.GeneralValidator;
 
+import java.util.Collection;
 import java.util.List;
 
-public class DataProviderToRuleMappingContext<DPO> {
+public class CombinedDataProvidersContext<DPO> {
 
     private final List<Trigger> registeredTriggers;
     private final List<DataProvider<DPO>> registeredDataProviders;
     private final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping;
 
-    public DataProviderToRuleMappingContext(final List<Trigger> registeredTriggers,
-                                            final List<DataProvider<DPO>> registeredDataProviders,
-                                            final GeneralValidator.DataProviderToRuleMapping
-                                                    dataProviderToRuleMapping) {
+    public CombinedDataProvidersContext(final List<Trigger> registeredTriggers, final List<DataProvider<DPO>>
+            registeredDataProviders, final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping) {
         this.registeredTriggers = registeredTriggers;
         this.registeredDataProviders = registeredDataProviders;
         this.dataProviderToRuleMapping = dataProviderToRuleMapping;
     }
 
-    public <RI, RO> RuleContext<DPO, RI, RO> check(final Rule<RI, RO> rule) {
-        return new RuleContext<DPO, RI, RO>(registeredTriggers, registeredDataProviders, dataProviderToRuleMapping, rule);
+    public <RO> RuleContext<DPO, Collection<DPO>, RO> check(final Rule<Collection<DPO>, RO> rule) {
+        return new RuleContext<DPO, Collection<DPO>, RO>(registeredTriggers, registeredDataProviders, dataProviderToRuleMapping, rule);
     }
 }

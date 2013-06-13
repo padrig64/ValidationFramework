@@ -31,7 +31,6 @@ import com.google.code.validationframework.base.rule.bool.AndBooleanRule;
 import com.google.code.validationframework.base.rule.string.StringRegexRule;
 import com.google.code.validationframework.base.transform.Transformer;
 import com.google.code.validationframework.base.trigger.ManualTrigger;
-import com.google.code.validationframework.base.validator.GeneralValidator;
 import com.google.code.validationframework.swing.dataprovider.JFormattedTextFieldTextProvider;
 import com.google.code.validationframework.swing.dataprovider.JTextFieldTextProvider;
 import com.google.code.validationframework.swing.resulthandler.AbstractColorFeedback;
@@ -313,9 +312,7 @@ public class GeneralValidatorDemoApp extends JFrame {
             Boolean> resultCollector) {
         on(new JTextFieldDocumentChangedTrigger(textField)) //
                 .read(new JTextFieldTextProvider(textField)) //
-                .map(GeneralValidator.DataProviderToRuleMapping.EACH_TO_ALL) //
                 .check(new InputFieldRule()) //
-                .map(GeneralValidator.RuleToResultHandlerMapping.EACH_TO_ALL) //
                 .handleWith(resultCollector);
     }
 
@@ -323,9 +320,7 @@ public class GeneralValidatorDemoApp extends JFrame {
             Boolean> resultCollector) {
         on(new JTextFieldDocumentChangedTrigger(textField)) //
                 .read(new JTextFieldTextProvider(textField)) //
-                .map(GeneralValidator.DataProviderToRuleMapping.EACH_TO_ALL) //
                 .check(new InputFieldRule()) //
-                .map(GeneralValidator.RuleToResultHandlerMapping.EACH_TO_ALL)  //
                 .handleWith(new InputFieldColorFeedback(textField)) //
                 .handleWith(resultCollector) //
                 .build();
@@ -335,9 +330,7 @@ public class GeneralValidatorDemoApp extends JFrame {
             Boolean> resultCollector) {
         on(new JTextFieldDocumentChangedTrigger(textField)) //
                 .read(new JTextFieldTextProvider(textField)) //
-                .map(GeneralValidator.DataProviderToRuleMapping.EACH_TO_ALL) //
                 .check(new InputFieldRule()) //
-                .map(GeneralValidator.RuleToResultHandlerMapping.EACH_TO_ALL)  //
                 .handleWith(new InputFieldIconFeedback(textField)) //
                 .handleWith(resultCollector) //
                 .build();
@@ -361,10 +354,8 @@ public class GeneralValidatorDemoApp extends JFrame {
         on(trigger) //
                 .on(manualTrigger) //
                 .read(dataProvider) //
-                .map(GeneralValidator.DataProviderToRuleMapping.EACH_TO_ALL) //
                 .check(rule1) //
                 .check(rule2) //
-                .map(GeneralValidator.RuleToResultHandlerMapping.EACH_TO_ALL) //
                 .handleWith(resultHandler1) //
                 .handleWith(resultCollector) //
                 .build();

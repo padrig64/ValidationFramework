@@ -26,6 +26,7 @@
 package com.google.code.validationframework.base.validator.context;
 
 import com.google.code.validationframework.api.dataprovider.DataProvider;
+import com.google.code.validationframework.api.rule.Rule;
 import com.google.code.validationframework.api.trigger.Trigger;
 import com.google.code.validationframework.base.validator.GeneralValidator;
 
@@ -50,8 +51,13 @@ public class DataProviderContext<DPO> {
         return this;
     }
 
-    public DataProviderToRuleMappingContext<DPO> map(final GeneralValidator.DataProviderToRuleMapping
-                                                             dataProviderToRuleMapping) {
-        return new DataProviderToRuleMappingContext<DPO>(registeredTriggers, registeredDataProviders, dataProviderToRuleMapping);
+    public CombinedDataProvidersContext<DPO> combine() {
+        return new CombinedDataProvidersContext<DPO>(registeredTriggers, registeredDataProviders,
+                GeneralValidator.DataProviderToRuleMapping.ALL_TO_EACH);
+    }
+
+    public <RO> RuleContext<DPO, DPO, RO> check(final Rule<DPO, RO> rule) {
+        return new RuleContext<DPO, DPO, RO>(registeredTriggers, registeredDataProviders,
+                GeneralValidator.DataProviderToRuleMapping.EACH_TO_EACH, rule);
     }
 }

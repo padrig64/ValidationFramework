@@ -41,12 +41,12 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
         Rule<RI, RO>, RI, RO, ResultHandler<RHI>, RHI> {
 
     public enum DataProviderToRuleMapping {
-        EACH_TO_ALL,
+        EACH_TO_EACH,
         ALL_TO_EACH
     }
 
     public enum RuleToResultHandlerMapping {
-        EACH_TO_ALL,
+        EACH_TO_EACH,
         ALL_TO_EACH
     }
 
@@ -54,12 +54,11 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
 
     private DataProviderToRuleMapping dataProviderToRuleMapping = DataProviderToRuleMapping.ALL_TO_EACH;
 
-    private final Transformer<Object, RI> dataProviderOutputToRuleInputTransformer = new CastTransformer<Object, RI>();
+    private Transformer<Object, RI> dataProviderOutputToRuleInputTransformer = new CastTransformer<Object, RI>();
 
     private RuleToResultHandlerMapping ruleToResultHandlerMapping = RuleToResultHandlerMapping.ALL_TO_EACH;
 
-    private final Transformer<Object, RHI> ruleOutputToResultHandlerInputTransformer = new CastTransformer<Object,
-            RHI>();
+    private Transformer<Object, RHI> ruleOutputToResultHandlerInputTransformer = new CastTransformer<Object, RHI>();
 
     public GeneralValidator() {
         this(DataProviderToRuleMapping.ALL_TO_EACH, RuleToResultHandlerMapping.ALL_TO_EACH);
@@ -79,26 +78,36 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
         this.ruleToResultHandlerMapping = ruleToResultHandlerMapping;
     }
 
-    public DataProviderToRuleMapping getDataProviderToRuleMapping() {
-        return dataProviderToRuleMapping;
+    public void mapDataProvidersToRules(final DataProviderToRuleMapping dataProviderToRuleMapping) {
+        mapDataProvidersToRules(dataProviderToRuleMapping, null);
     }
 
-    public void setDataProviderToRuleMapping(final DataProviderToRuleMapping dataProviderToRuleMapping) {
+    public void mapDataProvidersToRules(final DataProviderToRuleMapping dataProviderToRuleMapping,
+                                        final Transformer<Object, RI> dataProviderOutputToRuleInputTransformer) {
         this.dataProviderToRuleMapping = dataProviderToRuleMapping;
+        this.dataProviderOutputToRuleInputTransformer = dataProviderOutputToRuleInputTransformer;
+        if (this.dataProviderOutputToRuleInputTransformer == null) {
+            this.dataProviderOutputToRuleInputTransformer = new CastTransformer<Object, RI>();
+        }
     }
 
-    public RuleToResultHandlerMapping getRuleToResultHandlerMapping() {
-        return ruleToResultHandlerMapping;
+    public void mapRulesToResultHandlers(final RuleToResultHandlerMapping ruleToResultHandlerMapping) {
+        mapRulesToResultHandlers(ruleToResultHandlerMapping, null);
     }
 
-    public void setRuleToResultHandlerMapping(final RuleToResultHandlerMapping ruleToResultHandlerMapping) {
+    public void mapRulesToResultHandlers(final RuleToResultHandlerMapping ruleToResultHandlerMapping,
+                                         final Transformer<Object, RHI> ruleOutputToResultHandlerInputTransformer) {
         this.ruleToResultHandlerMapping = ruleToResultHandlerMapping;
+        this.ruleOutputToResultHandlerInputTransformer = ruleOutputToResultHandlerInputTransformer;
+        if (this.ruleOutputToResultHandlerInputTransformer == null) {
+            this.ruleOutputToResultHandlerInputTransformer = new CastTransformer<Object, RHI>();
+        }
     }
 
     @Override
     protected void processTrigger(final Trigger trigger) {
         switch (dataProviderToRuleMapping) {
-            case EACH_TO_ALL:
+            case EACH_TO_EACH:
                 for (final DataProvider<DPO> dataProvider : dataProviders) {
                     final RI ruleInput = dataProviderOutputToRuleInputTransformer.transform(dataProvider.getData());
                     processRules(ruleInput);
@@ -122,7 +131,7 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
 
     private void processRules(final RI ruleInput) {
         switch (ruleToResultHandlerMapping) {
-            case EACH_TO_ALL:
+            case EACH_TO_EACH:
                 for (final Rule<RI, RO> rule : rules) {
                     final RO ruleOutput = rule.validate(ruleInput);
                     final RHI resultHandlerInput = ruleOutputToResultHandlerInputTransformer.transform(ruleOutput);

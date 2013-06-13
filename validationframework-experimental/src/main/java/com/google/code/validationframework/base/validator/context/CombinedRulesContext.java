@@ -31,22 +31,21 @@ import com.google.code.validationframework.api.rule.Rule;
 import com.google.code.validationframework.api.trigger.Trigger;
 import com.google.code.validationframework.base.validator.GeneralValidator;
 
+import java.util.Collection;
 import java.util.List;
 
-public class RuleToResultHandlerMappingContext<DPO, RI, RO> {
+public class CombinedRulesContext<DPO, RI, RO> {
 
     private final List<Trigger> registeredTriggers;
     private final List<DataProvider<DPO>> registeredDataProviders;
     private final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping;
     private final List<Rule<RI, RO>> registeredRules;
-
     private GeneralValidator.RuleToResultHandlerMapping ruleToResultHandlerMapping = null;
 
-    public RuleToResultHandlerMappingContext(final List<Trigger> registeredTriggers,
-                                             final List<DataProvider<DPO>> registeredDataProviders,
-                                             final GeneralValidator.DataProviderToRuleMapping
-                                                     dataProviderToRuleMapping, final List<Rule<RI,
-            RO>> registeredRules, final GeneralValidator.RuleToResultHandlerMapping ruleToResultHandlerMapping) {
+    public CombinedRulesContext(final List<Trigger> registeredTriggers, final List<DataProvider<DPO>>
+            registeredDataProviders, final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping,
+                                final List<Rule<RI, RO>> registeredRules,
+                                final GeneralValidator.RuleToResultHandlerMapping ruleToResultHandlerMapping) {
         this.registeredTriggers = registeredTriggers;
         this.registeredDataProviders = registeredDataProviders;
         this.dataProviderToRuleMapping = dataProviderToRuleMapping;
@@ -54,7 +53,8 @@ public class RuleToResultHandlerMappingContext<DPO, RI, RO> {
         this.ruleToResultHandlerMapping = ruleToResultHandlerMapping;
     }
 
-    public <RHI> ResultHandlerContext<DPO, RI, RO, RHI> handleWith(final ResultHandler<RHI> resultHandler) {
-        return new ResultHandlerContext<DPO, RI, RO, RHI>(registeredTriggers, registeredDataProviders, dataProviderToRuleMapping, registeredRules, ruleToResultHandlerMapping, resultHandler);
+    public ResultHandlerContext<DPO, RI, RO, Collection<RO>> handleWith(final ResultHandler<Collection<RO>>
+                                                                                resultHandler) {
+        return new ResultHandlerContext<DPO, RI, RO, Collection<RO>>(registeredTriggers, registeredDataProviders, dataProviderToRuleMapping, registeredRules, ruleToResultHandlerMapping, resultHandler);
     }
 }
