@@ -26,55 +26,27 @@
 package com.google.code.validationframework.base.validator.context;
 
 import com.google.code.validationframework.api.dataprovider.DataProvider;
-import com.google.code.validationframework.api.resulthandler.ResultHandler;
 import com.google.code.validationframework.api.rule.Rule;
 import com.google.code.validationframework.api.trigger.Trigger;
-import com.google.code.validationframework.base.transform.Transformer;
 import com.google.code.validationframework.base.validator.GeneralValidator;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class RuleContext<DPO, RI, RO> {
+public class DataProviderCombinedContext<DPO> {
 
     private final List<Trigger> registeredTriggers;
     private final List<DataProvider<DPO>> registeredDataProviders;
     private final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping;
-    private final List<Rule<RI, RO>> registeredRules;
 
-    public RuleContext(final List<Trigger> registeredTriggers, final List<DataProvider<DPO>> registeredDataProviders,
-                       final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping, final Rule<RI,
-            RO> rule) {
+    public DataProviderCombinedContext(final List<Trigger> registeredTriggers, final List<DataProvider<DPO>>
+            registeredDataProviders, final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping) {
         this.registeredTriggers = registeredTriggers;
         this.registeredDataProviders = registeredDataProviders;
         this.dataProviderToRuleMapping = dataProviderToRuleMapping;
-        this.registeredRules = new ArrayList<Rule<RI, RO>>();
-        this.registeredRules.add(rule);
     }
 
-    public RuleContext<DPO, RI, RO> check(final Rule<RI, RO> rule) {
-        if (rule != null) {
-            registeredRules.add(rule);
-        }
-        return this;
-    }
-
-    public RuleCombinedContext<DPO, RI, RO> combine() {
-        return new RuleCombinedContext<DPO, RI, RO>(registeredTriggers, registeredDataProviders,
-                dataProviderToRuleMapping, registeredRules, GeneralValidator.RuleToResultHandlerMapping.ALL_TO_EACH);
-    }
-
-    public <RHI> RuleCombinedTransformedContext<DPO, RI, RO, RHI> combineAndTransform(final
-                                                                                      Transformer<Collection<RO>,
-                                                                                              RHI>
-                                                                                              rulesOutputToResultHandlerInputTransformer) {
-        return new RuleCombinedTransformedContext<DPO, RI, RO, RHI>(registeredTriggers, registeredDataProviders,
-                dataProviderToRuleMapping, registeredRules, GeneralValidator.RuleToResultHandlerMapping.ALL_TO_EACH,
-                rulesOutputToResultHandlerInputTransformer);
-    }
-
-    public ResultHandlerContext<DPO, RI, RO, RO> handleWith(final ResultHandler<RO> resultHandler) {
-        return new ResultHandlerContext<DPO, RI, RO, RO>(registeredTriggers, registeredDataProviders, dataProviderToRuleMapping, registeredRules, GeneralValidator.RuleToResultHandlerMapping.EACH_TO_EACH, null, resultHandler);
+    public <RO> RuleContext<DPO, Collection<DPO>, RO> check(final Rule<Collection<DPO>, RO> rule) {
+        return new RuleContext<DPO, Collection<DPO>, RO>(registeredTriggers, registeredDataProviders, dataProviderToRuleMapping, rule);
     }
 }

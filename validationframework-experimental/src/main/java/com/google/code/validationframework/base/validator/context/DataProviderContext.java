@@ -51,8 +51,8 @@ public class DataProviderContext<DPO> {
         return this;
     }
 
-    public CombinedDataProvidersContext<DPO> combine() {
-        return new CombinedDataProvidersContext<DPO>(registeredTriggers, registeredDataProviders,
+    public DataProviderCombinedContext<DPO> combine() {
+        return new DataProviderCombinedContext<DPO>(registeredTriggers, registeredDataProviders,
                 GeneralValidator.DataProviderToRuleMapping.ALL_TO_EACH);
     }
 

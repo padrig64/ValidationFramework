@@ -34,7 +34,7 @@ import com.google.code.validationframework.base.validator.GeneralValidator;
 import java.util.Collection;
 import java.util.List;
 
-public class CombinedRulesContext<DPO, RI, RO> {
+public class RuleCombinedContext<DPO, RI, RO> {
 
     private final List<Trigger> registeredTriggers;
     private final List<DataProvider<DPO>> registeredDataProviders;
@@ -42,10 +42,10 @@ public class CombinedRulesContext<DPO, RI, RO> {
     private final List<Rule<RI, RO>> registeredRules;
     private GeneralValidator.RuleToResultHandlerMapping ruleToResultHandlerMapping = null;
 
-    public CombinedRulesContext(final List<Trigger> registeredTriggers, final List<DataProvider<DPO>>
+    public RuleCombinedContext(final List<Trigger> registeredTriggers, final List<DataProvider<DPO>>
             registeredDataProviders, final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping,
-                                final List<Rule<RI, RO>> registeredRules,
-                                final GeneralValidator.RuleToResultHandlerMapping ruleToResultHandlerMapping) {
+                               final List<Rule<RI, RO>> registeredRules,
+                               final GeneralValidator.RuleToResultHandlerMapping ruleToResultHandlerMapping) {
         this.registeredTriggers = registeredTriggers;
         this.registeredDataProviders = registeredDataProviders;
         this.dataProviderToRuleMapping = dataProviderToRuleMapping;
@@ -55,6 +55,6 @@ public class CombinedRulesContext<DPO, RI, RO> {
 
     public ResultHandlerContext<DPO, RI, RO, Collection<RO>> handleWith(final ResultHandler<Collection<RO>>
                                                                                 resultHandler) {
-        return new ResultHandlerContext<DPO, RI, RO, Collection<RO>>(registeredTriggers, registeredDataProviders, dataProviderToRuleMapping, registeredRules, ruleToResultHandlerMapping, resultHandler);
+        return new ResultHandlerContext<DPO, RI, RO, Collection<RO>>(registeredTriggers, registeredDataProviders, dataProviderToRuleMapping, registeredRules, ruleToResultHandlerMapping, null, resultHandler);
     }
 }

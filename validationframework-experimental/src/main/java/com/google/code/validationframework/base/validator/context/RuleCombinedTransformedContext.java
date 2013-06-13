@@ -26,27 +26,40 @@
 package com.google.code.validationframework.base.validator.context;
 
 import com.google.code.validationframework.api.dataprovider.DataProvider;
+import com.google.code.validationframework.api.resulthandler.ResultHandler;
 import com.google.code.validationframework.api.rule.Rule;
 import com.google.code.validationframework.api.trigger.Trigger;
+import com.google.code.validationframework.base.transform.Transformer;
 import com.google.code.validationframework.base.validator.GeneralValidator;
 
 import java.util.Collection;
 import java.util.List;
 
-public class CombinedDataProvidersContext<DPO> {
+public class RuleCombinedTransformedContext<DPO, RI, RO, RHI> {
 
     private final List<Trigger> registeredTriggers;
     private final List<DataProvider<DPO>> registeredDataProviders;
     private final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping;
+    private final List<Rule<RI, RO>> registeredRules;
+    private GeneralValidator.RuleToResultHandlerMapping ruleToResultHandlerMapping = null;
+    private final Transformer<Collection<RO>, RHI> rulesOutputToResultHandlersInputTransformer;
 
-    public CombinedDataProvidersContext(final List<Trigger> registeredTriggers, final List<DataProvider<DPO>>
-            registeredDataProviders, final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping) {
+    public RuleCombinedTransformedContext(final List<Trigger> registeredTriggers,
+                                          final List<DataProvider<DPO>> registeredDataProviders,
+                                          final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping,
+                                          final List<Rule<RI, RO>> registeredRules,
+                                          final GeneralValidator.RuleToResultHandlerMapping
+                                                  ruleToResultHandlerMapping, final Transformer<Collection<RO>,
+            RHI> rulesOutputToResultHandlersInputTransformer) {
         this.registeredTriggers = registeredTriggers;
         this.registeredDataProviders = registeredDataProviders;
         this.dataProviderToRuleMapping = dataProviderToRuleMapping;
+        this.registeredRules = registeredRules;
+        this.ruleToResultHandlerMapping = ruleToResultHandlerMapping;
+        this.rulesOutputToResultHandlersInputTransformer = rulesOutputToResultHandlersInputTransformer;
     }
 
-    public <RO> RuleContext<DPO, Collection<DPO>, RO> check(final Rule<Collection<DPO>, RO> rule) {
-        return new RuleContext<DPO, Collection<DPO>, RO>(registeredTriggers, registeredDataProviders, dataProviderToRuleMapping, rule);
+    public ResultHandlerContext<DPO, RI, RO, RHI> handleWith(final ResultHandler<RHI> resultHandler) {
+        return new ResultHandlerContext<DPO, RI, RO, RHI>(registeredTriggers, registeredDataProviders, dataProviderToRuleMapping, registeredRules, ruleToResultHandlerMapping, rulesOutputToResultHandlersInputTransformer, resultHandler);
     }
 }

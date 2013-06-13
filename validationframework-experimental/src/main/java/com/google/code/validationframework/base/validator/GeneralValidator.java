@@ -54,11 +54,11 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
 
     private DataProviderToRuleMapping dataProviderToRuleMapping = DataProviderToRuleMapping.ALL_TO_EACH;
 
-    private Transformer<Object, RI> dataProviderOutputToRuleInputTransformer = new CastTransformer<Object, RI>();
+    private Transformer dataProviderOutputToRuleInputTransformer = new CastTransformer<Object, RI>();
 
     private RuleToResultHandlerMapping ruleToResultHandlerMapping = RuleToResultHandlerMapping.ALL_TO_EACH;
 
-    private Transformer<Object, RHI> ruleOutputToResultHandlerInputTransformer = new CastTransformer<Object, RHI>();
+    private Transformer ruleOutputToResultHandlerInputTransformer = new CastTransformer<Object, RHI>();
 
     public GeneralValidator() {
         this(DataProviderToRuleMapping.ALL_TO_EACH, RuleToResultHandlerMapping.ALL_TO_EACH);
@@ -83,7 +83,7 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
     }
 
     public void mapDataProvidersToRules(final DataProviderToRuleMapping dataProviderToRuleMapping,
-                                        final Transformer<Object, RI> dataProviderOutputToRuleInputTransformer) {
+                                        final Transformer<?, RI> dataProviderOutputToRuleInputTransformer) {
         this.dataProviderToRuleMapping = dataProviderToRuleMapping;
         this.dataProviderOutputToRuleInputTransformer = dataProviderOutputToRuleInputTransformer;
         if (this.dataProviderOutputToRuleInputTransformer == null) {
@@ -96,7 +96,7 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
     }
 
     public void mapRulesToResultHandlers(final RuleToResultHandlerMapping ruleToResultHandlerMapping,
-                                         final Transformer<Object, RHI> ruleOutputToResultHandlerInputTransformer) {
+                                         final Transformer<?, RHI> ruleOutputToResultHandlerInputTransformer) {
         this.ruleToResultHandlerMapping = ruleToResultHandlerMapping;
         this.ruleOutputToResultHandlerInputTransformer = ruleOutputToResultHandlerInputTransformer;
         if (this.ruleOutputToResultHandlerInputTransformer == null) {
@@ -109,7 +109,8 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
         switch (dataProviderToRuleMapping) {
             case EACH_TO_EACH:
                 for (final DataProvider<DPO> dataProvider : dataProviders) {
-                    final RI ruleInput = dataProviderOutputToRuleInputTransformer.transform(dataProvider.getData());
+                    final RI ruleInput = (RI) dataProviderOutputToRuleInputTransformer.transform(dataProvider.getData
+                            ());
                     processRules(ruleInput);
                 }
                 break;
@@ -119,7 +120,7 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
                 for (final DataProvider<DPO> dataProvider : dataProviders) {
                     dataProvidersOutput.add(dataProvider.getData());
                 }
-                final RI ruleInput = dataProviderOutputToRuleInputTransformer.transform(dataProvidersOutput);
+                final RI ruleInput = (RI) dataProviderOutputToRuleInputTransformer.transform(dataProvidersOutput);
                 processRules(ruleInput);
                 break;
 
@@ -134,7 +135,8 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
             case EACH_TO_EACH:
                 for (final Rule<RI, RO> rule : rules) {
                     final RO ruleOutput = rule.validate(ruleInput);
-                    final RHI resultHandlerInput = ruleOutputToResultHandlerInputTransformer.transform(ruleOutput);
+                    final RHI resultHandlerInput = (RHI) ruleOutputToResultHandlerInputTransformer.transform
+                            (ruleOutput);
                     processResultHandlers(resultHandlerInput);
                 }
                 break;
@@ -144,7 +146,7 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
                 for (final Rule<RI, RO> rule : rules) {
                     rulesOutput.add(rule.validate(ruleInput));
                 }
-                final RHI resultHandlerInput = ruleOutputToResultHandlerInputTransformer.transform(rulesOutput);
+                final RHI resultHandlerInput = (RHI) ruleOutputToResultHandlerInputTransformer.transform(rulesOutput);
                 processResultHandlers(resultHandlerInput);
                 break;
 
