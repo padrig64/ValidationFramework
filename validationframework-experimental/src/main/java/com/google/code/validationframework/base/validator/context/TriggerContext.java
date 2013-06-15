@@ -37,17 +37,27 @@ public class TriggerContext {
 
     public TriggerContext(final Trigger trigger) {
         this.triggers = new ArrayList<Trigger>();
-        this.triggers.add(trigger);
+        if (trigger != null) {
+            triggers.add(trigger);
+        }
     }
 
     public TriggerContext on(final Trigger trigger) {
         if (trigger != null) {
             triggers.add(trigger);
         }
+
+        // Stay in the same context and re-use the same instance because no type has changed
         return this;
     }
 
     public <DPO> DataProviderContext<DPO> read(final DataProvider<DPO> dataProvider) {
-        return new DataProviderContext<DPO>(triggers, dataProvider);
+        final List<DataProvider<DPO>> dataProviders = new ArrayList<DataProvider<DPO>>();
+        if (dataProvider != null) {
+            dataProviders.add(dataProvider);
+        }
+
+        // Change context
+        return new DataProviderContext<DPO>(triggers, dataProviders);
     }
 }

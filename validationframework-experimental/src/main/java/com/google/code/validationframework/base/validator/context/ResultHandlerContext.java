@@ -32,7 +32,6 @@ import com.google.code.validationframework.api.trigger.Trigger;
 import com.google.code.validationframework.base.transform.Transformer;
 import com.google.code.validationframework.base.validator.GeneralValidator;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ResultHandlerContext<DPO, RI, RO, RHI> {
@@ -57,7 +56,7 @@ public class ResultHandlerContext<DPO, RI, RO, RHI> {
                                 final List<Transformer> rulesOutputTransformers, //
                                 final GeneralValidator.RuleToResultHandlerMapping ruleToResultHandlerMapping, //
                                 final List<Transformer> combinedRulesOutputTransformers, //
-                                final ResultHandler<RHI> resultHandler) {
+                                final List<ResultHandler<RHI>> resultHandlers) {
         this.triggers = triggers;
         this.dataProviders = dataProviders;
         this.dataProvidersOutputTransformers = dataProvidersOutputTransformers;
@@ -67,14 +66,15 @@ public class ResultHandlerContext<DPO, RI, RO, RHI> {
         this.rulesOutputTransformers = rulesOutputTransformers;
         this.ruleToResultHandlerMapping = ruleToResultHandlerMapping;
         this.combinedRulesOutputTransformers = combinedRulesOutputTransformers;
-        this.resultHandlers = new ArrayList<ResultHandler<RHI>>();
-        this.resultHandlers.add(resultHandler);
+        this.resultHandlers = resultHandlers;
     }
 
     public ResultHandlerContext<DPO, RI, RO, RHI> handleWith(final ResultHandler<RHI> resultHandler) {
         if (resultHandler != null) {
             resultHandlers.add(resultHandler);
         }
+
+        // Stay in the same context and re-use the same instance because no type has changed
         return this;
     }
 

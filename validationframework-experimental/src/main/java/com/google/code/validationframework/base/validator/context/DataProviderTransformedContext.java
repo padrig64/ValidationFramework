@@ -31,6 +31,7 @@ import com.google.code.validationframework.api.trigger.Trigger;
 import com.google.code.validationframework.base.transform.Transformer;
 import com.google.code.validationframework.base.validator.GeneralValidator;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DataProviderTransformedContext<DPO, TDPO> {
@@ -49,17 +50,28 @@ public class DataProviderTransformedContext<DPO, TDPO> {
 
     public <TTDPO> DataProviderTransformedContext<DPO, TTDPO> transform(final Transformer<TDPO,
             TTDPO> dataProvidersOutputTransformer) {
-        dataProvidersOutputTransformers.add(dataProvidersOutputTransformer);
+        if (dataProvidersOutputTransformer != null) {
+            dataProvidersOutputTransformers.add(dataProvidersOutputTransformer);
+        }
+
+        // Stay in the same context, but create a new instance because the output type has changed
         return new DataProviderTransformedContext<DPO, TTDPO>(triggers, dataProviders, dataProvidersOutputTransformers);
     }
 
     public DataProviderTransformedCombinedContext<DPO, TDPO> combine() {
+        // Change context
         return new DataProviderTransformedCombinedContext<DPO, TDPO>(triggers, dataProviders,
                 dataProvidersOutputTransformers, GeneralValidator.DataProviderToRuleMapping.ALL_TO_EACH);
     }
 
     public <RO> RuleContext<DPO, TDPO, RO> check(final Rule<TDPO, RO> rule) {
+        final List<Rule<TDPO, RO>> rules = new ArrayList<Rule<TDPO, RO>>();
+        if (rule != null) {
+            rules.add(rule);
+        }
+
+        // Change context
         return new RuleContext<DPO, TDPO, RO>(triggers, dataProviders, dataProvidersOutputTransformers,
-                GeneralValidator.DataProviderToRuleMapping.EACH_TO_EACH, null, rule);
+                GeneralValidator.DataProviderToRuleMapping.EACH_TO_EACH, null, rules);
     }
 }

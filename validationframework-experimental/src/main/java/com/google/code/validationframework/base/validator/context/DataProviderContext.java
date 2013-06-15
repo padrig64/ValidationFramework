@@ -40,33 +40,45 @@ public class DataProviderContext<DPO> {
     private final List<DataProvider<DPO>> dataProviders;
 
     public DataProviderContext(final List<Trigger> triggers, //
-                               final DataProvider<DPO> dataProvider) {
+                               final List<DataProvider<DPO>> dataProviders) {
         this.triggers = triggers;
-        this.dataProviders = new ArrayList<DataProvider<DPO>>();
-        this.dataProviders.add(dataProvider);
+        this.dataProviders = dataProviders;
     }
 
     public DataProviderContext<DPO> read(final DataProvider<DPO> dataProvider) {
         if (dataProvider != null) {
             dataProviders.add(dataProvider);
         }
+
+        // Stay in the same context and re-use the same instance because no type has changed
         return this;
     }
 
     public <TDPO> DataProviderTransformedContext<DPO, TDPO> transform(final Transformer<DPO,
             TDPO> dataProvidersOutputTransformer) {
         final List<Transformer> transformers = new ArrayList<Transformer>();
-        transformers.add(dataProvidersOutputTransformer);
+        if (dataProvidersOutputTransformer != null) {
+            transformers.add(dataProvidersOutputTransformer);
+        }
+
+        // Change context
         return new DataProviderTransformedContext<DPO, TDPO>(triggers, dataProviders, transformers);
     }
 
     public DataProviderTransformedCombinedContext<DPO, DPO> combine() {
+        // Change context
         return new DataProviderTransformedCombinedContext<DPO, DPO>(triggers, dataProviders, null,
                 GeneralValidator.DataProviderToRuleMapping.ALL_TO_EACH);
     }
 
     public <RO> RuleContext<DPO, DPO, RO> check(final Rule<DPO, RO> rule) {
+        final List<Rule<DPO, RO>> rules = new ArrayList<Rule<DPO, RO>>();
+        if (rule != null) {
+            rules.add(rule);
+        }
+
+        // Change context
         return new RuleContext<DPO, DPO, RO>(triggers, dataProviders, null,
-                GeneralValidator.DataProviderToRuleMapping.EACH_TO_EACH, null, rule);
+                GeneralValidator.DataProviderToRuleMapping.EACH_TO_EACH, null, rules);
     }
 }

@@ -58,29 +58,36 @@ public class RuleTransformedContext<DPO, RI, RO, TRO> {
         this.dataProviderToRuleMapping = dataProviderToRuleMapping;
         this.combinedDataProvidersOutputTransformers = combinedDataProvidersOutputTransformers;
         this.rules = rules;
-        if (rulesOutputTransformers == null) {
-            this.rulesOutputTransformers = new ArrayList<Transformer>();
-        } else {
-            this.rulesOutputTransformers = rulesOutputTransformers;
-        }
+        this.rulesOutputTransformers = rulesOutputTransformers;
     }
 
     public <TTRO> RuleTransformedContext<DPO, RI, RO, TTRO> transform(final Transformer<TRO,
             TTRO> rulesOutputTransformer) {
-        rulesOutputTransformers.add(rulesOutputTransformer);
+        if (rulesOutputTransformer != null) {
+            rulesOutputTransformers.add(rulesOutputTransformer);
+        }
+
+        // Stay in the same context, but create a new instance because the output type has changed
         return new RuleTransformedContext<DPO, RI, RO, TTRO>(triggers, dataProviders,
                 dataProvidersOutputTransformers, dataProviderToRuleMapping, combinedDataProvidersOutputTransformers,
                 rules, rulesOutputTransformers);
     }
 
     public RuleTransformedCombinedContext<DPO, RI, RO, TRO> combine() {
+        // Change context
         return new RuleTransformedCombinedContext<DPO, RI, RO, TRO>(triggers, dataProviders,
                 dataProvidersOutputTransformers, dataProviderToRuleMapping, combinedDataProvidersOutputTransformers,
                 rules, null, GeneralValidator.RuleToResultHandlerMapping.ALL_TO_EACH);
     }
 
     public ResultHandlerContext<DPO, RI, RO, TRO> handleWith(final ResultHandler<TRO> resultHandler) {
+        final List<ResultHandler<TRO>> resultHandlers = new ArrayList<ResultHandler<TRO>>();
+        if (resultHandler != null) {
+            resultHandlers.add(resultHandler);
+        }
+
+        // Change context
         return new ResultHandlerContext<DPO, RI, RO, TRO>(triggers, dataProviders, dataProvidersOutputTransformers,
-                dataProviderToRuleMapping, combinedDataProvidersOutputTransformers, rules, rulesOutputTransformers, GeneralValidator.RuleToResultHandlerMapping.EACH_TO_EACH, rulesOutputTransformers, resultHandler);
+                dataProviderToRuleMapping, combinedDataProvidersOutputTransformers, rules, rulesOutputTransformers, GeneralValidator.RuleToResultHandlerMapping.EACH_TO_EACH, rulesOutputTransformers, resultHandlers);
     }
 }

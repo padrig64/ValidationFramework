@@ -49,38 +49,50 @@ public class RuleContext<DPO, RI, RO> {
                        final List<Transformer> dataProvidersOutputTransformers, //
                        final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping, //
                        final List<Transformer> combinedDataProvidersOutputTransformers, //
-                       final Rule<RI, RO> rule) {
+                       final List<Rule<RI, RO>> rules) {
         this.triggers = triggers;
         this.dataProviders = dataProviders;
         this.dataProvidersOutputTransformers = dataProvidersOutputTransformers;
         this.dataProviderToRuleMapping = dataProviderToRuleMapping;
         this.combinedDataProvidersOutputTransformers = combinedDataProvidersOutputTransformers;
-        this.rules = new ArrayList<Rule<RI, RO>>();
-        this.rules.add(rule);
+        this.rules = rules;
     }
 
     public RuleContext<DPO, RI, RO> check(final Rule<RI, RO> rule) {
         if (rule != null) {
             rules.add(rule);
         }
+
+        // Stay in the same context and re-use the same instance because no type has changed
         return this;
     }
 
     public <TRO> RuleTransformedContext<DPO, RI, RO, TRO> transform(final Transformer<RO, TRO> rulesOutputTransformer) {
         final List<Transformer> transformers = new ArrayList<Transformer>();
-        transformers.add(rulesOutputTransformer);
+        if (rulesOutputTransformer != null) {
+            transformers.add(rulesOutputTransformer);
+        }
+
+        // Change context
         return new RuleTransformedContext<DPO, RI, RO, TRO>(triggers, dataProviders, dataProvidersOutputTransformers,
                 dataProviderToRuleMapping, combinedDataProvidersOutputTransformers, rules, transformers);
     }
 
     public RuleTransformedCombinedContext<DPO, RI, RO, RO> combine() {
+        // Change context
         return new RuleTransformedCombinedContext<DPO, RI, RO, RO>(triggers, dataProviders,
                 dataProvidersOutputTransformers, dataProviderToRuleMapping, combinedDataProvidersOutputTransformers,
                 rules, null, GeneralValidator.RuleToResultHandlerMapping.ALL_TO_EACH);
     }
 
     public ResultHandlerContext<DPO, RI, RO, RO> handleWith(final ResultHandler<RO> resultHandler) {
+        final List<ResultHandler<RO>> resultHandlers = new ArrayList<ResultHandler<RO>>();
+        if (resultHandler != null) {
+            resultHandlers.add(resultHandler);
+        }
+
+        // Change context
         return new ResultHandlerContext<DPO, RI, RO, RO>(triggers, dataProviders, dataProvidersOutputTransformers,
-                dataProviderToRuleMapping, combinedDataProvidersOutputTransformers, rules, null, GeneralValidator.RuleToResultHandlerMapping.EACH_TO_EACH, null, resultHandler);
+                dataProviderToRuleMapping, combinedDataProvidersOutputTransformers, rules, null, GeneralValidator.RuleToResultHandlerMapping.EACH_TO_EACH, null, resultHandlers);
     }
 }

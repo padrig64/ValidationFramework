@@ -66,16 +66,16 @@ public class RuleTransformedCombinedTransformedContext<DPO, RI, RO, TRO> {
         this.rules = rules;
         this.rulesOutputTransformers = rulesOutputTransformers;
         this.ruleToResultHandlerMapping = ruleToResultHandlerMapping;
-        if (combinedRulesOutputTransformers == null) {
-            this.combinedRulesOutputTransformers = new ArrayList<Transformer>();
-        } else {
-            this.combinedRulesOutputTransformers = combinedRulesOutputTransformers;
-        }
+        this.combinedRulesOutputTransformers = combinedRulesOutputTransformers;
     }
 
     public <TTRO> RuleTransformedCombinedTransformedContext<DPO, RI, RO, TTRO> transform(final Transformer<TRO,
             TTRO> combinedRulesOutputTransformer) {
-        combinedRulesOutputTransformers.add(combinedRulesOutputTransformer);
+        if (combinedRulesOutputTransformer != null) {
+            combinedRulesOutputTransformers.add(combinedRulesOutputTransformer);
+        }
+
+        // Stay in the same context, but create a new instance because the output type has changed
         return new RuleTransformedCombinedTransformedContext<DPO, RI, RO, TTRO>(triggers, dataProviders,
                 dataProvidersOutputTransformers, dataProviderToRuleMapping, combinedDataProvidersOutputTransformers,
                 rules, rulesOutputTransformers, GeneralValidator.RuleToResultHandlerMapping.ALL_TO_EACH,
@@ -83,6 +83,12 @@ public class RuleTransformedCombinedTransformedContext<DPO, RI, RO, TRO> {
     }
 
     public ResultHandlerContext<DPO, RI, RO, TRO> handleWith(final ResultHandler<TRO> resultHandler) {
-        return new ResultHandlerContext<DPO, RI, RO, TRO>(triggers, dataProviders, dataProvidersOutputTransformers, dataProviderToRuleMapping, combinedDataProvidersOutputTransformers, rules, rulesOutputTransformers, ruleToResultHandlerMapping, combinedRulesOutputTransformers, resultHandler);
+        final List<ResultHandler<TRO>> resultHandlers = new ArrayList<ResultHandler<TRO>>();
+        if (resultHandler != null) {
+            resultHandlers.add(resultHandler);
+        }
+
+        // Change context
+        return new ResultHandlerContext<DPO, RI, RO, TRO>(triggers, dataProviders, dataProvidersOutputTransformers, dataProviderToRuleMapping, combinedDataProvidersOutputTransformers, rules, rulesOutputTransformers, ruleToResultHandlerMapping, combinedRulesOutputTransformers, resultHandlers);
     }
 }

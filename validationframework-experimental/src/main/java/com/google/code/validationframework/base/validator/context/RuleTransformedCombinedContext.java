@@ -69,7 +69,11 @@ public class RuleTransformedCombinedContext<DPO, RI, RO, TRO> {
     public <TTRO> RuleTransformedCombinedTransformedContext<DPO, RI, RO,
             TTRO> transform(final Transformer<Collection<TRO>, TTRO> rulesOutputToResultHandlerInputTransformer) {
         final List<Transformer> transformers = new ArrayList<Transformer>();
-        transformers.add(rulesOutputToResultHandlerInputTransformer);
+        if (rulesOutputToResultHandlerInputTransformer != null) {
+            transformers.add(rulesOutputToResultHandlerInputTransformer);
+        }
+
+        // Change context
         return new RuleTransformedCombinedTransformedContext<DPO, RI, RO, TTRO>(triggers, dataProviders,
                 dataProvidersOutputTransformers, dataProviderToRuleMapping, combinedDataProvidersOutputTransformers,
                 rules, rulesOutputTransformers, GeneralValidator.RuleToResultHandlerMapping.ALL_TO_EACH, transformers);
@@ -77,6 +81,12 @@ public class RuleTransformedCombinedContext<DPO, RI, RO, TRO> {
 
     public ResultHandlerContext<DPO, RI, RO, Collection<TRO>> handleWith(final ResultHandler<Collection<TRO>>
                                                                                  resultHandler) {
-        return new ResultHandlerContext<DPO, RI, RO, Collection<TRO>>(triggers, dataProviders, dataProvidersOutputTransformers, dataProviderToRuleMapping, combinedDataProvidersOutputTransformers, rules, rulesOutputTransformers, ruleToResultHandlerMapping, null, resultHandler);
+        final List<ResultHandler<Collection<TRO>>> resultHandlers = new ArrayList<ResultHandler<Collection<TRO>>>();
+        if (resultHandler != null) {
+            resultHandlers.add(resultHandler);
+        }
+
+        // Change context
+        return new ResultHandlerContext<DPO, RI, RO, Collection<TRO>>(triggers, dataProviders, dataProvidersOutputTransformers, dataProviderToRuleMapping, combinedDataProvidersOutputTransformers, rules, rulesOutputTransformers, ruleToResultHandlerMapping, null, resultHandlers);
     }
 }
