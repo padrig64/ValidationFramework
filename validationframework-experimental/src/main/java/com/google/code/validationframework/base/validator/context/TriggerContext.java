@@ -33,21 +33,21 @@ import java.util.List;
 
 public class TriggerContext {
 
-    private final List<Trigger> registeredTriggers;
+    private final List<Trigger> triggers;
 
     public TriggerContext(final Trigger trigger) {
-        this.registeredTriggers = new ArrayList<Trigger>();
-        this.registeredTriggers.add(trigger);
+        this.triggers = new ArrayList<Trigger>();
+        this.triggers.add(trigger);
     }
 
     public TriggerContext on(final Trigger trigger) {
         if (trigger != null) {
-            registeredTriggers.add(trigger);
+            triggers.add(trigger);
         }
         return this;
     }
 
     public <DPO> DataProviderContext<DPO> read(final DataProvider<DPO> dataProvider) {
-        return new DataProviderContext<DPO>(registeredTriggers, dataProvider);
+        return new DataProviderContext<DPO>(triggers, dataProvider);
     }
 }

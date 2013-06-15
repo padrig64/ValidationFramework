@@ -29,32 +29,46 @@ import com.google.code.validationframework.api.dataprovider.DataProvider;
 import com.google.code.validationframework.api.resulthandler.ResultHandler;
 import com.google.code.validationframework.api.rule.Rule;
 import com.google.code.validationframework.api.trigger.Trigger;
+import com.google.code.validationframework.base.transform.Transformer;
 import com.google.code.validationframework.base.validator.GeneralValidator;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class RuleCombinedContext<DPO, RI, RO> {
+public class RuleTransformedCombinedContext<DPO, RI, RO, TRO> {
 
-    private final List<Trigger> registeredTriggers;
-    private final List<DataProvider<DPO>> registeredDataProviders;
+    private final List<Trigger> triggers;
+    private final List<DataProvider<DPO>> dataProviders;
     private final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping;
-    private final List<Rule<RI, RO>> registeredRules;
+    private final List<Rule<RI, RO>> rules;
+    private final List<Transformer> rulesOutputTransformers;
     private GeneralValidator.RuleToResultHandlerMapping ruleToResultHandlerMapping = null;
 
-    public RuleCombinedContext(final List<Trigger> registeredTriggers, final List<DataProvider<DPO>>
-            registeredDataProviders, final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping,
-                               final List<Rule<RI, RO>> registeredRules,
-                               final GeneralValidator.RuleToResultHandlerMapping ruleToResultHandlerMapping) {
-        this.registeredTriggers = registeredTriggers;
-        this.registeredDataProviders = registeredDataProviders;
+    public RuleTransformedCombinedContext(final List<Trigger> triggers, final List<DataProvider<DPO>> dataProviders,
+                                          final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping,
+                                          final List<Rule<RI, RO>> rules,
+                                          final List<Transformer> rulesOutputTransformers,
+                                          final GeneralValidator.RuleToResultHandlerMapping
+                                                  ruleToResultHandlerMapping) {
+        this.triggers = triggers;
+        this.dataProviders = dataProviders;
         this.dataProviderToRuleMapping = dataProviderToRuleMapping;
-        this.registeredRules = registeredRules;
+        this.rules = rules;
+        this.rulesOutputTransformers = rulesOutputTransformers;
         this.ruleToResultHandlerMapping = ruleToResultHandlerMapping;
     }
 
-    public ResultHandlerContext<DPO, RI, RO, Collection<RO>> handleWith(final ResultHandler<Collection<RO>>
-                                                                                resultHandler) {
-        return new ResultHandlerContext<DPO, RI, RO, Collection<RO>>(registeredTriggers, registeredDataProviders, dataProviderToRuleMapping, registeredRules, ruleToResultHandlerMapping, null, resultHandler);
+    public <TTRO> RuleTransformedCombinedTransformedContext<DPO, RI, RO,
+            TTRO> transform(final Transformer<Collection<TRO>, TTRO> rulesOutputToResultHandlerInputTransformer) {
+        final List<Transformer> combinedRulesOutputTransformers = new ArrayList<Transformer>();
+        combinedRulesOutputTransformers.add(rulesOutputToResultHandlerInputTransformer);
+        return new RuleTransformedCombinedTransformedContext<DPO, RI, RO, TTRO>(triggers, dataProviders,
+                dataProviderToRuleMapping, rules, rulesOutputTransformers,
+                GeneralValidator.RuleToResultHandlerMapping.ALL_TO_EACH, combinedRulesOutputTransformers);
+    }
+
+    public ResultHandlerContext<DPO, RI, RO, Collection<TRO>> handleWith(final ResultHandler<Collection<TRO>> resultHandler) {
+        return new ResultHandlerContext<DPO, RI, RO, Collection<TRO>>(triggers, dataProviders, dataProviderToRuleMapping, rules, rulesOutputTransformers, ruleToResultHandlerMapping, null, resultHandler);
     }
 }

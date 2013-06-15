@@ -32,34 +32,45 @@ import com.google.code.validationframework.api.trigger.Trigger;
 import com.google.code.validationframework.base.transform.Transformer;
 import com.google.code.validationframework.base.validator.GeneralValidator;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.List;
 
-public class RuleCombinedTransformedContext<DPO, RI, RO, RHI> {
+public class RuleTransformedContext<DPO, RI, RO, TRO> {
 
-    private final List<Trigger> registeredTriggers;
-    private final List<DataProvider<DPO>> registeredDataProviders;
+    private final List<Trigger> triggers;
+    private final List<DataProvider<DPO>> dataProviders;
     private final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping;
-    private final List<Rule<RI, RO>> registeredRules;
-    private GeneralValidator.RuleToResultHandlerMapping ruleToResultHandlerMapping = null;
-    private final Transformer<Collection<RO>, RHI> rulesOutputToResultHandlersInputTransformer;
+    private final List<Rule<RI, RO>> rules;
+    private final List<Transformer> rulesOutputTransformers;
 
-    public RuleCombinedTransformedContext(final List<Trigger> registeredTriggers,
-                                          final List<DataProvider<DPO>> registeredDataProviders,
-                                          final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping,
-                                          final List<Rule<RI, RO>> registeredRules,
-                                          final GeneralValidator.RuleToResultHandlerMapping
-                                                  ruleToResultHandlerMapping, final Transformer<Collection<RO>,
-            RHI> rulesOutputToResultHandlersInputTransformer) {
-        this.registeredTriggers = registeredTriggers;
-        this.registeredDataProviders = registeredDataProviders;
+    public RuleTransformedContext(final List<Trigger> triggers, final List<DataProvider<DPO>> dataProviders,
+                                  final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping,
+                                  final List<Rule<RI, RO>> rules, final List<Transformer> rulesOutputTransformers) {
+        this.triggers = triggers;
+        this.dataProviders = dataProviders;
         this.dataProviderToRuleMapping = dataProviderToRuleMapping;
-        this.registeredRules = registeredRules;
-        this.ruleToResultHandlerMapping = ruleToResultHandlerMapping;
-        this.rulesOutputToResultHandlersInputTransformer = rulesOutputToResultHandlersInputTransformer;
+        this.rules = rules;
+        if (rulesOutputTransformers == null) {
+            this.rulesOutputTransformers = new ArrayList<Transformer>();
+        } else {
+            this.rulesOutputTransformers = rulesOutputTransformers;
+        }
     }
 
-    public ResultHandlerContext<DPO, RI, RO, RHI> handleWith(final ResultHandler<RHI> resultHandler) {
-        return new ResultHandlerContext<DPO, RI, RO, RHI>(registeredTriggers, registeredDataProviders, dataProviderToRuleMapping, registeredRules, ruleToResultHandlerMapping, rulesOutputToResultHandlersInputTransformer, resultHandler);
+    public <TTRO> RuleTransformedContext<DPO, RI, RO, TTRO> transform(final Transformer<TRO,
+            TTRO> rulesOutputTransformer) {
+        rulesOutputTransformers.add(rulesOutputTransformer);
+        return new RuleTransformedContext<DPO, RI, RO, TTRO>(triggers, dataProviders, dataProviderToRuleMapping,
+                rules, rulesOutputTransformers);
+    }
+
+    public RuleTransformedCombinedContext<DPO, RI, RO, TRO> combine() {
+        return new RuleTransformedCombinedContext<DPO, RI, RO, TRO>(triggers, dataProviders,
+                dataProviderToRuleMapping, rules, null, GeneralValidator.RuleToResultHandlerMapping.ALL_TO_EACH);
+    }
+
+    public ResultHandlerContext<DPO, RI, RO, TRO> handleWith(final ResultHandler<TRO> resultHandler) {
+        return new ResultHandlerContext<DPO, RI, RO, TRO>(triggers, dataProviders, dataProviderToRuleMapping, rules,
+                rulesOutputTransformers, GeneralValidator.RuleToResultHandlerMapping.EACH_TO_EACH, rulesOutputTransformers, resultHandler);
     }
 }

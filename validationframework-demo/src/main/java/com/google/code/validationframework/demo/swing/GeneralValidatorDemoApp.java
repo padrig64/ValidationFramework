@@ -25,10 +25,12 @@
 
 package com.google.code.validationframework.demo.swing;
 
+import com.google.code.validationframework.api.resulthandler.ResultHandler;
 import com.google.code.validationframework.api.rule.Rule;
 import com.google.code.validationframework.base.resulthandler.ResultCollector;
 import com.google.code.validationframework.base.rule.bool.AndBooleanRule;
 import com.google.code.validationframework.base.rule.string.StringRegexRule;
+import com.google.code.validationframework.base.transform.AndBooleanAggregator;
 import com.google.code.validationframework.base.transform.Transformer;
 import com.google.code.validationframework.base.trigger.ManualTrigger;
 import com.google.code.validationframework.swing.dataprovider.JFormattedTextFieldTextProvider;
@@ -66,6 +68,8 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.NumberFormat;
+import java.util.Collection;
+import java.util.List;
 
 import static com.google.code.validationframework.base.validator.GeneralValidatorBuilder.on;
 import static com.google.code.validationframework.experimental.builder.ResultCollectorValidatorBuilder.collect;
@@ -356,6 +360,8 @@ public class GeneralValidatorDemoApp extends JFrame {
                 .read(dataProvider) //
                 .check(rule1) //
                 .check(rule2) //
+                .combine()
+                .transform(new AndBooleanAggregator())
                 .handleWith(resultHandler1) //
                 .handleWith(resultCollector) //
                 .build();

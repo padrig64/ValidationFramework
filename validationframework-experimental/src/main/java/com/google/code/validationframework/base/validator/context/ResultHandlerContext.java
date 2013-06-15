@@ -33,38 +33,39 @@ import com.google.code.validationframework.base.transform.Transformer;
 import com.google.code.validationframework.base.validator.GeneralValidator;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class ResultHandlerContext<DPO, RI, RO, RHI> {
 
-    private final List<Trigger> registeredTriggers;
-    private final List<DataProvider<DPO>> registeredDataProviders;
+    private final List<Trigger> triggers;
+    private final List<DataProvider<DPO>> dataProviders;
     private final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping;
-    private final List<Rule<RI, RO>> registeredRules;
+    private final List<Rule<RI, RO>> rules;
+    private final List<Transformer> rulesOutputTransformers;
     private final GeneralValidator.RuleToResultHandlerMapping ruleToResultHandlerMapping;
-    private final Transformer<Collection<RO>, RHI> rulesOutputToResultHandlersInputTransformer;
-    private final List<ResultHandler<RHI>> registeredResultHandlers;
+    private final List<Transformer> combinedRulesOutputTransformers;
+    private final List<ResultHandler<RHI>> resultHandlers;
 
-    public ResultHandlerContext(final List<Trigger> registeredTriggers, final List<DataProvider<DPO>>
-            registeredDataProviders, final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping,
-                                final List<Rule<RI, RO>> registeredRules,
+    public ResultHandlerContext(final List<Trigger> triggers, final List<DataProvider<DPO>> dataProviders,
+                                final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping,
+                                final List<Rule<RI, RO>> rules, final List<Transformer> rulesOutputTransformers,
                                 final GeneralValidator.RuleToResultHandlerMapping ruleToResultHandlerMapping,
-                                final Transformer<Collection<RO>, RHI> rulesOutputToResultHandlersInputTransformer,
+                                final List<Transformer> combinedRulesOutputTransformers,
                                 final ResultHandler<RHI> resultHandler) {
-        this.registeredTriggers = registeredTriggers;
-        this.registeredDataProviders = registeredDataProviders;
+        this.triggers = triggers;
+        this.dataProviders = dataProviders;
         this.dataProviderToRuleMapping = dataProviderToRuleMapping;
-        this.registeredRules = registeredRules;
-        this.registeredResultHandlers = new ArrayList<ResultHandler<RHI>>();
+        this.rules = rules;
+        this.rulesOutputTransformers = rulesOutputTransformers;
         this.ruleToResultHandlerMapping = ruleToResultHandlerMapping;
-        this.registeredResultHandlers.add(resultHandler);
-        this.rulesOutputToResultHandlersInputTransformer = rulesOutputToResultHandlersInputTransformer;
+        this.combinedRulesOutputTransformers = combinedRulesOutputTransformers;
+        this.resultHandlers = new ArrayList<ResultHandler<RHI>>();
+        this.resultHandlers.add(resultHandler);
     }
 
     public ResultHandlerContext<DPO, RI, RO, RHI> handleWith(final ResultHandler<RHI> resultHandler) {
         if (resultHandler != null) {
-            registeredResultHandlers.add(resultHandler);
+            resultHandlers.add(resultHandler);
         }
         return this;
     }
@@ -75,12 +76,12 @@ public class ResultHandlerContext<DPO, RI, RO, RHI> {
                 RHI>(dataProviderToRuleMapping, ruleToResultHandlerMapping);
 
         // Add triggers
-        for (final Trigger trigger : registeredTriggers) {
+        for (final Trigger trigger : triggers) {
             validator.addTrigger(trigger);
         }
 
         // Add data providers
-        for (final DataProvider<DPO> dataProvider : registeredDataProviders) {
+        for (final DataProvider<DPO> dataProvider : dataProviders) {
             validator.addDataProvider(dataProvider);
         }
 
@@ -88,15 +89,15 @@ public class ResultHandlerContext<DPO, RI, RO, RHI> {
         validator.mapDataProvidersToRules(dataProviderToRuleMapping);
 
         // Add rules
-        for (final Rule<RI, RO> rule : registeredRules) {
+        for (final Rule<RI, RO> rule : rules) {
             validator.addRule(rule);
         }
 
-        // Map rules output to result handlers input
-        validator.mapRulesToResultHandlers(ruleToResultHandlerMapping, rulesOutputToResultHandlersInputTransformer);
+        // TODO Map rules output to result handlers input
+        validator.mapRulesToResultHandlers(ruleToResultHandlerMapping);
 
         // Add result handlers
-        for (final ResultHandler<RHI> resultHandler : registeredResultHandlers) {
+        for (final ResultHandler<RHI> resultHandler : resultHandlers) {
             validator.addResultHandler(resultHandler);
         }
 

@@ -35,29 +35,29 @@ import java.util.List;
 
 public class DataProviderContext<DPO> {
 
-    private final List<Trigger> registeredTriggers;
-    private final List<DataProvider<DPO>> registeredDataProviders;
+    private final List<Trigger> triggers;
+    private final List<DataProvider<DPO>> dataProviders;
 
-    public DataProviderContext(final List<Trigger> registeredTriggers, final DataProvider<DPO> dataProvider) {
-        this.registeredTriggers = registeredTriggers;
-        this.registeredDataProviders = new ArrayList<DataProvider<DPO>>();
-        this.registeredDataProviders.add(dataProvider);
+    public DataProviderContext(final List<Trigger> triggers, final DataProvider<DPO> dataProvider) {
+        this.triggers = triggers;
+        this.dataProviders = new ArrayList<DataProvider<DPO>>();
+        this.dataProviders.add(dataProvider);
     }
 
     public DataProviderContext<DPO> read(final DataProvider<DPO> dataProvider) {
         if (dataProvider != null) {
-            registeredDataProviders.add(dataProvider);
+            dataProviders.add(dataProvider);
         }
         return this;
     }
 
     public DataProviderCombinedContext<DPO> combine() {
-        return new DataProviderCombinedContext<DPO>(registeredTriggers, registeredDataProviders,
+        return new DataProviderCombinedContext<DPO>(triggers, dataProviders,
                 GeneralValidator.DataProviderToRuleMapping.ALL_TO_EACH);
     }
 
     public <RO> RuleContext<DPO, DPO, RO> check(final Rule<DPO, RO> rule) {
-        return new RuleContext<DPO, DPO, RO>(registeredTriggers, registeredDataProviders,
-                GeneralValidator.DataProviderToRuleMapping.EACH_TO_EACH, rule);
+        return new RuleContext<DPO, DPO, RO>(triggers, dataProviders, GeneralValidator.DataProviderToRuleMapping
+                .EACH_TO_EACH, rule);
     }
 }
