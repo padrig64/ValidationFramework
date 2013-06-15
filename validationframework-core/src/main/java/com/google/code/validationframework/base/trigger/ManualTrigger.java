@@ -36,13 +36,31 @@ import com.google.code.validationframework.api.trigger.TriggerEvent;
 public class ManualTrigger extends AbstractTrigger {
 
     /**
+     * @deprecated Use {@link #trigger()} instead.<br>This method will be removed in future releases.
+     */
+    @Deprecated
+    public void fireTriggerEvent() {
+        trigger();
+    }
+
+    /**
      * Fires a default trigger event whose source is this trigger.
      *
-     * @see #fireTriggerEvent(TriggerEvent)
+     * @see #trigger(TriggerEvent)
      * @see TriggerEvent
      */
-    public void fireTriggerEvent() {
-        fireTriggerEvent(new TriggerEvent(this));
+    public void trigger() {
+        super.fireTriggerEvent(new TriggerEvent(this));
+    }
+
+    /**
+     * @deprecated Use {@link #trigger(TriggerEvent)} instead.<br>This method will be made protected again in future
+     *             releases.
+     */
+    @Deprecated
+    @Override
+    public void fireTriggerEvent(final TriggerEvent event) {
+        super.fireTriggerEvent(event);
     }
 
     /**
@@ -51,8 +69,7 @@ public class ManualTrigger extends AbstractTrigger {
      * @see AbstractTrigger#fireTriggerEvent(TriggerEvent)
      * @see TriggerEvent
      */
-    @Override
-    public void fireTriggerEvent(final TriggerEvent event) {
-        super.fireTriggerEvent(event);
+    public void trigger(final TriggerEvent event) {
+        fireTriggerEvent(new TriggerEvent(this));
     }
 }

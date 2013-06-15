@@ -9,7 +9,8 @@
 * Added convenience in AndBooleanAggregator and OrBooleanAggregator to better support null values
 * Added convenience getComponent() method to Swing triggers, data providers and rules
 * Added InvokeLaterTrigger wrapper to re-schedule a trigger later on the Event Dispatch Thread
-* Renamed ButtonGroup-related data providers
+* Renamed ManualTrigger's triggers method for simplicity
+* Renamed ButtonGroup-related data providers for consistency
 
 # Version 1.1.1
 

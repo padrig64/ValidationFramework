@@ -39,22 +39,30 @@ public class RuleTransformedCombinedTransformedContext<DPO, RI, RO, TRO> {
 
     private final List<Trigger> triggers;
     private final List<DataProvider<DPO>> dataProviders;
+    private final List<Transformer> dataProvidersOutputTransformers;
     private final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping;
+    private final List<Transformer> combinedDataProvidersOutputTransformers;
     private final List<Rule<RI, RO>> rules;
     private final List<Transformer> rulesOutputTransformers;
     private GeneralValidator.RuleToResultHandlerMapping ruleToResultHandlerMapping = null;
     private final List<Transformer> combinedRulesOutputTransformers;
 
-    public RuleTransformedCombinedTransformedContext(final List<Trigger> triggers, final List<DataProvider<DPO>>
-            dataProviders, final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping,
-                                                     final List<Rule<RI, RO>> rules,
-                                                     final List<Transformer> rulesOutputTransformers,
+    public RuleTransformedCombinedTransformedContext(final List<Trigger> triggers, //
+                                                     final List<DataProvider<DPO>> dataProviders, //
+                                                     final List<Transformer> dataProvidersOutputTransformers,
+                                                     final GeneralValidator.DataProviderToRuleMapping
+                                                             dataProviderToRuleMapping, //
+                                                     final List<Transformer> combinedDataProvidersOutputTransformers,
+                                                     final List<Rule<RI, RO>> rules, //
+                                                     final List<Transformer> rulesOutputTransformers, //
                                                      final GeneralValidator.RuleToResultHandlerMapping
-                                                             ruleToResultHandlerMapping,
+                                                             ruleToResultHandlerMapping, //
                                                      final List<Transformer> combinedRulesOutputTransformers) {
         this.triggers = triggers;
         this.dataProviders = dataProviders;
+        this.dataProvidersOutputTransformers = dataProvidersOutputTransformers;
         this.dataProviderToRuleMapping = dataProviderToRuleMapping;
+        this.combinedDataProvidersOutputTransformers = combinedDataProvidersOutputTransformers;
         this.rules = rules;
         this.rulesOutputTransformers = rulesOutputTransformers;
         this.ruleToResultHandlerMapping = ruleToResultHandlerMapping;
@@ -69,11 +77,12 @@ public class RuleTransformedCombinedTransformedContext<DPO, RI, RO, TRO> {
             TTRO> combinedRulesOutputTransformer) {
         combinedRulesOutputTransformers.add(combinedRulesOutputTransformer);
         return new RuleTransformedCombinedTransformedContext<DPO, RI, RO, TTRO>(triggers, dataProviders,
-                dataProviderToRuleMapping, rules, rulesOutputTransformers,
-                GeneralValidator.RuleToResultHandlerMapping.ALL_TO_EACH, combinedRulesOutputTransformers);
+                dataProvidersOutputTransformers, dataProviderToRuleMapping, combinedDataProvidersOutputTransformers,
+                rules, rulesOutputTransformers, GeneralValidator.RuleToResultHandlerMapping.ALL_TO_EACH,
+                combinedRulesOutputTransformers);
     }
 
     public ResultHandlerContext<DPO, RI, RO, TRO> handleWith(final ResultHandler<TRO> resultHandler) {
-        return new ResultHandlerContext<DPO, RI, RO, TRO>(triggers, dataProviders, dataProviderToRuleMapping, rules, rulesOutputTransformers, ruleToResultHandlerMapping, combinedRulesOutputTransformers, resultHandler);
+        return new ResultHandlerContext<DPO, RI, RO, TRO>(triggers, dataProviders, dataProvidersOutputTransformers, dataProviderToRuleMapping, combinedDataProvidersOutputTransformers, rules, rulesOutputTransformers, ruleToResultHandlerMapping, combinedRulesOutputTransformers, resultHandler);
     }
 }

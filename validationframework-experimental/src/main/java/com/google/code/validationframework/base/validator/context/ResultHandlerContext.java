@@ -39,22 +39,30 @@ public class ResultHandlerContext<DPO, RI, RO, RHI> {
 
     private final List<Trigger> triggers;
     private final List<DataProvider<DPO>> dataProviders;
+    private final List<Transformer> dataProvidersOutputTransformers;
     private final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping;
+    private final List<Transformer> combinedDataProvidersOutputTransformers;
     private final List<Rule<RI, RO>> rules;
     private final List<Transformer> rulesOutputTransformers;
     private final GeneralValidator.RuleToResultHandlerMapping ruleToResultHandlerMapping;
     private final List<Transformer> combinedRulesOutputTransformers;
     private final List<ResultHandler<RHI>> resultHandlers;
 
-    public ResultHandlerContext(final List<Trigger> triggers, final List<DataProvider<DPO>> dataProviders,
-                                final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping,
-                                final List<Rule<RI, RO>> rules, final List<Transformer> rulesOutputTransformers,
-                                final GeneralValidator.RuleToResultHandlerMapping ruleToResultHandlerMapping,
-                                final List<Transformer> combinedRulesOutputTransformers,
+    public ResultHandlerContext(final List<Trigger> triggers, //
+                                final List<DataProvider<DPO>> dataProviders, //
+                                final List<Transformer> dataProvidersOutputTransformers, //
+                                final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping, //
+                                final List<Transformer> combinedDataProvidersOutputTransformers, //
+                                final List<Rule<RI, RO>> rules, //
+                                final List<Transformer> rulesOutputTransformers, //
+                                final GeneralValidator.RuleToResultHandlerMapping ruleToResultHandlerMapping, //
+                                final List<Transformer> combinedRulesOutputTransformers, //
                                 final ResultHandler<RHI> resultHandler) {
         this.triggers = triggers;
         this.dataProviders = dataProviders;
+        this.dataProvidersOutputTransformers = dataProvidersOutputTransformers;
         this.dataProviderToRuleMapping = dataProviderToRuleMapping;
+        this.combinedDataProvidersOutputTransformers = combinedDataProvidersOutputTransformers;
         this.rules = rules;
         this.rulesOutputTransformers = rulesOutputTransformers;
         this.ruleToResultHandlerMapping = ruleToResultHandlerMapping;

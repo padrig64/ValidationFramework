@@ -28,6 +28,7 @@ package com.google.code.validationframework.base.validator.context;
 import com.google.code.validationframework.api.dataprovider.DataProvider;
 import com.google.code.validationframework.api.rule.Rule;
 import com.google.code.validationframework.api.trigger.Trigger;
+import com.google.code.validationframework.base.transform.Transformer;
 import com.google.code.validationframework.base.validator.GeneralValidator;
 
 import java.util.ArrayList;
@@ -38,7 +39,8 @@ public class DataProviderContext<DPO> {
     private final List<Trigger> triggers;
     private final List<DataProvider<DPO>> dataProviders;
 
-    public DataProviderContext(final List<Trigger> triggers, final DataProvider<DPO> dataProvider) {
+    public DataProviderContext(final List<Trigger> triggers, //
+                               final DataProvider<DPO> dataProvider) {
         this.triggers = triggers;
         this.dataProviders = new ArrayList<DataProvider<DPO>>();
         this.dataProviders.add(dataProvider);
@@ -51,13 +53,20 @@ public class DataProviderContext<DPO> {
         return this;
     }
 
-    public DataProviderCombinedContext<DPO> combine() {
-        return new DataProviderCombinedContext<DPO>(triggers, dataProviders,
+    public <TDPO> DataProviderTransformedContext<DPO, TDPO> transform(final Transformer<DPO,
+            TDPO> dataProvidersOutputTransformer) {
+        final List<Transformer> transformers = new ArrayList<Transformer>();
+        transformers.add(dataProvidersOutputTransformer);
+        return new DataProviderTransformedContext<DPO, TDPO>(triggers, dataProviders, transformers);
+    }
+
+    public DataProviderTransformedCombinedContext<DPO, DPO> combine() {
+        return new DataProviderTransformedCombinedContext<DPO, DPO>(triggers, dataProviders, null,
                 GeneralValidator.DataProviderToRuleMapping.ALL_TO_EACH);
     }
 
     public <RO> RuleContext<DPO, DPO, RO> check(final Rule<DPO, RO> rule) {
-        return new RuleContext<DPO, DPO, RO>(triggers, dataProviders, GeneralValidator.DataProviderToRuleMapping
-                .EACH_TO_EACH, rule);
+        return new RuleContext<DPO, DPO, RO>(triggers, dataProviders, null,
+                GeneralValidator.DataProviderToRuleMapping.EACH_TO_EACH, null, rule);
     }
 }

@@ -30,9 +30,9 @@ public class ValidationFrameworkExperimentalIT {
             return data;
         }
 
-        public void fireTriggerEvent(final String data) {
+        public void trigger(final String data) {
             this.data = data;
-            super.fireTriggerEvent();
+            super.trigger();
         }
     }
 
@@ -59,11 +59,11 @@ public class ValidationFrameworkExperimentalIT {
                         .handleWith(mockResultHandler)
                         .build();
 
-        dataTrigger.fireTriggerEvent("Hello World");
+        dataTrigger.trigger("Hello World");
 
         verify(mockResultHandler).handleResult(Boolean.TRUE);
 
-        dataTrigger.fireTriggerEvent("Goodbye World");
+        dataTrigger.trigger("Goodbye World");
 
         verify(mockResultHandler).handleResult(Boolean.FALSE);
 

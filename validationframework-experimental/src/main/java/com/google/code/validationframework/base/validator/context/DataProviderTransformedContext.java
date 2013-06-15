@@ -28,25 +28,38 @@ package com.google.code.validationframework.base.validator.context;
 import com.google.code.validationframework.api.dataprovider.DataProvider;
 import com.google.code.validationframework.api.rule.Rule;
 import com.google.code.validationframework.api.trigger.Trigger;
+import com.google.code.validationframework.base.transform.Transformer;
 import com.google.code.validationframework.base.validator.GeneralValidator;
 
-import java.util.Collection;
 import java.util.List;
 
-public class DataProviderCombinedContext<DPO> {
+public class DataProviderTransformedContext<DPO, TDPO> {
 
-    private final List<Trigger> registeredTriggers;
-    private final List<DataProvider<DPO>> registeredDataProviders;
-    private final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping;
+    private final List<Trigger> triggers;
+    private final List<DataProvider<DPO>> dataProviders;
+    private final List<Transformer> dataProvidersOutputTransformers;
 
-    public DataProviderCombinedContext(final List<Trigger> registeredTriggers, final List<DataProvider<DPO>>
-            registeredDataProviders, final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping) {
-        this.registeredTriggers = registeredTriggers;
-        this.registeredDataProviders = registeredDataProviders;
-        this.dataProviderToRuleMapping = dataProviderToRuleMapping;
+    public DataProviderTransformedContext(final List<Trigger> triggers, //
+                                          final List<DataProvider<DPO>> dataProviders, //
+                                          final List<Transformer> dataProvidersOutputTransformers) {
+        this.triggers = triggers;
+        this.dataProviders = dataProviders;
+        this.dataProvidersOutputTransformers = dataProvidersOutputTransformers;
     }
 
-    public <RO> RuleContext<DPO, Collection<DPO>, RO> check(final Rule<Collection<DPO>, RO> rule) {
-        return new RuleContext<DPO, Collection<DPO>, RO>(registeredTriggers, registeredDataProviders, dataProviderToRuleMapping, rule);
+    public <TTDPO> DataProviderTransformedContext<DPO, TTDPO> transform(final Transformer<TDPO,
+            TTDPO> dataProvidersOutputTransformer) {
+        dataProvidersOutputTransformers.add(dataProvidersOutputTransformer);
+        return new DataProviderTransformedContext<DPO, TTDPO>(triggers, dataProviders, dataProvidersOutputTransformers);
+    }
+
+    public DataProviderTransformedCombinedContext<DPO, TDPO> combine() {
+        return new DataProviderTransformedCombinedContext<DPO, TDPO>(triggers, dataProviders,
+                dataProvidersOutputTransformers, GeneralValidator.DataProviderToRuleMapping.ALL_TO_EACH);
+    }
+
+    public <RO> RuleContext<DPO, TDPO, RO> check(final Rule<TDPO, RO> rule) {
+        return new RuleContext<DPO, TDPO, RO>(triggers, dataProviders, dataProvidersOutputTransformers,
+                GeneralValidator.DataProviderToRuleMapping.EACH_TO_EACH, null, rule);
     }
 }
