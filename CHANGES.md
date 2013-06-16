@@ -1,4 +1,4 @@
-# Version 1.2.0 (to be released)
+# Version 2.0.0 (to be released)
 
 * Changed groupid from validationframework to com.google.code.validation for future availability in Maven Central
 * Improved javadoc
@@ -11,6 +11,7 @@
 * Added InvokeLaterTrigger wrapper to re-schedule a trigger later on the Event Dispatch Thread
 * Renamed ManualTrigger's triggers method for simplicity
 * Renamed ButtonGroup-related data providers for consistency
+* Other minor bugs and code quality fixes
 
 # Version 1.1.1
 
