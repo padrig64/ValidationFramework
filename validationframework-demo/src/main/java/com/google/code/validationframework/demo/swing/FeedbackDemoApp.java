@@ -376,7 +376,7 @@ public class FeedbackDemoApp extends JFrame {
                 .build();
 
         // Test of triggering the validation even before the dialog is visible
-        manualTrigger.fireTriggerEvent();
+        manualTrigger.trigger();
 
         return formattedTextField;
     }

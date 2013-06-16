@@ -54,6 +54,16 @@ public class CellIconBooleanFeedback extends AbstractCellIconFeedback<Boolean> {
     }
 
     public CellIconBooleanFeedback(final JTable table, final int modelRowIndex, final int modelColumnIndex,
+                                   final String invalidText) {
+        this(table, modelRowIndex, modelColumnIndex, null, null, DEFAULT_INVALID_ICON, invalidText);
+    }
+
+    public CellIconBooleanFeedback(final JTable table, final int modelRowIndex, final int modelColumnIndex,
+                                   final Icon invalidIcon, final String invalidText) {
+        this(table, modelRowIndex, modelColumnIndex, null, null, invalidIcon, invalidText);
+    }
+
+    public CellIconBooleanFeedback(final JTable table, final int modelRowIndex, final int modelColumnIndex,
                                    final Icon validIcon, final Icon invalidIcon) {
         this(table, modelRowIndex, modelColumnIndex, validIcon, null, invalidIcon, null);
     }
@@ -61,11 +71,6 @@ public class CellIconBooleanFeedback extends AbstractCellIconFeedback<Boolean> {
     public CellIconBooleanFeedback(final JTable table, final int modelRowIndex, final int modelColumnIndex,
                                    final String validText, final String invalidText) {
         this(table, modelRowIndex, modelColumnIndex, DEFAULT_VALID_ICON, validText, DEFAULT_INVALID_ICON, invalidText);
-    }
-
-    public CellIconBooleanFeedback(final JTable table, final int modelRowIndex, final int modelColumnIndex,
-                                   final Icon invalidIcon, final String invalidText) {
-        this(table, modelRowIndex, modelColumnIndex, null, null, DEFAULT_INVALID_ICON, invalidText);
     }
 
     public CellIconBooleanFeedback(final JTable table, final int modelRowIndex, final int modelColumnIndex,

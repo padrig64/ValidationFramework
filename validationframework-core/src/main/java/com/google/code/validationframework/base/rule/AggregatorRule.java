@@ -26,7 +26,6 @@
 package com.google.code.validationframework.base.rule;
 
 import com.google.code.validationframework.base.transform.Aggregator;
-import com.google.code.validationframework.base.transform.Transformer;
 
 import java.util.Collection;
 
@@ -39,7 +38,7 @@ import java.util.Collection;
 public class AggregatorRule<RI, RO> extends TransformerRule<Collection<RI>, RO> {
 
     /**
-     * @see TransformerRule#TransformerRule(Transformer)
+     * @see TransformerRule#TransformerRule(com.google.code.validationframework.base.transform.Transformer)
      */
     public AggregatorRule(final Aggregator<RI, RO> transformer) {
         super(transformer);

@@ -28,7 +28,14 @@ package com.google.code.validationframework.base.validator;
 import com.google.code.validationframework.api.trigger.Trigger;
 import com.google.code.validationframework.base.validator.context.TriggerContext;
 
-public class GeneralValidatorBuilder {
+public final class GeneralValidatorBuilder {
+
+    /**
+     * Private constructor for utility class.
+     */
+    private GeneralValidatorBuilder() {
+        // Nothing to be done
+    }
 
     public static TriggerContext on(final Trigger trigger) {
         return new TriggerContext(trigger);

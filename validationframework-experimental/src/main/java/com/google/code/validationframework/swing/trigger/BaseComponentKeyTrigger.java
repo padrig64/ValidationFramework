@@ -132,7 +132,7 @@ public class BaseComponentKeyTrigger<C extends Component> extends AbstractTrigge
         return keyEventId;
     }
 
-    public void setKeyEventId() {
+    public void setKeyEventId(final int keyEventId) {
         this.keyEventId = keyEventId;
     }
 

@@ -54,7 +54,7 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
     /**
      * Logger for this class.
      */
-    private final Logger LOGGER = LoggerFactory.getLogger(GeneralValidator.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GeneralValidator.class);
 
     private List<Transformer> dataProvidersOutputTransformers = new ArrayList<Transformer>();
 
@@ -152,132 +152,143 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
     protected void processTrigger(final Trigger trigger) {
         switch (dataProviderToRuleMapping) {
             case EACH_TO_EACH:
-                // For each data provider
-                for (final DataProvider<DPO> dataProvider : dataProviders) {
-                    // Get the data provider output
-                    Object transformedOutput = dataProvider.getData();
-
-                    // Transform the data provider output
-                    if (dataProvidersOutputTransformers != null) {
-                        for (final Transformer transformer : dataProvidersOutputTransformers) {
-                            transformedOutput = transformer.transform(transformedOutput);
-                        }
-                    }
-
-                    // Transform the transformed data provider output to rule input
-                    if (rulesInputTransformers != null) {
-                        for (final Transformer transformer : rulesInputTransformers) {
-                            transformedOutput = transformer.transform(transformedOutput);
-                        }
-                    }
-                    final RI ruleInput = (RI) transformedOutput;
-
-                    // Process the rule input with the rules
-                    processRules(ruleInput);
-                }
+                processEachDataProviderWithEachRule();
                 break;
-
             case ALL_TO_EACH:
-                // For each data provider
-                final List<Object> transformedDataProvidersOutput = new ArrayList<Object>(dataProviders.size());
-                for (final DataProvider<DPO> dataProvider : dataProviders) {
-                    // Get the data provider output
-                    Object transformedOutput = dataProvider.getData();
-
-                    // Transform the data provider output
-                    if (dataProvidersOutputTransformers != null) {
-                        for (final Transformer transformer : dataProvidersOutputTransformers) {
-                            transformedOutput = transformer.transform(transformedOutput);
-                        }
-                    }
-
-                    // Put the transformed data provider output in a list
-                    transformedDataProvidersOutput.add(transformedOutput);
-                }
-
-                // Transform the list of transformed data provider output to rule input
-                Object transformedRulesInput = transformedDataProvidersOutput;
-                if (rulesInputTransformers != null) {
-                    for (final Transformer transformer : rulesInputTransformers) {
-                        transformedRulesInput = transformer.transform(transformedRulesInput);
-                    }
-                }
-                final RI ruleInput = (RI) transformedRulesInput;
-
-
-                // Process the rule input with the rules
-                processRules(ruleInput);
+                processAllDataProvidersWithEachRule();
                 break;
-
             default:
                 LOGGER.error("Unsupported " + DataProviderToRuleMapping.class.getSimpleName() + ": " +
                         dataProviderToRuleMapping);
         }
     }
 
+    private void processEachDataProviderWithEachRule() {
+        // For each data provider
+        for (final DataProvider<DPO> dataProvider : dataProviders) {
+            // Get the data provider output
+            Object transformedOutput = dataProvider.getData();
+
+            // Transform the data provider output
+            if (dataProvidersOutputTransformers != null) {
+                for (final Transformer transformer : dataProvidersOutputTransformers) {
+                    transformedOutput = transformer.transform(transformedOutput);
+                }
+            }
+
+            // Transform the transformed data provider output to rule input
+            if (rulesInputTransformers != null) {
+                for (final Transformer transformer : rulesInputTransformers) {
+                    transformedOutput = transformer.transform(transformedOutput);
+                }
+            }
+            final RI ruleInput = (RI) transformedOutput;
+
+            // Process the rule input with the rules
+            processRules(ruleInput);
+        }
+    }
+
+    private void processAllDataProvidersWithEachRule() {
+        // For each data provider
+        final List<Object> transformedDataProvidersOutput = new ArrayList<Object>(dataProviders.size());
+        for (final DataProvider<DPO> dataProvider : dataProviders) {
+            // Get the data provider output
+            Object transformedOutput = dataProvider.getData();
+
+            // Transform the data provider output
+            if (dataProvidersOutputTransformers != null) {
+                for (final Transformer transformer : dataProvidersOutputTransformers) {
+                    transformedOutput = transformer.transform(transformedOutput);
+                }
+            }
+
+            // Put the transformed data provider output in a list
+            transformedDataProvidersOutput.add(transformedOutput);
+        }
+
+        // Transform the list of transformed data provider output to rule input
+        Object transformedRulesInput = transformedDataProvidersOutput;
+        if (rulesInputTransformers != null) {
+            for (final Transformer transformer : rulesInputTransformers) {
+                transformedRulesInput = transformer.transform(transformedRulesInput);
+            }
+        }
+        final RI ruleInput = (RI) transformedRulesInput;
+
+        // Process the rule input with the rules
+        processRules(ruleInput);
+    }
+
     private void processRules(final RI ruleInput) {
         switch (ruleToResultHandlerMapping) {
             case EACH_TO_EACH:
-                // For each rule
-                for (final Rule<RI, RO> rule : rules) {
-                    // Validate the data and get the rule output
-                    Object ruleOutput = rule.validate(ruleInput);
-
-                    // Transform the rule output
-                    if (rulesOutputTransformers != null) {
-                        for (final Transformer transformer : rulesOutputTransformers) {
-                            ruleOutput = transformer.transform(ruleOutput);
-                        }
-                    }
-
-                    // Transform the transformed rule output to result handler input
-                    if (resultHandlersInputTransformers != null) {
-                        for (final Transformer transformer : resultHandlersInputTransformers) {
-                            ruleOutput = transformer.transform(ruleOutput);
-                        }
-                    }
-                    final RHI resultHandlerInput = (RHI) ruleOutput;
-
-                    // Process the result handler input with the result handlers
-                    processResultHandlers(resultHandlerInput);
-                }
+                processEachRuleWithEachResultHandler(ruleInput);
                 break;
-
             case ALL_TO_EACH:
-                // For each rule
-                final List<Object> combinedRulesOutput = new ArrayList<Object>(rules.size());
-                for (final Rule<RI, RO> rule : rules) {
-                    // Validate the data and get the rule output
-                    Object data = rule.validate(ruleInput);
-
-                    // Transform the rule output
-                    if (rulesOutputTransformers != null) {
-                        for (final Transformer transformer : rulesOutputTransformers) {
-                            data = transformer.transform(data);
-                        }
-                    }
-
-                    // Put the transformed rule output in a list
-                    combinedRulesOutput.add(data);
-                }
-
-                // Transform the list of transformed rule output to result handler input
-                Object ruleOutput = combinedRulesOutput;
-                if (resultHandlersInputTransformers != null) {
-                    for (final Transformer transformer : resultHandlersInputTransformers) {
-                        ruleOutput = transformer.transform(ruleOutput);
-                    }
-                }
-                final RHI resultHandlerInput = (RHI) ruleOutput;
-
-                // Process the result handler input with the result handlers
-                processResultHandlers(resultHandlerInput);
+                processAllRulesWithEachResultHandler(ruleInput);
                 break;
-
             default:
                 LOGGER.error("Unsupported " + RuleToResultHandlerMapping.class.getSimpleName() + ": " +
                         ruleToResultHandlerMapping);
         }
+    }
+
+    private void processEachRuleWithEachResultHandler(final RI ruleInput) {
+        // For each rule
+        for (final Rule<RI, RO> rule : rules) {
+            // Validate the data and get the rule output
+            Object ruleOutput = rule.validate(ruleInput);
+
+            // Transform the rule output
+            if (rulesOutputTransformers != null) {
+                for (final Transformer transformer : rulesOutputTransformers) {
+                    ruleOutput = transformer.transform(ruleOutput);
+                }
+            }
+
+            // Transform the transformed rule output to result handler input
+            if (resultHandlersInputTransformers != null) {
+                for (final Transformer transformer : resultHandlersInputTransformers) {
+                    ruleOutput = transformer.transform(ruleOutput);
+                }
+            }
+            final RHI resultHandlerInput = (RHI) ruleOutput;
+
+            // Process the result handler input with the result handlers
+            processResultHandlers(resultHandlerInput);
+        }
+    }
+
+    private void processAllRulesWithEachResultHandler(final RI ruleInput) {
+        // For each rule
+        final List<Object> combinedRulesOutput = new ArrayList<Object>(rules.size());
+        for (final Rule<RI, RO> rule : rules) {
+            // Validate the data and get the rule output
+            Object data = rule.validate(ruleInput);
+
+            // Transform the rule output
+            if (rulesOutputTransformers != null) {
+                for (final Transformer transformer : rulesOutputTransformers) {
+                    data = transformer.transform(data);
+                }
+            }
+
+            // Put the transformed rule output in a list
+            combinedRulesOutput.add(data);
+        }
+
+        // Transform the list of transformed rule output to result handler input
+        Object ruleOutput = combinedRulesOutput;
+        if (resultHandlersInputTransformers != null) {
+            for (final Transformer transformer : resultHandlersInputTransformers) {
+                ruleOutput = transformer.transform(ruleOutput);
+            }
+        }
+        final RHI resultHandlerInput = (RHI) ruleOutput;
+
+        // Process the result handler input with the result handlers
+        processResultHandlers(resultHandlerInput);
     }
 
     private void processResultHandlers(final RHI resultHandlerInput) {

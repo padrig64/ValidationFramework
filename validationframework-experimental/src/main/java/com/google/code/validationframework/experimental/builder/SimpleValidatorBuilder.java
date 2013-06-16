@@ -31,7 +31,14 @@ import com.google.code.validationframework.experimental.builder.context.simpleva
 
 import java.util.Collection;
 
-public class SimpleValidatorBuilder {
+public final class SimpleValidatorBuilder {
+
+    /**
+     * Private constructor for utility class.
+     */
+    private SimpleValidatorBuilder() {
+        // Nothing to be done
+    }
 
     public static DataProviderContext on(final Trigger trigger) {
         return new TriggerContext().on(trigger);

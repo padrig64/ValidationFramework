@@ -31,7 +31,14 @@ import com.google.code.validationframework.experimental.builder.context.resultco
 
 import java.util.Collection;
 
-public class ResultCollectorValidatorBuilder {
+public final class ResultCollectorValidatorBuilder {
+
+    /**
+     * Private constructor for utility class.
+     */
+    private ResultCollectorValidatorBuilder() {
+        // Nothing to be done
+    }
 
     public static <D> RuleContext<D> collect(final ResultCollector<?, D> resultCollector) {
         return new ResultCollectorContext().collect(resultCollector);
