@@ -40,32 +40,32 @@ public class ResultHandlerContext<DPO, RI, RO, RHI> {
     private final List<DataProvider<DPO>> dataProviders;
     private final List<Transformer> dataProvidersOutputTransformers;
     private final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping;
-    private final List<Transformer> combinedDataProvidersOutputTransformers;
+    private final List<Transformer> rulesInputTransformers;
     private final List<Rule<RI, RO>> rules;
     private final List<Transformer> rulesOutputTransformers;
     private final GeneralValidator.RuleToResultHandlerMapping ruleToResultHandlerMapping;
-    private final List<Transformer> combinedRulesOutputTransformers;
+    private final List<Transformer> resultHandlersInputTransformers;
     private final List<ResultHandler<RHI>> resultHandlers;
 
     public ResultHandlerContext(final List<Trigger> triggers, //
                                 final List<DataProvider<DPO>> dataProviders, //
                                 final List<Transformer> dataProvidersOutputTransformers, //
                                 final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping, //
-                                final List<Transformer> combinedDataProvidersOutputTransformers, //
+                                final List<Transformer> rulesInputTransformers, //
                                 final List<Rule<RI, RO>> rules, //
                                 final List<Transformer> rulesOutputTransformers, //
                                 final GeneralValidator.RuleToResultHandlerMapping ruleToResultHandlerMapping, //
-                                final List<Transformer> combinedRulesOutputTransformers, //
+                                final List<Transformer> resultHandlersInputTransformers, //
                                 final List<ResultHandler<RHI>> resultHandlers) {
         this.triggers = triggers;
         this.dataProviders = dataProviders;
         this.dataProvidersOutputTransformers = dataProvidersOutputTransformers;
         this.dataProviderToRuleMapping = dataProviderToRuleMapping;
-        this.combinedDataProvidersOutputTransformers = combinedDataProvidersOutputTransformers;
+        this.rulesInputTransformers = rulesInputTransformers;
         this.rules = rules;
         this.rulesOutputTransformers = rulesOutputTransformers;
         this.ruleToResultHandlerMapping = ruleToResultHandlerMapping;
-        this.combinedRulesOutputTransformers = combinedRulesOutputTransformers;
+        this.resultHandlersInputTransformers = resultHandlersInputTransformers;
         this.resultHandlers = resultHandlers;
     }
 
@@ -80,8 +80,7 @@ public class ResultHandlerContext<DPO, RI, RO, RHI> {
 
     public GeneralValidator<DPO, RI, RO, RHI> build() {
         // Create validator
-        final GeneralValidator<DPO, RI, RO, RHI> validator = new GeneralValidator<DPO, RI, RO,
-                RHI>(dataProviderToRuleMapping, ruleToResultHandlerMapping);
+        final GeneralValidator<DPO, RI, RO, RHI> validator = new GeneralValidator<DPO, RI, RO, RHI>();
 
         // Add triggers
         for (final Trigger trigger : triggers) {
@@ -93,16 +92,20 @@ public class ResultHandlerContext<DPO, RI, RO, RHI> {
             validator.addDataProvider(dataProvider);
         }
 
-        // TODO Map data providers output to rules input
+        // Map data providers output to rules input
+        validator.setDataProvidersOutputTransformers(dataProvidersOutputTransformers);
         validator.mapDataProvidersToRules(dataProviderToRuleMapping);
+        validator.setRulesInputTransformers(rulesInputTransformers);
 
         // Add rules
         for (final Rule<RI, RO> rule : rules) {
             validator.addRule(rule);
         }
 
-        // TODO Map rules output to result handlers input
+        // Map rules output to result handlers input
+        validator.setRulesOutputTransformers(rulesOutputTransformers);
         validator.mapRulesToResultHandlers(ruleToResultHandlerMapping);
+        validator.setResultHandlersInputTransformers(resultHandlersInputTransformers);
 
         // Add result handlers
         for (final ResultHandler<RHI> resultHandler : resultHandlers) {

@@ -357,7 +357,9 @@ public class GeneralValidatorDemoApp extends JFrame {
                 .read(dataProvider) //
                 .check(rule1) //
                 .check(rule2) //
-                .combine().transform(new AndBooleanAggregator()).handleWith(resultHandler1) //
+                .combine() //
+                .transform(new AndBooleanAggregator()) //
+                .handleWith(resultHandler1) //
                 .handleWith(resultCollector) //
                 .build();
 
