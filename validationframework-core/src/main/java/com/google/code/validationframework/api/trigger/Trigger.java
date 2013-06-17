@@ -38,12 +38,12 @@ public interface Trigger {
      *
      * @param listener Listener to validation trigger to be added.
      */
-    public void addTriggerListener(TriggerListener listener);
+    void addTriggerListener(TriggerListener listener);
 
     /**
      * Removes the specified validation trigger listener.
      *
      * @param listener Listener to validation trigger to be removed.
      */
-    public void removeTriggerListener(TriggerListener listener);
+    void removeTriggerListener(TriggerListener listener);
 }

@@ -65,54 +65,54 @@ public interface SimpleValidator<T extends Trigger, DP extends DataProvider<DPO>
      *
      * @param trigger Validation trigger to be added.
      */
-    public void addTrigger(final T trigger);
+    void addTrigger(final T trigger);
 
     /**
      * Removes the specified validation trigger.
      *
      * @param trigger Validation trigger to be removed.
      */
-    public void removeTrigger(final T trigger);
+    void removeTrigger(final T trigger);
 
     /**
      * Adds the specified validation trigger.
      *
      * @param dataProvider Validation data provider to be added.
      */
-    public void addDataProvider(final DP dataProvider);
+    void addDataProvider(final DP dataProvider);
 
     /**
      * Removes the specified validation trigger.
      *
      * @param dataProvider Validation data provider to be removed.
      */
-    public void removeDataProvider(final DP dataProvider);
+    void removeDataProvider(final DP dataProvider);
 
     /**
      * Adds the specified validation rule.
      *
      * @param rule Validation rule to be added.
      */
-    public void addRule(final R rule);
+    void addRule(final R rule);
 
     /**
      * Removes the specified validation rule.
      *
      * @param rule Validation rule to be removed.
      */
-    public void removeRule(final R rule);
+    void removeRule(final R rule);
 
     /**
      * Adds the specified validation result handler.
      *
      * @param resultHandler Validation result handler to be added.
      */
-    public void addResultHandler(final RH resultHandler);
+    void addResultHandler(final RH resultHandler);
 
     /**
      * Removes the specified validation result handler.
      *
      * @param resultHandler Validation result handler to be removed.
      */
-    public void removeResultHandler(final RH resultHandler);
+    void removeResultHandler(final RH resultHandler);
 }

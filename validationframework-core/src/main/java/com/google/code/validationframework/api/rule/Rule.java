@@ -42,5 +42,5 @@ public interface Rule<RI, RO> {
      *
      * @return Validation result.
      */
-    public RO validate(RI data);
+    RO validate(RI data);
 }

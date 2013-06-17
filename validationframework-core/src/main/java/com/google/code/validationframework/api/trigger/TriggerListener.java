@@ -39,5 +39,5 @@ public interface TriggerListener {
      *
      * @param event Trigger event.
      */
-    public void triggerValidation(TriggerEvent event);
+    void triggerValidation(TriggerEvent event);
 }

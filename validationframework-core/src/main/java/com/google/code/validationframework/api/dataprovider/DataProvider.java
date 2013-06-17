@@ -40,5 +40,5 @@ public interface DataProvider<DPO> {
      *
      * @return Data to be used for validation.
      */
-    public DPO getData();
+    DPO getData();
 }

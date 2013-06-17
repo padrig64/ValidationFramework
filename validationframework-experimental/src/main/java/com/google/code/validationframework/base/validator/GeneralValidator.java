@@ -68,6 +68,19 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
 
     private List<Transformer> resultHandlersInputTransformers = new ArrayList<Transformer>();
 
+    public Transformer[] getDataProvidersOutputTransformers() {
+        final Transformer[] transformers;
+
+        if (dataProvidersOutputTransformers == null) {
+            transformers = null;
+        } else {
+            transformers = dataProvidersOutputTransformers.toArray(new Transformer[dataProvidersOutputTransformers
+                    .size()]);
+        }
+
+        return transformers;
+    }
+
     public void setDataProvidersOutputTransformers(final Transformer... dataProvidersOutputTransformers) {
         if (dataProvidersOutputTransformers == null) {
             this.dataProvidersOutputTransformers = null;
@@ -90,6 +103,18 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
         this.dataProviderToRuleMapping = dataProviderToRuleMapping;
     }
 
+    public Transformer[] getRulesInputTransformers() {
+        final Transformer[] transformers;
+
+        if (rulesInputTransformers == null) {
+            transformers = null;
+        } else {
+            transformers = rulesInputTransformers.toArray(new Transformer[rulesInputTransformers.size()]);
+        }
+
+        return transformers;
+    }
+
     public void setRulesInputTransformers(final Transformer... rulesInputTransformers) {
         if (rulesInputTransformers == null) {
             this.rulesInputTransformers = null;
@@ -106,6 +131,18 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
             this.rulesInputTransformers = new ArrayList<Transformer>();
             this.rulesInputTransformers.addAll(rulesInputTransformers);
         }
+    }
+
+    public Transformer[] getRulesOutputTransformers() {
+        final Transformer[] transformers;
+
+        if (rulesOutputTransformers == null) {
+            transformers = null;
+        } else {
+            transformers = rulesOutputTransformers.toArray(new Transformer[rulesOutputTransformers.size()]);
+        }
+
+        return transformers;
     }
 
     public void setRulesOutputTransformers(final Transformer... rulesOutputTransformers) {
@@ -130,6 +167,19 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
         this.ruleToResultHandlerMapping = ruleToResultHandlerMapping;
     }
 
+    public Transformer[] getResultHandlersInputTransformers() {
+        final Transformer[] transformers;
+
+        if (resultHandlersInputTransformers == null) {
+            transformers = null;
+        } else {
+            transformers = resultHandlersInputTransformers.toArray(new Transformer[resultHandlersInputTransformers
+                    .size()]);
+        }
+
+        return transformers;
+    }
+
     public void setResultHandlersInputTransformers(final Transformer... resultHandlersInputTransformers) {
         if (resultHandlersInputTransformers == null) {
             this.resultHandlersInputTransformers = null;
@@ -148,6 +198,17 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
         }
     }
 
+    /**
+     * Convenience method to trigger the validation without adding a
+     * {@link com.google.code.validationframework.base.trigger.ManualTrigger}.
+     */
+    public void trigger() {
+        processTrigger(null);
+    }
+
+    /**
+     * @see AbstractSimpleValidator#processTrigger(Trigger)
+     */
     @Override
     protected void processTrigger(final Trigger trigger) {
         switch (dataProviderToRuleMapping) {

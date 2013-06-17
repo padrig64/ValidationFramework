@@ -72,7 +72,7 @@ public interface MappableValidator<T extends Trigger, DP extends DataProvider<DP
      * @param trigger      Trigger to be mapped to the data provider.
      * @param dataProvider Data provider to be mapped to the trigger.
      */
-    public void mapTriggerToDataProvider(final T trigger, final DP dataProvider);
+    void mapTriggerToDataProvider(final T trigger, final DP dataProvider);
 
     /**
      * Maps the specified data provider to the specified rule.<br>This means that whenever the specified data provider
@@ -85,7 +85,7 @@ public interface MappableValidator<T extends Trigger, DP extends DataProvider<DP
      * @param dataProvider Data provider to be mapped to the rule.
      * @param rule         Rule to be mapped to the data provider.
      */
-    public void mapDataProviderToRule(final DP dataProvider, final R rule);
+    void mapDataProviderToRule(final DP dataProvider, final R rule);
 
     /**
      * Maps the specified rule to the specified result handler.<br>This means that whenever the specified rule is
@@ -97,5 +97,5 @@ public interface MappableValidator<T extends Trigger, DP extends DataProvider<DP
      * @param rule          Rule to be mapped to the result handler.
      * @param resultHandler Result handler to be mapped to the rule.
      */
-    public void mapRuleToResultHandler(final R rule, final RH resultHandler);
+    void mapRuleToResultHandler(final R rule, final RH resultHandler);
 }

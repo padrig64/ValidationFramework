@@ -38,5 +38,5 @@ public interface ResultHandler<RHI> {
      *
      * @param result Validation result to be handled.
      */
-    public void handleResult(RHI result);
+    void handleResult(RHI result);
 }

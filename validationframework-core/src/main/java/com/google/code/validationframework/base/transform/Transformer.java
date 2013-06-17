@@ -41,5 +41,5 @@ public interface Transformer<I, O> {
      *
      * @return Transformation result.
      */
-    public O transform(I input);
+    O transform(I input);
 }

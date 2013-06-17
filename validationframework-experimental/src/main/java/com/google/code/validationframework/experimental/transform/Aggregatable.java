@@ -27,5 +27,5 @@ package com.google.code.validationframework.experimental.transform;
 
 public interface Aggregatable<O> {
 
-    public O getAggregatableValue();
+    O getAggregatableValue();
 }
