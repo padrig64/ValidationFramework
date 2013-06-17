@@ -68,20 +68,30 @@ public class TabIconBooleanFeedback implements ResultHandler<Boolean>, Disposabl
          */
         private static final long serialVersionUID = -8023773742352528637L;
 
+        /**
+         * Label that will hold the tab title.
+         */
         private final JLabel textLabel = new JLabel();
 
+        /**
+         * Label that will hold the validation result icon.
+         */
         private final JLabel iconLabel = new JLabel();
 
+        /**
+         * Position of the icon with respect to the tab text.<br>It can be {@link SwingConstants#LEADING},
+         * {@link SwingConstants#LEFT}, {@link SwingConstants#TRAILING} or {@link SwingConstants#RIGHT}.
+         *
+         * @see SwingConstants
+         */
         private final String iconPositionInLayout;
 
         private final IconToolTipAdapter toolTipAdapter;
 
         /**
-         * Flag indicating the last known enabled state of the tab.<br>It is used to check if the enabled state
-         * changed when
-         * painting because the {@link JTabbedPane} does not trigger anything when the enabled state of the tabs is
-         * changed by
-         * calling {@link JTabbedPane#setEnabledAt(int, boolean)}.
+         * Flag indicating the last known enabled state of the tab.<br>It is used to check if the enabled state changed
+         * when painting because the {@link JTabbedPane} does not trigger anything when the enabled state of the tabs is
+         * changed by calling {@link JTabbedPane#setEnabledAt(int, boolean)}.
          *
          * @see JTabbedPane#setEnabledAt(int, boolean)
          * @see #paint(Graphics)
@@ -376,15 +386,19 @@ public class TabIconBooleanFeedback implements ResultHandler<Boolean>, Disposabl
         this(tabbedPane, tabIndex, DEFAULT_VALID_ICON, null, DEFAULT_INVALID_ICON, null);
     }
 
+    public TabIconBooleanFeedback(final JTabbedPane tabbedPane, final int tabIndex, final String invalidText) {
+        this(tabbedPane, tabIndex, null, null, DEFAULT_INVALID_ICON, invalidText, DEFAULT_ICON_POSITION,
+                DEFAULT_ICON_TEXT_GAP);
+    }
+
     public TabIconBooleanFeedback(final JTabbedPane tabbedPane, final int tabIndex, final Icon invalidIcon,
                                   final String invalidText) {
         this(tabbedPane, tabIndex, null, null, invalidIcon, invalidText, DEFAULT_ICON_POSITION, DEFAULT_ICON_TEXT_GAP);
     }
 
     /**
-     * Constructor specifying the tabbed pane and the index of the tab to show the decoration on,
-     * as well as the icon and
-     * tooltip text representing valid and invalid results.
+     * Constructor specifying the tabbed pane and the index of the tab to show the decoration on, as well as the icon
+     * and tooltip text representing valid and invalid results.
      *
      * @param tabbedPane  Tabbed pane to show the icon tip feedback on.
      * @param tabIndex    Index of the tab to show the icon tip feedback on.
@@ -400,9 +414,8 @@ public class TabIconBooleanFeedback implements ResultHandler<Boolean>, Disposabl
     }
 
     /**
-     * Constructor specifying the tabbed pane and the index of the tab to show the decoration on,
-     * as well as the icon and
-     * tooltip text representing valid and invalid results, and the position and spacing of the decoration icon with
+     * Constructor specifying the tabbed pane and the index of the tab to show the decoration on, as well as the icon
+     * and tooltip text representing valid and invalid results, and the position and spacing of the decoration icon with
      * respect to the tab title.
      *
      * @param tabbedPane   Tabbed pane to show the icon tip feedback on.
