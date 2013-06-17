@@ -37,7 +37,7 @@ import com.google.code.validationframework.base.transform.Transformer;
  * @param <TDPO> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component,
  *               or the type of the component itself.
  */
-public class TransformerDataProvider<DPO, TDPO> implements DataProvider<TDPO> {
+public class TransformedDataProvider<DPO, TDPO> implements DataProvider<TDPO> {
 
     /**
      * Wrapped data provider whose output is to be transformed.
@@ -45,21 +45,25 @@ public class TransformerDataProvider<DPO, TDPO> implements DataProvider<TDPO> {
     private final DataProvider<DPO> wrappedDataProvider;
 
     /**
-     * Transformer transforming the output of the wrapped data provider.
+     * Transformer adapting the output of the wrapped data provider.
      */
-    private Transformer<DPO, TDPO> dataTransformer = new CastTransformer<DPO, TDPO>();
+    private final Transformer<DPO, TDPO> dataTransformer;
 
     /**
-     * Constructor specifying the wrapped data provider and the transformer to be used to transform the output of the
+     * Constructor specifying the wrapped data provider and the transformer to be used to adapt the output of the
      * wrapped data provider.
      *
      * @param wrappedDataProvider Wrapped data provider whose output is to be transformed.
-     * @param dataTransformer     Transformer transforming the output of the wrapped data provider.
+     * @param dataTransformer     Transformer adapting the output of the wrapped data provider.<br>If null, the
+     *                            provided data will be cast to the wanted type. In case the data cannot be cast, null
+     *                            will be provided.
      */
-    public TransformerDataProvider(final DataProvider<DPO> wrappedDataProvider, final Transformer<DPO,
+    public TransformedDataProvider(final DataProvider<DPO> wrappedDataProvider, final Transformer<DPO,
             TDPO> dataTransformer) {
         this.wrappedDataProvider = wrappedDataProvider;
         if (dataTransformer == null) {
+            this.dataTransformer = new CastTransformer<DPO, TDPO>();
+        } else {
             this.dataTransformer = dataTransformer;
         }
     }

@@ -9,7 +9,8 @@
 * Added convenience in AndBooleanAggregator and OrBooleanAggregator to better support null values
 * Added convenience getComponent() method to Swing triggers, data providers and rules
 * Added InvokeLaterTrigger wrapper to re-schedule a trigger later on the Event Dispatch Thread
-* Added TransformerDataProvider to adapt and transform the output of a data provider
+* Added TransformedDataProvider to adapt the type handled by data providers when added to validators handling another type
+* Added TransformedResultHandler to adapt the type handled by result handler when added to validators handling another type
 * Renamed ManualTrigger's triggers method for simplicity
 * Renamed ButtonGroup-related data providers for consistency
 * Other minor bugs and code quality fixes
