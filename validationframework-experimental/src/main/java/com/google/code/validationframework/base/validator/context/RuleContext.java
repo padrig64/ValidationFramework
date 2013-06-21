@@ -33,23 +33,24 @@ import com.google.code.validationframework.base.transform.Transformer;
 import com.google.code.validationframework.base.validator.GeneralValidator;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class RuleContext<DPO, RI, RO> {
 
-    private final List<Trigger> triggers;
-    private final List<DataProvider<DPO>> dataProviders;
-    private final List<Transformer> dataProvidersOutputTransformers;
+    private final Collection<Trigger> triggers;
+    private final Collection<DataProvider<DPO>> dataProviders;
+    private final Collection<Transformer> dataProvidersOutputTransformers;
     private final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping;
-    private final List<Transformer> combinedDataProvidersOutputTransformers;
-    private final List<Rule<RI, RO>> rules;
+    private final Collection<Transformer> combinedDataProvidersOutputTransformers;
+    private final Collection<Rule<RI, RO>> rules;
 
-    public RuleContext(final List<Trigger> triggers, //
-                       final List<DataProvider<DPO>> dataProviders, //
-                       final List<Transformer> dataProvidersOutputTransformers, //
-                       final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping, //
-                       final List<Transformer> combinedDataProvidersOutputTransformers, //
-                       final List<Rule<RI, RO>> rules) {
+    public RuleContext(final Collection<Trigger> triggers, //
+            final Collection<DataProvider<DPO>> dataProviders, //
+            final Collection<Transformer> dataProvidersOutputTransformers, //
+            final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping, //
+            final Collection<Transformer> combinedDataProvidersOutputTransformers, //
+            final Collection<Rule<RI, RO>> rules) {
         this.triggers = triggers;
         this.dataProviders = dataProviders;
         this.dataProvidersOutputTransformers = dataProvidersOutputTransformers;
@@ -61,6 +62,15 @@ public class RuleContext<DPO, RI, RO> {
     public RuleContext<DPO, RI, RO> check(final Rule<RI, RO> rule) {
         if (rule != null) {
             rules.add(rule);
+        }
+
+        // Stay in the same context and re-use the same instance because no type has changed
+        return this;
+    }
+
+    public RuleContext<DPO, RI, RO> check(final Collection<Rule<RI, RO>> rules) {
+        if (rules != null) {
+            this.rules.addAll(rules);
         }
 
         // Stay in the same context and re-use the same instance because no type has changed
@@ -93,6 +103,18 @@ public class RuleContext<DPO, RI, RO> {
 
         // Change context
         return new ResultHandlerContext<DPO, RI, RO, RO>(triggers, dataProviders, dataProvidersOutputTransformers,
-                dataProviderToRuleMapping, combinedDataProvidersOutputTransformers, rules, null, GeneralValidator.RuleToResultHandlerMapping.EACH_TO_EACH, null, resultHandlers);
+                dataProviderToRuleMapping, combinedDataProvidersOutputTransformers, rules, null,
+                GeneralValidator.RuleToResultHandlerMapping.EACH_TO_EACH, null, resultHandlers);
+    }
+
+    public ResultHandlerContext<DPO, RI, RO, RO> handleWith(final Collection<ResultHandler<RO>> resultHandlers) {
+        final List<ResultHandler<RO>> resultHandlerList = new ArrayList<ResultHandler<RO>>();
+        if (resultHandlers != null) {
+            resultHandlerList.addAll(resultHandlers);
+        }
+
+        // Change context
+        return new ResultHandlerContext<DPO, RI, RO, RO>(triggers, dataProviders, dataProvidersOutputTransformers,
+                dataProviderToRuleMapping, combinedDataProvidersOutputTransformers, rules, null, GeneralValidator.RuleToResultHandlerMapping.EACH_TO_EACH, null, resultHandlerList);
     }
 }

@@ -32,31 +32,31 @@ import com.google.code.validationframework.api.trigger.Trigger;
 import com.google.code.validationframework.base.transform.Transformer;
 import com.google.code.validationframework.base.validator.GeneralValidator;
 
-import java.util.List;
+import java.util.Collection;
 
 public class ResultHandlerContext<DPO, RI, RO, RHI> {
 
-    private final List<Trigger> triggers;
-    private final List<DataProvider<DPO>> dataProviders;
-    private final List<Transformer> dataProvidersOutputTransformers;
+    private final Collection<Trigger> triggers;
+    private final Collection<DataProvider<DPO>> dataProviders;
+    private final Collection<Transformer> dataProvidersOutputTransformers;
     private final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping;
-    private final List<Transformer> rulesInputTransformers;
-    private final List<Rule<RI, RO>> rules;
-    private final List<Transformer> rulesOutputTransformers;
+    private final Collection<Transformer> rulesInputTransformers;
+    private final Collection<Rule<RI, RO>> rules;
+    private final Collection<Transformer> rulesOutputTransformers;
     private final GeneralValidator.RuleToResultHandlerMapping ruleToResultHandlerMapping;
-    private final List<Transformer> resultHandlersInputTransformers;
-    private final List<ResultHandler<RHI>> resultHandlers;
+    private final Collection<Transformer> resultHandlersInputTransformers;
+    private final Collection<ResultHandler<RHI>> resultHandlers;
 
-    public ResultHandlerContext(final List<Trigger> triggers, //
-                                final List<DataProvider<DPO>> dataProviders, //
-                                final List<Transformer> dataProvidersOutputTransformers, //
-                                final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping, //
-                                final List<Transformer> rulesInputTransformers, //
-                                final List<Rule<RI, RO>> rules, //
-                                final List<Transformer> rulesOutputTransformers, //
-                                final GeneralValidator.RuleToResultHandlerMapping ruleToResultHandlerMapping, //
-                                final List<Transformer> resultHandlersInputTransformers, //
-                                final List<ResultHandler<RHI>> resultHandlers) {
+    public ResultHandlerContext(final Collection<Trigger> triggers, //
+            final Collection<DataProvider<DPO>> dataProviders, //
+            final Collection<Transformer> dataProvidersOutputTransformers, //
+            final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping, //
+            final Collection<Transformer> rulesInputTransformers, //
+            final Collection<Rule<RI, RO>> rules, //
+            final Collection<Transformer> rulesOutputTransformers, //
+            final GeneralValidator.RuleToResultHandlerMapping ruleToResultHandlerMapping, //
+            final Collection<Transformer> resultHandlersInputTransformers, //
+            final Collection<ResultHandler<RHI>> resultHandlers) {
         this.triggers = triggers;
         this.dataProviders = dataProviders;
         this.dataProvidersOutputTransformers = dataProvidersOutputTransformers;
@@ -72,6 +72,15 @@ public class ResultHandlerContext<DPO, RI, RO, RHI> {
     public ResultHandlerContext<DPO, RI, RO, RHI> handleWith(final ResultHandler<RHI> resultHandler) {
         if (resultHandler != null) {
             resultHandlers.add(resultHandler);
+        }
+
+        // Stay in the same context and re-use the same instance because no type has changed
+        return this;
+    }
+
+    public ResultHandlerContext<DPO, RI, RO, RHI> handleWith(final Collection<ResultHandler<RHI>> resultHandlers) {
+        if (resultHandlers != null) {
+            this.resultHandlers.addAll(resultHandlers);
         }
 
         // Stay in the same context and re-use the same instance because no type has changed

@@ -32,17 +32,18 @@ import com.google.code.validationframework.base.transform.Transformer;
 import com.google.code.validationframework.base.validator.GeneralValidator;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class DataProviderTransformedContext<DPO, TDPO> {
 
-    private final List<Trigger> triggers;
-    private final List<DataProvider<DPO>> dataProviders;
-    private final List<Transformer> dataProvidersOutputTransformers;
+    private final Collection<Trigger> triggers;
+    private final Collection<DataProvider<DPO>> dataProviders;
+    private final Collection<Transformer> dataProvidersOutputTransformers;
 
-    public DataProviderTransformedContext(final List<Trigger> triggers, //
-                                          final List<DataProvider<DPO>> dataProviders, //
-                                          final List<Transformer> dataProvidersOutputTransformers) {
+    public DataProviderTransformedContext(final Collection<Trigger> triggers, //
+            final Collection<DataProvider<DPO>> dataProviders, //
+            final Collection<Transformer> dataProvidersOutputTransformers) {
         this.triggers = triggers;
         this.dataProviders = dataProviders;
         this.dataProvidersOutputTransformers = dataProvidersOutputTransformers;
@@ -73,5 +74,16 @@ public class DataProviderTransformedContext<DPO, TDPO> {
         // Change context
         return new RuleContext<DPO, TDPO, RO>(triggers, dataProviders, dataProvidersOutputTransformers,
                 GeneralValidator.DataProviderToRuleMapping.EACH_TO_EACH, null, rules);
+    }
+
+    public <RO> RuleContext<DPO, TDPO, RO> check(final Collection<Rule<TDPO, RO>> rules) {
+        final List<Rule<TDPO, RO>> ruleList = new ArrayList<Rule<TDPO, RO>>();
+        if (rules != null) {
+            ruleList.addAll(rules);
+        }
+
+        // Change context
+        return new RuleContext<DPO, TDPO, RO>(triggers, dataProviders, dataProvidersOutputTransformers,
+                GeneralValidator.DataProviderToRuleMapping.EACH_TO_EACH, null, ruleList);
     }
 }

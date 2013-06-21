@@ -32,15 +32,16 @@ import com.google.code.validationframework.base.transform.Transformer;
 import com.google.code.validationframework.base.validator.GeneralValidator;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class DataProviderContext<DPO> {
 
-    private final List<Trigger> triggers;
-    private final List<DataProvider<DPO>> dataProviders;
+    private final Collection<Trigger> triggers;
+    private final Collection<DataProvider<DPO>> dataProviders;
 
-    public DataProviderContext(final List<Trigger> triggers, //
-                               final List<DataProvider<DPO>> dataProviders) {
+    public DataProviderContext(final Collection<Trigger> triggers, //
+            final Collection<DataProvider<DPO>> dataProviders) {
         this.triggers = triggers;
         this.dataProviders = dataProviders;
     }
@@ -48,6 +49,15 @@ public class DataProviderContext<DPO> {
     public DataProviderContext<DPO> read(final DataProvider<DPO> dataProvider) {
         if (dataProvider != null) {
             dataProviders.add(dataProvider);
+        }
+
+        // Stay in the same context and re-use the same instance because no type has changed
+        return this;
+    }
+
+    public DataProviderContext<DPO> read(final Collection<DataProvider<DPO>> dataProviders) {
+        if (dataProviders != null) {
+            this.dataProviders.addAll(dataProviders);
         }
 
         // Stay in the same context and re-use the same instance because no type has changed
@@ -80,5 +90,15 @@ public class DataProviderContext<DPO> {
         // Change context
         return new RuleContext<DPO, DPO, RO>(triggers, dataProviders, null,
                 GeneralValidator.DataProviderToRuleMapping.EACH_TO_EACH, null, rules);
+    }
+
+    public <RO> RuleContext<DPO, DPO, RO> check(final Collection<Rule<DPO, RO>> rules) {
+        final List<Rule<DPO, RO>> ruleList = new ArrayList<Rule<DPO, RO>>();
+        if (rules != null) {
+            ruleList.addAll(rules);
+        }
+
+        // Change context
+        return new RuleContext<DPO, DPO, RO>(triggers, dataProviders, null, GeneralValidator.DataProviderToRuleMapping.EACH_TO_EACH, null, ruleList);
     }
 }

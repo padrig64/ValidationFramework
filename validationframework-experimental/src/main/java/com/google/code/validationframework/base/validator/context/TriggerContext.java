@@ -29,22 +29,29 @@ import com.google.code.validationframework.api.dataprovider.DataProvider;
 import com.google.code.validationframework.api.trigger.Trigger;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class TriggerContext {
 
-    private final List<Trigger> triggers;
+    private final Collection<Trigger> triggers;
 
-    public TriggerContext(final Trigger trigger) {
-        this.triggers = new ArrayList<Trigger>();
-        if (trigger != null) {
-            triggers.add(trigger);
-        }
+    public TriggerContext(final Collection<Trigger> triggers) {
+        this.triggers = triggers;
     }
 
     public TriggerContext on(final Trigger trigger) {
         if (trigger != null) {
             triggers.add(trigger);
+        }
+
+        // Stay in the same context and re-use the same instance because no type has changed
+        return this;
+    }
+
+    public TriggerContext on(final Collection<Trigger> triggers) {
+        if (triggers != null) {
+            this.triggers.addAll(triggers);
         }
 
         // Stay in the same context and re-use the same instance because no type has changed
@@ -59,5 +66,15 @@ public class TriggerContext {
 
         // Change context
         return new DataProviderContext<DPO>(triggers, dataProviders);
+    }
+
+    public <DPO> DataProviderContext<DPO> read(final Collection<DataProvider<DPO>> dataProviders) {
+        final List<DataProvider<DPO>> dataProviderList = new ArrayList<DataProvider<DPO>>();
+        if (dataProviders != null) {
+            dataProviderList.addAll(dataProviders);
+        }
+
+        // Change context
+        return new DataProviderContext<DPO>(triggers, dataProviderList);
     }
 }

@@ -28,6 +28,10 @@ package com.google.code.validationframework.base.validator;
 import com.google.code.validationframework.api.trigger.Trigger;
 import com.google.code.validationframework.base.validator.context.TriggerContext;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 public final class GeneralValidatorBuilder {
 
     /**
@@ -38,6 +42,18 @@ public final class GeneralValidatorBuilder {
     }
 
     public static TriggerContext on(final Trigger trigger) {
-        return new TriggerContext(trigger);
+        final List<Trigger> triggers = new ArrayList<Trigger>();
+        if (trigger != null) {
+            triggers.add(trigger);
+        }
+        return new TriggerContext(triggers);
+    }
+
+    public static TriggerContext on(final Collection<Trigger> triggers) {
+        final List<Trigger> triggerList = new ArrayList<Trigger>();
+        if (triggers != null) {
+            triggerList.addAll(triggers);
+        }
+        return new TriggerContext(triggerList);
     }
 }

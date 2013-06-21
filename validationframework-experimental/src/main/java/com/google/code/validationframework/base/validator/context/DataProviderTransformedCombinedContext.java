@@ -37,16 +37,15 @@ import java.util.List;
 
 public class DataProviderTransformedCombinedContext<DPO, TDPO> {
 
-    private final List<Trigger> triggers;
-    private final List<DataProvider<DPO>> dataProviders;
-    private final List<Transformer> dataProvidersOutputTransformers;
+    private final Collection<Trigger> triggers;
+    private final Collection<DataProvider<DPO>> dataProviders;
+    private final Collection<Transformer> dataProvidersOutputTransformers;
     private final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping;
 
-    public DataProviderTransformedCombinedContext(final List<Trigger> triggers, //
-                                                  final List<DataProvider<DPO>> dataProviders, //
-                                                  final List<Transformer> dataProvidersOutputTransformers, //
-                                                  final GeneralValidator.DataProviderToRuleMapping
-                                                          dataProviderToRuleMapping) {
+    public DataProviderTransformedCombinedContext(final Collection<Trigger> triggers, //
+            final Collection<DataProvider<DPO>> dataProviders, //
+            final Collection<Transformer> dataProvidersOutputTransformers, //
+            final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping) {
         this.triggers = triggers;
         this.dataProviders = dataProviders;
         this.dataProvidersOutputTransformers = dataProvidersOutputTransformers;
@@ -72,6 +71,18 @@ public class DataProviderTransformedCombinedContext<DPO, TDPO> {
         }
 
         // Change context
-        return new RuleContext<DPO, Collection<TDPO>, RO>(triggers, dataProviders, dataProvidersOutputTransformers, dataProviderToRuleMapping, null, rules);
+        return new RuleContext<DPO, Collection<TDPO>, RO>(triggers, dataProviders, dataProvidersOutputTransformers,
+                dataProviderToRuleMapping, null, rules);
+    }
+
+    public <RO> RuleContext<DPO, Collection<TDPO>, RO> check(final Collection<Rule<Collection<TDPO>, RO>> rules) {
+        final List<Rule<Collection<TDPO>, RO>> ruleList = new ArrayList<Rule<Collection<TDPO>, RO>>();
+        if (rules != null) {
+            ruleList.addAll(rules);
+        }
+
+        // Change context
+        return new RuleContext<DPO, Collection<TDPO>, RO>(triggers, dataProviders, dataProvidersOutputTransformers,
+                dataProviderToRuleMapping, null, ruleList);
     }
 }

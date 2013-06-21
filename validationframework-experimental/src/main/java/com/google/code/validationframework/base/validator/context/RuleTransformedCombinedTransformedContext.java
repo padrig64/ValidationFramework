@@ -33,31 +33,30 @@ import com.google.code.validationframework.base.transform.Transformer;
 import com.google.code.validationframework.base.validator.GeneralValidator;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class RuleTransformedCombinedTransformedContext<DPO, RI, RO, TRO> {
 
-    private final List<Trigger> triggers;
-    private final List<DataProvider<DPO>> dataProviders;
-    private final List<Transformer> dataProvidersOutputTransformers;
+    private final Collection<Trigger> triggers;
+    private final Collection<DataProvider<DPO>> dataProviders;
+    private final Collection<Transformer> dataProvidersOutputTransformers;
     private final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping;
-    private final List<Transformer> combinedDataProvidersOutputTransformers;
-    private final List<Rule<RI, RO>> rules;
-    private final List<Transformer> rulesOutputTransformers;
+    private final Collection<Transformer> combinedDataProvidersOutputTransformers;
+    private final Collection<Rule<RI, RO>> rules;
+    private final Collection<Transformer> rulesOutputTransformers;
     private GeneralValidator.RuleToResultHandlerMapping ruleToResultHandlerMapping = null;
-    private final List<Transformer> combinedRulesOutputTransformers;
+    private final Collection<Transformer> combinedRulesOutputTransformers;
 
-    public RuleTransformedCombinedTransformedContext(final List<Trigger> triggers, //
-                                                     final List<DataProvider<DPO>> dataProviders, //
-                                                     final List<Transformer> dataProvidersOutputTransformers,
-                                                     final GeneralValidator.DataProviderToRuleMapping
-                                                             dataProviderToRuleMapping, //
-                                                     final List<Transformer> combinedDataProvidersOutputTransformers,
-                                                     final List<Rule<RI, RO>> rules, //
-                                                     final List<Transformer> rulesOutputTransformers, //
-                                                     final GeneralValidator.RuleToResultHandlerMapping
-                                                             ruleToResultHandlerMapping, //
-                                                     final List<Transformer> combinedRulesOutputTransformers) {
+    public RuleTransformedCombinedTransformedContext(final Collection<Trigger> triggers, //
+            final Collection<DataProvider<DPO>> dataProviders, //
+            final Collection<Transformer> dataProvidersOutputTransformers,
+            final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping, //
+            final Collection<Transformer> combinedDataProvidersOutputTransformers, final Collection<Rule<RI,
+            RO>> rules, //
+            final Collection<Transformer> rulesOutputTransformers, //
+            final GeneralValidator.RuleToResultHandlerMapping ruleToResultHandlerMapping, //
+            final Collection<Transformer> combinedRulesOutputTransformers) {
         this.triggers = triggers;
         this.dataProviders = dataProviders;
         this.dataProvidersOutputTransformers = dataProvidersOutputTransformers;
@@ -89,6 +88,19 @@ public class RuleTransformedCombinedTransformedContext<DPO, RI, RO, TRO> {
         }
 
         // Change context
-        return new ResultHandlerContext<DPO, RI, RO, TRO>(triggers, dataProviders, dataProvidersOutputTransformers, dataProviderToRuleMapping, combinedDataProvidersOutputTransformers, rules, rulesOutputTransformers, ruleToResultHandlerMapping, combinedRulesOutputTransformers, resultHandlers);
+        return new ResultHandlerContext<DPO, RI, RO, TRO>(triggers, dataProviders, dataProvidersOutputTransformers,
+                dataProviderToRuleMapping, combinedDataProvidersOutputTransformers, rules, rulesOutputTransformers,
+                ruleToResultHandlerMapping, combinedRulesOutputTransformers, resultHandlers);
+    }
+
+    public ResultHandlerContext<DPO, RI, RO, TRO> handleWith(final Collection<ResultHandler<TRO>> resultHandlers) {
+        final List<ResultHandler<TRO>> resultHandlerList = new ArrayList<ResultHandler<TRO>>();
+        if (resultHandlers != null) {
+            resultHandlerList.addAll(resultHandlers);
+        }
+
+        // Change context
+        return new ResultHandlerContext<DPO, RI, RO, TRO>(triggers, dataProviders, dataProvidersOutputTransformers,
+                dataProviderToRuleMapping, combinedDataProvidersOutputTransformers, rules, rulesOutputTransformers, ruleToResultHandlerMapping, combinedRulesOutputTransformers, resultHandlerList);
     }
 }

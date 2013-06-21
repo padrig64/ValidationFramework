@@ -37,19 +37,17 @@ import java.util.List;
 
 public class DataProviderTransformedCombinedTransformedContext<DPO, TDPO> {
 
-    private final List<Trigger> triggers;
-    private final List<DataProvider<DPO>> dataProviders;
-    private final List<Transformer> dataProvidersOutputTransformers;
+    private final Collection<Trigger> triggers;
+    private final Collection<DataProvider<DPO>> dataProviders;
+    private final Collection<Transformer> dataProvidersOutputTransformers;
     private final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping;
-    private final List<Transformer> combinedDataProvidersOutputTransformers;
+    private final Collection<Transformer> combinedDataProvidersOutputTransformers;
 
-    public DataProviderTransformedCombinedTransformedContext(final List<Trigger> triggers, //
-                                                             final List<DataProvider<DPO>> dataProviders, //
-                                                             final List<Transformer> dataProvidersOutputTransformers, //
-                                                             final GeneralValidator.DataProviderToRuleMapping
-                                                                     dataProviderToRuleMapping, //
-                                                             final List<Transformer>
-                                                                     combinedDataProvidersOutputTransformers) {
+    public DataProviderTransformedCombinedTransformedContext(final Collection<Trigger> triggers, //
+            final Collection<DataProvider<DPO>> dataProviders, //
+            final Collection<Transformer> dataProvidersOutputTransformers, //
+            final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping, //
+            final Collection<Transformer> combinedDataProvidersOutputTransformers) {
         this.triggers = triggers;
         this.dataProviders = dataProviders;
         this.dataProvidersOutputTransformers = dataProvidersOutputTransformers;
@@ -75,6 +73,18 @@ public class DataProviderTransformedCombinedTransformedContext<DPO, TDPO> {
         }
 
         // Change context
-        return new RuleContext<DPO, TDPO, RO>(triggers, dataProviders, dataProvidersOutputTransformers, dataProviderToRuleMapping, combinedDataProvidersOutputTransformers, rules);
+        return new RuleContext<DPO, TDPO, RO>(triggers, dataProviders, dataProvidersOutputTransformers,
+                dataProviderToRuleMapping, combinedDataProvidersOutputTransformers, rules);
+    }
+
+    public <RO> RuleContext<DPO, TDPO, RO> check(final Collection<Rule<TDPO, RO>> rules) {
+        final List<Rule<TDPO, RO>> ruleList = new ArrayList<Rule<TDPO, RO>>();
+        if (rules != null) {
+            ruleList.addAll(rules);
+        }
+
+        // Change context
+        return new RuleContext<DPO, TDPO, RO>(triggers, dataProviders, dataProvidersOutputTransformers,
+                dataProviderToRuleMapping, combinedDataProvidersOutputTransformers, ruleList);
     }
 }
