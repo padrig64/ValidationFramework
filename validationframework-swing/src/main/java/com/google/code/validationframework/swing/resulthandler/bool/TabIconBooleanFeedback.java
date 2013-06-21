@@ -44,6 +44,7 @@ import javax.swing.SwingUtilities;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -71,7 +72,7 @@ public class TabIconBooleanFeedback implements ResultHandler<Boolean>, Disposabl
         /**
          * Label that will hold the tab title.
          */
-        private final JLabel textLabel = new JLabel();
+        private final JLabel titleLabel = new JLabel();
 
         /**
          * Label that will hold the validation result icon.
@@ -79,13 +80,16 @@ public class TabIconBooleanFeedback implements ResultHandler<Boolean>, Disposabl
         private final JLabel iconLabel = new JLabel();
 
         /**
-         * Position of the icon with respect to the tab text.<br>It can be {@link SwingConstants#LEADING},
-         * {@link SwingConstants#LEFT}, {@link SwingConstants#TRAILING} or {@link SwingConstants#RIGHT}.
+         * Position of the icon with respect to the tab text.<br>It can be {@link SwingConstants#LEADING}, {@link
+         * SwingConstants#LEFT}, {@link SwingConstants#TRAILING} or {@link SwingConstants#RIGHT}.
          *
          * @see SwingConstants
          */
         private final String iconPositionInLayout;
 
+        /**
+         * Entity handling the display of the tooltip and the mouse events in the icon.
+         */
         private final IconToolTipAdapter toolTipAdapter;
 
         /**
@@ -98,6 +102,14 @@ public class TabIconBooleanFeedback implements ResultHandler<Boolean>, Disposabl
          */
         private boolean titleEnabled = tabbedPane.isEnabledAt(tabIndex);
 
+        /**
+         * Constructor specifying the layout constraints of the icon and title text.
+         *
+         * @param iconPosition Position of the icon with respect to the text.<br>It can be either {@link
+         *                     SwingConstants#LEADING}, {@link SwingConstants#TRAILING}, {@link SwingConstants#LEFT} or
+         *                     {@link SwingConstants#RIGHT}.
+         * @param iconTextGap  Gap between the icon and the text.
+         */
         public TitleRenderer(final int iconPosition, final int iconTextGap) {
             super();
 
@@ -126,7 +138,7 @@ public class TabIconBooleanFeedback implements ResultHandler<Boolean>, Disposabl
             setLayout(layout);
 
             // Set up text label
-            add(textLabel, BorderLayout.CENTER);
+            add(titleLabel, BorderLayout.CENTER);
 
             // Set up icon label
             toolTipAdapter = new IconToolTipAdapter(iconLabel, null, new AnchorLink(Anchor.BOTTOM_RIGHT,
@@ -134,9 +146,25 @@ public class TabIconBooleanFeedback implements ResultHandler<Boolean>, Disposabl
             iconLabel.addMouseListener(toolTipAdapter);
         }
 
+        /**
+         * Sets the tab title.
+         *
+         * @param text Tab title.
+         */
+        public void setTitle(final String text) {
+            // Update text label
+            titleLabel.setText(text);
+            updateRendererPreferredSize();
+        }
+
+        /**
+         * Sets the icon to be shown in the tab.
+         *
+         * @param icon Tab icon.
+         */
         public void setIcon(final Icon icon) {
             if (icon == null) {
-                // Remove icon label completely so that we do not have any unused space and mis-alignments
+                // Remove icon label completely so that we do not have any unused space and misalignment
                 if (getComponentCount() > 1) {
                     remove(iconLabel);
                 }
@@ -149,15 +177,30 @@ public class TabIconBooleanFeedback implements ResultHandler<Boolean>, Disposabl
 
             // Update icon label
             iconLabel.setIcon(icon);
+            updateRendererPreferredSize();
         }
 
+        /**
+         * Sets the tooltip text to be shown for the validation icon.
+         *
+         * @param text Tooltip text.
+         */
         public void setIconToolTipText(final String text) {
             toolTipAdapter.setToolTipText(text);
         }
 
-        public void setTitle(final String text) {
-            // Update text label
-            textLabel.setText(text);
+        /**
+         * Updates the preferred size of this title renderer.<br>This method is to be called whenever the title text or
+         * icon changes. This method will be keep the biggest preferred height, in order to avoid the whole tab content
+         * to move up and down (a few pixels) when the validation is shown and hidden.
+         */
+        private void updateRendererPreferredSize() {
+            setPreferredSize(null);
+            final int preferredWidth = getPreferredSize().width;
+            int preferredHeight = getPreferredSize().height;
+            preferredHeight = Math.max(iconLabel.getPreferredSize().height, preferredHeight);
+            preferredHeight = Math.max(titleLabel.getPreferredSize().height, preferredHeight);
+            setPreferredSize(new Dimension(preferredWidth, preferredHeight));
         }
 
         /**
@@ -167,7 +210,7 @@ public class TabIconBooleanFeedback implements ResultHandler<Boolean>, Disposabl
         public void setEnabled(final boolean enabled) {
             super.setEnabled(enabled);
             iconLabel.setEnabled(enabled);
-            textLabel.setEnabled(enabled);
+            titleLabel.setEnabled(enabled);
 
             if (enabled) {
                 // Re-add icon label if not already there and if there is an icon to show
@@ -203,6 +246,11 @@ public class TabIconBooleanFeedback implements ResultHandler<Boolean>, Disposabl
         }
     }
 
+    /**
+     * Entity handling the tooltip display for the validation icon.<br>It adjust the text to be displayed, shows the
+     * tooltip whenever the mouse enters the validation icon, and forward mouse events to the parent component (the
+     * title renderer).
+     */
     private static class IconToolTipAdapter implements MouseListener {
 
         private ToolTipDialog toolTipDialog = null;
@@ -214,7 +262,7 @@ public class TabIconBooleanFeedback implements ResultHandler<Boolean>, Disposabl
         private final AnchorLink anchorLinkWithToolTip;
 
         public IconToolTipAdapter(final JComponent owner, final String toolTipText,
-                                  final AnchorLink anchorLinkWithToolTip) {
+                final AnchorLink anchorLinkWithToolTip) {
             super();
             this.owner = owner;
             this.anchorLinkWithToolTip = anchorLinkWithToolTip;
@@ -267,6 +315,11 @@ public class TabIconBooleanFeedback implements ResultHandler<Boolean>, Disposabl
             forwardToParent(e);
         }
 
+        /**
+         * Forwards the specified mouse events to the parent tabbed pane.
+         *
+         * @param e Mouse event to be forwarded.
+         */
         private void forwardToParent(final MouseEvent e) {
             // Find parent tabbed pane
             Container parent = owner.getParent();
@@ -281,6 +334,11 @@ public class TabIconBooleanFeedback implements ResultHandler<Boolean>, Disposabl
             }
         }
 
+        /**
+         * Sets the tooltip text to be displayed for the icon.
+         *
+         * @param toolTipText Tooltip text to be displayed for the icon.
+         */
         public void setToolTipText(final String toolTipText) {
             this.toolTipText = toolTipText;
             if (toolTipDialog != null) {
@@ -289,6 +347,9 @@ public class TabIconBooleanFeedback implements ResultHandler<Boolean>, Disposabl
         }
     }
 
+    /**
+     * Entity tracking the properties of the tab and updates its title renderer accordingly.
+     */
     private class TabPropertyAdapter implements PropertyChangeListener {
 
         /**
@@ -377,7 +438,8 @@ public class TabIconBooleanFeedback implements ResultHandler<Boolean>, Disposabl
     private final PropertyChangeListener tabPropertyAdapter = new TabPropertyAdapter();
 
     /**
-     * Constructor specifying the tabbed pane and the index of the tab to show the decoration on.
+     * Constructor specifying the tabbed pane and the index of the tab to show the decoration on.<br>The default valid
+     * icon and default invalid icons will be used. No tooltip will be shown for these icons.
      *
      * @param tabbedPane Tabbed pane to show the icon tip feedback on.
      * @param tabIndex   Index of the tab to show the icon tip feedback on.
@@ -386,13 +448,30 @@ public class TabIconBooleanFeedback implements ResultHandler<Boolean>, Disposabl
         this(tabbedPane, tabIndex, DEFAULT_VALID_ICON, null, DEFAULT_INVALID_ICON, null);
     }
 
+    /**
+     * Constructor specifying the tabbed pane, the index of the tab to show the decoration on, and the tooltip text to
+     * be shown for the invalid icon.<br>No valid icon will be shown, and the default invalid icon will be used.
+     *
+     * @param tabbedPane  Tabbed pane to show the icon tip feedback on.
+     * @param tabIndex    Index of the tab to show the icon tip feedback on.
+     * @param invalidText Tooltip text to be shown for the invalid icon, or null.
+     */
     public TabIconBooleanFeedback(final JTabbedPane tabbedPane, final int tabIndex, final String invalidText) {
         this(tabbedPane, tabIndex, null, null, DEFAULT_INVALID_ICON, invalidText, DEFAULT_ICON_POSITION,
                 DEFAULT_ICON_TEXT_GAP);
     }
 
+    /**
+     * Constructor specifying the tabbed pane, the index of the tab to show the decoration on, the invalid icon and the
+     * tooltip text to be shown for the invalid icon.<br>No valid icon will be shown.
+     *
+     * @param tabbedPane  Tabbed pane to show the icon tip feedback on.
+     * @param tabIndex    Index of the tab to show the icon tip feedback on.
+     * @param invalidIcon Icon representing invalid results, or null.
+     * @param invalidText Tooltip text to be shown for the invalid icon, or null.
+     */
     public TabIconBooleanFeedback(final JTabbedPane tabbedPane, final int tabIndex, final Icon invalidIcon,
-                                  final String invalidText) {
+            final String invalidText) {
         this(tabbedPane, tabIndex, null, null, invalidIcon, invalidText, DEFAULT_ICON_POSITION, DEFAULT_ICON_TEXT_GAP);
     }
 
@@ -408,7 +487,7 @@ public class TabIconBooleanFeedback implements ResultHandler<Boolean>, Disposabl
      * @param invalidText Tooltip text on the invalid icon explaining the invalid results, or null.
      */
     public TabIconBooleanFeedback(final JTabbedPane tabbedPane, final int tabIndex, final Icon validIcon,
-                                  final String validText, final Icon invalidIcon, final String invalidText) {
+            final String validText, final Icon invalidIcon, final String invalidText) {
         this(tabbedPane, tabIndex, validIcon, validText, invalidIcon, invalidText, DEFAULT_ICON_POSITION,
                 DEFAULT_ICON_TEXT_GAP);
     }
@@ -425,13 +504,13 @@ public class TabIconBooleanFeedback implements ResultHandler<Boolean>, Disposabl
      * @param invalidIcon  Icon representing invalid results, or null.
      * @param invalidText  Tooltip text on the invalid icon explaining the invalid results, or null.
      * @param iconPosition Position of the icon with respect to the tab title.<br>It can be {@link
-     *                     SwingConstants#LEADING},
-     *                     {@link SwingConstants#LEFT}, {@link SwingConstants#TRAILING} or {@link SwingConstants#RIGHT}.
+     *                     SwingConstants#LEADING}, {@link SwingConstants#LEFT}, {@link SwingConstants#TRAILING} or
+     *                     {@link SwingConstants#RIGHT}.
      * @param iconTextGap  Spacing between the icon and the text.
      */
     public TabIconBooleanFeedback(final JTabbedPane tabbedPane, final int tabIndex, final Icon validIcon,
-                                  final String validText, final Icon invalidIcon, final String invalidText,
-                                  final int iconPosition, final int iconTextGap) {
+            final String validText, final Icon invalidIcon, final String invalidText, final int iconPosition,
+            final int iconTextGap) {
         this.tabbedPane = tabbedPane;
         this.tabIndex = tabIndex;
         this.validIcon = validIcon;
@@ -444,8 +523,14 @@ public class TabIconBooleanFeedback implements ResultHandler<Boolean>, Disposabl
 
         // Create tab title renderer
         final TitleRenderer customTitleRenderer = new TitleRenderer(iconPosition, iconTextGap);
-        customTitleRenderer.setIcon(tabbedPane.getIconAt(tabIndex));
+
+        // Set its text, what will update its preferred size
         customTitleRenderer.setTitle(tabbedPane.getTitleAt(tabIndex));
+
+        // Set the possible icons, what will update its preferred size
+        customTitleRenderer.setIcon(invalidIcon);
+        customTitleRenderer.setIcon(validIcon);
+        customTitleRenderer.setIcon(tabbedPane.getIconAt(tabIndex)); // Do this last because no validation yet
 
         // Apply title component to tab
         tabbedPane.setTabComponentAt(tabIndex, customTitleRenderer);
