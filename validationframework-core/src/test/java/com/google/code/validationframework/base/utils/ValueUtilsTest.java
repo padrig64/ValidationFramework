@@ -1,6 +1,5 @@
 package com.google.code.validationframework.base.utils;
 
-import com.google.code.validationframework.base.utils.ValueUtils;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

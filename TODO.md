@@ -1,14 +1,12 @@
-# FIXES
+# TO FIX
 
 * Fix calls to setVisible() on icon decoration
 * Icon tip decoration a bit more on the up and right when using Nimbus LAF
-* Fix moving panels on Linux when using the icon decoration on the tabbed pane
 * Remaining icontip's tooltips when quickly moving the mouse (in tables and outside tables): only on Linux?
 * Icon decoration steals mouse event even outside clipping bounds
-* Icontip dialogs can be made Popups (just like JPopupMenu or regular tooltips): not mishandled by some window managers?
 * Make consistent use of generics for Swing data providers
 
-# NEW STUFF
+# TO MAKE
 
 * Make validation of min + max + min/max group + global easier
 * Implement Disposable where appropriate
@@ -42,7 +40,7 @@
 * Auto-scroll/jump to errors in case of scrollpanes, tabbedpane, etc.
 * Initial focus for JFormattedTextField helper
 
-# THINK ABOUT
+# TO THINK ABOUT
 
 * Initial state for result handler before any validation has been performed yet
 * Differentiate between model changes due to user action and system action
