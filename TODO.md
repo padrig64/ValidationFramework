@@ -8,6 +8,7 @@
 
 # TO MAKE
 
+* Collection element transformer
 * Make validation of min + max + min/max group + global easier
 * Implement Disposable where appropriate
 * JFormattedTextFieldKeyboardTrigger

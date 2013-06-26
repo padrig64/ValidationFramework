@@ -28,6 +28,7 @@ package com.google.code.validationframework.base.validator.context;
 import com.google.code.validationframework.api.dataprovider.DataProvider;
 import com.google.code.validationframework.api.rule.Rule;
 import com.google.code.validationframework.api.trigger.Trigger;
+import com.google.code.validationframework.base.transform.Transformer;
 import com.google.code.validationframework.base.validator.GeneralValidator;
 
 import java.util.ArrayList;
@@ -52,6 +53,16 @@ public class DataProviderContext<DPO> {
 
         // Change context
         return new MultipleDataProviderContext<DPO>(triggers, dataProviders);
+    }
+
+    public <TDPO> TransformedDataProviderContext<DPO, TDPO> transform(final Transformer<DPO,
+            TDPO> dataProviderOutputToRuleInputTransformer) {
+        final List<Transformer> transformers = new ArrayList<Transformer>();
+        if (dataProviderOutputToRuleInputTransformer != null) {
+            transformers.add(dataProviderOutputToRuleInputTransformer);
+        }
+
+        return new TransformedDataProviderContext<DPO, TDPO>(triggers, dataProviders, transformers);
     }
 
     public <RO> RuleContext<DPO, DPO, RO> check(final Rule<DPO, RO> rule) {
