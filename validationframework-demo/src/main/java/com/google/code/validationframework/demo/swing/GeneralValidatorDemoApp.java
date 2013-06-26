@@ -67,6 +67,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.NumberFormat;
+import java.util.Collection;
 
 import static com.google.code.validationframework.base.validator.GeneralValidatorBuilder.on;
 import static com.google.code.validationframework.experimental.builder.ResultCollectorValidatorBuilder.collect;
@@ -354,6 +355,7 @@ public class GeneralValidatorDemoApp extends JFrame {
 
         on(trigger) //
                 .on(manualTrigger) //
+                .read(dataProvider) //
                 .read(dataProvider) //
                 .check(rule1) //
                 .check(rule2) //

@@ -28,6 +28,7 @@ package com.google.code.validationframework.base.validator.context;
 import com.google.code.validationframework.api.dataprovider.DataProvider;
 import com.google.code.validationframework.api.rule.Rule;
 import com.google.code.validationframework.api.trigger.Trigger;
+import com.google.code.validationframework.base.transform.Transformer;
 import com.google.code.validationframework.base.validator.GeneralValidator;
 
 import java.util.ArrayList;
@@ -52,6 +53,16 @@ public class MultipleDataProviderContext<DPO> {
 
         // Stay in the same context and re-use the same instance because no type has changed
         return this;
+    }
+
+    public <TDPO> TransformedDataProviderContext<DPO, TDPO> transform(final Transformer<Collection<DPO>,
+            TDPO> dataProviderOutputToRuleInputTransformer) {
+        final List<Transformer> transformers = new ArrayList<Transformer>();
+        if (dataProviderOutputToRuleInputTransformer != null) {
+            transformers.add(dataProviderOutputToRuleInputTransformer);
+        }
+
+        return new TransformedDataProviderContext<DPO, TDPO>(triggers, dataProviders, transformers);
     }
 
     public SplitDataProviderContext<DPO> forEach() {
