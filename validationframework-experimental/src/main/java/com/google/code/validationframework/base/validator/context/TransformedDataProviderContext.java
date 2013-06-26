@@ -49,14 +49,24 @@ public class TransformedDataProviderContext<DPO, TDPO> {
         this.dataProviderOutputToRuleInputTransformers = dataProviderOutputToRuleInputTransformers;
     }
 
-    public <RO> RuleContext<DPO, DPO, RO> check(final Rule<DPO, RO> rule) {
-        final List<Rule<DPO, RO>> rules = new ArrayList<Rule<DPO, RO>>();
+    public <TTDPO> TransformedDataProviderContext<DPO, TTDPO> transform(final Transformer<TDPO,
+            TTDPO> dataProviderOutputToRuleInputTransformer) {
+        if (dataProviderOutputToRuleInputTransformer != null) {
+            dataProviderOutputToRuleInputTransformers.add(dataProviderOutputToRuleInputTransformer);
+        }
+
+        // Change context because output type has changed
+        return new TransformedDataProviderContext<DPO, TTDPO>(triggers, dataProviders,
+                dataProviderOutputToRuleInputTransformers);
+    }
+
+    public <RO> RuleContext<DPO, TDPO, RO> check(final Rule<TDPO, RO> rule) {
+        final List<Rule<TDPO, RO>> rules = new ArrayList<Rule<TDPO, RO>>();
         if (rule != null) {
             rules.add(rule);
         }
 
         // Change context
-        return new RuleContext<DPO, DPO, RO>(triggers, dataProviders, GeneralValidator.DataProviderToRuleMapping
-                .EACH_TO_EACH, dataProviderOutputToRuleInputTransformers, rules);
+        return new RuleContext<DPO, TDPO, RO>(triggers, dataProviders, GeneralValidator.DataProviderToRuleMapping.EACH_TO_EACH, dataProviderOutputToRuleInputTransformers, rules);
     }
 }
