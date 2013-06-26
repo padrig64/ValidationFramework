@@ -62,6 +62,6 @@ public class DataProviderContext<DPO> {
 
         // Change context
         return new RuleContext<DPO, DPO, RO>(triggers, dataProviders, GeneralValidator.DataProviderToRuleMapping
-                .EACH_TO_EACH, rules);
+                .EACH_TO_EACH, null, rules);
     }
 }

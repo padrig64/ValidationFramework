@@ -29,6 +29,7 @@ import com.google.code.validationframework.api.dataprovider.DataProvider;
 import com.google.code.validationframework.api.resulthandler.ResultHandler;
 import com.google.code.validationframework.api.rule.Rule;
 import com.google.code.validationframework.api.trigger.Trigger;
+import com.google.code.validationframework.base.transform.Transformer;
 import com.google.code.validationframework.base.validator.GeneralValidator;
 
 import java.util.ArrayList;
@@ -40,15 +41,18 @@ public class RuleContext<DPO, RI, RO> {
     private final Collection<Trigger> triggers;
     private final Collection<DataProvider<DPO>> dataProviders;
     private final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping;
+    private final Collection<Transformer> dataProviderOutputToRuleInputTransformers;
     private final Collection<Rule<RI, RO>> rules;
 
     public RuleContext(final Collection<Trigger> triggers, //
                        final Collection<DataProvider<DPO>> dataProviders, //
                        final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping, //
+                       final Collection<Transformer> dataProviderOutputToRuleInputTransformers, //
                        final Collection<Rule<RI, RO>> rules) {
         this.triggers = triggers;
         this.dataProviders = dataProviders;
         this.dataProviderToRuleMapping = dataProviderToRuleMapping;
+        this.dataProviderOutputToRuleInputTransformers = dataProviderOutputToRuleInputTransformers;
         this.rules = rules;
     }
 
@@ -58,7 +62,8 @@ public class RuleContext<DPO, RI, RO> {
         }
 
         // Change context
-        return new MultipleRuleContext<DPO, RI, RO>(triggers, dataProviders, dataProviderToRuleMapping, rules);
+        return new MultipleRuleContext<DPO, RI, RO>(triggers, dataProviders, dataProviderToRuleMapping,
+                dataProviderOutputToRuleInputTransformers, rules);
     }
 
     public ResultHandlerContext<DPO, RI, RO, RO> handleWith(final ResultHandler<RO> resultHandler) {
@@ -68,7 +73,7 @@ public class RuleContext<DPO, RI, RO> {
         }
 
         // Change context
-        return new ResultHandlerContext<DPO, RI, RO, RO>(triggers, dataProviders, dataProviderToRuleMapping, rules,
-                GeneralValidator.RuleToResultHandlerMapping.EACH_TO_EACH, resultHandlers);
+        return new ResultHandlerContext<DPO, RI, RO, RO>(triggers, dataProviders, dataProviderToRuleMapping,
+                dataProviderOutputToRuleInputTransformers, rules, GeneralValidator.RuleToResultHandlerMapping.EACH_TO_EACH, resultHandlers);
     }
 }

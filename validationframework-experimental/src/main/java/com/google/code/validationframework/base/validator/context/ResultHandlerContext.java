@@ -29,6 +29,7 @@ import com.google.code.validationframework.api.dataprovider.DataProvider;
 import com.google.code.validationframework.api.resulthandler.ResultHandler;
 import com.google.code.validationframework.api.rule.Rule;
 import com.google.code.validationframework.api.trigger.Trigger;
+import com.google.code.validationframework.base.transform.Transformer;
 import com.google.code.validationframework.base.validator.GeneralValidator;
 
 import java.util.Collection;
@@ -38,6 +39,7 @@ public class ResultHandlerContext<DPO, RI, RO, RHI> {
     private final Collection<Trigger> triggers;
     private final Collection<DataProvider<DPO>> dataProviders;
     private final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping;
+    private final Collection<Transformer> dataProviderOutputToRuleInputTransformers;
     private final Collection<Rule<RI, RO>> rules;
     private final GeneralValidator.RuleToResultHandlerMapping ruleToResultHandlerMapping;
     private final Collection<ResultHandler<RHI>> resultHandlers;
@@ -45,12 +47,14 @@ public class ResultHandlerContext<DPO, RI, RO, RHI> {
     public ResultHandlerContext(final Collection<Trigger> triggers, //
                                 final Collection<DataProvider<DPO>> dataProviders, //
                                 final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping, //
+                                final Collection<Transformer> dataProviderOutputToRuleInputTransformers, //
                                 final Collection<Rule<RI, RO>> rules, //
                                 final GeneralValidator.RuleToResultHandlerMapping ruleToResultHandlerMapping, //
                                 final Collection<ResultHandler<RHI>> resultHandlers) {
         this.triggers = triggers;
         this.dataProviders = dataProviders;
         this.dataProviderToRuleMapping = dataProviderToRuleMapping;
+        this.dataProviderOutputToRuleInputTransformers = dataProviderOutputToRuleInputTransformers;
         this.rules = rules;
         this.ruleToResultHandlerMapping = ruleToResultHandlerMapping;
         this.resultHandlers = resultHandlers;
@@ -90,6 +94,7 @@ public class ResultHandlerContext<DPO, RI, RO, RHI> {
 
         // Map data providers output to rules input
         validator.mapDataProvidersToRules(dataProviderToRuleMapping);
+        validator.setRulesInputTransformers(dataProviderOutputToRuleInputTransformers);
 
         // Add rules
         for (final Rule<RI, RO> rule : rules) {
