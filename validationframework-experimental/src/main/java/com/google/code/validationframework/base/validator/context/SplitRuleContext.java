@@ -26,6 +26,7 @@
 package com.google.code.validationframework.base.validator.context;
 
 import com.google.code.validationframework.api.dataprovider.DataProvider;
+import com.google.code.validationframework.api.resulthandler.ResultHandler;
 import com.google.code.validationframework.api.rule.Rule;
 import com.google.code.validationframework.api.trigger.Trigger;
 import com.google.code.validationframework.base.validator.GeneralValidator;
@@ -34,34 +35,31 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class DataProviderContext<DPO> {
+public class SplitRuleContext<DPO, RI, RO> {
 
     private final Collection<Trigger> triggers;
     private final Collection<DataProvider<DPO>> dataProviders;
+    private final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping;
+    private final Collection<Rule<RI, RO>> rules;
 
-    public DataProviderContext(final Collection<Trigger> triggers, //
-                               final Collection<DataProvider<DPO>> dataProviders) {
+    public SplitRuleContext(final Collection<Trigger> triggers, //
+                            final Collection<DataProvider<DPO>> dataProviders, //
+                            final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping, //
+                            final Collection<Rule<RI, RO>> rules) {
         this.triggers = triggers;
         this.dataProviders = dataProviders;
+        this.dataProviderToRuleMapping = dataProviderToRuleMapping;
+        this.rules = rules;
     }
 
-    public MultipleDataProviderContext<DPO> read(final DataProvider<DPO> dataProvider) {
-        if (dataProvider != null) {
-            dataProviders.add(dataProvider);
+    public ResultHandlerContext<DPO, RI, RO, RO> handleWith(final ResultHandler<RO> resultHandler) {
+        final List<ResultHandler<RO>> resultHandlers = new ArrayList<ResultHandler<RO>>();
+        if (resultHandler != null) {
+            resultHandlers.add(resultHandler);
         }
 
         // Change context
-        return new MultipleDataProviderContext<DPO>(triggers, dataProviders);
-    }
-
-    public <RO> RuleContext<DPO, DPO, RO> check(final Rule<DPO, RO> rule) {
-        final List<Rule<DPO, RO>> rules = new ArrayList<Rule<DPO, RO>>();
-        if (rule != null) {
-            rules.add(rule);
-        }
-
-        // Change context
-        return new RuleContext<DPO, DPO, RO>(triggers, dataProviders, GeneralValidator.DataProviderToRuleMapping
-                .EACH_TO_EACH, rules);
+        return new ResultHandlerContext<DPO, RI, RO, RO>(triggers, dataProviders, dataProviderToRuleMapping, rules,
+                GeneralValidator.RuleToResultHandlerMapping.EACH_TO_EACH, resultHandlers);
     }
 }

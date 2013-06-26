@@ -34,24 +34,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class DataProviderContext<DPO> {
+public class SplitDataProviderContext<DPO> {
 
     private final Collection<Trigger> triggers;
     private final Collection<DataProvider<DPO>> dataProviders;
 
-    public DataProviderContext(final Collection<Trigger> triggers, //
-                               final Collection<DataProvider<DPO>> dataProviders) {
+    public SplitDataProviderContext(final Collection<Trigger> triggers, //
+                                    final Collection<DataProvider<DPO>> dataProviders) {
         this.triggers = triggers;
         this.dataProviders = dataProviders;
-    }
-
-    public MultipleDataProviderContext<DPO> read(final DataProvider<DPO> dataProvider) {
-        if (dataProvider != null) {
-            dataProviders.add(dataProvider);
-        }
-
-        // Change context
-        return new MultipleDataProviderContext<DPO>(triggers, dataProviders);
     }
 
     public <RO> RuleContext<DPO, DPO, RO> check(final Rule<DPO, RO> rule) {

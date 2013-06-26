@@ -23,12 +23,13 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.base.validator.context;
+package com.google.code.validationframework.base.validator.oldcontext;
 
 import com.google.code.validationframework.api.dataprovider.DataProvider;
 import com.google.code.validationframework.api.resulthandler.ResultHandler;
 import com.google.code.validationframework.api.rule.Rule;
 import com.google.code.validationframework.api.trigger.Trigger;
+import com.google.code.validationframework.base.transform.Transformer;
 import com.google.code.validationframework.base.validator.GeneralValidator;
 
 import java.util.Collection;
@@ -37,22 +38,34 @@ public class ResultHandlerContext<DPO, RI, RO, RHI> {
 
     private final Collection<Trigger> triggers;
     private final Collection<DataProvider<DPO>> dataProviders;
+    private final Collection<Transformer> dataProvidersOutputTransformers;
     private final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping;
+    private final Collection<Transformer> rulesInputTransformers;
     private final Collection<Rule<RI, RO>> rules;
+    private final Collection<Transformer> rulesOutputTransformers;
     private final GeneralValidator.RuleToResultHandlerMapping ruleToResultHandlerMapping;
+    private final Collection<Transformer> resultHandlersInputTransformers;
     private final Collection<ResultHandler<RHI>> resultHandlers;
 
     public ResultHandlerContext(final Collection<Trigger> triggers, //
-                                final Collection<DataProvider<DPO>> dataProviders, //
-                                final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping, //
-                                final Collection<Rule<RI, RO>> rules, //
-                                final GeneralValidator.RuleToResultHandlerMapping ruleToResultHandlerMapping, //
-                                final Collection<ResultHandler<RHI>> resultHandlers) {
+            final Collection<DataProvider<DPO>> dataProviders, //
+            final Collection<Transformer> dataProvidersOutputTransformers, //
+            final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping, //
+            final Collection<Transformer> rulesInputTransformers, //
+            final Collection<Rule<RI, RO>> rules, //
+            final Collection<Transformer> rulesOutputTransformers, //
+            final GeneralValidator.RuleToResultHandlerMapping ruleToResultHandlerMapping, //
+            final Collection<Transformer> resultHandlersInputTransformers, //
+            final Collection<ResultHandler<RHI>> resultHandlers) {
         this.triggers = triggers;
         this.dataProviders = dataProviders;
+        this.dataProvidersOutputTransformers = dataProvidersOutputTransformers;
         this.dataProviderToRuleMapping = dataProviderToRuleMapping;
+        this.rulesInputTransformers = rulesInputTransformers;
         this.rules = rules;
+        this.rulesOutputTransformers = rulesOutputTransformers;
         this.ruleToResultHandlerMapping = ruleToResultHandlerMapping;
+        this.resultHandlersInputTransformers = resultHandlersInputTransformers;
         this.resultHandlers = resultHandlers;
     }
 
@@ -89,7 +102,9 @@ public class ResultHandlerContext<DPO, RI, RO, RHI> {
         }
 
         // Map data providers output to rules input
+        validator.setDataProvidersOutputTransformers(dataProvidersOutputTransformers);
         validator.mapDataProvidersToRules(dataProviderToRuleMapping);
+        validator.setRulesInputTransformers(rulesInputTransformers);
 
         // Add rules
         for (final Rule<RI, RO> rule : rules) {
@@ -97,7 +112,9 @@ public class ResultHandlerContext<DPO, RI, RO, RHI> {
         }
 
         // Map rules output to result handlers input
+        validator.setRulesOutputTransformers(rulesOutputTransformers);
         validator.mapRulesToResultHandlers(ruleToResultHandlerMapping);
+        validator.setResultHandlersInputTransformers(resultHandlersInputTransformers);
 
         // Add result handlers
         for (final ResultHandler<RHI> resultHandler : resultHandlers) {

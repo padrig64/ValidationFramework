@@ -23,7 +23,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.base.validator.context;
+package com.google.code.validationframework.base.validator.oldcontext;
 
 import com.google.code.validationframework.api.dataprovider.DataProvider;
 import com.google.code.validationframework.api.rule.Rule;
@@ -35,54 +35,70 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class DataProviderTransformedCombinedContext<DPO, TDPO> {
+public class DataProviderContext<DPO> {
 
     private final Collection<Trigger> triggers;
     private final Collection<DataProvider<DPO>> dataProviders;
-    private final Collection<Transformer> dataProvidersOutputTransformers;
-    private final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping;
 
-    public DataProviderTransformedCombinedContext(final Collection<Trigger> triggers, //
-            final Collection<DataProvider<DPO>> dataProviders, //
-            final Collection<Transformer> dataProvidersOutputTransformers, //
-            final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping) {
+    public DataProviderContext(final Collection<Trigger> triggers, //
+            final Collection<DataProvider<DPO>> dataProviders) {
         this.triggers = triggers;
         this.dataProviders = dataProviders;
-        this.dataProvidersOutputTransformers = dataProvidersOutputTransformers;
-        this.dataProviderToRuleMapping = dataProviderToRuleMapping;
     }
 
-    public <TTDPO> DataProviderTransformedCombinedTransformedContext<DPO,
-            TTDPO> transform(final Transformer<Collection<TDPO>, TTDPO> dataProvidersOutputTransformer) {
+    public DataProviderContext<DPO> read(final DataProvider<DPO> dataProvider) {
+        if (dataProvider != null) {
+            dataProviders.add(dataProvider);
+        }
+
+        // Stay in the same context and re-use the same instance because no type has changed
+        return this;
+    }
+
+    public DataProviderContext<DPO> read(final Collection<DataProvider<DPO>> dataProviders) {
+        if (dataProviders != null) {
+            this.dataProviders.addAll(dataProviders);
+        }
+
+        // Stay in the same context and re-use the same instance because no type has changed
+        return this;
+    }
+
+    public <TDPO> DataProviderTransformedContext<DPO, TDPO> transform(final Transformer<DPO,
+            TDPO> dataProvidersOutputTransformer) {
         final List<Transformer> transformers = new ArrayList<Transformer>();
         if (dataProvidersOutputTransformer != null) {
             transformers.add(dataProvidersOutputTransformer);
         }
 
         // Change context
-        return new DataProviderTransformedCombinedTransformedContext<DPO, TTDPO>(triggers, dataProviders,
-                dataProvidersOutputTransformers, dataProviderToRuleMapping, transformers);
+        return new DataProviderTransformedContext<DPO, TDPO>(triggers, dataProviders, transformers);
     }
 
-    public <RO> RuleContext<DPO, Collection<TDPO>, RO> check(final Rule<Collection<TDPO>, RO> rule) {
-        final List<Rule<Collection<TDPO>, RO>> rules = new ArrayList<Rule<Collection<TDPO>, RO>>();
+    public DataProviderTransformedCombinedContext<DPO, DPO> combine() {
+        // Change context
+        return new DataProviderTransformedCombinedContext<DPO, DPO>(triggers, dataProviders, null,
+                GeneralValidator.DataProviderToRuleMapping.ALL_TO_EACH);
+    }
+
+    public <RO> RuleContext<DPO, DPO, RO> check(final Rule<DPO, RO> rule) {
+        final List<Rule<DPO, RO>> rules = new ArrayList<Rule<DPO, RO>>();
         if (rule != null) {
             rules.add(rule);
         }
 
         // Change context
-        return new RuleContext<DPO, Collection<TDPO>, RO>(triggers, dataProviders, dataProvidersOutputTransformers,
-                dataProviderToRuleMapping, null, rules);
+        return new RuleContext<DPO, DPO, RO>(triggers, dataProviders, null,
+                GeneralValidator.DataProviderToRuleMapping.EACH_TO_EACH, null, rules);
     }
 
-    public <RO> RuleContext<DPO, Collection<TDPO>, RO> check(final Collection<Rule<Collection<TDPO>, RO>> rules) {
-        final List<Rule<Collection<TDPO>, RO>> ruleList = new ArrayList<Rule<Collection<TDPO>, RO>>();
+    public <RO> RuleContext<DPO, DPO, RO> check(final Collection<Rule<DPO, RO>> rules) {
+        final List<Rule<DPO, RO>> ruleList = new ArrayList<Rule<DPO, RO>>();
         if (rules != null) {
             ruleList.addAll(rules);
         }
 
         // Change context
-        return new RuleContext<DPO, Collection<TDPO>, RO>(triggers, dataProviders, dataProvidersOutputTransformers,
-                dataProviderToRuleMapping, null, ruleList);
+        return new RuleContext<DPO, DPO, RO>(triggers, dataProviders, null, GeneralValidator.DataProviderToRuleMapping.EACH_TO_EACH, null, ruleList);
     }
 }

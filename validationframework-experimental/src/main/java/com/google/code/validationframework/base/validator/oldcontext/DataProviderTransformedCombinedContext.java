@@ -23,52 +23,66 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.base.validator.context;
+package com.google.code.validationframework.base.validator.oldcontext;
 
 import com.google.code.validationframework.api.dataprovider.DataProvider;
-import com.google.code.validationframework.api.resulthandler.ResultHandler;
 import com.google.code.validationframework.api.rule.Rule;
 import com.google.code.validationframework.api.trigger.Trigger;
+import com.google.code.validationframework.base.transform.Transformer;
 import com.google.code.validationframework.base.validator.GeneralValidator;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class RuleContext<DPO, RI, RO> {
+public class DataProviderTransformedCombinedContext<DPO, TDPO> {
 
     private final Collection<Trigger> triggers;
     private final Collection<DataProvider<DPO>> dataProviders;
+    private final Collection<Transformer> dataProvidersOutputTransformers;
     private final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping;
-    private final Collection<Rule<RI, RO>> rules;
 
-    public RuleContext(final Collection<Trigger> triggers, //
-                       final Collection<DataProvider<DPO>> dataProviders, //
-                       final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping, //
-                       final Collection<Rule<RI, RO>> rules) {
+    public DataProviderTransformedCombinedContext(final Collection<Trigger> triggers, //
+            final Collection<DataProvider<DPO>> dataProviders, //
+            final Collection<Transformer> dataProvidersOutputTransformers, //
+            final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping) {
         this.triggers = triggers;
         this.dataProviders = dataProviders;
+        this.dataProvidersOutputTransformers = dataProvidersOutputTransformers;
         this.dataProviderToRuleMapping = dataProviderToRuleMapping;
-        this.rules = rules;
     }
 
-    public MultipleRuleContext<DPO, RI, RO> check(final Rule<RI, RO> rule) {
+    public <TTDPO> DataProviderTransformedCombinedTransformedContext<DPO,
+            TTDPO> transform(final Transformer<Collection<TDPO>, TTDPO> dataProvidersOutputTransformer) {
+        final List<Transformer> transformers = new ArrayList<Transformer>();
+        if (dataProvidersOutputTransformer != null) {
+            transformers.add(dataProvidersOutputTransformer);
+        }
+
+        // Change context
+        return new DataProviderTransformedCombinedTransformedContext<DPO, TTDPO>(triggers, dataProviders,
+                dataProvidersOutputTransformers, dataProviderToRuleMapping, transformers);
+    }
+
+    public <RO> RuleContext<DPO, Collection<TDPO>, RO> check(final Rule<Collection<TDPO>, RO> rule) {
+        final List<Rule<Collection<TDPO>, RO>> rules = new ArrayList<Rule<Collection<TDPO>, RO>>();
         if (rule != null) {
             rules.add(rule);
         }
 
         // Change context
-        return new MultipleRuleContext<DPO, RI, RO>(triggers, dataProviders, dataProviderToRuleMapping, rules);
+        return new RuleContext<DPO, Collection<TDPO>, RO>(triggers, dataProviders, dataProvidersOutputTransformers,
+                dataProviderToRuleMapping, null, rules);
     }
 
-    public ResultHandlerContext<DPO, RI, RO, RO> handleWith(final ResultHandler<RO> resultHandler) {
-        final List<ResultHandler<RO>> resultHandlers = new ArrayList<ResultHandler<RO>>();
-        if (resultHandler != null) {
-            resultHandlers.add(resultHandler);
+    public <RO> RuleContext<DPO, Collection<TDPO>, RO> check(final Collection<Rule<Collection<TDPO>, RO>> rules) {
+        final List<Rule<Collection<TDPO>, RO>> ruleList = new ArrayList<Rule<Collection<TDPO>, RO>>();
+        if (rules != null) {
+            ruleList.addAll(rules);
         }
 
         // Change context
-        return new ResultHandlerContext<DPO, RI, RO, RO>(triggers, dataProviders, dataProviderToRuleMapping, rules,
-                GeneralValidator.RuleToResultHandlerMapping.EACH_TO_EACH, resultHandlers);
+        return new RuleContext<DPO, Collection<TDPO>, RO>(triggers, dataProviders, dataProvidersOutputTransformers,
+                dataProviderToRuleMapping, null, ruleList);
     }
 }

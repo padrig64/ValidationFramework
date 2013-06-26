@@ -23,45 +23,58 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.base.validator.context;
+package com.google.code.validationframework.base.validator.oldcontext;
 
 import com.google.code.validationframework.api.dataprovider.DataProvider;
-import com.google.code.validationframework.api.rule.Rule;
 import com.google.code.validationframework.api.trigger.Trigger;
-import com.google.code.validationframework.base.validator.GeneralValidator;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class DataProviderContext<DPO> {
+public class TriggerContext {
 
     private final Collection<Trigger> triggers;
-    private final Collection<DataProvider<DPO>> dataProviders;
 
-    public DataProviderContext(final Collection<Trigger> triggers, //
-                               final Collection<DataProvider<DPO>> dataProviders) {
+    public TriggerContext(final Collection<Trigger> triggers) {
         this.triggers = triggers;
-        this.dataProviders = dataProviders;
     }
 
-    public MultipleDataProviderContext<DPO> read(final DataProvider<DPO> dataProvider) {
+    public TriggerContext on(final Trigger trigger) {
+        if (trigger != null) {
+            triggers.add(trigger);
+        }
+
+        // Stay in the same context and re-use the same instance because no type has changed
+        return this;
+    }
+
+    public TriggerContext on(final Collection<Trigger> triggers) {
+        if (triggers != null) {
+            this.triggers.addAll(triggers);
+        }
+
+        // Stay in the same context and re-use the same instance because no type has changed
+        return this;
+    }
+
+    public <DPO> DataProviderContext<DPO> read(final DataProvider<DPO> dataProvider) {
+        final List<DataProvider<DPO>> dataProviders = new ArrayList<DataProvider<DPO>>();
         if (dataProvider != null) {
             dataProviders.add(dataProvider);
         }
 
         // Change context
-        return new MultipleDataProviderContext<DPO>(triggers, dataProviders);
+        return new DataProviderContext<DPO>(triggers, dataProviders);
     }
 
-    public <RO> RuleContext<DPO, DPO, RO> check(final Rule<DPO, RO> rule) {
-        final List<Rule<DPO, RO>> rules = new ArrayList<Rule<DPO, RO>>();
-        if (rule != null) {
-            rules.add(rule);
+    public <DPO> DataProviderContext<DPO> read(final Collection<DataProvider<DPO>> dataProviders) {
+        final List<DataProvider<DPO>> dataProviderList = new ArrayList<DataProvider<DPO>>();
+        if (dataProviders != null) {
+            dataProviderList.addAll(dataProviders);
         }
 
         // Change context
-        return new RuleContext<DPO, DPO, RO>(triggers, dataProviders, GeneralValidator.DataProviderToRuleMapping
-                .EACH_TO_EACH, rules);
+        return new DataProviderContext<DPO>(triggers, dataProviderList);
     }
 }

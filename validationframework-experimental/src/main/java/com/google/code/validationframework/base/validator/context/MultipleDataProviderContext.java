@@ -34,13 +34,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class DataProviderContext<DPO> {
+public class MultipleDataProviderContext<DPO> {
 
     private final Collection<Trigger> triggers;
     private final Collection<DataProvider<DPO>> dataProviders;
 
-    public DataProviderContext(final Collection<Trigger> triggers, //
-                               final Collection<DataProvider<DPO>> dataProviders) {
+    public MultipleDataProviderContext(final Collection<Trigger> triggers, //
+                                       final Collection<DataProvider<DPO>> dataProviders) {
         this.triggers = triggers;
         this.dataProviders = dataProviders;
     }
@@ -50,18 +50,23 @@ public class DataProviderContext<DPO> {
             dataProviders.add(dataProvider);
         }
 
-        // Change context
-        return new MultipleDataProviderContext<DPO>(triggers, dataProviders);
+        // Stay in the same context and re-use the same instance because no type has changed
+        return this;
     }
 
-    public <RO> RuleContext<DPO, DPO, RO> check(final Rule<DPO, RO> rule) {
-        final List<Rule<DPO, RO>> rules = new ArrayList<Rule<DPO, RO>>();
+    public SplitDataProviderContext<DPO> forEach() {
+        // Change context
+        return new SplitDataProviderContext<DPO>(triggers, dataProviders);
+    }
+
+    public <RO> RuleContext<DPO, Collection<DPO>, RO> check(final Rule<Collection<DPO>, RO> rule) {
+        final List<Rule<Collection<DPO>, RO>> rules = new ArrayList<Rule<Collection<DPO>, RO>>();
         if (rule != null) {
             rules.add(rule);
         }
 
         // Change context
-        return new RuleContext<DPO, DPO, RO>(triggers, dataProviders, GeneralValidator.DataProviderToRuleMapping
-                .EACH_TO_EACH, rules);
+        return new RuleContext<DPO, Collection<DPO>, RO>(triggers, dataProviders,
+                GeneralValidator.DataProviderToRuleMapping.ALL_TO_EACH, rules);
     }
 }
