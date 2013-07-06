@@ -67,7 +67,8 @@ public class DataProviderContext<DPO> {
             transformers.add(ruleInputTransformer);
         }
 
-        return new TransformedDataProviderContext<DPO, TDPO>(triggers, dataProviders, transformers);
+        return new TransformedDataProviderContext<DPO, TDPO>(triggers, dataProviders,
+                GeneralValidator.DataProviderToRuleMapping.EACH_TO_EACH, transformers);
     }
 
     public <RO> RuleContext<DPO, DPO, RO> check(final Rule<DPO, RO> rule) {
@@ -77,7 +78,6 @@ public class DataProviderContext<DPO> {
         }
 
         // Change context
-        return new RuleContext<DPO, DPO, RO>(triggers, dataProviders, GeneralValidator.DataProviderToRuleMapping
-                .EACH_TO_EACH, null, rules);
+        return new RuleContext<DPO, DPO, RO>(triggers, dataProviders, GeneralValidator.DataProviderToRuleMapping.EACH_TO_EACH, null, rules);
     }
 }

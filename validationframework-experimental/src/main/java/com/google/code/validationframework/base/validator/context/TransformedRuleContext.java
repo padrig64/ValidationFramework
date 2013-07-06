@@ -51,6 +51,7 @@ public class TransformedRuleContext<DPO, RI, RO, TRO> {
     private final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping;
     private final Collection<Transformer> ruleInputTransformers;
     private final Collection<Rule<RI, RO>> rules;
+    private final GeneralValidator.RuleToResultHandlerMapping ruleToResultHandlerMapping;
     private final Collection<Transformer> resultHandlerInputTransformers;
 
     public TransformedRuleContext(final Collection<Trigger> triggers, //
@@ -58,12 +59,14 @@ public class TransformedRuleContext<DPO, RI, RO, TRO> {
                                   final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping, //
                                   final Collection<Transformer> ruleInputTransformers, //
                                   final Collection<Rule<RI, RO>> rules, //
+                                  final GeneralValidator.RuleToResultHandlerMapping ruleToResultHandlerMapping,
                                   final Collection<Transformer> resultHandlerInputTransformers) {
         this.triggers = triggers;
         this.dataProviders = dataProviders;
         this.dataProviderToRuleMapping = dataProviderToRuleMapping;
         this.ruleInputTransformers = ruleInputTransformers;
         this.rules = rules;
+        this.ruleToResultHandlerMapping = ruleToResultHandlerMapping;
         this.resultHandlerInputTransformers = resultHandlerInputTransformers;
     }
 
@@ -75,7 +78,7 @@ public class TransformedRuleContext<DPO, RI, RO, TRO> {
 
         // Change context because output type has changed
         return new TransformedRuleContext<DPO, RI, RO, TTRO>(triggers, dataProviders, dataProviderToRuleMapping,
-                ruleInputTransformers, rules, resultHandlerInputTransformers);
+                ruleInputTransformers, rules, ruleToResultHandlerMapping, resultHandlerInputTransformers);
     }
 
     public ResultHandlerContext<DPO, RI, RO, TRO> handleWith(final ResultHandler<TRO> resultHandler) {
@@ -86,6 +89,6 @@ public class TransformedRuleContext<DPO, RI, RO, TRO> {
 
         // Change context
         return new ResultHandlerContext<DPO, RI, RO, TRO>(triggers, dataProviders, dataProviderToRuleMapping,
-                ruleInputTransformers, rules, GeneralValidator.RuleToResultHandlerMapping.EACH_TO_EACH, resultHandlerInputTransformers, resultHandlers);
+                ruleInputTransformers, rules, ruleToResultHandlerMapping, resultHandlerInputTransformers, resultHandlers);
     }
 }

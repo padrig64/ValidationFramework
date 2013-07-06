@@ -48,15 +48,15 @@ public class ResultHandlerContext<DPO, RI, RO, RHI> {
     private final Collection<ResultHandler<RHI>> resultHandlers;
 
     public ResultHandlerContext(final Collection<Trigger> triggers, //
-            final Collection<DataProvider<DPO>> dataProviders, //
-            final Collection<Transformer> dataProvidersOutputTransformers, //
-            final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping, //
-            final Collection<Transformer> rulesInputTransformers, //
-            final Collection<Rule<RI, RO>> rules, //
-            final Collection<Transformer> rulesOutputTransformers, //
-            final GeneralValidator.RuleToResultHandlerMapping ruleToResultHandlerMapping, //
-            final Collection<Transformer> resultHandlersInputTransformers, //
-            final Collection<ResultHandler<RHI>> resultHandlers) {
+                                final Collection<DataProvider<DPO>> dataProviders, //
+                                final Collection<Transformer> dataProvidersOutputTransformers, //
+                                final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping, //
+                                final Collection<Transformer> rulesInputTransformers, //
+                                final Collection<Rule<RI, RO>> rules, //
+                                final Collection<Transformer> rulesOutputTransformers, //
+                                final GeneralValidator.RuleToResultHandlerMapping ruleToResultHandlerMapping, //
+                                final Collection<Transformer> resultHandlersInputTransformers, //
+                                final Collection<ResultHandler<RHI>> resultHandlers) {
         this.triggers = triggers;
         this.dataProviders = dataProviders;
         this.dataProvidersOutputTransformers = dataProvidersOutputTransformers;

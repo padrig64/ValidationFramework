@@ -41,7 +41,7 @@ public class DataProviderContext<DPO> {
     private final Collection<DataProvider<DPO>> dataProviders;
 
     public DataProviderContext(final Collection<Trigger> triggers, //
-            final Collection<DataProvider<DPO>> dataProviders) {
+                               final Collection<DataProvider<DPO>> dataProviders) {
         this.triggers = triggers;
         this.dataProviders = dataProviders;
     }

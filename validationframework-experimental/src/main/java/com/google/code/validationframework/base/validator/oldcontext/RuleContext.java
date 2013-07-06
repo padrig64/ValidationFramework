@@ -46,11 +46,11 @@ public class RuleContext<DPO, RI, RO> {
     private final Collection<Rule<RI, RO>> rules;
 
     public RuleContext(final Collection<Trigger> triggers, //
-            final Collection<DataProvider<DPO>> dataProviders, //
-            final Collection<Transformer> dataProvidersOutputTransformers, //
-            final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping, //
-            final Collection<Transformer> combinedDataProvidersOutputTransformers, //
-            final Collection<Rule<RI, RO>> rules) {
+                       final Collection<DataProvider<DPO>> dataProviders, //
+                       final Collection<Transformer> dataProvidersOutputTransformers, //
+                       final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping, //
+                       final Collection<Transformer> combinedDataProvidersOutputTransformers, //
+                       final Collection<Rule<RI, RO>> rules) {
         this.triggers = triggers;
         this.dataProviders = dataProviders;
         this.dataProvidersOutputTransformers = dataProvidersOutputTransformers;

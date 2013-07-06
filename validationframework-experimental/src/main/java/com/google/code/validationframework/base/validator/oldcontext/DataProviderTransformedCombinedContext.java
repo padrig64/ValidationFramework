@@ -43,9 +43,10 @@ public class DataProviderTransformedCombinedContext<DPO, TDPO> {
     private final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping;
 
     public DataProviderTransformedCombinedContext(final Collection<Trigger> triggers, //
-            final Collection<DataProvider<DPO>> dataProviders, //
-            final Collection<Transformer> dataProvidersOutputTransformers, //
-            final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping) {
+                                                  final Collection<DataProvider<DPO>> dataProviders, //
+                                                  final Collection<Transformer> dataProvidersOutputTransformers, //
+                                                  final GeneralValidator.DataProviderToRuleMapping
+                                                          dataProviderToRuleMapping) {
         this.triggers = triggers;
         this.dataProviders = dataProviders;
         this.dataProvidersOutputTransformers = dataProvidersOutputTransformers;
@@ -82,7 +83,6 @@ public class DataProviderTransformedCombinedContext<DPO, TDPO> {
         }
 
         // Change context
-        return new RuleContext<DPO, Collection<TDPO>, RO>(triggers, dataProviders, dataProvidersOutputTransformers,
-                dataProviderToRuleMapping, null, ruleList);
+        return new RuleContext<DPO, Collection<TDPO>, RO>(triggers, dataProviders, dataProvidersOutputTransformers, dataProviderToRuleMapping, null, ruleList);
     }
 }

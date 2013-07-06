@@ -72,7 +72,8 @@ public class MultipleDataProviderContext<DPO> {
             transformers.add(ruleInputTransformer);
         }
 
-        return new TransformedDataProviderContext<DPO, TDPO>(triggers, dataProviders, transformers);
+        return new TransformedDataProviderContext<DPO, TDPO>(triggers, dataProviders,
+                GeneralValidator.DataProviderToRuleMapping.ALL_TO_EACH, transformers);
     }
 
     public <RO> RuleContext<DPO, Collection<DPO>, RO> check(final Rule<Collection<DPO>, RO> rule) {

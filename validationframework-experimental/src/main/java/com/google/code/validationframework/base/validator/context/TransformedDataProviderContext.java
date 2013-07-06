@@ -45,13 +45,16 @@ public class TransformedDataProviderContext<DPO, TDPO> {
 
     private final Collection<Trigger> triggers;
     private final Collection<DataProvider<DPO>> dataProviders;
+    private final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping;
     private final Collection<Transformer> ruleInputTransformers;
 
     public TransformedDataProviderContext(final Collection<Trigger> triggers, //
                                           final Collection<DataProvider<DPO>> dataProviders,
+                                          final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping,
                                           final Collection<Transformer> ruleInputTransformers) {
         this.triggers = triggers;
         this.dataProviders = dataProviders;
+        this.dataProviderToRuleMapping = dataProviderToRuleMapping;
         this.ruleInputTransformers = ruleInputTransformers;
     }
 
@@ -62,7 +65,8 @@ public class TransformedDataProviderContext<DPO, TDPO> {
         }
 
         // Change context because output type has changed
-        return new TransformedDataProviderContext<DPO, TTDPO>(triggers, dataProviders, ruleInputTransformers);
+        return new TransformedDataProviderContext<DPO, TTDPO>(triggers, dataProviders, dataProviderToRuleMapping,
+                ruleInputTransformers);
     }
 
     public <RO> RuleContext<DPO, TDPO, RO> check(final Rule<TDPO, RO> rule) {
@@ -72,6 +76,6 @@ public class TransformedDataProviderContext<DPO, TDPO> {
         }
 
         // Change context
-        return new RuleContext<DPO, TDPO, RO>(triggers, dataProviders, GeneralValidator.DataProviderToRuleMapping.EACH_TO_EACH, ruleInputTransformers, rules);
+        return new RuleContext<DPO, TDPO, RO>(triggers, dataProviders, dataProviderToRuleMapping, ruleInputTransformers, rules);
     }
 }

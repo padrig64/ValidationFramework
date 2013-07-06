@@ -49,14 +49,17 @@ public class RuleTransformedCombinedTransformedContext<DPO, RI, RO, TRO> {
     private final Collection<Transformer> combinedRulesOutputTransformers;
 
     public RuleTransformedCombinedTransformedContext(final Collection<Trigger> triggers, //
-            final Collection<DataProvider<DPO>> dataProviders, //
-            final Collection<Transformer> dataProvidersOutputTransformers,
-            final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping, //
-            final Collection<Transformer> combinedDataProvidersOutputTransformers, final Collection<Rule<RI,
-            RO>> rules, //
-            final Collection<Transformer> rulesOutputTransformers, //
-            final GeneralValidator.RuleToResultHandlerMapping ruleToResultHandlerMapping, //
-            final Collection<Transformer> combinedRulesOutputTransformers) {
+                                                     final Collection<DataProvider<DPO>> dataProviders, //
+                                                     final Collection<Transformer> dataProvidersOutputTransformers,
+                                                     final GeneralValidator.DataProviderToRuleMapping
+                                                             dataProviderToRuleMapping, //
+                                                     final Collection<Transformer>
+                                                             combinedDataProvidersOutputTransformers,
+                                                     final Collection<Rule<RI, RO>> rules, //
+                                                     final Collection<Transformer> rulesOutputTransformers, //
+                                                     final GeneralValidator.RuleToResultHandlerMapping
+                                                             ruleToResultHandlerMapping, //
+                                                     final Collection<Transformer> combinedRulesOutputTransformers) {
         this.triggers = triggers;
         this.dataProviders = dataProviders;
         this.dataProvidersOutputTransformers = dataProvidersOutputTransformers;
@@ -100,7 +103,6 @@ public class RuleTransformedCombinedTransformedContext<DPO, RI, RO, TRO> {
         }
 
         // Change context
-        return new ResultHandlerContext<DPO, RI, RO, TRO>(triggers, dataProviders, dataProvidersOutputTransformers,
-                dataProviderToRuleMapping, combinedDataProvidersOutputTransformers, rules, rulesOutputTransformers, ruleToResultHandlerMapping, combinedRulesOutputTransformers, resultHandlerList);
+        return new ResultHandlerContext<DPO, RI, RO, TRO>(triggers, dataProviders, dataProvidersOutputTransformers, dataProviderToRuleMapping, combinedDataProvidersOutputTransformers, rules, rulesOutputTransformers, ruleToResultHandlerMapping, combinedRulesOutputTransformers, resultHandlerList);
     }
 }

@@ -86,7 +86,7 @@ public class MultipleRuleContext<DPO, RI, RO> {
         }
 
         return new TransformedRuleContext<DPO, RI, RO, TRO>(triggers, dataProviders, dataProviderToRuleMapping,
-                ruleInputTransformers, rules, transformers);
+                ruleInputTransformers, rules, GeneralValidator.RuleToResultHandlerMapping.ALL_TO_EACH, transformers);
     }
 
     public ResultHandlerContext<DPO, RI, RO, Collection<RO>> handleWith(final ResultHandler<Collection<RO>>

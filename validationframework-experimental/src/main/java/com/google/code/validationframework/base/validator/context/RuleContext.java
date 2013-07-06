@@ -81,7 +81,7 @@ public class RuleContext<DPO, RI, RO> {
         }
 
         return new TransformedRuleContext<DPO, RI, RO, TRO>(triggers, dataProviders, dataProviderToRuleMapping,
-                ruleInputTransformers, rules, transformers);
+                ruleInputTransformers, rules, GeneralValidator.RuleToResultHandlerMapping.EACH_TO_EACH, transformers);
     }
 
     public ResultHandlerContext<DPO, RI, RO, RO> handleWith(final ResultHandler<RO> resultHandler) {

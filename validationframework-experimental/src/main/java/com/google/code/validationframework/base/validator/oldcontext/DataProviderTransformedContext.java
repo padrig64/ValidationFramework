@@ -42,8 +42,8 @@ public class DataProviderTransformedContext<DPO, TDPO> {
     private final Collection<Transformer> dataProvidersOutputTransformers;
 
     public DataProviderTransformedContext(final Collection<Trigger> triggers, //
-            final Collection<DataProvider<DPO>> dataProviders, //
-            final Collection<Transformer> dataProvidersOutputTransformers) {
+                                          final Collection<DataProvider<DPO>> dataProviders, //
+                                          final Collection<Transformer> dataProvidersOutputTransformers) {
         this.triggers = triggers;
         this.dataProviders = dataProviders;
         this.dataProvidersOutputTransformers = dataProvidersOutputTransformers;
