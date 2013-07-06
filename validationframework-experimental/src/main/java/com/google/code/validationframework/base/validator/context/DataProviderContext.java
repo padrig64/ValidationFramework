@@ -35,6 +35,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * TODO
+ *
+ * @param <DPO> Type of output of data provider objects.
+ */
 public class DataProviderContext<DPO> {
 
     private final Collection<Trigger> triggers;
@@ -56,10 +61,10 @@ public class DataProviderContext<DPO> {
     }
 
     public <TDPO> TransformedDataProviderContext<DPO, TDPO> transform(final Transformer<DPO,
-            TDPO> dataProviderOutputToRuleInputTransformer) {
+            TDPO> ruleInputTransformer) {
         final List<Transformer> transformers = new ArrayList<Transformer>();
-        if (dataProviderOutputToRuleInputTransformer != null) {
-            transformers.add(dataProviderOutputToRuleInputTransformer);
+        if (ruleInputTransformer != null) {
+            transformers.add(ruleInputTransformer);
         }
 
         return new TransformedDataProviderContext<DPO, TDPO>(triggers, dataProviders, transformers);

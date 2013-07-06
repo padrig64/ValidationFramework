@@ -56,46 +56,46 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(GeneralValidator.class);
 
-    private List<Transformer> dataProvidersOutputTransformers = new ArrayList<Transformer>();
+    private List<Transformer> dataProviderOutputTransformers = new ArrayList<Transformer>();
 
     private DataProviderToRuleMapping dataProviderToRuleMapping = DataProviderToRuleMapping.ALL_TO_EACH;
 
-    private List<Transformer> rulesInputTransformers = new ArrayList<Transformer>();
+    private List<Transformer> ruleInputTransformers = new ArrayList<Transformer>();
 
-    private List<Transformer> rulesOutputTransformers = new ArrayList<Transformer>();
+    private List<Transformer> ruleOutputTransformers = new ArrayList<Transformer>();
 
     private RuleToResultHandlerMapping ruleToResultHandlerMapping = RuleToResultHandlerMapping.ALL_TO_EACH;
 
-    private List<Transformer> resultHandlersInputTransformers = new ArrayList<Transformer>();
+    private List<Transformer> resultHandlerInputTransformers = new ArrayList<Transformer>();
 
-    public Transformer[] getDataProvidersOutputTransformers() {
+    public Transformer[] getDataProviderOutputTransformers() {
         final Transformer[] transformers;
 
-        if (dataProvidersOutputTransformers == null) {
+        if (dataProviderOutputTransformers == null) {
             transformers = null;
         } else {
-            transformers = dataProvidersOutputTransformers.toArray(new Transformer[dataProvidersOutputTransformers
-                    .size()]);
+            transformers = dataProviderOutputTransformers.toArray(new Transformer[dataProviderOutputTransformers.size
+                    ()]);
         }
 
         return transformers;
     }
 
-    public void setDataProvidersOutputTransformers(final Transformer... dataProvidersOutputTransformers) {
-        if (dataProvidersOutputTransformers == null) {
-            this.dataProvidersOutputTransformers = null;
+    public void setDataProviderOutputTransformers(final Transformer... dataProviderOutputTransformers) {
+        if (dataProviderOutputTransformers == null) {
+            this.dataProviderOutputTransformers = null;
         } else {
-            this.dataProvidersOutputTransformers = new ArrayList<Transformer>();
-            Collections.addAll(this.dataProvidersOutputTransformers, dataProvidersOutputTransformers);
+            this.dataProviderOutputTransformers = new ArrayList<Transformer>();
+            Collections.addAll(this.dataProviderOutputTransformers, dataProviderOutputTransformers);
         }
     }
 
-    public void setDataProvidersOutputTransformers(final Collection<Transformer> dataProvidersOutputTransformers) {
-        if (dataProvidersOutputTransformers == null) {
-            this.dataProvidersOutputTransformers = null;
+    public void setDataProviderOutputTransformers(final Collection<Transformer> dataProviderOutputTransformers) {
+        if (dataProviderOutputTransformers == null) {
+            this.dataProviderOutputTransformers = null;
         } else {
-            this.dataProvidersOutputTransformers = new ArrayList<Transformer>();
-            this.dataProvidersOutputTransformers.addAll(dataProvidersOutputTransformers);
+            this.dataProviderOutputTransformers = new ArrayList<Transformer>();
+            this.dataProviderOutputTransformers.addAll(dataProviderOutputTransformers);
         }
     }
 
@@ -103,63 +103,63 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
         this.dataProviderToRuleMapping = dataProviderToRuleMapping;
     }
 
-    public Transformer[] getRulesInputTransformers() {
+    public Transformer[] getRuleInputTransformers() {
         final Transformer[] transformers;
 
-        if (rulesInputTransformers == null) {
+        if (ruleInputTransformers == null) {
             transformers = null;
         } else {
-            transformers = rulesInputTransformers.toArray(new Transformer[rulesInputTransformers.size()]);
+            transformers = ruleInputTransformers.toArray(new Transformer[ruleInputTransformers.size()]);
         }
 
         return transformers;
     }
 
-    public void setRulesInputTransformers(final Transformer... rulesInputTransformers) {
-        if (rulesInputTransformers == null) {
-            this.rulesInputTransformers = null;
+    public void setRuleInputTransformers(final Transformer... ruleInputTransformers) {
+        if (ruleInputTransformers == null) {
+            this.ruleInputTransformers = null;
         } else {
-            this.rulesInputTransformers = new ArrayList<Transformer>();
-            Collections.addAll(this.rulesInputTransformers, rulesInputTransformers);
+            this.ruleInputTransformers = new ArrayList<Transformer>();
+            Collections.addAll(this.ruleInputTransformers, ruleInputTransformers);
         }
     }
 
-    public void setRulesInputTransformers(final Collection<Transformer> rulesInputTransformers) {
-        if (rulesInputTransformers == null) {
-            this.rulesInputTransformers = null;
+    public void setRuleInputTransformers(final Collection<Transformer> ruleInputTransformers) {
+        if (ruleInputTransformers == null) {
+            this.ruleInputTransformers = null;
         } else {
-            this.rulesInputTransformers = new ArrayList<Transformer>();
-            this.rulesInputTransformers.addAll(rulesInputTransformers);
+            this.ruleInputTransformers = new ArrayList<Transformer>();
+            this.ruleInputTransformers.addAll(ruleInputTransformers);
         }
     }
 
-    public Transformer[] getRulesOutputTransformers() {
+    public Transformer[] getRuleOutputTransformers() {
         final Transformer[] transformers;
 
-        if (rulesOutputTransformers == null) {
+        if (ruleOutputTransformers == null) {
             transformers = null;
         } else {
-            transformers = rulesOutputTransformers.toArray(new Transformer[rulesOutputTransformers.size()]);
+            transformers = ruleOutputTransformers.toArray(new Transformer[ruleOutputTransformers.size()]);
         }
 
         return transformers;
     }
 
-    public void setRulesOutputTransformers(final Transformer... rulesOutputTransformers) {
-        if (rulesOutputTransformers == null) {
-            this.rulesOutputTransformers = null;
+    public void setRuleOutputTransformers(final Transformer... ruleOutputTransformers) {
+        if (ruleOutputTransformers == null) {
+            this.ruleOutputTransformers = null;
         } else {
-            this.rulesOutputTransformers = new ArrayList<Transformer>();
-            Collections.addAll(this.rulesOutputTransformers, rulesOutputTransformers);
+            this.ruleOutputTransformers = new ArrayList<Transformer>();
+            Collections.addAll(this.ruleOutputTransformers, ruleOutputTransformers);
         }
     }
 
-    public void setRulesOutputTransformers(final Collection<Transformer> rulesOutputTransformers) {
-        if (rulesOutputTransformers == null) {
-            this.rulesOutputTransformers = null;
+    public void setRuleOutputTransformers(final Collection<Transformer> ruleOutputTransformers) {
+        if (ruleOutputTransformers == null) {
+            this.ruleOutputTransformers = null;
         } else {
-            this.rulesOutputTransformers = new ArrayList<Transformer>();
-            this.rulesOutputTransformers.addAll(rulesOutputTransformers);
+            this.ruleOutputTransformers = new ArrayList<Transformer>();
+            this.ruleOutputTransformers.addAll(ruleOutputTransformers);
         }
     }
 
@@ -167,34 +167,34 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
         this.ruleToResultHandlerMapping = ruleToResultHandlerMapping;
     }
 
-    public Transformer[] getResultHandlersInputTransformers() {
+    public Transformer[] getResultHandlerInputTransformers() {
         final Transformer[] transformers;
 
-        if (resultHandlersInputTransformers == null) {
+        if (resultHandlerInputTransformers == null) {
             transformers = null;
         } else {
-            transformers = resultHandlersInputTransformers.toArray(new Transformer[resultHandlersInputTransformers
-                    .size()]);
+            transformers = resultHandlerInputTransformers.toArray(new Transformer[resultHandlerInputTransformers.size
+                    ()]);
         }
 
         return transformers;
     }
 
-    public void setResultHandlersInputTransformers(final Transformer... resultHandlersInputTransformers) {
-        if (resultHandlersInputTransformers == null) {
-            this.resultHandlersInputTransformers = null;
+    public void setResultHandlerInputTransformers(final Transformer... resultHandlerInputTransformers) {
+        if (resultHandlerInputTransformers == null) {
+            this.resultHandlerInputTransformers = null;
         } else {
-            this.resultHandlersInputTransformers = new ArrayList<Transformer>();
-            Collections.addAll(this.resultHandlersInputTransformers, resultHandlersInputTransformers);
+            this.resultHandlerInputTransformers = new ArrayList<Transformer>();
+            Collections.addAll(this.resultHandlerInputTransformers, resultHandlerInputTransformers);
         }
     }
 
-    public void setResultHandlersInputTransformers(final Collection<Transformer> resultHandlersInputTransformers) {
-        if (resultHandlersInputTransformers == null) {
-            this.resultHandlersInputTransformers = null;
+    public void setResultHandlerInputTransformers(final Collection<Transformer> resultHandlerInputTransformers) {
+        if (resultHandlerInputTransformers == null) {
+            this.resultHandlerInputTransformers = null;
         } else {
-            this.resultHandlersInputTransformers = new ArrayList<Transformer>();
-            this.resultHandlersInputTransformers.addAll(resultHandlersInputTransformers);
+            this.resultHandlerInputTransformers = new ArrayList<Transformer>();
+            this.resultHandlerInputTransformers.addAll(resultHandlerInputTransformers);
         }
     }
 
@@ -231,15 +231,15 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
             Object transformedOutput = dataProvider.getData();
 
             // Transform the data provider output
-            if (dataProvidersOutputTransformers != null) {
-                for (final Transformer transformer : dataProvidersOutputTransformers) {
+            if (dataProviderOutputTransformers != null) {
+                for (final Transformer transformer : dataProviderOutputTransformers) {
                     transformedOutput = transformer.transform(transformedOutput);
                 }
             }
 
             // Transform the transformed data provider output to rule input
-            if (rulesInputTransformers != null) {
-                for (final Transformer transformer : rulesInputTransformers) {
+            if (ruleInputTransformers != null) {
+                for (final Transformer transformer : ruleInputTransformers) {
                     transformedOutput = transformer.transform(transformedOutput);
                 }
             }
@@ -258,8 +258,8 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
             Object transformedOutput = dataProvider.getData();
 
             // Transform the data provider output
-            if (dataProvidersOutputTransformers != null) {
-                for (final Transformer transformer : dataProvidersOutputTransformers) {
+            if (dataProviderOutputTransformers != null) {
+                for (final Transformer transformer : dataProviderOutputTransformers) {
                     transformedOutput = transformer.transform(transformedOutput);
                 }
             }
@@ -270,8 +270,8 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
 
         // Transform the list of transformed data provider output to rule input
         Object transformedRulesInput = transformedDataProvidersOutput;
-        if (rulesInputTransformers != null) {
-            for (final Transformer transformer : rulesInputTransformers) {
+        if (ruleInputTransformers != null) {
+            for (final Transformer transformer : ruleInputTransformers) {
                 transformedRulesInput = transformer.transform(transformedRulesInput);
             }
         }
@@ -302,15 +302,15 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
             Object ruleOutput = rule.validate(ruleInput);
 
             // Transform the rule output
-            if (rulesOutputTransformers != null) {
-                for (final Transformer transformer : rulesOutputTransformers) {
+            if (ruleOutputTransformers != null) {
+                for (final Transformer transformer : ruleOutputTransformers) {
                     ruleOutput = transformer.transform(ruleOutput);
                 }
             }
 
             // Transform the transformed rule output to result handler input
-            if (resultHandlersInputTransformers != null) {
-                for (final Transformer transformer : resultHandlersInputTransformers) {
+            if (resultHandlerInputTransformers != null) {
+                for (final Transformer transformer : resultHandlerInputTransformers) {
                     ruleOutput = transformer.transform(ruleOutput);
                 }
             }
@@ -329,8 +329,8 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
             Object data = rule.validate(ruleInput);
 
             // Transform the rule output
-            if (rulesOutputTransformers != null) {
-                for (final Transformer transformer : rulesOutputTransformers) {
+            if (ruleOutputTransformers != null) {
+                for (final Transformer transformer : ruleOutputTransformers) {
                     data = transformer.transform(data);
                 }
             }
@@ -341,8 +341,8 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
 
         // Transform the list of transformed rule output to result handler input
         Object ruleOutput = combinedRulesOutput;
-        if (resultHandlersInputTransformers != null) {
-            for (final Transformer transformer : resultHandlersInputTransformers) {
+        if (resultHandlerInputTransformers != null) {
+            for (final Transformer transformer : resultHandlerInputTransformers) {
                 ruleOutput = transformer.transform(ruleOutput);
             }
         }

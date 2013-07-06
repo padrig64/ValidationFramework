@@ -26,6 +26,7 @@
 package com.google.code.validationframework.base.validator.context;
 
 import com.google.code.validationframework.api.dataprovider.DataProvider;
+import com.google.code.validationframework.api.resulthandler.ResultHandler;
 import com.google.code.validationframework.api.rule.Rule;
 import com.google.code.validationframework.api.trigger.Trigger;
 import com.google.code.validationframework.base.transform.Transformer;
@@ -35,36 +36,52 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class SplitDataProviderContext<DPO> {
+/**
+ * TODO
+ *
+ * @param <DPO> Type of output of data provider objects.
+ * @param <RI>  Type of input of rule objects.
+ * @param <RO>  Type of output of rule objects.
+ */
+public class ForEachRuleContext<DPO, RI, RO> {
 
     private final Collection<Trigger> triggers;
     private final Collection<DataProvider<DPO>> dataProviders;
+    private final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping;
+    private final Collection<Transformer> ruleInputTransformers;
+    private final Collection<Rule<RI, RO>> rules;
 
-    public SplitDataProviderContext(final Collection<Trigger> triggers, //
-                                    final Collection<DataProvider<DPO>> dataProviders) {
+    public ForEachRuleContext(final Collection<Trigger> triggers, //
+                              final Collection<DataProvider<DPO>> dataProviders, //
+                              final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping, //
+                              final Collection<Transformer> ruleInputTransformers, //
+                              final Collection<Rule<RI, RO>> rules) {
         this.triggers = triggers;
         this.dataProviders = dataProviders;
+        this.dataProviderToRuleMapping = dataProviderToRuleMapping;
+        this.ruleInputTransformers = ruleInputTransformers;
+        this.rules = rules;
     }
 
-    public <TDPO> TransformedDataProviderContext<DPO, TDPO> transform(final Transformer<DPO,
-            TDPO> dataProviderOutputToRuleInputTransformer) {
+    public <TRO> TransformedRuleContext<DPO, RI, RO, TRO> transform(final Transformer<RO,
+            TRO> resultHandlerInputTransformer) {
         final List<Transformer> transformers = new ArrayList<Transformer>();
-        if (dataProviderOutputToRuleInputTransformer != null) {
-            transformers.add(dataProviderOutputToRuleInputTransformer);
+        if (resultHandlerInputTransformer != null) {
+            transformers.add(resultHandlerInputTransformer);
         }
 
-        // Change context
-        return new TransformedDataProviderContext<DPO, TDPO>(triggers, dataProviders, transformers);
+        return new TransformedRuleContext<DPO, RI, RO, TRO>(triggers, dataProviders, dataProviderToRuleMapping,
+                ruleInputTransformers, rules, transformers);
     }
 
-    public <RO> RuleContext<DPO, DPO, RO> check(final Rule<DPO, RO> rule) {
-        final List<Rule<DPO, RO>> rules = new ArrayList<Rule<DPO, RO>>();
-        if (rule != null) {
-            rules.add(rule);
+    public ResultHandlerContext<DPO, RI, RO, RO> handleWith(final ResultHandler<RO> resultHandler) {
+        final List<ResultHandler<RO>> resultHandlers = new ArrayList<ResultHandler<RO>>();
+        if (resultHandler != null) {
+            resultHandlers.add(resultHandler);
         }
 
         // Change context
-        return new RuleContext<DPO, DPO, RO>(triggers, dataProviders, GeneralValidator.DataProviderToRuleMapping
-                .EACH_TO_EACH, null, rules);
+        return new ResultHandlerContext<DPO, RI, RO, RO>(triggers, dataProviders, dataProviderToRuleMapping,
+                ruleInputTransformers, rules, GeneralValidator.RuleToResultHandlerMapping.EACH_TO_EACH, null, resultHandlers);
     }
 }

@@ -36,35 +36,56 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class SplitRuleContext<DPO, RI, RO> {
+/**
+ * TODO
+ *
+ * @param <DPO> Type of output of data provider objects.
+ * @param <RI>  Type of input of rule objects.
+ * @param <RO>  Type of output of rule objects.
+ * @param <TRO> Type of input of result handler objects.
+ */
+public class TransformedRuleContext<DPO, RI, RO, TRO> {
 
     private final Collection<Trigger> triggers;
     private final Collection<DataProvider<DPO>> dataProviders;
     private final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping;
-    private final Collection<Transformer> dataProviderOutputToRuleInputTransformers;
+    private final Collection<Transformer> ruleInputTransformers;
     private final Collection<Rule<RI, RO>> rules;
+    private final Collection<Transformer> resultHandlerInputTransformers;
 
-    public SplitRuleContext(final Collection<Trigger> triggers, //
-                            final Collection<DataProvider<DPO>> dataProviders, //
-                            final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping, //
-                            final Collection<Transformer> dataProviderOutputToRuleInputTransformers, //
-                            final Collection<Rule<RI, RO>> rules) {
+    public TransformedRuleContext(final Collection<Trigger> triggers, //
+                                  final Collection<DataProvider<DPO>> dataProviders, //
+                                  final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping, //
+                                  final Collection<Transformer> ruleInputTransformers, //
+                                  final Collection<Rule<RI, RO>> rules, //
+                                  final Collection<Transformer> resultHandlerInputTransformers) {
         this.triggers = triggers;
         this.dataProviders = dataProviders;
         this.dataProviderToRuleMapping = dataProviderToRuleMapping;
-        this.dataProviderOutputToRuleInputTransformers = dataProviderOutputToRuleInputTransformers;
+        this.ruleInputTransformers = ruleInputTransformers;
         this.rules = rules;
+        this.resultHandlerInputTransformers = resultHandlerInputTransformers;
     }
 
-    public ResultHandlerContext<DPO, RI, RO, RO> handleWith(final ResultHandler<RO> resultHandler) {
-        final List<ResultHandler<RO>> resultHandlers = new ArrayList<ResultHandler<RO>>();
+    public <TTRO> TransformedRuleContext<DPO, RI, RO, TTRO> transform(final Transformer<TRO,
+            TTRO> resultHandlerInputTransformer) {
+        if (resultHandlerInputTransformer != null) {
+            resultHandlerInputTransformers.add(resultHandlerInputTransformer);
+        }
+
+        // Change context because output type has changed
+        return new TransformedRuleContext<DPO, RI, RO, TTRO>(triggers, dataProviders, dataProviderToRuleMapping,
+                ruleInputTransformers, rules, resultHandlerInputTransformers);
+    }
+
+    public ResultHandlerContext<DPO, RI, RO, TRO> handleWith(final ResultHandler<TRO> resultHandler) {
+        final List<ResultHandler<TRO>> resultHandlers = new ArrayList<ResultHandler<TRO>>();
         if (resultHandler != null) {
             resultHandlers.add(resultHandler);
         }
 
         // Change context
-        return new ResultHandlerContext<DPO, RI, RO, RO>(triggers, dataProviders, dataProviderToRuleMapping,
-                dataProviderOutputToRuleInputTransformers, rules, GeneralValidator.RuleToResultHandlerMapping
-                .EACH_TO_EACH, resultHandlers);
+        return new ResultHandlerContext<DPO, RI, RO, TRO>(triggers, dataProviders, dataProviderToRuleMapping,
+                ruleInputTransformers, rules, GeneralValidator.RuleToResultHandlerMapping.EACH_TO_EACH, resultHandlerInputTransformers, resultHandlers);
     }
 }

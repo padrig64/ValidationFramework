@@ -35,29 +35,34 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * TODO
+ *
+ * @param <DPO>  Type of output of data provider objects.
+ * @param <TDPO> Type of input of rule objects.
+ */
 public class TransformedDataProviderContext<DPO, TDPO> {
 
     private final Collection<Trigger> triggers;
     private final Collection<DataProvider<DPO>> dataProviders;
-    private final Collection<Transformer> dataProviderOutputToRuleInputTransformers;
+    private final Collection<Transformer> ruleInputTransformers;
 
     public TransformedDataProviderContext(final Collection<Trigger> triggers, //
                                           final Collection<DataProvider<DPO>> dataProviders,
-                                          final Collection<Transformer> dataProviderOutputToRuleInputTransformers) {
+                                          final Collection<Transformer> ruleInputTransformers) {
         this.triggers = triggers;
         this.dataProviders = dataProviders;
-        this.dataProviderOutputToRuleInputTransformers = dataProviderOutputToRuleInputTransformers;
+        this.ruleInputTransformers = ruleInputTransformers;
     }
 
     public <TTDPO> TransformedDataProviderContext<DPO, TTDPO> transform(final Transformer<TDPO,
-            TTDPO> dataProviderOutputToRuleInputTransformer) {
-        if (dataProviderOutputToRuleInputTransformer != null) {
-            dataProviderOutputToRuleInputTransformers.add(dataProviderOutputToRuleInputTransformer);
+            TTDPO> ruleInputTransformer) {
+        if (ruleInputTransformer != null) {
+            ruleInputTransformers.add(ruleInputTransformer);
         }
 
         // Change context because output type has changed
-        return new TransformedDataProviderContext<DPO, TTDPO>(triggers, dataProviders,
-                dataProviderOutputToRuleInputTransformers);
+        return new TransformedDataProviderContext<DPO, TTDPO>(triggers, dataProviders, ruleInputTransformers);
     }
 
     public <RO> RuleContext<DPO, TDPO, RO> check(final Rule<TDPO, RO> rule) {
@@ -67,6 +72,6 @@ public class TransformedDataProviderContext<DPO, TDPO> {
         }
 
         // Change context
-        return new RuleContext<DPO, TDPO, RO>(triggers, dataProviders, GeneralValidator.DataProviderToRuleMapping.EACH_TO_EACH, dataProviderOutputToRuleInputTransformers, rules);
+        return new RuleContext<DPO, TDPO, RO>(triggers, dataProviders, GeneralValidator.DataProviderToRuleMapping.EACH_TO_EACH, ruleInputTransformers, rules);
     }
 }

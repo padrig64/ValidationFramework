@@ -39,24 +39,27 @@ public class ResultHandlerContext<DPO, RI, RO, RHI> {
     private final Collection<Trigger> triggers;
     private final Collection<DataProvider<DPO>> dataProviders;
     private final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping;
-    private final Collection<Transformer> dataProviderOutputToRuleInputTransformers;
+    private final Collection<Transformer> ruleInputTransformers;
     private final Collection<Rule<RI, RO>> rules;
     private final GeneralValidator.RuleToResultHandlerMapping ruleToResultHandlerMapping;
+    private final Collection<Transformer> resultHandlerInputTransformers;
     private final Collection<ResultHandler<RHI>> resultHandlers;
 
     public ResultHandlerContext(final Collection<Trigger> triggers, //
                                 final Collection<DataProvider<DPO>> dataProviders, //
                                 final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping, //
-                                final Collection<Transformer> dataProviderOutputToRuleInputTransformers, //
+                                final Collection<Transformer> ruleInputTransformers, //
                                 final Collection<Rule<RI, RO>> rules, //
                                 final GeneralValidator.RuleToResultHandlerMapping ruleToResultHandlerMapping, //
+                                final Collection<Transformer> resultHandlerInputTransformers, //
                                 final Collection<ResultHandler<RHI>> resultHandlers) {
         this.triggers = triggers;
         this.dataProviders = dataProviders;
         this.dataProviderToRuleMapping = dataProviderToRuleMapping;
-        this.dataProviderOutputToRuleInputTransformers = dataProviderOutputToRuleInputTransformers;
+        this.ruleInputTransformers = ruleInputTransformers;
         this.rules = rules;
         this.ruleToResultHandlerMapping = ruleToResultHandlerMapping;
+        this.resultHandlerInputTransformers = resultHandlerInputTransformers;
         this.resultHandlers = resultHandlers;
     }
 
@@ -94,7 +97,7 @@ public class ResultHandlerContext<DPO, RI, RO, RHI> {
 
         // Map data providers output to rules input
         validator.mapDataProvidersToRules(dataProviderToRuleMapping);
-        validator.setRulesInputTransformers(dataProviderOutputToRuleInputTransformers);
+        validator.setRuleInputTransformers(ruleInputTransformers);
 
         // Add rules
         for (final Rule<RI, RO> rule : rules) {
@@ -103,6 +106,7 @@ public class ResultHandlerContext<DPO, RI, RO, RHI> {
 
         // Map rules output to result handlers input
         validator.mapRulesToResultHandlers(ruleToResultHandlerMapping);
+        validator.setResultHandlerInputTransformers(resultHandlerInputTransformers);
 
         // Add result handlers
         for (final ResultHandler<RHI> resultHandler : resultHandlers) {

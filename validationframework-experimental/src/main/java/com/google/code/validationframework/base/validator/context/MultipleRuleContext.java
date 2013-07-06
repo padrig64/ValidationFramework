@@ -36,23 +36,30 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * TODO
+ *
+ * @param <DPO> Type of output of data provider objects.
+ * @param <RI>  Type of input of rule objects.
+ * @param <RO>  Type of output of rule objects.
+ */
 public class MultipleRuleContext<DPO, RI, RO> {
 
     private final Collection<Trigger> triggers;
     private final Collection<DataProvider<DPO>> dataProviders;
     private final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping;
-    private final Collection<Transformer> dataProviderOutputToRuleInputTransformers;
+    private final Collection<Transformer> ruleInputTransformers;
     private final Collection<Rule<RI, RO>> rules;
 
     public MultipleRuleContext(final Collection<Trigger> triggers, //
                                final Collection<DataProvider<DPO>> dataProviders, //
                                final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping, //
-                               final Collection<Transformer> dataProviderOutputToRuleInputTransformers, //
+                               final Collection<Transformer> ruleInputTransformers, //
                                final Collection<Rule<RI, RO>> rules) {
         this.triggers = triggers;
         this.dataProviders = dataProviders;
         this.dataProviderToRuleMapping = dataProviderToRuleMapping;
-        this.dataProviderOutputToRuleInputTransformers = dataProviderOutputToRuleInputTransformers;
+        this.ruleInputTransformers = ruleInputTransformers;
         this.rules = rules;
     }
 
@@ -65,10 +72,21 @@ public class MultipleRuleContext<DPO, RI, RO> {
         return this;
     }
 
-    public SplitRuleContext<DPO, RI, RO> forEach() {
+    public ForEachRuleContext<DPO, RI, RO> forEach() {
         // Change context
-        return new SplitRuleContext<DPO, RI, RO>(triggers, dataProviders, dataProviderToRuleMapping,
-                dataProviderOutputToRuleInputTransformers, rules);
+        return new ForEachRuleContext<DPO, RI, RO>(triggers, dataProviders, dataProviderToRuleMapping,
+                ruleInputTransformers, rules);
+    }
+
+    public <TRO> TransformedRuleContext<DPO, RI, RO, TRO> transform(final Transformer<Collection<RO>,
+            TRO> resultHandlerInputTransformer) {
+        final List<Transformer> transformers = new ArrayList<Transformer>();
+        if (resultHandlerInputTransformer != null) {
+            transformers.add(resultHandlerInputTransformer);
+        }
+
+        return new TransformedRuleContext<DPO, RI, RO, TRO>(triggers, dataProviders, dataProviderToRuleMapping,
+                ruleInputTransformers, rules, transformers);
     }
 
     public ResultHandlerContext<DPO, RI, RO, Collection<RO>> handleWith(final ResultHandler<Collection<RO>>
@@ -79,7 +97,6 @@ public class MultipleRuleContext<DPO, RI, RO> {
         }
 
         // Change context
-        return new ResultHandlerContext<DPO, RI, RO, Collection<RO>>(triggers, dataProviders,
-                dataProviderToRuleMapping, dataProviderOutputToRuleInputTransformers, rules, GeneralValidator.RuleToResultHandlerMapping.ALL_TO_EACH, resultHandlers);
+        return new ResultHandlerContext<DPO, RI, RO, Collection<RO>>(triggers, dataProviders, dataProviderToRuleMapping, ruleInputTransformers, rules, GeneralValidator.RuleToResultHandlerMapping.ALL_TO_EACH, null, resultHandlers);
     }
 }

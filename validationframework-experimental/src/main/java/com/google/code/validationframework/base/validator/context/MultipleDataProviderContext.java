@@ -35,6 +35,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * TODO
+ *
+ * @param <DPO> Type of output of data provider objects.
+ */
 public class MultipleDataProviderContext<DPO> {
 
     private final Collection<Trigger> triggers;
@@ -55,19 +60,19 @@ public class MultipleDataProviderContext<DPO> {
         return this;
     }
 
+    public ForEachDataProviderContext<DPO> forEach() {
+        // Change context
+        return new ForEachDataProviderContext<DPO>(triggers, dataProviders);
+    }
+
     public <TDPO> TransformedDataProviderContext<DPO, TDPO> transform(final Transformer<Collection<DPO>,
-            TDPO> dataProviderOutputToRuleInputTransformer) {
+            TDPO> ruleInputTransformer) {
         final List<Transformer> transformers = new ArrayList<Transformer>();
-        if (dataProviderOutputToRuleInputTransformer != null) {
-            transformers.add(dataProviderOutputToRuleInputTransformer);
+        if (ruleInputTransformer != null) {
+            transformers.add(ruleInputTransformer);
         }
 
         return new TransformedDataProviderContext<DPO, TDPO>(triggers, dataProviders, transformers);
-    }
-
-    public SplitDataProviderContext<DPO> forEach() {
-        // Change context
-        return new SplitDataProviderContext<DPO>(triggers, dataProviders);
     }
 
     public <RO> RuleContext<DPO, Collection<DPO>, RO> check(final Rule<Collection<DPO>, RO> rule) {
