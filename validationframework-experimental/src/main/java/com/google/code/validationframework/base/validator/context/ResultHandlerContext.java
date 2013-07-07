@@ -71,6 +71,7 @@ public class ResultHandlerContext<DPO, RI, RO, RHI> {
         this.resultHandlerInputTransformers = resultHandlerInputTransformers;
         this.resultHandlers = resultHandlers;
 
+        // Build validator now so that there is no need for the programmer to call build()
         validator = build();
     }
 

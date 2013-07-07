@@ -9,6 +9,7 @@
 * Added convenience in AndBooleanAggregator and OrBooleanAggregator to better support null values
 * Added convenience getComponent() method to Swing triggers, data providers and rules
 * Added InvokeLaterTrigger wrapper to re-schedule a trigger later on the Event Dispatch Thread
+* Added IllegalCharacterBooleanRule as a simple alternative to the StringRegexRule
 * Added TransformedDataProvider to adapt the type handled by data providers when added to validators handling another type
 * Added TransformedResultHandler to adapt the type handled by result handler when added to validators handling another type
 * Fixed size of tab title renderer in tabbed panes to avoid the contents to move up and down when the icon is shown and hidden

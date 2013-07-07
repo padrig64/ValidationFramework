@@ -39,6 +39,7 @@ import java.util.regex.Pattern;
  * @see AbstractStringBooleanRule
  * @see Pattern
  * @see Matcher
+ * @see StringRegexRule
  */
 public class StringRegexRule extends AbstractStringBooleanRule {
 
