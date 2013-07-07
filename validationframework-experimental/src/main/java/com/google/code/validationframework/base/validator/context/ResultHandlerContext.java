@@ -34,6 +34,14 @@ import com.google.code.validationframework.base.validator.GeneralValidator;
 
 import java.util.Collection;
 
+/**
+ * TODO
+ *
+ * @param <DPO> Type of output of data provider objects.
+ * @param <RI>  Type of input of rule objects.
+ * @param <RO>  Type of output of rule objects.
+ * @param <RHI> Type of input of result handler objects.
+ */
 public class ResultHandlerContext<DPO, RI, RO, RHI> {
 
     private final Collection<Trigger> triggers;
@@ -44,6 +52,7 @@ public class ResultHandlerContext<DPO, RI, RO, RHI> {
     private final GeneralValidator.RuleToResultHandlerMapping ruleToResultHandlerMapping;
     private final Collection<Transformer> resultHandlerInputTransformers;
     private final Collection<ResultHandler<RHI>> resultHandlers;
+    private final GeneralValidator<DPO, RI, RO, RHI> validator;
 
     public ResultHandlerContext(final Collection<Trigger> triggers, //
                                 final Collection<DataProvider<DPO>> dataProviders, //
@@ -61,11 +70,14 @@ public class ResultHandlerContext<DPO, RI, RO, RHI> {
         this.ruleToResultHandlerMapping = ruleToResultHandlerMapping;
         this.resultHandlerInputTransformers = resultHandlerInputTransformers;
         this.resultHandlers = resultHandlers;
+
+        validator = build();
     }
 
     public ResultHandlerContext<DPO, RI, RO, RHI> handleWith(final ResultHandler<RHI> resultHandler) {
         if (resultHandler != null) {
             resultHandlers.add(resultHandler);
+            validator.addResultHandler(resultHandler);
         }
 
         // Stay in the same context and re-use the same instance because no type has changed
@@ -75,13 +87,17 @@ public class ResultHandlerContext<DPO, RI, RO, RHI> {
     public ResultHandlerContext<DPO, RI, RO, RHI> handleWith(final Collection<ResultHandler<RHI>> resultHandlers) {
         if (resultHandlers != null) {
             this.resultHandlers.addAll(resultHandlers);
+
+            for (final ResultHandler<RHI> resultHandler : resultHandlers) {
+                validator.addResultHandler(resultHandler);
+            }
         }
 
         // Stay in the same context and re-use the same instance because no type has changed
         return this;
     }
 
-    public GeneralValidator<DPO, RI, RO, RHI> build() {
+    private GeneralValidator<DPO, RI, RO, RHI> build() {
         // Create validator
         final GeneralValidator<DPO, RI, RO, RHI> validator = new GeneralValidator<DPO, RI, RO, RHI>();
 
@@ -113,6 +129,10 @@ public class ResultHandlerContext<DPO, RI, RO, RHI> {
             validator.addResultHandler(resultHandler);
         }
 
+        return validator;
+    }
+
+    public GeneralValidator<DPO, RI, RO, RHI> getValidator() {
         return validator;
     }
 }

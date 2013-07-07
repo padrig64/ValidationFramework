@@ -305,8 +305,7 @@ public class GeneralValidatorDemoApp extends JFrame {
                 .collect(resultCollector4) //
                 .collect(resultCollector5) //
                 .check(new AndBooleanRule()) //
-                .handleWith(new ComponentEnablingBooleanResultHandler(applyButton)) //
-                .build();
+                .handleWith(new ComponentEnablingBooleanResultHandler(applyButton));
     }
 
     private void createValidator1(final JTextField textField, final ResultCollector<InputFieldResult,
@@ -314,6 +313,7 @@ public class GeneralValidatorDemoApp extends JFrame {
         on(new JTextFieldDocumentChangedTrigger(textField)) //
                 .read(new JTextFieldTextProvider(textField)) //
                 .check(new InputFieldRule()) //
+                .handleWith(new InputFieldToolTipFeedback(textField)) //
                 .handleWith(resultCollector);
     }
 
@@ -323,8 +323,7 @@ public class GeneralValidatorDemoApp extends JFrame {
                 .read(new JTextFieldTextProvider(textField)) //
                 .check(new InputFieldRule()) //
                 .handleWith(new InputFieldColorFeedback(textField)) //
-                .handleWith(resultCollector) //
-                .build();
+                .handleWith(resultCollector);
     }
 
     private void createValidator3(final JTextField textField, final ResultCollector<InputFieldResult,
@@ -333,8 +332,7 @@ public class GeneralValidatorDemoApp extends JFrame {
                 .read(new JTextFieldTextProvider(textField)) //
                 .check(new InputFieldRule()) //
                 .handleWith(new InputFieldIconFeedback(textField)) //
-                .handleWith(resultCollector) //
-                .build();
+                .handleWith(resultCollector);
     }
 
     private void createValidator4(final JFormattedTextField formattedTextField, final ResultCollector<Boolean,
@@ -359,8 +357,7 @@ public class GeneralValidatorDemoApp extends JFrame {
                 .check(rule2) //
                 .transform(new AndBooleanAggregator()) //
                 .handleWith(resultHandler1) //
-                .handleWith(resultCollector) //
-                .build();
+                .handleWith(resultCollector);
 
         // Test of triggering the validation even before the dialog is visible
         manualTrigger.trigger();
