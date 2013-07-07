@@ -29,6 +29,7 @@ import com.google.code.validationframework.api.dataprovider.DataProvider;
 import com.google.code.validationframework.api.resulthandler.ResultHandler;
 import com.google.code.validationframework.api.rule.Rule;
 import com.google.code.validationframework.api.trigger.Trigger;
+import com.google.code.validationframework.base.resulthandler.ResultCollector;
 import com.google.code.validationframework.base.transform.Transformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,6 +68,20 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
     private RuleToResultHandlerMapping ruleToResultHandlerMapping = RuleToResultHandlerMapping.ALL_TO_EACH;
 
     private List<Transformer> resultHandlerInputTransformers = new ArrayList<Transformer>();
+
+    public void addResultCollector(final ResultCollector<?, DPO> resultCollector) {
+        if (resultCollector != null) {
+            addTrigger(resultCollector);
+            addDataProvider(resultCollector);
+        }
+    }
+
+    public void removeResultCollector(final ResultCollector<?, DPO> resultCollector) {
+        if (resultCollector != null) {
+            removeTrigger(resultCollector);
+            removeDataProvider(resultCollector);
+        }
+    }
 
     public Transformer[] getDataProviderOutputTransformers() {
         final Transformer[] transformers;
@@ -224,6 +239,7 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
         }
     }
 
+    @SuppressWarnings("unchecked")
     private void processEachDataProviderWithEachRule() {
         // For each data provider
         for (final DataProvider<DPO> dataProvider : dataProviders) {
