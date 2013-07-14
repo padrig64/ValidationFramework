@@ -23,7 +23,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.base.validator.context;
+package com.google.code.validationframework.base.validator.buildercontext.generalvalidator;
 
 import com.google.code.validationframework.api.dataprovider.DataProvider;
 import com.google.code.validationframework.api.resulthandler.ResultHandler;
@@ -43,7 +43,7 @@ import java.util.List;
  * @param <RI>  Type of input of rule objects.
  * @param <RO>  Type of output of rule objects.
  */
-public class ForEachRuleContext<DPO, RI, RO> {
+public class RuleContext<DPO, RI, RO> {
 
     private final Collection<Trigger> triggers;
     private final Collection<DataProvider<DPO>> dataProviders;
@@ -51,16 +51,26 @@ public class ForEachRuleContext<DPO, RI, RO> {
     private final Collection<Transformer> ruleInputTransformers;
     private final Collection<Rule<RI, RO>> rules;
 
-    public ForEachRuleContext(final Collection<Trigger> triggers, //
-                              final Collection<DataProvider<DPO>> dataProviders, //
-                              final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping, //
-                              final Collection<Transformer> ruleInputTransformers, //
-                              final Collection<Rule<RI, RO>> rules) {
+    public RuleContext(final Collection<Trigger> triggers, //
+                       final Collection<DataProvider<DPO>> dataProviders, //
+                       final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping, //
+                       final Collection<Transformer> ruleInputTransformers, //
+                       final Collection<Rule<RI, RO>> rules) {
         this.triggers = triggers;
         this.dataProviders = dataProviders;
         this.dataProviderToRuleMapping = dataProviderToRuleMapping;
         this.ruleInputTransformers = ruleInputTransformers;
         this.rules = rules;
+    }
+
+    public MultipleRuleContext<DPO, RI, RO> check(final Rule<RI, RO> rule) {
+        if (rule != null) {
+            rules.add(rule);
+        }
+
+        // Change context
+        return new MultipleRuleContext<DPO, RI, RO>(triggers, dataProviders, dataProviderToRuleMapping,
+                ruleInputTransformers, rules);
     }
 
     public <TRO> TransformedRuleContext<DPO, RI, RO, TRO> transform(final Transformer<RO,

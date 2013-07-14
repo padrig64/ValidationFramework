@@ -23,39 +23,37 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.base.validator.context;
+package com.google.code.validationframework.base.validator;
 
-import com.google.code.validationframework.api.dataprovider.DataProvider;
 import com.google.code.validationframework.api.trigger.Trigger;
+import com.google.code.validationframework.base.validator.buildercontext.generalvalidator.TriggerContext;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class TriggerContext {
+public final class GeneralValidatorBuilder {
 
-    private final Collection<Trigger> triggers;
-
-    public TriggerContext(final Collection<Trigger> triggers) {
-        this.triggers = triggers;
+    /**
+     * Private constructor for utility class.
+     */
+    private GeneralValidatorBuilder() {
+        // Nothing to be done
     }
 
-    public TriggerContext on(final Trigger trigger) {
+    public static TriggerContext on(final Trigger trigger) {
+        final List<Trigger> triggers = new ArrayList<Trigger>();
         if (trigger != null) {
             triggers.add(trigger);
         }
-
-        // Stay in the same context and re-use the same instance because no type has changed
-        return this;
+        return new TriggerContext(triggers);
     }
 
-    public <DPO> DataProviderContext<DPO> read(final DataProvider<DPO> dataProvider) {
-        final List<DataProvider<DPO>> dataProviders = new ArrayList<DataProvider<DPO>>();
-        if (dataProvider != null) {
-            dataProviders.add(dataProvider);
+    public static TriggerContext on(final Collection<Trigger> triggers) {
+        final List<Trigger> triggerList = new ArrayList<Trigger>();
+        if (triggers != null) {
+            triggerList.addAll(triggers);
         }
-
-        // Change context
-        return new DataProviderContext<DPO>(triggers, dataProviders);
+        return new TriggerContext(triggerList);
     }
 }

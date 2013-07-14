@@ -23,7 +23,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.base.validator.context;
+package com.google.code.validationframework.base.validator.buildercontext.generalvalidator;
 
 import com.google.code.validationframework.api.dataprovider.DataProvider;
 import com.google.code.validationframework.api.rule.Rule;
@@ -40,24 +40,15 @@ import java.util.List;
  *
  * @param <DPO> Type of output of data provider objects.
  */
-public class DataProviderContext<DPO> {
+public class ForEachDataProviderContext<DPO> {
 
     private final Collection<Trigger> triggers;
     private final Collection<DataProvider<DPO>> dataProviders;
 
-    public DataProviderContext(final Collection<Trigger> triggers, //
-                               final Collection<DataProvider<DPO>> dataProviders) {
+    public ForEachDataProviderContext(final Collection<Trigger> triggers, //
+                                      final Collection<DataProvider<DPO>> dataProviders) {
         this.triggers = triggers;
         this.dataProviders = dataProviders;
-    }
-
-    public MultipleDataProviderContext<DPO> read(final DataProvider<DPO> dataProvider) {
-        if (dataProvider != null) {
-            dataProviders.add(dataProvider);
-        }
-
-        // Change context
-        return new MultipleDataProviderContext<DPO>(triggers, dataProviders);
     }
 
     public <TDPO> TransformedDataProviderContext<DPO, TDPO> transform(final Transformer<DPO,
@@ -67,6 +58,7 @@ public class DataProviderContext<DPO> {
             transformers.add(ruleInputTransformer);
         }
 
+        // Change context
         return new TransformedDataProviderContext<DPO, TDPO>(triggers, dataProviders,
                 GeneralValidator.DataProviderToRuleMapping.EACH_TO_EACH, transformers);
     }
