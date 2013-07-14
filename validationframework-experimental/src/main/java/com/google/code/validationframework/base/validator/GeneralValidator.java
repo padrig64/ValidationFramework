@@ -39,16 +39,100 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Simple validator allowing to have different mapping between data providers, rules and result handlers.<br>The
+ * validator allows to transform the data providers' output before mapping, the rules' input after mapping, the rules'
+ * output before mapping and the result handlers' input after mapping.<br>This means that the output of each data
+ * provider will be transformed using a series of data provider output {@link Transformer}s. Then, if the data provider
+ * to rule mapping is {@link DataProviderToRuleMapping#EACH_TO_EACH}, the output of each data provider output
+ * transformation will transformed again using a series of rule input {@link Transformer}s, before being passed to each
+ * rule. If the data provider to rule mapping is {@link DataProviderToRuleMapping#ALL_TO_EACH}, the output of all data
+ * provider output transformations will be put in a collection and transformed again using the series of rule input
+ * {@link Transformer}s, before being passed to each rule.<br>The output of each rule will be transformed using a series
+ * of rule output {@link Transformer}s. Then, if the rule to result handler mapping is {@link
+ * RuleToResultHandlerMapping#EACH_TO_EACH}, the output of each rule output transformation will be transformed again
+ * using a series of result handler input {@link Transformer}s, before being passed to each result handler.<br>If the
+ * rule to result handler mapping is {@link RuleToResultHandlerMapping#ALL_TO_EACH}, the output of all rule output
+ * transformations will be put in a collection and transformed as a whole using the series of result handler input
+ * {@link Transformer}s, before being passed to each result handler.<br>The general validation flow can be
+ * represented by the following pattern: triggers -> data providers -> data provider output transformers -> data
+ * provider to rule mapping -> rule input transformers -> rules -> rule output transformers -> rule output to result
+ * handler input transformers -> result handler input transformers -> result handlers.<br>Note that the use of
+ * transformers is optional. By default, the data provider to rule mapping is set to {@link
+ * DataProviderToRuleMapping#EACH_TO_EACH} and the rule to result handler mapping is set to {@link
+ * RuleToResultHandlerMapping#EACH_TO_EACH}.<br>For type safety, it is highly advised to use the {@link
+ * GeneralValidatorBuilder}.
+ *
+ * @param <DPO> Type of data provider output.<br>This may or may not be the same type as the rule input.
+ * @param <RI>  Type of rule input.<br>This may or may not be the same type as the data provider output.
+ * @param <RO>  Type of rule output.<br>This may or may not be the same type as the result handler input.
+ * @param <RHI> Type of result handler input.<br>This may or may not be the same type as the rule output.
+ *
+ * @see GeneralValidatorBuilder
+ * @see AbstractSimpleValidator
+ */
 public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<Trigger, DataProvider<DPO>, DPO,
         Rule<RI, RO>, RI, RO, ResultHandler<RHI>, RHI> {
 
+    /**
+     * Mapping between data providers and rules.
+     *
+     * @see #setDataProviderOutputTransformers(Transformer[])
+     * @see #setDataProviderOutputTransformers(Collection)
+     * @see #setDataProviderToRuleMapping(DataProviderToRuleMapping)
+     * @see #setRuleInputTransformers(Transformer[])
+     * @see #setRuleInputTransformers(Collection)
+     */
     public enum DataProviderToRuleMapping {
+
+        /**
+         * The data from each data provider will be passed one by one to each rule.<br>For this mapping, if no data
+         * provider output transformer is used, it is expected that the rule input is of the same as the type as the
+         * data provider output.<br>For type safety, it is highly advised to use the {@link GeneralValidatorBuilder}.
+         *
+         * @see GeneralValidatorBuilder
+         */
         EACH_TO_EACH,
+
+        /**
+         * The data from all data providers will passed all at once (in a {@link Collection}) to each rule.<br>For this
+         * mapping, if no data provider transformer is used, it is expected that the rule input is a {@link Collection}
+         * containing objects of the same type as the data provider output.<br>For type safety, it is highly advised to
+         * use the {@link GeneralValidatorBuilder}.
+         *
+         * @see GeneralValidatorBuilder
+         */
         ALL_TO_EACH
     }
 
+    /**
+     * Mapping between rules and result handlers.
+     *
+     * @see #setRuleOutputTransformers(Transformer[])
+     * @see #setRuleOutputTransformers(Collection)
+     * @see #setRuleToResultHandlerMapping(RuleToResultHandlerMapping)
+     * @see #setResultHandlerInputTransformers(Transformer[])
+     * @see #setResultHandlerInputTransformers(Collection)
+     */
     public enum RuleToResultHandlerMapping {
+
+        /**
+         * The result from each rule will be passed one by one to each result handler.<br>For this mapping, if no rule
+         * output transformer is used, it is expected that the result handler input is of the same type as the rule
+         * output.<br>For type safety, it is highly advised to use the {@link GeneralValidatorBuilder}.
+         *
+         * @see GeneralValidatorBuilder
+         */
         EACH_TO_EACH,
+
+        /**
+         * The result from all rules will be passed all at once (in a {@link Collection}) to each result handler.<br>For
+         * this mapping, if no rule output transformer is used, it is expected that the result handler input is a {@link
+         * Collection} containing objects of the same type as the rule output.<br>For type safety, it is highly advised
+         * to use the {@link GeneralValidatorBuilder}.
+         *
+         * @see GeneralValidatorBuilder
+         */
         ALL_TO_EACH
     }
 
@@ -57,18 +141,61 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(GeneralValidator.class);
 
+    /**
+     * List of {@link Transformer}s transforming the output of each data provider.<br>The type of input of the first
+     * transformer shall match the type of output of the data providers. The type of the input of a subsequent
+     * transformer shall match the type of output of the previous transformer.
+     *
+     * @see #dataProviderToRuleMapping
+     */
     private List<Transformer> dataProviderOutputTransformers = new ArrayList<Transformer>();
 
-    private DataProviderToRuleMapping dataProviderToRuleMapping = DataProviderToRuleMapping.ALL_TO_EACH;
+    /**
+     * Mapping between the (possibly transformed) data provider output to the rule input.
+     *
+     * @see DataProviderToRuleMapping
+     */
+    private DataProviderToRuleMapping dataProviderToRuleMapping = DataProviderToRuleMapping.EACH_TO_EACH;
 
+    /**
+     * List of {@link Transformer}s transforming the input of each rule.<br>The type of input of the first transformer
+     * shall match the type of output of the data provider to rule mapping: so either the type of data provider output
+     * or a {@link Collection} of objects of the same type as the data provider output. The type of the input of a
+     * subsequent transformer shall match the type of output of the previous transformer.
+     *
+     * @see #dataProviderToRuleMapping
+     */
     private List<Transformer> ruleInputTransformers = new ArrayList<Transformer>();
 
+    /**
+     * List of {@link Transformer}s transforming the output of each rule.<br>The type of input of the first transformer
+     * shall match the type of output of the rules. The type of the input of a subsequent transformer shall match the
+     * type of output of the previous transformer.
+     *
+     * @see #dataProviderToRuleMapping
+     */
     private List<Transformer> ruleOutputTransformers = new ArrayList<Transformer>();
 
-    private RuleToResultHandlerMapping ruleToResultHandlerMapping = RuleToResultHandlerMapping.ALL_TO_EACH;
+    /**
+     * Mapping between the (possibly transformed) rule output to the result handler input.
+     */
+    private RuleToResultHandlerMapping ruleToResultHandlerMapping = RuleToResultHandlerMapping.EACH_TO_EACH;
 
+    /**
+     * List of {@link Transformer}s transforming the input of each result handler.<br>The type of input of the first
+     * transformer shall match the type of rule to result handler mapping: so either the type of rule output or a {@link
+     * Collection} of objects of the same type as the rule output. The type of the input of a subsequent transformer
+     * shall match the type of output of the previous transformer.
+     *
+     * @see #dataProviderToRuleMapping
+     */
     private List<Transformer> resultHandlerInputTransformers = new ArrayList<Transformer>();
 
+    /**
+     * Adds the specified result collector to the triggers and data providers.
+     *
+     * @param resultCollector Result collector to be added.
+     */
     public void addResultCollector(final ResultCollector<?, DPO> resultCollector) {
         if (resultCollector != null) {
             addTrigger(resultCollector);
@@ -76,6 +203,11 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
         }
     }
 
+    /**
+     * Removes the specified result collector from the triggers and data providers.
+     *
+     * @param resultCollector Result collector to be removed.
+     */
     public void removeResultCollector(final ResultCollector<?, DPO> resultCollector) {
         if (resultCollector != null) {
             removeTrigger(resultCollector);
@@ -114,7 +246,11 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
         }
     }
 
-    public void mapDataProvidersToRules(final DataProviderToRuleMapping dataProviderToRuleMapping) {
+    public DataProviderToRuleMapping getDataProviderToRuleMapping() {
+        return dataProviderToRuleMapping;
+    }
+
+    public void setDataProviderToRuleMapping(final DataProviderToRuleMapping dataProviderToRuleMapping) {
         this.dataProviderToRuleMapping = dataProviderToRuleMapping;
     }
 
@@ -178,7 +314,11 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
         }
     }
 
-    public void mapRulesToResultHandlers(final RuleToResultHandlerMapping ruleToResultHandlerMapping) {
+    public RuleToResultHandlerMapping getRuleToResultHandlerMapping() {
+        return ruleToResultHandlerMapping;
+    }
+
+    public void setRuleToResultHandlerMapping(final RuleToResultHandlerMapping ruleToResultHandlerMapping) {
         this.ruleToResultHandlerMapping = ruleToResultHandlerMapping;
     }
 
@@ -239,6 +379,9 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
         }
     }
 
+    /**
+     * Processes the output of each data provider one by one with each rule.
+     */
     @SuppressWarnings("unchecked")
     private void processEachDataProviderWithEachRule() {
         // For each data provider
@@ -266,6 +409,10 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
         }
     }
 
+    /**
+     * Processes the output of all data providers, all at once, with each rule.
+     */
+    @SuppressWarnings("unchecked")
     private void processAllDataProvidersWithEachRule() {
         // For each data provider
         final List<Object> transformedDataProvidersOutput = new ArrayList<Object>(dataProviders.size());
@@ -297,6 +444,11 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
         processRules(ruleInput);
     }
 
+    /**
+     * Processes the specified rule input.
+     *
+     * @param ruleInput Rule input to be validated.
+     */
     private void processRules(final RI ruleInput) {
         switch (ruleToResultHandlerMapping) {
             case EACH_TO_EACH:
@@ -311,6 +463,13 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
         }
     }
 
+    /**
+     * Processes the specified rule input with each rule, and processes the results of each rule one by one with each
+     * result handler.
+     *
+     * @param ruleInput Rule input to be validated.
+     */
+    @SuppressWarnings("unchecked")
     private void processEachRuleWithEachResultHandler(final RI ruleInput) {
         // For each rule
         for (final Rule<RI, RO> rule : rules) {
@@ -337,6 +496,13 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
         }
     }
 
+    /**
+     * Processes the specified rule input with each rule, and processes the result of all rules, all at once, with each
+     * result handler.
+     *
+     * @param ruleInput Rule input to be validated.
+     */
+    @SuppressWarnings("unchecked")
     private void processAllRulesWithEachResultHandler(final RI ruleInput) {
         // For each rule
         final List<Object> combinedRulesOutput = new ArrayList<Object>(rules.size());
@@ -368,6 +534,11 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
         processResultHandlers(resultHandlerInput);
     }
 
+    /**
+     * Processes the specified result handler input with each result handler.
+     *
+     * @param resultHandlerInput Result handler input to be handled.
+     */
     private void processResultHandlers(final RHI resultHandlerInput) {
         for (final ResultHandler<RHI> resultHandler : resultHandlers) {
             resultHandler.handleResult(resultHandlerInput);

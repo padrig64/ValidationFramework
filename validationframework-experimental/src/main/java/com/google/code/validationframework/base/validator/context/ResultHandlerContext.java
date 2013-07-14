@@ -113,7 +113,7 @@ public class ResultHandlerContext<DPO, RI, RO, RHI> {
         }
 
         // Map data providers output to rules input
-        validator.mapDataProvidersToRules(dataProviderToRuleMapping);
+        validator.setDataProviderToRuleMapping(dataProviderToRuleMapping);
         validator.setRuleInputTransformers(ruleInputTransformers);
 
         // Add rules
@@ -122,7 +122,7 @@ public class ResultHandlerContext<DPO, RI, RO, RHI> {
         }
 
         // Map rules output to result handlers input
-        validator.mapRulesToResultHandlers(ruleToResultHandlerMapping);
+        validator.setRuleToResultHandlerMapping(ruleToResultHandlerMapping);
         validator.setResultHandlerInputTransformers(resultHandlerInputTransformers);
 
         // Add result handlers

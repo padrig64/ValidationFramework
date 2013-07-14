@@ -51,7 +51,7 @@ import java.util.Map;
  * @param <RI>  Type of data the rules will check.
  * @param <RO>  Type of result the rules will produce.
  * @param <RH>  Type of result handlers to be used on validation output.
- * @param <RHI> Type of result the result handlers will handler.<br>It may or may not be the same as RO depending on the
+ * @param <RHI> Type of result the result handlers will handle.<br>It may or may not be the same as RO depending on the
  *              implementations.<br>For instance, an implementation could aggregate/transform the results before using
  *              the result handlers.
  *
