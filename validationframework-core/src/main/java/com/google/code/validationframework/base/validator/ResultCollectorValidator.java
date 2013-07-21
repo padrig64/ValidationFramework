@@ -56,7 +56,9 @@ import java.util.Collection;
  * @see DataProvider
  * @see Rule
  * @see ResultHandler
+ * @deprecated Use {@link GeneralValidator} or {@link GeneralValidatorBuilder} instead.
  */
+@Deprecated
 public class ResultCollectorValidator<RI, RO> extends AbstractSimpleValidator<Trigger, DataProvider<RI>, RI,
         Rule<Collection<RI>, RO>, Collection<RI>, RO, ResultHandler<RO>, RO> {
 

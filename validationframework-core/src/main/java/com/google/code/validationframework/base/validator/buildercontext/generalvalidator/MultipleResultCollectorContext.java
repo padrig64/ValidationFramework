@@ -28,6 +28,7 @@ package com.google.code.validationframework.base.validator.buildercontext.genera
 import com.google.code.validationframework.api.dataprovider.DataProvider;
 import com.google.code.validationframework.api.rule.Rule;
 import com.google.code.validationframework.api.trigger.Trigger;
+import com.google.code.validationframework.base.resulthandler.ResultCollector;
 import com.google.code.validationframework.base.transform.Transformer;
 import com.google.code.validationframework.base.validator.GeneralValidator;
 
@@ -40,36 +41,51 @@ import java.util.List;
  *
  * @param <DPO> Type of output of data provider objects.
  */
-public class ForEachDataProviderContext<DPO> {
+public class MultipleResultCollectorContext<DPO> {
 
     private final Collection<Trigger> triggers;
     private final Collection<DataProvider<DPO>> dataProviders;
 
-    public ForEachDataProviderContext(final Collection<Trigger> triggers, //
-                                      final Collection<DataProvider<DPO>> dataProviders) {
+    public MultipleResultCollectorContext(final Collection<Trigger> triggers, //
+                                       final Collection<DataProvider<DPO>> dataProviders) {
         this.triggers = triggers;
         this.dataProviders = dataProviders;
     }
 
-    public <TDPO> TransformedDataProviderContext transform(final Transformer<DPO, TDPO> ruleInputTransformer) {
+    public MultipleResultCollectorContext<DPO> collect(final ResultCollector<?, DPO> resultCollector) {
+        if (resultCollector != null) {
+            triggers.add(resultCollector);
+            dataProviders.add(resultCollector);
+        }
+
+        // Stay in the same context and re-use the same instance because no type has changed
+        return this;
+    }
+
+    public ForEachDataProviderContext<DPO> forEach() {
+        // Change context
+        return new ForEachDataProviderContext<DPO>(triggers, dataProviders);
+    }
+
+    public <TDPO> TransformedDataProviderContext transform(final Transformer<Collection<DPO>,
+            TDPO> ruleInputTransformer) {
         final List<Transformer> transformers = new ArrayList<Transformer>();
         if (ruleInputTransformer != null) {
             transformers.add(ruleInputTransformer);
         }
 
-        // Change context
         return new TransformedDataProviderContext<DPO, TDPO>(triggers, dataProviders,
-                GeneralValidator.DataProviderToRuleMapping.EACH_TO_EACH, transformers);
+                GeneralValidator.DataProviderToRuleMapping.ALL_TO_EACH, transformers);
     }
 
-    public <RO> SingleRuleContext<DPO, DPO, RO> check(final Rule<DPO, RO> rule) {
-        final List<Rule<DPO, RO>> rules = new ArrayList<Rule<DPO, RO>>();
+    public <RO> SingleRuleContext<DPO, Collection<DPO>, RO> check(final Rule<Collection<DPO>, RO> rule) {
+        final List<Rule<Collection<DPO>, RO>> rules = new ArrayList<Rule<Collection<DPO>, RO>>();
         if (rule != null) {
             rules.add(rule);
         }
 
         // Change context
-        return new SingleRuleContext<DPO, DPO, RO>(triggers, dataProviders,
-                GeneralValidator.DataProviderToRuleMapping.EACH_TO_EACH, null, rules);
+        return new SingleRuleContext<DPO, Collection<DPO>, RO>(triggers, dataProviders,
+                GeneralValidator.DataProviderToRuleMapping.ALL_TO_EACH, null, rules);
     }
 }

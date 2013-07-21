@@ -43,7 +43,7 @@ import java.util.List;
  * @param <RI>  Type of input of rule objects.
  * @param <RO>  Type of output of rule objects.
  */
-public class RuleContext<DPO, RI, RO> {
+public class SingleRuleContext<DPO, RI, RO> {
 
     private final Collection<Trigger> triggers;
     private final Collection<DataProvider<DPO>> dataProviders;
@@ -51,11 +51,11 @@ public class RuleContext<DPO, RI, RO> {
     private final Collection<Transformer> ruleInputTransformers;
     private final Collection<Rule<RI, RO>> rules;
 
-    public RuleContext(final Collection<Trigger> triggers, //
-                       final Collection<DataProvider<DPO>> dataProviders, //
-                       final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping, //
-                       final Collection<Transformer> ruleInputTransformers, //
-                       final Collection<Rule<RI, RO>> rules) {
+    public SingleRuleContext(final Collection<Trigger> triggers, //
+                             final Collection<DataProvider<DPO>> dataProviders, //
+                             final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping, //
+                             final Collection<Transformer> ruleInputTransformers, //
+                             final Collection<Rule<RI, RO>> rules) {
         this.triggers = triggers;
         this.dataProviders = dataProviders;
         this.dataProviderToRuleMapping = dataProviderToRuleMapping;

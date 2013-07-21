@@ -40,24 +40,33 @@ import java.util.List;
  *
  * @param <DPO> Type of output of data provider objects.
  */
-public class ForEachDataProviderContext<DPO> {
+public class SingleDataProviderContext<DPO> {
 
     private final Collection<Trigger> triggers;
     private final Collection<DataProvider<DPO>> dataProviders;
 
-    public ForEachDataProviderContext(final Collection<Trigger> triggers, //
-                                      final Collection<DataProvider<DPO>> dataProviders) {
+    public SingleDataProviderContext(final Collection<Trigger> triggers, //
+                                     final Collection<DataProvider<DPO>> dataProviders) {
         this.triggers = triggers;
         this.dataProviders = dataProviders;
     }
 
-    public <TDPO> TransformedDataProviderContext transform(final Transformer<DPO, TDPO> ruleInputTransformer) {
+    public MultipleDataProviderContext<DPO> read(final DataProvider<DPO> dataProvider) {
+        if (dataProvider != null) {
+            dataProviders.add(dataProvider);
+        }
+
+        // Change context
+        return new MultipleDataProviderContext<DPO>(triggers, dataProviders);
+    }
+
+    public <TDPO> TransformedDataProviderContext transform(final Transformer<DPO,
+            TDPO> ruleInputTransformer) {
         final List<Transformer> transformers = new ArrayList<Transformer>();
         if (ruleInputTransformer != null) {
             transformers.add(ruleInputTransformer);
         }
 
-        // Change context
         return new TransformedDataProviderContext<DPO, TDPO>(triggers, dataProviders,
                 GeneralValidator.DataProviderToRuleMapping.EACH_TO_EACH, transformers);
     }
@@ -69,7 +78,6 @@ public class ForEachDataProviderContext<DPO> {
         }
 
         // Change context
-        return new SingleRuleContext<DPO, DPO, RO>(triggers, dataProviders,
-                GeneralValidator.DataProviderToRuleMapping.EACH_TO_EACH, null, rules);
+        return new SingleRuleContext<DPO, DPO, RO>(triggers, dataProviders, GeneralValidator.DataProviderToRuleMapping.EACH_TO_EACH, null, rules);
     }
 }

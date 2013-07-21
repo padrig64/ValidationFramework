@@ -47,7 +47,9 @@ import org.slf4j.LoggerFactory;
  * @see DataProvider
  * @see Rule
  * @see ResultHandler
+ * @deprecated Use {@link GeneralValidator} or {@link GeneralValidatorBuilder} instead.
  */
+@Deprecated
 public class DefaultSimpleValidator<RI, RO> extends AbstractSimpleValidator<Trigger, DataProvider<RI>, RI, Rule<RI,
         RO>, RI, RO, ResultHandler<RO>, RO> {
 

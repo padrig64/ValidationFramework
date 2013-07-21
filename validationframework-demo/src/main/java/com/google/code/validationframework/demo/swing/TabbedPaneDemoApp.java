@@ -54,8 +54,8 @@ import java.text.DecimalFormat;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.google.code.validationframework.experimental.builder.ResultCollectorValidatorBuilder.collect;
-import static com.google.code.validationframework.experimental.builder.SimpleValidatorBuilder.on;
+import static com.google.code.validationframework.base.validator.GeneralValidatorBuilder.collect;
+import static com.google.code.validationframework.base.validator.GeneralValidatorBuilder.on;
 
 public class TabbedPaneDemoApp extends JFrame {
 
@@ -153,9 +153,11 @@ public class TabbedPaneDemoApp extends JFrame {
         final ResultCollector<Boolean, Boolean> fieldResultCollector = new ResultCollector<Boolean, Boolean>();
         fieldResultCollectors.add(fieldResultCollector);
 
-        on(new JFormattedTextFieldDocumentChangedTrigger(field)).read(new JFormattedTextFieldTextProvider(field))
-                .check(new JFormattedTextFieldFormatterRule(field)).handleWith(new IconBooleanFeedback(field))
-                .handleWith(fieldResultCollector).build();
+        on(new JFormattedTextFieldDocumentChangedTrigger(field)) //
+                .read(new JFormattedTextFieldTextProvider(field)) //
+                .check(new JFormattedTextFieldFormatterRule(field)) //
+                .handleWith(new IconBooleanFeedback(field)) //
+                .handleWith(fieldResultCollector);
     }
 
     private void installTabValidator(final JTabbedPane tabbedPane, final int i, final Set<ResultCollector<?,
@@ -165,15 +167,17 @@ public class TabbedPaneDemoApp extends JFrame {
         tabResultCollectors.add(tabResultCollector);
 
         // Create validator for the whole tab
-        collect(fieldResultCollectors).check(new AndBooleanRule()).handleWith(new TabIconBooleanFeedback(tabbedPane,
-                i, null, null, TabIconBooleanFeedback.DEFAULT_INVALID_ICON, "One or several invalid input fields"))
-                .handleWith(tabResultCollector).build();
+        collect(fieldResultCollectors) //
+                .check(new AndBooleanRule()) //
+                .handleWith(new TabIconBooleanFeedback(tabbedPane, i, "One or several invalid input fields")) //
+                .handleWith(tabResultCollector);
     }
 
     private void installGlobalValidator(final Set<ResultCollector<?, Boolean>> tabResultCollectors,
                                         final Component... buttons) {
-        collect(tabResultCollectors).check(new AndBooleanRule()).handleWith(new ComponentEnablingBooleanResultHandler
-                (buttons)).build();
+        collect(tabResultCollectors) //
+                .check(new AndBooleanRule()) //
+                .handleWith(new ComponentEnablingBooleanResultHandler(buttons));
     }
 
     public static void main(final String[] args) {

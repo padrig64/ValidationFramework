@@ -26,7 +26,6 @@
 package com.google.code.validationframework.demo.swing;
 
 import com.google.code.validationframework.base.rule.string.StringLengthLessThanOrEqualToRule;
-import com.google.code.validationframework.experimental.builder.SimpleValidatorBuilder;
 import com.google.code.validationframework.swing.dataprovider.JTextFieldTextProvider;
 import com.google.code.validationframework.swing.resulthandler.bool.IconBooleanFeedback;
 import com.google.code.validationframework.swing.trigger.JTextFieldDocumentChangedTrigger;
@@ -50,6 +49,8 @@ import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+
+import static com.google.code.validationframework.base.validator.GeneralValidatorBuilder.on;
 
 public class CardLayoutDemoApp extends JFrame implements ItemListener {
 
@@ -78,11 +79,11 @@ public class CardLayoutDemoApp extends JFrame implements ItemListener {
         }
 
         private void installValidator(final JTextField textField) {
-            SimpleValidatorBuilder.on(new JTextFieldDocumentChangedTrigger(textField)).read(new
-                    JTextFieldTextProvider(textField)).check(new StringLengthLessThanOrEqualToRule(5 + count))
-                    .handleWith(new IconBooleanFeedback(textField, null, null,
-                            IconBooleanFeedback.DEFAULT_INVALID_ICON, "Should be less then " + (6 + count) + " " +
-                    "characters")).build();
+            on(new JTextFieldDocumentChangedTrigger(textField)) //
+                    .read(new JTextFieldTextProvider(textField)) //
+                    .check(new StringLengthLessThanOrEqualToRule(5 + count)) //
+                    .handleWith(new IconBooleanFeedback(textField, "Should be less then " + (6 + count) + " " +
+                            "characters"));
         }
     }
 

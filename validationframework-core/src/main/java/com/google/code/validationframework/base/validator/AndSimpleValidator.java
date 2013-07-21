@@ -37,7 +37,9 @@ import com.google.code.validationframework.base.transform.AndBooleanAggregator;
  * @see ResultAggregationValidator
  * @see AndBooleanAggregator
  * @see OrSimpleValidator
+ * @deprecated Use {@link GeneralValidator} or {@link GeneralValidatorBuilder} instead.
  */
+@Deprecated
 public class AndSimpleValidator<RI> extends ResultAggregationValidator<RI, Boolean, Boolean> {
 
     /**

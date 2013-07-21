@@ -4,8 +4,7 @@ import com.google.code.validationframework.api.dataprovider.DataProvider;
 import com.google.code.validationframework.api.resulthandler.ResultHandler;
 import com.google.code.validationframework.base.rule.string.StringRegexRule;
 import com.google.code.validationframework.base.trigger.ManualTrigger;
-import com.google.code.validationframework.base.validator.DefaultSimpleValidator;
-import com.google.code.validationframework.experimental.builder.SimpleValidatorBuilder;
+import com.google.code.validationframework.base.validator.GeneralValidator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -15,8 +14,10 @@ import org.ops4j.pax.exam.junit.PaxExam;
 import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.PerMethod;
 
+import static com.google.code.validationframework.base.validator.GeneralValidatorBuilder.on;
 import static org.mockito.Mockito.verify;
-import static org.ops4j.pax.exam.CoreOptions.*;
+import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
+import static org.ops4j.pax.exam.CoreOptions.options;
 
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerMethod.class)
@@ -38,11 +39,9 @@ public class ValidationFrameworkExperimentalIT {
 
     @Configuration
     public Option[] config() {
-        return options(
-                mavenBundle("com.google.code.validationframework", "validationframework-core").versionAsInProject(),
-                mavenBundle("com.google.code.validationframework", "validationframework-experimental").versionAsInProject(),
-                TestOptions.junitAndMockitoBundles()
-        );
+        return options(mavenBundle("com.google.code.validationframework",
+                "validationframework-core").versionAsInProject(), mavenBundle("com.google.code.validationframework",
+                "validationframework-experimental").versionAsInProject(), TestOptions.junitAndMockitoBundles());
     }
 
     @SuppressWarnings("unchecked")
@@ -51,13 +50,11 @@ public class ValidationFrameworkExperimentalIT {
         final DataTrigger dataTrigger = new DataTrigger();
         final ResultHandler<Boolean> mockResultHandler = Mockito.mock(ResultHandler.class);
 
-        final DefaultSimpleValidator<String, Boolean> validator =
-                SimpleValidatorBuilder
-                        .on(dataTrigger)
-                        .read(dataTrigger)
-                        .check(new StringRegexRule("^Hello World$"))
-                        .handleWith(mockResultHandler)
-                        .build();
+        final GeneralValidator<String, String, Boolean, Boolean> validator = on(dataTrigger) //
+                .read(dataTrigger) //
+                .check(new StringRegexRule("^Hello World$")) //
+                .handleWith(mockResultHandler) //
+                .getValidator();
 
         dataTrigger.trigger("Hello World");
 

@@ -35,6 +35,7 @@ import com.google.code.validationframework.api.trigger.TriggerListener;
 import com.google.code.validationframework.api.validator.SimpleValidator;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,7 +64,7 @@ import java.util.Map;
  */
 public abstract class AbstractSimpleValidator<T extends Trigger, DP extends DataProvider<DPO>, DPO,
         R extends Rule<RI, RO>, RI, RO, RH extends ResultHandler<RHI>, RHI> implements SimpleValidator<T, DP, DPO, R,
-                RI, RO, RH, RHI>, Disposable {
+        RI, RO, RH, RHI>, Disposable {
 
     /**
      * Listener to all registered triggers, initiating the validation logic.
@@ -205,80 +206,37 @@ public abstract class AbstractSimpleValidator<T extends Trigger, DP extends Data
      */
     @Override
     public void dispose() {
-        disposeTriggers();
-        disposeDataProviders();
-        disposeRules();
-        disposeResultHandlers();
-    }
-
-    /**
-     * Clears all triggers.
-     */
-    private void disposeTriggers() {
-        // Browse through all triggers
+        // Disconnect all installed triggers
         for (final T trigger : triggers) {
-            // Disconnect installed trigger adapter and forget about the trigger
+            // Disconnect trigger adapter and forget about the trigger
             final TriggerListener triggerAdapter = triggersToTriggerAdapters.remove(trigger);
             if (triggerAdapter != null) {
                 trigger.removeTriggerListener(triggerAdapter);
             }
-
-            // Dispose trigger itself
-            if (trigger instanceof Disposable) {
-                ((Disposable) trigger).dispose();
-            }
         }
 
-        // Clears all triggers
-        triggers.clear();
+        // Dispose everything
+        dispose(triggers);
+        dispose(dataProviders);
+        dispose(rules);
+        dispose(resultHandlers);
     }
 
     /**
-     * Clears all data providers.
+     * Clears all elements from the specified collection.
+     *
+     * @param elements Collection of elements to be disposed (for instance, data providers, rules, result handlers).
      */
-    private void disposeDataProviders() {
-        // Browse through all data providers
-        for (final DP dataProvider : dataProviders) {
-            // Dispose data provider itself
-            if (dataProvider instanceof Disposable) {
-                ((Disposable) dataProvider).dispose();
+    private void dispose(final Collection<?> elements) {
+        // Dispose all disposable elements
+        for (final Object element : elements) {
+            if (element instanceof Disposable) {
+                ((Disposable) element).dispose();
             }
         }
 
-        // Clear all data providers
+        // Clear collection
         dataProviders.clear();
-    }
-
-    /**
-     * Clears all rules.
-     */
-    private void disposeRules() {
-        // Browse through all rules
-        for (final R rule : rules) {
-            // Dispose rule itself
-            if (rule instanceof Disposable) {
-                ((Disposable) rule).dispose();
-            }
-        }
-
-        // Clear all data providers
-        rules.clear();
-    }
-
-    /**
-     * Clears all result handlers.
-     */
-    private void disposeResultHandlers() {
-        // Browse through all rules
-        for (final RH resultHandler : resultHandlers) {
-            // Dispose rule itself
-            if (resultHandler instanceof Disposable) {
-                ((Disposable) resultHandler).dispose();
-            }
-        }
-
-        // Clear all data providers
-        resultHandlers.clear();
     }
 
     /**

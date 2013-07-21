@@ -49,13 +49,13 @@ public class TriggerContext {
         return this;
     }
 
-    public <DPO> DataProviderContext<DPO> read(final DataProvider<DPO> dataProvider) {
+    public <DPO> SingleDataProviderContext<DPO> read(final DataProvider<DPO> dataProvider) {
         final List<DataProvider<DPO>> dataProviders = new ArrayList<DataProvider<DPO>>();
         if (dataProvider != null) {
             dataProviders.add(dataProvider);
         }
 
         // Change context
-        return new DataProviderContext<DPO>(triggers, dataProviders);
+        return new SingleDataProviderContext<DPO>(triggers, dataProviders);
     }
 }

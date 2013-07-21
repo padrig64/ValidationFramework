@@ -65,7 +65,7 @@ public class MultipleDataProviderContext<DPO> {
         return new ForEachDataProviderContext<DPO>(triggers, dataProviders);
     }
 
-    public <TDPO> TransformedDataProviderContext<DPO, TDPO> transform(final Transformer<Collection<DPO>,
+    public <TDPO> TransformedDataProviderContext transform(final Transformer<Collection<DPO>,
             TDPO> ruleInputTransformer) {
         final List<Transformer> transformers = new ArrayList<Transformer>();
         if (ruleInputTransformer != null) {
@@ -76,14 +76,14 @@ public class MultipleDataProviderContext<DPO> {
                 GeneralValidator.DataProviderToRuleMapping.ALL_TO_EACH, transformers);
     }
 
-    public <RO> RuleContext<DPO, Collection<DPO>, RO> check(final Rule<Collection<DPO>, RO> rule) {
+    public <RO> SingleRuleContext<DPO, Collection<DPO>, RO> check(final Rule<Collection<DPO>, RO> rule) {
         final List<Rule<Collection<DPO>, RO>> rules = new ArrayList<Rule<Collection<DPO>, RO>>();
         if (rule != null) {
             rules.add(rule);
         }
 
         // Change context
-        return new RuleContext<DPO, Collection<DPO>, RO>(triggers, dataProviders,
+        return new SingleRuleContext<DPO, Collection<DPO>, RO>(triggers, dataProviders,
                 GeneralValidator.DataProviderToRuleMapping.ALL_TO_EACH, null, rules);
     }
 }

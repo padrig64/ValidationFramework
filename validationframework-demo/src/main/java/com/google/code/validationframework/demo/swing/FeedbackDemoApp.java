@@ -29,9 +29,10 @@ import com.google.code.validationframework.api.rule.Rule;
 import com.google.code.validationframework.base.resulthandler.ResultCollector;
 import com.google.code.validationframework.base.rule.bool.AndBooleanRule;
 import com.google.code.validationframework.base.rule.string.StringRegexRule;
+import com.google.code.validationframework.base.transform.AndBooleanAggregator;
 import com.google.code.validationframework.base.transform.Transformer;
 import com.google.code.validationframework.base.trigger.ManualTrigger;
-import com.google.code.validationframework.base.validator.DefaultSimpleValidator;
+import com.google.code.validationframework.base.validator.GeneralValidator;
 import com.google.code.validationframework.swing.dataprovider.JFormattedTextFieldTextProvider;
 import com.google.code.validationframework.swing.dataprovider.JTextFieldTextProvider;
 import com.google.code.validationframework.swing.resulthandler.AbstractColorFeedback;
@@ -69,8 +70,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.NumberFormat;
 
-import static com.google.code.validationframework.experimental.builder.ResultCollectorValidatorBuilder.collect;
-import static com.google.code.validationframework.experimental.builder.SimpleValidatorBuilder.on;
+import static com.google.code.validationframework.base.validator.GeneralValidatorBuilder.collect;
+import static com.google.code.validationframework.base.validator.GeneralValidatorBuilder.on;
 
 public class FeedbackDemoApp extends JFrame {
 
@@ -306,14 +307,13 @@ public class FeedbackDemoApp extends JFrame {
                 .collect(resultCollector4) //
                 .collect(resultCollector5) //
                 .check(new AndBooleanRule()) //
-                .handleWith(new ComponentEnablingBooleanResultHandler(applyButton)) //
-                .build();
+                .handleWith(new ComponentEnablingBooleanResultHandler(applyButton));
     }
 
     private Component createValidator1(final JTextField textField, final ResultCollector<InputFieldResult,
             Boolean> resultCollector) {
-        final DefaultSimpleValidator<String, InputFieldResult> validator = new DefaultSimpleValidator<String,
-                InputFieldResult>();
+        final GeneralValidator<String, String, InputFieldResult, InputFieldResult> validator = new
+                GeneralValidator<String, String, InputFieldResult, InputFieldResult>();
 
         validator.addTrigger(new JTextFieldDocumentChangedTrigger(textField));
         validator.addDataProvider(new JTextFieldTextProvider(textField));
@@ -326,8 +326,8 @@ public class FeedbackDemoApp extends JFrame {
 
     private Component createValidator2(final JTextField textField, final ResultCollector<InputFieldResult,
             Boolean> resultCollector) {
-        final DefaultSimpleValidator<String, InputFieldResult> validator = new DefaultSimpleValidator<String,
-                InputFieldResult>();
+        final GeneralValidator<String, String, InputFieldResult, InputFieldResult> validator = new
+                GeneralValidator<String, String, InputFieldResult, InputFieldResult>();
 
         validator.addTrigger(new JTextFieldDocumentChangedTrigger(textField));
         validator.addDataProvider(new JTextFieldTextProvider(textField));
@@ -340,8 +340,8 @@ public class FeedbackDemoApp extends JFrame {
 
     private Component createValidator3(final JTextField textField, final ResultCollector<InputFieldResult,
             Boolean> resultCollector) {
-        final DefaultSimpleValidator<String, InputFieldResult> validator = new DefaultSimpleValidator<String,
-                InputFieldResult>();
+        final GeneralValidator<String, String, InputFieldResult, InputFieldResult> validator = new
+                GeneralValidator<String, String, InputFieldResult, InputFieldResult>();
 
         validator.addTrigger(new JTextFieldDocumentChangedTrigger(textField));
         validator.addDataProvider(new JTextFieldTextProvider(textField));
@@ -367,13 +367,14 @@ public class FeedbackDemoApp extends JFrame {
         // Example of decoration that would be clipped by the parent panel
         resultHandler1.setClippingAncestor((JComponent) formattedTextField.getParent().getParent());
 
-        on(trigger, manualTrigger) //
+        on(trigger) //
+                .on(manualTrigger) //
                 .read(dataProvider) //
                 .check(rule1) //
                 .check(rule2) //
+                .transform(new AndBooleanAggregator()) //
                 .handleWith(resultHandler1) //
-                .handleWith(resultCollector) //
-                .build();
+                .handleWith(resultCollector);
 
         // Test of triggering the validation even before the dialog is visible
         manualTrigger.trigger();

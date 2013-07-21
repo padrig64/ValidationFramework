@@ -31,6 +31,10 @@ import com.google.code.validationframework.experimental.builder.context.simpleva
 
 import java.util.Collection;
 
+/**
+ * @deprecated Use {@link com.google.code.validationframework.base.validator.GeneralValidatorBuilder} instead.
+ */
+@Deprecated
 public final class SimpleValidatorBuilder {
 
     /**
@@ -40,18 +44,34 @@ public final class SimpleValidatorBuilder {
         // Nothing to be done
     }
 
+    /**
+     * @deprecated Use {@link com.google.code.validationframework.base.validator.GeneralValidatorBuilder} instead.
+     */
+    @Deprecated
     public static DataProviderContext on(final Trigger trigger) {
         return new TriggerContext().on(trigger);
     }
 
+    /**
+     * @deprecated Use {@link com.google.code.validationframework.base.validator.GeneralValidatorBuilder} instead.
+     */
+    @Deprecated
     public static DataProviderContext on(final Trigger... triggers) {
         return new TriggerContext().on(triggers);
     }
 
+    /**
+     * @deprecated Use {@link com.google.code.validationframework.base.validator.GeneralValidatorBuilder} instead.
+     */
+    @Deprecated
     public static DataProviderContext on(final Collection<Trigger> triggers) {
         return new TriggerContext().on(triggers);
     }
 
+    /**
+     * @deprecated Use {@link com.google.code.validationframework.base.validator.GeneralValidatorBuilder} instead.
+     */
+    @Deprecated
     public static DataProviderContext on(final Class<? extends Trigger> triggerClass) {
         return new TriggerContext().on(triggerClass);
     }

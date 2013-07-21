@@ -31,6 +31,10 @@ import com.google.code.validationframework.experimental.builder.context.resultco
 
 import java.util.Collection;
 
+/**
+ * @deprecated Use {@link com.google.code.validationframework.base.validator.GeneralValidatorBuilder} instead.
+ */
+@Deprecated
 public final class ResultCollectorValidatorBuilder {
 
     /**
@@ -40,14 +44,26 @@ public final class ResultCollectorValidatorBuilder {
         // Nothing to be done
     }
 
+    /**
+     * @deprecated Use {@link com.google.code.validationframework.base.validator.GeneralValidatorBuilder} instead.
+     */
+    @Deprecated
     public static <D> RuleContext<D> collect(final ResultCollector<?, D> resultCollector) {
         return new ResultCollectorContext().collect(resultCollector);
     }
 
+    /**
+     * @deprecated Use {@link com.google.code.validationframework.base.validator.GeneralValidatorBuilder} instead.
+     */
+    @Deprecated
     public static <D> RuleContext<D> collect(final ResultCollector<?, D>... resultCollectors) {
         return new ResultCollectorContext().collect(resultCollectors);
     }
 
+    /**
+     * @deprecated Use {@link com.google.code.validationframework.base.validator.GeneralValidatorBuilder} instead.
+     */
+    @Deprecated
     public static <D> RuleContext<D> collect(final Collection<ResultCollector<?, D>> resultCollectors) {
         return new ResultCollectorContext().collect(resultCollectors);
     }

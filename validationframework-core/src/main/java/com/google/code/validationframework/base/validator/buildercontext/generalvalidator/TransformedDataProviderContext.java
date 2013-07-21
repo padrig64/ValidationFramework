@@ -58,7 +58,7 @@ public class TransformedDataProviderContext<DPO, TDPO> {
         this.ruleInputTransformers = ruleInputTransformers;
     }
 
-    public <TTDPO> TransformedDataProviderContext<DPO, TTDPO> transform(final Transformer<TDPO,
+    public <TTDPO> TransformedDataProviderContext transform(final Transformer<TDPO,
             TTDPO> ruleInputTransformer) {
         if (ruleInputTransformer != null) {
             ruleInputTransformers.add(ruleInputTransformer);
@@ -69,13 +69,13 @@ public class TransformedDataProviderContext<DPO, TDPO> {
                 ruleInputTransformers);
     }
 
-    public <RO> RuleContext<DPO, TDPO, RO> check(final Rule<TDPO, RO> rule) {
+    public <RO> SingleRuleContext<DPO, TDPO, RO> check(final Rule<TDPO, RO> rule) {
         final List<Rule<TDPO, RO>> rules = new ArrayList<Rule<TDPO, RO>>();
         if (rule != null) {
             rules.add(rule);
         }
 
         // Change context
-        return new RuleContext<DPO, TDPO, RO>(triggers, dataProviders, dataProviderToRuleMapping, ruleInputTransformers, rules);
+        return new SingleRuleContext<DPO, TDPO, RO>(triggers, dataProviders, dataProviderToRuleMapping, ruleInputTransformers, rules);
     }
 }
