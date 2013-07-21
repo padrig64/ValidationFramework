@@ -25,6 +25,7 @@
 
 package com.google.code.validationframework.base.resulthandler;
 
+import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.api.resulthandler.ResultHandler;
 
 import java.util.ArrayList;
@@ -36,8 +37,9 @@ import java.util.List;
  * @param <RHI> Type of validation result.<br>It can be, for instance, an enumeration or just a boolean.
  *
  * @see ResultHandler
+ * @see Disposable
  */
-public class CompositeResultHandler<RHI> implements ResultHandler<RHI> {
+public class CompositeResultHandler<RHI> implements ResultHandler<RHI>, Disposable {
 
     /**
      * Delegate result handlers.
@@ -96,5 +98,19 @@ public class CompositeResultHandler<RHI> implements ResultHandler<RHI> {
         for (final ResultHandler<RHI> resultHandler : resultHandlers) {
             resultHandler.handleResult(result);
         }
+    }
+
+    /**
+     * @see Disposable#dispose()
+     */
+    @Override
+    public void dispose() {
+        for (final ResultHandler<RHI> resultHandler : resultHandlers) {
+            if (resultHandler instanceof Disposable) {
+                ((Disposable) resultHandler).dispose();
+            }
+        }
+
+        resultHandlers.clear();
     }
 }

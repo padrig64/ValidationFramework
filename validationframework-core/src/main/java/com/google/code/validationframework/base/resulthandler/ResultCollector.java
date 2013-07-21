@@ -25,6 +25,7 @@
 
 package com.google.code.validationframework.base.resulthandler;
 
+import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.api.dataprovider.DataProvider;
 import com.google.code.validationframework.api.resulthandler.ResultHandler;
 import com.google.code.validationframework.api.trigger.TriggerEvent;
@@ -45,8 +46,10 @@ import com.google.code.validationframework.base.trigger.AbstractTrigger;
  * @see ResultHandler
  * @see AbstractTrigger
  * @see DataProvider
+ * @see Disposable
  */
-public class ResultCollector<VO, DPO> extends AbstractTrigger implements ResultHandler<VO>, DataProvider<DPO> {
+public class ResultCollector<VO, DPO> extends AbstractTrigger implements ResultHandler<VO>, DataProvider<DPO>,
+        Disposable {
 
     /**
      * Last collected result.
@@ -91,6 +94,22 @@ public class ResultCollector<VO, DPO> extends AbstractTrigger implements ResultH
      */
     @Override
     public DPO getData() {
-        return transformer.transform(lastResult);
+        DPO transformedData = null;
+
+        if (transformer != null) {
+            transformedData = transformer.transform(lastResult);
+        }
+
+        return transformedData;
+    }
+
+    /**
+     * @see Disposable#dispose()
+     */
+    @Override
+    public void dispose() {
+        if (transformer instanceof Disposable) {
+            ((Disposable) transformer).dispose();
+        }
     }
 }

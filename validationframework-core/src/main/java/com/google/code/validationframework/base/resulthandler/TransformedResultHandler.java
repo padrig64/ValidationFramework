@@ -25,6 +25,7 @@
 
 package com.google.code.validationframework.base.resulthandler;
 
+import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.api.resulthandler.ResultHandler;
 import com.google.code.validationframework.base.transform.CastTransformer;
 import com.google.code.validationframework.base.transform.Transformer;
@@ -35,8 +36,11 @@ import com.google.code.validationframework.base.transform.Transformer;
  *
  * @param <RI>  Type of result to be transformed.
  * @param <TRI> Type of result handled by the wrapped result handler.
+ *
+ * @see ResultHandler
+ * @see Disposable
  */
-public class TransformedResultHandler<RI, TRI> implements ResultHandler<RI> {
+public class TransformedResultHandler<RI, TRI> implements ResultHandler<RI>, Disposable {
 
     /**
      * Wrapped result handler whose input will be transformed.
@@ -72,6 +76,21 @@ public class TransformedResultHandler<RI, TRI> implements ResultHandler<RI> {
      */
     @Override
     public void handleResult(final RI result) {
-        wrappedResultHandler.handleResult(resultTransformer.transform(result));
+        if ((wrappedResultHandler != null) && (resultTransformer != null)) {
+            wrappedResultHandler.handleResult(resultTransformer.transform(result));
+        }
+    }
+
+    /**
+     * @see Disposable#dispose()
+     */
+    @Override
+    public void dispose() {
+        if (wrappedResultHandler instanceof Disposable) {
+            ((Disposable) wrappedResultHandler).dispose();
+        }
+        if (resultTransformer instanceof Disposable) {
+            ((Disposable) resultTransformer).dispose();
+        }
     }
 }

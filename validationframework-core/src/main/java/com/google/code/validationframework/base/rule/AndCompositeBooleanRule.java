@@ -25,6 +25,7 @@
 
 package com.google.code.validationframework.base.rule;
 
+import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.api.rule.Rule;
 import com.google.code.validationframework.base.transform.AndBooleanAggregator;
 import com.google.code.validationframework.base.transform.Transformer;
@@ -80,6 +81,23 @@ public class AndCompositeBooleanRule<RI> extends AbstractCompositeRule<RI, Boole
         }
 
         // Aggregate results
-        return aggregator.transform(results);
+        Boolean aggregated = null;
+        if (aggregator != null) {
+            aggregated = aggregator.transform(results);
+        }
+
+        return aggregated;
+    }
+
+    /**
+     * @see AbstractCompositeRule#dispose()
+     */
+    @Override
+    public void dispose() {
+        super.dispose();
+
+        if (aggregator instanceof Disposable) {
+            ((Disposable) aggregator).dispose();
+        }
     }
 }

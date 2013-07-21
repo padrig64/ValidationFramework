@@ -25,6 +25,7 @@
 
 package com.google.code.validationframework.base.rule;
 
+import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.api.rule.Rule;
 import com.google.code.validationframework.base.transform.Transformer;
 
@@ -33,8 +34,11 @@ import com.google.code.validationframework.base.transform.Transformer;
  *
  * @param <RI> Type of data to be transformed to RO.
  * @param <RO> Type of data transformed form RI.
+ *
+ * @see Rule
+ * @see Disposable
  */
-public class TransformerRule<RI, RO> implements Rule<RI, RO> {
+public class TransformerRule<RI, RO> implements Rule<RI, RO>, Disposable {
 
     /**
      * Transformer that will transform the data under validation to a result.
@@ -55,6 +59,22 @@ public class TransformerRule<RI, RO> implements Rule<RI, RO> {
      */
     @Override
     public RO validate(final RI data) {
-        return transformer.transform(data);
+        RO transformedData = null;
+
+        if (transformer != null) {
+            transformedData = transformer.transform(data);
+        }
+
+        return transformedData;
+    }
+
+    /**
+     * @see Disposable#dispose()
+     */
+    @Override
+    public void dispose() {
+        if (transformer instanceof Disposable) {
+            ((Disposable) transformer).dispose();
+        }
     }
 }

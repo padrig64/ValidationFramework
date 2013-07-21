@@ -32,6 +32,8 @@ import com.google.code.validationframework.api.trigger.TriggerEvent;
  * purposes as it allows to trigger validation at convenient times without having to implement a custom {@link
  * com.google.code.validationframework.api.trigger.Trigger}. It can be used, for instance, to trigger an initial
  * validation when a dialog pops up, or when some other events occur in the system.
+ *
+ * @see AbstractTrigger
  */
 public class ManualTrigger extends AbstractTrigger {
 
@@ -70,6 +72,6 @@ public class ManualTrigger extends AbstractTrigger {
      * @see TriggerEvent
      */
     public void trigger(final TriggerEvent event) {
-        fireTriggerEvent(new TriggerEvent(this));
+        super.fireTriggerEvent(event);
     }
 }

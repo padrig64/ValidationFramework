@@ -25,6 +25,7 @@
 
 package com.google.code.validationframework.base.validator;
 
+import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.api.dataprovider.DataProvider;
 import com.google.code.validationframework.api.resulthandler.ResultHandler;
 import com.google.code.validationframework.api.rule.Rule;
@@ -542,6 +543,38 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
     private void processResultHandlers(final RHI resultHandlerInput) {
         for (final ResultHandler<RHI> resultHandler : resultHandlers) {
             resultHandler.handleResult(resultHandlerInput);
+        }
+    }
+
+    /**
+     * @see AbstractSimpleValidator#dispose()
+     */
+    @Override
+    public void dispose() {
+        super.dispose();
+
+        for (final Transformer<?, ?> transformer : dataProviderOutputTransformers) {
+            if (transformer instanceof Disposable) {
+                ((Disposable) transformer).dispose();
+            }
+        }
+
+        for (final Transformer<?, ?> transformer : ruleInputTransformers) {
+            if (transformer instanceof Disposable) {
+                ((Disposable) transformer).dispose();
+            }
+        }
+
+        for (final Transformer<?, ?> transformer : ruleOutputTransformers) {
+            if (transformer instanceof Disposable) {
+                ((Disposable) transformer).dispose();
+            }
+        }
+
+        for (final Transformer<?, ?> transformer : resultHandlerInputTransformers) {
+            if (transformer instanceof Disposable) {
+                ((Disposable) transformer).dispose();
+            }
         }
     }
 }

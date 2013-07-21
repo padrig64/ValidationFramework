@@ -25,6 +25,7 @@
 
 package com.google.code.validationframework.base.dataprovider;
 
+import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.api.dataprovider.DataProvider;
 import com.google.code.validationframework.base.transform.CastTransformer;
 import com.google.code.validationframework.base.transform.Transformer;
@@ -36,8 +37,11 @@ import com.google.code.validationframework.base.transform.Transformer;
  * @param <DPO>  Type of data returned by the wrapped data provider.
  * @param <TDPO> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component,
  *               or the type of the component itself.
+ *
+ * @see DataProvider
+ * @see Disposable
  */
-public class TransformedDataProvider<DPO, TDPO> implements DataProvider<TDPO> {
+public class TransformedDataProvider<DPO, TDPO> implements DataProvider<TDPO>, Disposable {
 
     /**
      * Wrapped data provider whose output is to be transformed.
@@ -73,6 +77,25 @@ public class TransformedDataProvider<DPO, TDPO> implements DataProvider<TDPO> {
      */
     @Override
     public TDPO getData() {
-        return dataTransformer.transform(wrappedDataProvider.getData());
+        TDPO transformedData = null;
+
+        if ((dataTransformer != null) && (wrappedDataProvider != null)) {
+            transformedData = dataTransformer.transform(wrappedDataProvider.getData());
+        }
+
+        return transformedData;
+    }
+
+    /**
+     * @see Disposable#dispose()
+     */
+    @Override
+    public void dispose() {
+        if (wrappedDataProvider instanceof Disposable) {
+            ((Disposable) wrappedDataProvider).dispose();
+        }
+        if (dataTransformer instanceof Disposable) {
+            ((Disposable) dataTransformer).dispose();
+        }
     }
 }

@@ -25,6 +25,7 @@
 
 package com.google.code.validationframework.base.dataprovider;
 
+import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.api.dataprovider.DataProvider;
 
 import java.util.ArrayList;
@@ -37,8 +38,9 @@ import java.util.List;
  * @param <DPO> Type of data in the list.
  *
  * @see DataProvider
+ * @see Disposable
  */
-public class ListCompositeDataProvider<DPO> implements DataProvider<List<DPO>> {
+public class ListCompositeDataProvider<DPO> implements DataProvider<List<DPO>>, Disposable {
 
     /**
      * Sub-data providers
@@ -109,5 +111,19 @@ public class ListCompositeDataProvider<DPO> implements DataProvider<List<DPO>> {
         }
 
         return dataList;
+    }
+
+    /**
+     * @see Disposable#dispose()
+     */
+    @Override
+    public void dispose() {
+        for(final DataProvider<DPO> dataProvider : dataProviders) {
+            if(dataProvider instanceof Disposable) {
+                ((Disposable) dataProvider).dispose();
+            }
+        }
+
+        dataProviders.clear();
     }
 }

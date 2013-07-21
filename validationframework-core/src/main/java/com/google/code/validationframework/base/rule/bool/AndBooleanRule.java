@@ -25,6 +25,7 @@
 
 package com.google.code.validationframework.base.rule.bool;
 
+import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.api.rule.Rule;
 import com.google.code.validationframework.base.transform.AndBooleanAggregator;
 import com.google.code.validationframework.base.transform.Transformer;
@@ -36,8 +37,9 @@ import java.util.Collection;
  *
  * @see Rule
  * @see OrBooleanRule
+ * @see Disposable
  */
-public class AndBooleanRule implements Rule<Collection<Boolean>, Boolean> {
+public class AndBooleanRule implements Rule<Collection<Boolean>, Boolean>, Disposable {
 
     /**
      * Default boolean result for empty or null collections.
@@ -78,6 +80,22 @@ public class AndBooleanRule implements Rule<Collection<Boolean>, Boolean> {
      */
     @Override
     public Boolean validate(final Collection<Boolean> elements) {
-        return aggregator.transform(elements);
+        Boolean aggregated = null;
+
+        if (aggregator != null) {
+            aggregated = aggregator.transform(elements);
+        }
+
+        return aggregated;
+    }
+
+    /**
+     * @see Disposable#dispose()
+     */
+    @Override
+    public void dispose() {
+        if (aggregator instanceof Disposable) {
+            ((Disposable) aggregator).dispose();
+        }
     }
 }

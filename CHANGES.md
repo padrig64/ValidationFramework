@@ -15,6 +15,7 @@
 * Fixed size of tab title renderer in tabbed panes to avoid the contents to move up and down when the icon is shown and hidden
 * Renamed ManualTrigger's triggers method for simplicity
 * Renamed ButtonGroup-related data providers for consistency
+* Made triggers, data providers, rules, result handlers and transformers from core Disposable where applicable
 * Other minor bugs and code quality fixes
 
 # Version 1.1.1

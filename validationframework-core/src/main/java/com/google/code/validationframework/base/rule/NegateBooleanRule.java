@@ -25,14 +25,18 @@
 
 package com.google.code.validationframework.base.rule;
 
+import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.api.rule.Rule;
 
 /**
  * Rule wrapper to negate/invert the result of a provided rule.
  *
  * @param <RHI> Type of data to be validated by the wrapped rule.
+ *
+ * @see Rule
+ * @see Disposable
  */
-public class NegateBooleanRule<RHI> implements Rule<RHI, Boolean> {
+public class NegateBooleanRule<RHI> implements Rule<RHI, Boolean>, Disposable {
 
     /**
      * Default value returned when the result of the wrapped rule is null.
@@ -75,7 +79,11 @@ public class NegateBooleanRule<RHI> implements Rule<RHI, Boolean> {
      */
     @Override
     public Boolean validate(final RHI data) {
-        Boolean result = wrappedRule.validate(data);
+        Boolean result = null;
+
+        if (wrappedRule != null) {
+            result = wrappedRule.validate(data);
+        }
 
         if (result == null) {
             result = nullResultNegation;
@@ -84,5 +92,15 @@ public class NegateBooleanRule<RHI> implements Rule<RHI, Boolean> {
         }
 
         return result;
+    }
+
+    /**
+     * @see Disposable#dispose()
+     */
+    @Override
+    public void dispose() {
+        if (wrappedRule instanceof Disposable) {
+            ((Disposable) wrappedRule).dispose();
+        }
     }
 }

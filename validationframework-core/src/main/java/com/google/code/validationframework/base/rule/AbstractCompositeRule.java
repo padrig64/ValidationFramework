@@ -25,6 +25,7 @@
 
 package com.google.code.validationframework.base.rule;
 
+import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.api.rule.Rule;
 
 import java.util.ArrayList;
@@ -38,8 +39,9 @@ import java.util.List;
  * @param <RO> Type of validation result.<br>It can be, for instance, an enumeration or just a boolean.
  *
  * @see Rule
+ * @see Disposable
  */
-public abstract class AbstractCompositeRule<RI, RO> implements Rule<RI, RO> {
+public abstract class AbstractCompositeRule<RI, RO> implements Rule<RI, RO>, Disposable {
 
     /**
      * Sub-rules to be checked.
@@ -84,5 +86,17 @@ public abstract class AbstractCompositeRule<RI, RO> implements Rule<RI, RO> {
      */
     public void removeRule(final Rule<RI, RO> rule) {
         rules.remove(rule);
+    }
+
+    /**
+     * @see Disposable#dispose()
+     */
+    @Override
+    public void dispose() {
+        for (final Rule<RI, RO> rule : rules) {
+            if (rule instanceof Disposable) {
+                ((Disposable) rule).dispose();
+            }
+        }
     }
 }

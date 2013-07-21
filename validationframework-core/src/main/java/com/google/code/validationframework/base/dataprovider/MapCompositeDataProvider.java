@@ -25,6 +25,7 @@
 
 package com.google.code.validationframework.base.dataprovider;
 
+import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.api.dataprovider.DataProvider;
 
 import java.util.HashMap;
@@ -37,8 +38,9 @@ import java.util.Map;
  * @param <DPO> Type of data in the map.
  *
  * @see DataProvider
+ * @see Disposable
  */
-public class MapCompositeDataProvider<K, DPO> implements DataProvider<Map<K, DPO>> {
+public class MapCompositeDataProvider<K, DPO> implements DataProvider<Map<K, DPO>>, Disposable {
 
     /**
      * Sub-data providers.
@@ -77,5 +79,19 @@ public class MapCompositeDataProvider<K, DPO> implements DataProvider<Map<K, DPO
         }
 
         return dataList;
+    }
+
+    /**
+     * @see Disposable#dispose()
+     */
+    @Override
+    public void dispose() {
+        for(final DataProvider<DPO> dataProvider : dataProviders.values()) {
+            if(dataProvider instanceof Disposable) {
+                ((Disposable) dataProvider).dispose();
+            }
+        }
+
+        dataProviders.clear();
     }
 }

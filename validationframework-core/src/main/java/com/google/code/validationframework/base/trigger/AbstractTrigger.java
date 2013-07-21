@@ -25,6 +25,7 @@
 
 package com.google.code.validationframework.base.trigger;
 
+import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.api.trigger.Trigger;
 import com.google.code.validationframework.api.trigger.TriggerEvent;
 import com.google.code.validationframework.api.trigger.TriggerListener;
@@ -40,8 +41,9 @@ import java.util.List;
  * @see Trigger
  * @see TriggerListener
  * @see TriggerEvent
+ * @see Disposable
  */
-public abstract class AbstractTrigger implements Trigger {
+public abstract class AbstractTrigger implements Trigger, Disposable {
 
     /**
      * Trigger listeners.
@@ -72,6 +74,18 @@ public abstract class AbstractTrigger implements Trigger {
     protected void fireTriggerEvent(final TriggerEvent event) {
         for (final TriggerListener listener : listeners) {
             listener.triggerValidation(event);
+        }
+    }
+
+    /**
+     * @see Disposable#dispose()
+     */
+    @Override
+    public void dispose() {
+        for (final TriggerListener listener : listeners) {
+            if (listener instanceof Disposable) {
+                ((Disposable) listener).dispose();
+            }
         }
     }
 }
