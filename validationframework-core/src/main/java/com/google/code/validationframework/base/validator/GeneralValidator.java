@@ -551,30 +551,24 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
      */
     @Override
     public void dispose() {
+        // Dispose triggers, data providers, rules and result handlers
         super.dispose();
 
-        for (final Transformer<?, ?> transformer : dataProviderOutputTransformers) {
-            if (transformer instanceof Disposable) {
-                ((Disposable) transformer).dispose();
-            }
-        }
+        // Dispose transformers
+        dispose(dataProviderOutputTransformers);
+        dispose(ruleInputTransformers);
+        dispose(ruleOutputTransformers);
+        dispose(resultHandlerInputTransformers);
+    }
 
-        for (final Transformer<?, ?> transformer : ruleInputTransformers) {
-            if (transformer instanceof Disposable) {
-                ((Disposable) transformer).dispose();
+    private void dispose(final Collection<Transformer> elements) {
+        if (elements != null) {
+            for (final Transformer<?, ?> element : elements) {
+                if (element instanceof Disposable) {
+                    ((Disposable) element).dispose();
+                }
             }
-        }
-
-        for (final Transformer<?, ?> transformer : ruleOutputTransformers) {
-            if (transformer instanceof Disposable) {
-                ((Disposable) transformer).dispose();
-            }
-        }
-
-        for (final Transformer<?, ?> transformer : resultHandlerInputTransformers) {
-            if (transformer instanceof Disposable) {
-                ((Disposable) transformer).dispose();
-            }
+            elements.clear();
         }
     }
 }
