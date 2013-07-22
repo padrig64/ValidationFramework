@@ -25,91 +25,29 @@
 
 package com.google.code.validationframework.swing.trigger;
 
-import com.google.code.validationframework.api.common.Disposable;
-import com.google.code.validationframework.api.trigger.TriggerEvent;
-import com.google.code.validationframework.base.trigger.AbstractTrigger;
-
 import java.awt.Component;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 /**
  * Trigger initiating the validation when one or several properties of a component change.
+ * <p/>
+ * It is provided for convenience over the {@link BaseComponentPropertyChangeTrigger} to make it easier to find while
+ * building the validators.
+ *
+ * @see BaseComponentPropertyChangeTrigger
  */
-public class ComponentPropertyChangeTrigger extends AbstractTrigger implements Disposable {
+public class ComponentPropertyChangeTrigger extends BaseComponentPropertyChangeTrigger<Component> {
 
     /**
-     * Listener to component property changes triggering the validation.
-     */
-    private class PropertyChangeAdapter implements PropertyChangeListener {
-
-        /**
-         * @see PropertyChangeListener#propertyChange(PropertyChangeEvent)
-         */
-        @Override
-        public void propertyChange(final PropertyChangeEvent evt) {
-            // Trigger validation
-            fireTriggerEvent(new TriggerEvent(source));
-        }
-    }
-
-    /**
-     * Component whose property changes are to be listened to.
-     */
-    private final Component source;
-
-    /**
-     * Listener to component property changes.
-     */
-    private final PropertyChangeListener propertyChangeAdapter = new PropertyChangeAdapter();
-
-    /**
-     * Constructor specifying the component whose property changes are to be watched.<br>Using this constructor will
-     * be the
-     * trigger initiate the validation upon any property change.
-     *
-     * @param source Component whose property changes are to be listened to.
+     * @see BaseComponentPropertyChangeTrigger#BaseComponentPropertyChangeTrigger(Component)
      */
     public ComponentPropertyChangeTrigger(final Component source) {
-        super();
-        this.source = source;
-        source.addPropertyChangeListener(propertyChangeAdapter);
+        super(source);
     }
 
     /**
-     * Constructor specifying the component for which the specified property changes are to be watched.
-     *
-     * @param component     Component whose property changes are to be listened to.
-     * @param propertyNames Optional names of the properties of the component to listen to.<br>If no property name is
-     *                      specified, changes on any property will initiate the trigger.
+     * @see BaseComponentPropertyChangeTrigger#BaseComponentPropertyChangeTrigger(Component, String...)
      */
     public ComponentPropertyChangeTrigger(final Component component, final String... propertyNames) {
-        super();
-        this.source = component;
-
-        if ((propertyNames == null) || (propertyNames.length == 0)) {
-            component.addPropertyChangeListener(propertyChangeAdapter);
-        } else {
-            for (final String propertyName : propertyNames) {
-                component.addPropertyChangeListener(propertyName, propertyChangeAdapter);
-            }
-        }
-    }
-
-    /**
-     * Gets the source component.
-     *
-     * @return Source component.
-     */
-    public Component getComponent() {
-        return source;
-    }
-
-    /**
-     * @see Disposable#dispose()
-     */
-    @Override
-    public void dispose() {
-        source.removePropertyChangeListener(propertyChangeAdapter);
+        super(component, propertyNames);
     }
 }
