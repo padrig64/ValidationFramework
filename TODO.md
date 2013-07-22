@@ -1,8 +1,7 @@
 # TO FIX
 
 * Fix calls to setVisible() on icon decoration
-* Icon tip decoration a bit more on the up and right when using Nimbus LAF
-* Remaining icontip's tooltips when quickly moving the mouse (in tables and outside tables): only on Linux?
+* Remaining icontip's tooltips when quickly moving mouse (in/outside tables): only on Linux? still happening?
 * Icon decoration steals mouse event even outside clipping bounds
 * Make consistent use of generics for Swing data providers
 
@@ -43,6 +42,7 @@
 
 # TO THINK ABOUT
 
+* Make anchor link in the AbstractIconFeedback dependent of the look-and-feel
 * Initial state for result handler before any validation has been performed yet
 * Differentiate between model changes due to user action and system action
 * General-purpose conditional logic

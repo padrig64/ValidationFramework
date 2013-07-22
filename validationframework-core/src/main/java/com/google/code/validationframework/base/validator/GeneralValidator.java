@@ -41,28 +41,38 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Simple validator allowing to have different mapping between data providers, rules and result handlers.<br>The
- * validator allows to transform the data providers' output before mapping, the rules' input after mapping, the rules'
- * output before mapping and the result handlers' input after mapping.<br>This means that the output of each data
- * provider will be transformed using a series of data provider output {@link Transformer}s. Then, if the data provider
- * to rule mapping is {@link DataProviderToRuleMapping#EACH_TO_EACH}, the output of each data provider output
- * transformation will transformed again using a series of rule input {@link Transformer}s, before being passed to each
- * rule. If the data provider to rule mapping is {@link DataProviderToRuleMapping#ALL_TO_EACH}, the output of all data
- * provider output transformations will be put in a collection and transformed again using the series of rule input
- * {@link Transformer}s, before being passed to each rule.<br>The output of each rule will be transformed using a series
- * of rule output {@link Transformer}s. Then, if the rule to result handler mapping is {@link
- * RuleToResultHandlerMapping#EACH_TO_EACH}, the output of each rule output transformation will be transformed again
- * using a series of result handler input {@link Transformer}s, before being passed to each result handler.<br>If the
- * rule to result handler mapping is {@link RuleToResultHandlerMapping#ALL_TO_EACH}, the output of all rule output
- * transformations will be put in a collection and transformed as a whole using the series of result handler input
- * {@link Transformer}s, before being passed to each result handler.<br>The general validation flow can be
- * represented by the following pattern: triggers -> data providers -> data provider output transformers -> data
- * provider to rule mapping -> rule input transformers -> rules -> rule output transformers -> rule output to result
- * handler input transformers -> result handler input transformers -> result handlers.<br>Note that the use of
- * transformers is optional. By default, the data provider to rule mapping is set to {@link
+ * Simple validator allowing to have different mapping between data providers, rules and result handlers.
+ * <p/>
+ * The validator allows to transform the data providers' output before mapping, the rules' input after mapping,
+ * the rules' output before mapping and the result handlers' input after mapping.
+ * <p/>
+ * This means that the output of each data provider will be transformed using a series of data provider output {@link
+ * Transformer}s. Then, if the data provider to rule mapping is {@link DataProviderToRuleMapping#EACH_TO_EACH},
+ * the output of each data provider output transformation will transformed again using a series of rule input {@link
+ * Transformer}s, before being passed to each rule. If the data provider to rule mapping is {@link
+ * DataProviderToRuleMapping#ALL_TO_EACH}, the output of all data provider output transformations will be put in a
+ * collection and transformed again using the series of rule input {@link Transformer}s, before being passed to each
+ * rule.
+ * <p/>
+ * The output of each rule will be transformed using a series of rule output {@link Transformer}s. Then, if the rule to
+ * result handler mapping is {@link RuleToResultHandlerMapping#EACH_TO_EACH}, the output of each rule output
+ * transformation will be transformed again using a series of result handler input {@link Transformer}s, before being
+ * passed to each result handler.
+ * <p/>
+ * If the rule to result handler mapping is {@link RuleToResultHandlerMapping#ALL_TO_EACH}, the output of all rule
+ * output transformations will be put in a collection and transformed as a whole using the series of result handler
+ * input {@link Transformer}s, before being passed to each result handler.
+ * <p/>
+ * The general validation flow can be represented by the following pattern:<br>triggers -> data providers -> data
+ * provider output transformers -> data provider to rule mapping -> rule input transformers -> rules -> rule output
+ * transformers -> rule output to result handler input transformers -> result handler input transformers -> result
+ * handlers
+ * <p/>
+ * Note that the use of transformers is optional. By default, the data provider to rule mapping is set to {@link
  * DataProviderToRuleMapping#EACH_TO_EACH} and the rule to result handler mapping is set to {@link
- * RuleToResultHandlerMapping#EACH_TO_EACH}.<br>For type safety, it is highly advised to use the {@link
- * GeneralValidatorBuilder}.
+ * RuleToResultHandlerMapping#EACH_TO_EACH}.
+ * <p/>
+ * For type safety, it is highly advised to use the {@link GeneralValidatorBuilder}.
  *
  * @param <DPO> Type of data provider output.<br>This may or may not be the same type as the rule input.
  * @param <RI>  Type of rule input.<br>This may or may not be the same type as the data provider output.
@@ -87,19 +97,24 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
     public enum DataProviderToRuleMapping {
 
         /**
-         * The data from each data provider will be passed one by one to each rule.<br>For this mapping, if no data
-         * provider output transformer is used, it is expected that the rule input is of the same as the type as the
-         * data provider output.<br>For type safety, it is highly advised to use the {@link GeneralValidatorBuilder}.
+         * The data from each data provider will be passed one by one to each rule.
+         * <p/>
+         * For this mapping, if no data provider output transformer is used, it is expected that the rule input is of
+         * the same as the type as the data provider output.
+         * <p/>
+         * For type safety, it is highly advised to use the {@link GeneralValidatorBuilder}.
          *
          * @see GeneralValidatorBuilder
          */
         EACH_TO_EACH,
 
         /**
-         * The data from all data providers will passed all at once (in a {@link Collection}) to each rule.<br>For this
-         * mapping, if no data provider transformer is used, it is expected that the rule input is a {@link Collection}
-         * containing objects of the same type as the data provider output.<br>For type safety, it is highly advised to
-         * use the {@link GeneralValidatorBuilder}.
+         * The data from all data providers will passed all at once (in a {@link Collection}) to each rule.
+         * <p/>
+         * For this mapping, if no data provider transformer is used, it is expected that the rule input is a {@link
+         * Collection} containing objects of the same type as the data provider output.
+         * <p/>
+         * For type safety, it is highly advised to use the {@link GeneralValidatorBuilder}.
          *
          * @see GeneralValidatorBuilder
          */
@@ -118,19 +133,24 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
     public enum RuleToResultHandlerMapping {
 
         /**
-         * The result from each rule will be passed one by one to each result handler.<br>For this mapping, if no rule
-         * output transformer is used, it is expected that the result handler input is of the same type as the rule
-         * output.<br>For type safety, it is highly advised to use the {@link GeneralValidatorBuilder}.
+         * The result from each rule will be passed one by one to each result handler.
+         * <p/>
+         * For this mapping, if no rule output transformer is used, it is expected that the result handler input is of
+         * the same type as the rule output.
+         * <p/>
+         * For type safety, it is highly advised to use the {@link GeneralValidatorBuilder}.
          *
          * @see GeneralValidatorBuilder
          */
         EACH_TO_EACH,
 
         /**
-         * The result from all rules will be passed all at once (in a {@link Collection}) to each result handler.<br>For
-         * this mapping, if no rule output transformer is used, it is expected that the result handler input is a {@link
-         * Collection} containing objects of the same type as the rule output.<br>For type safety, it is highly advised
-         * to use the {@link GeneralValidatorBuilder}.
+         * The result from all rules will be passed all at once (in a {@link Collection}) to each result handler.
+         * <p/>
+         * For this mapping, if no rule output transformer is used, it is expected that the result handler input is a
+         * {@link Collection} containing objects of the same type as the rule output.
+         * <p/>
+         * For type safety, it is highly advised to use the {@link GeneralValidatorBuilder}.
          *
          * @see GeneralValidatorBuilder
          */
@@ -143,9 +163,10 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
     private static final Logger LOGGER = LoggerFactory.getLogger(GeneralValidator.class);
 
     /**
-     * List of {@link Transformer}s transforming the output of each data provider.<br>The type of input of the first
-     * transformer shall match the type of output of the data providers. The type of the input of a subsequent
-     * transformer shall match the type of output of the previous transformer.
+     * List of {@link Transformer}s transforming the output of each data provider.
+     * <p/>
+     * The type of input of the first transformer shall match the type of output of the data providers. The type of the
+     * input of a subsequent transformer shall match the type of output of the previous transformer.
      *
      * @see #dataProviderToRuleMapping
      */
@@ -159,19 +180,22 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
     private DataProviderToRuleMapping dataProviderToRuleMapping = DataProviderToRuleMapping.EACH_TO_EACH;
 
     /**
-     * List of {@link Transformer}s transforming the input of each rule.<br>The type of input of the first transformer
-     * shall match the type of output of the data provider to rule mapping: so either the type of data provider output
-     * or a {@link Collection} of objects of the same type as the data provider output. The type of the input of a
-     * subsequent transformer shall match the type of output of the previous transformer.
+     * List of {@link Transformer}s transforming the input of each rule.
+     * <p/>
+     * The type of input of the first transformer shall match the type of output of the data provider to rule mapping:
+     * so either the type of data provider output or a {@link Collection} of objects of the same type as the data
+     * provider output. The type of the input of a subsequent transformer shall match the type of output of the previous
+     * transformer.
      *
      * @see #dataProviderToRuleMapping
      */
     private List<Transformer> ruleInputTransformers = new ArrayList<Transformer>();
 
     /**
-     * List of {@link Transformer}s transforming the output of each rule.<br>The type of input of the first transformer
-     * shall match the type of output of the rules. The type of the input of a subsequent transformer shall match the
-     * type of output of the previous transformer.
+     * List of {@link Transformer}s transforming the output of each rule.
+     * <p/>
+     * The type of input of the first transformer shall match the type of output of the rules. The type of the input of
+     * a subsequent transformer shall match the type of output of the previous transformer.
      *
      * @see #dataProviderToRuleMapping
      */
@@ -183,10 +207,11 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
     private RuleToResultHandlerMapping ruleToResultHandlerMapping = RuleToResultHandlerMapping.EACH_TO_EACH;
 
     /**
-     * List of {@link Transformer}s transforming the input of each result handler.<br>The type of input of the first
-     * transformer shall match the type of rule to result handler mapping: so either the type of rule output or a {@link
-     * Collection} of objects of the same type as the rule output. The type of the input of a subsequent transformer
-     * shall match the type of output of the previous transformer.
+     * List of {@link Transformer}s transforming the input of each result handler.
+     * <p/>
+     * The type of input of the first transformer shall match the type of rule to result handler mapping: so either the
+     * type of rule output or a {@link Collection} of objects of the same type as the rule output. The type of the input
+     * of a subsequent transformer shall match the type of output of the previous transformer.
      *
      * @see #dataProviderToRuleMapping
      */

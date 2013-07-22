@@ -28,12 +28,25 @@ package com.google.code.validationframework.swing.resulthandler;
 import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.api.resulthandler.ResultHandler;
 import com.google.code.validationframework.swing.decoration.IconComponentDecoration;
+import com.google.code.validationframework.swing.decoration.anchor.Anchor;
 import com.google.code.validationframework.swing.decoration.anchor.AnchorLink;
 
 import javax.swing.Icon;
 import javax.swing.JComponent;
 
+/**
+ * Abstract implementation of a result handler using an {@link IconComponentDecoration} to show feedback to the user.
+ *
+ * Concrete classes only need to implement the {@link #handleResult(Object)} method by calling the {@link #showIcon()}
+ * and {@link #hideIcon()} methods according to the result.
+ *
+ * @param <RHI> Type of result handler input.
+ */
 public abstract class AbstractIconFeedback<RHI> implements ResultHandler<RHI>, Disposable {
+
+    // TODO Make this dependent on the LAF
+    private static final AnchorLink DEFAULT_ANCHOR_LINK_WITH_OWNER = new AnchorLink(new Anchor(0.0f, 3, 1.0f, -3),
+            Anchor.CENTER);
 
     private IconComponentDecoration decoration = null;
 
@@ -42,7 +55,7 @@ public abstract class AbstractIconFeedback<RHI> implements ResultHandler<RHI>, D
     }
 
     public void attach(final JComponent decoratedComponent) {
-        attach(decoratedComponent, IconComponentDecoration.DEFAULT_ANCHOR_LINK_WITH_OWNER);
+        attach(decoratedComponent, DEFAULT_ANCHOR_LINK_WITH_OWNER);
     }
 
     public void attach(final JComponent decoratedComponent, final AnchorLink anchorLinkWithOwner) {
@@ -158,12 +171,18 @@ public abstract class AbstractIconFeedback<RHI> implements ResultHandler<RHI>, D
         }
     }
 
+    /**
+     * @see IconComponentDecoration#setVisible(boolean)
+     */
     protected void showIcon() {
         if (decoration != null) {
             decoration.setVisible(true);
         }
     }
 
+    /**
+     * @see IconComponentDecoration#setVisible(boolean)
+     */
     protected void hideIcon() {
         if (decoration != null) {
             decoration.setVisible(false);

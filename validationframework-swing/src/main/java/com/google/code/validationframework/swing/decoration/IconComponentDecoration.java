@@ -85,12 +85,10 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
         }
     }
 
-    // TODO Make this dependent on the LAF
     /**
      * Default anchor link with the owner component on which the decorator will be attached.
      */
-    public static final AnchorLink DEFAULT_ANCHOR_LINK_WITH_OWNER = new AnchorLink(new Anchor(0.0f, 3, 1.0f, -3),
-            Anchor.CENTER);
+    public static final AnchorLink DEFAULT_ANCHOR_LINK_WITH_OWNER = new AnchorLink(Anchor.BOTTOM_LEFT, Anchor.CENTER);
 
     /**
      * Icon to be displayed as decoration on the owner component.
