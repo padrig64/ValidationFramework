@@ -216,6 +216,11 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
         }
     }
 
+    /**
+     * Gets the transformers transforming the output of each data provider before they are mapped to the rules.
+     *
+     * @return Data provider output transformers.
+     */
     public Transformer[] getDataProviderOutputTransformers() {
         final Transformer[] transformers;
 
@@ -229,6 +234,11 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
         return transformers;
     }
 
+    /**
+     * Sets teh transformers transforming the output of each data provider before they are mapped to the rules.
+     *
+     * @param dataProviderOutputTransformers Data provider output transformers.
+     */
     public void setDataProviderOutputTransformers(final Transformer... dataProviderOutputTransformers) {
         if (dataProviderOutputTransformers == null) {
             this.dataProviderOutputTransformers = null;
@@ -238,6 +248,11 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
         }
     }
 
+    /**
+     * Sets teh transformers transforming the output of each data provider before they are mapped to the rules.
+     *
+     * @param dataProviderOutputTransformers Data provider output transformers.
+     */
     public void setDataProviderOutputTransformers(final Collection<Transformer> dataProviderOutputTransformers) {
         if (dataProviderOutputTransformers == null) {
             this.dataProviderOutputTransformers = null;
@@ -561,6 +576,11 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
         dispose(resultHandlerInputTransformers);
     }
 
+    /**
+     * Disposes the elements of the specified collection.
+     *
+     * @param elements Elements to be disposed.
+     */
     private void dispose(final Collection<Transformer> elements) {
         if (elements != null) {
             for (final Transformer<?, ?> element : elements) {
