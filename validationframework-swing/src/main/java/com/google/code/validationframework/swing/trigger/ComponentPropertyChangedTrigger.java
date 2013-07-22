@@ -28,24 +28,26 @@ package com.google.code.validationframework.swing.trigger;
 import java.awt.Component;
 
 /**
- * @deprecated Use {@link ComponentPropertyChangedTrigger} instead.<br>This class will be removed in the future
- *             releases.
+ * Trigger initiating the validation when one or several properties of a component change.
+ * <p/>
+ * It is provided for convenience over the {@link BaseComponentPropertyChangedTrigger} to make it easier to find while
+ * building the validators.
+ *
+ * @see BaseComponentPropertyChangedTrigger
  */
-@Deprecated
-public class ComponentPropertyChangeTrigger extends BaseComponentPropertyChangedTrigger<Component> {
+public class ComponentPropertyChangedTrigger extends BaseComponentPropertyChangedTrigger<Component> {
 
     /**
-     * @deprecated Use {@link ComponentPropertyChangedTrigger#ComponentPropertyChangedTrigger(Component)} instead.
+     * @see BaseComponentPropertyChangedTrigger#BaseComponentPropertyChangedTrigger(Component)
      */
-    public ComponentPropertyChangeTrigger(final Component source) {
+    public ComponentPropertyChangedTrigger(final Component source) {
         super(source);
     }
 
     /**
-     * @deprecated Use {@link ComponentPropertyChangedTrigger#ComponentPropertyChangedTrigger(Component,
-     * String...)} instead.
+     * @see BaseComponentPropertyChangedTrigger#BaseComponentPropertyChangedTrigger(Component, String...)
      */
-    public ComponentPropertyChangeTrigger(final Component component, final String... propertyNames) {
+    public ComponentPropertyChangedTrigger(final Component component, final String... propertyNames) {
         super(component, propertyNames);
     }
 }

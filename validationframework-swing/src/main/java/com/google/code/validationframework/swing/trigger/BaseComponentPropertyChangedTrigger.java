@@ -36,7 +36,7 @@ import java.beans.PropertyChangeListener;
 /**
  * Trigger initiating the validation when one or several properties of a component change.
  */
-public class BaseComponentPropertyChangeTrigger<C extends Component> extends AbstractTrigger implements Disposable {
+public class BaseComponentPropertyChangedTrigger<C extends Component> extends AbstractTrigger implements Disposable {
 
     /**
      * Listener to component property changes triggering the validation.
@@ -70,7 +70,7 @@ public class BaseComponentPropertyChangeTrigger<C extends Component> extends Abs
      *
      * @param source Component whose property changes are to be listened to.
      */
-    public BaseComponentPropertyChangeTrigger(final C source) {
+    public BaseComponentPropertyChangedTrigger(final C source) {
         super();
         this.source = source;
         source.addPropertyChangeListener(propertyChangeAdapter);
@@ -83,7 +83,7 @@ public class BaseComponentPropertyChangeTrigger<C extends Component> extends Abs
      * @param propertyNames Optional names of the properties of the component to listen to.<br>If no property name is
      *                      specified, changes on any property will initiate the trigger.
      */
-    public BaseComponentPropertyChangeTrigger(final C component, final String... propertyNames) {
+    public BaseComponentPropertyChangedTrigger(final C component, final String... propertyNames) {
         super();
         this.source = component;
 
