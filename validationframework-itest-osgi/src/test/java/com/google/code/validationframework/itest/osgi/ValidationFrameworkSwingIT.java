@@ -1,7 +1,7 @@
 package com.google.code.validationframework.itest.osgi;
 
 import com.google.code.validationframework.base.rule.string.StringRegexRule;
-import com.google.code.validationframework.base.validator.GeneralValidator;
+import com.google.code.validationframework.base.validator.generalvalidator.GeneralValidator;
 import com.google.code.validationframework.swing.dataprovider.JTextFieldTextProvider;
 import com.google.code.validationframework.swing.resulthandler.bool.ComponentEnablingBooleanResultHandler;
 import com.google.code.validationframework.swing.resulthandler.bool.IconBooleanFeedback;
@@ -27,7 +27,7 @@ import java.util.concurrent.FutureTask;
 import java.util.concurrent.RunnableFuture;
 import java.util.concurrent.TimeUnit;
 
-import static com.google.code.validationframework.base.validator.GeneralValidatorBuilder.on;
+import static com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder.on;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;

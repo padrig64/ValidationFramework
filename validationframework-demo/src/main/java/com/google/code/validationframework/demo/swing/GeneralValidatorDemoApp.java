@@ -68,8 +68,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.NumberFormat;
 
-import static com.google.code.validationframework.base.validator.GeneralValidatorBuilder.collect;
-import static com.google.code.validationframework.base.validator.GeneralValidatorBuilder.on;
+import static com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder.collect;
+import static com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder.on;
 
 public class GeneralValidatorDemoApp extends JFrame {
 

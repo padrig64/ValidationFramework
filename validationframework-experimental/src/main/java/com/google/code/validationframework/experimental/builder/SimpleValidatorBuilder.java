@@ -32,7 +32,7 @@ import com.google.code.validationframework.experimental.builder.context.simpleva
 import java.util.Collection;
 
 /**
- * @deprecated Use {@link com.google.code.validationframework.base.validator.GeneralValidatorBuilder} instead.
+ * @deprecated Use {@link com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder} instead.
  */
 @Deprecated
 public final class SimpleValidatorBuilder {
@@ -45,7 +45,7 @@ public final class SimpleValidatorBuilder {
     }
 
     /**
-     * @deprecated Use {@link com.google.code.validationframework.base.validator.GeneralValidatorBuilder} instead.
+     * @deprecated Use {@link com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder} instead.
      */
     @Deprecated
     public static DataProviderContext on(final Trigger trigger) {
@@ -53,7 +53,7 @@ public final class SimpleValidatorBuilder {
     }
 
     /**
-     * @deprecated Use {@link com.google.code.validationframework.base.validator.GeneralValidatorBuilder} instead.
+     * @deprecated Use {@link com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder} instead.
      */
     @Deprecated
     public static DataProviderContext on(final Trigger... triggers) {
@@ -61,7 +61,7 @@ public final class SimpleValidatorBuilder {
     }
 
     /**
-     * @deprecated Use {@link com.google.code.validationframework.base.validator.GeneralValidatorBuilder} instead.
+     * @deprecated Use {@link com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder} instead.
      */
     @Deprecated
     public static DataProviderContext on(final Collection<Trigger> triggers) {
@@ -69,7 +69,7 @@ public final class SimpleValidatorBuilder {
     }
 
     /**
-     * @deprecated Use {@link com.google.code.validationframework.base.validator.GeneralValidatorBuilder} instead.
+     * @deprecated Use {@link com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder} instead.
      */
     @Deprecated
     public static DataProviderContext on(final Class<? extends Trigger> triggerClass) {

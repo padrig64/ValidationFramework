@@ -50,7 +50,7 @@ import java.awt.Toolkit;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
-import static com.google.code.validationframework.base.validator.GeneralValidatorBuilder.on;
+import static com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder.on;
 
 public class CardLayoutDemoApp extends JFrame implements ItemListener {
 

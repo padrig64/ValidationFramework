@@ -52,7 +52,9 @@ import java.util.Collection;
  * @see DataProvider
  * @see Rule
  * @see ResultHandler
- * @deprecated Use {@link GeneralValidator} or {@link GeneralValidatorBuilder} instead.
+ * @deprecated Use {@link com.google.code.validationframework.base.validator.generalvalidator.GeneralValidator} or
+ *             {@link com.google.code.validationframework.base.validator.generalvalidator.dsl
+ *             .GeneralValidatorBuilder} instead.
  */
 @Deprecated
 public class ResultAggregationValidator<RI, RO, RHI> extends AbstractSimpleValidator<Trigger, DataProvider<RI>, RI,
@@ -74,7 +76,7 @@ public class ResultAggregationValidator<RI, RO, RHI> extends AbstractSimpleValid
      *
      * @param resultAggregator Transformer aggregating the rule results into a single result.
      */
-    public ResultAggregationValidator(final Aggregator<RO, RHI> resultAggregator) {
+    public ResultAggregationValidator(Aggregator<RO, RHI> resultAggregator) {
         this.resultAggregator = resultAggregator;
     }
 
@@ -82,12 +84,12 @@ public class ResultAggregationValidator<RI, RO, RHI> extends AbstractSimpleValid
      * @see AbstractSimpleValidator#processTrigger(Trigger)
      */
     @Override
-    protected void processTrigger(final Trigger trigger) {
+    protected void processTrigger(Trigger trigger) {
         if (dataProviders.isEmpty()) {
             LOGGER.warn("No data providers in validator: " + this);
         } else {
             // Process data from all providers
-            for (final DataProvider<RI> dataProvider : dataProviders) {
+            for (DataProvider<RI> dataProvider : dataProviders) {
                 processData(dataProvider.getData());
             }
         }
@@ -98,15 +100,15 @@ public class ResultAggregationValidator<RI, RO, RHI> extends AbstractSimpleValid
      *
      * @param data Data to be validated against all rules.
      */
-    protected void processData(final RI data) {
+    protected void processData(RI data) {
         // Check data against all rules
-        final Collection<RO> results = new ArrayList<RO>(resultHandlers.size());
-        for (final Rule<RI, RO> rule : rules) {
+        Collection<RO> results = new ArrayList<RO>(resultHandlers.size());
+        for (Rule<RI, RO> rule : rules) {
             results.add(rule.validate(data));
         }
 
         // Aggregate all results and process the output
-        final RHI aggregatedResult = resultAggregator.transform(results);
+        RHI aggregatedResult = resultAggregator.transform(results);
         processResult(aggregatedResult);
     }
 
@@ -115,9 +117,9 @@ public class ResultAggregationValidator<RI, RO, RHI> extends AbstractSimpleValid
      *
      * @param aggregatedResult Aggregated result to be processed by all result handlers.
      */
-    protected void processResult(final RHI aggregatedResult) {
+    protected void processResult(RHI aggregatedResult) {
         // Process the result with all result handlers
-        for (final ResultHandler<RHI> resultHandler : resultHandlers) {
+        for (ResultHandler<RHI> resultHandler : resultHandlers) {
             resultHandler.handleResult(aggregatedResult);
         }
     }

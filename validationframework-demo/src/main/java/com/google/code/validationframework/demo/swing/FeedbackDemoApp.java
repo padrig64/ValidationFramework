@@ -32,7 +32,7 @@ import com.google.code.validationframework.base.rule.string.StringRegexRule;
 import com.google.code.validationframework.base.transform.AndBooleanAggregator;
 import com.google.code.validationframework.base.transform.Transformer;
 import com.google.code.validationframework.base.trigger.ManualTrigger;
-import com.google.code.validationframework.base.validator.GeneralValidator;
+import com.google.code.validationframework.base.validator.generalvalidator.GeneralValidator;
 import com.google.code.validationframework.swing.dataprovider.JFormattedTextFieldTextProvider;
 import com.google.code.validationframework.swing.dataprovider.JTextFieldTextProvider;
 import com.google.code.validationframework.swing.resulthandler.AbstractColorFeedback;
@@ -70,8 +70,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.NumberFormat;
 
-import static com.google.code.validationframework.base.validator.GeneralValidatorBuilder.collect;
-import static com.google.code.validationframework.base.validator.GeneralValidatorBuilder.on;
+import static com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder.collect;
+import static com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder.on;
 
 public class FeedbackDemoApp extends JFrame {
 

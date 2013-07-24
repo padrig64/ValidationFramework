@@ -23,7 +23,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.base.validator;
+package com.google.code.validationframework.base.validator.generalvalidator;
 
 import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.api.dataprovider.DataProvider;
@@ -32,6 +32,7 @@ import com.google.code.validationframework.api.rule.Rule;
 import com.google.code.validationframework.api.trigger.Trigger;
 import com.google.code.validationframework.base.resulthandler.ResultCollector;
 import com.google.code.validationframework.base.transform.Transformer;
+import com.google.code.validationframework.base.validator.AbstractSimpleValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -72,15 +73,16 @@ import java.util.List;
  * DataProviderToRuleMapping#EACH_TO_EACH} and the rule to result handler mapping is set to {@link
  * RuleToResultHandlerMapping#EACH_TO_EACH}.
  * <p/>
- * For type safety, it is highly advised to use the {@link GeneralValidatorBuilder}.
+ * For type safety, it is highly advised to use the {@link com.google.code.validationframework.base.validator
+ * .generalvalidator.dsl.GeneralValidatorBuilder}.
  *
  * @param <DPO> Type of data provider output.<br>This may or may not be the same type as the rule input.
  * @param <RI>  Type of rule input.<br>This may or may not be the same type as the data provider output.
  * @param <RO>  Type of rule output.<br>This may or may not be the same type as the result handler input.
  * @param <RHI> Type of result handler input.<br>This may or may not be the same type as the rule output.
  *
- * @see GeneralValidatorBuilder
- * @see AbstractSimpleValidator
+ * @see com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder
+ * @see com.google.code.validationframework.base.validator.AbstractSimpleValidator
  */
 public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<Trigger, DataProvider<DPO>, DPO,
         Rule<RI, RO>, RI, RO, ResultHandler<RHI>, RHI> {
@@ -102,9 +104,10 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
          * For this mapping, if no data provider output transformer is used, it is expected that the rule input is of
          * the same as the type as the data provider output.
          * <p/>
-         * For type safety, it is highly advised to use the {@link GeneralValidatorBuilder}.
+         * For type safety, it is highly advised to use the {@link com.google.code.validationframework.base.validator
+         * .generalvalidator.dsl.GeneralValidatorBuilder}.
          *
-         * @see GeneralValidatorBuilder
+         * @see com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder
          */
         EACH_TO_EACH,
 
@@ -114,9 +117,10 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
          * For this mapping, if no data provider transformer is used, it is expected that the rule input is a {@link
          * Collection} containing objects of the same type as the data provider output.
          * <p/>
-         * For type safety, it is highly advised to use the {@link GeneralValidatorBuilder}.
+         * For type safety, it is highly advised to use the {@link com.google.code.validationframework.base.validator
+         * .generalvalidator.dsl.GeneralValidatorBuilder}.
          *
-         * @see GeneralValidatorBuilder
+         * @see com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder
          */
         ALL_TO_EACH
     }
@@ -138,9 +142,10 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
          * For this mapping, if no rule output transformer is used, it is expected that the result handler input is of
          * the same type as the rule output.
          * <p/>
-         * For type safety, it is highly advised to use the {@link GeneralValidatorBuilder}.
+         * For type safety, it is highly advised to use the {@link com.google.code.validationframework.base.validator
+         * .generalvalidator.dsl.GeneralValidatorBuilder}.
          *
-         * @see GeneralValidatorBuilder
+         * @see com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder
          */
         EACH_TO_EACH,
 
@@ -150,9 +155,10 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
          * For this mapping, if no rule output transformer is used, it is expected that the result handler input is a
          * {@link Collection} containing objects of the same type as the rule output.
          * <p/>
-         * For type safety, it is highly advised to use the {@link GeneralValidatorBuilder}.
+         * For type safety, it is highly advised to use the {@link com.google.code.validationframework.base.validator
+         * .generalvalidator.dsl.GeneralValidatorBuilder}.
          *
-         * @see GeneralValidatorBuilder
+         * @see com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder
          */
         ALL_TO_EACH
     }
@@ -222,7 +228,7 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
      *
      * @param resultCollector Result collector to be added.
      */
-    public void addResultCollector(final ResultCollector<?, DPO> resultCollector) {
+    public void addResultCollector(ResultCollector<?, DPO> resultCollector) {
         if (resultCollector != null) {
             addTrigger(resultCollector);
             addDataProvider(resultCollector);
@@ -234,7 +240,7 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
      *
      * @param resultCollector Result collector to be removed.
      */
-    public void removeResultCollector(final ResultCollector<?, DPO> resultCollector) {
+    public void removeResultCollector(ResultCollector<?, DPO> resultCollector) {
         if (resultCollector != null) {
             removeTrigger(resultCollector);
             removeDataProvider(resultCollector);
@@ -247,7 +253,7 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
      * @return Data provider output transformers.
      */
     public Transformer[] getDataProviderOutputTransformers() {
-        final Transformer[] transformers;
+        Transformer[] transformers;
 
         if (dataProviderOutputTransformers == null) {
             transformers = null;
@@ -264,7 +270,7 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
      *
      * @param dataProviderOutputTransformers Data provider output transformers.
      */
-    public void setDataProviderOutputTransformers(final Transformer... dataProviderOutputTransformers) {
+    public void setDataProviderOutputTransformers(Transformer... dataProviderOutputTransformers) {
         if (dataProviderOutputTransformers == null) {
             this.dataProviderOutputTransformers = null;
         } else {
@@ -278,7 +284,7 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
      *
      * @param dataProviderOutputTransformers Data provider output transformers.
      */
-    public void setDataProviderOutputTransformers(final Collection<Transformer> dataProviderOutputTransformers) {
+    public void setDataProviderOutputTransformers(Collection<Transformer> dataProviderOutputTransformers) {
         if (dataProviderOutputTransformers == null) {
             this.dataProviderOutputTransformers = null;
         } else {
@@ -291,12 +297,12 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
         return dataProviderToRuleMapping;
     }
 
-    public void setDataProviderToRuleMapping(final DataProviderToRuleMapping dataProviderToRuleMapping) {
+    public void setDataProviderToRuleMapping(DataProviderToRuleMapping dataProviderToRuleMapping) {
         this.dataProviderToRuleMapping = dataProviderToRuleMapping;
     }
 
     public Transformer[] getRuleInputTransformers() {
-        final Transformer[] transformers;
+        Transformer[] transformers;
 
         if (ruleInputTransformers == null) {
             transformers = null;
@@ -307,7 +313,7 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
         return transformers;
     }
 
-    public void setRuleInputTransformers(final Transformer... ruleInputTransformers) {
+    public void setRuleInputTransformers(Transformer... ruleInputTransformers) {
         if (ruleInputTransformers == null) {
             this.ruleInputTransformers = null;
         } else {
@@ -316,7 +322,7 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
         }
     }
 
-    public void setRuleInputTransformers(final Collection<Transformer> ruleInputTransformers) {
+    public void setRuleInputTransformers(Collection<Transformer> ruleInputTransformers) {
         if (ruleInputTransformers == null) {
             this.ruleInputTransformers = null;
         } else {
@@ -326,7 +332,7 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
     }
 
     public Transformer[] getRuleOutputTransformers() {
-        final Transformer[] transformers;
+        Transformer[] transformers;
 
         if (ruleOutputTransformers == null) {
             transformers = null;
@@ -337,7 +343,7 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
         return transformers;
     }
 
-    public void setRuleOutputTransformers(final Transformer... ruleOutputTransformers) {
+    public void setRuleOutputTransformers(Transformer... ruleOutputTransformers) {
         if (ruleOutputTransformers == null) {
             this.ruleOutputTransformers = null;
         } else {
@@ -346,7 +352,7 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
         }
     }
 
-    public void setRuleOutputTransformers(final Collection<Transformer> ruleOutputTransformers) {
+    public void setRuleOutputTransformers(Collection<Transformer> ruleOutputTransformers) {
         if (ruleOutputTransformers == null) {
             this.ruleOutputTransformers = null;
         } else {
@@ -359,12 +365,12 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
         return ruleToResultHandlerMapping;
     }
 
-    public void setRuleToResultHandlerMapping(final RuleToResultHandlerMapping ruleToResultHandlerMapping) {
+    public void setRuleToResultHandlerMapping(RuleToResultHandlerMapping ruleToResultHandlerMapping) {
         this.ruleToResultHandlerMapping = ruleToResultHandlerMapping;
     }
 
     public Transformer[] getResultHandlerInputTransformers() {
-        final Transformer[] transformers;
+        Transformer[] transformers;
 
         if (resultHandlerInputTransformers == null) {
             transformers = null;
@@ -376,7 +382,7 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
         return transformers;
     }
 
-    public void setResultHandlerInputTransformers(final Transformer... resultHandlerInputTransformers) {
+    public void setResultHandlerInputTransformers(Transformer... resultHandlerInputTransformers) {
         if (resultHandlerInputTransformers == null) {
             this.resultHandlerInputTransformers = null;
         } else {
@@ -385,7 +391,7 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
         }
     }
 
-    public void setResultHandlerInputTransformers(final Collection<Transformer> resultHandlerInputTransformers) {
+    public void setResultHandlerInputTransformers(Collection<Transformer> resultHandlerInputTransformers) {
         if (resultHandlerInputTransformers == null) {
             this.resultHandlerInputTransformers = null;
         } else {
@@ -406,7 +412,7 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
      * @see AbstractSimpleValidator#processTrigger(Trigger)
      */
     @Override
-    protected void processTrigger(final Trigger trigger) {
+    protected void processTrigger(Trigger trigger) {
         switch (dataProviderToRuleMapping) {
             case EACH_TO_EACH:
                 processEachDataProviderWithEachRule();
@@ -423,27 +429,27 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
     /**
      * Processes the output of each data provider one by one with each rule.
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked") // NOSONAR (Avoid Duplicate Literals)
     private void processEachDataProviderWithEachRule() {
         // For each data provider
-        for (final DataProvider<DPO> dataProvider : dataProviders) {
+        for (DataProvider<DPO> dataProvider : dataProviders) {
             // Get the data provider output
             Object transformedOutput = dataProvider.getData();
 
             // Transform the data provider output
             if (dataProviderOutputTransformers != null) {
-                for (final Transformer transformer : dataProviderOutputTransformers) {
+                for (Transformer transformer : dataProviderOutputTransformers) {
                     transformedOutput = transformer.transform(transformedOutput);
                 }
             }
 
             // Transform the transformed data provider output to rule input
             if (ruleInputTransformers != null) {
-                for (final Transformer transformer : ruleInputTransformers) {
+                for (Transformer transformer : ruleInputTransformers) {
                     transformedOutput = transformer.transform(transformedOutput);
                 }
             }
-            final RI ruleInput = (RI) transformedOutput;
+            RI ruleInput = (RI) transformedOutput;
 
             // Process the rule input with the rules
             processRules(ruleInput);
@@ -453,17 +459,17 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
     /**
      * Processes the output of all data providers, all at once, with each rule.
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked") // NOSONAR (Avoid Duplicate Literals)
     private void processAllDataProvidersWithEachRule() {
         // For each data provider
-        final List<Object> transformedDataProvidersOutput = new ArrayList<Object>(dataProviders.size());
-        for (final DataProvider<DPO> dataProvider : dataProviders) {
+        List<Object> transformedDataProvidersOutput = new ArrayList<Object>(dataProviders.size());
+        for (DataProvider<DPO> dataProvider : dataProviders) {
             // Get the data provider output
             Object transformedOutput = dataProvider.getData();
 
             // Transform the data provider output
             if (dataProviderOutputTransformers != null) {
-                for (final Transformer transformer : dataProviderOutputTransformers) {
+                for (Transformer transformer : dataProviderOutputTransformers) {
                     transformedOutput = transformer.transform(transformedOutput);
                 }
             }
@@ -475,11 +481,11 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
         // Transform the list of transformed data provider output to rule input
         Object transformedRulesInput = transformedDataProvidersOutput;
         if (ruleInputTransformers != null) {
-            for (final Transformer transformer : ruleInputTransformers) {
+            for (Transformer transformer : ruleInputTransformers) {
                 transformedRulesInput = transformer.transform(transformedRulesInput);
             }
         }
-        final RI ruleInput = (RI) transformedRulesInput;
+        RI ruleInput = (RI) transformedRulesInput;
 
         // Process the rule input with the rules
         processRules(ruleInput);
@@ -490,7 +496,7 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
      *
      * @param ruleInput Rule input to be validated.
      */
-    private void processRules(final RI ruleInput) {
+    private void processRules(RI ruleInput) {
         switch (ruleToResultHandlerMapping) {
             case EACH_TO_EACH:
                 processEachRuleWithEachResultHandler(ruleInput);
@@ -510,27 +516,27 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
      *
      * @param ruleInput Rule input to be validated.
      */
-    @SuppressWarnings("unchecked")
-    private void processEachRuleWithEachResultHandler(final RI ruleInput) {
+    @SuppressWarnings("unchecked") // NOSONAR (Avoid Duplicate Literals)
+    private void processEachRuleWithEachResultHandler(RI ruleInput) {
         // For each rule
-        for (final Rule<RI, RO> rule : rules) {
+        for (Rule<RI, RO> rule : rules) {
             // Validate the data and get the rule output
             Object ruleOutput = rule.validate(ruleInput);
 
             // Transform the rule output
             if (ruleOutputTransformers != null) {
-                for (final Transformer transformer : ruleOutputTransformers) {
+                for (Transformer transformer : ruleOutputTransformers) {
                     ruleOutput = transformer.transform(ruleOutput);
                 }
             }
 
             // Transform the transformed rule output to result handler input
             if (resultHandlerInputTransformers != null) {
-                for (final Transformer transformer : resultHandlerInputTransformers) {
+                for (Transformer transformer : resultHandlerInputTransformers) {
                     ruleOutput = transformer.transform(ruleOutput);
                 }
             }
-            final RHI resultHandlerInput = (RHI) ruleOutput;
+            RHI resultHandlerInput = (RHI) ruleOutput;
 
             // Process the result handler input with the result handlers
             processResultHandlers(resultHandlerInput);
@@ -543,17 +549,17 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
      *
      * @param ruleInput Rule input to be validated.
      */
-    @SuppressWarnings("unchecked")
-    private void processAllRulesWithEachResultHandler(final RI ruleInput) {
+    @SuppressWarnings("unchecked") // NOSONAR (Avoid Duplicate Literals)
+    private void processAllRulesWithEachResultHandler(RI ruleInput) {
         // For each rule
-        final List<Object> combinedRulesOutput = new ArrayList<Object>(rules.size());
-        for (final Rule<RI, RO> rule : rules) {
+        List<Object> combinedRulesOutput = new ArrayList<Object>(rules.size());
+        for (Rule<RI, RO> rule : rules) {
             // Validate the data and get the rule output
             Object data = rule.validate(ruleInput);
 
             // Transform the rule output
             if (ruleOutputTransformers != null) {
-                for (final Transformer transformer : ruleOutputTransformers) {
+                for (Transformer transformer : ruleOutputTransformers) {
                     data = transformer.transform(data);
                 }
             }
@@ -565,11 +571,11 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
         // Transform the list of transformed rule output to result handler input
         Object ruleOutput = combinedRulesOutput;
         if (resultHandlerInputTransformers != null) {
-            for (final Transformer transformer : resultHandlerInputTransformers) {
+            for (Transformer transformer : resultHandlerInputTransformers) {
                 ruleOutput = transformer.transform(ruleOutput);
             }
         }
-        final RHI resultHandlerInput = (RHI) ruleOutput;
+        RHI resultHandlerInput = (RHI) ruleOutput;
 
         // Process the result handler input with the result handlers
         processResultHandlers(resultHandlerInput);
@@ -580,8 +586,8 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
      *
      * @param resultHandlerInput Result handler input to be handled.
      */
-    private void processResultHandlers(final RHI resultHandlerInput) {
-        for (final ResultHandler<RHI> resultHandler : resultHandlers) {
+    private void processResultHandlers(RHI resultHandlerInput) {
+        for (ResultHandler<RHI> resultHandler : resultHandlers) {
             resultHandler.handleResult(resultHandlerInput);
         }
     }
@@ -606,9 +612,9 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
      *
      * @param elements Elements to be disposed.
      */
-    private void dispose(final Collection<Transformer> elements) {
+    private void dispose(Collection<Transformer> elements) {
         if (elements != null) {
-            for (final Transformer<?, ?> element : elements) {
+            for (Transformer<?, ?> element : elements) {
                 if (element instanceof Disposable) {
                     ((Disposable) element).dispose();
                 }

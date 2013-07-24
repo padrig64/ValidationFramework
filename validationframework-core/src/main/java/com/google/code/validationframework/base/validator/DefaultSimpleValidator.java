@@ -47,7 +47,9 @@ import org.slf4j.LoggerFactory;
  * @see DataProvider
  * @see Rule
  * @see ResultHandler
- * @deprecated Use {@link GeneralValidator} or {@link GeneralValidatorBuilder} instead.
+ * @deprecated Use {@link com.google.code.validationframework.base.validator.generalvalidator.GeneralValidator} or
+ *             {@link com.google.code.validationframework.base.validator.generalvalidator.dsl
+ *             .GeneralValidatorBuilder} instead.
  */
 @Deprecated
 public class DefaultSimpleValidator<RI, RO> extends AbstractSimpleValidator<Trigger, DataProvider<RI>, RI, Rule<RI,
@@ -62,12 +64,12 @@ public class DefaultSimpleValidator<RI, RO> extends AbstractSimpleValidator<Trig
      * @see AbstractSimpleValidator#processTrigger(Trigger)
      */
     @Override
-    protected void processTrigger(final Trigger trigger) {
+    protected void processTrigger(Trigger trigger) {
         if (dataProviders.isEmpty()) {
             LOGGER.warn("No data providers in validator: " + this);
         } else {
             // Process data from all providers
-            for (final DataProvider<RI> dataProvider : dataProviders) {
+            for (DataProvider<RI> dataProvider : dataProviders) {
                 processData(dataProvider.getData());
             }
         }
@@ -78,9 +80,9 @@ public class DefaultSimpleValidator<RI, RO> extends AbstractSimpleValidator<Trig
      *
      * @param data Data to be validated against all rules.
      */
-    protected void processData(final RI data) {
+    protected void processData(RI data) {
         // Check data against all rules
-        for (final Rule<RI, RO> rule : rules) {
+        for (Rule<RI, RO> rule : rules) {
             processResult(rule.validate(data));
         }
     }
@@ -90,8 +92,8 @@ public class DefaultSimpleValidator<RI, RO> extends AbstractSimpleValidator<Trig
      *
      * @param result Result to be processed by all result handlers.
      */
-    protected void processResult(final RO result) {
-        for (final ResultHandler<RO> resultHandler : resultHandlers) {
+    protected void processResult(RO result) {
+        for (ResultHandler<RO> resultHandler : resultHandlers) {
             resultHandler.handleResult(result);
         }
     }

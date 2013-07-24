@@ -37,7 +37,9 @@ import com.google.code.validationframework.base.transform.OrBooleanAggregator;
  * @see ResultAggregationValidator
  * @see OrBooleanAggregator
  * @see AndSimpleValidator
- * @deprecated Use {@link GeneralValidator} or {@link GeneralValidatorBuilder} instead.
+ * @deprecated Use {@link com.google.code.validationframework.base.validator.generalvalidator.GeneralValidator} or
+ *             {@link com.google.code.validationframework.base.validator.generalvalidator.dsl
+ *             .GeneralValidatorBuilder} instead.
  */
 @Deprecated
 public class OrSimpleValidator<RI> extends ResultAggregationValidator<RI, Boolean, Boolean> {
@@ -58,7 +60,7 @@ public class OrSimpleValidator<RI> extends ResultAggregationValidator<RI, Boolea
      * @param emptyCollectionValue Value for empty and null collections of results.
      * @param nullElementValue     Value for null elements in the transformed collections of results.
      */
-    public OrSimpleValidator(final boolean emptyCollectionValue, final boolean nullElementValue) {
+    public OrSimpleValidator(boolean emptyCollectionValue, boolean nullElementValue) {
         super(new OrBooleanAggregator(emptyCollectionValue, nullElementValue));
     }
 }

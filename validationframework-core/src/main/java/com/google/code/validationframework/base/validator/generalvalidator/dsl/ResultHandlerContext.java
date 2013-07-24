@@ -23,18 +23,16 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.base.validator.dsl.generalvalidator;
+package com.google.code.validationframework.base.validator.generalvalidator.dsl;
 
 import com.google.code.validationframework.api.dataprovider.DataProvider;
 import com.google.code.validationframework.api.resulthandler.ResultHandler;
 import com.google.code.validationframework.api.rule.Rule;
 import com.google.code.validationframework.api.trigger.Trigger;
 import com.google.code.validationframework.base.transform.Transformer;
-import com.google.code.validationframework.base.validator.GeneralValidator;
+import com.google.code.validationframework.base.validator.generalvalidator.GeneralValidator;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * TODO
@@ -42,9 +40,9 @@ import java.util.List;
  * @param <DPO> Type of data provider output.
  * @param <RI>  Type of rule input.
  * @param <RO>  Type of rule output.
- * @param <TRO> Type of result handler input.
+ * @param <RHI> Type of result handler input.
  */
-public class TransformedRuleContext<DPO, RI, RO, TRO> {
+public class ResultHandlerContext<DPO, RI, RO, RHI> {
 
     /**
      * Triggers to be added to the validator under construction.
@@ -82,6 +80,16 @@ public class TransformedRuleContext<DPO, RI, RO, TRO> {
     private final Collection<Transformer> addedResultHandlerInputTransformers;
 
     /**
+     * Result handler to be added to the validator under construction.
+     */
+    private final Collection<ResultHandler<RHI>> addedResultHandlers;
+
+    /**
+     * Validator under construction.
+     */
+    private final GeneralValidator<DPO, RI, RO, RHI> builtValidator;
+
+    /**
      * Constructor specifying the already known elements of the validator under construction.
      *
      * @param addedTriggers              Triggers to be added.
@@ -92,14 +100,16 @@ public class TransformedRuleContext<DPO, RI, RO, TRO> {
      * @param ruleToResultHandlerMapping Rule to result handler mapping to be set.
      * @param addedResultHandlerInputTransformers
      *                                   Result handler input transformers to be added.
+     * @param addedResultHandlers        Result handlers to be added.
      */
-    public TransformedRuleContext(final Collection<Trigger> addedTriggers, //
-                                  final Collection<DataProvider<DPO>> addedDataProviders, //
-                                  final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping, //
-                                  final Collection<Transformer> addedRuleInputTransformers, //
-                                  final Collection<Rule<RI, RO>> addedRules, //
-                                  final GeneralValidator.RuleToResultHandlerMapping ruleToResultHandlerMapping,
-                                  final Collection<Transformer> addedResultHandlerInputTransformers) {
+    public ResultHandlerContext(Collection<Trigger> addedTriggers, //
+                                Collection<DataProvider<DPO>> addedDataProviders, //
+                                GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping, //
+                                Collection<Transformer> addedRuleInputTransformers, //
+                                Collection<Rule<RI, RO>> addedRules, //
+                                GeneralValidator.RuleToResultHandlerMapping ruleToResultHandlerMapping, //
+                                Collection<Transformer> addedResultHandlerInputTransformers, //
+                                Collection<ResultHandler<RHI>> addedResultHandlers) {
         this.addedTriggers = addedTriggers;
         this.addedDataProviders = addedDataProviders;
         this.dataProviderToRuleMapping = dataProviderToRuleMapping;
@@ -107,26 +117,10 @@ public class TransformedRuleContext<DPO, RI, RO, TRO> {
         this.addedRules = addedRules;
         this.ruleToResultHandlerMapping = ruleToResultHandlerMapping;
         this.addedResultHandlerInputTransformers = addedResultHandlerInputTransformers;
-    }
+        this.addedResultHandlers = addedResultHandlers;
 
-    /**
-     * Adds the specified result handler input transformer to the validator under construction.
-     *
-     * @param resultHandlerInputTransformer Result handler input transformer to be added.
-     * @param <TTRO>                        Type of transformer output.
-     *
-     * @return Context allowing further construction of the validator using the DSL.
-     */
-    public <TTRO> TransformedRuleContext<DPO, RI, RO, TTRO> transform(final Transformer<TRO,
-            TTRO> resultHandlerInputTransformer) {
-        if (resultHandlerInputTransformer != null) {
-            addedResultHandlerInputTransformers.add(resultHandlerInputTransformer);
-        }
-
-        // Change context because output type has changed
-        return new TransformedRuleContext<DPO, RI, RO, TTRO>(addedTriggers, addedDataProviders,
-                dataProviderToRuleMapping, addedRuleInputTransformers, addedRules, ruleToResultHandlerMapping,
-                addedResultHandlerInputTransformers);
+        // Build validator now so that there is no need for the programmer to call build()
+        builtValidator = build();
     }
 
     /**
@@ -136,16 +130,14 @@ public class TransformedRuleContext<DPO, RI, RO, TRO> {
      *
      * @return Context allowing further construction of the validator using the DSL.
      */
-    public ResultHandlerContext<DPO, RI, RO, TRO> handleWith(final ResultHandler<TRO> resultHandler) {
-        final List<ResultHandler<TRO>> addedResultHandlers = new ArrayList<ResultHandler<TRO>>();
+    public ResultHandlerContext<DPO, RI, RO, RHI> handleWith(ResultHandler<RHI> resultHandler) {
         if (resultHandler != null) {
             addedResultHandlers.add(resultHandler);
+            builtValidator.addResultHandler(resultHandler);
         }
 
-        // Change context
-        return new ResultHandlerContext<DPO, RI, RO, TRO>(addedTriggers, addedDataProviders,
-                dataProviderToRuleMapping, addedRuleInputTransformers, addedRules, ruleToResultHandlerMapping,
-                addedResultHandlerInputTransformers, addedResultHandlers);
+        // Stay in the same context and re-use the same instance because no type has changed
+        return this;
     }
 
     /**
@@ -155,14 +147,68 @@ public class TransformedRuleContext<DPO, RI, RO, TRO> {
      *
      * @return Context allowing further construction of the validator using the DSL.
      */
-    public ResultHandlerContext<DPO, RI, RO, TRO> handleWith(final Collection<ResultHandler<TRO>> resultHandlers) {
-        final List<ResultHandler<TRO>> addedResultHandlers = new ArrayList<ResultHandler<TRO>>();
+    public ResultHandlerContext<DPO, RI, RO, RHI> handleWith(Collection<ResultHandler<RHI>> resultHandlers) {
         if (resultHandlers != null) {
-            addedResultHandlers.addAll(resultHandlers);
+            this.addedResultHandlers.addAll(resultHandlers);
+
+            for (ResultHandler<RHI> resultHandler : resultHandlers) {
+                builtValidator.addResultHandler(resultHandler);
+            }
         }
 
-        // Change context
-        return new ResultHandlerContext<DPO, RI, RO, TRO>(addedTriggers, addedDataProviders,
-                dataProviderToRuleMapping, addedRuleInputTransformers, addedRules, ruleToResultHandlerMapping, addedResultHandlerInputTransformers, addedResultHandlers);
+        // Stay in the same context and re-use the same instance because no type has changed
+        return this;
+    }
+
+    /**
+     * Builds the validator.
+     *
+     * @return Fully constructed validator.
+     */
+    private GeneralValidator<DPO, RI, RO, RHI> build() {
+        // Create validator
+        GeneralValidator<DPO, RI, RO, RHI> validator = new GeneralValidator<DPO, RI, RO, RHI>();
+
+        // Add triggers
+        for (Trigger trigger : addedTriggers) {
+            validator.addTrigger(trigger);
+        }
+
+        // Add data providers
+        for (DataProvider<DPO> dataProvider : addedDataProviders) {
+            validator.addDataProvider(dataProvider);
+        }
+
+        // Map data providers output to rules input
+        validator.setDataProviderToRuleMapping(dataProviderToRuleMapping);
+        validator.setRuleInputTransformers(addedRuleInputTransformers);
+
+        // Add rules
+        for (Rule<RI, RO> rule : addedRules) {
+            validator.addRule(rule);
+        }
+
+        // Map rules output to result handlers input
+        validator.setRuleToResultHandlerMapping(ruleToResultHandlerMapping);
+        validator.setResultHandlerInputTransformers(addedResultHandlerInputTransformers);
+
+        // Add result handlers
+        for (ResultHandler<RHI> resultHandler : addedResultHandlers) {
+            validator.addResultHandler(resultHandler);
+        }
+
+        return validator;
+    }
+
+    /**
+     * Gets the fully constructed validator.
+     * <p/>
+     * Note that this method does not build the validator. At this point, the validator is already fully constructed
+     * and effective since the addition of the first result handler.
+     *
+     * @return Fully constructed validator.
+     */
+    public GeneralValidator<DPO, RI, RO, RHI> getValidator() {
+        return builtValidator;
     }
 }

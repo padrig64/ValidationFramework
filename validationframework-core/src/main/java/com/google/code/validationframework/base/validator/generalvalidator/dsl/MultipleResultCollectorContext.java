@@ -23,13 +23,14 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.base.validator.dsl.generalvalidator;
+package com.google.code.validationframework.base.validator.generalvalidator.dsl;
 
 import com.google.code.validationframework.api.dataprovider.DataProvider;
 import com.google.code.validationframework.api.rule.Rule;
 import com.google.code.validationframework.api.trigger.Trigger;
+import com.google.code.validationframework.base.resulthandler.ResultCollector;
 import com.google.code.validationframework.base.transform.Transformer;
-import com.google.code.validationframework.base.validator.GeneralValidator;
+import com.google.code.validationframework.base.validator.generalvalidator.GeneralValidator;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -40,7 +41,7 @@ import java.util.List;
  *
  * @param <DPO> Type of data provider output.
  */
-public class SingleDataProviderContext<DPO> {
+public class MultipleResultCollectorContext<DPO> {
 
     /**
      * Triggers to be added to the validator under construction.
@@ -58,42 +59,57 @@ public class SingleDataProviderContext<DPO> {
      * @param addedTriggers      Triggers to be added.
      * @param addedDataProviders Data providers to be added.
      */
-    public SingleDataProviderContext(final Collection<Trigger> addedTriggers, //
-                                     final Collection<DataProvider<DPO>> addedDataProviders) {
+    public MultipleResultCollectorContext(final Collection<Trigger> addedTriggers, //
+                                          final Collection<DataProvider<DPO>> addedDataProviders) {
         this.addedTriggers = addedTriggers;
         this.addedDataProviders = addedDataProviders;
     }
 
     /**
-     * Adds the specified data provider to the validator under construction.
+     * Adds the specified result collector as trigger and data provider to the validator under construction.
      *
-     * @param dataProvider Data provider to be added.
+     * @param resultCollector Result collector to be added.
      *
      * @return Context allowing further construction of the validator using the DSL.
      */
-    public MultipleDataProviderContext<DPO> read(final DataProvider<DPO> dataProvider) {
-        if (dataProvider != null) {
-            addedDataProviders.add(dataProvider);
+    public MultipleResultCollectorContext<DPO> collect(final ResultCollector<?, DPO> resultCollector) {
+        if (resultCollector != null) {
+            addedTriggers.add(resultCollector);
+            addedDataProviders.add(resultCollector);
         }
 
-        // Change context
-        return new MultipleDataProviderContext<DPO>(addedTriggers, addedDataProviders);
+        // Stay in the same context and re-use the same instance because no type has changed
+        return this;
     }
 
     /**
-     * Adds the specified data providers to the validator under construction.
+     * Adds the specified result collectors as triggers and data providers to the validator under construction.
      *
-     * @param dataProviders Data providers to be added.
+     * @param resultCollectors Result collectors to be added.
      *
      * @return Context allowing further construction of the validator using the DSL.
      */
-    public MultipleDataProviderContext<DPO> read(final Collection<DataProvider<DPO>> dataProviders) {
-        if (dataProviders != null) {
-            addedDataProviders.addAll(dataProviders);
+    public MultipleResultCollectorContext<DPO> collect(final Collection<ResultCollector<?, DPO>> resultCollectors) {
+        if (resultCollectors != null) {
+            addedTriggers.addAll(resultCollectors);
+            addedDataProviders.addAll(resultCollectors);
         }
 
+        // Stay in the same context and re-use the same instance because no type has changed
+        return this;
+    }
+
+    /**
+     * Makes the validator process each data provider independently.<br>This corresponds to the use of {@link
+     * GeneralValidator.DataProviderToRuleMapping#EACH_TO_EACH}.
+     *
+     * @return Context allowing further construction of the validator using the DSL.
+     *
+     * @see {@link GeneralValidator.DataProviderToRuleMapping#EACH_TO_EACH}.
+     */
+    public ForEachDataProviderContext<DPO> forEach() {
         // Change context
-        return new MultipleDataProviderContext<DPO>(addedTriggers, this.addedDataProviders);
+        return new ForEachDataProviderContext<DPO>(addedTriggers, addedDataProviders);
     }
 
     /**
@@ -104,14 +120,15 @@ public class SingleDataProviderContext<DPO> {
      *
      * @return Context allowing further construction of the validator using the DSL.
      */
-    public <TDPO> TransformedDataProviderContext transform(final Transformer<DPO, TDPO> ruleInputTransformer) {
-        final List<Transformer> addedTransformers = new ArrayList<Transformer>();
+    public <TDPO> TransformedDataProviderContext transform(final Transformer<Collection<DPO>,
+            TDPO> ruleInputTransformer) {
+        final List<Transformer> transformers = new ArrayList<Transformer>();
         if (ruleInputTransformer != null) {
-            addedTransformers.add(ruleInputTransformer);
+            transformers.add(ruleInputTransformer);
         }
 
         return new TransformedDataProviderContext<DPO, TDPO>(addedTriggers, addedDataProviders,
-                GeneralValidator.DataProviderToRuleMapping.EACH_TO_EACH, addedTransformers);
+                GeneralValidator.DataProviderToRuleMapping.ALL_TO_EACH, transformers);
     }
 
     /**
@@ -122,33 +139,33 @@ public class SingleDataProviderContext<DPO> {
      *
      * @return Context allowing further construction of the validator using the DSL.
      */
-    public <RO> SingleRuleContext<DPO, DPO, RO> check(final Rule<DPO, RO> rule) {
-        final List<Rule<DPO, RO>> addedRules = new ArrayList<Rule<DPO, RO>>();
+    public <RO> SingleRuleContext<DPO, Collection<DPO>, RO> check(final Rule<Collection<DPO>, RO> rule) {
+        final List<Rule<Collection<DPO>, RO>> addedRules = new ArrayList<Rule<Collection<DPO>, RO>>();
         if (rule != null) {
             addedRules.add(rule);
         }
 
         // Change context
-        return new SingleRuleContext<DPO, DPO, RO>(addedTriggers, addedDataProviders,
-                GeneralValidator.DataProviderToRuleMapping.EACH_TO_EACH, null, addedRules);
+        return new SingleRuleContext<DPO, Collection<DPO>, RO>(addedTriggers, addedDataProviders,
+                GeneralValidator.DataProviderToRuleMapping.ALL_TO_EACH, null, addedRules);
     }
 
     /**
      * Adds the specified rules to the validator under construction.
      *
      * @param rules Rules to be added.
-     * @param <RO>  Type of rule output.
+     * @param <RO>  Type of rules output.
      *
      * @return Context allowing further construction of the validator using the DSL.
      */
-    public <RO> MultipleRuleContext<DPO, DPO, RO> check(final Collection<Rule<DPO, RO>> rules) {
-        final List<Rule<DPO, RO>> addedRules = new ArrayList<Rule<DPO, RO>>();
+    public <RO> SingleRuleContext<DPO, Collection<DPO>, RO> check(final Collection<Rule<Collection<DPO>, RO>> rules) {
+        final List<Rule<Collection<DPO>, RO>> addedRules = new ArrayList<Rule<Collection<DPO>, RO>>();
         if (rules != null) {
             addedRules.addAll(rules);
         }
 
         // Change context
-        return new MultipleRuleContext<DPO, DPO, RO>(addedTriggers, addedDataProviders,
-                GeneralValidator.DataProviderToRuleMapping.EACH_TO_EACH, null, addedRules);
+        return new SingleRuleContext<DPO, Collection<DPO>, RO>(addedTriggers, addedDataProviders,
+                GeneralValidator.DataProviderToRuleMapping.ALL_TO_EACH, null, addedRules);
     }
 }

@@ -56,7 +56,9 @@ import java.util.Collection;
  * @see DataProvider
  * @see Rule
  * @see ResultHandler
- * @deprecated Use {@link GeneralValidator} or {@link GeneralValidatorBuilder} instead.
+ * @deprecated Use {@link com.google.code.validationframework.base.validator.generalvalidator.GeneralValidator} or
+ *             {@link com.google.code.validationframework.base.validator.generalvalidator.dsl
+ *             .GeneralValidatorBuilder} instead.
  */
 @Deprecated
 public class ResultCollectorValidator<RI, RO> extends AbstractSimpleValidator<Trigger, DataProvider<RI>, RI,
@@ -72,7 +74,7 @@ public class ResultCollectorValidator<RI, RO> extends AbstractSimpleValidator<Tr
      *
      * @param resultCollector Result collector being a result handler for another validator.
      */
-    public void addResultCollector(final ResultCollector<?, RI> resultCollector) {
+    public void addResultCollector(ResultCollector<?, RI> resultCollector) {
         addTrigger(resultCollector);
         addDataProvider(resultCollector);
     }
@@ -82,7 +84,7 @@ public class ResultCollectorValidator<RI, RO> extends AbstractSimpleValidator<Tr
      *
      * @param resultCollector Result collector being a result handler for another validator.
      */
-    public void removeResultCollector(final ResultCollector<?, RI> resultCollector) {
+    public void removeResultCollector(ResultCollector<?, RI> resultCollector) {
         removeTrigger(resultCollector);
         removeDataProvider(resultCollector);
     }
@@ -91,13 +93,13 @@ public class ResultCollectorValidator<RI, RO> extends AbstractSimpleValidator<Tr
      * @see AbstractSimpleValidator#processTrigger(Trigger)
      */
     @Override
-    protected void processTrigger(final Trigger trigger) {
+    protected void processTrigger(Trigger trigger) {
         if (dataProviders.isEmpty()) {
             LOGGER.warn("No data providers in validator: " + this);
         } else {
             // Collect results
-            final Collection<RI> collectedResults = new ArrayList<RI>();
-            for (final DataProvider<RI> dataProvider : dataProviders) {
+            Collection<RI> collectedResults = new ArrayList<RI>();
+            for (DataProvider<RI> dataProvider : dataProviders) {
                 collectedResults.add(dataProvider.getData());
             }
 
@@ -111,9 +113,9 @@ public class ResultCollectorValidator<RI, RO> extends AbstractSimpleValidator<Tr
      *
      * @param data Data to be validated against all rules.
      */
-    protected void processData(final Collection<RI> data) {
+    protected void processData(Collection<RI> data) {
         // Check data against all rules
-        for (final Rule<Collection<RI>, RO> rule : rules) {
+        for (Rule<Collection<RI>, RO> rule : rules) {
             processResult(rule.validate(data));
         }
     }
@@ -123,8 +125,8 @@ public class ResultCollectorValidator<RI, RO> extends AbstractSimpleValidator<Tr
      *
      * @param result Result to be processed by all result handlers.
      */
-    protected void processResult(final RO result) {
-        for (final ResultHandler<RO> resultHandler : resultHandlers) {
+    protected void processResult(RO result) {
+        for (ResultHandler<RO> resultHandler : resultHandlers) {
             resultHandler.handleResult(result);
         }
     }

@@ -23,14 +23,14 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.base.validator.dsl.generalvalidator;
+package com.google.code.validationframework.base.validator.generalvalidator.dsl;
 
 import com.google.code.validationframework.api.dataprovider.DataProvider;
 import com.google.code.validationframework.api.resulthandler.ResultHandler;
 import com.google.code.validationframework.api.rule.Rule;
 import com.google.code.validationframework.api.trigger.Trigger;
 import com.google.code.validationframework.base.transform.Transformer;
-import com.google.code.validationframework.base.validator.GeneralValidator;
+import com.google.code.validationframework.base.validator.generalvalidator.GeneralValidator;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -43,7 +43,7 @@ import java.util.List;
  * @param <RI>  Type of rule input.
  * @param <RO>  Type of rule output.
  */
-public class SingleRuleContext<DPO, RI, RO> {
+public class ForEachRuleContext<DPO, RI, RO> {
 
     /**
      * Triggers to be added to the validator under construction.
@@ -79,50 +79,16 @@ public class SingleRuleContext<DPO, RI, RO> {
      * @param addedRuleInputTransformers Rule input transformers to be added.
      * @param addedRules                 Rules to be added.
      */
-    public SingleRuleContext(final Collection<Trigger> addedTriggers, //
-                             final Collection<DataProvider<DPO>> addedDataProviders, //
-                             final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping, //
-                             final Collection<Transformer> addedRuleInputTransformers, //
-                             final Collection<Rule<RI, RO>> addedRules) {
+    public ForEachRuleContext(final Collection<Trigger> addedTriggers, //
+                              final Collection<DataProvider<DPO>> addedDataProviders, //
+                              final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping, //
+                              final Collection<Transformer> addedRuleInputTransformers, //
+                              final Collection<Rule<RI, RO>> addedRules) {
         this.addedTriggers = addedTriggers;
         this.addedDataProviders = addedDataProviders;
         this.dataProviderToRuleMapping = dataProviderToRuleMapping;
         this.addedRuleInputTransformers = addedRuleInputTransformers;
         this.addedRules = addedRules;
-    }
-
-    /**
-     * Adds the specified rule to the validator under construction.
-     *
-     * @param rule Rule to be added.
-     *
-     * @return Context allowing further construction of the validator using the DSL.
-     */
-    public MultipleRuleContext<DPO, RI, RO> check(final Rule<RI, RO> rule) {
-        if (rule != null) {
-            addedRules.add(rule);
-        }
-
-        // Change context
-        return new MultipleRuleContext<DPO, RI, RO>(addedTriggers, addedDataProviders, dataProviderToRuleMapping,
-                addedRuleInputTransformers, addedRules);
-    }
-
-    /**
-     * Adds the specified rules to the validator under construction.
-     *
-     * @param rules Rules to be added.
-     *
-     * @return Context allowing further construction of the validator using the DSL.
-     */
-    public MultipleRuleContext<DPO, RI, RO> check(final Collection<Rule<RI, RO>> rules) {
-        if (rules != null) {
-            addedRules.addAll(rules);
-        }
-
-        // Change context
-        return new MultipleRuleContext<DPO, RI, RO>(addedTriggers, addedDataProviders, dataProviderToRuleMapping,
-                addedRuleInputTransformers, addedRules);
     }
 
     /**

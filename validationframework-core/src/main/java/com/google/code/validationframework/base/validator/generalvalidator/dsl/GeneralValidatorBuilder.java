@@ -23,32 +23,29 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.base.validator.dsl.generalvalidator;
+package com.google.code.validationframework.base.validator.generalvalidator.dsl;
 
 import com.google.code.validationframework.api.dataprovider.DataProvider;
 import com.google.code.validationframework.api.trigger.Trigger;
+import com.google.code.validationframework.base.resulthandler.ResultCollector;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 /**
- * TODO
+ * General validator builder that can be used to construct a {@link com.google.code.validationframework.base.validator.generalvalidator.GeneralValidator} using a DSL.<br>Note that the
+ * {@link com.google.code.validationframework.base.validator.generalvalidator.GeneralValidator} will be constructed and effective only after the addition of the first result handler.
+ *
+ * @see com.google.code.validationframework.base.validator.generalvalidator.GeneralValidator
  */
-public class TriggerContext {
+public final class GeneralValidatorBuilder {
 
     /**
-     * Triggers to be added to the validator under construction.
+     * Private constructor for utility class.
      */
-    private final Collection<Trigger> addedTriggers;
-
-    /**
-     * Constructor specifying the already known elements of the validator under construction.
-     *
-     * @param addedTriggers Triggers to be added.
-     */
-    public TriggerContext(final Collection<Trigger> addedTriggers) {
-        this.addedTriggers = addedTriggers;
+    private GeneralValidatorBuilder() {
+        // Nothing to be done
     }
 
     /**
@@ -58,13 +55,12 @@ public class TriggerContext {
      *
      * @return Context allowing further construction of the validator using the DSL.
      */
-    public TriggerContext on(final Trigger trigger) {
+    public static TriggerContext on(final Trigger trigger) {
+        final List<Trigger> addedTriggers = new ArrayList<Trigger>();
         if (trigger != null) {
             addedTriggers.add(trigger);
         }
-
-        // Stay in the same context and re-use the same instance because no type has changed
-        return this;
+        return new TriggerContext(addedTriggers);
     }
 
     /**
@@ -74,48 +70,50 @@ public class TriggerContext {
      *
      * @return Context allowing further construction of the validator using the DSL.
      */
-    public TriggerContext on(final Collection<Trigger> triggers) {
+    public static TriggerContext on(final Collection<Trigger> triggers) {
+        final List<Trigger> addedTriggers = new ArrayList<Trigger>();
         if (triggers != null) {
             addedTriggers.addAll(triggers);
         }
-
-        // Stay in the same context and re-use the same instance because no type has changed
-        return this;
+        return new TriggerContext(addedTriggers);
     }
 
     /**
-     * Adds the specified data provider to the validator under construction.
+     * Adds the specified result collector as trigger and data provider to the validator under construction.
      *
-     * @param dataProvider Data provider to be added.
-     * @param <DPO>        Type of data provider output.
+     * @param resultCollector Result collector to be added.
+     * @param <DPO>           Type of data provider output.
      *
      * @return Context allowing further construction of the validator using the DSL.
      */
-    public <DPO> SingleDataProviderContext<DPO> read(final DataProvider<DPO> dataProvider) {
+    public static <DPO> SingleResultCollectorContext<DPO> collect(final ResultCollector<?, DPO> resultCollector) {
+        final List<Trigger> addedTriggers = new ArrayList<Trigger>();
         final List<DataProvider<DPO>> addedDataProviders = new ArrayList<DataProvider<DPO>>();
-        if (dataProvider != null) {
-            addedDataProviders.add(dataProvider);
+        if (resultCollector != null) {
+            addedTriggers.add(resultCollector);
+            addedDataProviders.add(resultCollector);
         }
 
-        // Change context
-        return new SingleDataProviderContext<DPO>(addedTriggers, addedDataProviders);
+        return new SingleResultCollectorContext<DPO>(addedTriggers, addedDataProviders);
     }
 
     /**
-     * Adds the specified data providers to the validator under construction.
+     * Adds the specified result collectors as triggers and data providers to the validator under construction.
      *
-     * @param dataProviders Data providers to be added.
-     * @param <DPO>         Type of data provider output.
+     * @param resultCollectors Result collectors to be added.
+     * @param <DPO>            Type of data provider output.
      *
      * @return Context allowing further construction of the validator using the DSL.
      */
-    public <DPO> MultipleDataProviderContext<DPO> read(final Collection<DataProvider<DPO>> dataProviders) {
+    public static <DPO> MultipleResultCollectorContext<DPO> collect(final Collection<ResultCollector<?,
+            DPO>> resultCollectors) {
+        final List<Trigger> addedTriggers = new ArrayList<Trigger>();
         final List<DataProvider<DPO>> addedDataProviders = new ArrayList<DataProvider<DPO>>();
-        if (dataProviders != null) {
-            addedDataProviders.addAll(dataProviders);
+        if (resultCollectors != null) {
+            addedTriggers.addAll(resultCollectors);
+            addedDataProviders.addAll(resultCollectors);
         }
 
-        // Change context
-        return new MultipleDataProviderContext<DPO>(addedTriggers, addedDataProviders);
+        return new MultipleResultCollectorContext<DPO>(addedTriggers, addedDataProviders);
     }
 }

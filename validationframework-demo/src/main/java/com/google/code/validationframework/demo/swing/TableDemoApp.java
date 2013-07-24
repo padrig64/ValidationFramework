@@ -27,7 +27,7 @@ package com.google.code.validationframework.demo.swing;
 
 import com.google.code.validationframework.base.resulthandler.PrintStreamResultHandler;
 import com.google.code.validationframework.base.rule.string.StringLengthGreaterThanOrEqualToRule;
-import com.google.code.validationframework.base.validator.GeneralValidator;
+import com.google.code.validationframework.base.validator.generalvalidator.GeneralValidator;
 import com.google.code.validationframework.swing.dataprovider.JTableTextEditorTextProvider;
 import com.google.code.validationframework.swing.resulthandler.bool.CellIconBooleanFeedback;
 import com.google.code.validationframework.swing.trigger.JTableTextEditorDocumentChangedTrigger;
@@ -52,7 +52,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.util.Random;
 
-import static com.google.code.validationframework.base.validator.GeneralValidatorBuilder.on;
+import static com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder.on;
 
 public class TableDemoApp extends JFrame {
 
