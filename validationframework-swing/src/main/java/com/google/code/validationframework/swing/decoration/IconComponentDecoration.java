@@ -49,7 +49,7 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
          * @see MouseAdapter#mouseMoved(MouseEvent)
          */
         @Override
-        public void mouseMoved(final MouseEvent e) {
+        public void mouseMoved(MouseEvent e) {
             if ((toolTipDialog != null) && toolTipDialog.isVisible()) {
                 if (!decorationPainter.getClipBounds().contains(e.getPoint())) {
                     toolTipDialog.setVisible(false);
@@ -78,7 +78,7 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
          * @see MouseAdapter#mouseExited(MouseEvent)
          */
         @Override
-        public void mouseExited(final MouseEvent e) {
+        public void mouseExited(MouseEvent e) {
             if (toolTipDialog != null) {
                 toolTipDialog.setVisible(false);
             }
@@ -105,16 +105,57 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
      */
     private ToolTipDialog toolTipDialog = null;
 
+    /**
+     * Tooltip text to appear on the decoration icon.
+     */
     private String toolTipText = null;
 
+    /**
+     * Anchor link between the decoration icon and the tooltip.
+     */
     private AnchorLink anchorLinkWithToolTip = new AnchorLink(Anchor.BOTTOM_RIGHT, Anchor.TOP_LEFT);
 
-    public IconComponentDecoration(final JComponent decoratedComponent) {
-        this(decoratedComponent, null);
+    /**
+     * Constructor specifying the component to be decorated.
+     *
+     * @param owner Component to be decorated.
+     */
+    public IconComponentDecoration(JComponent owner) {
+        this(owner, DEFAULT_ANCHOR_LINK_WITH_OWNER, null);
     }
 
-    public IconComponentDecoration(final JComponent decoratedComponent, final Icon icon) {
-        super(decoratedComponent, DEFAULT_ANCHOR_LINK_WITH_OWNER);
+    /**
+     * Constructor specifying the component to be decorated and the anchor link with its owner (the decorated
+     * component).
+     *
+     * @param owner               Component to be decorated.
+     * @param anchorLinkWithOwner Anchor link between the decorated component and the decoration icon.
+     */
+    public IconComponentDecoration(JComponent owner, AnchorLink anchorLinkWithOwner) {
+        this(owner, anchorLinkWithOwner, null);
+    }
+
+    /**
+     * Constructor specifying the component to be decorated and the anchor link with its owner (the decorated
+     * component).
+     *
+     * @param owner Component to be decorated.
+     * @param icon  Decoration icon.
+     */
+    public IconComponentDecoration(JComponent owner, Icon icon) {
+        this(owner, DEFAULT_ANCHOR_LINK_WITH_OWNER, icon);
+    }
+
+    /**
+     * Constructor specifying the component to be decorated and the anchor link with its owner (the decorated
+     * component).
+     *
+     * @param owner               Component to be decorated.
+     * @param anchorLinkWithOwner Anchor link between the decorated component and the decoration icon.
+     * @param icon                Decoration icon.
+     */
+    public IconComponentDecoration(JComponent owner, AnchorLink anchorLinkWithOwner, Icon icon) {
+        super(owner, anchorLinkWithOwner);
         this.icon = icon;
 
         decorationPainter.addMouseListener(new IconMouseAdapter());
@@ -135,7 +176,7 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
      *
      * @param icon Decoration icon to be attached to the owner component.
      */
-    public void setIcon(final Icon icon) {
+    public void setIcon(Icon icon) {
         this.icon = icon;
         followDecoratedComponent();
     }
@@ -154,7 +195,7 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
      *
      * @param text Tooltip text for this decoration, or null if this decoration should have no tooltip.
      */
-    public void setToolTipText(final String text) {
+    public void setToolTipText(String text) {
         this.toolTipText = text;
         if (toolTipDialog != null) {
             toolTipDialog.setText(text);
@@ -175,7 +216,7 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
      *
      * @param anchorLinkWithToolTip Anchor link to be used to slave the tooltip to this decoration.
      */
-    public void setAnchorLinkWithToolTip(final AnchorLink anchorLinkWithToolTip) {
+    public void setAnchorLinkWithToolTip(AnchorLink anchorLinkWithToolTip) {
         this.anchorLinkWithToolTip = anchorLinkWithToolTip;
     }
 
@@ -183,7 +224,7 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
      * @see AbstractComponentDecoration#setVisible(boolean)
      */
     @Override
-    public void setVisible(final boolean visible) {
+    public void setVisible(boolean visible) {
         super.setVisible(visible);
         if (!visible && (toolTipDialog != null)) {
             toolTipDialog.setVisible(false);
@@ -218,7 +259,7 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
      * @see AbstractComponentDecoration#paint(Graphics)
      */
     @Override
-    public void paint(final Graphics g) {
+    public void paint(Graphics g) {
         if (isVisible() && (icon != null) && (decorationPainter != null)) {
             icon.paintIcon(decorationPainter, g, 0, 0);
         }
