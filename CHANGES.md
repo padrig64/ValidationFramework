@@ -1,4 +1,4 @@
-# Version 2.0.0 (to be released)
+# Version 2.0.0
 
 * Changed groupid from validationframework to com.google.code.validation for future availability in Maven Central
 * Improved javadoc
