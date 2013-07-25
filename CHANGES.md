@@ -1,3 +1,7 @@
+# Version 2.0.1 (to be released)
+
+* Added ToStringTransformer in core
+
 # Version 2.0.0
 
 * Changed groupid from validationframework to com.google.code.validation for future availability in Maven Central
