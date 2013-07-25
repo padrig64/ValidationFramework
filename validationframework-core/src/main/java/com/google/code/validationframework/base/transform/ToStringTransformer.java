@@ -27,8 +27,11 @@ package com.google.code.validationframework.base.transform;
 
 /**
  * Transformer using the {@link Object#toString()} method of the given objects.
+ *
+ * @param <I> Type of input to be transformed.<br>It is needed only to avoid compilation warning when using the
+ *            validator builders.
  */
-public class ToStringTransformer implements Transformer<Object, String> {
+public class ToStringTransformer<I> implements Transformer<I, String> {
 
     /**
      * Default value to be returned in case null is passed to the {@link #transform(Object)} method.
@@ -62,7 +65,7 @@ public class ToStringTransformer implements Transformer<Object, String> {
      * @see Transformer#transform(Object)
      */
     @Override
-    public String transform(Object input) {
+    public String transform(I input) {
         String str;
 
         if (input == null) {

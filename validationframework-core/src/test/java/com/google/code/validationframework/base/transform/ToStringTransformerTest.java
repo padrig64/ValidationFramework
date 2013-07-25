@@ -34,7 +34,7 @@ public class ToStringTransformerTest {
 
     @Test
     public void testToStringTransformer() {
-        ToStringTransformer transformer = new ToStringTransformer();
+        ToStringTransformer<Object> transformer = new ToStringTransformer<Object>();
 
         // Test simple object
         assertTrue(transformer.transform(new Object()).startsWith("java.lang.Object@"));
@@ -46,7 +46,7 @@ public class ToStringTransformerTest {
 
         // Test default value
         assertEquals(null, transformer.transform(null));
-        transformer = new ToStringTransformer("null");
+        transformer = new ToStringTransformer<Object>("null");
         assertEquals("null", transformer.transform(null));
     }
 }

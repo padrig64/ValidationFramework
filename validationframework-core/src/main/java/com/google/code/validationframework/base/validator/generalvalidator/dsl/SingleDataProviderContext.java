@@ -58,8 +58,8 @@ public class SingleDataProviderContext<DPO> {
      * @param addedTriggers      Triggers to be added.
      * @param addedDataProviders Data providers to be added.
      */
-    public SingleDataProviderContext(final Collection<Trigger> addedTriggers, //
-                                     final Collection<DataProvider<DPO>> addedDataProviders) {
+    public SingleDataProviderContext(Collection<Trigger> addedTriggers, //
+                                     Collection<DataProvider<DPO>> addedDataProviders) {
         this.addedTriggers = addedTriggers;
         this.addedDataProviders = addedDataProviders;
     }
@@ -71,7 +71,7 @@ public class SingleDataProviderContext<DPO> {
      *
      * @return Context allowing further construction of the validator using the DSL.
      */
-    public MultipleDataProviderContext<DPO> read(final DataProvider<DPO> dataProvider) {
+    public MultipleDataProviderContext<DPO> read(DataProvider<DPO> dataProvider) {
         if (dataProvider != null) {
             addedDataProviders.add(dataProvider);
         }
@@ -87,7 +87,7 @@ public class SingleDataProviderContext<DPO> {
      *
      * @return Context allowing further construction of the validator using the DSL.
      */
-    public MultipleDataProviderContext<DPO> read(final Collection<DataProvider<DPO>> dataProviders) {
+    public MultipleDataProviderContext<DPO> read(Collection<DataProvider<DPO>> dataProviders) {
         if (dataProviders != null) {
             addedDataProviders.addAll(dataProviders);
         }
@@ -104,8 +104,8 @@ public class SingleDataProviderContext<DPO> {
      *
      * @return Context allowing further construction of the validator using the DSL.
      */
-    public <TDPO> TransformedDataProviderContext transform(final Transformer<DPO, TDPO> ruleInputTransformer) {
-        final List<Transformer> addedTransformers = new ArrayList<Transformer>();
+    public <TDPO> TransformedDataProviderContext<DPO, TDPO> transform(Transformer<DPO, TDPO> ruleInputTransformer) {
+        List<Transformer> addedTransformers = new ArrayList<Transformer>();
         if (ruleInputTransformer != null) {
             addedTransformers.add(ruleInputTransformer);
         }
@@ -122,8 +122,8 @@ public class SingleDataProviderContext<DPO> {
      *
      * @return Context allowing further construction of the validator using the DSL.
      */
-    public <RO> SingleRuleContext<DPO, DPO, RO> check(final Rule<DPO, RO> rule) {
-        final List<Rule<DPO, RO>> addedRules = new ArrayList<Rule<DPO, RO>>();
+    public <RO> SingleRuleContext<DPO, DPO, RO> check(Rule<DPO, RO> rule) {
+        List<Rule<DPO, RO>> addedRules = new ArrayList<Rule<DPO, RO>>();
         if (rule != null) {
             addedRules.add(rule);
         }
@@ -141,8 +141,8 @@ public class SingleDataProviderContext<DPO> {
      *
      * @return Context allowing further construction of the validator using the DSL.
      */
-    public <RO> MultipleRuleContext<DPO, DPO, RO> check(final Collection<Rule<DPO, RO>> rules) {
-        final List<Rule<DPO, RO>> addedRules = new ArrayList<Rule<DPO, RO>>();
+    public <RO> MultipleRuleContext<DPO, DPO, RO> check(Collection<Rule<DPO, RO>> rules) {
+        List<Rule<DPO, RO>> addedRules = new ArrayList<Rule<DPO, RO>>();
         if (rules != null) {
             addedRules.addAll(rules);
         }
