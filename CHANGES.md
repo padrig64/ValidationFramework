@@ -1,7 +1,9 @@
 # Version 2.0.1 (to be released)
 
 * Added ToStringTransformer in core
+* Added PropertyChangeTrigger in core
 * Fixed compilation warning when adding rule input transformer using the GeneralValidatorBuilder
+* Added comments
 
 # Version 2.0.0
 

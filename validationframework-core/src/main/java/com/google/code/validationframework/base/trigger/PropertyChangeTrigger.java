@@ -33,6 +33,9 @@ import java.beans.PropertyChangeListener;
 /**
  * Trigger that can be added as a {@link PropertyChangeListener} and triggers the validation when a property change
  * event is received.
+ * <p/>
+ * This is particularly handy if the entity you register to is based on a {@link java.beans.PropertyChangeSupport} or
+ * equivalent.
  *
  * @see AbstractTrigger
  * @see PropertyChangeListener
