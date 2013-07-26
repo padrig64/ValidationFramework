@@ -36,7 +36,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * TODO
+ * DSL-related context of the {@link GeneralValidatorBuilder} after adding one or more rule input transformers.
  *
  * @param <DPO>  Type of data provider output.
  * @param <TDPO> Type of rule input.
@@ -71,10 +71,10 @@ public class TransformedDataProviderContext<DPO, TDPO> {
      * @param dataProviderToRuleMapping  Data provider to rule mapping to be set.
      * @param addedRuleInputTransformers Rule input transformers to be added.
      */
-    public TransformedDataProviderContext(final Collection<Trigger> addedTriggers, //
-                                          final Collection<DataProvider<DPO>> addedDataProviders,
-                                          final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping,
-                                          final Collection<Transformer> addedRuleInputTransformers) {
+    public TransformedDataProviderContext(Collection<Trigger> addedTriggers, //
+                                          Collection<DataProvider<DPO>> addedDataProviders,
+                                          GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping,
+                                          Collection<Transformer> addedRuleInputTransformers) {
         this.addedTriggers = addedTriggers;
         this.addedDataProviders = addedDataProviders;
         this.dataProviderToRuleMapping = dataProviderToRuleMapping;
@@ -89,7 +89,7 @@ public class TransformedDataProviderContext<DPO, TDPO> {
      *
      * @return Context allowing further construction of the validator using the DSL.
      */
-    public <TTDPO> TransformedDataProviderContext transform(final Transformer<TDPO, TTDPO> ruleInputTransformer) {
+    public <TTDPO> TransformedDataProviderContext transform(Transformer<TDPO, TTDPO> ruleInputTransformer) {
         if (ruleInputTransformer != null) {
             addedRuleInputTransformers.add(ruleInputTransformer);
         }
@@ -107,8 +107,8 @@ public class TransformedDataProviderContext<DPO, TDPO> {
      *
      * @return Context allowing further construction of the validator using the DSL.
      */
-    public <RO> SingleRuleContext<DPO, TDPO, RO> check(final Rule<TDPO, RO> rule) {
-        final List<Rule<TDPO, RO>> addedRules = new ArrayList<Rule<TDPO, RO>>();
+    public <RO> SingleRuleContext<DPO, TDPO, RO> check(Rule<TDPO, RO> rule) {
+        List<Rule<TDPO, RO>> addedRules = new ArrayList<Rule<TDPO, RO>>();
         if (rule != null) {
             addedRules.add(rule);
         }
@@ -126,8 +126,8 @@ public class TransformedDataProviderContext<DPO, TDPO> {
      *
      * @return Context allowing further construction of the validator using the DSL.
      */
-    public <RO> MultipleRuleContext<DPO, TDPO, RO> check(final Collection<Rule<TDPO, RO>> rules) {
-        final List<Rule<TDPO, RO>> addedRules = new ArrayList<Rule<TDPO, RO>>();
+    public <RO> MultipleRuleContext<DPO, TDPO, RO> check(Collection<Rule<TDPO, RO>> rules) {
+        List<Rule<TDPO, RO>> addedRules = new ArrayList<Rule<TDPO, RO>>();
         if (rules != null) {
             addedRules.addAll(rules);
         }

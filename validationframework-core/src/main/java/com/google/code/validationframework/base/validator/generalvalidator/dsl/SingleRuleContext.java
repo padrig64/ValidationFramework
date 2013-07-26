@@ -37,7 +37,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * TODO
+ * DSL-related context of the {@link GeneralValidatorBuilder} after adding the first rule.
  *
  * @param <DPO> Type of data provider output.
  * @param <RI>  Type of rule input.
@@ -79,11 +79,11 @@ public class SingleRuleContext<DPO, RI, RO> {
      * @param addedRuleInputTransformers Rule input transformers to be added.
      * @param addedRules                 Rules to be added.
      */
-    public SingleRuleContext(final Collection<Trigger> addedTriggers, //
-                             final Collection<DataProvider<DPO>> addedDataProviders, //
-                             final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping, //
-                             final Collection<Transformer> addedRuleInputTransformers, //
-                             final Collection<Rule<RI, RO>> addedRules) {
+    public SingleRuleContext(Collection<Trigger> addedTriggers, //
+                             Collection<DataProvider<DPO>> addedDataProviders, //
+                             GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping, //
+                             Collection<Transformer> addedRuleInputTransformers, //
+                             Collection<Rule<RI, RO>> addedRules) {
         this.addedTriggers = addedTriggers;
         this.addedDataProviders = addedDataProviders;
         this.dataProviderToRuleMapping = dataProviderToRuleMapping;
@@ -98,7 +98,7 @@ public class SingleRuleContext<DPO, RI, RO> {
      *
      * @return Context allowing further construction of the validator using the DSL.
      */
-    public MultipleRuleContext<DPO, RI, RO> check(final Rule<RI, RO> rule) {
+    public MultipleRuleContext<DPO, RI, RO> check(Rule<RI, RO> rule) {
         if (rule != null) {
             addedRules.add(rule);
         }
@@ -115,7 +115,7 @@ public class SingleRuleContext<DPO, RI, RO> {
      *
      * @return Context allowing further construction of the validator using the DSL.
      */
-    public MultipleRuleContext<DPO, RI, RO> check(final Collection<Rule<RI, RO>> rules) {
+    public MultipleRuleContext<DPO, RI, RO> check(Collection<Rule<RI, RO>> rules) {
         if (rules != null) {
             addedRules.addAll(rules);
         }
@@ -133,9 +133,9 @@ public class SingleRuleContext<DPO, RI, RO> {
      *
      * @return Context allowing further construction of the validator using the DSL.
      */
-    public <TRO> TransformedRuleContext<DPO, RI, RO, TRO> transform(final Transformer<RO,
+    public <TRO> TransformedRuleContext<DPO, RI, RO, TRO> transform(Transformer<RO,
             TRO> resultHandlerInputTransformer) {
-        final List<Transformer> transformers = new ArrayList<Transformer>();
+        List<Transformer> transformers = new ArrayList<Transformer>();
         if (resultHandlerInputTransformer != null) {
             transformers.add(resultHandlerInputTransformer);
         }
@@ -152,8 +152,8 @@ public class SingleRuleContext<DPO, RI, RO> {
      *
      * @return Context allowing further construction of the validator using the DSL.
      */
-    public ResultHandlerContext<DPO, RI, RO, RO> handleWith(final ResultHandler<RO> resultHandler) {
-        final List<ResultHandler<RO>> addedResultHandlers = new ArrayList<ResultHandler<RO>>();
+    public ResultHandlerContext<DPO, RI, RO, RO> handleWith(ResultHandler<RO> resultHandler) {
+        List<ResultHandler<RO>> addedResultHandlers = new ArrayList<ResultHandler<RO>>();
         if (resultHandler != null) {
             addedResultHandlers.add(resultHandler);
         }
@@ -171,8 +171,8 @@ public class SingleRuleContext<DPO, RI, RO> {
      *
      * @return Context allowing further construction of the validator using the DSL.
      */
-    public ResultHandlerContext<DPO, RI, RO, RO> handleWith(final Collection<ResultHandler<RO>> resultHandlers) {
-        final List<ResultHandler<RO>> addedResultHandlers = new ArrayList<ResultHandler<RO>>();
+    public ResultHandlerContext<DPO, RI, RO, RO> handleWith(Collection<ResultHandler<RO>> resultHandlers) {
+        List<ResultHandler<RO>> addedResultHandlers = new ArrayList<ResultHandler<RO>>();
         if (resultHandlers != null) {
             addedResultHandlers.addAll(resultHandlers);
         }

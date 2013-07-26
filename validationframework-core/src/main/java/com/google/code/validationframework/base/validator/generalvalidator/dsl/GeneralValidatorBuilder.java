@@ -34,8 +34,11 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * General validator builder that can be used to construct a {@link com.google.code.validationframework.base.validator.generalvalidator.GeneralValidator} using a DSL.<br>Note that the
- * {@link com.google.code.validationframework.base.validator.generalvalidator.GeneralValidator} will be constructed and effective only after the addition of the first result handler.
+ * General validator builder that can be used to construct a {@link com.google.code.validationframework.base
+ * .validator.generalvalidator.GeneralValidator} using a DSL.
+ * <p/>
+ * Note that the {@link com.google.code.validationframework.base.validator.generalvalidator.GeneralValidator} will be
+ * constructed and effective only after the addition of the first result handler.
  *
  * @see com.google.code.validationframework.base.validator.generalvalidator.GeneralValidator
  */
@@ -55,8 +58,8 @@ public final class GeneralValidatorBuilder {
      *
      * @return Context allowing further construction of the validator using the DSL.
      */
-    public static TriggerContext on(final Trigger trigger) {
-        final List<Trigger> addedTriggers = new ArrayList<Trigger>();
+    public static TriggerContext on(Trigger trigger) {
+        List<Trigger> addedTriggers = new ArrayList<Trigger>();
         if (trigger != null) {
             addedTriggers.add(trigger);
         }
@@ -70,8 +73,8 @@ public final class GeneralValidatorBuilder {
      *
      * @return Context allowing further construction of the validator using the DSL.
      */
-    public static TriggerContext on(final Collection<Trigger> triggers) {
-        final List<Trigger> addedTriggers = new ArrayList<Trigger>();
+    public static TriggerContext on(Collection<Trigger> triggers) {
+        List<Trigger> addedTriggers = new ArrayList<Trigger>();
         if (triggers != null) {
             addedTriggers.addAll(triggers);
         }
@@ -86,9 +89,9 @@ public final class GeneralValidatorBuilder {
      *
      * @return Context allowing further construction of the validator using the DSL.
      */
-    public static <DPO> SingleResultCollectorContext<DPO> collect(final ResultCollector<?, DPO> resultCollector) {
-        final List<Trigger> addedTriggers = new ArrayList<Trigger>();
-        final List<DataProvider<DPO>> addedDataProviders = new ArrayList<DataProvider<DPO>>();
+    public static <DPO> SingleResultCollectorContext<DPO> collect(ResultCollector<?, DPO> resultCollector) {
+        List<Trigger> addedTriggers = new ArrayList<Trigger>();
+        List<DataProvider<DPO>> addedDataProviders = new ArrayList<DataProvider<DPO>>();
         if (resultCollector != null) {
             addedTriggers.add(resultCollector);
             addedDataProviders.add(resultCollector);
@@ -105,10 +108,10 @@ public final class GeneralValidatorBuilder {
      *
      * @return Context allowing further construction of the validator using the DSL.
      */
-    public static <DPO> MultipleResultCollectorContext<DPO> collect(final Collection<ResultCollector<?,
+    public static <DPO> MultipleResultCollectorContext<DPO> collect(Collection<ResultCollector<?,
             DPO>> resultCollectors) {
-        final List<Trigger> addedTriggers = new ArrayList<Trigger>();
-        final List<DataProvider<DPO>> addedDataProviders = new ArrayList<DataProvider<DPO>>();
+        List<Trigger> addedTriggers = new ArrayList<Trigger>();
+        List<DataProvider<DPO>> addedDataProviders = new ArrayList<DataProvider<DPO>>();
         if (resultCollectors != null) {
             addedTriggers.addAll(resultCollectors);
             addedDataProviders.addAll(resultCollectors);

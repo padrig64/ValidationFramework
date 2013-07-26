@@ -35,7 +35,7 @@ import com.google.code.validationframework.base.validator.generalvalidator.Gener
 import java.util.Collection;
 
 /**
- * TODO
+ * DSL-related context of the {@link GeneralValidatorBuilder} after adding one or more result handlers.
  *
  * @param <DPO> Type of data provider output.
  * @param <RI>  Type of rule input.

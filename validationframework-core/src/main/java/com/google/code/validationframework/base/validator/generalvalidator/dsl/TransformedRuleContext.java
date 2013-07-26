@@ -37,7 +37,8 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * TODO
+ * DSL-related context of the {@link GeneralValidatorBuilder} after adding one or more result handler input
+ * transformers.
  *
  * @param <DPO> Type of data provider output.
  * @param <RI>  Type of rule input.
@@ -93,13 +94,13 @@ public class TransformedRuleContext<DPO, RI, RO, TRO> {
      * @param addedResultHandlerInputTransformers
      *                                   Result handler input transformers to be added.
      */
-    public TransformedRuleContext(final Collection<Trigger> addedTriggers, //
-                                  final Collection<DataProvider<DPO>> addedDataProviders, //
-                                  final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping, //
-                                  final Collection<Transformer> addedRuleInputTransformers, //
-                                  final Collection<Rule<RI, RO>> addedRules, //
-                                  final GeneralValidator.RuleToResultHandlerMapping ruleToResultHandlerMapping,
-                                  final Collection<Transformer> addedResultHandlerInputTransformers) {
+    public TransformedRuleContext(Collection<Trigger> addedTriggers, //
+                                  Collection<DataProvider<DPO>> addedDataProviders, //
+                                  GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping, //
+                                  Collection<Transformer> addedRuleInputTransformers, //
+                                  Collection<Rule<RI, RO>> addedRules, //
+                                  GeneralValidator.RuleToResultHandlerMapping ruleToResultHandlerMapping,
+                                  Collection<Transformer> addedResultHandlerInputTransformers) {
         this.addedTriggers = addedTriggers;
         this.addedDataProviders = addedDataProviders;
         this.dataProviderToRuleMapping = dataProviderToRuleMapping;
@@ -117,7 +118,7 @@ public class TransformedRuleContext<DPO, RI, RO, TRO> {
      *
      * @return Context allowing further construction of the validator using the DSL.
      */
-    public <TTRO> TransformedRuleContext<DPO, RI, RO, TTRO> transform(final Transformer<TRO,
+    public <TTRO> TransformedRuleContext<DPO, RI, RO, TTRO> transform(Transformer<TRO,
             TTRO> resultHandlerInputTransformer) {
         if (resultHandlerInputTransformer != null) {
             addedResultHandlerInputTransformers.add(resultHandlerInputTransformer);
@@ -136,8 +137,8 @@ public class TransformedRuleContext<DPO, RI, RO, TRO> {
      *
      * @return Context allowing further construction of the validator using the DSL.
      */
-    public ResultHandlerContext<DPO, RI, RO, TRO> handleWith(final ResultHandler<TRO> resultHandler) {
-        final List<ResultHandler<TRO>> addedResultHandlers = new ArrayList<ResultHandler<TRO>>();
+    public ResultHandlerContext<DPO, RI, RO, TRO> handleWith(ResultHandler<TRO> resultHandler) {
+        List<ResultHandler<TRO>> addedResultHandlers = new ArrayList<ResultHandler<TRO>>();
         if (resultHandler != null) {
             addedResultHandlers.add(resultHandler);
         }
@@ -155,8 +156,8 @@ public class TransformedRuleContext<DPO, RI, RO, TRO> {
      *
      * @return Context allowing further construction of the validator using the DSL.
      */
-    public ResultHandlerContext<DPO, RI, RO, TRO> handleWith(final Collection<ResultHandler<TRO>> resultHandlers) {
-        final List<ResultHandler<TRO>> addedResultHandlers = new ArrayList<ResultHandler<TRO>>();
+    public ResultHandlerContext<DPO, RI, RO, TRO> handleWith(Collection<ResultHandler<TRO>> resultHandlers) {
+        List<ResultHandler<TRO>> addedResultHandlers = new ArrayList<ResultHandler<TRO>>();
         if (resultHandlers != null) {
             addedResultHandlers.addAll(resultHandlers);
         }

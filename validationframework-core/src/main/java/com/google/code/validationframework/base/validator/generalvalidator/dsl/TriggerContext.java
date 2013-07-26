@@ -33,7 +33,9 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * TODO
+ * DSL-related context of the {@link GeneralValidatorBuilder} after adding one or more triggers.
+ *
+ * @see GeneralValidatorBuilder
  */
 public class TriggerContext {
 
@@ -47,7 +49,7 @@ public class TriggerContext {
      *
      * @param addedTriggers Triggers to be added.
      */
-    public TriggerContext(final Collection<Trigger> addedTriggers) {
+    public TriggerContext(Collection<Trigger> addedTriggers) {
         this.addedTriggers = addedTriggers;
     }
 
@@ -58,7 +60,7 @@ public class TriggerContext {
      *
      * @return Context allowing further construction of the validator using the DSL.
      */
-    public TriggerContext on(final Trigger trigger) {
+    public TriggerContext on(Trigger trigger) {
         if (trigger != null) {
             addedTriggers.add(trigger);
         }
@@ -74,7 +76,7 @@ public class TriggerContext {
      *
      * @return Context allowing further construction of the validator using the DSL.
      */
-    public TriggerContext on(final Collection<Trigger> triggers) {
+    public TriggerContext on(Collection<Trigger> triggers) {
         if (triggers != null) {
             addedTriggers.addAll(triggers);
         }
@@ -91,8 +93,8 @@ public class TriggerContext {
      *
      * @return Context allowing further construction of the validator using the DSL.
      */
-    public <DPO> SingleDataProviderContext<DPO> read(final DataProvider<DPO> dataProvider) {
-        final List<DataProvider<DPO>> addedDataProviders = new ArrayList<DataProvider<DPO>>();
+    public <DPO> SingleDataProviderContext<DPO> read(DataProvider<DPO> dataProvider) {
+        List<DataProvider<DPO>> addedDataProviders = new ArrayList<DataProvider<DPO>>();
         if (dataProvider != null) {
             addedDataProviders.add(dataProvider);
         }
@@ -109,8 +111,8 @@ public class TriggerContext {
      *
      * @return Context allowing further construction of the validator using the DSL.
      */
-    public <DPO> MultipleDataProviderContext<DPO> read(final Collection<DataProvider<DPO>> dataProviders) {
-        final List<DataProvider<DPO>> addedDataProviders = new ArrayList<DataProvider<DPO>>();
+    public <DPO> MultipleDataProviderContext<DPO> read(Collection<DataProvider<DPO>> dataProviders) {
+        List<DataProvider<DPO>> addedDataProviders = new ArrayList<DataProvider<DPO>>();
         if (dataProviders != null) {
             addedDataProviders.addAll(dataProviders);
         }

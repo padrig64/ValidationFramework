@@ -37,7 +37,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * TODO
+ * DSL-related context of the {@link GeneralValidatorBuilder} after adding the first result collector.
  *
  * @param <DPO> Type of data provider output.
  */
@@ -59,7 +59,7 @@ public class SingleResultCollectorContext<DPO> {
      * @param addedTriggers      Triggers to be added.
      * @param addedDataProviders Data providers to be added.
      */
-    public SingleResultCollectorContext(final Collection<Trigger> addedTriggers, final Collection<DataProvider<DPO>>
+    public SingleResultCollectorContext(Collection<Trigger> addedTriggers, Collection<DataProvider<DPO>>
             addedDataProviders) {
         this.addedTriggers = addedTriggers;
         this.addedDataProviders = addedDataProviders;
@@ -72,7 +72,7 @@ public class SingleResultCollectorContext<DPO> {
      *
      * @return Context allowing further construction of the validator using the DSL.
      */
-    public MultipleResultCollectorContext<DPO> collect(final ResultCollector<?, DPO> resultCollector) {
+    public MultipleResultCollectorContext<DPO> collect(ResultCollector<?, DPO> resultCollector) {
         if (resultCollector != null) {
             addedTriggers.add(resultCollector);
             addedDataProviders.add(resultCollector);
@@ -89,7 +89,7 @@ public class SingleResultCollectorContext<DPO> {
      *
      * @return Context allowing further construction of the validator using the DSL.
      */
-    public MultipleResultCollectorContext<DPO> collect(final Collection<ResultCollector<?, DPO>> resultCollectors) {
+    public MultipleResultCollectorContext<DPO> collect(Collection<ResultCollector<?, DPO>> resultCollectors) {
         if (resultCollectors != null) {
             addedTriggers.addAll(resultCollectors);
             addedDataProviders.addAll(resultCollectors);
@@ -107,8 +107,8 @@ public class SingleResultCollectorContext<DPO> {
      *
      * @return Context allowing further construction of the validator using the DSL.
      */
-    public <TDPO> TransformedDataProviderContext transform(final Transformer<DPO, TDPO> ruleInputTransformer) {
-        final List<Transformer> addedTransformers = new ArrayList<Transformer>();
+    public <TDPO> TransformedDataProviderContext transform(Transformer<DPO, TDPO> ruleInputTransformer) {
+        List<Transformer> addedTransformers = new ArrayList<Transformer>();
         if (ruleInputTransformer != null) {
             addedTransformers.add(ruleInputTransformer);
         }
@@ -125,8 +125,8 @@ public class SingleResultCollectorContext<DPO> {
      *
      * @return Context allowing further construction of the validator using the DSL.
      */
-    public <RO> SingleRuleContext<DPO, DPO, RO> check(final Rule<DPO, RO> rule) {
-        final List<Rule<DPO, RO>> addedRules = new ArrayList<Rule<DPO, RO>>();
+    public <RO> SingleRuleContext<DPO, DPO, RO> check(Rule<DPO, RO> rule) {
+        List<Rule<DPO, RO>> addedRules = new ArrayList<Rule<DPO, RO>>();
         if (rule != null) {
             addedRules.add(rule);
         }
@@ -144,8 +144,8 @@ public class SingleResultCollectorContext<DPO> {
      *
      * @return Context allowing further construction of the validator using the DSL.
      */
-    public <RO> SingleRuleContext<DPO, DPO, RO> check(final Collection<Rule<DPO, RO>> rules) {
-        final List<Rule<DPO, RO>> addedRules = new ArrayList<Rule<DPO, RO>>();
+    public <RO> SingleRuleContext<DPO, DPO, RO> check(Collection<Rule<DPO, RO>> rules) {
+        List<Rule<DPO, RO>> addedRules = new ArrayList<Rule<DPO, RO>>();
         if (rules != null) {
             addedRules.addAll(rules);
         }

@@ -36,9 +36,11 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * TODO
+ * DSL-related context of the {@link GeneralValidatorBuilder} after adding the first data provider.
  *
  * @param <DPO> Type of data provider output.
+ *
+ * @see GeneralValidatorBuilder
  */
 public class SingleDataProviderContext<DPO> {
 

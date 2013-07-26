@@ -36,7 +36,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * TODO
+ * DSL-related context of the {@link GeneralValidatorBuilder} after adding more data providers.
  *
  * @param <DPO> Type of data provider output.
  */
@@ -58,8 +58,8 @@ public class MultipleDataProviderContext<DPO> {
      * @param addedTriggers      Triggers to be added.
      * @param addedDataProviders Data providers to be added.
      */
-    public MultipleDataProviderContext(final Collection<Trigger> addedTriggers, //
-                                       final Collection<DataProvider<DPO>> addedDataProviders) {
+    public MultipleDataProviderContext(Collection<Trigger> addedTriggers, //
+                                       Collection<DataProvider<DPO>> addedDataProviders) {
         this.addedTriggers = addedTriggers;
         this.addedDataProviders = addedDataProviders;
     }
@@ -71,7 +71,7 @@ public class MultipleDataProviderContext<DPO> {
      *
      * @return Context allowing further construction of the validator using the DSL.
      */
-    public MultipleDataProviderContext<DPO> read(final DataProvider<DPO> dataProvider) {
+    public MultipleDataProviderContext<DPO> read(DataProvider<DPO> dataProvider) {
         if (dataProvider != null) {
             addedDataProviders.add(dataProvider);
         }
@@ -87,7 +87,7 @@ public class MultipleDataProviderContext<DPO> {
      *
      * @return Context allowing further construction of the validator using the DSL.
      */
-    public MultipleDataProviderContext<DPO> read(final Collection<DataProvider<DPO>> dataProviders) {
+    public MultipleDataProviderContext<DPO> read(Collection<DataProvider<DPO>> dataProviders) {
         if (dataProviders != null) {
             addedDataProviders.addAll(dataProviders);
         }
@@ -117,9 +117,9 @@ public class MultipleDataProviderContext<DPO> {
      *
      * @return Context allowing further construction of the validator using the DSL.
      */
-    public <TDPO> TransformedDataProviderContext transform(final Transformer<Collection<DPO>,
+    public <TDPO> TransformedDataProviderContext transform(Transformer<Collection<DPO>,
             TDPO> ruleInputTransformer) {
-        final List<Transformer> transformers = new ArrayList<Transformer>();
+        List<Transformer> transformers = new ArrayList<Transformer>();
         if (ruleInputTransformer != null) {
             transformers.add(ruleInputTransformer);
         }
@@ -136,8 +136,8 @@ public class MultipleDataProviderContext<DPO> {
      *
      * @return Context allowing further construction of the validator using the DSL.
      */
-    public <RO> SingleRuleContext<DPO, Collection<DPO>, RO> check(final Rule<Collection<DPO>, RO> rule) {
-        final List<Rule<Collection<DPO>, RO>> addedRules = new ArrayList<Rule<Collection<DPO>, RO>>();
+    public <RO> SingleRuleContext<DPO, Collection<DPO>, RO> check(Rule<Collection<DPO>, RO> rule) {
+        List<Rule<Collection<DPO>, RO>> addedRules = new ArrayList<Rule<Collection<DPO>, RO>>();
         if (rule != null) {
             addedRules.add(rule);
         }
@@ -155,8 +155,8 @@ public class MultipleDataProviderContext<DPO> {
      *
      * @return Context allowing further construction of the validator using the DSL.
      */
-    public <RO> SingleRuleContext<DPO, Collection<DPO>, RO> check(final Collection<Rule<Collection<DPO>, RO>> rules) {
-        final List<Rule<Collection<DPO>, RO>> addedRules = new ArrayList<Rule<Collection<DPO>, RO>>();
+    public <RO> SingleRuleContext<DPO, Collection<DPO>, RO> check(Collection<Rule<Collection<DPO>, RO>> rules) {
+        List<Rule<Collection<DPO>, RO>> addedRules = new ArrayList<Rule<Collection<DPO>, RO>>();
         if (rules != null) {
             addedRules.addAll(rules);
         }
