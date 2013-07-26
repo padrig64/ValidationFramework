@@ -32,9 +32,8 @@ import com.google.code.validationframework.experimental.builder.context.resultco
 import java.util.Collection;
 
 /**
- * @deprecated Use {@link com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder} instead.
+ * Use {@link com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder} instead.
  */
-@Deprecated
 public final class ResultCollectorValidatorBuilder {
 
     /**
@@ -45,28 +44,26 @@ public final class ResultCollectorValidatorBuilder {
     }
 
     /**
-     * @deprecated Use {@link com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder} instead.
+     * Use {@link com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder}
+     * instead.
      */
-    @Deprecated
-    public static <D> RuleContext<D> collect(final ResultCollector<?, D> resultCollector) {
+    public static <D> RuleContext<D> collect(ResultCollector<?, D> resultCollector) {
         return new ResultCollectorContext().collect(resultCollector);
     }
 
     /**
-     * @deprecated Use {@link com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder} instead.
+     * Use {@link com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder}
+     * instead.
      */
-    @Deprecated
-    public static <D> RuleContext<D> collect(final ResultCollector<?, D>... resultCollectors) {
+    public static <D> RuleContext<D> collect(ResultCollector<?, D>... resultCollectors) {
         return new ResultCollectorContext().collect(resultCollectors);
     }
 
     /**
-     * @deprecated Use {@link com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder} instead.
+     * Use {@link com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder}
+     * instead.
      */
-    @Deprecated
-    public static <D> RuleContext<D> collect(final Collection<ResultCollector<?, D>> resultCollectors) {
+    public static <D> RuleContext<D> collect(Collection<ResultCollector<?, D>> resultCollectors) {
         return new ResultCollectorContext().collect(resultCollectors);
     }
-
-    // TODO Collect from validator
 }

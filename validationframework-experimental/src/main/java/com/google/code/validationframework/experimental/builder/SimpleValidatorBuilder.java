@@ -32,9 +32,8 @@ import com.google.code.validationframework.experimental.builder.context.simpleva
 import java.util.Collection;
 
 /**
- * @deprecated Use {@link com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder} instead.
+ * Use {@link com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder} instead.
  */
-@Deprecated
 public final class SimpleValidatorBuilder {
 
     /**
@@ -45,34 +44,34 @@ public final class SimpleValidatorBuilder {
     }
 
     /**
-     * @deprecated Use {@link com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder} instead.
+     * Use {@link com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder}
+     * instead.
      */
-    @Deprecated
-    public static DataProviderContext on(final Trigger trigger) {
+    public static DataProviderContext on(Trigger trigger) {
         return new TriggerContext().on(trigger);
     }
 
     /**
-     * @deprecated Use {@link com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder} instead.
+     * Use {@link com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder}
+     * instead.
      */
-    @Deprecated
-    public static DataProviderContext on(final Trigger... triggers) {
+    public static DataProviderContext on(Trigger... triggers) {
         return new TriggerContext().on(triggers);
     }
 
     /**
-     * @deprecated Use {@link com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder} instead.
+     * Use {@link com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder}
+     * instead.
      */
-    @Deprecated
-    public static DataProviderContext on(final Collection<Trigger> triggers) {
+    public static DataProviderContext on(Collection<Trigger> triggers) {
         return new TriggerContext().on(triggers);
     }
 
     /**
-     * @deprecated Use {@link com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder} instead.
+     * Use {@link com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder}
+     * instead.
      */
-    @Deprecated
-    public static DataProviderContext on(final Class<? extends Trigger> triggerClass) {
+    public static DataProviderContext on(Class<? extends Trigger> triggerClass) {
         return new TriggerContext().on(triggerClass);
     }
 }
