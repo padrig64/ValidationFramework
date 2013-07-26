@@ -37,6 +37,10 @@ import org.slf4j.LoggerFactory;
  * bound to a known specific type of data, and result handlers that are bound to a known specific type of
  * result.<br>When any of its triggers is initiated, the simple validator will read all the data from all of its data
  * providers, check them all against all of its rules, and handles all the results using all of its result handlers.
+ * <p/>
+ * Use {@link com.google.code.validationframework.base.validator.generalvalidator.GeneralValidator} or
+ * {@link com.google.code.validationframework.base.validator.generalvalidator.dsl
+ * .GeneralValidatorBuilder} instead.
  *
  * @param <RI> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
  *             type of the component itself.
@@ -47,11 +51,7 @@ import org.slf4j.LoggerFactory;
  * @see DataProvider
  * @see Rule
  * @see ResultHandler
- * @deprecated Use {@link com.google.code.validationframework.base.validator.generalvalidator.GeneralValidator} or
- *             {@link com.google.code.validationframework.base.validator.generalvalidator.dsl
- *             .GeneralValidatorBuilder} instead.
  */
-@Deprecated
 public class DefaultSimpleValidator<RI, RO> extends AbstractSimpleValidator<Trigger, DataProvider<RI>, RI, Rule<RI,
         RO>, RI, RO, ResultHandler<RO>, RO> {
 

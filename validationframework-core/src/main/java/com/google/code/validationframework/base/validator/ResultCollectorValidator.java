@@ -45,6 +45,9 @@ import java.util.Collection;
  * them all against all of its rules, and handles all the results using all of its result handlers.<br>The result
  * collector validator can be useful to aggregate the validation from a group of components (for instance, from
  * different tabs) to enable/disable some buttons accordingly.
+ * <p/>
+ * Use {@link com.google.code.validationframework.base.validator.generalvalidator.GeneralValidator} or
+ * {@link com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder} instead.
  *
  * @param <RI> Type of data handled by this validator, that is to say, the collected results from other validators.
  * @param <RO> Type of validation result of this validator.<br>It can be, for instance, an enumeration or just a
@@ -56,11 +59,7 @@ import java.util.Collection;
  * @see DataProvider
  * @see Rule
  * @see ResultHandler
- * @deprecated Use {@link com.google.code.validationframework.base.validator.generalvalidator.GeneralValidator} or
- *             {@link com.google.code.validationframework.base.validator.generalvalidator.dsl
- *             .GeneralValidatorBuilder} instead.
  */
-@Deprecated
 public class ResultCollectorValidator<RI, RO> extends AbstractSimpleValidator<Trigger, DataProvider<RI>, RI,
         Rule<Collection<RI>, RO>, Collection<RI>, RO, ResultHandler<RO>, RO> {
 

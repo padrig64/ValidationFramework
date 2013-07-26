@@ -30,6 +30,9 @@ import com.google.code.validationframework.base.transform.OrBooleanAggregator;
 /**
  * Simple validator using boolean results and aggregating all results from the rules into a single result using the OR
  * operation.
+ * <p/>
+ * Use {@link com.google.code.validationframework.base.validator.generalvalidator.GeneralValidator} or
+ * {@link com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder} instead.
  *
  * @param <RI> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
  *             type of the component itself.
@@ -37,11 +40,7 @@ import com.google.code.validationframework.base.transform.OrBooleanAggregator;
  * @see ResultAggregationValidator
  * @see OrBooleanAggregator
  * @see AndSimpleValidator
- * @deprecated Use {@link com.google.code.validationframework.base.validator.generalvalidator.GeneralValidator} or
- *             {@link com.google.code.validationframework.base.validator.generalvalidator.dsl
- *             .GeneralValidatorBuilder} instead.
  */
-@Deprecated
 public class OrSimpleValidator<RI> extends ResultAggregationValidator<RI, Boolean, Boolean> {
 
     /**

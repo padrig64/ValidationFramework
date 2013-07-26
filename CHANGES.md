@@ -5,7 +5,8 @@
 
 # Version 2.0.0
 
-* Changed groupid from validationframework to com.google.code.validation for future availability in Maven Central
+* Changed groupid from 'validationframework' to 'com.google.code.validationframework' for future availability in Maven Central
+* Added all-purpose GeneralValidator and GeneralValidatorBuilder that can replace all the previously existing validators
 * Improved javadoc
 * Migrated to JNA 3.5.2, MigLayout 4.2 and SLF4J 1.7.5
 * Added transformers data providers based on the Swing components that use Object in their interface

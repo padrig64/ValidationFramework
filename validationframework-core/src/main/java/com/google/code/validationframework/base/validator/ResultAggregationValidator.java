@@ -40,6 +40,9 @@ import java.util.Collection;
  * Concrete implementation of a simple validator that aggregates the results of all the rules into a single result
  * before passing it to the results handlers.<br>This can be useful, for instance, to combine boolean results using the
  * AND or OR operations.
+ * <p/>
+ * Use {@link com.google.code.validationframework.base.validator.generalvalidator.GeneralValidator} or
+ * {@link com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder} instead.
  *
  * @param <RI>  Type of data to be validated.<br>It can be, for instance, the type of data handled by a component,
  *              or the type of the component itself.
@@ -52,11 +55,7 @@ import java.util.Collection;
  * @see DataProvider
  * @see Rule
  * @see ResultHandler
- * @deprecated Use {@link com.google.code.validationframework.base.validator.generalvalidator.GeneralValidator} or
- *             {@link com.google.code.validationframework.base.validator.generalvalidator.dsl
- *             .GeneralValidatorBuilder} instead.
  */
-@Deprecated
 public class ResultAggregationValidator<RI, RO, RHI> extends AbstractSimpleValidator<Trigger, DataProvider<RI>, RI,
         Rule<RI, RO>, RI, RO, ResultHandler<RHI>, RHI> {
 
