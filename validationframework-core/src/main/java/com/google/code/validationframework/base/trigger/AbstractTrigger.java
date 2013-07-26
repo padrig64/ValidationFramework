@@ -34,9 +34,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Abstract implementation of a typical trigger.<br>It merely implements the methods to add and remove trigger
- * listeners, and provides the method {@link #fireTriggerEvent(TriggerEvent)} to fire a trigger event to these
- * listeners.<br>However, the call of this method is left to the sub-classes.
+ * Abstract implementation of a typical trigger.
+ * <p/>
+ * It merely implements the methods to add and remove trigger listeners, and provides the method {@link
+ * #fireTriggerEvent(TriggerEvent)} to fire a trigger event to these listeners. However, the call of this method is left
+ * to the sub-classes.
  *
  * @see Trigger
  * @see TriggerListener
@@ -54,7 +56,7 @@ public abstract class AbstractTrigger implements Trigger, Disposable {
      * @see Trigger#addTriggerListener(TriggerListener)
      */
     @Override
-    public void addTriggerListener(final TriggerListener listener) {
+    public void addTriggerListener(TriggerListener listener) {
         listeners.add(listener);
     }
 
@@ -62,7 +64,7 @@ public abstract class AbstractTrigger implements Trigger, Disposable {
      * @see Trigger#removeTriggerListener(TriggerListener)
      */
     @Override
-    public void removeTriggerListener(final TriggerListener listener) {
+    public void removeTriggerListener(TriggerListener listener) {
         listeners.remove(listener);
     }
 
@@ -71,8 +73,8 @@ public abstract class AbstractTrigger implements Trigger, Disposable {
      *
      * @param event Trigger event to be fired.
      */
-    protected void fireTriggerEvent(final TriggerEvent event) {
-        for (final TriggerListener listener : listeners) {
+    protected void fireTriggerEvent(TriggerEvent event) {
+        for (TriggerListener listener : listeners) {
             listener.triggerValidation(event);
         }
     }
@@ -82,7 +84,7 @@ public abstract class AbstractTrigger implements Trigger, Disposable {
      */
     @Override
     public void dispose() {
-        for (final TriggerListener listener : listeners) {
+        for (TriggerListener listener : listeners) {
             if (listener instanceof Disposable) {
                 ((Disposable) listener).dispose();
             }

@@ -27,52 +27,25 @@ package com.google.code.validationframework.base.trigger;
 
 import com.google.code.validationframework.api.trigger.TriggerEvent;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 /**
- * Trigger allowing the programmer to fire trigger events using a single method call.
- * <p/>
- * This is for convenience purposes as it allows to trigger validation at convenient times without having to implement a
- * custom {@link com.google.code.validationframework.api.trigger.Trigger}. It can be used, for instance, to trigger an
- * initial validation when a dialog pops up, or when some other events occur in the system.
+ * Trigger that can be added as a {@link PropertyChangeListener} and triggers the validation when a property change
+ * event is received.
  *
  * @see AbstractTrigger
+ * @see PropertyChangeListener
  */
-public class ManualTrigger extends AbstractTrigger {
+public class PropertyChangeTrigger extends AbstractTrigger implements PropertyChangeListener {
 
     /**
-     * @deprecated Use {@link #trigger()} instead.<br>This method will be removed in future releases.
-     */
-    @Deprecated
-    public void fireTriggerEvent() {
-        trigger();
-    }
-
-    /**
-     * Fires a default trigger event whose source is this trigger.
+     * Triggers the validation when the property change event is received.
      *
-     * @see #trigger(TriggerEvent)
-     * @see TriggerEvent
+     * @see PropertyChangeListener#propertyChange(PropertyChangeEvent)
      */
-    public void trigger() {
-        super.fireTriggerEvent(new TriggerEvent(this));
-    }
-
-    /**
-     * @deprecated Use {@link #trigger(TriggerEvent)} instead.<br>This method will be made protected again in future
-     *             releases.
-     */
-    @Deprecated
     @Override
-    public void fireTriggerEvent(TriggerEvent event) {
-        super.fireTriggerEvent(event);
-    }
-
-    /**
-     * Fires the specified trigger event.<br>This method, from the super class, has been made public for convenience.
-     *
-     * @see AbstractTrigger#fireTriggerEvent(TriggerEvent)
-     * @see TriggerEvent
-     */
-    public void trigger(TriggerEvent event) {
-        super.fireTriggerEvent(event);
+    public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
+        fireTriggerEvent(new TriggerEvent(propertyChangeEvent.getSource()));
     }
 }
