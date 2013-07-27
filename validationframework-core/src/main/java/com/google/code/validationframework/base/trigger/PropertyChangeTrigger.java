@@ -62,7 +62,8 @@ public class PropertyChangeTrigger extends AbstractTrigger implements PropertyCh
     /**
      * Constructor specifying the properties to initiate the validation.
      * <p/>
-     * Any other property change will not initiate the validation.
+     * Any other property change will not initiate the validation. However, if the specified collection is empty, any
+     * property change will initiate the validation.
      *
      * @param triggerProperties Property names to initiate the validation.
      */
@@ -73,7 +74,8 @@ public class PropertyChangeTrigger extends AbstractTrigger implements PropertyCh
     /**
      * Constructor specifying the properties to initiate the validation.
      * <p/>
-     * Any other property change will not initiate the validation.
+     * Any other property change will not initiate the validation. However, if the specified collection is empty, any
+     * property change will initiate the validation.
      *
      * @param triggerProperties Property names to initiate the validation.
      */
@@ -88,7 +90,8 @@ public class PropertyChangeTrigger extends AbstractTrigger implements PropertyCh
      */
     @Override
     public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-        if ((triggerProperties == null) || triggerProperties.contains(propertyChangeEvent.getPropertyName())) {
+        if ((triggerProperties == null) || triggerProperties.isEmpty() || triggerProperties.contains
+                (propertyChangeEvent.getPropertyName())) {
             fireTriggerEvent(new TriggerEvent(propertyChangeEvent.getSource()));
         }
     }
