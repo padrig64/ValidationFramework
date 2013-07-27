@@ -29,6 +29,9 @@ import com.google.code.validationframework.api.trigger.TriggerEvent;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 
 /**
  * Trigger that can be added as a {@link PropertyChangeListener} and triggers the validation when a property change
@@ -36,11 +39,47 @@ import java.beans.PropertyChangeListener;
  * <p/>
  * This is particularly handy if the entity you register to is based on a {@link java.beans.PropertyChangeSupport} or
  * equivalent.
+ * <p/>
+ * However, it is still possible in this trigger to initiate the validation only on some properties, instead of all
+ * properties.
  *
  * @see AbstractTrigger
  * @see PropertyChangeListener
  */
 public class PropertyChangeTrigger extends AbstractTrigger implements PropertyChangeListener {
+
+    private final Collection<String> triggerProperties;
+
+    /**
+     * Default constructor.
+     * <p/>
+     * The trigger will initiate the validation whenever any property change is trigger.
+     */
+    public PropertyChangeTrigger() {
+        this.triggerProperties = null;
+    }
+
+    /**
+     * Constructor specifying the properties to initiate the validation.
+     * <p/>
+     * Any other property change will not initiate the validation.
+     *
+     * @param triggerProperties Property names to initiate the validation.
+     */
+    public PropertyChangeTrigger(String... triggerProperties) {
+        this.triggerProperties = Arrays.asList(triggerProperties);
+    }
+
+    /**
+     * Constructor specifying the properties to initiate the validation.
+     * <p/>
+     * Any other property change will not initiate the validation.
+     *
+     * @param triggerProperties Property names to initiate the validation.
+     */
+    public PropertyChangeTrigger(Collection<String> triggerProperties) {
+        this.triggerProperties = new ArrayList<String>(triggerProperties);
+    }
 
     /**
      * Triggers the validation when the property change event is received.
@@ -49,6 +88,8 @@ public class PropertyChangeTrigger extends AbstractTrigger implements PropertyCh
      */
     @Override
     public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-        fireTriggerEvent(new TriggerEvent(propertyChangeEvent.getSource()));
+        if ((triggerProperties == null) || triggerProperties.contains(propertyChangeEvent.getPropertyName())) {
+            fireTriggerEvent(new TriggerEvent(propertyChangeEvent.getSource()));
+        }
     }
 }
