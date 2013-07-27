@@ -23,52 +23,49 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.base.transform;
+package com.google.code.validationframework.base.resulthandler;
 
+import com.google.code.validationframework.api.resulthandler.ResultHandler;
+import com.google.code.validationframework.base.transform.ToStringTransformer;
 import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class CollectionElementTransformerTest {
+public class TransformedResultHandlerTest {
 
     @Test
     public void testNonNull() {
-        CollectionElementTransformer<Long, String> transformer = new CollectionElementTransformer<Long,
-                String>(new ToStringTransformer<Long>());
+        TransformedResultHandler<Boolean, String> resultHandler = new TransformedResultHandler<Boolean,
+                String>(new ToStringTransformer<Boolean>(), new ResultHandler<String>() {
 
-        // Prepare input to be transformed
-        List<Long> input = new ArrayList<Long>();
-        for (long i = 1000; i < 1030; i++) {
-            input.add(i);
-        }
+            @Override
+            public void handleResult(String result) {
+                assertEquals("true", result);
+            }
+        });
+        resultHandler.handleResult(true);
 
-        // Perform transformation
-        Collection<String> output = transformer.transform(input);
+        resultHandler = new TransformedResultHandler<Boolean, String>(new ToStringTransformer<Boolean>(),
+                new ResultHandler<String>() {
 
-        // Check output
-        int i = 0;
-        for (String outputElement : output) {
-            assertEquals(input.get(i++).longValue(), Long.parseLong(outputElement));
-        }
+            @Override
+            public void handleResult(String result) {
+                assertEquals("false", result);
+            }
+        });
+        resultHandler.handleResult(false);
     }
 
     @Test
     public void testNull() {
-        CollectionElementTransformer<Long, String> transformer = new CollectionElementTransformer<Long,
-                String>(new ToStringTransformer<Long>("null value"));
+        TransformedResultHandler<Boolean, String> resultHandler = new TransformedResultHandler<Boolean,
+                String>(new ToStringTransformer<Boolean>("null value"), new ResultHandler<String>() {
 
-        // Prepare input to be transformed
-        List<Long> input = new ArrayList<Long>();
-        input.add(null);
-
-        // Perform transformation
-        Collection<String> output = transformer.transform(input);
-
-        // Check output
-        assertEquals("null value", output.iterator().next());
+            @Override
+            public void handleResult(String result) {
+                assertEquals("null value", result);
+            }
+        });
+        resultHandler.handleResult(null);
     }
 }

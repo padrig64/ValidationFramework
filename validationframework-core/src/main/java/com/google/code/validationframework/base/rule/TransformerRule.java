@@ -50,7 +50,7 @@ public class TransformerRule<RI, RO> implements Rule<RI, RO>, Disposable {
      *
      * @param transformer Transformer to be used to produce the results.
      */
-    public TransformerRule(final Transformer<RI, RO> transformer) {
+    public TransformerRule(Transformer<RI, RO> transformer) {
         this.transformer = transformer;
     }
 
@@ -58,7 +58,7 @@ public class TransformerRule<RI, RO> implements Rule<RI, RO>, Disposable {
      * @see Rule#validate(Object)
      */
     @Override
-    public RO validate(final RI data) {
+    public RO validate(RI data) {
         RO transformedData = null;
 
         if (transformer != null) {

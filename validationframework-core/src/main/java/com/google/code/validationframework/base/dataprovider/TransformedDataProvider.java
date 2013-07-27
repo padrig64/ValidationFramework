@@ -62,8 +62,7 @@ public class TransformedDataProvider<DPO, TDPO> implements DataProvider<TDPO>, D
      *                            provided data will be cast to the wanted type. In case the data cannot be cast, null
      *                            will be provided.
      */
-    public TransformedDataProvider(final DataProvider<DPO> wrappedDataProvider, final Transformer<DPO,
-            TDPO> dataTransformer) {
+    public TransformedDataProvider(DataProvider<DPO> wrappedDataProvider, Transformer<DPO, TDPO> dataTransformer) {
         this.wrappedDataProvider = wrappedDataProvider;
         if (dataTransformer == null) {
             this.dataTransformer = new CastTransformer<DPO, TDPO>();

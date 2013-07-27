@@ -33,10 +33,9 @@ import static org.junit.Assert.assertTrue;
 public class ToStringTransformerTest {
 
     @Test
-    public void testToStringTransformer() {
-        ToStringTransformer<Object> transformer = new ToStringTransformer<Object>();
-
+    public void testNonNull() {
         // Test simple object
+        ToStringTransformer<Object> transformer = new ToStringTransformer<Object>();
         assertTrue(transformer.transform(new Object()).startsWith("java.lang.Object@"));
 
         // Test number
@@ -44,8 +43,16 @@ public class ToStringTransformerTest {
         assertEquals("341.1", transformer.transform(341.1f));
         assertEquals("-341.1", transformer.transform(-341.1f));
 
-        // Test default value
+
+    }
+
+    @Test
+    public void testNull() {
+        // Test default null value
+        ToStringTransformer<Object> transformer = new ToStringTransformer<Object>();
         assertEquals(null, transformer.transform(null));
+
+        // Test custom null value
         transformer = new ToStringTransformer<Object>("null");
         assertEquals("null", transformer.transform(null));
     }

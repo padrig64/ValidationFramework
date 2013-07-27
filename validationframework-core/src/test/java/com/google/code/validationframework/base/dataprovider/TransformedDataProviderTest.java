@@ -23,52 +23,50 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.base.transform;
+package com.google.code.validationframework.base.dataprovider;
 
+import com.google.code.validationframework.api.dataprovider.DataProvider;
+import com.google.code.validationframework.api.resulthandler.ResultHandler;
+import com.google.code.validationframework.base.resulthandler.TransformedResultHandler;
+import com.google.code.validationframework.base.transform.ToStringTransformer;
 import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class CollectionElementTransformerTest {
+public class TransformedDataProviderTest {
 
     @Test
     public void testNonNull() {
-        CollectionElementTransformer<Long, String> transformer = new CollectionElementTransformer<Long,
-                String>(new ToStringTransformer<Long>());
+        TransformedDataProvider<Boolean, String> dataProvider = new TransformedDataProvider<Boolean,
+                String>(new DataProvider<Boolean>() {
 
-        // Prepare input to be transformed
-        List<Long> input = new ArrayList<Long>();
-        for (long i = 1000; i < 1030; i++) {
-            input.add(i);
-        }
+            @Override
+            public Boolean getData() {
+                return true;
+            }
+        }, new ToStringTransformer<Boolean>());
+        assertEquals("true", dataProvider.getData());
 
-        // Perform transformation
-        Collection<String> output = transformer.transform(input);
+        dataProvider = new TransformedDataProvider<Boolean, String>(new DataProvider<Boolean>() {
 
-        // Check output
-        int i = 0;
-        for (String outputElement : output) {
-            assertEquals(input.get(i++).longValue(), Long.parseLong(outputElement));
-        }
+            @Override
+            public Boolean getData() {
+                return false;
+            }
+        }, new ToStringTransformer<Boolean>());
+        assertEquals("false", dataProvider.getData());
     }
 
     @Test
     public void testNull() {
-        CollectionElementTransformer<Long, String> transformer = new CollectionElementTransformer<Long,
-                String>(new ToStringTransformer<Long>("null value"));
+        TransformedDataProvider<Boolean, String> dataProvider = new TransformedDataProvider<Boolean,
+                String>(new DataProvider<Boolean>() {
 
-        // Prepare input to be transformed
-        List<Long> input = new ArrayList<Long>();
-        input.add(null);
-
-        // Perform transformation
-        Collection<String> output = transformer.transform(input);
-
-        // Check output
-        assertEquals("null value", output.iterator().next());
+            @Override
+            public Boolean getData() {
+                return null;
+            }
+        }, new ToStringTransformer<Boolean>("null value"));
+        assertEquals("null value", dataProvider.getData());
     }
 }
