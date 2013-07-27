@@ -33,10 +33,12 @@ import com.google.code.validationframework.base.trigger.AbstractTrigger;
 import javax.swing.SwingUtilities;
 
 /**
- * Trigger wrapper to re-schedule the wrapped trigger on the Event Dispatch Thread.<br>This can be useful when triggers
- * are initially trigger outside the EDT, but also to schedule the trigger later. The latter case is useful if you have
- * triggers initiated on keystrokes on an input field and data providers reading the text of the same input field: this
- * trigger wrapper can be used to make sure that the input field treats the keystrokes before the trigger is initiated.
+ * Trigger wrapper to re-schedule the wrapped trigger on the Event Dispatch Thread.
+ * <p/>
+ * This can be useful when triggers are initially trigger outside the EDT, but also to schedule the trigger later. The
+ * latter case is useful if you have triggers initiated on keystrokes on an input field and data providers reading the
+ * text of the same input field: this trigger wrapper can be used to make sure that the input field treats the
+ * keystrokes before the trigger is initiated.
  */
 public class InvokeLaterTrigger extends AbstractTrigger {
 
@@ -46,26 +48,26 @@ public class InvokeLaterTrigger extends AbstractTrigger {
     private class TriggerRescheduler implements TriggerListener, Runnable {
 
         /**
-         * Flag indicating whether to re-schedule only if the wrapped trigger was initiated outside the EDT.
+         * Flag indicating whether to re-schedule even if the wrapped trigger was initiated on the EDT.
          */
-        private final boolean onlyIfNotOnEDT;
+        private final boolean evenIfAlreadyOnEDT;
 
         /**
          * Constructor specifying whether to re-schedule only if the wrapped trigger was initiated outside the EDT.
          *
-         * @param onlyIfNotOnEDT Flag indicating whether to re-schedule only if the wrapped trigger was initiated
-         *                       outside the EDT.
+         * @param evenIfAlreadyOnEDT Flag indicating whether to re-schedule even if the wrapped trigger was initiated
+         *                           on the EDT.
          */
-        public TriggerRescheduler(final boolean onlyIfNotOnEDT) {
-            this.onlyIfNotOnEDT = onlyIfNotOnEDT;
+        public TriggerRescheduler(boolean evenIfAlreadyOnEDT) {
+            this.evenIfAlreadyOnEDT = evenIfAlreadyOnEDT;
         }
 
         /**
          * @see TriggerListener#triggerValidation(TriggerEvent)
          */
         @Override
-        public void triggerValidation(final TriggerEvent event) {
-            if (!onlyIfNotOnEDT || !SwingUtilities.isEventDispatchThread()) {
+        public void triggerValidation(TriggerEvent event) {
+            if (!evenIfAlreadyOnEDT || !SwingUtilities.isEventDispatchThread()) {
                 // Either forced or not yet on the EDT
                 SwingUtilities.invokeLater(this);
             } else {
@@ -85,26 +87,28 @@ public class InvokeLaterTrigger extends AbstractTrigger {
 
     /**
      * Constructor specifying the wrapped trigger and whether to re-schedule on the EDT only if the wrapped trigger was
-     * initiated outside the EDT.<br>By default, the trigger will always be re-scheduled later on the EDT, even if it
-     * was on the EDT.
+     * initiated outside the EDT.
+     * <p/>
+     * By default, the trigger will always be re-scheduled later on the EDT, even if it was already triggered on the
+     * EDT.
      *
      * @param wrappedTrigger Wrapped trigger to re-schedule later on the EDT.
      *
      * @see #InvokeLaterTrigger(Trigger, boolean)
      */
-    public InvokeLaterTrigger(final Trigger wrappedTrigger) {
-        this(wrappedTrigger, false);
+    public InvokeLaterTrigger(Trigger wrappedTrigger) {
+        this(wrappedTrigger, true);
     }
 
     /**
-     * Constructor specifying the wrapped trigger and whether to re-schedule on the EDT only if the wrapped trigger was
-     * initiated outside the EDT.
+     * Constructor specifying the wrapped trigger and whether to re-schedule on the EDT even if the wrapped trigger was
+     * initiated on the EDT.
      *
-     * @param wrappedTrigger Wrapped trigger to re-schedule later on the EDT.
-     * @param onlyIfNotOnEDT Flag indicating whether to re-schedule only if the wrapped trigger was initiated outside
-     *                       the EDT.
+     * @param wrappedTrigger     Wrapped trigger to re-schedule later on the EDT.
+     * @param evenIfAlreadyOnEDT Flag indicating whether to re-schedule even if the wrapped trigger was initiated on the
+     *                           EDT.
      */
-    public InvokeLaterTrigger(final Trigger wrappedTrigger, final boolean onlyIfNotOnEDT) {
-        wrappedTrigger.addTriggerListener(new TriggerRescheduler(onlyIfNotOnEDT));
+    public InvokeLaterTrigger(Trigger wrappedTrigger, boolean evenIfAlreadyOnEDT) {
+        wrappedTrigger.addTriggerListener(new TriggerRescheduler(evenIfAlreadyOnEDT));
     }
 }
