@@ -8,7 +8,6 @@
 # TO MAKE
 
 * PropertyChangeTrigger implements PropertyChangeListener, Trigger (and same for other common listeners)
-* Collection element transformer
 * Make validation of min + max + min/max group + global easier
 * Implement Disposable where appropriate
 * JFormattedTextFieldKeyboardTrigger
