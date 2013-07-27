@@ -40,14 +40,14 @@ public class ComponentPropertyChangedTrigger extends BaseComponentPropertyChange
     /**
      * @see BaseComponentPropertyChangedTrigger#BaseComponentPropertyChangedTrigger(Component)
      */
-    public ComponentPropertyChangedTrigger(final Component source) {
+    public ComponentPropertyChangedTrigger(Component source) {
         super(source);
     }
 
     /**
      * @see BaseComponentPropertyChangedTrigger#BaseComponentPropertyChangedTrigger(Component, String...)
      */
-    public ComponentPropertyChangedTrigger(final Component component, final String... propertyNames) {
+    public ComponentPropertyChangedTrigger(Component component, String... propertyNames) {
         super(component, propertyNames);
     }
 }

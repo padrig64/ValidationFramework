@@ -28,8 +28,7 @@ package com.google.code.validationframework.swing.trigger;
 import java.awt.Component;
 
 /**
- * @deprecated Use {@link ComponentPropertyChangedTrigger} instead.<br>This class will be removed in the future
- *             releases.
+ * @deprecated Use {@link ComponentPropertyChangedTrigger} instead.<br>This class will be removed in a future release.
  */
 @Deprecated
 public class ComponentPropertyChangeTrigger extends BaseComponentPropertyChangedTrigger<Component> {
@@ -37,15 +36,15 @@ public class ComponentPropertyChangeTrigger extends BaseComponentPropertyChanged
     /**
      * @deprecated Use {@link ComponentPropertyChangedTrigger#ComponentPropertyChangedTrigger(Component)} instead.
      */
-    public ComponentPropertyChangeTrigger(final Component source) {
+    public ComponentPropertyChangeTrigger(Component source) {
         super(source);
     }
 
     /**
      * @deprecated Use {@link ComponentPropertyChangedTrigger#ComponentPropertyChangedTrigger(Component,
-     * String...)} instead.
+     *             String...)} instead.
      */
-    public ComponentPropertyChangeTrigger(final Component component, final String... propertyNames) {
+    public ComponentPropertyChangeTrigger(Component component, String... propertyNames) {
         super(component, propertyNames);
     }
 }

@@ -23,41 +23,75 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.base.trigger;
+package com.google.code.validationframework.swing.trigger;
 
 import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.api.trigger.Trigger;
 import com.google.code.validationframework.api.trigger.TriggerEvent;
 import com.google.code.validationframework.api.trigger.TriggerListener;
 
+import javax.swing.AbstractAction;
+import javax.swing.Icon;
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Abstract implementation of a typical trigger.
+ * Trigger initiating the validation when an action is performed.
  * <p/>
- * It merely implements the methods to add and remove trigger listeners, and provides the method {@link
- * #fireTriggerEvent(TriggerEvent)} to fire a trigger event to these listeners. However, the call of this method is left
- * to the sub-classes.
- *
- * @see Trigger
- * @see TriggerListener
- * @see TriggerEvent
- * @see Disposable
+ * This trigger can be used wherever actions and {@link java.awt.event.ActionListener}s are used (for instance, on
+ * buttons).
  */
-public abstract class AbstractTrigger implements Trigger, Disposable {
+public class ActionTrigger extends AbstractAction implements Trigger, Disposable {
 
     /**
-     * Trigger listeners.
+     * Generated serial UID.
      */
-    protected final List<TriggerListener> listeners = new ArrayList<TriggerListener>();
+    private static final long serialVersionUID = -3496046784335243792L;
+
+    /**
+     * Trigger listeners to be notified when the action is performed.
+     */
+    private final List<TriggerListener> triggerListeners = new ArrayList<TriggerListener>();
+
+    /**
+     * @see AbstractAction#AbstractAction()
+     */
+    public ActionTrigger() {
+        super();
+    }
+
+    /**
+     * @see AbstractAction#AbstractAction(String)
+     */
+    public ActionTrigger(String s) {
+        super(s);
+    }
+
+    /**
+     * @see AbstractAction#AbstractAction(String, Icon)
+     */
+    public ActionTrigger(String s, Icon icon) {
+        super(s, icon);
+    }
+
+    /**
+     * @see AbstractAction#actionPerformed(ActionEvent)
+     */
+    @Override
+    public void actionPerformed(ActionEvent actionEvent) {
+        TriggerEvent event = new TriggerEvent(actionEvent.getSource());
+        for (TriggerListener listener : triggerListeners) {
+            listener.triggerValidation(event);
+        }
+    }
 
     /**
      * @see Trigger#addTriggerListener(TriggerListener)
      */
     @Override
     public void addTriggerListener(TriggerListener listener) {
-        listeners.add(listener);
+        triggerListeners.add(listener);
     }
 
     /**
@@ -65,18 +99,7 @@ public abstract class AbstractTrigger implements Trigger, Disposable {
      */
     @Override
     public void removeTriggerListener(TriggerListener listener) {
-        listeners.remove(listener);
-    }
-
-    /**
-     * Fires the specified trigger event.<br>Calling this method is left to the sub-classes.
-     *
-     * @param event Trigger event to be fired.
-     */
-    protected void fireTriggerEvent(TriggerEvent event) {
-        for (TriggerListener listener : listeners) {
-            listener.triggerValidation(event);
-        }
+        triggerListeners.remove(listener);
     }
 
     /**
@@ -84,11 +107,11 @@ public abstract class AbstractTrigger implements Trigger, Disposable {
      */
     @Override
     public void dispose() {
-        for (TriggerListener listener : listeners) {
+        for (TriggerListener listener : triggerListeners) {
             if (listener instanceof Disposable) {
                 ((Disposable) listener).dispose();
             }
         }
-        listeners.clear();
+        triggerListeners.clear();
     }
 }
