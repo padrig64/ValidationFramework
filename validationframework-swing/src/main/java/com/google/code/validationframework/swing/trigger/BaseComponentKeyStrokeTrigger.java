@@ -33,6 +33,7 @@ import javax.swing.KeyStroke;
 import java.awt.Component;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -80,10 +81,15 @@ public class BaseComponentKeyStrokeTrigger<C extends Component> extends Abstract
          * @param keyEvent Key event to be triggered.
          */
         private void processEvent(KeyEvent keyEvent) {
-            for (KeyStroke keyStroke : keyStrokes) {
-                if (KeyStroke.getKeyStrokeForEvent(keyEvent).equals(keyStroke)) {
-                    fireTriggerEvent(new TriggerEvent(source));
-                    break;
+            if (keyStrokes.isEmpty()) {
+                // No key stroke define, so react on any key event
+                fireTriggerEvent(new TriggerEvent(source));
+            } else {
+                for (KeyStroke keyStroke : keyStrokes) {
+                    if (KeyStroke.getKeyStrokeForEvent(keyEvent).equals(keyStroke)) {
+                        fireTriggerEvent(new TriggerEvent(source));
+                        break;
+                    }
                 }
             }
         }
@@ -105,7 +111,9 @@ public class BaseComponentKeyStrokeTrigger<C extends Component> extends Abstract
     private final Set<KeyStroke> keyStrokes = new HashSet<KeyStroke>();
 
     /**
-     * Constructor specifying the text component to listen to.
+     * Constructor specifying the text component to listen to and the key stroke to trigger the validation.
+     * <p/>
+     * If no key stroke is provided, the trigger will initiate the validation on any key stroke.
      * <p/>
      * You may use {@link KeyStroke} utility methods to build a {@link KeyStroke}.
      *
@@ -141,7 +149,7 @@ public class BaseComponentKeyStrokeTrigger<C extends Component> extends Abstract
      * @return Key strokes for which the validation will be triggered.
      */
     public Collection<KeyStroke> getKeyStokes() {
-        return keyStrokes;
+        return new ArrayList<KeyStroke>(keyStrokes);
     }
 
     /**
@@ -159,6 +167,8 @@ public class BaseComponentKeyStrokeTrigger<C extends Component> extends Abstract
 
     /**
      * Removes a key stroke for which the validation should no longer be triggered.
+     * <p/>
+     * If all key strokes are removed, the trigger will initiate the validation on any key stroke.
      *
      * @param keyStroke Key stroke to be removed.
      */
