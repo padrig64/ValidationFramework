@@ -29,6 +29,7 @@ import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.api.trigger.TriggerEvent;
 import com.google.code.validationframework.base.trigger.AbstractTrigger;
 
+import javax.swing.KeyStroke;
 import java.awt.Component;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -37,12 +38,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Trigger that initiates the validation whenever a key is pressed, released or typed on the component.
+ * Trigger that initiates the validation whenever registered key strokes happen on a component.
  *
  * @see AbstractTrigger
  * @see Disposable
  */
-public class BaseComponentKeyTrigger<C extends Component> extends AbstractTrigger implements Disposable {
+public class BaseComponentKeyStrokeTrigger<C extends Component> extends AbstractTrigger implements Disposable {
 
     /**
      * Listener to key strokes on source text component.
@@ -53,7 +54,7 @@ public class BaseComponentKeyTrigger<C extends Component> extends AbstractTrigge
          * @see KeyListener#keyPressed(KeyEvent)
          */
         @Override
-        public void keyPressed(final KeyEvent keyEvent) {
+        public void keyPressed(KeyEvent keyEvent) {
             processEvent(keyEvent);
         }
 
@@ -61,7 +62,7 @@ public class BaseComponentKeyTrigger<C extends Component> extends AbstractTrigge
          * @see KeyListener#keyReleased(KeyEvent)
          */
         @Override
-        public void keyReleased(final KeyEvent keyEvent) {
+        public void keyReleased(KeyEvent keyEvent) {
             processEvent(keyEvent);
         }
 
@@ -69,7 +70,7 @@ public class BaseComponentKeyTrigger<C extends Component> extends AbstractTrigge
          * @see KeyListener#keyTyped(KeyEvent)
          */
         @Override
-        public void keyTyped(final KeyEvent keyEvent) {
+        public void keyTyped(KeyEvent keyEvent) {
             processEvent(keyEvent);
         }
 
@@ -78,16 +79,11 @@ public class BaseComponentKeyTrigger<C extends Component> extends AbstractTrigge
          *
          * @param keyEvent Key event to be triggered.
          */
-        private void processEvent(final KeyEvent keyEvent) {
-            // Check event ID and key code
-            if ((keyEvent.getID() == keyEventId) && (keyCodes.contains(keyEvent.getKeyCode()))) {
-                // Check modifiers
-                if (strictModifiersMatch) {
-                    if ((keyEvent.getModifiers() == modifiersMask)) {
-                        fireTriggerEvent(new TriggerEvent(source));
-                    }
-                } else if ((keyEvent.getModifiers() & modifiersMask) == modifiersMask) {
+        private void processEvent(KeyEvent keyEvent) {
+            for (KeyStroke keyStroke : keyStrokes) {
+                if (KeyStroke.getKeyStrokeForEvent(keyEvent).equals(keyStroke)) {
                     fireTriggerEvent(new TriggerEvent(source));
+                    break;
                 }
             }
         }
@@ -103,78 +99,31 @@ public class BaseComponentKeyTrigger<C extends Component> extends AbstractTrigge
      */
     private final KeyListener sourceAdapter = new SourceAdapter();
 
-    private int keyEventId = KeyEvent.KEY_TYPED;
-
-    private int modifiersMask = 0;
-
-    private boolean strictModifiersMatch = false;
-
-    private final Set<Integer> keyCodes = new HashSet<Integer>();
+    /**
+     * Key strokes for which the validation will be triggered.
+     */
+    private final Set<KeyStroke> keyStrokes = new HashSet<KeyStroke>();
 
     /**
      * Constructor specifying the text component to listen to.
+     * <p/>
+     * You may use {@link KeyStroke} utility methods to build a {@link KeyStroke}.
      *
-     * @param source   Text component to listen to.
-     * @param keyCodes Virtual key codes ({@link KeyEvent}#VK_*).
+     * @param source     Text component to listen to.
+     * @param keyStrokes Key strokes to trigger the validation.
+     *
+     * @see KeyStroke
      */
-    public BaseComponentKeyTrigger(final C source, final int... keyCodes) {
+    public BaseComponentKeyStrokeTrigger(C source, KeyStroke... keyStrokes) {
         super();
+
         this.source = source;
-        if (keyCodes != null) {
-            for (final int keyCode : keyCodes) {
-                addKey(keyCode);
+        if (keyStrokes != null) {
+            for (KeyStroke keyStroke : keyStrokes) {
+                addKeyStroke(keyStroke);
             }
         }
         source.addKeyListener(sourceAdapter);
-    }
-
-    public int getKeyEventId() {
-        return keyEventId;
-    }
-
-    public void setKeyEventId(final int keyEventId) {
-        this.keyEventId = keyEventId;
-    }
-
-    public int getModifiers() {
-        return modifiersMask;
-    }
-
-    public void setModifiers(final int modifiersMask) {
-        setModifiers(modifiersMask, false);
-    }
-
-    public void setModifiers(final int modifiersMask, final boolean strictModifiersMatch) {
-        this.modifiersMask = modifiersMask;
-        this.strictModifiersMatch = strictModifiersMatch;
-    }
-
-    /**
-     * Gets the key codes for which the validation will be triggered.<br>Key codes correspond to {@link KeyEvent}#VK_*.
-     *
-     * @return Key codes for which the validation will be triggered.
-     */
-    public Collection<Integer> getKeys() {
-        return keyCodes;
-    }
-
-    /**
-     * Adds a key code for which the validation will be triggered.<br>Key codes correspond to {@link KeyEvent}#VK_*.
-     *
-     * @param keyCode Key code to be added to trigger the validation.
-     */
-    public void addKey(final int keyCode) {
-        keyCodes.add(keyCode);
-    }
-
-    /**
-     * Removes a key code for which the validation should no longer be triggered.<br>Key codes correspond to {@link
-     * KeyEvent}#VK_*.
-     *
-     * @param keyCode Key code to be removed.
-     */
-    public void removeKey(final int keyCode) {
-        keyCodes.remove(keyCode);
     }
 
     /**
@@ -184,6 +133,37 @@ public class BaseComponentKeyTrigger<C extends Component> extends AbstractTrigge
      */
     public C getComponent() {
         return source;
+    }
+
+    /**
+     * Gets the key strokes for which the validation will be triggered.
+     *
+     * @return Key strokes for which the validation will be triggered.
+     */
+    public Collection<KeyStroke> getKeyStokes() {
+        return keyStrokes;
+    }
+
+    /**
+     * Adds a key stroke for which the validation will be triggered.
+     * <p/>
+     * You may use {@link KeyStroke} utility methods to build a {@link KeyStroke}.
+     *
+     * @param keyStroke Key stroke to be added to trigger the validation.
+     *
+     * @see KeyStroke
+     */
+    public void addKeyStroke(KeyStroke keyStroke) {
+        keyStrokes.add(keyStroke);
+    }
+
+    /**
+     * Removes a key stroke for which the validation should no longer be triggered.
+     *
+     * @param keyStroke Key stroke to be removed.
+     */
+    public void removeKey(KeyStroke keyStroke) {
+        keyStrokes.remove(keyStroke);
     }
 
     /**

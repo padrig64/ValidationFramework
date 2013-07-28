@@ -7,10 +7,9 @@
 
 # TO MAKE
 
-* PropertyChangeTrigger implements PropertyChangeListener, Trigger (and same for other common listeners)
+* Common (non-)Swing listeners implementing Trigger
 * Make validation of min + max + min/max group + global easier
 * Implement Disposable where appropriate
-* JFormattedTextFieldKeyboardTrigger
 * User-modification trigger for (formatted) textfields
 * IconResultHandler: dynamic message (maybe override the getInvalidText() method)
 * Consistent comments (use of dispose(), cast transformers, default behaviors, what classes can be used for, etc.)
@@ -30,7 +29,6 @@
 * Rule-based formatter
 * Reformat/Revert JFormattedTextField when focus lost? Save values allowed by the rules (wider than the default number formatter)
 * Icon decoration above combobox popups
-* JavaFX 2 support
 * Tab decoration depending on tab selection
 * No decoration on disabled components (config + listen to component state)
 * Avoid instantiation of result collectors (collect directly from validators, etc.)
@@ -42,6 +40,7 @@
 
 # TO THINK ABOUT
 
+* JavaFX 2 support
 * Make anchor link in the AbstractIconFeedback dependent of the look-and-feel
 * Initial state for result handler before any validation has been performed yet
 * Differentiate between model changes due to user action and system action

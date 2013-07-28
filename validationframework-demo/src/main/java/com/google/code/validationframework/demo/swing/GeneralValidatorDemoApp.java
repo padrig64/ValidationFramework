@@ -42,6 +42,7 @@ import com.google.code.validationframework.swing.resulthandler.bool.IconBooleanF
 import com.google.code.validationframework.swing.rule.JFormattedTextFieldFormatterRule;
 import com.google.code.validationframework.swing.trigger.JFormattedTextFieldDocumentChangedTrigger;
 import com.google.code.validationframework.swing.trigger.JTextFieldDocumentChangedTrigger;
+import com.google.code.validationframework.swing.trigger.JTextFieldKeyStrokeTrigger;
 import net.miginfocom.swing.MigLayout;
 
 import javax.imageio.ImageIO;
@@ -54,6 +55,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -63,6 +65,7 @@ import javax.swing.text.NumberFormatter;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -310,7 +313,8 @@ public class GeneralValidatorDemoApp extends JFrame {
 
     private void createValidator1(final JTextField textField, final ResultCollector<InputFieldResult,
             Boolean> resultCollector) {
-        on(new JTextFieldDocumentChangedTrigger(textField)) //
+//        on(new JTextFieldDocumentChangedTrigger(textField)) //
+        on(new JTextFieldKeyStrokeTrigger(textField, KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0)))
                 .read(new JTextFieldTextProvider(textField)) //
                 .check(new InputFieldRule()) //
                 .handleWith(new InputFieldToolTipFeedback(textField)) //

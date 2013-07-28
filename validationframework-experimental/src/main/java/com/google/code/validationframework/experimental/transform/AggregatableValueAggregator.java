@@ -30,11 +30,19 @@ import com.google.code.validationframework.base.transform.Transformer;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * @deprecated Class will be removed in a future release.
+ */
+@Deprecated
 public class AggregatableValueAggregator<I, O> implements Transformer<Collection<Aggregatable<I>>, O> {
 
     private final Transformer<Collection<I>, O> delegate;
 
-    public AggregatableValueAggregator(final Transformer<Collection<I>, O> delegate) {
+    /**
+     * @deprecated Class will be removed in a future release.
+     */
+    @Deprecated
+    public AggregatableValueAggregator(Transformer<Collection<I>, O> delegate) {
         this.delegate = delegate;
     }
 
@@ -42,12 +50,12 @@ public class AggregatableValueAggregator<I, O> implements Transformer<Collection
      * @see Transformer#transform(Object)
      */
     @Override
-    public O transform(final Collection<Aggregatable<I>> elements) {
+    public O transform(Collection<Aggregatable<I>> elements) {
         Collection<I> aggregatableValues = null;
 
         if (elements != null) {
             aggregatableValues = new ArrayList<I>();
-            for (final Aggregatable<I> element : elements) {
+            for (Aggregatable<I> element : elements) {
                 aggregatableValues.add(element.getAggregatableValue());
             }
         }

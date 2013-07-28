@@ -23,13 +23,25 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.experimental.transform;
+package com.google.code.validationframework.swing.trigger;
+
+import javax.swing.JTextArea;
+import javax.swing.KeyStroke;
 
 /**
- * @deprecated Class Will be removed in a future release.
+ * Trigger that initiates the validation whenever registered key strokes happen on a component.
+ * <p/>
+ * It is provided for convenience over the {@link BaseComponentKeyStrokeTrigger} to make it easier to find while
+ * building the validators.
+ *
+ * @see BaseComponentKeyStrokeTrigger
  */
-@Deprecated
-public interface Aggregatable<O> {
+public class JTextAreaKeyStrokeTrigger extends BaseComponentKeyStrokeTrigger<JTextArea> {
 
-    O getAggregatableValue();
+    /**
+     * @see BaseComponentKeyStrokeTrigger#BaseComponentKeyStrokeTrigger(java.awt.Component, KeyStroke...)
+     */
+    public JTextAreaKeyStrokeTrigger(JTextArea source, KeyStroke... keyStrokes) {
+        super(source, keyStrokes);
+    }
 }

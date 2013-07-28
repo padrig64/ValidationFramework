@@ -4,6 +4,7 @@
 * Added PropertyChangeTrigger in core that can be used as PropertyChangeListener to trigger the validation
 * Added ActionTrigger in Swing support that can be used as an Action or ActionListener to trigger the validation
 * Added CollectionElementTransformer in core
+* Added ComponentKeyStrokeTrigger and convenience derivates
 * Fixed compilation warning when adding rule input transformer using the GeneralValidatorBuilder
 * Reversed flag in the InvokeLateTrigger wrapper
 * Undeprecated old validators to allow smoother transition from version 1.x.x to 2.x.x
