@@ -60,7 +60,7 @@ public class TransformedRuleContext<DPO, RI, RO, TRO> {
     /**
      * Data provider to rule mapping to be set to the validator under construction.
      */
-    private final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping;
+    private final GeneralValidator.MappingStrategy dataProviderToRuleMapping;
 
     /**
      * Rule input transformers to be added to the validator under construction.
@@ -75,7 +75,7 @@ public class TransformedRuleContext<DPO, RI, RO, TRO> {
     /**
      * Rule to result handler mapping to be set to the validator under construction.
      */
-    private final GeneralValidator.RuleToResultHandlerMapping ruleToResultHandlerMapping;
+    private final GeneralValidator.MappingStrategy ruleToResultHandlerMapping;
 
     /**
      * Result handler input transformers to be added to the validator under construction.
@@ -96,10 +96,10 @@ public class TransformedRuleContext<DPO, RI, RO, TRO> {
      */
     public TransformedRuleContext(Collection<Trigger> addedTriggers, //
                                   Collection<DataProvider<DPO>> addedDataProviders, //
-                                  GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping, //
+                                  GeneralValidator.MappingStrategy dataProviderToRuleMapping, //
                                   Collection<Transformer> addedRuleInputTransformers, //
                                   Collection<Rule<RI, RO>> addedRules, //
-                                  GeneralValidator.RuleToResultHandlerMapping ruleToResultHandlerMapping,
+                                  GeneralValidator.MappingStrategy ruleToResultHandlerMapping,
                                   Collection<Transformer> addedResultHandlerInputTransformers) {
         this.addedTriggers = addedTriggers;
         this.addedDataProviders = addedDataProviders;

@@ -8,6 +8,7 @@
 * Fixed compilation warning when adding rule input transformer using the GeneralValidatorBuilder
 * Reversed flag in the InvokeLateTrigger wrapper
 * Undeprecated old validators to allow smoother transition from version 1.x.x to 2.x.x
+* Simplified mapping strategy names between data providers and rules, and between rules and result handlers in the GeneralValidator
 * Added comments
 
 # Version 2.0.0

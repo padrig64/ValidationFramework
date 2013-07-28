@@ -36,8 +36,8 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * DSL-related context of the {@link GeneralValidatorBuilder} after using the {@link
- * GeneralValidator.DataProviderToRuleMapping#EACH_TO_EACH} mapping.
+ * DSL-related context of the {@link GeneralValidatorBuilder} after using the {@link GeneralValidator
+ * .MappingStrategy#SPLIT} mapping.
  *
  * @param <DPO> Type of data provider output.
  */
@@ -81,7 +81,7 @@ public class ForEachDataProviderContext<DPO> {
 
         // Change context
         return new TransformedDataProviderContext<DPO, TDPO>(addedTriggers, addedDataProviders,
-                GeneralValidator.DataProviderToRuleMapping.EACH_TO_EACH, transformers);
+                GeneralValidator.MappingStrategy.SPLIT, transformers);
     }
 
     /**
@@ -100,7 +100,7 @@ public class ForEachDataProviderContext<DPO> {
 
         // Change context
         return new SingleRuleContext<DPO, DPO, RO>(addedTriggers, addedDataProviders,
-                GeneralValidator.DataProviderToRuleMapping.EACH_TO_EACH, null, addedRules);
+                GeneralValidator.MappingStrategy.SPLIT, null, addedRules);
     }
 
     /**
@@ -118,7 +118,6 @@ public class ForEachDataProviderContext<DPO> {
         }
 
         // Change context
-        return new SingleRuleContext<DPO, DPO, RO>(addedTriggers, addedDataProviders,
-                GeneralValidator.DataProviderToRuleMapping.EACH_TO_EACH, null, addedRules);
+        return new SingleRuleContext<DPO, DPO, RO>(addedTriggers, addedDataProviders, GeneralValidator.MappingStrategy.SPLIT, null, addedRules);
     }
 }

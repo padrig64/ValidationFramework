@@ -113,7 +113,7 @@ public class SingleDataProviderContext<DPO> {
         }
 
         return new TransformedDataProviderContext<DPO, TDPO>(addedTriggers, addedDataProviders,
-                GeneralValidator.DataProviderToRuleMapping.EACH_TO_EACH, addedTransformers);
+                GeneralValidator.MappingStrategy.SPLIT, addedTransformers);
     }
 
     /**
@@ -132,7 +132,7 @@ public class SingleDataProviderContext<DPO> {
 
         // Change context
         return new SingleRuleContext<DPO, DPO, RO>(addedTriggers, addedDataProviders,
-                GeneralValidator.DataProviderToRuleMapping.EACH_TO_EACH, null, addedRules);
+                GeneralValidator.MappingStrategy.SPLIT, null, addedRules);
     }
 
     /**
@@ -151,6 +151,6 @@ public class SingleDataProviderContext<DPO> {
 
         // Change context
         return new MultipleRuleContext<DPO, DPO, RO>(addedTriggers, addedDataProviders,
-                GeneralValidator.DataProviderToRuleMapping.EACH_TO_EACH, null, addedRules);
+                GeneralValidator.MappingStrategy.SPLIT, null, addedRules);
     }
 }

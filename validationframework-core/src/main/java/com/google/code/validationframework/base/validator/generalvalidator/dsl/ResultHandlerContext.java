@@ -57,7 +57,7 @@ public class ResultHandlerContext<DPO, RI, RO, RHI> {
     /**
      * Data provider to rule mapping to be set to the validator under construction.
      */
-    private final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping;
+    private final GeneralValidator.MappingStrategy dataProviderToRuleMapping;
 
     /**
      * Rule input transformers to be added to the validator under construction.
@@ -72,7 +72,7 @@ public class ResultHandlerContext<DPO, RI, RO, RHI> {
     /**
      * Rule to result handler mapping to be set to the validator under construction.
      */
-    private final GeneralValidator.RuleToResultHandlerMapping ruleToResultHandlerMapping;
+    private final GeneralValidator.MappingStrategy ruleToResultHandlerMapping;
 
     /**
      * Result handler input transformers to be added to the validator under construction.
@@ -104,10 +104,10 @@ public class ResultHandlerContext<DPO, RI, RO, RHI> {
      */
     public ResultHandlerContext(Collection<Trigger> addedTriggers, //
                                 Collection<DataProvider<DPO>> addedDataProviders, //
-                                GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping, //
+                                GeneralValidator.MappingStrategy dataProviderToRuleMapping, //
                                 Collection<Transformer> addedRuleInputTransformers, //
                                 Collection<Rule<RI, RO>> addedRules, //
-                                GeneralValidator.RuleToResultHandlerMapping ruleToResultHandlerMapping, //
+                                GeneralValidator.MappingStrategy ruleToResultHandlerMapping, //
                                 Collection<Transformer> addedResultHandlerInputTransformers, //
                                 Collection<ResultHandler<RHI>> addedResultHandlers) {
         this.addedTriggers = addedTriggers;
@@ -180,7 +180,7 @@ public class ResultHandlerContext<DPO, RI, RO, RHI> {
         }
 
         // Map data providers output to rules input
-        validator.setDataProviderToRuleMapping(dataProviderToRuleMapping);
+        validator.setDataProviderToRuleMappingStrategy(dataProviderToRuleMapping);
         validator.setRuleInputTransformers(addedRuleInputTransformers);
 
         // Add rules
@@ -189,7 +189,7 @@ public class ResultHandlerContext<DPO, RI, RO, RHI> {
         }
 
         // Map rules output to result handlers input
-        validator.setRuleToResultHandlerMapping(ruleToResultHandlerMapping);
+        validator.setRuleToResultHandlerMappingStrategy(ruleToResultHandlerMapping);
         validator.setResultHandlerInputTransformers(addedResultHandlerInputTransformers);
 
         // Add result handlers

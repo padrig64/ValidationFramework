@@ -58,7 +58,7 @@ public class SingleRuleContext<DPO, RI, RO> {
     /**
      * Data provider to rule mapping to be set to the validator under construction.
      */
-    private final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping;
+    private final GeneralValidator.MappingStrategy dataProviderToRuleMapping;
 
     /**
      * Rule input transformers to be added to the validator under construction.
@@ -81,7 +81,7 @@ public class SingleRuleContext<DPO, RI, RO> {
      */
     public SingleRuleContext(Collection<Trigger> addedTriggers, //
                              Collection<DataProvider<DPO>> addedDataProviders, //
-                             GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping, //
+                             GeneralValidator.MappingStrategy dataProviderToRuleMapping, //
                              Collection<Transformer> addedRuleInputTransformers, //
                              Collection<Rule<RI, RO>> addedRules) {
         this.addedTriggers = addedTriggers;
@@ -142,7 +142,7 @@ public class SingleRuleContext<DPO, RI, RO> {
 
         return new TransformedRuleContext<DPO, RI, RO, TRO>(addedTriggers, addedDataProviders,
                 dataProviderToRuleMapping, addedRuleInputTransformers, addedRules,
-                GeneralValidator.RuleToResultHandlerMapping.EACH_TO_EACH, transformers);
+                GeneralValidator.MappingStrategy.SPLIT, transformers);
     }
 
     /**
@@ -161,7 +161,7 @@ public class SingleRuleContext<DPO, RI, RO> {
         // Change context
         return new ResultHandlerContext<DPO, RI, RO, RO>(addedTriggers, addedDataProviders,
                 dataProviderToRuleMapping, addedRuleInputTransformers, addedRules,
-                GeneralValidator.RuleToResultHandlerMapping.EACH_TO_EACH, null, addedResultHandlers);
+                GeneralValidator.MappingStrategy.SPLIT, null, addedResultHandlers);
     }
 
     /**
@@ -178,7 +178,6 @@ public class SingleRuleContext<DPO, RI, RO> {
         }
 
         // Change context
-        return new ResultHandlerContext<DPO, RI, RO, RO>(addedTriggers, addedDataProviders,
-                dataProviderToRuleMapping, addedRuleInputTransformers, addedRules, GeneralValidator.RuleToResultHandlerMapping.EACH_TO_EACH, null, addedResultHandlers);
+        return new ResultHandlerContext<DPO, RI, RO, RO>(addedTriggers, addedDataProviders, dataProviderToRuleMapping, addedRuleInputTransformers, addedRules, GeneralValidator.MappingStrategy.SPLIT, null, addedResultHandlers);
     }
 }

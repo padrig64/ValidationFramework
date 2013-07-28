@@ -37,8 +37,8 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * DSL-related context of the {@link GeneralValidatorBuilder} after using the {@link
- * GeneralValidator.RuleToResultHandlerMapping#EACH_TO_EACH} mapping.
+ * DSL-related context of the {@link GeneralValidatorBuilder} after using the {@link GeneralValidator
+ * .MappingStrategy#SPLIT} mapping.
  *
  * @param <DPO> Type of data provider output.
  * @param <RI>  Type of rule input.
@@ -59,7 +59,7 @@ public class ForEachRuleContext<DPO, RI, RO> {
     /**
      * Data provider to rule mapping to be set to the validator under construction.
      */
-    private final GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping;
+    private final GeneralValidator.MappingStrategy dataProviderToRuleMapping;
 
     /**
      * Rule input transformers to be added to the validator under construction.
@@ -82,7 +82,7 @@ public class ForEachRuleContext<DPO, RI, RO> {
      */
     public ForEachRuleContext(Collection<Trigger> addedTriggers, //
                               Collection<DataProvider<DPO>> addedDataProviders, //
-                              GeneralValidator.DataProviderToRuleMapping dataProviderToRuleMapping, //
+                              GeneralValidator.MappingStrategy dataProviderToRuleMapping, //
                               Collection<Transformer> addedRuleInputTransformers, //
                               Collection<Rule<RI, RO>> addedRules) {
         this.addedTriggers = addedTriggers;
@@ -109,7 +109,7 @@ public class ForEachRuleContext<DPO, RI, RO> {
 
         return new TransformedRuleContext<DPO, RI, RO, TRO>(addedTriggers, addedDataProviders,
                 dataProviderToRuleMapping, addedRuleInputTransformers, addedRules,
-                GeneralValidator.RuleToResultHandlerMapping.EACH_TO_EACH, transformers);
+                GeneralValidator.MappingStrategy.SPLIT, transformers);
     }
 
     /**
@@ -128,7 +128,7 @@ public class ForEachRuleContext<DPO, RI, RO> {
         // Change context
         return new ResultHandlerContext<DPO, RI, RO, RO>(addedTriggers, addedDataProviders,
                 dataProviderToRuleMapping, addedRuleInputTransformers, addedRules,
-                GeneralValidator.RuleToResultHandlerMapping.EACH_TO_EACH, null, addedResultHandlers);
+                GeneralValidator.MappingStrategy.SPLIT, null, addedResultHandlers);
     }
 
     /**
@@ -146,6 +146,6 @@ public class ForEachRuleContext<DPO, RI, RO> {
 
         // Change context
         return new ResultHandlerContext<DPO, RI, RO, RO>(addedTriggers, addedDataProviders,
-                dataProviderToRuleMapping, addedRuleInputTransformers, addedRules, GeneralValidator.RuleToResultHandlerMapping.EACH_TO_EACH, null, addedResultHandlers);
+                dataProviderToRuleMapping, addedRuleInputTransformers, addedRules, GeneralValidator.MappingStrategy.SPLIT, null, addedResultHandlers);
     }
 }

@@ -44,25 +44,27 @@ import java.util.List;
 /**
  * Simple validator allowing to have different mapping between data providers, rules and result handlers.
  * <p/>
- * The validator allows to transform the data providers' output before mapping, the rules' input after mapping,
- * the rules' output before mapping and the result handlers' input after mapping.
+ * For type safety, it is highly advised to use the {@link com.google.code.validationframework.base.validator
+ * .generalvalidator.dsl.GeneralValidatorBuilder}.
+ * <p/>
+ * The validator allows to transform the data providers' output before mapping, the rules' input after mapping, the
+ * rules' output before mapping and the result handlers' input after mapping.
  * <p/>
  * This means that the output of each data provider will be transformed using a series of data provider output {@link
- * Transformer}s. Then, if the data provider to rule mapping is {@link DataProviderToRuleMapping#EACH_TO_EACH},
- * the output of each data provider output transformation will transformed again using a series of rule input {@link
- * Transformer}s, before being passed to each rule. If the data provider to rule mapping is {@link
- * DataProviderToRuleMapping#ALL_TO_EACH}, the output of all data provider output transformations will be put in a
- * collection and transformed again using the series of rule input {@link Transformer}s, before being passed to each
- * rule.
+ * Transformer}s. Then, if the data provider to rule mapping is {@link MappingStrategy#SPLIT}, the output of each data
+ * provider output transformation will transformed again using a series of rule input {@link Transformer}s, before being
+ * passed to each rule. If the data provider to rule mapping is {@link MappingStrategy#JOIN}, the output of all data
+ * provider output transformations will be put in a collection and transformed again using the series of rule input
+ * {@link Transformer}s, before being passed to each rule.
  * <p/>
  * The output of each rule will be transformed using a series of rule output {@link Transformer}s. Then, if the rule to
- * result handler mapping is {@link RuleToResultHandlerMapping#EACH_TO_EACH}, the output of each rule output
- * transformation will be transformed again using a series of result handler input {@link Transformer}s, before being
- * passed to each result handler.
+ * result handler mapping is {@link MappingStrategy#SPLIT}, the output of each rule output transformation will be
+ * transformed again using a series of result handler input {@link Transformer}s, before being passed to each result
+ * handler.
  * <p/>
- * If the rule to result handler mapping is {@link RuleToResultHandlerMapping#ALL_TO_EACH}, the output of all rule
- * output transformations will be put in a collection and transformed as a whole using the series of result handler
- * input {@link Transformer}s, before being passed to each result handler.
+ * If the rule to result handler mapping is {@link MappingStrategy#JOIN}, the output of all rule output transformations
+ * will be put in a collection and transformed as a whole using the series of result handler input {@link Transformer}s,
+ * before being passed to each result handler.
  * <p/>
  * The general validation flow can be represented by the following pattern:<br>triggers -> data providers -> data
  * provider output transformers -> data provider to rule mapping -> rule input transformers -> rules -> rule output
@@ -70,11 +72,7 @@ import java.util.List;
  * handlers
  * <p/>
  * Note that the use of transformers is optional. By default, the data provider to rule mapping is set to {@link
- * DataProviderToRuleMapping#EACH_TO_EACH} and the rule to result handler mapping is set to {@link
- * RuleToResultHandlerMapping#EACH_TO_EACH}.
- * <p/>
- * For type safety, it is highly advised to use the {@link com.google.code.validationframework.base.validator
- * .generalvalidator.dsl.GeneralValidatorBuilder}.
+ * MappingStrategy#SPLIT} and the rule to result handler mapping is set to {@link MappingStrategy#SPLIT}.
  *
  * @param <DPO> Type of data provider output.<br>This may or may not be the same type as the rule input.
  * @param <RI>  Type of rule input.<br>This may or may not be the same type as the data provider output.
@@ -88,79 +86,13 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
         Rule<RI, RO>, RI, RO, ResultHandler<RHI>, RHI> {
 
     /**
-     * Mapping between data providers and rules.
-     *
-     * @see #setDataProviderOutputTransformers(Transformer[])
-     * @see #setDataProviderOutputTransformers(Collection)
-     * @see #setDataProviderToRuleMapping(DataProviderToRuleMapping)
-     * @see #setRuleInputTransformers(Transformer[])
-     * @see #setRuleInputTransformers(Collection)
+     * Mapping strategy between data providers and rules, and between rules and result handlers.
      */
-    public enum DataProviderToRuleMapping {
+    public enum MappingStrategy {
 
-        /**
-         * The data from each data provider will be passed one by one to each rule.
-         * <p/>
-         * For this mapping, if no data provider output transformer is used, it is expected that the rule input is of
-         * the same as the type as the data provider output.
-         * <p/>
-         * For type safety, it is highly advised to use the {@link com.google.code.validationframework.base.validator
-         * .generalvalidator.dsl.GeneralValidatorBuilder}.
-         *
-         * @see com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder
-         */
-        EACH_TO_EACH,
+        SPLIT,
 
-        /**
-         * The data from all data providers will passed all at once (in a {@link Collection}) to each rule.
-         * <p/>
-         * For this mapping, if no data provider transformer is used, it is expected that the rule input is a {@link
-         * Collection} containing objects of the same type as the data provider output.
-         * <p/>
-         * For type safety, it is highly advised to use the {@link com.google.code.validationframework.base.validator
-         * .generalvalidator.dsl.GeneralValidatorBuilder}.
-         *
-         * @see com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder
-         */
-        ALL_TO_EACH
-    }
-
-    /**
-     * Mapping between rules and result handlers.
-     *
-     * @see #setRuleOutputTransformers(Transformer[])
-     * @see #setRuleOutputTransformers(Collection)
-     * @see #setRuleToResultHandlerMapping(RuleToResultHandlerMapping)
-     * @see #setResultHandlerInputTransformers(Transformer[])
-     * @see #setResultHandlerInputTransformers(Collection)
-     */
-    public enum RuleToResultHandlerMapping {
-
-        /**
-         * The result from each rule will be passed one by one to each result handler.
-         * <p/>
-         * For this mapping, if no rule output transformer is used, it is expected that the result handler input is of
-         * the same type as the rule output.
-         * <p/>
-         * For type safety, it is highly advised to use the {@link com.google.code.validationframework.base.validator
-         * .generalvalidator.dsl.GeneralValidatorBuilder}.
-         *
-         * @see com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder
-         */
-        EACH_TO_EACH,
-
-        /**
-         * The result from all rules will be passed all at once (in a {@link Collection}) to each result handler.
-         * <p/>
-         * For this mapping, if no rule output transformer is used, it is expected that the result handler input is a
-         * {@link Collection} containing objects of the same type as the rule output.
-         * <p/>
-         * For type safety, it is highly advised to use the {@link com.google.code.validationframework.base.validator
-         * .generalvalidator.dsl.GeneralValidatorBuilder}.
-         *
-         * @see com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder
-         */
-        ALL_TO_EACH
+        JOIN
     }
 
     /**
@@ -180,10 +112,8 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
 
     /**
      * Mapping between the (possibly transformed) data provider output to the rule input.
-     *
-     * @see DataProviderToRuleMapping
      */
-    private DataProviderToRuleMapping dataProviderToRuleMapping = DataProviderToRuleMapping.EACH_TO_EACH;
+    private MappingStrategy dataProviderToRuleMapping = GeneralValidator.MappingStrategy.SPLIT;
 
     /**
      * List of {@link Transformer}s transforming the input of each rule.
@@ -210,7 +140,7 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
     /**
      * Mapping between the (possibly transformed) rule output to the result handler input.
      */
-    private RuleToResultHandlerMapping ruleToResultHandlerMapping = RuleToResultHandlerMapping.EACH_TO_EACH;
+    private MappingStrategy ruleToResultHandlerMapping = MappingStrategy.SPLIT;
 
     /**
      * List of {@link Transformer}s transforming the input of each result handler.
@@ -293,11 +223,11 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
         }
     }
 
-    public DataProviderToRuleMapping getDataProviderToRuleMapping() {
+    public MappingStrategy getDataProviderToRuleMappingStrategy() {
         return dataProviderToRuleMapping;
     }
 
-    public void setDataProviderToRuleMapping(DataProviderToRuleMapping dataProviderToRuleMapping) {
+    public void setDataProviderToRuleMappingStrategy(MappingStrategy dataProviderToRuleMapping) {
         this.dataProviderToRuleMapping = dataProviderToRuleMapping;
     }
 
@@ -361,11 +291,11 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
         }
     }
 
-    public RuleToResultHandlerMapping getRuleToResultHandlerMapping() {
+    public MappingStrategy getRuleToResultHandlerMappingStrategy() {
         return ruleToResultHandlerMapping;
     }
 
-    public void setRuleToResultHandlerMapping(RuleToResultHandlerMapping ruleToResultHandlerMapping) {
+    public void setRuleToResultHandlerMappingStrategy(MappingStrategy ruleToResultHandlerMapping) {
         this.ruleToResultHandlerMapping = ruleToResultHandlerMapping;
     }
 
@@ -414,14 +344,15 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
     @Override
     protected void processTrigger(Trigger trigger) {
         switch (dataProviderToRuleMapping) {
-            case EACH_TO_EACH:
+            case SPLIT:
                 processEachDataProviderWithEachRule();
                 break;
-            case ALL_TO_EACH:
+            case JOIN:
                 processAllDataProvidersWithEachRule();
                 break;
             default:
-                LOGGER.error("Unsupported " + DataProviderToRuleMapping.class.getSimpleName() + ": " +
+                LOGGER.error("Unsupported " + com.google.code.validationframework.base.validator.generalvalidator
+                        .GeneralValidator.MappingStrategy.class.getSimpleName() + ": " +
                         dataProviderToRuleMapping);
         }
     }
@@ -498,14 +429,14 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
      */
     private void processRules(RI ruleInput) {
         switch (ruleToResultHandlerMapping) {
-            case EACH_TO_EACH:
+            case SPLIT:
                 processEachRuleWithEachResultHandler(ruleInput);
                 break;
-            case ALL_TO_EACH:
+            case JOIN:
                 processAllRulesWithEachResultHandler(ruleInput);
                 break;
             default:
-                LOGGER.error("Unsupported " + RuleToResultHandlerMapping.class.getSimpleName() + ": " +
+                LOGGER.error("Unsupported " + MappingStrategy.class.getSimpleName() + ": " +
                         ruleToResultHandlerMapping);
         }
     }

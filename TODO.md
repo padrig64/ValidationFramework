@@ -7,7 +7,6 @@
 
 # TO MAKE
 
-* Common (non-)Swing listeners implementing Trigger
 * Make validation of min + max + min/max group + global easier
 * Implement Disposable where appropriate
 * User-modification trigger for (formatted) textfields

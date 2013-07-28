@@ -98,11 +98,11 @@ public class MultipleDataProviderContext<DPO> {
 
     /**
      * Makes the validator process each data provider independently.<br>This corresponds to the use of {@link
-     * GeneralValidator.DataProviderToRuleMapping#EACH_TO_EACH}.
+     * GeneralValidator.MappingStrategy#SPLIT}.
      *
      * @return Context allowing further construction of the validator using the DSL.
      *
-     * @see {@link GeneralValidator.DataProviderToRuleMapping#EACH_TO_EACH}.
+     * @see {@link GeneralValidator.MappingStrategy#SPLIT}.
      */
     public ForEachDataProviderContext<DPO> forEach() {
         // Change context
@@ -117,15 +117,14 @@ public class MultipleDataProviderContext<DPO> {
      *
      * @return Context allowing further construction of the validator using the DSL.
      */
-    public <TDPO> TransformedDataProviderContext transform(Transformer<Collection<DPO>,
-            TDPO> ruleInputTransformer) {
+    public <TDPO> TransformedDataProviderContext transform(Transformer<Collection<DPO>, TDPO> ruleInputTransformer) {
         List<Transformer> transformers = new ArrayList<Transformer>();
         if (ruleInputTransformer != null) {
             transformers.add(ruleInputTransformer);
         }
 
         return new TransformedDataProviderContext<DPO, TDPO>(addedTriggers, addedDataProviders,
-                GeneralValidator.DataProviderToRuleMapping.ALL_TO_EACH, transformers);
+                GeneralValidator.MappingStrategy.JOIN, transformers);
     }
 
     /**
@@ -144,7 +143,7 @@ public class MultipleDataProviderContext<DPO> {
 
         // Change context
         return new SingleRuleContext<DPO, Collection<DPO>, RO>(addedTriggers, addedDataProviders,
-                GeneralValidator.DataProviderToRuleMapping.ALL_TO_EACH, null, addedRules);
+                GeneralValidator.MappingStrategy.JOIN, null, addedRules);
     }
 
     /**
@@ -163,6 +162,6 @@ public class MultipleDataProviderContext<DPO> {
 
         // Change context
         return new SingleRuleContext<DPO, Collection<DPO>, RO>(addedTriggers, addedDataProviders,
-                GeneralValidator.DataProviderToRuleMapping.ALL_TO_EACH, null, addedRules);
+                GeneralValidator.MappingStrategy.JOIN, null, addedRules);
     }
 }
