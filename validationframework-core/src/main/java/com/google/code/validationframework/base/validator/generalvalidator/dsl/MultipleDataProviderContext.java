@@ -102,7 +102,7 @@ public class MultipleDataProviderContext<DPO> {
      *
      * @return Context allowing further construction of the validator using the DSL.
      *
-     * @see {@link GeneralValidator.MappingStrategy#SPLIT}.
+     * @see {@link GeneralValidator.MappingStrategy#SPLIT}
      */
     public ForEachDataProviderContext<DPO> forEach() {
         // Change context
