@@ -39,17 +39,14 @@ import static org.ops4j.pax.exam.CoreOptions.wrappedBundle;
 public class ValidationFrameworkSwingIT {
     @Configuration
     public Option[] config() {
-        return options(mavenBundle("com.google.code.validationframework", "validationframework-core") //
-                .versionAsInProject(), mavenBundle("com.google.code.validationframework",
-                "validationframework-experimental") //
-                .versionAsInProject(), mavenBundle("com.google.code.validationframework",
-                "validationframework-swing") //
-                .versionAsInProject(), wrappedBundle(mavenBundle("net.java.timingframework", "timingframework-core") //
-                .versionAsInProject()), wrappedBundle(mavenBundle("net.java.timingframework",
-                "timingframework-swing") //
-                .versionAsInProject()), mavenBundle("net.java.dev.jna", "jna") //
-                .versionAsInProject(), wrappedBundle(mavenBundle("net.java.dev" + ".jna", "platform") //
-                .versionAsInProject()), TestOptions.junitAndMockitoBundles());
+        return options(mavenBundle("com.google.code.validationframework", "validationframework-core").versionAsInProject(), //
+                mavenBundle("com.google.code.validationframework", "validationframework-experimental").versionAsInProject(), //
+                mavenBundle("com.google.code.validationframework", "validationframework-swing").versionAsInProject(), //
+                wrappedBundle(mavenBundle("net.java.timingframework", "timingframework-core").versionAsInProject()), //
+                wrappedBundle(mavenBundle("net.java.timingframework", "timingframework-swing").versionAsInProject()), //
+                mavenBundle("net.java.dev.jna", "jna").versionAsInProject(), //
+                wrappedBundle(mavenBundle("net.java.dev" + ".jna", "platform").versionAsInProject()), //
+                TestOptions.junitAndMockitoBundles());
     }
 
     private class TestFrame extends JFrame {
