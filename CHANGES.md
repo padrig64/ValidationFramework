@@ -1,4 +1,6 @@
-# Version 2.1.0 (to be released)
+# Version 2.1.1 (to be released)
+
+# Version 2.1.0
 
 * Added ToStringTransformer in core
 * Added PropertyChangeTrigger in core that can be used as PropertyChangeListener to trigger the validation
