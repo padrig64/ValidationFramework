@@ -42,7 +42,6 @@ import com.google.code.validationframework.base.trigger.AbstractTrigger;
  * @param <VO>  Type of result collected from another validator.
  * @param <DPO> Type of data provided by the collector.<br>It could be the same as VO.
  *
- * @see com.google.code.validationframework.base.validator.ResultCollectorValidator
  * @see ResultHandler
  * @see AbstractTrigger
  * @see DataProvider
@@ -75,7 +74,7 @@ public class ResultCollector<VO, DPO> extends AbstractTrigger implements ResultH
      *
      * @param transformer Transform to apply on the collected result.
      */
-    public ResultCollector(final Transformer<VO, DPO> transformer) {
+    public ResultCollector(Transformer<VO, DPO> transformer) {
         super();
         this.transformer = transformer;
     }
@@ -84,7 +83,7 @@ public class ResultCollector<VO, DPO> extends AbstractTrigger implements ResultH
      * @see ResultHandler#handleResult(Object)
      */
     @Override
-    public void handleResult(final VO result) {
+    public void handleResult(VO result) {
         lastResult = result; // We expect the method getData() to be called subsequently
         fireTriggerEvent(new TriggerEvent(this));
     }

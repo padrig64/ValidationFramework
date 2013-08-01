@@ -26,8 +26,11 @@
 package com.google.code.validationframework.base.validator.generalvalidator.dsl;
 
 import com.google.code.validationframework.api.dataprovider.DataProvider;
+import com.google.code.validationframework.api.resulthandler.ResultHandler;
 import com.google.code.validationframework.api.trigger.Trigger;
+import com.google.code.validationframework.api.validator.SimpleValidator;
 import com.google.code.validationframework.base.resulthandler.ResultCollector;
+import com.google.code.validationframework.base.resulthandler.SimpleResultCollector;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -115,6 +118,68 @@ public final class GeneralValidatorBuilder {
         if (resultCollectors != null) {
             addedTriggers.addAll(resultCollectors);
             addedDataProviders.addAll(resultCollectors);
+        }
+
+        return new MultipleResultCollectorContext<DPO>(addedTriggers, addedDataProviders);
+    }
+
+    /**
+     * Adds a new result collector as trigger and data provider to the validator under construction, in order to collect
+     * the results of the specified validator.
+     *
+     * @param validator Validator to collect the result from.<br>A result collector will be created, added as a result
+     *                  handler to the specified validator, and added as a trigger and data provider in the validator
+     *                  under construction.
+     * @param <DPO>     Type of data provider output, that is to say, type of result of the specified validator.
+     *
+     * @return Context allowing further construction of the validator using the DSL.
+     */
+    public static <DPO> SingleResultCollectorContext<DPO> collectFrom(SimpleValidator<?, ?, ?, ?, ?, ?,
+            ResultHandler<DPO>, DPO> validator) {
+        List<Trigger> addedTriggers = new ArrayList<Trigger>();
+        List<DataProvider<DPO>> addedDataProviders = new ArrayList<DataProvider<DPO>>();
+        if (validator != null) {
+            // Create result collector
+            SimpleResultCollector<DPO> resultCollector = new SimpleResultCollector<DPO>();
+
+            // Register result collector in specified validator
+            validator.addResultHandler(resultCollector);
+
+            // Result result collector in validator under construction
+            addedTriggers.add(resultCollector);
+            addedDataProviders.add(resultCollector);
+        }
+
+        return new SingleResultCollectorContext<DPO>(addedTriggers, addedDataProviders);
+    }
+
+    /**
+     * Adds new result collectors as triggers and data providers to the validator under construction, in order to
+     * collect the results of the specified validator.
+     *
+     * @param validators Validators to collect the result from.<br>A result collector will be created, added as a result
+     *                   handler to the specified validators, and added as a trigger and data provider in the validator
+     *                   under construction.
+     * @param <DPO>      Type of data provider output.
+     *
+     * @return Context allowing further construction of the validator using the DSL.
+     */
+    public static <DPO> MultipleResultCollectorContext<DPO> collectFrom(Collection<SimpleValidator<?, ?, ?, ?, ?, ?,
+            ResultHandler<DPO>, DPO>> validators) {
+        List<Trigger> addedTriggers = new ArrayList<Trigger>();
+        List<DataProvider<DPO>> addedDataProviders = new ArrayList<DataProvider<DPO>>();
+        if (validators != null) {
+            for (SimpleValidator<?, ?, ?, ?, ?, ?, ResultHandler<DPO>, DPO> validator : validators) {
+                // Create result collector
+                SimpleResultCollector<DPO> resultCollector = new SimpleResultCollector<DPO>();
+
+                // Register result collector in specified validator
+                validator.addResultHandler(resultCollector);
+
+                // Result result collector in validator under construction
+                addedTriggers.add(resultCollector);
+                addedDataProviders.add(resultCollector);
+            }
         }
 
         return new MultipleResultCollectorContext<DPO>(addedTriggers, addedDataProviders);

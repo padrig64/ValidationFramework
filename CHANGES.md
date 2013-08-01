@@ -1,6 +1,8 @@
 # Version 2.1.1 (to be released)
 
-* Added StringNotEmptyRule as a simpler alternative to StringLengthGreaterThanRule and StringLengthGreaterThanOrEqualToRule.
+* Added SimpleResultCollector for convenience over the ResultCollector
+* Made the GeneralValidatorBuilder collect from other simple validators
+* Added StringNotEmptyRule as a simpler alternative to StringLengthGreaterThanRule and StringLengthGreaterThanOrEqualToRule
 
 # Version 2.1.0
 
