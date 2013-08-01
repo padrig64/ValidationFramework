@@ -7,6 +7,7 @@
 
 # TO MAKE
 
+* Let programmer specified result for null input data
 * Make validation of min + max + min/max group + global easier
 * Implement Disposable where appropriate
 * User-modification trigger for (formatted) textfields

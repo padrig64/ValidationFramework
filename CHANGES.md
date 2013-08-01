@@ -1,5 +1,7 @@
 # Version 2.1.1 (to be released)
 
+* Added StringNotEmptyRule as a simpler alternative to StringLengthGreaterThanRule and StringLengthGreaterThanOrEqualToRule.
+
 # Version 2.1.0
 
 * Added ToStringTransformer in core
