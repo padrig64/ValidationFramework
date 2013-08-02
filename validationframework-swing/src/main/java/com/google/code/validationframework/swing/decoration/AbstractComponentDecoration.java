@@ -44,8 +44,9 @@ import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 
 /**
- * Abstract implementation of a decoration that can be attached to a component.<br>Concrete implementations will just
- * need to provide the size and do the painting on the already-computed location.
+ * Abstract implementation of a decoration that can be attached to a component.
+ * <p/>
+ * Concrete implementations will just need to provide the size and do the painting on the already-computed location.
  */
 public abstract class AbstractComponentDecoration implements Disposable {
 
@@ -60,7 +61,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
          * @see AncestorListener#ancestorAdded(AncestorEvent)
          */
         @Override
-        public void ancestorAdded(final AncestorEvent event) {
+        public void ancestorAdded(AncestorEvent event) {
             followDecoratedComponent();
         }
 
@@ -68,7 +69,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
          * @see AncestorListener#ancestorRemoved(AncestorEvent)
          */
         @Override
-        public void ancestorRemoved(final AncestorEvent event) {
+        public void ancestorRemoved(AncestorEvent event) {
             // Nothing to be done
         }
 
@@ -76,7 +77,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
          * @see AncestorListener#ancestorMoved(AncestorEvent)
          */
         @Override
-        public void ancestorMoved(final AncestorEvent event) {
+        public void ancestorMoved(AncestorEvent event) {
             followDecoratedComponent();
         }
 
@@ -84,7 +85,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
          * @see HierarchyBoundsListener#ancestorMoved(HierarchyEvent)
          */
         @Override
-        public void ancestorMoved(final HierarchyEvent e) {
+        public void ancestorMoved(HierarchyEvent e) {
             followDecoratedComponent();
         }
 
@@ -92,7 +93,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
          * @see HierarchyBoundsListener#ancestorResized(HierarchyEvent)
          */
         @Override
-        public void ancestorResized(final HierarchyEvent e) {
+        public void ancestorResized(HierarchyEvent e) {
             followDecoratedComponent();
         }
 
@@ -100,7 +101,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
          * @see ComponentListener#componentMoved(ComponentEvent)
          */
         @Override
-        public void componentMoved(final ComponentEvent e) {
+        public void componentMoved(ComponentEvent e) {
             followDecoratedComponent();
         }
 
@@ -108,7 +109,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
          * @see ComponentListener#componentResized(ComponentEvent)
          */
         @Override
-        public void componentResized(final ComponentEvent e) {
+        public void componentResized(ComponentEvent e) {
             followDecoratedComponent();
         }
 
@@ -116,7 +117,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
          * @see ComponentListener#componentShown(ComponentEvent)
          */
         @Override
-        public void componentShown(final ComponentEvent e) {
+        public void componentShown(ComponentEvent e) {
             followDecoratedComponent();
         }
 
@@ -124,7 +125,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
          * @see ComponentListener#componentHidden(ComponentEvent)
          */
         @Override
-        public void componentHidden(final ComponentEvent e) {
+        public void componentHidden(ComponentEvent e) {
             // Nothing to be done
         }
 
@@ -132,7 +133,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
          * @see HierarchyListener#hierarchyChanged(HierarchyEvent)
          */
         @Override
-        public void hierarchyChanged(final HierarchyEvent e) {
+        public void hierarchyChanged(HierarchyEvent e) {
             if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
                 decorationPainter.setVisible(getDecoratedComponent().isShowing());
             }
@@ -140,8 +141,9 @@ public abstract class AbstractComponentDecoration implements Disposable {
     }
 
     /**
-     * Entity responsible of calling the {@link AbstractComponentDecoration#paint(Graphics)} method.<br>It is a hook
-     * in the Swing paint mechanism.
+     * Entity responsible of calling the {@link AbstractComponentDecoration#paint(Graphics)} method.
+     * <p/>
+     * It works as a hook in the Swing paint mechanism.
      */
     protected class DecorationPainter extends JComponent {
 
@@ -178,7 +180,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
          *
          * @param clipBounds Clipping bounds.
          */
-        public void setClipBounds(final Rectangle clipBounds) {
+        public void setClipBounds(Rectangle clipBounds) {
             this.clipBounds = clipBounds;
         }
 
@@ -210,7 +212,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
          * @see AbstractComponentDecoration#paint(Graphics)
          */
         @Override
-        public void paintComponent(final Graphics g) {
+        public void paintComponent(Graphics g) {
             if (super.isVisible() && (decoratedComponent != null) && decoratedComponent.isShowing() &&
                     areBoundsValid(clipBounds)) {
                 // Clip graphics
@@ -222,21 +224,24 @@ public abstract class AbstractComponentDecoration implements Disposable {
         }
 
         /**
-         * Checks whether the specified clipping bounds can be used for painting.<br>If the bounds cannot be used, it is
-         * not necessary to paint the decoration.
+         * Checks whether the specified clipping bounds can be used for painting.
+         * <p/>
+         * If the bounds cannot be used, it is not necessary to paint the decoration.
          *
          * @param bounds Clipping bounds to be checked.
          *
          * @return True if the bounds can be used, false otherwise.
          */
-        private boolean areBoundsValid(final Rectangle bounds) {
+        private boolean areBoundsValid(Rectangle bounds) {
             return (bounds != null) && (bounds.width > 0) && (bounds.height > 0);
         }
     }
 
     /**
-     * Offset in the layer of the layered pane where the decoration is to be put.<br>The decoration will be added to the
-     * layered pane at the same layer index as the decorated component, incremented by this offset.
+     * Offset in the layer of the layered pane where the decoration is to be put.
+     * <p/>
+     * The decoration will be added to the layered pane at the same layer index as the decorated component, incremented
+     * by this offset.
      *
      * @see #getDecoratedComponentLayerInLayeredPane
      */
@@ -248,8 +253,9 @@ public abstract class AbstractComponentDecoration implements Disposable {
     private JComponent decoratedComponent;
 
     /**
-     * Ancestor component that will be used to determine the clipping bounds of the decoration.<br>If the default null
-     * value is specified, the parent component of the decorated component will be used.
+     * Ancestor component that will be used to determine the clipping bounds of the decoration.
+     * <p/>
+     * If the default null value is specified, the parent component of the decorated component will be used.
      */
     private JComponent clippingAncestor = null;
 
@@ -260,8 +266,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
 
     /**
      * Listener to decorated component changes that would affect properties of the decoration attached to it (for
-     * instance,
-     * size, location, etc.).
+     * instance, size, location, etc.).
      */
     private final ComponentTracker decoratedComponentTracker = new ComponentTracker();
 
@@ -277,8 +282,9 @@ public abstract class AbstractComponentDecoration implements Disposable {
     protected DecorationPainter decorationPainter = new DecorationPainter();
 
     /**
-     * Layered pane to which the decoration painter will be added.<br>The decoration will actually contain a component
-     * responsible of painting the decoration.
+     * Layered pane to which the decoration painter will be added.
+     * <p/>
+     * The decoration will actually contain a component responsible of painting the decoration.
      *
      * @see #decorationPainter
      */
@@ -291,7 +297,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
      * @param decoratedComponent Component to be decorated.
      * @param anchorLink         Anchor link between the decorated component and its decoration.
      */
-    public AbstractComponentDecoration(final JComponent decoratedComponent, final AnchorLink anchorLink) {
+    public AbstractComponentDecoration(JComponent decoratedComponent, AnchorLink anchorLink) {
         this.anchorLink = anchorLink;
         attach(decoratedComponent);
     }
@@ -301,7 +307,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
      *
      * @param componentToBeDecorated Component to be decorated.
      */
-    private void attach(final JComponent componentToBeDecorated) {
+    private void attach(JComponent componentToBeDecorated) {
         detach();
 
         decoratedComponent = componentToBeDecorated;
@@ -337,7 +343,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
      */
     private void attachToLayeredPane() {
         // Get ancestor layered pane that will get the decoration holder component
-        final Container ancestor = SwingUtilities.getAncestorOfClass(JLayeredPane.class, decoratedComponent);
+        Container ancestor = SwingUtilities.getAncestorOfClass(JLayeredPane.class, decoratedComponent);
         if (ancestor instanceof JLayeredPane) {
             attachedLayeredPane = (JLayeredPane) ancestor;
             attachedLayeredPane.add(decorationPainter, getDecoratedComponentLayerInLayeredPane(attachedLayeredPane));
@@ -351,7 +357,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
      *
      * @return Index of the decorated component in the layered pane.
      */
-    private Integer getDecoratedComponentLayerInLayeredPane(final JLayeredPane layeredPane) {
+    private Integer getDecoratedComponentLayerInLayeredPane(JLayeredPane layeredPane) {
         Container ancestorInLayer = decoratedComponent;
         while (!layeredPane.equals(ancestorInLayer.getParent())) {
             ancestorInLayer = ancestorInLayer.getParent();
@@ -380,8 +386,9 @@ public abstract class AbstractComponentDecoration implements Disposable {
     }
 
     /**
-     * Gets the custom clipping ancestor component that will be used to clip the decoration.<br>If null is returned, the
-     * parent container of the decorated component is used.
+     * Gets the custom clipping ancestor component that will be used to clip the decoration.
+     * <p/>
+     * If null is returned, the parent container of the decorated component is used.
      *
      * @return Clipping ancestor or null.
      */
@@ -390,22 +397,26 @@ public abstract class AbstractComponentDecoration implements Disposable {
     }
 
     /**
-     * Sets the custom clipping ancestor component that will be used to clip the decoration.<br>If set to null,
-     * the parent container of the decorated component will be used.<br>Note that the specified clipping component
-     * shall be an ancestor of the decorated component, or the component itself.
+     * Sets the custom clipping ancestor component that will be used to clip the decoration.
+     * <p/>
+     * If set to null, the parent container of the decorated component will be used.
+     * <p/>
+     * Note that the specified clipping component shall be an ancestor of the decorated component, or the component
+     * itself.
      *
      * @param decorationClippingAncestor Clipping ancestor or null to
      */
-    public void setClippingAncestor(final JComponent decorationClippingAncestor) {
+    public void setClippingAncestor(JComponent decorationClippingAncestor) {
         clippingAncestor = decorationClippingAncestor;
         followDecoratedComponent();
     }
 
     /**
-     * Gets the effective clipping ancestor.<br>If no custom clipping ancestor is set, the parent container of the
-     * decorated component will be returned.
+     * Gets the effective clipping ancestor.
+     * <p/>
+     * If no custom clipping ancestor is set, the parent container of the decorated component will be returned.
      *
-     * @return Effective clipping ancester.
+     * @return Effective clipping ancestor.
      */
     private JComponent getEffectiveClippingAncestor() {
         JComponent clippingComponent = clippingAncestor;
@@ -432,7 +443,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
      *
      * @param anchorLink Anchor link between the component and its decoration.
      */
-    public void setAnchorLink(final AnchorLink anchorLink) {
+    public void setAnchorLink(AnchorLink anchorLink) {
         this.anchorLink = anchorLink;
         followDecoratedComponent();
     }
@@ -451,23 +462,26 @@ public abstract class AbstractComponentDecoration implements Disposable {
      *
      * @param visible True to make the decoration visible, false to make it invisible.
      */
-    public void setVisible(final boolean visible) {
+    public void setVisible(boolean visible) {
         if (decorationPainter != null) {
             decorationPainter.setVisible(visible);
         }
     }
 
     /**
-     * Updates the decoration painter with respect to the decorated component.<br>This method is to be called whenever
-     * changes on the decorated component have an impact on the decoration (for instance, its size, location,
-     * etc.).<br>This method has been made protected so that it can be easily called from the implementing sub-classes.
+     * Updates the decoration painter with respect to the decorated component.
+     * <p/>
+     * This method is to be called whenever changes on the decorated component have an impact on the decoration (for
+     * instance, its size, location, etc.).
+     * <p/>
+     * This method has been made protected so that it can be easily called from the implementing sub-classes.
      */
     protected void followDecoratedComponent() {
         if ((decorationPainter != null) && (anchorLink != null) && (decoratedComponent != null)) {
             if (attachedLayeredPane == null) {
                 attachToLayeredPane();
             }
-            final Container layeredPane = SwingUtilities.getAncestorOfClass(JLayeredPane.class, decoratedComponent);
+            Container layeredPane = SwingUtilities.getAncestorOfClass(JLayeredPane.class, decoratedComponent);
             if (layeredPane instanceof JLayeredPane) {
                 followDecoratedComponent((JLayeredPane) layeredPane);
             } else {
@@ -489,37 +503,36 @@ public abstract class AbstractComponentDecoration implements Disposable {
      *
      * @see #followDecoratedComponent()
      */
-    private void followDecoratedComponent(final JLayeredPane layeredPane) {
-        final Point relativeLocationToOwner = anchorLink.getRelativeSlaveLocation(decoratedComponent.getWidth(),
+    private void followDecoratedComponent(JLayeredPane layeredPane) {
+        Point relativeLocationToOwner = anchorLink.getRelativeSlaveLocation(decoratedComponent.getWidth(),
                 decoratedComponent.getHeight(), getWidth(), getHeight());
 
         // Calculate decoration painter unclipped bounds
-        final Point ownerLocationInLayeredPane = SwingUtilities.convertPoint(decoratedComponent.getParent(),
+        Point ownerLocationInLayeredPane = SwingUtilities.convertPoint(decoratedComponent.getParent(),
                 decoratedComponent.getLocation(), layeredPane);
-        final Rectangle decorationBoundsInLayeredPane = new Rectangle(ownerLocationInLayeredPane.x +
+        Rectangle decorationBoundsInLayeredPane = new Rectangle(ownerLocationInLayeredPane.x +
                 relativeLocationToOwner.x, ownerLocationInLayeredPane.y + relativeLocationToOwner.y, getWidth(),
                 getHeight());
         decorationPainter.setBounds(decorationBoundsInLayeredPane);
 
         // Calculate decoration painter clipped bounds
-        final JComponent clippingComponent = getEffectiveClippingAncestor();
-        final Rectangle ownerBoundsInParent = decoratedComponent.getBounds();
-        final Rectangle decorationBoundsInParent = new Rectangle(ownerBoundsInParent.x + relativeLocationToOwner.x,
+        JComponent clippingComponent = getEffectiveClippingAncestor();
+        Rectangle ownerBoundsInParent = decoratedComponent.getBounds();
+        Rectangle decorationBoundsInParent = new Rectangle(ownerBoundsInParent.x + relativeLocationToOwner.x,
                 ownerBoundsInParent.y + relativeLocationToOwner.y, getWidth(), getHeight());
-        final Rectangle decorationBoundsInAncestor = SwingUtilities.convertRectangle(decoratedComponent.getParent(),
+        Rectangle decorationBoundsInAncestor = SwingUtilities.convertRectangle(decoratedComponent.getParent(),
                 decorationBoundsInParent, clippingComponent);
-        final Rectangle ancestorVisibleRect = clippingComponent.getVisibleRect();
-        final Rectangle decorationVisibleBoundsInAncestor = ancestorVisibleRect.intersection
-                (decorationBoundsInAncestor);
+        Rectangle ancestorVisibleRect = clippingComponent.getVisibleRect();
+        Rectangle decorationVisibleBoundsInAncestor = ancestorVisibleRect.intersection(decorationBoundsInAncestor);
 
         if ((decorationVisibleBoundsInAncestor.width == 0) || (decorationVisibleBoundsInAncestor.height == 0)) {
             decorationPainter.setClipBounds(null);
         } else {
-            final Rectangle decorationVisibleBoundsInLayeredPane = SwingUtilities.convertRectangle(clippingComponent,
+            Rectangle decorationVisibleBoundsInLayeredPane = SwingUtilities.convertRectangle(clippingComponent,
                     decorationVisibleBoundsInAncestor, layeredPane);
 
             // Clip graphics context
-            final Rectangle clipBounds = SwingUtilities.convertRectangle(decorationPainter.getParent(),
+            Rectangle clipBounds = SwingUtilities.convertRectangle(decorationPainter.getParent(),
                     decorationVisibleBoundsInLayeredPane, decorationPainter);
             decorationPainter.setClipBounds(clipBounds);
         }
