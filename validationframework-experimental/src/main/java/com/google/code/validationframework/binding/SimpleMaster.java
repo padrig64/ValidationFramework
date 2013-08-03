@@ -30,6 +30,11 @@ import java.util.List;
 
 public class SimpleMaster<MO> implements Master<MO> {
 
+    /**
+     * Generated serial UID.
+     */
+    private static final long serialVersionUID = 7521786502824594650L;
+
     private final List<Slave<MO>> slaves = new ArrayList<Slave<MO>>();
 
     private MO value = null;
@@ -64,7 +69,7 @@ public class SimpleMaster<MO> implements Master<MO> {
 
     protected void notifySlaves() {
         for (Slave<MO> slave : slaves) {
-            slave.masterChanged(this);
+            slave.setValue(value);
         }
     }
 }

@@ -134,7 +134,7 @@ public final class GeneralValidatorBuilder {
      *
      * @return Context allowing further construction of the validator using the DSL.
      */
-    public static <DPO> SingleResultCollectorContext<DPO> collectFrom(SimpleValidator<?, ?, ?, ?, ?, ?,
+    public static <DPO> SingleResultCollectorContext<DPO> collect(SimpleValidator<?, ?, ?, ?, ?, ?,
             ResultHandler<DPO>, DPO> validator) {
         List<Trigger> addedTriggers = new ArrayList<Trigger>();
         List<DataProvider<DPO>> addedDataProviders = new ArrayList<DataProvider<DPO>>();

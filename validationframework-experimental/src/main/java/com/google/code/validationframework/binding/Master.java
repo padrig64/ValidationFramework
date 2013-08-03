@@ -25,7 +25,9 @@
 
 package com.google.code.validationframework.binding;
 
-public interface Master<T> {
+import java.io.Serializable;
+
+public interface Master<T> extends Serializable {
 
     void addSlave(Slave<T> slave);
 

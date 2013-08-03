@@ -25,21 +25,18 @@
 
 package com.google.code.validationframework.binding;
 
-public class SimpleSlave<SI> implements Slave<SI> {
+public class BindableCharacter extends Bindable<Character> {
 
     /**
      * Generated serial UID.
      */
-    private static final long serialVersionUID = -6842013247860181154L;
+    private static final long serialVersionUID = -8348746444021071503L;
 
-    private SI value = null;
-
-    public SI getValue() {
-        return value;
+    public BindableCharacter() {
+        super();
     }
 
-    @Override
-    public void setValue(SI value) {
-        this.value = value;
+    public BindableCharacter(Character value) {
+        super(value);
     }
 }

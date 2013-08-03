@@ -29,10 +29,134 @@ import com.google.code.validationframework.base.transform.CastTransformer;
 import com.google.code.validationframework.base.transform.Transformer;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
 public final class Binder {
+
+    private static class SingleProxy<MO, SI> implements Slave<MO>, Master<SI> {
+
+        /**
+         * Generated serial UID.
+         */
+        private static final long serialVersionUID = 5765153977289533185L;
+
+        private final List<Transformer> transformers = new ArrayList<Transformer>();
+
+        private final Transformer<Object, SI> lastTransformer = new CastTransformer<Object, SI>();
+
+        private final List<Slave<SI>> slaves = new ArrayList<Slave<SI>>();
+
+        private SI value = null;
+
+        public SingleProxy(Collection<Transformer> transformers) {
+            if (transformers != null) {
+                this.transformers.addAll(transformers);
+            }
+        }
+
+        @Override
+        public void addSlave(Slave<SI> slave) {
+            slaves.add(slave);
+        }
+
+        @Override
+        public void removeSlave(Slave<SI> slave) {
+            slaves.remove(slave);
+        }
+
+        @Override
+        public SI getValue() {
+            return value;
+        }
+
+        @Override
+        public void setValue(MO value) {
+            // Transform value
+            Object transformedValue = value;
+            for (Transformer transformer : transformers) {
+                transformedValue = transformer.transform(transformedValue);
+            }
+            this.value = lastTransformer.transform(transformedValue);
+
+            // Notify slaves
+            notifySlaves();
+        }
+
+        private void notifySlaves() {
+            for (Slave<SI> slave : slaves) {
+                slave.setValue(value);
+            }
+        }
+    }
+
+    private static class MultipleProxy<MO, SI> implements Slave<MO>, Master<SI> {
+
+        /**
+         * Generated serial UID.
+         */
+        private static final long serialVersionUID = 5765153977289533185L;
+
+        private final List<Master<MO>> masters = new ArrayList<Master<MO>>();
+
+        private final List<Transformer> transformers = new ArrayList<Transformer>();
+
+        private final Transformer<Object, SI> lastTransformer = new CastTransformer<Object, SI>();
+
+        private final List<Slave<SI>> slaves = new ArrayList<Slave<SI>>();
+
+        private SI value = null;
+
+        public MultipleProxy(Collection<Master<MO>> masters, Collection<Transformer> transformers) {
+            if (masters != null) {
+                this.masters.addAll(masters);
+            }
+            if (transformers != null) {
+                this.transformers.addAll(transformers);
+            }
+        }
+
+        @Override
+        public void addSlave(Slave<SI> slave) {
+            slaves.add(slave);
+        }
+
+        @Override
+        public void removeSlave(Slave<SI> slave) {
+            slaves.remove(slave);
+        }
+
+        @Override
+        public SI getValue() {
+            return value;
+        }
+
+        @Override
+        public void setValue(MO value) {
+            // TODO Get value from all masters
+            List<MO> values = new ArrayList<MO>();
+            for (Master<MO> master : masters) {
+                values.add(master.getValue());
+            }
+
+            // Transform value
+            Object transformedValue = values;
+            for (Transformer transformer : transformers) {
+                transformedValue = transformer.transform(transformedValue);
+            }
+            this.value = lastTransformer.transform(transformedValue);
+
+            // Notify slaves
+            notifySlaves();
+        }
+
+        private void notifySlaves() {
+            for (Slave<SI> slave : slaves) {
+                slave.setValue(value);
+            }
+        }
+    }
 
     public static class SingleMasterContext<MO, SI> {
 
@@ -53,91 +177,44 @@ public final class Binder {
         }
 
         public void to(Slave<SI> slave) {
-            SingleMasterTransformersProxy<MO, SI> proxy = new SingleMasterTransformersProxy<MO, SI>(transformers);
+            // Connect master -> proxy -> slave
+            SingleProxy<MO, SI> proxy = new SingleProxy<MO, SI>(transformers);
             master.addSlave(proxy);
             proxy.addSlave(slave);
 
-            proxy.masterChanged(master);
+            // Set initial values in proxy and slave
+            proxy.setValue(master.getValue());
         }
     }
 
-    public static class MultipleMasterContext<T> {
-
-        private final Collection<Master<T>> masters;
-
-        public MultipleMasterContext(Collection<Master<T>> masters) {
-            this.masters = masters;
-        }
-
-        public void to(Slave<Collection<T>> slave) {
-            MultipleMastersProxy<T> proxy = new MultipleMastersProxy<T>(masters);
-
-            for (Master<T> master : masters) {
-                master.addSlave(proxy);
-            }
-
-            proxy.addSlave(slave);
-        }
-    }
-
-    private static class SingleMasterTransformersProxy<MO, SI> extends SimpleMaster<SI> implements Slave<MO> {
-
-        private final Collection<Transformer> transformers;
-
-        private final CastTransformer<Object, SI> lastTransformer = new CastTransformer<Object, SI>();
-
-        public SingleMasterTransformersProxy(Collection<Transformer> transformers) {
-            this.transformers = transformers;
-        }
-
-        @Override
-        public void masterChanged(Master<MO> changedMaster) {
-            Object transformedValue = changedMaster.getValue();
-            for (Transformer transformer : transformers) {
-                transformedValue = transformer.transform(transformedValue);
-            }
-
-            SI slaveInput = lastTransformer.transform(transformedValue);
-            setValue(slaveInput);
-        }
-    }
-
-    private static class MultipleMastersProxy<MO> implements Slave<MO>, Master<Collection<MO>> {
+    public static class MultipleMasterContext<MO, SI> {
 
         private final Collection<Master<MO>> masters;
 
-        private final List<Slave<Collection<MO>>> slaves = new ArrayList<Slave<Collection<MO>>>();
+        private final List<Transformer> transformers = new ArrayList<Transformer>();
 
-        public MultipleMastersProxy(Collection<Master<MO>> masters) {
+        public MultipleMasterContext(Collection<Master<MO>> masters, Collection<Transformer> transformers) {
             this.masters = masters;
-        }
-
-        @Override
-        public void masterChanged(Master<MO> changedMaster) {
-            for (Slave<Collection<MO>> slave : slaves) {
-                slave.masterChanged(this);
+            if (transformers != null) {
+                this.transformers.addAll(transformers);
             }
         }
 
-        @Override
-        public void addSlave(Slave<Collection<MO>> slave) {
-            slaves.add(slave);
+        public <TSI> MultipleMasterContext<MO, TSI> transform(Transformer<SI, TSI> transformer) {
+            transformers.add(transformer);
+            return new MultipleMasterContext<MO, TSI>(masters, transformers);
         }
 
-        @Override
-        public void removeSlave(Slave<Collection<MO>> slave) {
-            slaves.remove(slave);
-        }
-
-        @Override
-        public Collection<MO> getValue() {
-            List<MO> values = new ArrayList<MO>();
-
+        public void to(Slave<SI> slave) {
+            // Connect masters -> proxy -> slave
+            MultipleProxy<MO, SI> proxy = new MultipleProxy<MO, SI>(masters, transformers);
             for (Master<MO> master : masters) {
-                values.add(master.getValue());
+                master.addSlave(proxy);
             }
+            proxy.addSlave(slave);
 
-            return values;
+            // Slave initial values in proxy and slave
+            proxy.setValue(null);
         }
     }
 
@@ -152,7 +229,11 @@ public final class Binder {
         return new SingleMasterContext<MO, MO>(master, null);
     }
 
-    public static <MO> MultipleMasterContext<MO> bind(Collection<Master<MO>> masters) {
-        return new MultipleMasterContext<MO>(masters);
+    public static <MO> MultipleMasterContext<MO, Collection<MO>> bind(Collection<Master<MO>> masters) {
+        return new MultipleMasterContext<MO, Collection<MO>>(masters, null);
+    }
+
+    public static <MO> MultipleMasterContext<MO, Collection<MO>> bind(Master<MO>... masters) {
+        return new MultipleMasterContext<MO, Collection<MO>>(Arrays.asList(masters), null);
     }
 }

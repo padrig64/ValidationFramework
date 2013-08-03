@@ -25,6 +25,7 @@
 
 package com.google.code.validationframework.binding;
 
+import com.google.code.validationframework.base.transform.AndBooleanAggregator;
 import com.google.code.validationframework.base.transform.ToStringTransformer;
 import org.junit.Test;
 
@@ -35,31 +36,42 @@ public class BinderTest {
 
     @Test
     public void testMasterToSlave() {
-        SimpleBindable<Integer> first = new SimpleBindable<Integer>(5);
-        SimpleBindable<Integer> second = new SimpleBindable<Integer>(0);
-        bind(first).to(second);
+        Bindable<Integer> master = new Bindable<Integer>(5);
+        Bindable<Integer> slave = new Bindable<Integer>(0);
+        bind(master).to(slave);
 
-        assertEquals(Integer.valueOf(5), first.getValue());
-        assertEquals(first.getValue(), second.getValue());
+        assertEquals(Integer.valueOf(5), master.getValue());
+        assertEquals(master.getValue(), slave.getValue());
 
-        first.setValue(8);
+        master.setValue(8);
 
-        assertEquals(Integer.valueOf(8), first.getValue());
-        assertEquals(first.getValue(), second.getValue());
+        assertEquals(Integer.valueOf(8), master.getValue());
+        assertEquals(master.getValue(), slave.getValue());
     }
 
     @Test
     public void testMasterToSlaveWithTransformation() {
-        SimpleBindable<Integer> first = new SimpleBindable<Integer>(5);
-        SimpleBindable<String> second = new SimpleBindable<String>("0");
-        bind(first).transform(new ToStringTransformer<Integer>()).to(second);
+        Bindable<Integer> master = new Bindable<Integer>(5);
+        Bindable<String> slave = new Bindable<String>("0");
+        bind(master).transform(new ToStringTransformer<Integer>()).to(slave);
 
-        assertEquals(Integer.valueOf(5), first.getValue());
-        assertEquals("5", second.getValue());
+        assertEquals(Integer.valueOf(5), master.getValue());
+        assertEquals("5", slave.getValue());
 
-        first.setValue(8);
+        master.setValue(8);
 
-        assertEquals(Integer.valueOf(8), first.getValue());
-        assertEquals("8", second.getValue());
+        assertEquals(Integer.valueOf(8), master.getValue());
+        assertEquals("8", slave.getValue());
+    }
+
+    @Test
+    public void testMasterToSlaveWithAggregation() {
+        BindableBoolean master1 = new BindableBoolean(true);
+        BindableBoolean master2 = new BindableBoolean(false);
+        BindableBoolean master3 = new BindableBoolean(false);
+        BindableBoolean slave = new BindableBoolean();
+        bind(master1, master2, master3).transform(new AndBooleanAggregator()).to(slave);
+
+        assertEquals(false, slave.getValue());
     }
 }

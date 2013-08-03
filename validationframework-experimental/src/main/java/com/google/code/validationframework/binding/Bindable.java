@@ -25,21 +25,52 @@
 
 package com.google.code.validationframework.binding;
 
-public class SimpleSlave<SI> implements Slave<SI> {
+import java.util.ArrayList;
+import java.util.List;
+
+public class Bindable<T> implements Master<T>, Slave<T> {
 
     /**
      * Generated serial UID.
      */
-    private static final long serialVersionUID = -6842013247860181154L;
+    private static final long serialVersionUID = 6820249070710960455L;
 
-    private SI value = null;
+    private final List<Slave<T>> slaves = new ArrayList<Slave<T>>();
 
-    public SI getValue() {
+    private T value = null;
+
+    public Bindable() {
+        this(null);
+    }
+
+    public Bindable(T value) {
+        this.value = value;
+    }
+
+    @Override
+    public void addSlave(Slave<T> slave) {
+        slaves.add(slave);
+    }
+
+    @Override
+    public void removeSlave(Slave<T> slave) {
+        slaves.remove(slave);
+    }
+
+    @Override
+    public T getValue() {
         return value;
     }
 
     @Override
-    public void setValue(SI value) {
+    public void setValue(T value) {
         this.value = value;
+        notifySlaves();
+    }
+
+    protected void notifySlaves() {
+        for (Slave<T> slave : slaves) {
+            slave.setValue(value);
+        }
     }
 }

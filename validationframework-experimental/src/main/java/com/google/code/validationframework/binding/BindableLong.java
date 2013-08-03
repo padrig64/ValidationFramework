@@ -25,51 +25,18 @@
 
 package com.google.code.validationframework.binding;
 
-import java.util.ArrayList;
-import java.util.List;
+public class BindableLong extends Bindable<Long> {
 
-public class SimpleBindable<T> implements Master<T>, Slave<T> {
+    /**
+     * Generated serial UID.
+     */
+    private static final long serialVersionUID = 9198702274930261989L;
 
-    private final List<Slave<T>> slaves = new ArrayList<Slave<T>>();
-
-    private T value = null;
-
-    public SimpleBindable() {
-        this(null);
+    public BindableLong() {
+        super();
     }
 
-    public SimpleBindable(T value) {
-        this.value = value;
-    }
-
-    @Override
-    public void addSlave(Slave<T> slave) {
-        slaves.add(slave);
-    }
-
-    @Override
-    public void removeSlave(Slave<T> slave) {
-        slaves.remove(slave);
-    }
-
-    @Override
-    public void masterChanged(Master<T> changedMaster) {
-        this.value = changedMaster.getValue();
-    }
-
-    @Override
-    public T getValue() {
-        return value;
-    }
-
-    public void setValue(T value) {
-        this.value = value;
-        notifySlaves();
-    }
-
-    protected void notifySlaves() {
-        for (Slave<T> slave : slaves) {
-            slave.masterChanged(this);
-        }
+    public BindableLong(Long value) {
+        super(value);
     }
 }
