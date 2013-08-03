@@ -25,51 +25,16 @@
 
 package com.google.code.validationframework.binding;
 
-import java.util.ArrayList;
-import java.util.List;
+public class SimpleSlave<SI> implements Slave<SI> {
 
-public class Bindable<T> implements MasterSlave<T> {
-
-    private final List<Slave<T>> slaves = new ArrayList<Slave<T>>();
-
-    private T value = null;
-
-    public Bindable() {
-        this(null);
-    }
-
-    public Bindable(T value) {
-        this.value = value;
-    }
+    private SI value = null;
 
     @Override
-    public void addSlave(Slave<T> slave) {
-        slaves.add(slave);
+    public void masterChanged(Master<SI> changedMaster) {
+        value = changedMaster.getValue();
     }
 
-    @Override
-    public void removeSlave(Slave<T> slave) {
-        slaves.remove(slave);
-    }
-
-    @Override
-    public void masterChanged(Master<T> changedMaster) {
-        this.value = changedMaster.getValue();
-    }
-
-    @Override
-    public T getValue() {
+    public SI getValue() {
         return value;
-    }
-
-    public void setValue(T value) {
-        this.value = value;
-        notifySlaves();
-    }
-
-    protected void notifySlaves() {
-        for (Slave<T> slave : slaves) {
-            slave.masterChanged(this);
-        }
     }
 }

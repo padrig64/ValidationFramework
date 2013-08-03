@@ -35,8 +35,8 @@ public class BinderTest {
 
     @Test
     public void testMasterToSlave() {
-        Bindable<Integer> first = new Bindable<Integer>(5);
-        Bindable<Integer> second = new Bindable<Integer>(0);
+        SimpleBindable<Integer> first = new SimpleBindable<Integer>(5);
+        SimpleBindable<Integer> second = new SimpleBindable<Integer>(0);
         bind(first).to(second);
 
         assertEquals(Integer.valueOf(5), first.getValue());
@@ -50,8 +50,8 @@ public class BinderTest {
 
     @Test
     public void testMasterToSlaveWithTransformation() {
-        Bindable<Integer> first = new Bindable<Integer>(5);
-        Bindable<String> second = new Bindable<String>("0");
+        SimpleBindable<Integer> first = new SimpleBindable<Integer>(5);
+        SimpleBindable<String> second = new SimpleBindable<String>("0");
         bind(first).transform(new ToStringTransformer<Integer>()).to(second);
 
         assertEquals(Integer.valueOf(5), first.getValue());
