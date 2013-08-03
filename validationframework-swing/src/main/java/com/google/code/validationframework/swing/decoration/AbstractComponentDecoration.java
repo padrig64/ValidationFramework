@@ -41,7 +41,6 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.HierarchyBoundsListener;
 import java.awt.event.HierarchyEvent;
-import java.awt.event.HierarchyListener;
 
 /**
  * Abstract implementation of a decoration that can be attached to a component.
@@ -54,8 +53,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
      * Entity responsible of tracking the changes on the decorated component and/or its ancestors that would require to
      * update the location and/or the clip bounds of the decoration.
      */
-    private final class ComponentTracker implements AncestorListener, HierarchyBoundsListener, ComponentListener,
-            HierarchyListener {
+    private final class ComponentTracker implements AncestorListener, HierarchyBoundsListener, ComponentListener {
 
         /**
          * @see AncestorListener#ancestorAdded(AncestorEvent)
@@ -128,16 +126,6 @@ public abstract class AbstractComponentDecoration implements Disposable {
         public void componentHidden(ComponentEvent e) {
             // Nothing to be done
         }
-
-        /**
-         * @see HierarchyListener#hierarchyChanged(HierarchyEvent)
-         */
-        @Override
-        public void hierarchyChanged(HierarchyEvent e) {
-            if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
-                decorationPainter.setVisible(getDecoratedComponent().isShowing());
-            }
-        }
     }
 
     /**
@@ -164,6 +152,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
         public DecorationPainter() {
             super();
             setFocusable(false);
+            setVisible(true);
         }
 
         /**
@@ -213,8 +202,8 @@ public abstract class AbstractComponentDecoration implements Disposable {
          */
         @Override
         public void paintComponent(Graphics g) {
-            if (super.isVisible() && (decoratedComponent != null) && decoratedComponent.isShowing() &&
-                    areBoundsValid(clipBounds)) {
+            if (isVisible() && (decoratedComponent != null) && decoratedComponent.isShowing() && areBoundsValid
+                    (clipBounds)) {
                 // Clip graphics
                 g.setClip(clipBounds);
 
@@ -316,7 +305,6 @@ public abstract class AbstractComponentDecoration implements Disposable {
             decoratedComponent.addComponentListener(decoratedComponentTracker);
             decoratedComponent.addAncestorListener(decoratedComponentTracker);
             decoratedComponent.addHierarchyBoundsListener(decoratedComponentTracker);
-            decoratedComponent.addHierarchyListener(decoratedComponentTracker);
 
             attachToLayeredPane();
         }
@@ -326,12 +314,12 @@ public abstract class AbstractComponentDecoration implements Disposable {
      * Detaches the decoration from the decorated component.
      */
     private void detach() {
-        setVisible(false);
+        // Do not call setVisible(false) here: that would make it invisible by default (detach() is called in attach())
+
         if (decoratedComponent != null) {
             decoratedComponent.removeComponentListener(decoratedComponentTracker);
             decoratedComponent.removeAncestorListener(decoratedComponentTracker);
             decoratedComponent.removeHierarchyBoundsListener(decoratedComponentTracker);
-            decoratedComponent.removeHierarchyListener(decoratedComponentTracker);
             decoratedComponent = null;
 
             detachFromLayeredPane();
@@ -454,7 +442,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
      * @return True if the decoration is visible, false otherwise.
      */
     public boolean isVisible() {
-        return ((decorationPainter != null) && decorationPainter.isVisible());
+        return decorationPainter.isVisible();
     }
 
     /**
@@ -463,9 +451,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
      * @param visible True to make the decoration visible, false to make it invisible.
      */
     public void setVisible(boolean visible) {
-        if (decorationPainter != null) {
-            decorationPainter.setVisible(visible);
-        }
+        decorationPainter.setVisible(visible);
     }
 
     /**
@@ -477,7 +463,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
      * This method has been made protected so that it can be easily called from the implementing sub-classes.
      */
     protected void followDecoratedComponent() {
-        if ((decorationPainter != null) && (anchorLink != null) && (decoratedComponent != null)) {
+        if ((anchorLink != null) && (decoratedComponent != null)) {
             if (attachedLayeredPane == null) {
                 attachToLayeredPane();
             }

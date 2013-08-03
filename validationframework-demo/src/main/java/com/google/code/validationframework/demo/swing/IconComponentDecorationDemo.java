@@ -69,7 +69,7 @@ public class IconComponentDecorationDemo extends JFrame {
     private Component createTabContent0() {
         JPanel panel = new JPanel(new MigLayout("fill"));
 
-        JTextField textField = new JTextField("JTextField");
+        JTextField textField = new JTextField("Not empty");
         textField.setColumns(15);
         panel.add(textField);
 
@@ -85,6 +85,7 @@ public class IconComponentDecorationDemo extends JFrame {
         JPanel panel = new JPanel(new MigLayout("fill"));
 
         JTextField textField = new JTextField();
+        textField.setName("tab1");
         textField.setColumns(15);
         panel.add(textField);
 

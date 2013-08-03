@@ -3,6 +3,7 @@
 * Added SimpleResultCollector for convenience over the ResultCollector
 * Made the GeneralValidatorBuilder collect from other simple validators
 * Added StringNotEmptyRule as a simpler alternative to StringLengthGreaterThanRule and StringLengthGreaterThanOrEqualToRule
+* Fixed visibility of AbstractComponentDecoration when set manually and the component goes to showing state
 
 # Version 2.1.0
 

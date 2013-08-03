@@ -1,6 +1,8 @@
 # TO FIX
 
-* Fix calls to setVisible() on icon decoration
+* Painting of translucent decorations
+* No decoration on disabled components (config + listen to component state)
+* Smarter selection of clipping ancestor (viewport?)
 * Remaining icontip's tooltips when quickly moving mouse (in/outside tables): only on Linux? still happening?
 * Icon decoration steals mouse event even outside clipping bounds
 * Make consistent use of generics for Swing data providers
@@ -30,7 +32,6 @@
 * Reformat/Revert JFormattedTextField when focus lost? Save values allowed by the rules (wider than the default number formatter)
 * Icon decoration above combobox popups
 * Tab decoration depending on tab selection
-* No decoration on disabled components (config + listen to component state)
 * Avoid instantiation of result collectors (collect directly from validators, etc.)
 * Better icon tip anchoring for IconTipDecorator
 * Alternative location of icon tip w.r.t. screen edge
