@@ -134,7 +134,7 @@ public final class Binder {
 
         @Override
         public void setValue(MO value) {
-            // TODO Get value from all masters
+            // Get value from all masters
             List<MO> values = new ArrayList<MO>();
             for (Master<MO> master : masters) {
                 values.add(master.getValue());
@@ -185,6 +185,22 @@ public final class Binder {
             // Set initial values in proxy and slave
             proxy.setValue(master.getValue());
         }
+
+        public void to(Collection<Slave<SI>> slaves) {
+            // Connect master -> proxy -> slaves
+            SingleProxy<MO, SI> proxy = new SingleProxy<MO, SI>(transformers);
+            master.addSlave(proxy);
+            for (Slave<SI> slave : slaves) {
+                proxy.addSlave(slave);
+            }
+
+            // Set initial values in proxy and slave
+            proxy.setValue(master.getValue());
+        }
+
+        public void to(Slave<SI>... slaves) {
+            to(Arrays.asList(slaves));
+        }
     }
 
     public static class MultipleMasterContext<MO, SI> {
@@ -215,6 +231,24 @@ public final class Binder {
 
             // Slave initial values in proxy and slave
             proxy.setValue(null);
+        }
+
+        public void to(Collection<Slave<SI>> slaves) {
+            // Connect masters -> proxy -> slaves
+            MultipleProxy<MO, SI> proxy = new MultipleProxy<MO, SI>(masters, transformers);
+            for (Master<MO> master : masters) {
+                master.addSlave(proxy);
+            }
+            for (Slave<SI> slave : slaves) {
+                proxy.addSlave(slave);
+            }
+
+            // Slave initial values in proxy and slave
+            proxy.setValue(null);
+        }
+
+        public void to(Slave<SI>... slaves) {
+            to(Arrays.asList(slaves));
         }
     }
 
