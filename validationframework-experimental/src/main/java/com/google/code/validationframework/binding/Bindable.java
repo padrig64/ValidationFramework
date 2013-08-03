@@ -39,6 +39,8 @@ public class Bindable<T> implements Master<T>, Slave<T> {
 
     private T value = null;
 
+    private boolean settingValue = false;
+
     public Bindable() {
         this(null);
     }
@@ -64,8 +66,14 @@ public class Bindable<T> implements Master<T>, Slave<T> {
 
     @Override
     public void setValue(T value) {
-        this.value = value;
-        notifySlaves();
+        if (!settingValue) {
+            settingValue = true;
+
+            this.value = value;
+            notifySlaves();
+
+            settingValue = false;
+        }
     }
 
     protected void notifySlaves() {

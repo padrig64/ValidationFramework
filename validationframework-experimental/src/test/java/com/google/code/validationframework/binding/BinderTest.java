@@ -74,4 +74,20 @@ public class BinderTest {
 
         assertEquals(false, slave.getValue());
     }
+
+    @Test
+    public void testMasterSlaveLoop() {
+        BindableInteger first = new BindableInteger(5);
+        BindableInteger second = new BindableInteger(4);
+
+        // The following should not result in an StackOverflowError
+        bind(first).to(second);
+        bind(second).to(first);
+
+        first.setValue(12);
+        assertEquals(Integer.valueOf(12), second.getValue());
+
+        second.setValue(36);
+        assertEquals(Integer.valueOf(36), first.getValue());
+    }
 }
