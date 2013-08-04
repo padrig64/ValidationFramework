@@ -211,33 +211,24 @@ public class IconComponentDecorationDemo extends JFrame {
 
             @Override
             public void run() {
-//                // Set look-and-feel
-//                try {
-//                    for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-//                        if ("Nimbus".equals(info.getName())) {
-//                            UIManager.setLookAndFeel(info.getClassName());
-//                            break;
-//                        }
-//                    }
-//                } catch (UnsupportedLookAndFeelException e) {
-//                    // handle exception
-//                } catch (ClassNotFoundException e) {
-//                    // handle exception
-//                } catch (InstantiationException e) {
-//                    // handle exception
-//                } catch (IllegalAccessException e) {
-//                    // handle exception
-//                }
+                // Set look-and-feel
                 try {
-                    UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                } catch (InstantiationException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
+                    for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+                        if ("Nimbus".equals(info.getName())) {
+                            UIManager.setLookAndFeel(info.getClassName());
+                            break;
+                        }
+                    }
+
+//                    UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
                 } catch (UnsupportedLookAndFeelException e) {
-                    e.printStackTrace();
+                    // handle exception
+                } catch (ClassNotFoundException e) {
+                    // handle exception
+                } catch (InstantiationException e) {
+                    // handle exception
+                } catch (IllegalAccessException e) {
+                    // handle exception
                 }
 
                 // Show window

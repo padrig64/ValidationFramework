@@ -290,8 +290,8 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
         SwingUtilities.convertPointFromScreen(mouseLocation, decorationPainter);
 
         // Determine if tooltip dialog should be visible or not
-        boolean shouldBeVisible = decorationPainter.isVisible() && decorationPainter.getClipBounds().contains
-                (mouseLocation);
+        boolean shouldBeVisible = decorationPainter.isVisible() && ((decorationPainter.getClipBounds() != null) &&
+                decorationPainter.getClipBounds().contains(mouseLocation));
 
         // Create tooltip dialog if needed
         if (shouldBeVisible) {

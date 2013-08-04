@@ -184,6 +184,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
         public DecorationPainter() {
             super();
             setFocusable(false);
+            setOpaque(false);
         }
 
         /**
@@ -235,6 +236,8 @@ public abstract class AbstractComponentDecoration implements Disposable {
          */
         @Override
         public void paintComponent(Graphics g) {
+            super.paintComponent(g);
+
             if (isVisible() && (decoratedComponent != null) && decoratedComponent.isShowing() && areBoundsValid
                     (clipBounds)) {
                 // Clip graphics
@@ -461,6 +464,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
         JComponent clippingComponent = clippingAncestor;
 
         if ((clippingComponent == null) && (decoratedComponent != null)) {
+            // Look for the first viewport or layered pane in the component hierarchy tree
             Container parent = decoratedComponent.getParent();
             while ((parent != null) && (clippingComponent == null)) {
                 if ((parent instanceof JViewport) || (parent instanceof JLayeredPane)) {
@@ -518,7 +522,10 @@ public abstract class AbstractComponentDecoration implements Disposable {
      * @see DecorationPainter
      */
     private void updateDecorationPainterVisibility() {
-        decorationPainter.setVisible(decoratedComponent.isEnabled() && decoratedComponent.isShowing() && visible);
+        boolean shouldBeVisible = decoratedComponent.isEnabled() && decoratedComponent.isShowing() && visible;
+        if (shouldBeVisible != decorationPainter.isVisible()) {
+            decorationPainter.setVisible(shouldBeVisible);
+        }
     }
 
     /**
@@ -540,12 +547,6 @@ public abstract class AbstractComponentDecoration implements Disposable {
             } else {
                 decorationPainter.setClipBounds(null);
             }
-
-            // Repaint
-            decorationPainter.repaint();
-            if (layeredPane != null) {
-                layeredPane.repaint();
-            }
         }
     }
 
@@ -560,25 +561,54 @@ public abstract class AbstractComponentDecoration implements Disposable {
         Point relativeLocationToOwner = anchorLink.getRelativeSlaveLocation(decoratedComponent.getWidth(),
                 decoratedComponent.getHeight(), getWidth(), getHeight());
 
-        // Calculate decoration painter unclipped bounds
-        Point ownerLocationInLayeredPane = SwingUtilities.convertPoint(decoratedComponent.getParent(),
-                decoratedComponent.getLocation(), layeredPane);
-        Rectangle decorationBoundsInLayeredPane = new Rectangle(ownerLocationInLayeredPane.x +
-                relativeLocationToOwner.x, ownerLocationInLayeredPane.y + relativeLocationToOwner.y, getWidth(),
-                getHeight());
-        decorationPainter.setBounds(decorationBoundsInLayeredPane);
+        updateDecorationPainterUnclippedBounds(layeredPane, relativeLocationToOwner);
+        updateDecorationPainterClippedBounds(layeredPane, relativeLocationToOwner);
+    }
 
-        // Calculate decoration painter clipped bounds
+    /**
+     * Calculates and updates the unclipped bounds of the decoration painter in layered pane coordinates.
+     *
+     * @param layeredPane             Layered pane containing the decoration painter.
+     * @param relativeLocationToOwner Location of the decoration painter relatively to the decorated component.
+     */
+    private void updateDecorationPainterUnclippedBounds(JLayeredPane layeredPane, Point relativeLocationToOwner) {
+        // Calculate location of the decorated component in the layered pane contained the decoration painter
+        Point decoratedComponentLocationInLayeredPane = SwingUtilities.convertPoint(decoratedComponent.getParent(),
+                decoratedComponent.getLocation(), layeredPane);
+
+        // Deduces the location of the decoration painter in the layered pane
+        Rectangle decorationBoundsInLayeredPane = new Rectangle(decoratedComponentLocationInLayeredPane.x +
+                relativeLocationToOwner.x, decoratedComponentLocationInLayeredPane.y + relativeLocationToOwner.y,
+                getWidth(), getHeight());
+
+        // Update decoration painter
+        decorationPainter.setBounds(decorationBoundsInLayeredPane);
+    }
+
+    /**
+     * Calculates and updates the clipped bounds of the decoration painter in layered pane coordinates.
+     *
+     * @param layeredPane             Layered pane containing the decoration painter.
+     * @param relativeLocationToOwner Location of the decoration painter relatively to the decorated component.
+     */
+    private void updateDecorationPainterClippedBounds(JLayeredPane layeredPane, Point relativeLocationToOwner) {
         JComponent clippingComponent = getEffectiveClippingAncestor();
+
         Rectangle ownerBoundsInParent = decoratedComponent.getBounds();
         Rectangle decorationBoundsInParent = new Rectangle(ownerBoundsInParent.x + relativeLocationToOwner.x,
                 ownerBoundsInParent.y + relativeLocationToOwner.y, getWidth(), getHeight());
         Rectangle decorationBoundsInAncestor = SwingUtilities.convertRectangle(decoratedComponent.getParent(),
                 decorationBoundsInParent, clippingComponent);
-        Rectangle ancestorVisibleRect = clippingComponent.getVisibleRect();
-        Rectangle decorationVisibleBoundsInAncestor = ancestorVisibleRect.intersection(decorationBoundsInAncestor);
+        Rectangle decorationVisibleBoundsInAncestor;
+        if (clippingComponent == null) {
+            decorationVisibleBoundsInAncestor = decorationBoundsInAncestor;
+        } else {
+            Rectangle ancestorVisibleRect = clippingComponent.getVisibleRect();
+            decorationVisibleBoundsInAncestor = ancestorVisibleRect.intersection(decorationBoundsInAncestor);
+        }
 
         if ((decorationVisibleBoundsInAncestor.width == 0) || (decorationVisibleBoundsInAncestor.height == 0)) {
+            // No bounds, no painting
             decorationPainter.setClipBounds(null);
         } else {
             Rectangle decorationVisibleBoundsInLayeredPane = SwingUtilities.convertRectangle(clippingComponent,
