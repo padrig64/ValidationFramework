@@ -211,6 +211,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
          */
         @Override
         public int getWidth() {
+            // Implementation in sub-classes
             return AbstractComponentDecoration.this.getWidth();
         }
 
@@ -221,6 +222,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
          */
         @Override
         public int getHeight() {
+            // Implementation in sub-classes
             return AbstractComponentDecoration.this.getHeight();
         }
 
@@ -238,7 +240,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
                 // Clip graphics
                 g.setClip(clipBounds);
 
-                // Paint decoration
+                // Paint decoration (implementation in sub-classes)
                 AbstractComponentDecoration.this.paint(g);
             }
         }

@@ -86,7 +86,7 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
          * @see ComponentListener#componentShown(ComponentEvent)
          */
         @Override
-        public void componentShown(ComponentEvent componentEvent) {
+        public void componentShown(ComponentEvent e) {
             updateToolTipDialogVisibility();
         }
 
@@ -94,7 +94,7 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
          * @see ComponentListener#componentHidden(ComponentEvent)
          */
         @Override
-        public void componentHidden(ComponentEvent componentEvent) {
+        public void componentHidden(ComponentEvent e) {
             updateToolTipDialogVisibility();
         }
 
@@ -102,7 +102,7 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
          * @see ComponentListener#componentMoved(ComponentEvent)
          */
         @Override
-        public void componentMoved(ComponentEvent componentEvent) {
+        public void componentMoved(ComponentEvent e) {
             updateToolTipDialogVisibility();
         }
 
@@ -110,7 +110,7 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
          * @see ComponentListener#componentResized(ComponentEvent)
          */
         @Override
-        public void componentResized(ComponentEvent componentEvent) {
+        public void componentResized(ComponentEvent e) {
             updateToolTipDialogVisibility();
         }
     }
@@ -350,7 +350,7 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
      */
     @Override
     public void paint(Graphics g) {
-        if (isVisible() && (icon != null) && (decorationPainter != null)) {
+        if (icon != null) {
             icon.paintIcon(decorationPainter, g, 0, 0);
         }
     }
