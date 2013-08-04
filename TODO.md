@@ -1,14 +1,12 @@
 # TO FIX
 
 * Painting of translucent decorations
-* No decoration on disabled components (config + listen to component state)
-* Smarter selection of clipping ancestor (viewport?)
 * Remaining icontip's tooltips when quickly moving mouse (in/outside tables): only on Linux? still happening?
 * Icon decoration steals mouse event even outside clipping bounds
-* Make consistent use of generics for Swing data providers
 
 # TO MAKE
 
+* Make consistent use of generics for Swing data providers
 * Specify result for null rule input
 * Make validation of min + max + min/max group + global easier
 * Implement Disposable where appropriate
@@ -38,6 +36,7 @@
 * Common implementation for the icon tip
 * Auto-scroll/jump to errors in case of scrollpanes, tabbedpane, etc.
 * Initial focus for JFormattedTextField helper
+* Make it possible to have the component decoration still visible even if the decorated component is disabled (config)
 
 # TO THINK ABOUT
 

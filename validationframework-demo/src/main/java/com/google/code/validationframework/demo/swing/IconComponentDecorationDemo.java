@@ -9,6 +9,7 @@ import com.google.code.validationframework.swing.trigger.JTextFieldDocumentChang
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.ImageIcon;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -24,6 +25,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import static com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder.on;
 
@@ -58,7 +61,8 @@ public class IconComponentDecorationDemo extends JFrame {
         contentPane.add(tabbedPane, "grow");
 
         // Create tabs
-        tabbedPane.add("Constant info", createTabSingleCompInfo());
+        tabbedPane.add("Constant info", createTabConstantInfo());
+        tabbedPane.add("Disabled", createTabDisabled());
         tabbedPane.add("Single validation", createTabSingleCompWithValidation());
         tabbedPane.add("Split pane", createTabSplitPane());
         tabbedPane.add("Scroll pane", createTabScrollPane());
@@ -73,7 +77,7 @@ public class IconComponentDecorationDemo extends JFrame {
         setLocation((screenSize.width - size.width) / 2, (screenSize.height - size.height) / 3);
     }
 
-    private Component createTabSingleCompInfo() {
+    private Component createTabConstantInfo() {
         JPanel panel = new JPanel(new MigLayout("fill"));
 
         JTextField textField = new JTextField("Not empty");
@@ -84,6 +88,32 @@ public class IconComponentDecorationDemo extends JFrame {
         ImageIcon icon = IconUtils.loadImageIcon("/images/defaults/info.png", IconComponentDecoration.class);
         decoration.setIcon(icon);
         decoration.setToolTipText("Tooltip");
+
+        return panel;
+    }
+
+    private Component createTabDisabled() {
+        JPanel panel = new JPanel(new MigLayout("fill, wrap 1"));
+
+        final JTextField textField = new JTextField();
+        final JCheckBox checkBox = new JCheckBox("Enabled");
+        checkBox.setSelected(true);
+        panel.add(checkBox);
+        checkBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                textField.setEnabled(checkBox.isSelected());
+            }
+        });
+
+        panel.add(textField);
+        textField.setColumns(15);
+
+        on(new JTextFieldDocumentChangedTrigger(textField)) //
+                .read(new JTextFieldTextProvider(textField)) //
+                .check(new StringNotEmptyRule()) //
+                .handleWith(new IconBooleanFeedback(textField, "Cannot be empty")) //
+                .trigger();
 
         return panel;
     }
@@ -104,6 +134,7 @@ public class IconComponentDecorationDemo extends JFrame {
 
         return panel;
     }
+
 
     private Component createTabSplitPane() {
         JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);

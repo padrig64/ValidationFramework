@@ -35,6 +35,8 @@ import javax.swing.SwingUtilities;
 import java.awt.Graphics;
 import java.awt.MouseInfo;
 import java.awt.Point;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -46,35 +48,30 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
     /**
      * Listener to mouse events on the icon and showing/hiding the associated tooltip.
      */
-    private class IconMouseAdapter extends MouseAdapter {
+    private class DecorationPainterTracker extends MouseAdapter implements ComponentListener {
+
+        /**
+         * @see MouseAdapter#mouseEntered(MouseEvent)
+         */
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            updateToolTipDialogVisibility();
+        }
 
         /**
          * @see MouseAdapter#mouseMoved(MouseEvent)
          */
         @Override
         public void mouseMoved(MouseEvent e) {
-            if ((toolTipDialog != null) && toolTipDialog.isVisible()) {
-                if (!decorationPainter.getClipBounds().contains(e.getPoint())) {
-                    toolTipDialog.setVisible(false);
-                }
-            } else if (getDecoratedComponent().isShowing() && decorationPainter.getClipBounds().contains(e.getPoint()
-            )) {
-                createToolTipDialogIfNeeded();
-                toolTipDialog.setVisible(true);
-            }
+            updateToolTipDialogVisibility();
         }
 
         /**
-         * Creates the dialog showing the tooltip if it is not created yet.<br>We do this only here to make sure that
-         * we have a parent and to make sure that we actually have a window ancestor.<br>If we create the dialog
-         * before having a window ancestor, it will have no owner (see {@link ToolTipDialog#ToolTipDialog(JComponent,
-         * AnchorLink)} and that will result in having the tooltip behind the other windows of the application.
+         * @see MouseAdapter#mouseDragged(MouseEvent)
          */
-        private void createToolTipDialogIfNeeded() {
-            if (toolTipDialog == null) {
-                toolTipDialog = new ToolTipDialog(decorationPainter, anchorLinkWithToolTip);
-            }
-            toolTipDialog.setText(toolTipText);
+        @Override
+        public void mouseDragged(MouseEvent e) {
+            updateToolTipDialogVisibility();
         }
 
         /**
@@ -82,9 +79,39 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
          */
         @Override
         public void mouseExited(MouseEvent e) {
-            if (toolTipDialog != null) {
-                toolTipDialog.setVisible(false);
-            }
+            updateToolTipDialogVisibility();
+        }
+
+        /**
+         * @see ComponentListener#componentShown(ComponentEvent)
+         */
+        @Override
+        public void componentShown(ComponentEvent componentEvent) {
+            updateToolTipDialogVisibility();
+        }
+
+        /**
+         * @see ComponentListener#componentHidden(ComponentEvent)
+         */
+        @Override
+        public void componentHidden(ComponentEvent componentEvent) {
+            updateToolTipDialogVisibility();
+        }
+
+        /**
+         * @see ComponentListener#componentMoved(ComponentEvent)
+         */
+        @Override
+        public void componentMoved(ComponentEvent componentEvent) {
+            updateToolTipDialogVisibility();
+        }
+
+        /**
+         * @see ComponentListener#componentResized(ComponentEvent)
+         */
+        @Override
+        public void componentResized(ComponentEvent componentEvent) {
+            updateToolTipDialogVisibility();
         }
     }
 
@@ -99,14 +126,21 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
     private Icon icon = null;
 
     /**
-     * Dialog representing the tooltip.<br>The tooltip is not based on the general tooltip mechanism to make so that it
-     * does not get influenced by the different timings and tricky mouse behavior (sometimes hard to make a real tooltip
-     * appear).<br>It is lazy-initialized to make sure we will have a parent and a window ancestor (owner of the
-     * dialog).
+     * Dialog representing the tooltip.
+     * <p/>
+     * The tooltip is not based on the general tooltip mechanism to make so that it does not get influenced by the
+     * different timings and tricky mouse behavior (sometimes hard to make a real tooltip appear).
+     * <p/>
+     * It is lazy-initialized to make sure we will have a parent and a window ancestor (owner of the dialog).
      *
-     * @see IconMouseAdapter#createToolTipDialogIfNeeded()
+     * @see DecorationPainterTracker#createToolTipDialogIfNeeded()
      */
     private ToolTipDialog toolTipDialog = null;
+
+    /**
+     * Listener to mouse events on the icon and showing/hiding the associated tooltip.
+     */
+    private final DecorationPainterTracker decorationPainterTracker = new DecorationPainterTracker();
 
     /**
      * Tooltip text to appear on the decoration icon.
@@ -161,9 +195,20 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
         super(owner, anchorLinkWithOwner);
         this.icon = icon;
 
-        IconMouseAdapter iconMouseAdapter = new IconMouseAdapter();
-        decorationPainter.addMouseListener(iconMouseAdapter);
-        decorationPainter.addMouseMotionListener(iconMouseAdapter);
+        decorationPainter.addMouseListener(decorationPainterTracker);
+        decorationPainter.addMouseMotionListener(decorationPainterTracker);
+        decorationPainter.addComponentListener(decorationPainterTracker);
+    }
+
+    /**
+     * @see AbstractComponentDecoration#dispose()
+     */
+    @Override
+    public void dispose() {
+        super.dispose();
+        decorationPainter.removeMouseListener(decorationPainterTracker);
+        decorationPainter.removeMouseMotionListener(decorationPainterTracker);
+        decorationPainter.removeComponentListener(decorationPainterTracker);
     }
 
     /**
@@ -230,12 +275,50 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);
-        if (toolTipDialog != null) {
-            // Show tooltip dialog if mouse is already at the right position
-            Point mouseLocation = MouseInfo.getPointerInfo().getLocation();
-            SwingUtilities.convertPointFromScreen(mouseLocation, decorationPainter);
-            toolTipDialog.setVisible(visible && decorationPainter.getClipBounds().contains(mouseLocation));
+        updateToolTipDialogVisibility();
+    }
+
+    /**
+     * Updates the visibility of the tooltip dialog according to the mouse pointer location, the visibility of the
+     * decoration painter and the bounds of the decoration painter.
+     *
+     * @see AbstractComponentDecoration#updateDecorationPainterVisibility()
+     */
+    private void updateToolTipDialogVisibility() {
+        // Get mouse location
+        Point mouseLocation = MouseInfo.getPointerInfo().getLocation();
+        SwingUtilities.convertPointFromScreen(mouseLocation, decorationPainter);
+
+        // Determine if tooltip dialog should be visible or not
+        boolean shouldBeVisible = decorationPainter.isVisible() && decorationPainter.getClipBounds().contains
+                (mouseLocation);
+
+        // Create tooltip dialog if needed
+        if (shouldBeVisible) {
+            createToolTipDialogIfNeeded();
         }
+
+        // Update tooltip dialog visibility if changed
+        if (toolTipDialog != null && (toolTipDialog.isVisible() != shouldBeVisible)) {
+            toolTipDialog.setVisible(shouldBeVisible);
+        }
+    }
+
+    /**
+     * Creates the dialog showing the tooltip if it is not created yet.
+     * <p/>
+     * We do this only here to make sure that we have a parent and to make sure that we actually have a window
+     * ancestor.
+     * <p/>
+     * If we create the dialog before having a window ancestor, it will have no owner (see {@link
+     * ToolTipDialog#ToolTipDialog(JComponent, AnchorLink)} and that will result in having the tooltip behind the
+     * other windows of the application.
+     */
+    private void createToolTipDialogIfNeeded() {
+        if (toolTipDialog == null) {
+            toolTipDialog = new ToolTipDialog(decorationPainter, anchorLinkWithToolTip);
+        }
+        toolTipDialog.setText(toolTipText);
     }
 
     /**
