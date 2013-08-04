@@ -52,7 +52,7 @@ import java.awt.event.ItemListener;
 
 import static com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder.on;
 
-public class CardLayoutDemoApp extends JFrame implements ItemListener {
+public class IconComponentDecorationInCardLayoutDemoApp extends JFrame implements ItemListener {
 
     private static class Card extends JPanel {
 
@@ -99,7 +99,7 @@ public class CardLayoutDemoApp extends JFrame implements ItemListener {
     /**
      * Default constructor.
      */
-    public CardLayoutDemoApp() {
+    public IconComponentDecorationInCardLayoutDemoApp() {
         super();
         init();
     }
@@ -175,7 +175,7 @@ public class CardLayoutDemoApp extends JFrame implements ItemListener {
                 }
 
                 // Show window
-                new CardLayoutDemoApp().setVisible(true);
+                new IconComponentDecorationInCardLayoutDemoApp().setVisible(true);
             }
         });
     }
