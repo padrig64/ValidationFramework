@@ -31,7 +31,10 @@ import com.google.code.validationframework.swing.decoration.support.ToolTipDialo
 
 import javax.swing.Icon;
 import javax.swing.JComponent;
+import javax.swing.SwingUtilities;
 import java.awt.Graphics;
+import java.awt.MouseInfo;
+import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -52,13 +55,11 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
         public void mouseMoved(MouseEvent e) {
             if ((toolTipDialog != null) && toolTipDialog.isVisible()) {
                 if (!decorationPainter.getClipBounds().contains(e.getPoint())) {
-                    mouseOverIcon = false;
                     toolTipDialog.setVisible(false);
                 }
             } else if (getDecoratedComponent().isShowing() && decorationPainter.getClipBounds().contains(e.getPoint()
             )) {
                 createToolTipDialogIfNeeded();
-                mouseOverIcon = true;
                 toolTipDialog.setVisible(true);
             }
         }
@@ -82,7 +83,6 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
         @Override
         public void mouseExited(MouseEvent e) {
             if (toolTipDialog != null) {
-                mouseOverIcon = false;
                 toolTipDialog.setVisible(false);
             }
         }
@@ -117,17 +117,6 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
      * Anchor link between the decoration icon and the tooltip.
      */
     private AnchorLink anchorLinkWithToolTip = new AnchorLink(Anchor.BOTTOM_RIGHT, Anchor.TOP_LEFT);
-
-    /**
-     * Flag indicating whether the mouse is in the bounds of the clipped decoration icon.
-     * <p/>
-     * It is needed to show the tooltip dialog when the decoration is made visible and the mouse is already in the
-     * bounds of the icon.
-     *
-     * @see IconMouseAdapter
-     * @see #setVisible(boolean)
-     */
-    private boolean mouseOverIcon = false;
 
     /**
      * Constructor specifying the component to be decorated.
@@ -242,8 +231,10 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
     public void setVisible(boolean visible) {
         super.setVisible(visible);
         if (toolTipDialog != null) {
-            // Show tooltip if mouse is already at the right position
-            toolTipDialog.setVisible(visible && mouseOverIcon);
+            // Show tooltip dialog if mouse is already at the right position
+            Point mouseLocation = MouseInfo.getPointerInfo().getLocation();
+            SwingUtilities.convertPointFromScreen(mouseLocation, decorationPainter);
+            toolTipDialog.setVisible(visible && decorationPainter.getClipBounds().contains(mouseLocation));
         }
     }
 

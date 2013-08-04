@@ -30,6 +30,7 @@ import com.google.code.validationframework.swing.decoration.anchor.AnchorLink;
 
 import javax.swing.JComponent;
 import javax.swing.JLayeredPane;
+import javax.swing.JViewport;
 import javax.swing.SwingUtilities;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
@@ -41,6 +42,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.HierarchyBoundsListener;
 import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
 
 /**
  * Abstract implementation of a decoration that can be attached to a component.
@@ -53,7 +55,8 @@ public abstract class AbstractComponentDecoration implements Disposable {
      * Entity responsible of tracking the changes on the decorated component and/or its ancestors that would require to
      * update the location and/or the clip bounds of the decoration.
      */
-    private final class ComponentTracker implements AncestorListener, HierarchyBoundsListener, ComponentListener {
+    private final class ComponentTracker implements AncestorListener, HierarchyBoundsListener, ComponentListener,
+            HierarchyListener {
 
         /**
          * @see AncestorListener#ancestorAdded(AncestorEvent)
@@ -126,12 +129,24 @@ public abstract class AbstractComponentDecoration implements Disposable {
         public void componentHidden(ComponentEvent e) {
             // Nothing to be done
         }
+
+        @Override
+        public void hierarchyChanged(HierarchyEvent e) {
+            if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
+                // Adapt visibility of decoration painter
+                decorationPainter.setVisible(decoratedComponent.isShowing() && visible);
+            }
+        }
     }
 
     /**
      * Entity responsible of calling the {@link AbstractComponentDecoration#paint(Graphics)} method.
      * <p/>
      * It works as a hook in the Swing paint mechanism.
+     * <p/>
+     * Note that the painter is made invisible whenever the decorated component is no longer showing on the screen, so
+     * that the decoration does not try to paint when the component is on a hidden tab, for instance, and does not steal
+     * the mouse events from other decorations at the same location on other tabs.
      */
     protected class DecorationPainter extends JComponent {
 
@@ -152,7 +167,6 @@ public abstract class AbstractComponentDecoration implements Disposable {
         public DecorationPainter() {
             super();
             setFocusable(false);
-            setVisible(true);
         }
 
         /**
@@ -280,6 +294,17 @@ public abstract class AbstractComponentDecoration implements Disposable {
     private JLayeredPane attachedLayeredPane = null;
 
     /**
+     * Flag indicating whether the decoration is visible or not.
+     * <p/>
+     * Note that it does not mean that it is showing on the screen.
+     *
+     * @see #isVisible()
+     * @see #setVisible(boolean)
+     * @see ComponentTracker#hierarchyChanged(HierarchyEvent)
+     */
+    private boolean visible = true;
+
+    /**
      * Constructor specifying the component to be decorated and the anchor link between the decorated component and its
      * decoration.
      *
@@ -305,6 +330,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
             decoratedComponent.addComponentListener(decoratedComponentTracker);
             decoratedComponent.addAncestorListener(decoratedComponentTracker);
             decoratedComponent.addHierarchyBoundsListener(decoratedComponentTracker);
+            decoratedComponent.addHierarchyListener(decoratedComponentTracker);
 
             attachToLayeredPane();
         }
@@ -320,6 +346,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
             decoratedComponent.removeComponentListener(decoratedComponentTracker);
             decoratedComponent.removeAncestorListener(decoratedComponentTracker);
             decoratedComponent.removeHierarchyBoundsListener(decoratedComponentTracker);
+            decoratedComponent.removeHierarchyListener(decoratedComponentTracker);
             decoratedComponent = null;
 
             detachFromLayeredPane();
@@ -409,9 +436,14 @@ public abstract class AbstractComponentDecoration implements Disposable {
     private JComponent getEffectiveClippingAncestor() {
         JComponent clippingComponent = clippingAncestor;
 
-        if ((clippingComponent == null) && (decoratedComponent != null) &&
-                (decoratedComponent.getParent() instanceof JComponent)) {
-            clippingComponent = (JComponent) decoratedComponent.getParent();
+        if ((clippingComponent == null) && (decoratedComponent != null)) {
+            Container parent = decoratedComponent.getParent();
+            while ((parent != null) && (clippingComponent == null)) {
+                if ((parent instanceof JViewport) || (parent instanceof JLayeredPane)) {
+                    clippingComponent = (JComponent) parent;
+                }
+                parent = parent.getParent();
+            }
         }
 
         return clippingComponent;
@@ -442,7 +474,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
      * @return True if the decoration is visible, false otherwise.
      */
     public boolean isVisible() {
-        return decorationPainter.isVisible();
+        return visible;
     }
 
     /**
@@ -451,7 +483,8 @@ public abstract class AbstractComponentDecoration implements Disposable {
      * @param visible True to make the decoration visible, false to make it invisible.
      */
     public void setVisible(boolean visible) {
-        decorationPainter.setVisible(visible);
+        this.visible = visible;
+        decorationPainter.setVisible(decoratedComponent.isShowing() && visible);
     }
 
     /**

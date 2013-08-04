@@ -11,12 +11,16 @@ import net.miginfocom.swing.MigLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
+import javax.swing.border.LineBorder;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -54,19 +58,22 @@ public class IconComponentDecorationDemo extends JFrame {
         contentPane.add(tabbedPane, "grow");
 
         // Create tabs
-        tabbedPane.add("Single component", createTabContent0());
-        tabbedPane.add("Single component with validation", createTabContent1());
+        tabbedPane.add("Constant info", createTabSingleCompInfo());
+        tabbedPane.add("Single validation", createTabSingleCompWithValidation());
+        tabbedPane.add("Split pane", createTabSplitPane());
+        tabbedPane.add("Scroll pane", createTabScrollPane());
+        tabbedPane.add("Small panels", createTabSmallPanels());
 
         // Set size
-        pack();
+        Dimension size = new Dimension(640, 480);
+        setSize(size);
 
         // Set location
-        Dimension size = getSize();
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation((screenSize.width - size.width) / 2, (screenSize.height - size.height) / 3);
     }
 
-    private Component createTabContent0() {
+    private Component createTabSingleCompInfo() {
         JPanel panel = new JPanel(new MigLayout("fill"));
 
         JTextField textField = new JTextField("Not empty");
@@ -81,7 +88,7 @@ public class IconComponentDecorationDemo extends JFrame {
         return panel;
     }
 
-    private Component createTabContent1() {
+    private Component createTabSingleCompWithValidation() {
         JPanel panel = new JPanel(new MigLayout("fill"));
 
         JTextField textField = new JTextField();
@@ -93,9 +100,79 @@ public class IconComponentDecorationDemo extends JFrame {
                 .read(new JTextFieldTextProvider(textField)) //
                 .check(new StringNotEmptyRule()) //
                 .handleWith(new IconBooleanFeedback(textField, "Cannot be empty")) //
-                .getValidator().trigger();
+                .trigger();
 
         return panel;
+    }
+
+    private Component createTabSplitPane() {
+        JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+
+        JPanel panel = new JPanel(new MigLayout("fill"));
+        splitPane.setTopComponent(panel);
+        JTextField textField = new JTextField();
+        textField.setColumns(15);
+        panel.add(textField);
+
+        on(new JTextFieldDocumentChangedTrigger(textField)) //
+                .read(new JTextFieldTextProvider(textField)) //
+                .check(new StringNotEmptyRule()) //
+                .handleWith(new IconBooleanFeedback(textField)) //
+                .trigger();
+
+        panel = new JPanel(new MigLayout("fill"));
+        splitPane.setBottomComponent(panel);
+        textField = new JTextField();
+        textField.setColumns(15);
+        panel.add(textField);
+
+        on(new JTextFieldDocumentChangedTrigger(textField)) //
+                .read(new JTextFieldTextProvider(textField)) //
+                .check(new StringNotEmptyRule()) //
+                .handleWith(new IconBooleanFeedback(textField)) //
+                .trigger();
+
+        return splitPane;
+    }
+
+    private Component createTabScrollPane() {
+        JPanel panel = new JPanel(new MigLayout("fill, wrap 1"));
+
+        for (int i = 0; i < 3; i++) {
+            JTextField textField = new JTextField();
+            textField.setColumns(15);
+            panel.add(textField);
+
+            on(new JTextFieldDocumentChangedTrigger(textField)) //
+                    .read(new JTextFieldTextProvider(textField)) //
+                    .check(new StringNotEmptyRule()) //
+                    .handleWith(new IconBooleanFeedback(textField, "Field " + i + " cannot be empty")) //
+                    .trigger();
+        }
+
+        return new JScrollPane(panel);
+    }
+
+    private Component createTabSmallPanels() {
+        JPanel panel = new JPanel(new MigLayout("fill, wrap 1", "[fill]", "[fill]0[fill]"));
+
+        for (int i = 0; i < 3; i++) {
+            JPanel smallPanel = new JPanel(new MigLayout("insets 0, fill", "[fill]", "[fill]"));
+            panel.add(smallPanel);
+            smallPanel.setBorder(new LineBorder(Color.YELLOW));
+
+            JTextField textField = new JTextField();
+            textField.setColumns(15);
+            smallPanel.add(textField);
+
+            on(new JTextFieldDocumentChangedTrigger(textField)) //
+                    .read(new JTextFieldTextProvider(textField)) //
+                    .check(new StringNotEmptyRule()) //
+                    .handleWith(new IconBooleanFeedback(textField, "Field " + i + " cannot be empty")) //
+                    .trigger();
+        }
+
+        return new JScrollPane(panel);
     }
 
     public static void main(String... args) {
