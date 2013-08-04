@@ -211,4 +211,14 @@ public class ResultHandlerContext<DPO, RI, RO, RHI> {
     public GeneralValidator<DPO, RI, RO, RHI> getValidator() {
         return builtValidator;
     }
+
+    /**
+     * Triggers the validation of the fully constructor validator.
+     * <p/>
+     * This method is provided as a convenience, as it has the same effect as calling {@link GeneralValidator#trigger()}
+     * on the fully constructed validator returned by {@link #getValidator()}.
+     */
+    public void trigger() {
+        builtValidator.trigger();
+    }
 }
