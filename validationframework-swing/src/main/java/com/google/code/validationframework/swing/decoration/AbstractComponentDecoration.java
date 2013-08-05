@@ -522,7 +522,8 @@ public abstract class AbstractComponentDecoration implements Disposable {
      * @see DecorationPainter
      */
     private void updateDecorationPainterVisibility() {
-        boolean shouldBeVisible = decoratedComponent.isEnabled() && decoratedComponent.isShowing() && visible;
+        boolean shouldBeVisible = (decoratedComponent != null) && decoratedComponent.isEnabled() &&
+                decoratedComponent.isShowing() && visible;
         if (shouldBeVisible != decorationPainter.isVisible()) {
             decorationPainter.setVisible(shouldBeVisible);
         }
@@ -619,6 +620,9 @@ public abstract class AbstractComponentDecoration implements Disposable {
                     decorationVisibleBoundsInLayeredPane, decorationPainter);
             decorationPainter.setClipBounds(clipBounds);
         }
+
+        // Repaint decoration
+        decorationPainter.repaint();
     }
 
     /**
@@ -627,6 +631,17 @@ public abstract class AbstractComponentDecoration implements Disposable {
     @Override
     public void dispose() {
         detach();
+    }
+
+    /**
+     * Triggers a repaint of the component decoration.
+     * <p/>
+     * Note that this will also make the decoration follow the component.
+     *
+     * @see #followDecoratedComponent()
+     */
+    public void followAndRepaint() {
+        followDecoratedComponent();
     }
 
     /**

@@ -8,14 +8,18 @@ import com.google.code.validationframework.swing.resulthandler.bool.IconBooleanF
 import com.google.code.validationframework.swing.trigger.JTextFieldDocumentChangedTrigger;
 import net.miginfocom.swing.MigLayout;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
+import javax.swing.JViewport;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -24,9 +28,15 @@ import javax.swing.border.LineBorder;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 import static com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder.on;
 
@@ -77,6 +87,62 @@ public class IconComponentDecorationDemo extends JFrame {
         setLocation((screenSize.width - size.width) / 2, (screenSize.height - size.height) / 3);
     }
 
+//    public class Validator extends JComponent {
+//        private Set<JComponent> invalidFields = new HashSet<JComponent>();
+//
+//        private BufferedImage warningIcon;
+//
+//        public Validator() {
+//            loadImages();
+//        }
+//
+//        public void removeWarning(JComponent field) {
+//            if (invalidFields.contains(field)) {
+//                invalidFields.remove(field);
+//                repaintBadge(field);
+//            }
+//        }
+//
+//        public void addWarning(JComponent field) {
+//            invalidFields.add(field);
+//            repaintBadge(field);
+//        }
+//
+//        private void repaintBadge(JComponent field) {
+//            Point p = field.getLocationOnScreen();
+//            SwingUtilities.convertPointFromScreen(p, this);
+//            int x = p.x - warningIcon.getWidth() / 2;
+//            int y = (int) (p.y + field.getHeight() - warningIcon.getHeight() / 1.5);
+//            repaint(x, y, warningIcon.getWidth(), warningIcon.getHeight());
+//        }
+//
+//        private void loadImages() {
+//            try {
+//                warningIcon = ImageIO.read(getClass().getResource("/images/defaults/info.png"));
+//            } catch (IOException ex) {
+//                ex.printStackTrace();
+//            }
+//        }
+//
+//        @Override
+//        protected void paintComponent(Graphics g) {
+//            for (JComponent invalid : invalidFields) {
+//                if (invalid.getParent() instanceof JViewport) {
+//                    JViewport viewport = (JViewport) invalid.getParent();
+//                    // the parent of the viewport is a JScrollPane
+//                    invalid = (JComponent) viewport.getParent();
+//                }
+//                Point p = invalid.getLocationOnScreen();
+//                SwingUtilities.convertPointFromScreen(p, this);
+//                int x = p.x - warningIcon.getWidth() / 2;
+//                int y = (int) (p.y + invalid.getHeight() - warningIcon.getHeight() / 1.5);
+//                if (g.getClipBounds().intersects(x, y, warningIcon.getWidth(), warningIcon.getHeight())) {
+//                    g.drawImage(warningIcon, x, y, null);
+//                }
+//            }
+//        }
+//    }
+
     private Component createTabConstantInfo() {
         JPanel panel = new JPanel(new MigLayout("fill"));
 
@@ -103,7 +169,7 @@ public class IconComponentDecorationDemo extends JFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 textField.setEnabled(checkBox.isSelected());
-            }
+                }
         });
 
         panel.add(textField);

@@ -48,6 +48,17 @@ import java.awt.event.ComponentListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+/**
+ * Abstract implementation of a result handler using an {@link IconComponentDecoration} to show feedback to the user on
+ * a table cell.
+ * <p/>
+ * Concrete classes only need to implement the {@link #handleResult(Object)} method by calling the {@link #showIcon()}
+ * and {@link #hideIcon()} methods according to the result.
+ *
+ * @param <RHI> Type of result handler input.
+ *
+ * @see AbstractIconFeedback
+ */
 public abstract class AbstractCellIconFeedback<RHI> extends AbstractIconFeedback<RHI> {
 
     /**
@@ -60,7 +71,7 @@ public abstract class AbstractCellIconFeedback<RHI> extends AbstractIconFeedback
          * @see ComponentListener#componentShown(ComponentEvent)
          */
         @Override
-        public void componentShown(final ComponentEvent e) {
+        public void componentShown(ComponentEvent e) {
             // Nothing to be done
         }
 
@@ -68,7 +79,7 @@ public abstract class AbstractCellIconFeedback<RHI> extends AbstractIconFeedback
          * @see ComponentListener#componentHidden(ComponentEvent)
          */
         @Override
-        public void componentHidden(final ComponentEvent e) {
+        public void componentHidden(ComponentEvent e) {
             // Nothing to be done
         }
 
@@ -76,7 +87,7 @@ public abstract class AbstractCellIconFeedback<RHI> extends AbstractIconFeedback
          * @see ComponentListener#componentMoved(ComponentEvent)
          */
         @Override
-        public void componentMoved(final ComponentEvent e) {
+        public void componentMoved(ComponentEvent e) {
             // Nothing to be done
         }
 
@@ -84,54 +95,66 @@ public abstract class AbstractCellIconFeedback<RHI> extends AbstractIconFeedback
          * @see ComponentListener#componentResized(ComponentEvent)
          */
         @Override
-        public void componentResized(final ComponentEvent e) {
+        public void componentResized(ComponentEvent e) {
             // Cell bounds may have changed
-            followerDecoratedCell(0);
+            followDecoratedCell(0);
         }
 
         /**
          * @see TableColumnModelListener#columnAdded(TableColumnModelEvent)
          */
         @Override
-        public void columnAdded(final TableColumnModelEvent e) {
+        public void columnAdded(TableColumnModelEvent e) {
             // Cell bounds may have changed
-            followerDecoratedCell(0);
+            followDecoratedCell(0);
         }
 
         /**
          * @see TableColumnModelListener#columnRemoved(TableColumnModelEvent)
          */
         @Override
-        public void columnRemoved(final TableColumnModelEvent e) {
+        public void columnRemoved(TableColumnModelEvent e) {
             // Cell bounds may have changed
-            followerDecoratedCell(0);
+            followDecoratedCell(0);
         }
 
         /**
          * @see TableColumnModelListener#columnMoved(TableColumnModelEvent)
          */
         @Override
-        public void columnMoved(final TableColumnModelEvent e) {
+        public void columnMoved(TableColumnModelEvent e) {
             // Cell may have moved
-            followerDecoratedCell(table.getTableHeader().getDraggedDistance());
+
+            // Check if it is the moved column correspond to the decorated cell
+            int columnIndex = e.getFromIndex();
+            if ((0 <= columnIndex) && (columnIndex < table.getColumnCount())) {
+                columnIndex = table.convertColumnIndexToModel(columnIndex);
+            }
+            if (columnIndex == modelColumnIndex) {
+                // Column of decorated cell is being dragged
+                followDecoratedCell(table.getTableHeader().getDraggedDistance());
+            } else {
+                // Another column has been dragged but this column have moved
+                followDecoratedCell(0);
+            }
         }
 
         /**
          * @see TableColumnModelListener#columnMarginChanged(ChangeEvent)
          */
         @Override
-        public void columnMarginChanged(final ChangeEvent e) {
+        public void columnMarginChanged(ChangeEvent e) {
             // Cell bounds may have changed
-            followerDecoratedCell(0);
+            followDecoratedCell(0);
         }
 
         /**
          * @see TableColumnModelListener#columnSelectionChanged(ListSelectionEvent)
          */
         @Override
-        public void columnSelectionChanged(final ListSelectionEvent e) {
+        public void columnSelectionChanged(ListSelectionEvent e) {
             // Column ordering has changed, so cell may have moved
-            followerDecoratedCell(0);
+            followDecoratedCell(0);
         }
 
         /**
@@ -142,29 +165,29 @@ public abstract class AbstractCellIconFeedback<RHI> extends AbstractIconFeedback
          * @see PropertyChangeListener#propertyChange(PropertyChangeEvent)
          */
         @Override
-        public void propertyChange(final PropertyChangeEvent e) {
+        public void propertyChange(PropertyChangeEvent e) {
             if ("columnModel".equals(e.getPropertyName())) {
                 // Unhook from previous column model
-                final Object oldValue = e.getOldValue();
+                Object oldValue = e.getOldValue();
                 if (oldValue instanceof TableColumnModel) {
                     ((TableColumnModel) oldValue).removeColumnModelListener(this);
                 }
 
                 // Hook to new column model
-                final Object newValue = e.getNewValue();
+                Object newValue = e.getNewValue();
                 if (newValue instanceof TableColumnModel) {
                     ((TableColumnModel) newValue).addColumnModelListener(this);
                 }
 
             } else if ("sorter".equals(e.getPropertyName()) || "rowSorter".equals(e.getPropertyName())) {
                 // Unhook from previous row sorter
-                final Object oldValue = e.getOldValue();
+                Object oldValue = e.getOldValue();
                 if (oldValue instanceof RowSorter<?>) {
                     ((RowSorter<?>) oldValue).removeRowSorterListener(this);
                 }
 
                 // Hook to new row sorter
-                final Object newValue = e.getNewValue();
+                Object newValue = e.getNewValue();
                 if (newValue instanceof RowSorter<?>) {
                     ((RowSorter<?>) newValue).addRowSorterListener(this);
                 }
@@ -175,8 +198,8 @@ public abstract class AbstractCellIconFeedback<RHI> extends AbstractIconFeedback
          * @see RowSorterListener#sorterChanged(RowSorterEvent)
          */
         @Override
-        public void sorterChanged(final RowSorterEvent e) {
-            followerDecoratedCell(0);
+        public void sorterChanged(RowSorterEvent e) {
+            followDecoratedCell(0);
         }
     }
 
@@ -195,7 +218,7 @@ public abstract class AbstractCellIconFeedback<RHI> extends AbstractIconFeedback
 
     private final CellTracker cellTracker = new CellTracker();
 
-    public AbstractCellIconFeedback(final JTable table, final int modelRowIndex, final int modelColumnIndex) {
+    public AbstractCellIconFeedback(JTable table, int modelRowIndex, int modelColumnIndex) {
         super(table);
         this.table = table;
         this.modelRowIndex = modelRowIndex;
@@ -208,7 +231,7 @@ public abstract class AbstractCellIconFeedback<RHI> extends AbstractIconFeedback
      * @see AbstractIconFeedback#detach()
      */
     @Override
-    public void attach(final JComponent decoratedComponent, final AnchorLink anchorLinkWithOwner) {
+    public void attach(JComponent decoratedComponent, AnchorLink anchorLinkWithOwner) {
         super.attach(decoratedComponent, anchorLinkWithOwner);
         if (decoratedComponent instanceof JTable) {
             table = (JTable) decoratedComponent;
@@ -249,18 +272,18 @@ public abstract class AbstractCellIconFeedback<RHI> extends AbstractIconFeedback
         return modelRowIndex;
     }
 
-    public void setCellRowIndex(final int cellModelRowIndex) {
+    public void setCellRowIndex(int cellModelRowIndex) {
         modelRowIndex = cellModelRowIndex;
-        followerDecoratedCell(0);
+        followDecoratedCell(0);
     }
 
     public int getCellColumnIndex() {
-        return modelRowIndex;
+        return modelColumnIndex;
     }
 
-    public void setCellColumnIndex(final int cellModelColumnIndex) {
+    public void setCellColumnIndex(int cellModelColumnIndex) {
         modelColumnIndex = cellModelColumnIndex;
-        followerDecoratedCell(0);
+        followDecoratedCell(0);
     }
 
     /**
@@ -279,9 +302,9 @@ public abstract class AbstractCellIconFeedback<RHI> extends AbstractIconFeedback
      * @param anchorLinkWithTableCell Anchor link between the cell and its decoration.
      */
     @Override
-    public void setAnchorLink(final AnchorLink anchorLinkWithTableCell) {
+    public void setAnchorLink(AnchorLink anchorLinkWithTableCell) {
         anchorLinkWithCell = anchorLinkWithTableCell;
-        followerDecoratedCell(0);
+        followDecoratedCell(0);
     }
 
     /**
@@ -289,7 +312,7 @@ public abstract class AbstractCellIconFeedback<RHI> extends AbstractIconFeedback
      *
      * @param dragOffsetX Dragged distance in case the column is being dragged, 0 otherwise.
      */
-    private void followerDecoratedCell(final int dragOffsetX) {
+    private void followDecoratedCell(int dragOffsetX) {
         // Gets the absolute anchor link and update the decoration
         super.setAnchorLink(getAbsoluteAnchorLinkWithCell(dragOffsetX));
     }
@@ -301,17 +324,17 @@ public abstract class AbstractCellIconFeedback<RHI> extends AbstractIconFeedback
      *
      * @return Absolute anchor link to attach the decoration to the cell.
      */
-    private AnchorLink getAbsoluteAnchorLinkWithCell(final int dragOffsetX) {
-        final AnchorLink absoluteAnchorLink;
+    private AnchorLink getAbsoluteAnchorLinkWithCell(int dragOffsetX) {
+        AnchorLink absoluteAnchorLink;
 
-        final TableModel tableModel = table.getModel();
+        TableModel tableModel = table.getModel();
         if ((0 <= modelRowIndex) && (modelRowIndex < tableModel.getRowCount()) && (0 <= modelColumnIndex) &&
                 (modelColumnIndex < tableModel.getColumnCount())) {
-            final int viewRowIndex = table.convertRowIndexToView(modelRowIndex);
-            final int viewColumnIndex = table.convertColumnIndexToView(modelColumnIndex);
+            int viewRowIndex = table.convertRowIndexToView(modelRowIndex);
+            int viewColumnIndex = table.convertColumnIndexToView(modelColumnIndex);
 
-            final Rectangle cellBounds = table.getCellRect(viewRowIndex, viewColumnIndex, true);
-            final Anchor cellMasterAnchor = new Anchor(0.0f, cellBounds.x + dragOffsetX, 0.0f,
+            Rectangle cellBounds = table.getCellRect(viewRowIndex, viewColumnIndex, true);
+            Anchor cellMasterAnchor = new Anchor(0.0f, cellBounds.x + dragOffsetX, 0.0f,
                     cellBounds.y + cellBounds.height);
             absoluteAnchorLink = new AnchorLink(cellMasterAnchor, anchorLinkWithCell.getSlaveAnchor());
         } else {

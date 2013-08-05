@@ -35,8 +35,9 @@ import javax.swing.Icon;
 import javax.swing.JComponent;
 
 /**
- * Abstract implementation of a result handler using an {@link IconComponentDecoration} to show feedback to the user.
- *
+ * Abstract implementation of a result handler using an {@link IconComponentDecoration} to show feedback to the user on
+ * component.
+ * <p/>
  * Concrete classes only need to implement the {@link #handleResult(Object)} method by calling the {@link #showIcon()}
  * and {@link #hideIcon()} methods according to the result.
  *
@@ -50,15 +51,15 @@ public abstract class AbstractIconFeedback<RHI> implements ResultHandler<RHI>, D
 
     private IconComponentDecoration decoration = null;
 
-    public AbstractIconFeedback(final JComponent decoratedComponent) {
+    public AbstractIconFeedback(JComponent decoratedComponent) {
         attach(decoratedComponent);
     }
 
-    public void attach(final JComponent decoratedComponent) {
+    public void attach(JComponent decoratedComponent) {
         attach(decoratedComponent, DEFAULT_ANCHOR_LINK_WITH_OWNER);
     }
 
-    public void attach(final JComponent decoratedComponent, final AnchorLink anchorLinkWithOwner) {
+    public void attach(JComponent decoratedComponent, AnchorLink anchorLinkWithOwner) {
         boolean wasVisible = false;
         if (decoration != null) {
             wasVisible = decoration.isVisible();
@@ -105,7 +106,7 @@ public abstract class AbstractIconFeedback<RHI> implements ResultHandler<RHI>, D
     /**
      * @see IconComponentDecoration#setClippingAncestor(JComponent)
      */
-    public void setClippingAncestor(final JComponent decorationClippingAncestor) {
+    public void setClippingAncestor(JComponent decorationClippingAncestor) {
         if (decoration != null) {
             decoration.setClippingAncestor(decorationClippingAncestor);
         }
@@ -125,7 +126,7 @@ public abstract class AbstractIconFeedback<RHI> implements ResultHandler<RHI>, D
     /**
      * @see IconComponentDecoration#setAnchorLink(AnchorLink)
      */
-    public void setAnchorLink(final AnchorLink anchorLink) {
+    public void setAnchorLink(AnchorLink anchorLink) {
         if (decoration != null) {
             decoration.setAnchorLink(anchorLink);
         }
@@ -145,7 +146,7 @@ public abstract class AbstractIconFeedback<RHI> implements ResultHandler<RHI>, D
     /**
      * @see IconComponentDecoration#setIcon(Icon)
      */
-    protected void setIcon(final Icon icon) {
+    protected void setIcon(Icon icon) {
         if (decoration != null) {
             decoration.setIcon(icon);
         }
@@ -165,7 +166,7 @@ public abstract class AbstractIconFeedback<RHI> implements ResultHandler<RHI>, D
     /**
      * @see IconComponentDecoration#setToolTipText(String)
      */
-    protected void setToolTipText(final String text) {
+    protected void setToolTipText(String text) {
         if (decoration != null) {
             decoration.setToolTipText(text);
         }
