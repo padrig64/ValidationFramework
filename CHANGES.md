@@ -1,10 +1,11 @@
-# Version 2.1.1 (to be released)
+# Version 2.1.1
 
 * Added SimpleResultCollector for convenience over the ResultCollector
 * Made the GeneralValidatorBuilder collect from other simple validators
 * Added StringNotEmptyRule as a simpler alternative to StringLengthGreaterThanRule and StringLengthGreaterThanOrEqualToRule
 * Added convenience trigger() method in the GeneralValidatorBuilder DSL after adding the first result handler to the validator under construction
 * Fixed visibility of AbstractComponentDecoration when set manually and the component goes to showing state
+* Fixed tracking of decorated table cells while dragging a column
 
 # Version 2.1.0
 
