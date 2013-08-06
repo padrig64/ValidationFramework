@@ -28,33 +28,35 @@ package com.google.code.validationframework.base.transform;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
- * @see ToStringTransformer
+ * @see NegateBooleanTransformer
  */
-public class ToStringTransformerTest {
+public class NegateBooleanTransformerTest {
 
     @Test
-    public void testNonNull() {
-        // Test simple object
-        ToStringTransformer<Object> transformer = new ToStringTransformer<Object>();
-        assertTrue(transformer.transform(new Object()).startsWith("java.lang.Object@"));
+    public void testDefault() {
+        Transformer<Boolean, Boolean> transformer = new NegateBooleanTransformer();
 
-        // Test number
-        assertEquals("15.001", transformer.transform(15.001));
-        assertEquals("341.1", transformer.transform(341.1f));
-        assertEquals("-341.1", transformer.transform(-341.1f));
+        assertTrue(transformer.transform(false));
+        assertFalse(transformer.transform(true));
+        assertEquals(null, transformer.transform(null));
     }
 
     @Test
-    public void testNull() {
-        // Test default null value
-        ToStringTransformer<Object> transformer = new ToStringTransformer<Object>();
-        assertEquals(null, transformer.transform(null));
+    public void testCustomNull() {
+        Transformer<Boolean, Boolean> transformer = new NegateBooleanTransformer(false);
 
-        // Test custom null value
-        transformer = new ToStringTransformer<Object>("null");
-        assertEquals("null", transformer.transform(null));
+        assertTrue(transformer.transform(false));
+        assertFalse(transformer.transform(true));
+        assertFalse(transformer.transform(null));
+
+        transformer = new NegateBooleanTransformer(true);
+
+        assertTrue(transformer.transform(false));
+        assertFalse(transformer.transform(true));
+        assertTrue(transformer.transform(null));
     }
 }

@@ -25,36 +25,52 @@
 
 package com.google.code.validationframework.base.transform;
 
-import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 /**
- * @see ToStringTransformer
+ * Transformer negating the boolean input.
+ *
+ * @see Transformer
  */
-public class ToStringTransformerTest {
+public class NegateBooleanTransformer implements Transformer<Boolean, Boolean> {
 
-    @Test
-    public void testNonNull() {
-        // Test simple object
-        ToStringTransformer<Object> transformer = new ToStringTransformer<Object>();
-        assertTrue(transformer.transform(new Object()).startsWith("java.lang.Object@"));
+    /**
+     * Default result to be returned for the negation of null input.
+     */
+    private static final Boolean DEFAULT_NULL_NEGATION = null;
 
-        // Test number
-        assertEquals("15.001", transformer.transform(15.001));
-        assertEquals("341.1", transformer.transform(341.1f));
-        assertEquals("-341.1", transformer.transform(-341.1f));
+    /**
+     * Result to be returned for the negation of null input.
+     */
+    private final Boolean nullNegation;
+
+    /**
+     * Default constructor considering null to be the result returned for the negation of null input.
+     */
+    public NegateBooleanTransformer() {
+        this(DEFAULT_NULL_NEGATION);
     }
 
-    @Test
-    public void testNull() {
-        // Test default null value
-        ToStringTransformer<Object> transformer = new ToStringTransformer<Object>();
-        assertEquals(null, transformer.transform(null));
+    /**
+     * Constructor specifying the result to be returned for the negation of null input.
+     *
+     * @param nullNegation Result to be returned for the negation of null input.
+     */
+    public NegateBooleanTransformer(Boolean nullNegation) {
+        this.nullNegation = nullNegation;
+    }
 
-        // Test custom null value
-        transformer = new ToStringTransformer<Object>("null");
-        assertEquals("null", transformer.transform(null));
+    /**
+     * @see Transformer#transform(Object)
+     */
+    @Override
+    public Boolean transform(Boolean input) {
+        Boolean output;
+
+        if (input == null) {
+            output = nullNegation;
+        } else {
+            output = !input;
+        }
+
+        return output;
     }
 }

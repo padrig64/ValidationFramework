@@ -33,6 +33,9 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * @see CollectionElementTransformer
+ */
 public class CollectionElementTransformerTest {
 
     @Test

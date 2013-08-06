@@ -1,3 +1,7 @@
+# Version 2.1.2 (to be released)
+
+* Added NegateBooleanTransformer in core
+
 # Version 2.1.1
 
 * Added SimpleResultCollector for convenience over the ResultCollector
