@@ -69,20 +69,10 @@ public class AndBooleanAggregator implements Aggregator<Boolean, Boolean> {
      * Constructor specifying the boolean values for empty and null collections, and null elements.
      *
      * @param emptyCollectionValue Value for empty and null collections.
-     * @param nullElementValue     Value for null elements in the transformed collection.
+     * @param nullElementValue     Value for null elements in the transformed collection.<br>If this value is set to
+     *                             null, then the element will be ignored from the aggregation.
      */
-    public AndBooleanAggregator(final boolean emptyCollectionValue, final boolean nullElementValue) {
-        this.emptyCollectionValid = emptyCollectionValue;
-        this.nullElementValid = nullElementValue;
-    }
-
-    /**
-     * Constructor specifying the boolean values for empty and null collections, and null elements.
-     *
-     * @param emptyCollectionValue Value for empty and null collections.
-     * @param nullElementValue     Value for null elements in the transformed collection.<br>It can be null.
-     */
-    public AndBooleanAggregator(final Boolean emptyCollectionValue, final Boolean nullElementValue) {
+    public AndBooleanAggregator(Boolean emptyCollectionValue, Boolean nullElementValue) {
         this.emptyCollectionValid = emptyCollectionValue;
         this.nullElementValid = nullElementValue;
     }
@@ -91,13 +81,13 @@ public class AndBooleanAggregator implements Aggregator<Boolean, Boolean> {
      * @see Transformer#transform(Object)
      */
     @Override
-    public Boolean transform(final Collection<Boolean> elements) {
+    public Boolean transform(Collection<Boolean> elements) {
         Boolean aggregation = true;
 
         if ((elements == null) || elements.isEmpty()) {
             aggregation = emptyCollectionValid;
         } else {
-            for (final Boolean element : elements) {
+            for (Boolean element : elements) {
                 Boolean result = element;
                 if (result == null) {
                     result = nullElementValid;
