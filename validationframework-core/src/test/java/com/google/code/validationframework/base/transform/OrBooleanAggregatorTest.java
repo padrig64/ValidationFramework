@@ -51,7 +51,7 @@ public class OrBooleanAggregatorTest {
         transformer = new OrBooleanAggregator(true, OrBooleanAggregator.DEFAULT_NULL_ELEMENT_VALUE);
         assertTrue(transformer.transform(null));
 
-        transformer = new OrBooleanAggregator(false, OrBooleanAggregator.DEFAULT_NULL_ELEMENT_VALUE);
+        transformer = new OrBooleanAggregator(Boolean.FALSE, OrBooleanAggregator.DEFAULT_NULL_ELEMENT_VALUE);
         assertFalse(transformer.transform(null));
 
         transformer = new OrBooleanAggregator(null, OrBooleanAggregator.DEFAULT_NULL_ELEMENT_VALUE);
@@ -68,7 +68,7 @@ public class OrBooleanAggregatorTest {
         Aggregator<Boolean, Boolean> transformer = new OrBooleanAggregator();
         assertFalse(transformer.transform(booleans));
 
-        transformer = new OrBooleanAggregator(OrBooleanAggregator.DEFAULT_EMPTY_COLLECTION_VALUE, true);
+        transformer = new OrBooleanAggregator(OrBooleanAggregator.DEFAULT_EMPTY_COLLECTION_VALUE, Boolean.TRUE);
         assertTrue(transformer.transform(booleans));
 
         transformer = new OrBooleanAggregator(OrBooleanAggregator.DEFAULT_EMPTY_COLLECTION_VALUE, false);

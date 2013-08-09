@@ -51,7 +51,7 @@ public class AndBooleanAggregatorTest {
         transformer = new AndBooleanAggregator(true, AndBooleanAggregator.DEFAULT_NULL_ELEMENT_VALUE);
         assertTrue(transformer.transform(null));
 
-        transformer = new AndBooleanAggregator(false, AndBooleanAggregator.DEFAULT_NULL_ELEMENT_VALUE);
+        transformer = new AndBooleanAggregator(Boolean.FALSE, AndBooleanAggregator.DEFAULT_NULL_ELEMENT_VALUE);
         assertFalse(transformer.transform(null));
 
         transformer = new AndBooleanAggregator(null, AndBooleanAggregator.DEFAULT_NULL_ELEMENT_VALUE);
@@ -68,7 +68,7 @@ public class AndBooleanAggregatorTest {
         Aggregator<Boolean, Boolean> transformer = new AndBooleanAggregator();
         assertFalse(transformer.transform(booleans));
 
-        transformer = new AndBooleanAggregator(AndBooleanAggregator.DEFAULT_EMPTY_COLLECTION_VALUE, true);
+        transformer = new AndBooleanAggregator(AndBooleanAggregator.DEFAULT_EMPTY_COLLECTION_VALUE, Boolean.TRUE);
         assertTrue(transformer.transform(booleans));
 
         transformer = new AndBooleanAggregator(AndBooleanAggregator.DEFAULT_EMPTY_COLLECTION_VALUE, false);
