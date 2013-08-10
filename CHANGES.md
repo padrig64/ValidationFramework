@@ -1,6 +1,8 @@
 # Version 2.1.2 (to be released)
 
 * Added NegateBooleanTransformer in core
+* Removed ambiguous constructor in AndBooleanAggregator and OrBooleanAggregator
+* Added the _nouses instruction for the maven bundle plugin
 
 # Version 2.1.1
 
