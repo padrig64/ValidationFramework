@@ -48,7 +48,7 @@
         <dependsmavenplugin.version>1.2</dependsmavenplugin.version>
         <failsafeplugin.version>2.14.1</failsafeplugin.version>
         <java.compiler.version>1.6</java.compiler.version>
-        <mavenbundleplugin.version>2.3.7</mavenbundleplugin.version>
+        <mavenbundleplugin.version>2.4.0</mavenbundleplugin.version>
         <mavencompilerplugin.version>3.1</mavencompilerplugin.version>
         <mavengpgplugin.version>1.4</mavengpgplugin.version>
         <mavenjavadocplugin.version>2.9</mavenjavadocplugin.version>
@@ -278,6 +278,7 @@
                     <extensions>true</extensions>
                     <configuration>
                         <instructions>
+                            <_nouses>true</_nouses>
                             <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
                             <Import-Package>*</Import-Package>
                         </instructions>
