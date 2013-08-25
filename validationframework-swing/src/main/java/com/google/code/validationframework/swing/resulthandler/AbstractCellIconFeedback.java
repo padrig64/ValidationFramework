@@ -208,16 +208,40 @@ public abstract class AbstractCellIconFeedback<RHI> extends AbstractIconFeedback
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractCellIconFeedback.class);
 
+    /**
+     * Table containing the cell to be decorated.
+     */
     private JTable table = null;
 
+    /**
+     * Row model index of the cell to be decorated.
+     */
     private int modelRowIndex = -1;
 
+    /**
+     * Column model index of the cell to be decorated.
+     */
     private int modelColumnIndex = -1;
 
+    /**
+     * Anchor link between the cell and the decoration.
+     * <p/>
+     * It is used to slave the decoration to the cell in terms of location.
+     */
     private AnchorLink anchorLinkWithCell = IconComponentDecoration.DEFAULT_ANCHOR_LINK_WITH_OWNER;
 
+    /**
+     * Entity track changes on the cell location and size and adjusting the decoration accordingly.
+     */
     private final CellTracker cellTracker = new CellTracker();
 
+    /**
+     * Constructor specifying the table and the cell to be decorated.
+     *
+     * @param table            Table containing the cell to be decorated.
+     * @param modelRowIndex    Model row index of the cell to be decorated.
+     * @param modelColumnIndex Model column index of the cell to be decorated.
+     */
     public AbstractCellIconFeedback(JTable table, int modelRowIndex, int modelColumnIndex) {
         super(table);
         this.table = table;
@@ -268,19 +292,39 @@ public abstract class AbstractCellIconFeedback<RHI> extends AbstractIconFeedback
         super.detach();
     }
 
+    /**
+     * Gets the row model index of the decorated cell.
+     *
+     * @return Row model index of the decorated cell.
+     */
     public int getCellRowIndex() {
         return modelRowIndex;
     }
 
+    /**
+     * Sets the row model index of the cell to be decorated.
+     *
+     * @param cellModelRowIndex Row model index of the cell to be decorated.
+     */
     public void setCellRowIndex(int cellModelRowIndex) {
         modelRowIndex = cellModelRowIndex;
         followDecoratedCell(0);
     }
 
+    /**
+     * Gets the column model index of the decorated cell.
+     *
+     * @return Column model index of the decorated cell.
+     */
     public int getCellColumnIndex() {
         return modelColumnIndex;
     }
 
+    /**
+     * Sets the column model index of the cell to be decorated.
+     *
+     * @param cellModelColumnIndex Column model index of the cell to be decorated.
+     */
     public void setCellColumnIndex(int cellModelColumnIndex) {
         modelColumnIndex = cellModelColumnIndex;
         followDecoratedCell(0);
