@@ -3,6 +3,7 @@
 * Added NegateBooleanTransformer in core
 * Removed ambiguous constructor in AndBooleanAggregator and OrBooleanAggregator
 * Added the _nouses instruction for the maven bundle plugin
+* Fixed NullPointerException in AbstractComponentDecoration sometimes occurring depending on the window hierarchy
 
 # Version 2.1.1
 
