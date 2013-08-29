@@ -45,6 +45,7 @@ import java.awt.event.ComponentListener;
 import java.awt.event.HierarchyBoundsListener;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
+import java.beans.Beans;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -190,6 +191,18 @@ public abstract class AbstractComponentDecoration implements Disposable {
             super();
             setFocusable(false);
             setOpaque(false);
+
+            // Quick workaround for use in JFormDesigner
+            setVisible(!Beans.isDesignTime());
+        }
+
+        /**
+         * @see JComponent#setVisible(boolean)
+         */
+        @Override
+        public void setVisible(boolean visible) {
+            // Quick workaround for use in JFormDesigner
+            super.setVisible(visible && !Beans.isDesignTime());
         }
 
         /**
