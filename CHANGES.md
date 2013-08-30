@@ -1,4 +1,4 @@
-# Version 2.1.2 (to be released)
+# Version 2.1.2
 
 * Added NegateBooleanTransformer in core
 * Removed ambiguous constructor in AndBooleanAggregator and OrBooleanAggregator
