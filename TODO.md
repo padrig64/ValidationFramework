@@ -9,6 +9,18 @@
 
 # TO MAKE
 
+* ResultCollector disposes other validator
+* JFormattedTextFieldOptionalFormatterRule
+* JFormattedTextFieldOptionalValueProvider
+* JTableCellEditorCancelledTrigger
+* JTableComboBoxEditorValueProvider
+* JTableModelChangeTrigger
+* JTableModelDataProvider
+* JTableTextEditorFormatterRule
+* NotNullAndNotEmptyStringBooleanRule
+* NumericRangeCheckResultHandler
+* NumericRangesValidRule
+
 * Make consistent use of generics for Swing data providers
 * Specify result for null rule input
 * Make validation of min + max + min/max group + global easier
