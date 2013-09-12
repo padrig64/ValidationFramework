@@ -2,7 +2,7 @@
 
 * Convenient constructor in the component decorations (abstract + cell + comp)
 * Allow decoration on disabled components
-* Implement de same on tab decoration
+* Implement the same on tab decoration
 * Painting of translucent decorations
 * Remaining icontip's tooltips when quickly moving mouse (in/outside tables): only on Linux? still happening?
 * Icon decoration steals mouse event even outside clipping bounds
@@ -17,7 +17,6 @@
 * JTableModelChangeTrigger
 * JTableModelDataProvider
 * JTableTextEditorFormatterRule
-* NotNullAndNotEmptyStringBooleanRule
 * NumericRangeCheckResultHandler
 * NumericRangesValidRule
 
@@ -60,6 +59,7 @@
 * Initial state for result handler before any validation has been performed yet
 * Differentiate between model changes due to user action and system action
 * General-purpose conditional logic
+* Binding
 * Thread-safety (triggers from multiple-threads)
 * Make triggers not trigger until the whole validator is ready
 * Remove data provider marker interface (check validation of heterogeneous groups first)
@@ -74,6 +74,5 @@
 * Heterogeneous Group
 * Put decoration per plane and not per parent
 * Exception-based results
-* Conditional logic framework
 * All features described in the README file
 * Dialog strategies
