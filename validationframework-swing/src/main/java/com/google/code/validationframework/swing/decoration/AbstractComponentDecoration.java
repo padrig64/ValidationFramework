@@ -507,8 +507,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
             }
 
             if (clippingComponent == null) {
-                LOGGER.warn("No viewport or layered pane could be found to clip the decoration of component: " +
-                        decoratedComponent);
+                // This may be a normal case depending on the application logic to hide a panel (tabbed pane like)
                 if (lastNonNullParent instanceof JComponent) {
                     clippingComponent = (JComponent) lastNonNullParent;
                 }
