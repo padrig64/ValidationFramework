@@ -26,27 +26,41 @@
 package com.google.code.validationframework.base.rule.object;
 
 import com.google.code.validationframework.api.rule.Rule;
+import com.google.code.validationframework.base.utils.ValueUtils;
 
 /**
- * Rule making sure that the provided data is not null.
+ * Rule making sure that the provided data is null.
  * <p/>
- * It will return true if the data is not null, and false otherwise.
+ * It will return true if the data is null, and false otherwise.<br>Note that even though generics are not needed in the
+ * logic of this class, providing a specific type makes it more convenient to reduce compilation warnings and errors.
  * <p/>
- * Note that even though generics are not needed in the logic of this class, providing a specific type makes it more
- * convenient to reduce compilation warnings and errors.
+ * Refer to {@link ValueUtils#areEqual(Object, Object)} to see how null, {@link Float#NaN} and {@link Float#NaN} values
+ * are treated.
  *
- * @param <RI> Type of data to be validated.<br>
- *             It can be, for instance, the type of data handled by a component, or the type of the component itself.
+ * @param <RI> Type of data to be validated.
  *
  * @see Rule
+ * @see ValueUtils#areEqual(Object, Object)
  */
-public class NotNullBooleanRule<RI> implements Rule<RI, Boolean> {
+public class EqualsBooleanRule<RI> implements Rule<RI, Boolean> {
+
+    private final RI referenceData;
+
+    /**
+     * Constructor specifying the reference object against which the input data will be checked.
+     *
+     * @param referenceData Reference object, or null.
+     */
+    public EqualsBooleanRule(RI referenceData) {
+        this.referenceData = referenceData;
+    }
 
     /**
      * @see Rule#validate(Object)
+     * @see ValueUtils#areEqual(Object, Object)
      */
     @Override
     public Boolean validate(RI data) {
-        return (data != null);
+        return ValueUtils.areEqual(referenceData, data);
     }
 }

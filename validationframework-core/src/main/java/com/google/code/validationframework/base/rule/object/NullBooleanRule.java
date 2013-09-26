@@ -28,12 +28,15 @@ package com.google.code.validationframework.base.rule.object;
 import com.google.code.validationframework.api.rule.Rule;
 
 /**
- * Rule making sure that the provided data is null.<br>It will return true if the data is null, and false
- * otherwise.<br>Note that even though generics are not needed in the logic of this class, providing a specific type
- * makes it more convenient to reduce compilation warnings and errors.
+ * Rule making sure that the provided data is null.
+ * <p/>
+ * It will return true if the data is null, and false otherwise.
+ * <p/>
+ * Note that even though generics are not needed in the logic of this class, providing a specific type makes it more
+ * convenient to reduce compilation warnings and errors.
  *
- * @param <RI> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
- *             type of the component itself.
+ * @param <RI> Type of data to be validated.<br>
+ *             It can be, for instance, the type of data handled by a component, or the type of the component itself.
  *
  * @see Rule
  */
@@ -43,7 +46,7 @@ public class NullBooleanRule<RI> implements Rule<RI, Boolean> {
      * @see Rule#validate(Object)
      */
     @Override
-    public Boolean validate(final RI data) {
+    public Boolean validate(RI data) {
         return (data == null);
     }
 }

@@ -1,3 +1,7 @@
+# Version 2.1.3 (to be released)
+
+* Added EqualsBooleanRule in core
+
 # Version 2.1.2
 
 * Added NegateBooleanTransformer in core

@@ -25,28 +25,25 @@
 
 package com.google.code.validationframework.base.rule.object;
 
-import com.google.code.validationframework.api.rule.Rule;
+import org.junit.Test;
 
 /**
- * Rule making sure that the provided data is not null.
- * <p/>
- * It will return true if the data is not null, and false otherwise.
- * <p/>
- * Note that even though generics are not needed in the logic of this class, providing a specific type makes it more
- * convenient to reduce compilation warnings and errors.
- *
- * @param <RI> Type of data to be validated.<br>
- *             It can be, for instance, the type of data handled by a component, or the type of the component itself.
- *
- * @see Rule
+ * @see EqualsBooleanRule
  */
-public class NotNullBooleanRule<RI> implements Rule<RI, Boolean> {
+public class EqualsBooleanRuleTest {
 
-    /**
-     * @see Rule#validate(Object)
-     */
-    @Override
-    public Boolean validate(RI data) {
-        return (data != null);
+    @Test
+    public void testNull() {
+        // TODO
+    }
+
+    @Test
+    public void testNaN() {
+        // TODO
+    }
+
+    @Test
+    public void testRegular() {
+        // TODO
     }
 }

@@ -46,7 +46,7 @@ public final class ValueUtils {
      *
      * @return True if both values are equal or if both are null.
      */
-    public static boolean areEqual(final Object value1, final Object value2) {
+    public static boolean areEqual(Object value1, Object value2) {
         return ((value1 == null) && (value2 == null)) || (isNaN(value1) && isNaN(value2)) ||
                 ((value1 != null) && value1.equals(value2));
     }
@@ -58,7 +58,7 @@ public final class ValueUtils {
      *
      * @return True if the value is NaN, false otherwise.
      */
-    private static boolean isNaN(final Object value) {
+    private static boolean isNaN(Object value) {
         return ((value instanceof Float) && Float.isNaN((Float) value)) || ((value instanceof Double) && Double.isNaN
                 ((Double) value));
     }
