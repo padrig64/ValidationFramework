@@ -1,6 +1,7 @@
 # Version 2.1.3 (to be released)
 
 * Added EqualsBooleanRule in core
+* Added convenient constructor to IconComponentDecoration
 
 # Version 2.1.2
 

@@ -167,9 +167,28 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
      *
      * @param owner               Component to be decorated.
      * @param anchorLinkWithOwner Anchor link between the decorated component and the decoration icon.
+     *
+     * @see #IconComponentDecoration(JComponent, Anchor, Anchor)
      */
     public IconComponentDecoration(JComponent owner, AnchorLink anchorLinkWithOwner) {
         this(owner, anchorLinkWithOwner, null);
+    }
+
+    /**
+     * Constructor specifying the component to be decorated and the anchor link with its owner (the decorated
+     * component).
+     * <p/>
+     * This constructor is provided as a convenient alternative to {@link #IconComponentDecoration(JComponent,
+     * AnchorLink)}.
+     *
+     * @param owner            Component to be decorated.
+     * @param ownerAnchor      Anchor on the owner to attach the decoration to.
+     * @param decorationAnchor Anchor on the decoration to be attached to the owner anchor.
+     *
+     * @see #IconComponentDecoration(JComponent, AnchorLink)
+     */
+    public IconComponentDecoration(JComponent owner, Anchor ownerAnchor, Anchor decorationAnchor) {
+        this(owner, new AnchorLink(ownerAnchor, decorationAnchor), null);
     }
 
     /**
