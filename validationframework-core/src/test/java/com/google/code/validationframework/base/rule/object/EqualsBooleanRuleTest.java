@@ -25,7 +25,11 @@
 
 package com.google.code.validationframework.base.rule.object;
 
+import com.google.code.validationframework.api.rule.Rule;
 import org.junit.Test;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @see EqualsBooleanRule
@@ -34,16 +38,38 @@ public class EqualsBooleanRuleTest {
 
     @Test
     public void testNull() {
-        // TODO
+        Rule<Object, Boolean> rule = new EqualsBooleanRule<Object>(null);
+
+        assertTrue(rule.validate(null));
+        assertFalse(rule.validate(new Object()));
     }
 
     @Test
     public void testNaN() {
-        // TODO
+        Rule<Object, Boolean> rule = new EqualsBooleanRule<Object>(Double.NaN);
+
+        assertTrue(rule.validate(Double.NaN));
+        assertTrue(rule.validate(Float.NaN));
+        assertFalse(rule.validate(null));
+        assertFalse(rule.validate(0));
+        assertFalse(rule.validate(-54.32));
+
+        rule = new EqualsBooleanRule<Object>(Float.NaN);
+        assertTrue(rule.validate(Double.NaN));
+        assertTrue(rule.validate(Float.NaN));
+        assertFalse(rule.validate(null));
+        assertFalse(rule.validate(0));
+        assertFalse(rule.validate(-54.32));
     }
 
     @Test
     public void testRegular() {
-        // TODO
+        Object ref = new Object();
+        Rule<Object, Boolean> rule = new EqualsBooleanRule<Object>(ref);
+
+        assertTrue(rule.validate(ref));
+        assertFalse(rule.validate(new Object()));
+        assertFalse(rule.validate(null));
+        assertFalse(rule.validate(Double.NaN));
     }
 }
