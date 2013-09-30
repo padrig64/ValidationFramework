@@ -32,13 +32,13 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
- * @see EqualsBooleanRule
+ * @see EqualsRule
  */
-public class EqualsBooleanRuleTest {
+public class EqualsRuleTest {
 
     @Test
     public void testNull() {
-        Rule<Object, Boolean> rule = new EqualsBooleanRule<Object>(null);
+        Rule<Object, Boolean> rule = new EqualsRule<Object>(null);
 
         assertTrue(rule.validate(null));
         assertFalse(rule.validate(new Object()));
@@ -46,7 +46,7 @@ public class EqualsBooleanRuleTest {
 
     @Test
     public void testNaN() {
-        Rule<Object, Boolean> rule = new EqualsBooleanRule<Object>(Double.NaN);
+        Rule<Object, Boolean> rule = new EqualsRule<Object>(Double.NaN);
 
         assertTrue(rule.validate(Double.NaN));
         assertTrue(rule.validate(Float.NaN));
@@ -54,7 +54,7 @@ public class EqualsBooleanRuleTest {
         assertFalse(rule.validate(0));
         assertFalse(rule.validate(-54.32));
 
-        rule = new EqualsBooleanRule<Object>(Float.NaN);
+        rule = new EqualsRule<Object>(Float.NaN);
         assertTrue(rule.validate(Double.NaN));
         assertTrue(rule.validate(Float.NaN));
         assertFalse(rule.validate(null));
@@ -65,7 +65,7 @@ public class EqualsBooleanRuleTest {
     @Test
     public void testRegular() {
         Object ref = new Object();
-        Rule<Object, Boolean> rule = new EqualsBooleanRule<Object>(ref);
+        Rule<Object, Boolean> rule = new EqualsRule<Object>(ref);
 
         assertTrue(rule.validate(ref));
         assertFalse(rule.validate(new Object()));

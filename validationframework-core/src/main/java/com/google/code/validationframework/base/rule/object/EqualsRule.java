@@ -42,7 +42,7 @@ import com.google.code.validationframework.base.utils.ValueUtils;
  * @see Rule
  * @see ValueUtils#areEqual(Object, Object)
  */
-public class EqualsBooleanRule<RI> implements Rule<RI, Boolean> {
+public class EqualsRule<RI> implements Rule<RI, Boolean> {
 
     private final RI referenceData;
 
@@ -51,7 +51,7 @@ public class EqualsBooleanRule<RI> implements Rule<RI, Boolean> {
      *
      * @param referenceData Reference object, or null.
      */
-    public EqualsBooleanRule(RI referenceData) {
+    public EqualsRule(RI referenceData) {
         this.referenceData = referenceData;
     }
 
