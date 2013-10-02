@@ -86,7 +86,7 @@ public class CastTransformer<I, O> implements Transformer<I, O> {
      *
      * @param castErrorBehavior Behavior in case of an error while casting.
      */
-    public CastTransformer(final CastErrorBehavior castErrorBehavior) {
+    public CastTransformer(CastErrorBehavior castErrorBehavior) {
         super();
         this.castErrorBehavior = castErrorBehavior;
     }
@@ -96,7 +96,7 @@ public class CastTransformer<I, O> implements Transformer<I, O> {
      */
     @SuppressWarnings("unchecked")
     @Override
-    public O transform(final I input) {
+    public O transform(I input) {
         O output;
 
         try {
@@ -105,10 +105,10 @@ public class CastTransformer<I, O> implements Transformer<I, O> {
         } catch (ClassCastException e) {
             switch (castErrorBehavior) {
                 case LOG_WARNING:
-                    LOGGER.warn("Failed transforming input: " + input, e);
+                    LOGGER.warn("Failed casting input: " + input, e);
                     break;
                 case LOG_ERROR:
-                    LOGGER.error("Failed transforming input: " + input, e);
+                    LOGGER.error("Failed casting input: " + input, e);
                     break;
                 case TRHOW_EXCEPTION:
                     throw e;

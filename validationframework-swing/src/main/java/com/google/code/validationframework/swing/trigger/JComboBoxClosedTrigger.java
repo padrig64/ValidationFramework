@@ -27,38 +27,87 @@ package com.google.code.validationframework.swing.trigger;
 
 import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.api.trigger.TriggerEvent;
+import com.google.code.validationframework.base.common.LogErrorUncheckedExceptionHandler;
+import com.google.code.validationframework.base.common.UncheckedExceptionHandler;
 import com.google.code.validationframework.base.trigger.AbstractTrigger;
 
 import javax.swing.JComboBox;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
+/**
+ * Trigger initiating the validation when the combobox popup menu is canceled.
+ *
+ * @see AbstractTrigger
+ * @see Disposable
+ * @see PopupMenuListener#popupMenuCanceled(PopupMenuEvent)
+ */
 public class JComboBoxClosedTrigger extends AbstractTrigger implements Disposable {
 
+    /**
+     * Listener to popup menu events to trigger the validation.
+     */
     private class SourceAdapter implements PopupMenuListener {
 
+        /**
+         * @see PopupMenuListener#popupMenuWillBecomeVisible(PopupMenuEvent)
+         */
         @Override
-        public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
+        public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
             // Nothing to be done
         }
 
+        /**
+         * @see PopupMenuListener#popupMenuWillBecomeInvisible(PopupMenuEvent)
+         */
         @Override
-        public void popupMenuWillBecomeInvisible(final PopupMenuEvent e) {
+        public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
             fireTriggerEvent(new TriggerEvent(source));
         }
 
+        /**
+         * @see PopupMenuListener#popupMenuCanceled(PopupMenuEvent)
+         */
         @Override
-        public void popupMenuCanceled(final PopupMenuEvent e) {
+        public void popupMenuCanceled(PopupMenuEvent e) {
             // Nothing to be done
         }
     }
 
+    /**
+     * Source combobox that will trigger the validation.
+     */
     private JComboBox source = null;
 
+    /**
+     * Combobox listener actually triggering the validation.
+     */
     private final PopupMenuListener sourceAdapter = new SourceAdapter();
 
-    public JComboBoxClosedTrigger(final JComboBox source) {
-        super();
+    /**
+     * Constructor specifying the source combobox that will trigger the validation.
+     * <p/>
+     * Note that a default handler for unchecked exceptions occurring when firing trigger events will be used.
+     *
+     * @param source Source combobox that will trigger the validation.
+     *
+     * @see AbstractTrigger#AbstractTrigger()
+     */
+    public JComboBoxClosedTrigger(JComboBox source) {
+        this(source, new LogErrorUncheckedExceptionHandler());
+    }
+
+    /**
+     * Constructor specifying the source combobox that will trigger the validation.
+     *
+     * @param source                    Source combobox that will trigger the validation.
+     * @param uncheckedExceptionHandler Handler for exceptions occurring when firing the trigger events.<br>
+     *                                  If null, the default handler will be used.
+     *
+     * @see AbstractTrigger#AbstractTrigger(UncheckedExceptionHandler)
+     */
+    public JComboBoxClosedTrigger(JComboBox source, UncheckedExceptionHandler uncheckedExceptionHandler) {
+        super(uncheckedExceptionHandler);
         this.source = source;
         source.addPopupMenuListener(sourceAdapter);
     }

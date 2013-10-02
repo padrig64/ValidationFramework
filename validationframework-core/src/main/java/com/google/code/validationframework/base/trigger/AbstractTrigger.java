@@ -29,6 +29,8 @@ import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.api.trigger.Trigger;
 import com.google.code.validationframework.api.trigger.TriggerEvent;
 import com.google.code.validationframework.api.trigger.TriggerListener;
+import com.google.code.validationframework.base.common.RethrowUncheckedExceptionHandler;
+import com.google.code.validationframework.base.common.UncheckedExceptionHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,9 +50,42 @@ import java.util.List;
 public abstract class AbstractTrigger implements Trigger, Disposable {
 
     /**
+     * Strategy for handling exceptions thrown when the trigger events are fired.
+     */
+    protected final UncheckedExceptionHandler uncheckedExceptionHandler;
+
+    /**
      * Trigger listeners.
      */
     protected final List<TriggerListener> listeners = new ArrayList<TriggerListener>();
+
+    /**
+     * Default constructor.
+     * <p/>
+     * By default, any exception occurring when the trigger events are fired will not be caught.
+     *
+     * @see RethrowUncheckedExceptionHandler
+     */
+    public AbstractTrigger() {
+        this(null);
+    }
+
+    /**
+     * Constructor specifying what to do when an exception occurs when the trigger event is fired.
+     *
+     * @param uncheckedExceptionHandler Strategy for handling exceptions thrown when the trigger events are fired.<br>
+     *                                  If null, the default {@link RethrowUncheckedExceptionHandler} will be used.
+     *
+     * @see UncheckedExceptionHandler
+     * @see RethrowUncheckedExceptionHandler
+     */
+    public AbstractTrigger(UncheckedExceptionHandler uncheckedExceptionHandler) {
+        if (uncheckedExceptionHandler == null) {
+            this.uncheckedExceptionHandler = new RethrowUncheckedExceptionHandler();
+        } else {
+            this.uncheckedExceptionHandler = uncheckedExceptionHandler;
+        }
+    }
 
     /**
      * @see Trigger#addTriggerListener(TriggerListener)
@@ -74,8 +109,14 @@ public abstract class AbstractTrigger implements Trigger, Disposable {
      * @param event Trigger event to be fired.
      */
     protected void fireTriggerEvent(TriggerEvent event) {
-        for (TriggerListener listener : listeners) {
-            listener.triggerValidation(event);
+        try {
+            for (TriggerListener listener : listeners) {
+                listener.triggerValidation(event);
+            }
+        } catch (RuntimeException e) {
+            uncheckedExceptionHandler.handleException(e);
+        } catch (Error e) {
+            uncheckedExceptionHandler.handleError(e);
         }
     }
 
