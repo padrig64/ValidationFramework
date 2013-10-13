@@ -35,8 +35,9 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
 /**
- * Base class for triggers on focus gain.<br>When this trigger is not longer required, do not forget to call {@link
- * #dispose()}.
+ * Base class for triggers on focus gain.
+ * <p/>
+ * When this trigger is not longer required, do not forget to call {@link #dispose()}.
  *
  * @param <C> Type of component whose focus is to be tracked.
  *
@@ -54,7 +55,7 @@ public class BaseJComponentFocusGainedTrigger<C extends Component> extends Abstr
          * @see FocusListener#focusGained(FocusEvent)
          */
         @Override
-        public void focusGained(final FocusEvent e) {
+        public void focusGained(FocusEvent e) {
             fireTriggerEvent(new TriggerEvent(source));
         }
     }
@@ -70,15 +71,15 @@ public class BaseJComponentFocusGainedTrigger<C extends Component> extends Abstr
     private final FocusListener sourceAdapter = new SourceAdapter();
 
     /**
-     * Constructor specified the component whose focus is to be tracked.<br>A focus listener will be installed. So
-     * you may
-     * need to call {@link #dispose()} when trigger is no longer needed.
+     * Constructor specified the component whose focus is to be tracked.
+     * <p/>
+     * A focus listener will be installed. So you may need to call {@link #dispose()} when trigger is no longer needed.
      *
      * @param source Component whose focus is to be tracked.
      *
      * @see #dispose()
      */
-    public BaseJComponentFocusGainedTrigger(final C source) {
+    public BaseJComponentFocusGainedTrigger(C source) {
         super();
         this.source = source;
         source.addFocusListener(sourceAdapter);
@@ -98,7 +99,9 @@ public class BaseJComponentFocusGainedTrigger<C extends Component> extends Abstr
      */
     @Override
     public void dispose() {
-        source.removeFocusListener(sourceAdapter);
-        source = null;
+        if (source != null) {
+            source.removeFocusListener(sourceAdapter);
+            source = null;
+        }
     }
 }

@@ -110,7 +110,9 @@ public class JComboBoxModelChangedTrigger extends AbstractTrigger implements Dis
      */
     @Override
     public void dispose() {
-        source.removeActionListener(sourceAdapter);
-        source = null;
+        if (source != null) {
+            source.removeActionListener(sourceAdapter);
+            source = null;
+        }
     }
 }

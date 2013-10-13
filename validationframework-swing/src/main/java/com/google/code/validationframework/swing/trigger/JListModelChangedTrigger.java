@@ -39,8 +39,10 @@ import javax.swing.event.ListDataListener;
 public class JListModelChangedTrigger extends AbstractTrigger implements Disposable {
 
     /**
-     * Listener to changes in the model of the list, triggering the validation.<br>Note that there is no need to track
-     * replacement of the model in the list as this is already done in {@link javax.swing.JList}.
+     * Listener to changes in the model of the list, triggering the validation.
+     * <p/>
+     * Note that there is no need to track replacement of the model in the list as this is already done in {@link
+     * JList}.
      */
     private class ModelChangeAdapter implements ListDataListener {
 
@@ -48,7 +50,7 @@ public class JListModelChangedTrigger extends AbstractTrigger implements Disposa
          * @see ListDataListener#intervalAdded(ListDataEvent)
          */
         @Override
-        public void intervalAdded(final ListDataEvent e) {
+        public void intervalAdded(ListDataEvent e) {
             fireTriggerEvent(new TriggerEvent(source));
         }
 
@@ -56,7 +58,7 @@ public class JListModelChangedTrigger extends AbstractTrigger implements Disposa
          * @see ListDataListener#intervalRemoved(ListDataEvent)
          */
         @Override
-        public void intervalRemoved(final ListDataEvent e) {
+        public void intervalRemoved(ListDataEvent e) {
             fireTriggerEvent(new TriggerEvent(source));
         }
 
@@ -64,7 +66,7 @@ public class JListModelChangedTrigger extends AbstractTrigger implements Disposa
          * @see ListDataListener#contentsChanged(ListDataEvent)
          */
         @Override
-        public void contentsChanged(final ListDataEvent e) {
+        public void contentsChanged(ListDataEvent e) {
             fireTriggerEvent(new TriggerEvent(source));
         }
     }
@@ -84,7 +86,7 @@ public class JListModelChangedTrigger extends AbstractTrigger implements Disposa
      *
      * @param source List whose model changes are meant to trigger validation.
      */
-    public JListModelChangedTrigger(final JList source) {
+    public JListModelChangedTrigger(JList source) {
         super();
         this.source = source;
         this.source.getModel().addListDataListener(modelChangeAdapter);

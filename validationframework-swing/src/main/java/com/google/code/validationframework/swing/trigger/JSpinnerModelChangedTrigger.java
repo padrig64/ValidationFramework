@@ -38,7 +38,7 @@ public class JSpinnerModelChangedTrigger extends AbstractTrigger implements Disp
     private class SourceAdapter implements ChangeListener {
 
         @Override
-        public void stateChanged(final ChangeEvent e) {
+        public void stateChanged(ChangeEvent e) {
             fireTriggerEvent(new TriggerEvent(source));
         }
     }
@@ -47,7 +47,7 @@ public class JSpinnerModelChangedTrigger extends AbstractTrigger implements Disp
 
     private final ChangeListener sourceAdapter = new SourceAdapter();
 
-    public JSpinnerModelChangedTrigger(final JSpinner source) {
+    public JSpinnerModelChangedTrigger(JSpinner source) {
         super();
         this.source = source;
         source.addChangeListener(sourceAdapter);
@@ -67,7 +67,9 @@ public class JSpinnerModelChangedTrigger extends AbstractTrigger implements Disp
      */
     @Override
     public void dispose() {
-        source.removeChangeListener(sourceAdapter);
-        source = null;
+        if (source != null) {
+            source.removeChangeListener(sourceAdapter);
+            source = null;
+        }
     }
 }

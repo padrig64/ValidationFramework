@@ -28,8 +28,9 @@ package com.google.code.validationframework.swing.trigger;
 import javax.swing.JTextField;
 
 /**
- * Convenience class for triggers on focus gain by a {@link JTextField}.<br>When this trigger is not longer required, do
- * not forget to call {@link #dispose()}.
+ * Convenience class for triggers on focus gain by a {@link JTextField}.
+ * <p/>
+ * When this trigger is not longer required, do not forget to call {@link #dispose()}.
  *
  * @see BaseJComponentFocusGainedTrigger
  * @see #dispose()
@@ -37,15 +38,15 @@ import javax.swing.JTextField;
 public class JTextFieldFocusGainedTrigger extends BaseJComponentFocusGainedTrigger<JTextField> {
 
     /**
-     * Constructor specified the textfield whose focus is to be tracked.<br>A focus listener will be installed. So
-     * you may
-     * need to call {@link #dispose()} when trigger is no longer needed.
+     * Constructor specified the textfield whose focus is to be tracked.
+     * <p/>
+     * A focus listener will be installed. So you may need to call {@link #dispose()} when trigger is no longer needed.
      *
      * @param source Component whose focus is to be tracked.
      *
      * @see #dispose()
      */
-    public JTextFieldFocusGainedTrigger(final JTextField source) {
+    public JTextFieldFocusGainedTrigger(JTextField source) {
         super(source);
     }
 }

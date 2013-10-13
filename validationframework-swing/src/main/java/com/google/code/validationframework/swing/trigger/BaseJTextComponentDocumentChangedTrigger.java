@@ -62,7 +62,7 @@ public class BaseJTextComponentDocumentChangedTrigger<C extends JTextComponent> 
          * @see #removeUpdate(DocumentEvent)
          */
         @Override
-        public void insertUpdate(final DocumentEvent e) {
+        public void insertUpdate(DocumentEvent e) {
             // Inhibit the pending remove update if any
             skipPendingRemove = true;
 
@@ -76,7 +76,7 @@ public class BaseJTextComponentDocumentChangedTrigger<C extends JTextComponent> 
          * @see #insertUpdate(DocumentEvent)
          */
         @Override
-        public void removeUpdate(final DocumentEvent e) {
+        public void removeUpdate(DocumentEvent e) {
             /*
              * Reschedule the remove update later and fire the associated event only if there is no subsequent insert
              * update.<br>This is done because, very often, when the text is replace by another text (or if the focus
@@ -106,7 +106,7 @@ public class BaseJTextComponentDocumentChangedTrigger<C extends JTextComponent> 
          * @see DocumentListener#changedUpdate(DocumentEvent)
          */
         @Override
-        public void changedUpdate(final DocumentEvent e) {
+        public void changedUpdate(DocumentEvent e) {
             fireTriggerEvent(new TriggerEvent(source));
         }
     }
@@ -126,7 +126,7 @@ public class BaseJTextComponentDocumentChangedTrigger<C extends JTextComponent> 
      *
      * @param source Text component to listen to.
      */
-    public BaseJTextComponentDocumentChangedTrigger(final C source) {
+    public BaseJTextComponentDocumentChangedTrigger(C source) {
         super();
         this.source = source;
         source.getDocument().addDocumentListener(sourceAdapter);
@@ -147,7 +147,9 @@ public class BaseJTextComponentDocumentChangedTrigger<C extends JTextComponent> 
      */
     @Override
     public void dispose() {
-        source.getDocument().removeDocumentListener(sourceAdapter);
-        source = null;
+        if (source != null) {
+            source.getDocument().removeDocumentListener(sourceAdapter);
+            source = null;
+        }
     }
 }

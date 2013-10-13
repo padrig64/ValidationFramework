@@ -39,9 +39,10 @@ import javax.swing.event.ListSelectionListener;
 public class JListSelectionChangedTrigger extends AbstractTrigger implements Disposable {
 
     /**
-     * Listener to selection changes in the selection model of the list, triggering the validation.<br>Note that
-     * there is
-     * no need to track replacement of the selection model in the list as this is already done in {@link JList}.
+     * Listener to selection changes in the selection model of the list, triggering the validation.
+     * <p/>
+     * Note that there is no need to track replacement of the selection model in the list as this is already done in
+     * {@link JList}.
      */
     private class SelectionAdapter implements ListSelectionListener {
 
@@ -49,7 +50,7 @@ public class JListSelectionChangedTrigger extends AbstractTrigger implements Dis
          * @see ListSelectionListener#valueChanged(ListSelectionEvent)
          */
         @Override
-        public void valueChanged(final ListSelectionEvent e) {
+        public void valueChanged(ListSelectionEvent e) {
             if (!e.getValueIsAdjusting()) {
                 fireTriggerEvent(new TriggerEvent(source));
             }
@@ -71,7 +72,7 @@ public class JListSelectionChangedTrigger extends AbstractTrigger implements Dis
      *
      * @param source List whose selection changes are meant to trigger validation.
      */
-    public JListSelectionChangedTrigger(final JList source) {
+    public JListSelectionChangedTrigger(JList source) {
         super();
         this.source = source;
         this.source.addListSelectionListener(selectionAdapter);

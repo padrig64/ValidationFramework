@@ -126,7 +126,9 @@ public class JComboBoxCanceledTrigger extends AbstractTrigger implements Disposa
      */
     @Override
     public void dispose() {
-        source.removePopupMenuListener(sourceAdapter);
-        source = null;
+        if (source != null) {
+            source.removePopupMenuListener(sourceAdapter);
+            source = null;
+        }
     }
 }

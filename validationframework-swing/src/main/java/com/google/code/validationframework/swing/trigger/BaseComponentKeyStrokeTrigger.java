@@ -181,7 +181,9 @@ public class BaseComponentKeyStrokeTrigger<C extends Component> extends Abstract
      */
     @Override
     public void dispose() {
-        source.removeKeyListener(sourceAdapter);
-        source = null;
+        if (source != null) {
+            source.removeKeyListener(sourceAdapter);
+            source = null;
+        }
     }
 }

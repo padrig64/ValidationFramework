@@ -49,7 +49,7 @@ public class JTableTextEditorDocumentChangedTrigger extends AbstractTrigger impl
          * @see PropertyChangeListener#propertyChange(PropertyChangeEvent)
          */
         @Override
-        public void propertyChange(final PropertyChangeEvent evt) {
+        public void propertyChange(PropertyChangeEvent evt) {
             // Detach from previous editor
             if (evt.getOldValue() != null) {
                 detach(evt.getOldValue());
@@ -61,10 +61,10 @@ public class JTableTextEditorDocumentChangedTrigger extends AbstractTrigger impl
             }
         }
 
-        private void attach(final DefaultCellEditor editor) {
-            final Component editorComponent = editor.getComponent();
+        private void attach(DefaultCellEditor editor) {
+            Component editorComponent = editor.getComponent();
             if (editorComponent instanceof JTextComponent) {
-                final JTextComponentDocumentChangedTrigger trigger = new JTextComponentDocumentChangedTrigger(
+                JTextComponentDocumentChangedTrigger trigger = new JTextComponentDocumentChangedTrigger(
                         (JTextComponent) editorComponent);
                 trigger.addTriggerListener(triggerForwarder);
                 editorToTrigger.put(editor, trigger);
@@ -72,8 +72,8 @@ public class JTableTextEditorDocumentChangedTrigger extends AbstractTrigger impl
             }
         }
 
-        private void detach(final Object editor) {
-            final Disposable trigger = editorToTrigger.get(editor);
+        private void detach(Object editor) {
+            Disposable trigger = editorToTrigger.get(editor);
             if (trigger != null) {
                 trigger.dispose();
                 editorToTrigger.remove(editor);
@@ -87,7 +87,7 @@ public class JTableTextEditorDocumentChangedTrigger extends AbstractTrigger impl
          * @see TriggerListener#triggerValidation(TriggerEvent)
          */
         @Override
-        public void triggerValidation(final TriggerEvent event) {
+        public void triggerValidation(TriggerEvent event) {
             /*
              * Check if trigger allowed here, because at the moment the trigger is registered (when the editor component
              * is set on the table), the editing row and editing column are not yet set in the table.
@@ -103,7 +103,7 @@ public class JTableTextEditorDocumentChangedTrigger extends AbstractTrigger impl
          * @return True if trigger is allowed, false otherwise.
          */
         private boolean isTriggerAllowed() {
-            final boolean allow;
+            boolean allow;
 
             if ((modelRowIndex == ALL_ROWS) && (modelColumnIndex == ALL_COLUMNS)) {
                 allow = true;
@@ -122,7 +122,7 @@ public class JTableTextEditorDocumentChangedTrigger extends AbstractTrigger impl
             boolean allow = false;
 
             try {
-                final int viewRowIndex = table.convertRowIndexToView(modelRowIndex);
+                int viewRowIndex = table.convertRowIndexToView(modelRowIndex);
                 if (viewRowIndex == table.getEditingRow()) {
                     allow = true;
                 }
@@ -137,7 +137,7 @@ public class JTableTextEditorDocumentChangedTrigger extends AbstractTrigger impl
             boolean allow = false;
 
             try {
-                final int viewColumnIndex = table.convertColumnIndexToView(modelColumnIndex);
+                int viewColumnIndex = table.convertColumnIndexToView(modelColumnIndex);
                 if (viewColumnIndex == table.getEditingColumn()) {
                     allow = true;
                 }
@@ -152,8 +152,8 @@ public class JTableTextEditorDocumentChangedTrigger extends AbstractTrigger impl
             boolean allow = false;
 
             try {
-                final int viewRowIndex = table.convertRowIndexToView(modelRowIndex);
-                final int viewColumnIndex = table.convertColumnIndexToView(modelColumnIndex);
+                int viewRowIndex = table.convertRowIndexToView(modelRowIndex);
+                int viewColumnIndex = table.convertColumnIndexToView(modelColumnIndex);
                 if ((viewRowIndex == table.getEditingRow()) && (viewColumnIndex == table.getEditingColumn())) {
                     allow = true;
                 }
@@ -178,12 +178,11 @@ public class JTableTextEditorDocumentChangedTrigger extends AbstractTrigger impl
 
     private final TriggerListener triggerForwarder = new TriggerForwarder();
 
-    public JTableTextEditorDocumentChangedTrigger(final JTable table) {
+    public JTableTextEditorDocumentChangedTrigger(JTable table) {
         this(table, ALL_ROWS, ALL_COLUMNS);
     }
 
-    public JTableTextEditorDocumentChangedTrigger(final JTable table, final int modelRowIndex,
-                                                  final int modelColumnIndex) {
+    public JTableTextEditorDocumentChangedTrigger(JTable table, int modelRowIndex, int modelColumnIndex) {
         super();
         this.table = table;
         this.modelRowIndex = modelRowIndex;
@@ -205,7 +204,9 @@ public class JTableTextEditorDocumentChangedTrigger extends AbstractTrigger impl
      */
     @Override
     public void dispose() {
-        table.removePropertyChangeListener("tableCellEditor", sourceAdapter);
-        table = null;
+        if (table != null) {
+            table.removePropertyChangeListener("tableCellEditor", sourceAdapter);
+            table = null;
+        }
     }
 }

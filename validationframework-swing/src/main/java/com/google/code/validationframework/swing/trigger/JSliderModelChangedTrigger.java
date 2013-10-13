@@ -38,7 +38,7 @@ public class JSliderModelChangedTrigger extends AbstractTrigger implements Dispo
     private class SourceAdapter implements ChangeListener {
 
         @Override
-        public void stateChanged(final ChangeEvent e) {
+        public void stateChanged(ChangeEvent e) {
             if ((e.getSource() instanceof JSlider) && !(((JSlider) e.getSource()).getValueIsAdjusting())) {
                 fireTriggerEvent(new TriggerEvent(source));
             }
@@ -49,7 +49,7 @@ public class JSliderModelChangedTrigger extends AbstractTrigger implements Dispo
 
     private final ChangeListener sourceAdapter = new SourceAdapter();
 
-    public JSliderModelChangedTrigger(final JSlider source) {
+    public JSliderModelChangedTrigger(JSlider source) {
         super();
         this.source = source;
         source.addChangeListener(sourceAdapter);
@@ -69,7 +69,9 @@ public class JSliderModelChangedTrigger extends AbstractTrigger implements Dispo
      */
     @Override
     public void dispose() {
-        source.removeChangeListener(sourceAdapter);
-        source = null;
+        if (source != null) {
+            source.removeChangeListener(sourceAdapter);
+            source = null;
+        }
     }
 }

@@ -47,7 +47,7 @@ public class BaseJToggleButtonModelChangedTrigger<C extends JToggleButton> exten
     private class SourceAdapter implements ItemListener {
 
         @Override
-        public void itemStateChanged(final ItemEvent e) {
+        public void itemStateChanged(ItemEvent e) {
             fireTriggerEvent(new TriggerEvent(source));
         }
     }
@@ -56,7 +56,7 @@ public class BaseJToggleButtonModelChangedTrigger<C extends JToggleButton> exten
 
     private final ItemListener sourceAdapter = new SourceAdapter();
 
-    public BaseJToggleButtonModelChangedTrigger(final C source) {
+    public BaseJToggleButtonModelChangedTrigger(C source) {
         super();
         this.source = source;
         source.addItemListener(sourceAdapter);
@@ -76,7 +76,9 @@ public class BaseJToggleButtonModelChangedTrigger<C extends JToggleButton> exten
      */
     @Override
     public void dispose() {
-        source.removeItemListener(sourceAdapter);
-        source = null;
+        if (source != null) {
+            source.removeItemListener(sourceAdapter);
+            source = null;
+        }
     }
 }

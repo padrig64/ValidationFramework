@@ -2,6 +2,7 @@
 
 * Added EqualsBooleanRule in core
 * Added convenient constructor to IconComponentDecoration
+* Fixed NullPointerException when calling dispose() multiple times on some triggers
 
 # Version 2.1.2
 

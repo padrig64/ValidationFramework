@@ -6,6 +6,7 @@
 * Painting of translucent decorations
 * Remaining icontip's tooltips when quickly moving mouse (in/outside tables): only on Linux? still happening?
 * Icon decoration steals mouse event even outside clipping bounds
+* Consistent behavior of dispose() methods
 
 # TO MAKE
 

@@ -38,7 +38,7 @@ public class JButtonActionTrigger extends AbstractTrigger implements Disposable 
     private class SourceAdapter implements ActionListener {
 
         @Override
-        public void actionPerformed(final ActionEvent e) {
+        public void actionPerformed(ActionEvent e) {
             fireTriggerEvent(new TriggerEvent(source));
         }
     }
@@ -47,7 +47,7 @@ public class JButtonActionTrigger extends AbstractTrigger implements Disposable 
 
     private final ActionListener sourceAdapter = new SourceAdapter();
 
-    public JButtonActionTrigger(final JButton source) {
+    public JButtonActionTrigger(JButton source) {
         super();
         this.source = source;
         source.addActionListener(sourceAdapter);
@@ -67,7 +67,9 @@ public class JButtonActionTrigger extends AbstractTrigger implements Disposable 
      */
     @Override
     public void dispose() {
-        source.removeActionListener(sourceAdapter);
-        source = null;
+        if (source != null) {
+            source.removeActionListener(sourceAdapter);
+            source = null;
+        }
     }
 }
