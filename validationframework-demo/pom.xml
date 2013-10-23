@@ -26,6 +26,10 @@
         </dependency>
         <dependency>
             <groupId>com.google.code.validationframework</groupId>
+            <artifactId>validationframework-javafx</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.validationframework</groupId>
             <artifactId>validationframework-experimental</artifactId>
         </dependency>
 

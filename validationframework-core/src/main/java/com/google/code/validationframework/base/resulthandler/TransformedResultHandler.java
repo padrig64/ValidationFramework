@@ -31,54 +31,59 @@ import com.google.code.validationframework.base.transform.CastTransformer;
 import com.google.code.validationframework.base.transform.Transformer;
 
 /**
- * Wrapper for result handlers that will transform the result to another type.<br>This can be useful, for instance, to
- * adapt existing result handlers to be put in validators requiring another type of result.
+ * Wrapper for result handlers that will transform the result to another type.
+ * <p/>
+ * This can be useful, for instance, to adapt existing result handlers to be put in validators requiring another type of
+ * result.
  *
- * @param <RI>  Type of result to be transformed.
- * @param <TRI> Type of result handled by the wrapped result handler.
+ * @param <RHI>  Type of result to be transformed.
+ * @param <TRHI> Type of result handled by the wrapped result handler.
  *
  * @see ResultHandler
  * @see Disposable
  */
-public class TransformedResultHandler<RI, TRI> implements ResultHandler<RI>, Disposable {
+public class TransformedResultHandler<RHI, TRHI> implements ResultHandler<RHI>, Disposable {
 
     /**
      * Wrapped result handler whose input will be transformed.
      */
-    private final ResultHandler<TRI> wrappedResultHandler;
+    private final ResultHandler<TRHI> wrappedResultHandler;
 
     /**
      * Transformer adapting the result before processing with the wrapped result handler.
      */
-    final Transformer<RI, TRI> resultTransformer;
+    final Transformer<RHI, TRHI> resultTransformer;
 
     /**
      * Constructor specifying the wrapped result handler and the transformer to be used to adapt the result
      * before processing with the wrapped result handler.
      *
      * @param resultTransformer    Transformer adapting the result before processing with the wrapped result
-     *                             handler.<br>If null, the result will be cast to the wanted type. In case the
-     *                             result cannot be cast, null will be provided.
+     *                             handler.<br>
+     *                             If null, the result will be cast to the wanted type. In case the result cannot be
+     *                             cast, null will be provided.
      * @param wrappedResultHandler Wrapped result handler whose input will be transformed.
      */
-    public TransformedResultHandler(Transformer<RI, TRI> resultTransformer, ResultHandler<TRI> wrappedResultHandler) {
+    public TransformedResultHandler(Transformer<RHI, TRHI> resultTransformer,
+                                    ResultHandler<TRHI> wrappedResultHandler) {
         this.wrappedResultHandler = wrappedResultHandler;
         if (resultTransformer == null) {
-            this.resultTransformer = new CastTransformer<RI, TRI>();
+            this.resultTransformer = new CastTransformer<RHI, TRHI>();
         } else {
             this.resultTransformer = resultTransformer;
         }
     }
 
     /**
-     * @deprecated Use {@link #TransformedResultHandler(Transformer, ResultHandler)} instead.<br>This method will be
-     *             removed in a future release.
+     * @deprecated Use {@link #TransformedResultHandler(Transformer, ResultHandler)} instead.<br>
+     *             This method will be removed in a future release.
      */
     @Deprecated
-    public TransformedResultHandler(ResultHandler<TRI> wrappedResultHandler, Transformer<RI, TRI> resultTransformer) {
+    public TransformedResultHandler(ResultHandler<TRHI> wrappedResultHandler, Transformer<RHI,
+            TRHI> resultTransformer) {
         this.wrappedResultHandler = wrappedResultHandler;
         if (resultTransformer == null) {
-            this.resultTransformer = new CastTransformer<RI, TRI>();
+            this.resultTransformer = new CastTransformer<RHI, TRHI>();
         } else {
             this.resultTransformer = resultTransformer;
         }
@@ -88,7 +93,7 @@ public class TransformedResultHandler<RI, TRI> implements ResultHandler<RI>, Dis
      * @see ResultHandler#handleResult(Object)
      */
     @Override
-    public void handleResult(RI result) {
+    public void handleResult(RHI result) {
         if ((wrappedResultHandler != null) && (resultTransformer != null)) {
             wrappedResultHandler.handleResult(resultTransformer.transform(result));
         }
