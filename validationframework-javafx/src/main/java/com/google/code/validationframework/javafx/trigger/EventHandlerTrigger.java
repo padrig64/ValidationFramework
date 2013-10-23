@@ -36,11 +36,15 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Trigger initiating the validation whenever an event of the specified class and type(s) is fired.
+ * Trigger that can be added as an {@link EventHandler} on a {@link javafx.scene.Node} and initiating the validation
+ * whenever an event of the specified class and type(s) is fired.
  *
  * @param <E> Class of event triggering the validation.
  *
+ * @see AbstractTrigger
  * @see EventHandler
+ * @see Event
+ * @see EventType
  */
 public class EventHandlerTrigger<E extends Event> extends AbstractTrigger implements EventHandler<E> {
 

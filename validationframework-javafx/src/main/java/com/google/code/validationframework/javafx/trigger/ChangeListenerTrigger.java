@@ -31,13 +31,16 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 
 /**
- * Trigger listening that can be added as a change listener in an {@link ObservableValue} and triggering the validation
- * whenever the value changes.
+ * Trigger listening that can be added as a {@link ChangeListener} on an {@link ObservableValue} and triggering the
+ * validation whenever the value changes.
  *
  * @param <T> Type of value whose change is being observed.
  *
  * @see AbstractTrigger
  * @see ChangeListener
+ * @see ObservableValue
+ * @see InvalidationListenerTrigger
+ * @see ObservableValueChangeTrigger
  */
 public class ChangeListenerTrigger<T> extends AbstractTrigger implements ChangeListener<T> {
 
