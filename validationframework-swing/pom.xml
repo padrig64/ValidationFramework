@@ -14,7 +14,6 @@
     <packaging>bundle</packaging>
 
     <dependencies>
-
         <!-- Validation Framework -->
 
         <dependency>
@@ -57,7 +56,6 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
         </dependency>
-
     </dependencies>
 
     <build>

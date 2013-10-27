@@ -14,7 +14,6 @@
     <packaging>bundle</packaging>
 
     <dependencies>
-
         <!-- Logging -->
 
         <dependency>
@@ -33,7 +32,6 @@
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
         </dependency>
-
     </dependencies>
 
     <build>

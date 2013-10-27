@@ -80,7 +80,6 @@
 
     <dependencyManagement>
         <dependencies>
-
             <!-- Validation Framework -->
 
             <dependency>
@@ -145,6 +144,11 @@
 
             <!-- Demo -->
 
+            <dependency>
+                <groupId>com.miglayout</groupId>
+                <artifactId>miglayout-javafx</artifactId>
+                <version>${miglayout.version}</version>
+            </dependency>
             <dependency>
                 <groupId>com.miglayout</groupId>
                 <artifactId>miglayout-swing</artifactId>
@@ -219,7 +223,6 @@
                 <version>${eclipse.version}</version>
                 <scope>test</scope>
             </dependency>
-
         </dependencies>
     </dependencyManagement>
 

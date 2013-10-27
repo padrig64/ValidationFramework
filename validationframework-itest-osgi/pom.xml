@@ -13,8 +13,7 @@
     <name>Validation Framework :: OSGi Integration Tests</name>
 
     <dependencies>
-
-        <!-- Validation Framework dependencies -->
+        <!-- Validation Framework -->
 
         <dependency>
             <groupId>com.google.code.validationframework</groupId>
@@ -29,7 +28,7 @@
             <artifactId>validationframework-experimental</artifactId>
         </dependency>
 
-        <!-- Test dependencies -->
+        <!-- Test -->
 
         <dependency>
             <groupId>org.eclipse</groupId>
