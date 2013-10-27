@@ -86,6 +86,11 @@ public class InvokeLaterTrigger extends AbstractTrigger {
     }
 
     /**
+     * Default behavior of invoking later if already on the EDT.
+     */
+    private static final boolean DEFAULT_EVEN_IF_ALREADY_ON_EDT = true;
+
+    /**
      * Constructor specifying the wrapped trigger and whether to re-schedule on the EDT only if the wrapped trigger was
      * initiated outside the EDT.
      * <p/>
@@ -97,7 +102,7 @@ public class InvokeLaterTrigger extends AbstractTrigger {
      * @see #InvokeLaterTrigger(Trigger, boolean)
      */
     public InvokeLaterTrigger(Trigger wrappedTrigger) {
-        this(wrappedTrigger, true);
+        this(wrappedTrigger, DEFAULT_EVEN_IF_ALREADY_ON_EDT);
     }
 
     /**
