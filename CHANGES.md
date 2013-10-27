@@ -4,6 +4,7 @@
 * Added EqualsBooleanRule in core
 * Added convenient BooleanResultCollector in core
 * Added IsTrueRule and IsFalseRule in core
+* Added InvokeLaterResultHandler wrapper
 * Added convenient constructor to IconComponentDecoration
 * Fixed NullPointerException when calling dispose() multiple times on some triggers
 

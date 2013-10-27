@@ -32,7 +32,7 @@ import com.google.code.validationframework.base.trigger.AbstractTrigger;
 import javafx.application.Platform;
 
 /**
- * Trigger wrapper to re-schedule the wrapped trigger in the FX Application Thread.
+ * Trigger wrapper to re-schedule the wrapped trigger on the FX Application Thread.
  * <p/>
  * This can be useful when triggers are initially trigger outside the application thread, but also to schedule the
  * trigger later.
@@ -40,26 +40,26 @@ import javafx.application.Platform;
 public class RunLaterTrigger extends AbstractTrigger {
 
     /**
-     * Listener to the wrapped trigger and that will re-schedule in the application thread as required.
+     * Listener to the wrapped trigger and that will re-schedule on the application thread as required.
      */
     private class TriggerRescheduler implements TriggerListener, Runnable {
 
         /**
-         * Flag indicating whether to re-schedule even if the wrapped trigger is already initiated in the application
+         * Flag indicating whether to re-schedule even if the wrapped trigger is already initiated on the application
          * thread.
          */
-        private final boolean evenIfAlreadyOnPlatformThread;
+        private final boolean evenIfAlreadyOnApplicationThread;
 
         /**
          * Constructor specifying whether to re-schedule only if the wrapped trigger was initiated outside the
          * application thread.
          *
          * @param evenIfAlreadyOnApplicationThread
-         *         Flag indicating whether to re-schedule even if the wrapped trigger is already initiated in the
+         *         Flag indicating whether to re-schedule even if the wrapped trigger is already initiated on the
          *         application thread.
          */
         public TriggerRescheduler(boolean evenIfAlreadyOnApplicationThread) {
-            this.evenIfAlreadyOnPlatformThread = evenIfAlreadyOnApplicationThread;
+            this.evenIfAlreadyOnApplicationThread = evenIfAlreadyOnApplicationThread;
         }
 
         /**
@@ -67,11 +67,11 @@ public class RunLaterTrigger extends AbstractTrigger {
          */
         @Override
         public void triggerValidation(TriggerEvent event) {
-            if (!evenIfAlreadyOnPlatformThread || !Platform.isFxApplicationThread()) {
-                // Either forced or not yet in the application thread
+            if (evenIfAlreadyOnApplicationThread || !Platform.isFxApplicationThread()) {
+                // Either forced or not yet on the application thread
                 Platform.runLater(this);
             } else {
-                // Already in the application thread
+                // Already on the application thread
                 run();
             }
         }
@@ -86,17 +86,17 @@ public class RunLaterTrigger extends AbstractTrigger {
     }
 
     /**
-     * Default behavior of invoking later if already on the application thread.
+     * Default behavior of running later if already on the application thread.
      */
     private static final boolean DEFAULT_EVEN_IF_ALREADY_ON_APPLICATION_THREAD = true;
 
     /**
      * Constructor specifying the wrapped trigger to be rescheduled.
      * <p/>
-     * By default, the trigger will always be re-scheduled later in the application thread, even if it is already
-     * triggered in the application thread.
+     * By default, the trigger will always be re-scheduled later on the application thread, even if it is already
+     * triggered on the application thread.
      *
-     * @param wrappedTrigger Wrapped trigger to re-schedule later in the application thread.
+     * @param wrappedTrigger Wrapped trigger to re-schedule later on the application thread.
      *
      * @see #RunLaterTrigger(Trigger, boolean)
      */
@@ -105,12 +105,12 @@ public class RunLaterTrigger extends AbstractTrigger {
     }
 
     /**
-     * Constructor specifying the wrapped trigger and whether to re-schedule in the application thread even if the
-     * wrapped trigger is already initiated in the application thread.
+     * Constructor specifying the wrapped trigger and whether to re-schedule on the application thread even if the
+     * wrapped trigger is already initiated on the application thread.
      *
-     * @param wrappedTrigger Wrapped trigger to re-schedule later in the application thread.
+     * @param wrappedTrigger Wrapped trigger to re-schedule later on the application thread.
      * @param evenIfAlreadyInApplicationThread
-     *                       Flag indicating whether to re-schedule even if the wrapped trigger is already initiated in
+     *                       Flag indicating whether to re-schedule even if the wrapped trigger is already initiated on
      *                       the application thread.
      */
     public RunLaterTrigger(Trigger wrappedTrigger, boolean evenIfAlreadyInApplicationThread) {
