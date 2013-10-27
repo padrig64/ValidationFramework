@@ -23,17 +23,17 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.javafx.resulthandler;
+package com.google.code.validationframework.javafx;
 
 import com.google.code.validationframework.api.resulthandler.ResultHandler;
 import javafx.beans.property.BooleanProperty;
 import javafx.scene.Node;
 
-public class NodeEnablingResultHandler implements ResultHandler<Boolean> {
+public class NodeDisablingResultHandler implements ResultHandler<Boolean> {
 
     private final BooleanProperty disableProperty;
 
-    public NodeEnablingResultHandler(Node node) {
+    public NodeDisablingResultHandler(Node node) {
         if (node == null) {
             disableProperty = null;
         } else {
@@ -44,7 +44,7 @@ public class NodeEnablingResultHandler implements ResultHandler<Boolean> {
     @Override
     public void handleResult(Boolean result) {
         if (disableProperty != null) {
-            disableProperty.set(!result);
+            disableProperty.set(result);
         }
     }
 }

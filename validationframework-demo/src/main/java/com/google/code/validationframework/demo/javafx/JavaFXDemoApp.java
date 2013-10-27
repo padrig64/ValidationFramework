@@ -4,9 +4,10 @@ import com.google.code.validationframework.base.resulthandler.BooleanResultColle
 import com.google.code.validationframework.base.rule.bool.AndBooleanRule;
 import com.google.code.validationframework.base.rule.bool.IsTrueRule;
 import com.google.code.validationframework.base.rule.string.StringNotEmptyRule;
+import com.google.code.validationframework.base.transform.NegateBooleanTransformer;
 import com.google.code.validationframework.base.trigger.ManualTrigger;
 import com.google.code.validationframework.javafx.dataprovider.ObservableValueProvider;
-import com.google.code.validationframework.javafx.resulthandler.NodeEnablingResultHandler;
+import com.google.code.validationframework.javafx.resulthandler.WritableValueSetterResultHandler;
 import com.google.code.validationframework.javafx.trigger.ObservableValueChangeTrigger;
 import javafx.application.Application;
 import javafx.scene.Parent;
@@ -68,7 +69,8 @@ public class JavaFXDemoApp extends Application {
         collect(nameResultCollector) //
                 .collect(agreeResultCollector) //
                 .check(new AndBooleanRule()) //
-                .handleWith(new NodeEnablingResultHandler(submitButton));
+                .transform(new NegateBooleanTransformer()) //
+                .handleWith(new WritableValueSetterResultHandler<Boolean>(submitButton.disableProperty()));
 
         // Initial trigger
         manualTrigger.trigger();

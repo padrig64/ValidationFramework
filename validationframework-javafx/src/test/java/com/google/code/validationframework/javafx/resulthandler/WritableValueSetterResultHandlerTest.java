@@ -27,24 +27,37 @@ package com.google.code.validationframework.javafx.resulthandler;
 
 import com.google.code.validationframework.api.resulthandler.ResultHandler;
 import javafx.beans.property.BooleanProperty;
-import javafx.scene.Node;
+import javafx.beans.property.SimpleBooleanProperty;
+import org.junit.Test;
 
-public class NodeDisablingResultHandler implements ResultHandler<Boolean> {
+import static org.junit.Assert.assertEquals;
 
-    private final BooleanProperty disableProperty;
+/**
+ * @see WritableValueSetterResultHandler
+ */
+public class WritableValueSetterResultHandlerTest {
 
-    public NodeDisablingResultHandler(Node node) {
-        if (node == null) {
-            disableProperty = null;
-        } else {
-            disableProperty = node.disableProperty();
-        }
+    @Test
+    public void testNull() {
+        BooleanProperty propertyToBeSet = new SimpleBooleanProperty();
+
+        ResultHandler<Boolean> resultHandler = new WritableValueSetterResultHandler<Boolean>(propertyToBeSet, true);
+        resultHandler.handleResult(null);
+        assertEquals(true, propertyToBeSet.getValue());
+
+        resultHandler = new WritableValueSetterResultHandler<Boolean>(propertyToBeSet, false);
+        resultHandler.handleResult(null);
+        assertEquals(false, propertyToBeSet.getValue());
     }
 
-    @Override
-    public void handleResult(Boolean result) {
-        if (disableProperty != null) {
-            disableProperty.set(result);
-        }
+    @Test
+    public void testNonNull() {
+        BooleanProperty propertyToBeSet = new SimpleBooleanProperty();
+
+        ResultHandler<Boolean> resultHandler = new WritableValueSetterResultHandler<Boolean>(propertyToBeSet);
+        resultHandler.handleResult(true);
+        assertEquals(true, propertyToBeSet.getValue());
+        resultHandler.handleResult(false);
+        assertEquals(false, propertyToBeSet.getValue());
     }
 }
