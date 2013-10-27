@@ -28,27 +28,25 @@ package com.google.code.validationframework.base.resulthandler;
 import com.google.code.validationframework.base.transform.Transformer;
 
 /**
- * Simpler alternative to the {@link ResultCollector}.
+ * Simpler alternative to the {@link ResultCollector} collecting and providing boolean results.
  * <p/>
  * It is provided for convenience.
  *
- * @param <DPO> Type of validation result and data provided.
- *
  * @see ResultCollector
  */
-public class SimpleResultCollector<DPO> extends ResultCollector<DPO, DPO> {
+public class BooleanResultCollector extends ResultCollector<Boolean, Boolean> {
 
     /**
      * @see ResultCollector#ResultCollector()
      */
-    public SimpleResultCollector() {
+    public BooleanResultCollector() {
         super();
     }
 
     /**
      * @see ResultCollector#ResultCollector(Transformer)
      */
-    public SimpleResultCollector(Transformer<DPO, DPO> transformer) {
+    public BooleanResultCollector(Transformer<Boolean, Boolean> transformer) {
         super(transformer);
     }
 }
