@@ -31,20 +31,44 @@ import com.google.code.validationframework.base.trigger.AbstractTrigger;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 
+/**
+ * Trigger initiating the validation whenever an observable value is changed.
+ *
+ * @see ChangeListenerTrigger
+ * @see ObservableInvalidationTrigger
+ * @see ObservableValue
+ */
 public class ObservableValueChangeTrigger<T> extends AbstractTrigger implements Disposable {
 
+    /**
+     * Listener to changes of the observable value.
+     */
     private class ChangeAdapter implements ChangeListener<T> {
 
+        /**
+         * @see ChangeListener#changed(ObservableValue, Object, Object)
+         */
         @Override
         public void changed(ObservableValue<? extends T> observableValue, T oldValue, T newValue) {
             fireTriggerEvent(new TriggerEvent(observableValue));
         }
     }
 
+    /**
+     * Observable value to listen to.
+     */
     private final ObservableValue<T> observableValue;
 
+    /**
+     * Listener to changes of the observable value.
+     */
     private final ChangeAdapter changeAdapter = new ChangeAdapter();
 
+    /**
+     * Constructor specifying the observable object to listen to.
+     *
+     * @param observableValue Observable value to listen to.
+     */
     public ObservableValueChangeTrigger(ObservableValue<T> observableValue) {
         super();
         this.observableValue = observableValue;

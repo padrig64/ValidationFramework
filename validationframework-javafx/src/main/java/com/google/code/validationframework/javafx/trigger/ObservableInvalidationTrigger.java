@@ -32,7 +32,7 @@ import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 
 /**
- * Trigger initiating the validation whenever an observable value is invalidated.
+ * Trigger initiating the validation whenever an observable object is invalidated.
  *
  * @see InvalidationListenerTrigger
  * @see ObservableValueChangeTrigger
