@@ -36,7 +36,6 @@ import javafx.beans.value.ObservableValue;
  *
  * @param <T> Type of value whose change is being observed.
  *
- * @see AbstractTrigger
  * @see ChangeListener
  * @see ObservableValue
  * @see InvalidationListenerTrigger

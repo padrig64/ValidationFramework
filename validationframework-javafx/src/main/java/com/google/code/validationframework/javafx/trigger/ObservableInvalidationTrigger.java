@@ -31,20 +31,44 @@ import com.google.code.validationframework.base.trigger.AbstractTrigger;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 
+/**
+ * Trigger initiating the validation whenever an observable value is invalidated.
+ *
+ * @see InvalidationListenerTrigger
+ * @see ObservableValueChangeTrigger
+ * @see Observable
+ */
 public class ObservableInvalidationTrigger extends AbstractTrigger implements Disposable {
 
+    /**
+     * Listener to invalidation of the observable.
+     */
     private class InvalidationAdapter implements InvalidationListener {
 
+        /**
+         * @see InvalidationListener#invalidated(Observable)
+         */
         @Override
         public void invalidated(Observable observable) {
             fireTriggerEvent(new TriggerEvent(observable));
         }
     }
 
+    /**
+     * Observable object to listen to.
+     */
     private final Observable observable;
 
+    /**
+     * Listener to invalidation of the observable.
+     */
     private final InvalidationAdapter invalidationAdapter = new InvalidationAdapter();
 
+    /**
+     * Constructor specifying the observable object to listen to.
+     *
+     * @param observable Observable object to listen to.
+     */
     public ObservableInvalidationTrigger(Observable observable) {
         super();
         this.observable = observable;

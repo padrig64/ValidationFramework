@@ -41,7 +41,6 @@ import java.util.Set;
  *
  * @param <E> Class of event triggering the validation.
  *
- * @see AbstractTrigger
  * @see EventHandler
  * @see Event
  * @see EventType

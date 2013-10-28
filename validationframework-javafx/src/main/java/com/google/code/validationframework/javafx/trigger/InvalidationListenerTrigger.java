@@ -34,7 +34,6 @@ import javafx.beans.Observable;
  * Trigger that can be added as an {@link InvalidationListener} on an {@link Observable} object and initiating the
  * validation whenever this object is invalidated.
  *
- * @see AbstractTrigger
  * @see InvalidationListener
  * @see Observable
  * @see ChangeListenerTrigger
