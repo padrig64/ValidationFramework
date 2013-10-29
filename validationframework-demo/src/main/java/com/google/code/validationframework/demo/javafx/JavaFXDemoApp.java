@@ -7,6 +7,7 @@ import com.google.code.validationframework.base.rule.string.StringNotEmptyRule;
 import com.google.code.validationframework.base.transform.NegateBooleanTransformer;
 import com.google.code.validationframework.base.trigger.ManualTrigger;
 import com.google.code.validationframework.javafx.dataprovider.ObservableValueProvider;
+import com.google.code.validationframework.javafx.resulthandler.IconResultHandler;
 import com.google.code.validationframework.javafx.resulthandler.WritableValueSetterResultHandler;
 import com.google.code.validationframework.javafx.trigger.ObservableValueChangeTrigger;
 import javafx.application.Application;
@@ -29,8 +30,8 @@ public class JavaFXDemoApp extends Application {
      */
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = initComponents();
-        stage.setScene(new Scene(root, 640, 480));
+        Scene scene = new Scene(initComponents(), 640, 480);
+        stage.setScene(scene);
         stage.show();
     }
 
@@ -39,8 +40,8 @@ public class JavaFXDemoApp extends Application {
 
         Label nameLabel = new Label("Enter your name:");
         parent.add(nameLabel);
-        TextField textField = new TextField();
-        parent.add(textField);
+        TextField nameTextField = new TextField();
+        parent.add(nameTextField);
 
         CheckBox agreeCheckBox = new CheckBox("I agree with the terms and conditions");
         parent.add(agreeCheckBox);
@@ -51,11 +52,12 @@ public class JavaFXDemoApp extends Application {
         // Install validation on textfield
         ManualTrigger manualTrigger = new ManualTrigger();
         BooleanResultCollector nameResultCollector = new BooleanResultCollector();
-        on(new ObservableValueChangeTrigger<String>(textField.textProperty())) //
+        on(new ObservableValueChangeTrigger<String>(nameTextField.textProperty())) //
                 .on(manualTrigger) //
-                .read(new ObservableValueProvider<String>(textField.textProperty())) //
+                .read(new ObservableValueProvider<String>(nameTextField.textProperty())) //
                 .check(new StringNotEmptyRule()) //
-                .handleWith(nameResultCollector); //
+                .handleWith(nameResultCollector) //
+                .handleWith(new IconResultHandler(nameTextField));
 
         // Install validation on "I agree" checkbox
         BooleanResultCollector agreeResultCollector = new BooleanResultCollector();
