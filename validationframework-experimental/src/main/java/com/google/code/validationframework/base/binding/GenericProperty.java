@@ -23,20 +23,45 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.binding;
+package com.google.code.validationframework.base.binding;
 
-public class BindableCharacter extends Bindable<Character> {
+import com.google.code.validationframework.base.utils.ValueUtils;
+
+public class GenericProperty<T> extends AbstractReadableProperty<T> implements WritableProperty<T> {
 
     /**
      * Generated serial UID.
      */
-    private static final long serialVersionUID = -8348746444021071503L;
+    private static final long serialVersionUID = 6820249070710960455L;
 
-    public BindableCharacter() {
-        super();
+    private T value = null;
+
+    private boolean settingValue = false;
+
+    public GenericProperty() {
+        this(null);
     }
 
-    public BindableCharacter(Character value) {
-        super(value);
+    public GenericProperty(T value) {
+        this.value = value;
+    }
+
+    @Override
+    public T getValue() {
+        return value;
+    }
+
+    @Override
+    public void setValue(T value) {
+        if (!settingValue) {
+            settingValue = true;
+
+            if (!ValueUtils.areEqual(this.value, value)) {
+                this.value = value;
+                notifySlaves();
+            }
+
+            settingValue = false;
+        }
     }
 }

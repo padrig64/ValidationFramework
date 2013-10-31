@@ -23,7 +23,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.binding;
+package com.google.code.validationframework.base.binding;
 
 import com.google.code.validationframework.base.transform.CastTransformer;
 import com.google.code.validationframework.base.transform.Transformer;
@@ -37,11 +37,11 @@ public final class Binder {
 
     public static class SingleMasterContext<MO, SI> {
 
-        private final Master<MO> master;
+        private final ReadableProperty<MO> master;
 
         private final List<Transformer> transformers = new ArrayList<Transformer>();
 
-        public SingleMasterContext(Master<MO> master, Collection<Transformer> transformers) {
+        public SingleMasterContext(ReadableProperty<MO> master, Collection<Transformer> transformers) {
             this.master = master;
             if (transformers != null) {
                 this.transformers.addAll(transformers);
@@ -53,7 +53,7 @@ public final class Binder {
             return new SingleMasterContext<MO, TSI>(master, transformers);
         }
 
-        public void to(Slave<SI> slave) {
+        public void to(WritableProperty<SI> slave) {
             // Connect master -> proxy -> slave
             SingleMasterProxy<MO, SI> proxy = new SingleMasterProxy<MO, SI>(transformers);
             master.addSlave(proxy);
@@ -63,11 +63,11 @@ public final class Binder {
             proxy.setValue(master.getValue());
         }
 
-        public void to(Collection<Slave<SI>> slaves) {
+        public void to(Collection<WritableProperty<SI>> slaves) {
             // Connect master -> proxy -> slaves
             SingleMasterProxy<MO, SI> proxy = new SingleMasterProxy<MO, SI>(transformers);
             master.addSlave(proxy);
-            for (Slave<SI> slave : slaves) {
+            for (WritableProperty<SI> slave : slaves) {
                 proxy.addSlave(slave);
             }
 
@@ -75,12 +75,12 @@ public final class Binder {
             proxy.setValue(master.getValue());
         }
 
-        public void to(Slave<SI>... slaves) {
+        public void to(WritableProperty<SI>... slaves) {
             to(Arrays.asList(slaves));
         }
     }
 
-    private static class SingleMasterProxy<MO, SI> implements Slave<MO>, Master<SI> {
+    private static class SingleMasterProxy<MO, SI> implements WritableProperty<MO>, ReadableProperty<SI> {
 
         /**
          * Generated serial UID.
@@ -91,7 +91,7 @@ public final class Binder {
 
         private final Transformer<Object, SI> lastTransformer = new CastTransformer<Object, SI>();
 
-        private final List<Slave<SI>> slaves = new ArrayList<Slave<SI>>();
+        private final List<WritableProperty<SI>> slaves = new ArrayList<WritableProperty<SI>>();
 
         private SI value = null;
 
@@ -102,12 +102,12 @@ public final class Binder {
         }
 
         @Override
-        public void addSlave(Slave<SI> slave) {
+        public void addSlave(WritableProperty<SI> slave) {
             slaves.add(slave);
         }
 
         @Override
-        public void removeSlave(Slave<SI> slave) {
+        public void removeSlave(WritableProperty<SI> slave) {
             slaves.remove(slave);
         }
 
@@ -130,7 +130,7 @@ public final class Binder {
         }
 
         private void notifySlaves() {
-            for (Slave<SI> slave : slaves) {
+            for (WritableProperty<SI> slave : slaves) {
                 slave.setValue(value);
             }
         }
@@ -138,11 +138,11 @@ public final class Binder {
 
     public static class MultipleMasterContext<MO, SI> {
 
-        private final Collection<Master<MO>> masters;
+        private final Collection<ReadableProperty<MO>> masters;
 
         private final List<Transformer> transformers = new ArrayList<Transformer>();
 
-        public MultipleMasterContext(Collection<Master<MO>> masters, Collection<Transformer> transformers) {
+        public MultipleMasterContext(Collection<ReadableProperty<MO>> masters, Collection<Transformer> transformers) {
             this.masters = masters;
             if (transformers != null) {
                 this.transformers.addAll(transformers);
@@ -154,10 +154,10 @@ public final class Binder {
             return new MultipleMasterContext<MO, TSI>(masters, transformers);
         }
 
-        public void to(Slave<SI> slave) {
+        public void to(WritableProperty<SI> slave) {
             // Connect masters -> proxy -> slave
             MultipleMasterProxy<MO, SI> proxy = new MultipleMasterProxy<MO, SI>(masters, transformers);
-            for (Master<MO> master : masters) {
+            for (ReadableProperty<MO> master : masters) {
                 master.addSlave(proxy);
             }
             proxy.addSlave(slave);
@@ -166,13 +166,13 @@ public final class Binder {
             proxy.setValue(null);
         }
 
-        public void to(Collection<Slave<SI>> slaves) {
+        public void to(Collection<WritableProperty<SI>> slaves) {
             // Connect masters -> proxy -> slaves
             MultipleMasterProxy<MO, SI> proxy = new MultipleMasterProxy<MO, SI>(masters, transformers);
-            for (Master<MO> master : masters) {
+            for (ReadableProperty<MO> master : masters) {
                 master.addSlave(proxy);
             }
-            for (Slave<SI> slave : slaves) {
+            for (WritableProperty<SI> slave : slaves) {
                 proxy.addSlave(slave);
             }
 
@@ -180,29 +180,29 @@ public final class Binder {
             proxy.setValue(null);
         }
 
-        public void to(Slave<SI>... slaves) {
+        public void to(WritableProperty<SI>... slaves) {
             to(Arrays.asList(slaves));
         }
     }
 
-    private static class MultipleMasterProxy<MO, SI> implements Slave<MO>, Master<SI> {
+    private static class MultipleMasterProxy<MO, SI> implements WritableProperty<MO>, ReadableProperty<SI> {
 
         /**
          * Generated serial UID.
          */
         private static final long serialVersionUID = 5765153977289533185L;
 
-        private final List<Master<MO>> masters = new ArrayList<Master<MO>>();
+        private final List<ReadableProperty<MO>> masters = new ArrayList<ReadableProperty<MO>>();
 
         private final List<Transformer> transformers = new ArrayList<Transformer>();
 
         private final Transformer<Object, SI> lastTransformer = new CastTransformer<Object, SI>();
 
-        private final List<Slave<SI>> slaves = new ArrayList<Slave<SI>>();
+        private final List<WritableProperty<SI>> slaves = new ArrayList<WritableProperty<SI>>();
 
         private SI value = null;
 
-        public MultipleMasterProxy(Collection<Master<MO>> masters, Collection<Transformer> transformers) {
+        public MultipleMasterProxy(Collection<ReadableProperty<MO>> masters, Collection<Transformer> transformers) {
             if (masters != null) {
                 this.masters.addAll(masters);
             }
@@ -212,12 +212,12 @@ public final class Binder {
         }
 
         @Override
-        public void addSlave(Slave<SI> slave) {
+        public void addSlave(WritableProperty<SI> slave) {
             slaves.add(slave);
         }
 
         @Override
-        public void removeSlave(Slave<SI> slave) {
+        public void removeSlave(WritableProperty<SI> slave) {
             slaves.remove(slave);
         }
 
@@ -230,7 +230,7 @@ public final class Binder {
         public void setValue(MO value) {
             // Get value from all masters
             List<MO> values = new ArrayList<MO>();
-            for (Master<MO> master : masters) {
+            for (ReadableProperty<MO> master : masters) {
                 values.add(master.getValue());
             }
 
@@ -246,7 +246,7 @@ public final class Binder {
         }
 
         private void notifySlaves() {
-            for (Slave<SI> slave : slaves) {
+            for (WritableProperty<SI> slave : slaves) {
                 slave.setValue(value);
             }
         }
@@ -259,15 +259,15 @@ public final class Binder {
         // Nothing to be done
     }
 
-    public static <MO> SingleMasterContext<MO, MO> bind(Master<MO> master) {
+    public static <MO> SingleMasterContext<MO, MO> bind(ReadableProperty<MO> master) {
         return new SingleMasterContext<MO, MO>(master, null);
     }
 
-    public static <MO> MultipleMasterContext<MO, Collection<MO>> bind(Collection<Master<MO>> masters) {
+    public static <MO> MultipleMasterContext<MO, Collection<MO>> bind(Collection<ReadableProperty<MO>> masters) {
         return new MultipleMasterContext<MO, Collection<MO>>(masters, null);
     }
 
-    public static <MO> MultipleMasterContext<MO, Collection<MO>> bind(Master<MO>... masters) {
+    public static <MO> MultipleMasterContext<MO, Collection<MO>> bind(ReadableProperty<MO>... masters) {
         return new MultipleMasterContext<MO, Collection<MO>>(Arrays.asList(masters), null);
     }
 }

@@ -23,62 +23,20 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.binding;
+package com.google.code.validationframework.base.binding;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class Bindable<T> implements Master<T>, Slave<T> {
+public class NumberProperty extends GenericProperty<Number> {
 
     /**
      * Generated serial UID.
      */
-    private static final long serialVersionUID = 6820249070710960455L;
+    private static final long serialVersionUID = 8984427408062605446L;
 
-    private final List<Slave<T>> slaves = new ArrayList<Slave<T>>();
-
-    private T value = null;
-
-    private boolean settingValue = false;
-
-    public Bindable() {
-        this(null);
+    public NumberProperty() {
+        super();
     }
 
-    public Bindable(T value) {
-        this.value = value;
-    }
-
-    @Override
-    public void addSlave(Slave<T> slave) {
-        slaves.add(slave);
-    }
-
-    @Override
-    public void removeSlave(Slave<T> slave) {
-        slaves.remove(slave);
-    }
-
-    @Override
-    public T getValue() {
-        return value;
-    }
-
-    @Override
-    public void setValue(T value) {
-        if (!settingValue) {
-            settingValue = true;
-
-            this.value = value;
-            notifySlaves();
-
-            settingValue = false;
-        }
-    }
-
-    protected void notifySlaves() {
-        for (Slave<T> slave : slaves) {
-            slave.setValue(value);
-        }
+    public NumberProperty(Number value) {
+        super(value);
     }
 }

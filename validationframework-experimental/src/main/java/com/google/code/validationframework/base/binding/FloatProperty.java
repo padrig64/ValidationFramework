@@ -23,15 +23,20 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.binding;
+package com.google.code.validationframework.base.binding;
 
-import java.io.Serializable;
+public class FloatProperty extends GenericProperty<Float> {
 
-public interface Master<T> extends Serializable {
+    /**
+     * Generated serial UID.
+     */
+    private static final long serialVersionUID = -1512193438429616526L;
 
-    void addSlave(Slave<T> slave);
+    public FloatProperty() {
+        super();
+    }
 
-    void removeSlave(Slave<T> slave);
-
-    T getValue();
+    public FloatProperty(Float value) {
+        super(value);
+    }
 }

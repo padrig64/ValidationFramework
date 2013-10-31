@@ -23,20 +23,20 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.binding;
+package com.google.code.validationframework.base.binding;
 
-public class BindableObject extends Bindable<Object> {
+public class ByteProperty extends GenericProperty<Byte> {
 
     /**
      * Generated serial UID.
      */
-    private static final long serialVersionUID = 2116166830289933631L;
+    private static final long serialVersionUID = -7037496289623988380L;
 
-    public BindableObject() {
+    public ByteProperty() {
         super();
     }
 
-    public BindableObject(Object value) {
+    public ByteProperty(Byte value) {
         super(value);
     }
 }

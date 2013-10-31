@@ -23,20 +23,20 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.binding;
+package com.google.code.validationframework.base.binding;
 
-public class BindableFloat extends Bindable<Float> {
+public class ShortProperty extends GenericProperty<Short> {
 
     /**
      * Generated serial UID.
      */
-    private static final long serialVersionUID = -1512193438429616526L;
+    private static final long serialVersionUID = -6829461722329907249L;
 
-    public BindableFloat() {
+    public ShortProperty() {
         super();
     }
 
-    public BindableFloat(Float value) {
+    public ShortProperty(Short value) {
         super(value);
     }
 }

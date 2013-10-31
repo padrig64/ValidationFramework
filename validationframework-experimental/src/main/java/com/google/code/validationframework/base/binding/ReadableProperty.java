@@ -23,20 +23,15 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.binding;
+package com.google.code.validationframework.base.binding;
 
-public class BindableBoolean extends Bindable<Boolean> {
+import java.io.Serializable;
 
-    /**
-     * Generated serial UID.
-     */
-    private static final long serialVersionUID = -2018001255493953897L;
+public interface ReadableProperty<T> extends Serializable {
 
-    public BindableBoolean() {
-        super();
-    }
+    void addSlave(WritableProperty<T> slave);
 
-    public BindableBoolean(Boolean value) {
-        super(value);
-    }
+    void removeSlave(WritableProperty<T> slave);
+
+    T getValue();
 }

@@ -23,20 +23,35 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.binding;
+package com.google.code.validationframework.base.binding;
 
-public class BindableString extends Bindable<String> {
+import java.util.ArrayList;
+import java.util.List;
+
+public abstract class AbstractReadableProperty<T> implements ReadableProperty<T> {
 
     /**
      * Generated serial UID.
      */
-    private static final long serialVersionUID = 2406961827301975199L;
+    private static final long serialVersionUID = -72144362842650597L;
 
-    public BindableString() {
-        super();
+    private final List<WritableProperty<T>> slaves = new ArrayList<WritableProperty<T>>();
+
+    @Override
+    public void addSlave(WritableProperty<T> slave) {
+        slaves.add(slave);
+        slave.setValue(getValue());
     }
 
-    public BindableString(String value) {
-        super(value);
+    @Override
+    public void removeSlave(WritableProperty<T> slave) {
+        slaves.remove(slave);
+    }
+
+    protected void notifySlaves() {
+        T value = getValue();
+        for (WritableProperty<T> slave : slaves) {
+            slave.setValue(value);
+        }
     }
 }

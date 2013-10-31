@@ -23,20 +23,11 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.binding;
+package com.google.code.validationframework.base.binding;
 
-public class BindableByte extends Bindable<Byte> {
+import java.io.Serializable;
 
-    /**
-     * Generated serial UID.
-     */
-    private static final long serialVersionUID = -7037496289623988380L;
+public interface WritableProperty<T> extends Serializable {
 
-    public BindableByte() {
-        super();
-    }
-
-    public BindableByte(Byte value) {
-        super(value);
-    }
+    void setValue(T value);
 }

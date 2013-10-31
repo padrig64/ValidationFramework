@@ -23,11 +23,20 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.binding;
+package com.google.code.validationframework.base.binding;
 
-import java.io.Serializable;
+public class DoubleProperty extends GenericProperty<Double> {
 
-public interface Slave<SI> extends Serializable {
+    /**
+     * Generated serial UID.
+     */
+    private static final long serialVersionUID = 8642981660808233279L;
 
-    void setValue(SI value);
+    public DoubleProperty() {
+        super();
+    }
+
+    public DoubleProperty(Double value) {
+        super(value);
+    }
 }

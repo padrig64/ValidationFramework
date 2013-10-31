@@ -23,21 +23,21 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.binding;
+package com.google.code.validationframework.base.binding;
 
 import com.google.code.validationframework.base.transform.AndBooleanAggregator;
 import com.google.code.validationframework.base.transform.ToStringTransformer;
 import org.junit.Test;
 
-import static com.google.code.validationframework.binding.Binder.bind;
+import static com.google.code.validationframework.base.binding.Binder.bind;
 import static org.junit.Assert.assertEquals;
 
 public class BinderTest {
 
     @Test
     public void testMasterToSlave() {
-        Bindable<Integer> master = new Bindable<Integer>(5);
-        Bindable<Integer> slave = new Bindable<Integer>(0);
+        GenericProperty<Integer> master = new GenericProperty<Integer>(5);
+        GenericProperty<Integer> slave = new GenericProperty<Integer>(0);
         bind(master).to(slave);
 
         assertEquals(Integer.valueOf(5), master.getValue());
@@ -51,8 +51,8 @@ public class BinderTest {
 
     @Test
     public void testMasterToSlaveWithTransformation() {
-        Bindable<Integer> master = new Bindable<Integer>(5);
-        Bindable<String> slave = new Bindable<String>("0");
+        GenericProperty<Integer> master = new GenericProperty<Integer>(5);
+        GenericProperty<String> slave = new GenericProperty<String>("0");
         bind(master).transform(new ToStringTransformer<Integer>()).to(slave);
 
         assertEquals(Integer.valueOf(5), master.getValue());
@@ -66,10 +66,10 @@ public class BinderTest {
 
     @Test
     public void testMasterToSlaveWithAggregation() {
-        BindableBoolean master1 = new BindableBoolean(true);
-        BindableBoolean master2 = new BindableBoolean(false);
-        BindableBoolean master3 = new BindableBoolean(false);
-        BindableBoolean slave = new BindableBoolean();
+        BooleanProperty master1 = new BooleanProperty(true);
+        BooleanProperty master2 = new BooleanProperty(false);
+        BooleanProperty master3 = new BooleanProperty(false);
+        BooleanProperty slave = new BooleanProperty();
         bind(master1, master2, master3).transform(new AndBooleanAggregator()).to(slave);
 
         assertEquals(false, slave.getValue());
@@ -77,8 +77,8 @@ public class BinderTest {
 
     @Test
     public void testMasterSlaveLoop() {
-        BindableInteger first = new BindableInteger(5);
-        BindableInteger second = new BindableInteger(4);
+        IntegerProperty first = new IntegerProperty(5);
+        IntegerProperty second = new IntegerProperty(4);
 
         // The following should not result in an StackOverflowError
         bind(first).to(second);
