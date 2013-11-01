@@ -27,7 +27,6 @@ package com.google.code.validationframework.swing.binding;
 
 import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.base.binding.AbstractReadableProperty;
-import com.google.code.validationframework.base.binding.ReadableProperty;
 import com.google.code.validationframework.base.utils.ValueUtils;
 
 import java.awt.Component;
@@ -89,7 +88,7 @@ public class ComponentRolloverProperty extends AbstractReadableProperty<Boolean>
     }
 
     /**
-     * @see ReadableProperty#getValue()
+     * @see AbstractReadableProperty#getValue()
      */
     @Override
     public Boolean getValue() {

@@ -27,13 +27,13 @@ package com.google.code.validationframework.swing.binding;
 
 import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.base.binding.AbstractReadableProperty;
-import javafx.beans.value.WritableValue;
+import com.google.code.validationframework.base.binding.WritableProperty;
 
 import java.awt.Component;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-public class ComponentEnabledProperty extends AbstractReadableProperty<Boolean> implements WritableValue<Boolean>,
+public class ComponentEnabledProperty extends AbstractReadableProperty<Boolean> implements WritableProperty<Boolean>,
         Disposable {
 
     private class PropertyChangeAdapter implements PropertyChangeListener {
@@ -64,7 +64,7 @@ public class ComponentEnabledProperty extends AbstractReadableProperty<Boolean> 
     }
 
     /**
-     * @see Disposable#dispose()
+     * @see com.google.code.validationframework.api.common.Disposable#dispose()
      */
     @Override
     public void dispose() {
@@ -80,7 +80,7 @@ public class ComponentEnabledProperty extends AbstractReadableProperty<Boolean> 
     }
 
     /**
-     * @see WritableValue#setValue(Object)
+     * @see WritableProperty#setValue(Object)
      */
     @Override
     public void setValue(Boolean value) {
