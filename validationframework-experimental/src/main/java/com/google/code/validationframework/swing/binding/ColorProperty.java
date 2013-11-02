@@ -23,29 +23,33 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.base.binding;
+package com.google.code.validationframework.swing.binding;
+
+import com.google.code.validationframework.base.binding.SimpleProperty;
+
+import java.awt.Color;
 
 /**
- * Simple property holding a {@link Short} value.
+ * Simple property holding a {@link Color} value.
  */
-public class ShortProperty extends SimpleProperty<Short> {
+public class ColorProperty extends SimpleProperty<Color> {
 
     /**
      * Generated serial UID.
      */
-    private static final long serialVersionUID = -6829461722329907249L;
+    private static final long serialVersionUID = -4469626009648482296L;
 
     /**
      * @see SimpleProperty#SimpleProperty()
      */
-    public ShortProperty() {
+    public ColorProperty() {
         super();
     }
 
     /**
      * @see SimpleProperty#SimpleProperty(Object)
      */
-    public ShortProperty(Short value) {
+    public ColorProperty(Color value) {
         super(value);
     }
 }

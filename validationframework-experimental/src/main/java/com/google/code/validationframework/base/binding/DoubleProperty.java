@@ -25,17 +25,26 @@
 
 package com.google.code.validationframework.base.binding;
 
-public class DoubleProperty extends GenericProperty<Double> {
+/**
+ * Simple property holding a {@link Double} value.
+ */
+public class DoubleProperty extends SimpleProperty<Double> {
 
     /**
      * Generated serial UID.
      */
     private static final long serialVersionUID = 8642981660808233279L;
 
+    /**
+     * @see SimpleProperty#SimpleProperty()
+     */
     public DoubleProperty() {
         super();
     }
 
+    /**
+     * @see SimpleProperty#SimpleProperty(Object)
+     */
     public DoubleProperty(Double value) {
         super(value);
     }

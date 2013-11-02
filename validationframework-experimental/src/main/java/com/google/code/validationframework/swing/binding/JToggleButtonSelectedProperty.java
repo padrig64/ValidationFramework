@@ -27,56 +27,40 @@ package com.google.code.validationframework.swing.binding;
 
 import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.base.binding.AbstractReadableProperty;
-import com.google.code.validationframework.base.utils.ValueUtils;
+import com.google.code.validationframework.base.binding.WritableProperty;
 
-import java.awt.Component;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import javax.swing.JToggleButton;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
-public class ComponentRolloverProperty extends AbstractReadableProperty<Boolean> implements Disposable {
+public class JToggleButtonSelectedProperty extends AbstractReadableProperty<Boolean> implements
+        WritableProperty<Boolean>, Disposable {
 
-    private class RolloverAdapter implements MouseListener {
-
-        @Override
-        public void mouseEntered(MouseEvent e) {
-            setValue(true);
-        }
+    private class PropertyChangeAdapter implements ItemListener {
 
         @Override
-        public void mouseExited(MouseEvent e) {
-            setValue(false);
-        }
-
-        @Override
-        public void mousePressed(MouseEvent e) {
-            // Nothing to be done
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
-            // Nothing to be done
-        }
-
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            // Nothing to be done
+        public void itemStateChanged(ItemEvent e) {
+            setValue(component.isSelected());
         }
     }
 
     /**
      * Generated serial UID.
      */
-    private static final long serialVersionUID = -2940271817151485560L;
+    private static final long serialVersionUID = -313416439956652682L;
 
-    private boolean rollover = false;
+    private final JToggleButton component;
 
-    private final Component component;
+    private final PropertyChangeAdapter propertyChangeAdapter = new PropertyChangeAdapter();
 
-    private final MouseListener rolloverAdapter = new RolloverAdapter();
+    private boolean settingValue = false;
 
-    public ComponentRolloverProperty(Component component) {
+    private boolean value = false;
+
+    public JToggleButtonSelectedProperty(JToggleButton component) {
         this.component = component;
-        this.component.addMouseListener(rolloverAdapter);
+        this.component.addItemListener(propertyChangeAdapter);
+        setValue(component.isSelected());
     }
 
     /**
@@ -84,7 +68,7 @@ public class ComponentRolloverProperty extends AbstractReadableProperty<Boolean>
      */
     @Override
     public void dispose() {
-        component.removeMouseListener(rolloverAdapter);
+        component.removeItemListener(propertyChangeAdapter);
     }
 
     /**
@@ -92,13 +76,28 @@ public class ComponentRolloverProperty extends AbstractReadableProperty<Boolean>
      */
     @Override
     public Boolean getValue() {
-        return rollover;
+        return value;
     }
 
-    private void setValue(boolean rollover) {
-        if (!ValueUtils.areEqual(this.rollover, rollover)) {
-            this.rollover = rollover;
-            updateSlaves();
+    /**
+     * @see WritableProperty#setValue(Object)
+     */
+    @Override
+    public void setValue(Boolean value) {
+        if (!settingValue) {
+            settingValue = true;
+
+            boolean normalizedValue = false;
+            if (value != null) {
+                normalizedValue = value;
+            }
+            if (this.value != normalizedValue) {
+                this.value = normalizedValue;
+                component.setSelected(normalizedValue);
+                updateSlaves();
+            }
+
+            settingValue = false;
         }
     }
 }

@@ -30,36 +30,21 @@ import com.google.code.validationframework.base.binding.AbstractReadableProperty
 import com.google.code.validationframework.base.utils.ValueUtils;
 
 import java.awt.Component;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
-public class ComponentRolloverProperty extends AbstractReadableProperty<Boolean> implements Disposable {
+public class ComponentFocusedProperty extends AbstractReadableProperty<Boolean> implements Disposable {
 
-    private class RolloverAdapter implements MouseListener {
+    private class FocusAdapter implements FocusListener {
 
         @Override
-        public void mouseEntered(MouseEvent e) {
+        public void focusGained(FocusEvent e) {
             setValue(true);
         }
 
         @Override
-        public void mouseExited(MouseEvent e) {
+        public void focusLost(FocusEvent e) {
             setValue(false);
-        }
-
-        @Override
-        public void mousePressed(MouseEvent e) {
-            // Nothing to be done
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
-            // Nothing to be done
-        }
-
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            // Nothing to be done
         }
     }
 
@@ -68,15 +53,15 @@ public class ComponentRolloverProperty extends AbstractReadableProperty<Boolean>
      */
     private static final long serialVersionUID = -2940271817151485560L;
 
-    private boolean rollover = false;
+    private boolean focused = false;
 
     private final Component component;
 
-    private final MouseListener rolloverAdapter = new RolloverAdapter();
+    private final FocusListener focusAdapter = new FocusAdapter();
 
-    public ComponentRolloverProperty(Component component) {
+    public ComponentFocusedProperty(Component component) {
         this.component = component;
-        this.component.addMouseListener(rolloverAdapter);
+        this.component.addFocusListener(focusAdapter);
     }
 
     /**
@@ -84,7 +69,7 @@ public class ComponentRolloverProperty extends AbstractReadableProperty<Boolean>
      */
     @Override
     public void dispose() {
-        component.removeMouseListener(rolloverAdapter);
+        component.removeFocusListener(focusAdapter);
     }
 
     /**
@@ -92,12 +77,12 @@ public class ComponentRolloverProperty extends AbstractReadableProperty<Boolean>
      */
     @Override
     public Boolean getValue() {
-        return rollover;
+        return focused;
     }
 
-    private void setValue(boolean rollover) {
-        if (!ValueUtils.areEqual(this.rollover, rollover)) {
-            this.rollover = rollover;
+    private void setValue(boolean focused) {
+        if (!ValueUtils.areEqual(this.focused, focused)) {
+            this.focused = focused;
             updateSlaves();
         }
     }

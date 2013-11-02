@@ -25,11 +25,8 @@
 
 package com.google.code.validationframework.javafx.decoration;
 
-import javafx.geometry.Dimension2D;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
-
-import java.awt.Point;
 
 /**
  * Pair of anchors.
@@ -105,19 +102,20 @@ public class AnchorLink {
         this.slaveAnchor = slaveAnchor;
     }
 
-//    /**
-//     * Computes the location of the specified node that is slaved to the specified master node using this anchor link.
-//     *
-//     * @param masterComponent Master node to which the other node is slaved.
-//     * @param slaveComponent  Slave node that is slaved to the master node.
-//     *
-//     * @return Location where the slave node should be.
-//     */
-//    public Point getRelativeSlaveLocation(Node masterComponent, Node slaveComponent) {
-//        return getRelativeSlaveLocation(masterComponent.property, masterComponent.getHeight(), slaveComponent.
-//        (), slaveComponent.getHeight());
-//    }
-//
+    /**
+     * Computes the location of the specified node that is slaved to the specified master node using this anchor link.
+     *
+     * @param masterComponent Master node to which the other node is slaved.
+     * @param slaveComponent  Slave node that is slaved to the master node.
+     *
+     * @return Location where the slave node should be.
+     */
+    public Point2D getRelativeSlaveLocation(Node masterComponent, Node slaveComponent) {
+        return getRelativeSlaveLocation(masterComponent.getBoundsInParent().getWidth(),
+                masterComponent.getBoundsInParent().getHeight(), slaveComponent.getBoundsInParent().getWidth(),
+                slaveComponent.getBoundsInParent().getHeight());
+    }
+
 //    /**
 //     * Computes the location of the slave node (whose size is specified) that is slaved to the master node (whose size
 //     * is specified) using this anchor link.

@@ -23,45 +23,33 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.base.binding;
+package com.google.code.validationframework.swing.binding;
 
-import com.google.code.validationframework.base.utils.ValueUtils;
+import com.google.code.validationframework.base.binding.SimpleProperty;
 
-public class GenericProperty<T> extends AbstractReadableProperty<T> implements WritableProperty<T> {
+import java.awt.Font;
+
+/**
+ * Simple property holding a {@link Font} value.
+ */
+public class FontProperty extends SimpleProperty<Font> {
 
     /**
      * Generated serial UID.
      */
-    private static final long serialVersionUID = 6820249070710960455L;
+    private static final long serialVersionUID = 6275942101731034614L;
 
-    private T value = null;
-
-    private boolean settingValue = false;
-
-    public GenericProperty() {
-        this(null);
+    /**
+     * @see SimpleProperty#SimpleProperty()
+     */
+    public FontProperty() {
+        super();
     }
 
-    public GenericProperty(T value) {
-        this.value = value;
-    }
-
-    @Override
-    public T getValue() {
-        return value;
-    }
-
-    @Override
-    public void setValue(T value) {
-        if (!settingValue) {
-            settingValue = true;
-
-            if (!ValueUtils.areEqual(this.value, value)) {
-                this.value = value;
-                notifySlaves();
-            }
-
-            settingValue = false;
-        }
+    /**
+     * @see SimpleProperty#SimpleProperty(Object)
+     */
+    public FontProperty(Font value) {
+        super(value);
     }
 }

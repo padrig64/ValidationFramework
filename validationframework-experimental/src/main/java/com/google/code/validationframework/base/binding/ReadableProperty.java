@@ -27,11 +27,42 @@ package com.google.code.validationframework.base.binding;
 
 import java.io.Serializable;
 
+/**
+ * Interface to be implemented by readable property whose value can be gotten by the programmer and which can be used to
+ * slave writable properties.
+ * <p/>
+ * If you are using JavaFX, you should better use JavaFX's property binding mechanism. The binding mechanism provided by
+ * the ValidationFramework is mostly meant for Swing and other frameworks that can benefit from it. JavaFX has a much
+ * more furnished API to achieve similar goals.
+ *
+ * @param <T> Type of property value
+ *
+ * @see WritableProperty
+ */
 public interface ReadableProperty<T> extends Serializable {
 
+    /**
+     * Adds a {@link WritableProperty} as a slave.
+     * <p/>
+     * Anytime readable property value changes, the slaved {@link WritableProperty}s will also be set.
+     *
+     * @param slave {@link WritableProperty} to be slaved.
+     */
     void addSlave(WritableProperty<T> slave);
 
+    /**
+     * Removes the {@link WritableProperty}.
+     *
+     * @param slave {@link WritableProperty} that should no longer be slaved.
+     */
     void removeSlave(WritableProperty<T> slave);
 
+    /**
+     * Gets the value of the property.
+     * <p/>
+     * This method can be called by the programmer or a {@link WritableProperty} that is bound to it.
+     *
+     * @return Property value.
+     */
     T getValue();
 }

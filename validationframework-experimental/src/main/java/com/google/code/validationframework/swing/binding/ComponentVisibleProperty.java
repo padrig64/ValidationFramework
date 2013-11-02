@@ -94,7 +94,7 @@ public class ComponentVisibleProperty extends AbstractReadableProperty<Boolean> 
             if (this.value != normalizedValue) {
                 this.value = normalizedValue;
                 component.setVisible(normalizedValue);
-                notifySlaves();
+                updateSlaves();
             }
 
             settingValue = false;

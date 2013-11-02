@@ -48,11 +48,20 @@ public class IconResultHandler implements ResultHandler<Boolean> {
         }
 
         public DecorationPane(Node wrappedNode) {
-            this.wrappedNode = wrappedNode;
+            setWrappedNode(wrappedNode);
+        }
 
+        public Node getWrappedNode() {
+            return wrappedNode;
+        }
+
+        public void setWrappedNode(Node wrappedNode) {
+            this.wrappedNode = wrappedNode;
             if (wrappedNode != null) {
                 getChildren().add(wrappedNode);
             }
+
+            requestLayout();
         }
 
         @Override
@@ -139,8 +148,8 @@ public class IconResultHandler implements ResultHandler<Boolean> {
                     bounds = ((Decoration) decorationNode).getDecorated().localToScene(bounds);
                     bounds = decorationNode.getParent().sceneToLocal(bounds);
 
-                    decorationNode.relocate(bounds.getMinX() - decorationNode.getBoundsInLocal().getWidth() / 2 +2,
-                            bounds.getMaxY() - decorationNode.getBoundsInLocal().getWidth() / 2-2);
+                    decorationNode.relocate(bounds.getMinX() - decorationNode.getBoundsInLocal().getWidth() / 2 + 2,
+                            bounds.getMaxY() - decorationNode.getBoundsInLocal().getWidth() / 2 - 2);
                 }
             }
         }
@@ -149,6 +158,8 @@ public class IconResultHandler implements ResultHandler<Boolean> {
     private static class DecorationPaneInstaller implements ChangeListener<Scene>, Runnable {
 
         private final Decoration decoration;
+
+        private final DecorationPane decorationPane = new DecorationPane();
 
         public DecorationPaneInstaller(Decoration decoration) {
             this.decoration = decoration;
@@ -161,6 +172,13 @@ public class IconResultHandler implements ResultHandler<Boolean> {
 
         @Override
         public void run() {
+            // Uninstall decoration pane if needed
+            Scene oldScene = decorationPane.getScene();
+            if (oldScene != null) {
+//                oldScene.setRoot(decorationPane.getWrappedNode());
+                // TODO
+            }
+
             if (decoration.getDecorated() != null) {
                 Scene scene = decoration.getDecorated().getScene();
                 if (scene != null) {

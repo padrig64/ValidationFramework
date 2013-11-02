@@ -25,17 +25,26 @@
 
 package com.google.code.validationframework.base.binding;
 
-public class BooleanProperty extends GenericProperty<Boolean> {
+/**
+ * Simple property holding a {@link Boolean} value.
+ */
+public class BooleanProperty extends SimpleProperty<Boolean> {
 
     /**
      * Generated serial UID.
      */
     private static final long serialVersionUID = -2018001255493953897L;
 
+    /**
+     * @see SimpleProperty#SimpleProperty()
+     */
     public BooleanProperty() {
         super();
     }
 
+    /**
+     * @see SimpleProperty#SimpleProperty(Object)
+     */
     public BooleanProperty(Boolean value) {
         super(value);
     }

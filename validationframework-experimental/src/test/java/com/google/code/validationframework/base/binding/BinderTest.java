@@ -36,8 +36,8 @@ public class BinderTest {
 
     @Test
     public void testMasterToSlave() {
-        GenericProperty<Integer> master = new GenericProperty<Integer>(5);
-        GenericProperty<Integer> slave = new GenericProperty<Integer>(0);
+        SimpleProperty<Integer> master = new SimpleProperty<Integer>(5);
+        SimpleProperty<Integer> slave = new SimpleProperty<Integer>(0);
         bind(master).to(slave);
 
         assertEquals(Integer.valueOf(5), master.getValue());
@@ -51,8 +51,8 @@ public class BinderTest {
 
     @Test
     public void testMasterToSlaveWithTransformation() {
-        GenericProperty<Integer> master = new GenericProperty<Integer>(5);
-        GenericProperty<String> slave = new GenericProperty<String>("0");
+        SimpleProperty<Integer> master = new SimpleProperty<Integer>(5);
+        SimpleProperty<String> slave = new SimpleProperty<String>("0");
         bind(master).transform(new ToStringTransformer<Integer>()).to(slave);
 
         assertEquals(Integer.valueOf(5), master.getValue());

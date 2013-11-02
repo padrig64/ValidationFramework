@@ -25,17 +25,26 @@
 
 package com.google.code.validationframework.base.binding;
 
-public class StringProperty extends GenericProperty<String> {
+/**
+ * Simple property holding a {@link String} value.
+ */
+public class StringProperty extends SimpleProperty<String> {
 
     /**
      * Generated serial UID.
      */
     private static final long serialVersionUID = 2406961827301975199L;
 
+    /**
+     * @see SimpleProperty#SimpleProperty()
+     */
     public StringProperty() {
         super();
     }
 
+    /**
+     * @see SimpleProperty#SimpleProperty(Object)
+     */
     public StringProperty(String value) {
         super(value);
     }

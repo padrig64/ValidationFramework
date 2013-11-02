@@ -25,17 +25,26 @@
 
 package com.google.code.validationframework.base.binding;
 
-public class FloatProperty extends GenericProperty<Float> {
+/**
+ * Simple property holding a {@link Float} value.
+ */
+public class FloatProperty extends SimpleProperty<Float> {
 
     /**
      * Generated serial UID.
      */
     private static final long serialVersionUID = -1512193438429616526L;
 
+    /**
+     * @see SimpleProperty#SimpleProperty()
+     */
     public FloatProperty() {
         super();
     }
 
+    /**
+     * @see SimpleProperty#SimpleProperty(Object)
+     */
     public FloatProperty(Float value) {
         super(value);
     }

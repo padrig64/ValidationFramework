@@ -23,29 +23,37 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.base.binding;
+package com.google.code.validationframework.base.trigger;
 
-/**
- * Simple property holding a {@link Short} value.
- */
-public class ShortProperty extends SimpleProperty<Short> {
+import com.google.code.validationframework.base.binding.ReadableProperty;
+import com.google.code.validationframework.base.binding.WritableProperty;
 
-    /**
-     * Generated serial UID.
-     */
-    private static final long serialVersionUID = -6829461722329907249L;
+public class ReadablePropertyTrigger extends AbstractTrigger {
 
-    /**
-     * @see SimpleProperty#SimpleProperty()
-     */
-    public ShortProperty() {
-        super();
+    private class PropertyAdapter<T> implements WritableProperty<T> {
+
+        /**
+         * Generated serial UID.
+         */
+        private static final long serialVersionUID = -6569739055085972530L;
+
+        @Override
+        public void setValue(T value) {
+        }
     }
 
-    /**
-     * @see SimpleProperty#SimpleProperty(Object)
-     */
-    public ShortProperty(Short value) {
-        super(value);
+    private final ReadableProperty<Object> property;
+
+    private final PropertyAdapter<Object> propertyAdapter = new PropertyAdapter<Object>();
+
+    public ReadablePropertyTrigger(ReadableProperty<Object> property) {
+        this.property = property;
+        this.property.addSlave(propertyAdapter);
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        property.removeSlave(propertyAdapter);
     }
 }

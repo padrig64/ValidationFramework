@@ -25,17 +25,26 @@
 
 package com.google.code.validationframework.base.binding;
 
-public class ByteProperty extends GenericProperty<Byte> {
+/**
+ * Simple property holding a {@link Byte} value.
+ */
+public class ByteProperty extends SimpleProperty<Byte> {
 
     /**
      * Generated serial UID.
      */
     private static final long serialVersionUID = -7037496289623988380L;
 
+    /**
+     * @see SimpleProperty#SimpleProperty()
+     */
     public ByteProperty() {
         super();
     }
 
+    /**
+     * @see SimpleProperty#SimpleProperty(Object)
+     */
     public ByteProperty(Byte value) {
         super(value);
     }

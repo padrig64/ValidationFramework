@@ -25,17 +25,26 @@
 
 package com.google.code.validationframework.base.binding;
 
-public class NumberProperty extends GenericProperty<Number> {
+/**
+ * Simple property holding a {@link Number} value.
+ */
+public class NumberProperty extends SimpleProperty<Number> {
 
     /**
      * Generated serial UID.
      */
     private static final long serialVersionUID = 8984427408062605446L;
 
+    /**
+     * @see SimpleProperty#SimpleProperty()
+     */
     public NumberProperty() {
         super();
     }
 
+    /**
+     * @see SimpleProperty#SimpleProperty(Object)
+     */
     public NumberProperty(Number value) {
         super(value);
     }

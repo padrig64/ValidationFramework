@@ -41,7 +41,7 @@ public class InvokeLater<T> extends AbstractReadableProperty<T> implements Writa
 
         @Override
         public void run() {
-            notifySlaves();
+            updateSlaves();
         }
     }
 

@@ -25,57 +25,73 @@
 
 package com.google.code.validationframework.base.binding;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.google.code.validationframework.base.utils.ValueUtils;
 
 /**
- * Abstract implementation of a {@link ReadableProperty}.
+ * Simple implementation of a property that is both readable and writable.
  * <p/>
- * Sub-classes should call the {@link #updateSlaves()} method whenever slaved {@link WritableProperty}s need to be
- * updated.
+ * Slaved properties will only be updated if the new value set on this property differs from the previous one.
  * <p/>
- * Note that this class is not thread-safe.
+ * Note that binding can be bi-directional. Infinite recursion will be prevented.
+ * <p/>
+ * Finally note that this class is not thread-safe.
  *
  * @param <T> Type of property value.
  */
-public abstract class AbstractReadableProperty<T> implements ReadableProperty<T> {
+public class SimpleProperty<T> extends AbstractReadableProperty<T> implements WritableProperty<T> {
 
     /**
      * Generated serial UID.
      */
-    private static final long serialVersionUID = -72144362842650597L;
+    private static final long serialVersionUID = 6820249070710960455L;
 
     /**
-     * Writable properties to be updated.
+     * Property value.
      */
-    private final List<WritableProperty<T>> slaves = new ArrayList<WritableProperty<T>>();
+    private T value = null;
 
     /**
-     * @see ReadableProperty#addSlave(WritableProperty)
+     * Flag used to avoid any infinite recursion.
      */
-    @Override
-    public void addSlave(WritableProperty<T> slave) {
-        slaves.add(slave);
-        slave.setValue(getValue());
+    private boolean settingValue = false;
+
+    /**
+     * Default constructor using null as the initial property value.
+     */
+    public SimpleProperty() {
+        this(null);
     }
 
     /**
-     * @see ReadableProperty#removeSlave(WritableProperty)
+     * @param value Initial property value.
      */
-    @Override
-    public void removeSlave(WritableProperty<T> slave) {
-        slaves.remove(slave);
+    public SimpleProperty(T value) {
+        this.value = value;
     }
 
     /**
-     * Updates the slaved writable properties with this property's value.
-     *
-     * @see #getValue()
+     * @see AbstractReadableProperty#getValue()
      */
-    protected void updateSlaves() {
-        T value = getValue();
-        for (WritableProperty<T> slave : slaves) {
-            slave.setValue(value);
+    @Override
+    public T getValue() {
+        return value;
+    }
+
+    /**
+     * @see WritableProperty#setValue(Object)
+     */
+    @Override
+    public void setValue(T value) {
+        if (!settingValue) {
+            settingValue = true;
+
+            // Update slaves only if the new value is different than the previous value
+            if (!ValueUtils.areEqual(this.value, value)) {
+                this.value = value;
+                updateSlaves();
+            }
+
+            settingValue = false;
         }
     }
 }
