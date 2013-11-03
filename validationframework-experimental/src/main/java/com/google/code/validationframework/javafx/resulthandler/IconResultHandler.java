@@ -130,6 +130,7 @@ public class IconResultHandler implements ResultHandler<Boolean> {
             return height;
         }
 
+
         @Override
         protected void layoutChildren() {
             super.layoutChildren();
@@ -137,19 +138,16 @@ public class IconResultHandler implements ResultHandler<Boolean> {
             System.out.println("IconResultHandler$DecorationPane.layoutChildren");
             if (wrappedNode != null) {
                 Bounds localBounds = getBoundsInLocal();
-                System.out.println(" |_ " + localBounds.getWidth());
-                System.out.println(" |_ " + localBounds.getHeight());
                 wrappedNode.resizeRelocate(0, 0, localBounds.getWidth(), localBounds.getHeight());
             }
 
             for (Node decorationNode : getChildren()) {
                 if (decorationNode instanceof Decoration) {
-                    Bounds bounds = ((Decoration) decorationNode).getDecorated().getBoundsInLocal();
-                    bounds = ((Decoration) decorationNode).getDecorated().localToScene(bounds);
-                    bounds = decorationNode.getParent().sceneToLocal(bounds);
-
-                    decorationNode.relocate(bounds.getMinX() - decorationNode.getBoundsInLocal().getWidth() / 2 + 2,
-                            bounds.getMaxY() - decorationNode.getBoundsInLocal().getWidth() / 2 - 2);
+                    Bounds decorationBounds = decorationNode.getLayoutBounds();
+                    Bounds decoratedBounds = ((Decoration) decorationNode).getDecorated().getLayoutBounds();
+                    decoratedBounds = ((Decoration) decorationNode).getDecorated().localToScene(decoratedBounds);
+                    decorationNode.relocate(decoratedBounds.getMinX() - decorationBounds.getWidth() / 2 + 1,
+                            decoratedBounds.getMaxY() - decorationBounds.getHeight() / 2 - 1);
                 }
             }
         }

@@ -64,7 +64,7 @@ public class ComponentEnabledProperty extends AbstractReadableProperty<Boolean> 
     }
 
     /**
-     * @see com.google.code.validationframework.api.common.Disposable#dispose()
+     * @see Disposable#dispose()
      */
     @Override
     public void dispose() {
