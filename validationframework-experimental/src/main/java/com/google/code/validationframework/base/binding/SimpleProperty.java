@@ -87,8 +87,9 @@ public class SimpleProperty<T> extends AbstractReadableProperty<T> implements Wr
 
             // Update slaves only if the new value is different than the previous value
             if (!ValueUtils.areEqual(this.value, value)) {
+                T oldValue = this.value;
                 this.value = value;
-                updateSlaves();
+                notifyListeners(oldValue, value);
             }
 
             settingValue = false;

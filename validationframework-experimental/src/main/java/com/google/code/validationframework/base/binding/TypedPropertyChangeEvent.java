@@ -23,37 +23,42 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.base.trigger;
+package com.google.code.validationframework.base.binding;
 
-import com.google.code.validationframework.base.binding.ReadableProperty;
-import com.google.code.validationframework.base.binding.WritableProperty;
+import java.beans.PropertyChangeEvent;
 
-public class ReadablePropertyTrigger extends AbstractTrigger {
+public class TypedPropertyChangeEvent<S, T> extends PropertyChangeEvent {
 
-    private class PropertyAdapter<T> implements WritableProperty<T> {
+    /**
+     * Generated serial UID.
+     */
+    private static final long serialVersionUID = 7714148045056915812L;
 
-        /**
-         * Generated serial UID.
-         */
-        private static final long serialVersionUID = -6569739055085972530L;
-
-        @Override
-        public void setValue(T value) {
-        }
+    public TypedPropertyChangeEvent(S source, String propertyName, T oldValue, T newValue) {
+        super(source, propertyName, oldValue, newValue);
     }
 
-    private final ReadableProperty<Object> property;
-
-    private final PropertyAdapter<Object> propertyAdapter = new PropertyAdapter<Object>();
-
-    public ReadablePropertyTrigger(ReadableProperty<Object> property) {
-        this.property = property;
-        this.property.addSlave(propertyAdapter);
-    }
-
+    /**
+     * @see PropertyChangeEvent#getSource()
+     */
     @Override
-    public void dispose() {
-        super.dispose();
-        property.removeSlave(propertyAdapter);
+    public S getSource() {
+        return (S) super.getSource();
+    }
+
+    /**
+     * @see PropertyChangeEvent#getOldValue()
+     */
+    @Override
+    public T getOldValue() {
+        return (T) super.getOldValue();
+    }
+
+    /**
+     * @see PropertyChangeEvent#getNewValue()
+     */
+    @Override
+    public T getNewValue() {
+        return (T) super.getNewValue();
     }
 }

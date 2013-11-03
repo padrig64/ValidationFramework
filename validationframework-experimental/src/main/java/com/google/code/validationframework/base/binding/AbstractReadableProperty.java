@@ -31,8 +31,7 @@ import java.util.List;
 /**
  * Abstract implementation of a {@link ReadableProperty}.
  * <p/>
- * Sub-classes should call the {@link #updateSlaves()} method whenever slaved {@link WritableProperty}s need to be
- * updated.
+ * Sub-classes should call the {@link #notifyListeners(Object, Object)} method whenever the property value changes.
  * <p/>
  * Note that this class is not thread-safe.
  *
@@ -48,23 +47,24 @@ public abstract class AbstractReadableProperty<T> implements ReadableProperty<T>
     /**
      * Writable properties to be updated.
      */
-    private final List<WritableProperty<T>> slaves = new ArrayList<WritableProperty<T>>();
+    private final List<ReadablePropertyChangeListener<T>> listeners = new
+            ArrayList<ReadablePropertyChangeListener<T>>();
 
     /**
-     * @see ReadableProperty#addSlave(WritableProperty)
+     * @see ReadableProperty#addChangeListener(ReadablePropertyChangeListener)
      */
     @Override
-    public void addSlave(WritableProperty<T> slave) {
-        slaves.add(slave);
-        slave.setValue(getValue());
+    public void addChangeListener(ReadablePropertyChangeListener<T> listener) {
+        listeners.add(listener);
+        listener.propertyChanged(this, null, getValue());
     }
 
     /**
-     * @see ReadableProperty#removeSlave(WritableProperty)
+     * @see ReadableProperty#removeChangeListener(ReadablePropertyChangeListener)
      */
     @Override
-    public void removeSlave(WritableProperty<T> slave) {
-        slaves.remove(slave);
+    public void removeChangeListener(ReadablePropertyChangeListener<T> listener) {
+        listeners.remove(listener);
     }
 
     /**
@@ -72,10 +72,9 @@ public abstract class AbstractReadableProperty<T> implements ReadableProperty<T>
      *
      * @see #getValue()
      */
-    protected void updateSlaves() {
-        T value = getValue();
-        for (WritableProperty<T> slave : slaves) {
-            slave.setValue(value);
+    protected void notifyListeners(T oldValue, T newValue) {
+        for (ReadablePropertyChangeListener<T> listener : listeners) {
+            listener.propertyChanged(this, oldValue, newValue);
         }
     }
 }

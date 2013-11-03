@@ -92,9 +92,10 @@ public class ComponentEnabledProperty extends AbstractReadableProperty<Boolean> 
                 normalizedValue = value;
             }
             if (this.value != normalizedValue) {
+                Boolean oldValue = this.value;
                 this.value = normalizedValue;
                 component.setEnabled(normalizedValue);
-                updateSlaves();
+                notifyListeners(oldValue, normalizedValue);
             }
 
             settingValue = false;

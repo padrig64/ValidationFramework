@@ -82,8 +82,9 @@ public class ComponentFocusedProperty extends AbstractReadableProperty<Boolean> 
 
     private void setValue(boolean focused) {
         if (!ValueUtils.areEqual(this.focused, focused)) {
+            boolean oldValue = this.focused;
             this.focused = focused;
-            updateSlaves();
+            notifyListeners(oldValue, focused);
         }
     }
 }

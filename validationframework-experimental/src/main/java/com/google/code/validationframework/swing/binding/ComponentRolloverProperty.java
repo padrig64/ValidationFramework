@@ -97,8 +97,9 @@ public class ComponentRolloverProperty extends AbstractReadableProperty<Boolean>
 
     private void setValue(boolean rollover) {
         if (!ValueUtils.areEqual(this.rollover, rollover)) {
+            boolean oldValue = this.rollover;
             this.rollover = rollover;
-            updateSlaves();
+            notifyListeners(oldValue, rollover);
         }
     }
 }

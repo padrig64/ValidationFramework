@@ -66,23 +66,23 @@ public final class Binder {
         public void to(WritableProperty<SI> slave) {
             // Connect master -> proxy -> slave
             SingleMasterProxy<MO, SI> proxy = new SingleMasterProxy<MO, SI>(transformers);
-            master.addSlave(proxy);
+            master.addChangeListener(proxy);
             proxy.addSlave(slave);
 
             // Set initial values in proxy and slave
-            proxy.setValue(master.getValue());
+            proxy.propertyChanged(null, null, master.getValue());
         }
 
         public void to(Collection<WritableProperty<SI>> slaves) {
             // Connect master -> proxy -> slaves
             SingleMasterProxy<MO, SI> proxy = new SingleMasterProxy<MO, SI>(transformers);
-            master.addSlave(proxy);
+            master.addChangeListener(proxy);
             for (WritableProperty<SI> slave : slaves) {
                 proxy.addSlave(slave);
             }
 
             // Set initial values in proxy and slave
-            proxy.setValue(master.getValue());
+            proxy.propertyChanged(null, null, master.getValue());
         }
 
         public void to(WritableProperty<SI>... slaves) {
@@ -90,12 +90,7 @@ public final class Binder {
         }
     }
 
-    private static class SingleMasterProxy<MO, SI> implements WritableProperty<MO>, ReadableProperty<SI> {
-
-        /**
-         * Generated serial UID.
-         */
-        private static final long serialVersionUID = 5765153977289533185L;
+    private static class SingleMasterProxy<MO, SI> implements ReadablePropertyChangeListener<MO> {
 
         private final List<Transformer> transformers = new ArrayList<Transformer>();
 
@@ -103,45 +98,32 @@ public final class Binder {
 
         private final List<WritableProperty<SI>> slaves = new ArrayList<WritableProperty<SI>>();
 
-        private SI value = null;
-
         public SingleMasterProxy(Collection<Transformer> transformers) {
             if (transformers != null) {
                 this.transformers.addAll(transformers);
             }
         }
 
-        @Override
         public void addSlave(WritableProperty<SI> slave) {
             slaves.add(slave);
         }
 
-        @Override
         public void removeSlave(WritableProperty<SI> slave) {
             slaves.remove(slave);
         }
 
         @Override
-        public SI getValue() {
-            return value;
-        }
-
-        @Override
-        public void setValue(MO value) {
+        public void propertyChanged(ReadableProperty<MO> property, MO oldValue, MO newValue) {
             // Transform value
-            Object transformedValue = value;
+            Object transformedValue = newValue;
             for (Transformer transformer : transformers) {
                 transformedValue = transformer.transform(transformedValue);
             }
-            this.value = lastTransformer.transform(transformedValue);
+            SI slaveInputValue = lastTransformer.transform(transformedValue);
 
-            // Notify slaves
-            notifySlaves();
-        }
-
-        private void notifySlaves() {
+            // Update slaves
             for (WritableProperty<SI> slave : slaves) {
-                slave.setValue(value);
+                slave.setValue(slaveInputValue);
             }
         }
     }
@@ -168,26 +150,26 @@ public final class Binder {
             // Connect masters -> proxy -> slave
             MultipleMasterProxy<MO, SI> proxy = new MultipleMasterProxy<MO, SI>(masters, transformers);
             for (ReadableProperty<MO> master : masters) {
-                master.addSlave(proxy);
+                master.addChangeListener(proxy);
             }
             proxy.addSlave(slave);
 
             // Slave initial values in proxy and slave
-            proxy.setValue(null);
+            proxy.propertyChanged(null, null, null);
         }
 
         public void to(Collection<WritableProperty<SI>> slaves) {
             // Connect masters -> proxy -> slaves
             MultipleMasterProxy<MO, SI> proxy = new MultipleMasterProxy<MO, SI>(masters, transformers);
             for (ReadableProperty<MO> master : masters) {
-                master.addSlave(proxy);
+                master.addChangeListener(proxy);
             }
             for (WritableProperty<SI> slave : slaves) {
                 proxy.addSlave(slave);
             }
 
             // Slave initial values in proxy and slave
-            proxy.setValue(null);
+            proxy.propertyChanged(null, null, null);
         }
 
         public void to(WritableProperty<SI>... slaves) {
@@ -195,12 +177,7 @@ public final class Binder {
         }
     }
 
-    private static class MultipleMasterProxy<MO, SI> implements WritableProperty<MO>, ReadableProperty<SI> {
-
-        /**
-         * Generated serial UID.
-         */
-        private static final long serialVersionUID = 5765153977289533185L;
+    private static class MultipleMasterProxy<MO, SI> implements ReadablePropertyChangeListener<MO> {
 
         private final List<ReadableProperty<MO>> masters = new ArrayList<ReadableProperty<MO>>();
 
@@ -209,8 +186,6 @@ public final class Binder {
         private final Transformer<Object, SI> lastTransformer = new CastTransformer<Object, SI>();
 
         private final List<WritableProperty<SI>> slaves = new ArrayList<WritableProperty<SI>>();
-
-        private SI value = null;
 
         public MultipleMasterProxy(Collection<ReadableProperty<MO>> masters, Collection<Transformer> transformers) {
             if (masters != null) {
@@ -221,23 +196,16 @@ public final class Binder {
             }
         }
 
-        @Override
         public void addSlave(WritableProperty<SI> slave) {
             slaves.add(slave);
         }
 
-        @Override
         public void removeSlave(WritableProperty<SI> slave) {
             slaves.remove(slave);
         }
 
         @Override
-        public SI getValue() {
-            return value;
-        }
-
-        @Override
-        public void setValue(MO value) {
+        public void propertyChanged(ReadableProperty<MO> property, MO oldValue, MO newValue) {
             // Get value from all masters
             List<MO> values = new ArrayList<MO>();
             for (ReadableProperty<MO> master : masters) {
@@ -249,15 +217,11 @@ public final class Binder {
             for (Transformer transformer : transformers) {
                 transformedValue = transformer.transform(transformedValue);
             }
-            this.value = lastTransformer.transform(transformedValue);
+            SI slaveInputValue = lastTransformer.transform(transformedValue);
 
             // Notify slaves
-            notifySlaves();
-        }
-
-        private void notifySlaves() {
             for (WritableProperty<SI> slave : slaves) {
-                slave.setValue(value);
+                slave.setValue(slaveInputValue);
             }
         }
     }

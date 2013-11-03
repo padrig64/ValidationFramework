@@ -26,24 +26,31 @@
 package com.google.code.validationframework.swing.binding;
 
 import com.google.code.validationframework.base.binding.AbstractReadableProperty;
+import com.google.code.validationframework.base.binding.ReadablePropertyChangeListener;
 import com.google.code.validationframework.base.binding.WritableProperty;
 
 import javax.swing.SwingUtilities;
 
 public class InvokeLater<T> extends AbstractReadableProperty<T> implements WritableProperty<T> {
 
+    private class Postponer implements Runnable {
+
+        private T oldValue;
+
+        public Postponer(T oldValue) {
+            this.oldValue = oldValue;
+        }
+
+        @Override
+        public void run() {
+            notifyListeners(oldValue, getValue());
+        }
+    }
+
     /**
      * Generated serial UID.
      */
     private static final long serialVersionUID = -5018423028707001078L;
-
-    private class Postponer implements Runnable {
-
-        @Override
-        public void run() {
-            updateSlaves();
-        }
-    }
 
     private T value = null;
 
@@ -55,20 +62,20 @@ public class InvokeLater<T> extends AbstractReadableProperty<T> implements Writa
         value = initialValue;
     }
 
-    public InvokeLater(WritableProperty<T>... wrappedSlaves) {
-        if (wrappedSlaves != null) {
-            for (WritableProperty<T> wrappedSlave : wrappedSlaves) {
-                addSlave(wrappedSlave);
+    public InvokeLater(ReadablePropertyChangeListener<T>... listeners) {
+        if (listeners != null) {
+            for (ReadablePropertyChangeListener<T> listener : listeners) {
+                addChangeListener(listener);
             }
         }
     }
 
-    public InvokeLater(T initialValue, WritableProperty<T>... wrappedSlaves) {
+    public InvokeLater(T initialValue, ReadablePropertyChangeListener<T>... listeners) {
         value = initialValue;
 
-        if (wrappedSlaves != null) {
-            for (WritableProperty<T> wrappedSlave : wrappedSlaves) {
-                addSlave(wrappedSlave);
+        if (listeners != null) {
+            for (ReadablePropertyChangeListener<T> listener : listeners) {
+                addChangeListener(listener);
             }
         }
     }
@@ -80,7 +87,8 @@ public class InvokeLater<T> extends AbstractReadableProperty<T> implements Writa
 
     @Override
     public void setValue(T value) {
+        T oldValue = this.value;
         this.value = value;
-        SwingUtilities.invokeLater(new Postponer());
+        SwingUtilities.invokeLater(new Postponer(oldValue));
     }
 }
