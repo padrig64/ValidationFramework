@@ -23,7 +23,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.experimental.utils.swing;
+package com.google.code.validationframework.swing.utils;
 
 import javax.swing.JFormattedTextField;
 import javax.swing.text.JTextComponent;

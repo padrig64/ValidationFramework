@@ -23,7 +23,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.experimental.format;
+package com.google.code.validationframework.swing.format;
 
 import com.google.code.validationframework.api.rule.Rule;
 import com.google.code.validationframework.base.transform.Aggregator;

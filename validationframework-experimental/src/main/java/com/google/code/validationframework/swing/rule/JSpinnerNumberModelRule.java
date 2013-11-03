@@ -23,7 +23,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.experimental.rule;
+package com.google.code.validationframework.swing.rule;
 
 import com.google.code.validationframework.api.rule.Rule;
 import org.slf4j.Logger;

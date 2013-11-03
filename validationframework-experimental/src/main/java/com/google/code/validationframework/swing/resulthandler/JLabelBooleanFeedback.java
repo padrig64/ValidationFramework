@@ -23,7 +23,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.experimental.resulthandler;
+package com.google.code.validationframework.swing.resulthandler;
 
 import com.google.code.validationframework.api.resulthandler.ResultHandler;
 
