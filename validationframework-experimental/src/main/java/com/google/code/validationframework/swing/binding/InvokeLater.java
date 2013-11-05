@@ -47,11 +47,6 @@ public class InvokeLater<T> extends AbstractReadableProperty<T> implements Writa
         }
     }
 
-    /**
-     * Generated serial UID.
-     */
-    private static final long serialVersionUID = -5018423028707001078L;
-
     private T value = null;
 
     public InvokeLater() {

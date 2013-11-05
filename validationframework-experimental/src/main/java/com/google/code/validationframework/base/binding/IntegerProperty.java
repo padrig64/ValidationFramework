@@ -31,11 +31,6 @@ package com.google.code.validationframework.base.binding;
 public class IntegerProperty extends SimpleProperty<Integer> {
 
     /**
-     * Generated serial UID.
-     */
-    private static final long serialVersionUID = -4252118633780976491L;
-
-    /**
      * @see SimpleProperty#SimpleProperty()
      */
     public IntegerProperty() {

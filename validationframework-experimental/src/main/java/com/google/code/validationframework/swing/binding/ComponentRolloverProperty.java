@@ -63,11 +63,6 @@ public class ComponentRolloverProperty extends AbstractReadableProperty<Boolean>
         }
     }
 
-    /**
-     * Generated serial UID.
-     */
-    private static final long serialVersionUID = -2940271817151485560L;
-
     private boolean rollover = false;
 
     private final Component component;

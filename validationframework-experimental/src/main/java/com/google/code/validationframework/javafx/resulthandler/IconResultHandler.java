@@ -41,24 +41,16 @@ public class IconResultHandler implements ResultHandler<Boolean> {
 
     private static class DecorationPane extends Pane {
 
-        private Node wrappedNode = null;
+        private Node clippingNode = null;
 
         public DecorationPane() {
             this(null);
         }
 
-        public DecorationPane(Node wrappedNode) {
-            setWrappedNode(wrappedNode);
-        }
-
-        public Node getWrappedNode() {
-            return wrappedNode;
-        }
-
-        public void setWrappedNode(Node wrappedNode) {
-            this.wrappedNode = wrappedNode;
-            if (wrappedNode != null) {
-                getChildren().add(wrappedNode);
+        public DecorationPane(Node clippingNode) {
+            this.clippingNode = clippingNode;
+            if (clippingNode != null) {
+                getChildren().add(clippingNode);
             }
 
             requestLayout();
@@ -67,10 +59,10 @@ public class IconResultHandler implements ResultHandler<Boolean> {
         @Override
         protected double computeMinWidth(double v) {
             double width;
-            if (wrappedNode == null) {
+            if (clippingNode == null) {
                 width = super.computeMinWidth(v);
             } else {
-                width = wrappedNode.minWidth(v);
+                width = clippingNode.minWidth(v);
             }
             return width;
         }
@@ -78,10 +70,10 @@ public class IconResultHandler implements ResultHandler<Boolean> {
         @Override
         protected double computeMinHeight(double v) {
             double height;
-            if (wrappedNode == null) {
+            if (clippingNode == null) {
                 height = super.computeMinHeight(v);
             } else {
-                height = wrappedNode.minHeight(v);
+                height = clippingNode.minHeight(v);
             }
             return height;
         }
@@ -89,10 +81,10 @@ public class IconResultHandler implements ResultHandler<Boolean> {
         @Override
         protected double computePrefWidth(double v) {
             double width;
-            if (wrappedNode == null) {
+            if (clippingNode == null) {
                 width = super.computePrefWidth(v);
             } else {
-                width = wrappedNode.prefWidth(v);
+                width = clippingNode.prefWidth(v);
             }
             return width;
         }
@@ -100,10 +92,10 @@ public class IconResultHandler implements ResultHandler<Boolean> {
         @Override
         protected double computePrefHeight(double v) {
             double height;
-            if (wrappedNode == null) {
+            if (clippingNode == null) {
                 height = super.computePrefHeight(v);
             } else {
-                height = wrappedNode.prefHeight(v);
+                height = clippingNode.prefHeight(v);
             }
             return height;
         }
@@ -111,10 +103,10 @@ public class IconResultHandler implements ResultHandler<Boolean> {
         @Override
         protected double computeMaxWidth(double v) {
             double width;
-            if (wrappedNode == null) {
+            if (clippingNode == null) {
                 width = super.computeMaxWidth(v);
             } else {
-                width = wrappedNode.maxWidth(v);
+                width = clippingNode.maxWidth(v);
             }
             return width;
         }
@@ -122,32 +114,32 @@ public class IconResultHandler implements ResultHandler<Boolean> {
         @Override
         protected double computeMaxHeight(double v) {
             double height;
-            if (wrappedNode == null) {
+            if (clippingNode == null) {
                 height = super.computeMaxHeight(v);
             } else {
-                height = wrappedNode.maxHeight(v);
+                height = clippingNode.maxHeight(v);
             }
             return height;
         }
-
 
         @Override
         protected void layoutChildren() {
             super.layoutChildren();
 
-            System.out.println("IconResultHandler$DecorationPane.layoutChildren");
-            if (wrappedNode != null) {
+            if (clippingNode != null) {
                 Bounds localBounds = getBoundsInLocal();
-                wrappedNode.resizeRelocate(0, 0, localBounds.getWidth(), localBounds.getHeight());
+                clippingNode.resizeRelocate(0, 0, localBounds.getWidth(), localBounds.getHeight());
             }
 
             for (Node decorationNode : getChildren()) {
                 if (decorationNode instanceof Decoration) {
-                    Bounds decorationBounds = decorationNode.getLayoutBounds();
-                    Bounds decoratedBounds = ((Decoration) decorationNode).getDecorated().getLayoutBounds();
-                    decoratedBounds = ((Decoration) decorationNode).getDecorated().localToScene(decoratedBounds);
-                    decorationNode.relocate(decoratedBounds.getMinX() - decorationBounds.getWidth() / 2 + 1,
-                            decoratedBounds.getMaxY() - decorationBounds.getHeight() / 2 - 1);
+                    Bounds decoratedNodeBounds = ((Decoration) decorationNode).getDecorated().getLayoutBounds();
+                    decoratedNodeBounds = ((Decoration) decorationNode).getDecorated().localToScene(decoratedNodeBounds);
+                    decoratedNodeBounds = decorationNode.getParent().sceneToLocal(decoratedNodeBounds);
+
+                    Bounds decorationNodeBounds = decorationNode.getLayoutBounds();
+                    decorationNode.relocate(decoratedNodeBounds.getMinX() - decorationNodeBounds.getWidth() / 2 + 1,
+                            decoratedNodeBounds.getMaxY() - decorationNodeBounds.getHeight() / 2 - 1);
                 }
             }
         }
@@ -173,7 +165,7 @@ public class IconResultHandler implements ResultHandler<Boolean> {
             // Uninstall decoration pane if needed
             Scene oldScene = decorationPane.getScene();
             if (oldScene != null) {
-//                oldScene.setRoot(decorationPane.getWrappedNode());
+//                oldScene.setRoot(decorationPane.getClippingNode());
                 // TODO
             }
 

@@ -44,11 +44,6 @@ public class JToggleButtonSelectedProperty extends AbstractReadableProperty<Bool
         }
     }
 
-    /**
-     * Generated serial UID.
-     */
-    private static final long serialVersionUID = -313416439956652682L;
-
     private final JToggleButton component;
 
     private final PropertyChangeAdapter propertyChangeAdapter = new PropertyChangeAdapter();

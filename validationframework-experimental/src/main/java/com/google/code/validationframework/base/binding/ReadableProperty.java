@@ -25,8 +25,6 @@
 
 package com.google.code.validationframework.base.binding;
 
-import java.io.Serializable;
-
 /**
  * Interface to be implemented by readable property that can notify {@link ReadablePropertyChangeListener}s.
  * <p/>
@@ -38,7 +36,7 @@ import java.io.Serializable;
  *
  * @see WritableProperty
  */
-public interface ReadableProperty<T> extends Serializable {
+public interface ReadableProperty<T> {
 
     /**
      * Adds a {@link WritableProperty} as a slave.

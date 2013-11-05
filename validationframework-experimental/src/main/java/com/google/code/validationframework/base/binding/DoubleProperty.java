@@ -31,11 +31,6 @@ package com.google.code.validationframework.base.binding;
 public class DoubleProperty extends SimpleProperty<Double> {
 
     /**
-     * Generated serial UID.
-     */
-    private static final long serialVersionUID = 8642981660808233279L;
-
-    /**
      * @see SimpleProperty#SimpleProperty()
      */
     public DoubleProperty() {

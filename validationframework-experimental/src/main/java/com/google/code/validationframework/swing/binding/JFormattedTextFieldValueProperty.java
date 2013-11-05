@@ -28,35 +28,36 @@ package com.google.code.validationframework.swing.binding;
 import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.base.binding.AbstractReadableProperty;
 import com.google.code.validationframework.base.binding.WritableProperty;
+import com.google.code.validationframework.base.utils.ValueUtils;
 
-import java.awt.Component;
+import javax.swing.JFormattedTextField;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-public class ComponentEnabledProperty extends AbstractReadableProperty<Boolean> implements WritableProperty<Boolean>,
-        Disposable {
+public class JFormattedTextFieldValueProperty extends AbstractReadableProperty<Object> implements
+        WritableProperty<Object>, Disposable {
 
     private class PropertyChangeAdapter implements PropertyChangeListener {
 
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
-            setValue(component.isEnabled());
+            setValue(formattedTextField.getValue());
         }
 
     }
 
-    private final Component component;
+    private final JFormattedTextField formattedTextField;
 
     private final PropertyChangeAdapter propertyChangeAdapter = new PropertyChangeAdapter();
 
     private boolean settingValue = false;
 
-    private boolean value = false;
+    private Object value = null;
 
-    public ComponentEnabledProperty(Component component) {
-        this.component = component;
-        this.component.addPropertyChangeListener("enabled", propertyChangeAdapter);
-        setValue(component.isEnabled());
+    public JFormattedTextFieldValueProperty(JFormattedTextField formattedTextField) {
+        this.formattedTextField = formattedTextField;
+        this.formattedTextField.addPropertyChangeListener("value", propertyChangeAdapter);
+        setValue(formattedTextField.getValue());
     }
 
     /**
@@ -64,14 +65,14 @@ public class ComponentEnabledProperty extends AbstractReadableProperty<Boolean> 
      */
     @Override
     public void dispose() {
-        component.removePropertyChangeListener("enabled", propertyChangeAdapter);
+        formattedTextField.removePropertyChangeListener("value", propertyChangeAdapter);
     }
 
     /**
      * @see AbstractReadableProperty#getValue()
      */
     @Override
-    public Boolean getValue() {
+    public Object getValue() {
         return value;
     }
 
@@ -79,19 +80,15 @@ public class ComponentEnabledProperty extends AbstractReadableProperty<Boolean> 
      * @see WritableProperty#setValue(Object)
      */
     @Override
-    public void setValue(Boolean value) {
+    public void setValue(Object value) {
         if (!settingValue) {
             settingValue = true;
 
-            boolean normalizedValue = false;
-            if (value != null) {
-                normalizedValue = value;
-            }
-            if (this.value != normalizedValue) {
-                Boolean oldValue = this.value;
-                this.value = normalizedValue;
-                component.setEnabled(normalizedValue);
-                notifyListeners(oldValue, normalizedValue);
+            if (!ValueUtils.areEqual(this.value, value)) {
+                Object oldValue = this.value;
+                this.value = value;
+                formattedTextField.setValue(value);
+                notifyListeners(oldValue, value);
             }
 
             settingValue = false;

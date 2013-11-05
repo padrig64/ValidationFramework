@@ -41,11 +41,6 @@ import com.google.code.validationframework.base.utils.ValueUtils;
 public class SimpleProperty<T> extends AbstractReadableProperty<T> implements WritableProperty<T> {
 
     /**
-     * Generated serial UID.
-     */
-    private static final long serialVersionUID = 6820249070710960455L;
-
-    /**
      * Property value.
      */
     private T value = null;

@@ -31,11 +31,6 @@ package com.google.code.validationframework.base.binding;
 public class LongProperty extends SimpleProperty<Long> {
 
     /**
-     * Generated serial UID.
-     */
-    private static final long serialVersionUID = 9198702274930261989L;
-
-    /**
      * @see SimpleProperty#SimpleProperty()
      */
     public LongProperty() {

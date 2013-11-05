@@ -35,11 +35,6 @@ import java.awt.Font;
 public class FontProperty extends SimpleProperty<Font> {
 
     /**
-     * Generated serial UID.
-     */
-    private static final long serialVersionUID = 6275942101731034614L;
-
-    /**
      * @see SimpleProperty#SimpleProperty()
      */
     public FontProperty() {

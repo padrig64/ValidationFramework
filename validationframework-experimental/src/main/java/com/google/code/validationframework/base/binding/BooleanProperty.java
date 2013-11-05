@@ -31,11 +31,6 @@ package com.google.code.validationframework.base.binding;
 public class BooleanProperty extends SimpleProperty<Boolean> {
 
     /**
-     * Generated serial UID.
-     */
-    private static final long serialVersionUID = -2018001255493953897L;
-
-    /**
      * @see SimpleProperty#SimpleProperty()
      */
     public BooleanProperty() {

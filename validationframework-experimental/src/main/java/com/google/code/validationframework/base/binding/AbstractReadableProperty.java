@@ -40,11 +40,6 @@ import java.util.List;
 public abstract class AbstractReadableProperty<T> implements ReadableProperty<T> {
 
     /**
-     * Generated serial UID.
-     */
-    private static final long serialVersionUID = -72144362842650597L;
-
-    /**
      * Writable properties to be updated.
      */
     private final List<ReadablePropertyChangeListener<T>> listeners = new

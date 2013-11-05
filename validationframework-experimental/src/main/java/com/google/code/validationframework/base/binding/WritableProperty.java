@@ -25,8 +25,6 @@
 
 package com.google.code.validationframework.base.binding;
 
-import java.io.Serializable;
-
 /**
  * Interface to be implemented by writable properties whose value can be set by the programmer or slave to readable
  * properties.
@@ -39,7 +37,7 @@ import java.io.Serializable;
  *
  * @see ReadableProperty
  */
-public interface WritableProperty<T> extends Serializable {
+public interface WritableProperty<T> {
 
     /**
      * Sets the value of the property.

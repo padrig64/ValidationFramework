@@ -44,11 +44,6 @@ public class ComponentVisibleProperty extends AbstractReadableProperty<Boolean> 
         }
     }
 
-    /**
-     * Generated serial UID.
-     */
-    private static final long serialVersionUID = -313416439956652682L;
-
     private final Component component;
 
     private final PropertyChangeAdapter propertyChangeAdapter = new PropertyChangeAdapter();

@@ -35,11 +35,6 @@ import java.awt.Color;
 public class ColorProperty extends SimpleProperty<Color> {
 
     /**
-     * Generated serial UID.
-     */
-    private static final long serialVersionUID = -4469626009648482296L;
-
-    /**
      * @see SimpleProperty#SimpleProperty()
      */
     public ColorProperty() {
