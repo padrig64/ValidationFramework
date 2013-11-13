@@ -5,6 +5,7 @@
 * Added convenient BooleanResultCollector in core
 * Added IsTrueRule and IsFalseRule in core
 * Added InvokeLaterResultHandler wrapper
+* Fixed logic issue in InvokeLaterTrigger wrapper
 * Added convenient constructor to IconComponentDecoration
 * Added convenient constructor to ComponentKeyStrokeTrigger
 * Fixed NullPointerException when calling dispose() multiple times on some triggers
