@@ -1,4 +1,4 @@
-# Version 2.1.3
+# Version 2.1.4
 
 * Added initial support for JavaFX 2
 * Added EqualsBooleanRule in core
