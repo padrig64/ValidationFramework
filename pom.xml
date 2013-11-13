@@ -264,7 +264,7 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <version>${mavencompilerplugin.version}</version>
                     <configuration>
-                        <source>{java.compiler.version}</source>
+                        <source>${java.compiler.version}</source>
                         <target>${java.compiler.version}</target>
                         <compilerVersion>${java.compiler.version}</compilerVersion>
                         <compilerArgs>
