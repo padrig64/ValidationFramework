@@ -6,6 +6,7 @@
 * Added IsTrueRule and IsFalseRule in core
 * Added InvokeLaterResultHandler wrapper
 * Added convenient constructor to IconComponentDecoration
+* Added convenient constructor to ComponentKeyStrokeTrigger
 * Fixed NullPointerException when calling dispose() multiple times on some triggers
 
 # Version 2.1.2
