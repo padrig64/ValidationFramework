@@ -28,10 +28,23 @@ package com.google.code.validationframework.javafx.dataprovider;
 import com.google.code.validationframework.api.dataprovider.DataProvider;
 import javafx.beans.value.ObservableValue;
 
+/**
+ * Data provider giving the data from a specified {@link ObservableValue}.
+ *
+ * @param <DPO> Type of value provided.
+ */
 public class ObservableValueProvider<DPO> implements DataProvider<DPO> {
 
+    /**
+     * Observable value to get the data from.
+     */
     private final ObservableValue<DPO> observableValue;
 
+    /**
+     * Constructor specifying the {@link ObservableValue} to get the data from.
+     *
+     * @param observableValue Observable value to get the data from.
+     */
     public ObservableValueProvider(ObservableValue<DPO> observableValue) {
         this.observableValue = observableValue;
     }
