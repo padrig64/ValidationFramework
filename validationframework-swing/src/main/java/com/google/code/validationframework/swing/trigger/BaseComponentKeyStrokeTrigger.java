@@ -111,6 +111,43 @@ public class BaseComponentKeyStrokeTrigger<C extends Component> extends Abstract
     private final Set<KeyStroke> keyStrokes = new HashSet<KeyStroke>();
 
     /**
+     * Constructor specifying the text component to listen to and the virtual key codes to trigger the validation.
+     * <p/>
+     * If no virtual key code is provided, the trigger will initiate the validation on any key stroke.
+     * <p/>
+     * You may refer to the {@link KeyStroke} constants to see the available virtual key codes.
+     *
+     * @param source   Text component to listen to.
+     * @param keyCodes Virtual key strokes to trigger the validation.
+     *
+     * @see #BaseComponentKeyStrokeTrigger(Component, KeyStroke...)
+     * @see KeyStroke
+     */
+    public BaseComponentKeyStrokeTrigger(C source, int... keyCodes) {
+        this(source, toKeyStrokes(keyCodes));
+    }
+
+    /**
+     * Converts the specified array of key codes in an array of key strokes.
+     *
+     * @param keyCodes Array of key codes to be converted.
+     *
+     * @return Array of keystrokes resulting form the conversion.
+     */
+    private static KeyStroke[] toKeyStrokes(int... keyCodes) {
+        KeyStroke[] keyStrokes = null;
+
+        if (keyCodes != null) {
+            keyStrokes = new KeyStroke[keyCodes.length];
+            for (int i = 0; i < keyCodes.length; i++) {
+                keyStrokes[i] = KeyStroke.getKeyStroke(keyCodes[i], 0);
+            }
+        }
+
+        return keyStrokes;
+    }
+
+    /**
      * Constructor specifying the text component to listen to and the key stroke to trigger the validation.
      * <p/>
      * If no key stroke is provided, the trigger will initiate the validation on any key stroke.

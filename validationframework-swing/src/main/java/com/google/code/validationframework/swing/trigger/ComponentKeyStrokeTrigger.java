@@ -39,6 +39,13 @@ import java.awt.Component;
 public class ComponentKeyStrokeTrigger extends BaseComponentKeyStrokeTrigger<Component> {
 
     /**
+     * @see BaseComponentKeyStrokeTrigger#BaseComponentKeyStrokeTrigger(Component, int...)
+     */
+    public ComponentKeyStrokeTrigger(Component source, int... keyCodes) {
+        super(source, keyCodes);
+    }
+
+    /**
      * @see BaseComponentKeyStrokeTrigger#BaseComponentKeyStrokeTrigger(Component, KeyStroke...)
      */
     public ComponentKeyStrokeTrigger(Component source, KeyStroke... keyStrokes) {
