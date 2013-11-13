@@ -1,4 +1,4 @@
-# Version 2.1.3 (to be released)
+# Version 2.1.3
 
 * Added initial support for JavaFX 2
 * Added EqualsBooleanRule in core
@@ -9,6 +9,7 @@
 * Added convenient constructor to IconComponentDecoration
 * Added convenient constructor to ComponentKeyStrokeTrigger
 * Fixed NullPointerException when calling dispose() multiple times on some triggers
+* Added experimental property binding mainly meant for Swing (not JavaFX)
 
 # Version 2.1.2
 

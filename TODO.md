@@ -52,6 +52,7 @@
 * Auto-scroll/jump to errors in case of scrollpanes, tabbedpane, etc.
 * Initial focus for JFormattedTextField helper
 * Make it possible to have the component decoration still visible even if the decorated component is disabled (config)
+* Add more examples, javadoc and UML diagrams to wiki (incl. example of Formatter/Format configuration)
 
 # TO THINK ABOUT
 
@@ -72,6 +73,7 @@
 * Aggregate boolean result collectors
 * Aggregate data from multiple providers, aggregate rule results
 * Validator marker interface?
+* Re-use instances of T, DP, R, RH, V
 * Heterogeneous Group
 * Put decoration per plane and not per parent
 * Exception-based results
