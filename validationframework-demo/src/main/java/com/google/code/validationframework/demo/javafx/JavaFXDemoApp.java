@@ -7,7 +7,6 @@ import com.google.code.validationframework.base.rule.string.StringNotEmptyRule;
 import com.google.code.validationframework.base.transform.NegateBooleanTransformer;
 import com.google.code.validationframework.base.trigger.ManualTrigger;
 import com.google.code.validationframework.javafx.dataprovider.ObservableValueProvider;
-import com.google.code.validationframework.javafx.resulthandler.IconResultHandler;
 import com.google.code.validationframework.javafx.resulthandler.WritableValueSetterResultHandler;
 import com.google.code.validationframework.javafx.trigger.ObservableValueChangeTrigger;
 import javafx.application.Application;
@@ -56,8 +55,7 @@ public class JavaFXDemoApp extends Application {
                 .on(manualTrigger) //
                 .read(new ObservableValueProvider<String>(nameTextField.textProperty())) //
                 .check(new StringNotEmptyRule()) //
-                .handleWith(nameResultCollector) //
-                .handleWith(new IconResultHandler(nameTextField));
+                .handleWith(nameResultCollector);
 
         // Install validation on "I agree" checkbox
         BooleanResultCollector agreeResultCollector = new BooleanResultCollector();
