@@ -38,29 +38,29 @@ import java.util.List;
  * <p/>
  * If you are using JavaFX, you should better use JavaFX's property binding mechanism. The binding mechanism provided by
  * the ValidationFramework is mostly meant for Swing and other frameworks that can benefit from it. JavaFX has a much
- * more furnished API to achieve similar goals.
+ * more furnished API to achieve similar goals and much more.
  *
  * @see ReadableProperty
  * @see WritableProperty
  */
 public final class Binder {
 
-    public static class SingleMasterContext<MO, SI> {
+    public static class SingleMasterBinding<MO, SI> {
 
         private final ReadableProperty<MO> master;
 
         private final List<Transformer> transformers = new ArrayList<Transformer>();
 
-        public SingleMasterContext(ReadableProperty<MO> master, Collection<Transformer> transformers) {
+        public SingleMasterBinding(ReadableProperty<MO> master, Collection<Transformer> transformers) {
             this.master = master;
             if (transformers != null) {
                 this.transformers.addAll(transformers);
             }
         }
 
-        public <TSI> SingleMasterContext<MO, TSI> transform(Transformer<SI, TSI> transformer) {
+        public <TSI> SingleMasterBinding<MO, TSI> transform(Transformer<SI, TSI> transformer) {
             transformers.add(transformer);
-            return new SingleMasterContext<MO, TSI>(master, transformers);
+            return new SingleMasterBinding<MO, TSI>(master, transformers);
         }
 
         public void to(WritableProperty<SI> slave) {
@@ -128,27 +128,27 @@ public final class Binder {
         }
     }
 
-    public static class MultipleMasterContext<MO, SI> {
+    public static class MultipleMastersBinding<MO, SI> {
 
         private final Collection<ReadableProperty<MO>> masters;
 
         private final List<Transformer> transformers = new ArrayList<Transformer>();
 
-        public MultipleMasterContext(Collection<ReadableProperty<MO>> masters, Collection<Transformer> transformers) {
+        public MultipleMastersBinding(Collection<ReadableProperty<MO>> masters, Collection<Transformer> transformers) {
             this.masters = masters;
             if (transformers != null) {
                 this.transformers.addAll(transformers);
             }
         }
 
-        public <TSI> MultipleMasterContext<MO, TSI> transform(Transformer<SI, TSI> transformer) {
+        public <TSI> MultipleMastersBinding<MO, TSI> transform(Transformer<SI, TSI> transformer) {
             transformers.add(transformer);
-            return new MultipleMasterContext<MO, TSI>(masters, transformers);
+            return new MultipleMastersBinding<MO, TSI>(masters, transformers);
         }
 
         public void to(WritableProperty<SI> slave) {
             // Connect masters -> proxy -> slave
-            MultipleMasterProxy<MO, SI> proxy = new MultipleMasterProxy<MO, SI>(masters, transformers);
+            MultipleMastersProxy<MO, SI> proxy = new MultipleMastersProxy<MO, SI>(masters, transformers);
             for (ReadableProperty<MO> master : masters) {
                 master.addChangeListener(proxy);
             }
@@ -160,7 +160,7 @@ public final class Binder {
 
         public void to(Collection<WritableProperty<SI>> slaves) {
             // Connect masters -> proxy -> slaves
-            MultipleMasterProxy<MO, SI> proxy = new MultipleMasterProxy<MO, SI>(masters, transformers);
+            MultipleMastersProxy<MO, SI> proxy = new MultipleMastersProxy<MO, SI>(masters, transformers);
             for (ReadableProperty<MO> master : masters) {
                 master.addChangeListener(proxy);
             }
@@ -177,7 +177,7 @@ public final class Binder {
         }
     }
 
-    private static class MultipleMasterProxy<MO, SI> implements ReadablePropertyChangeListener<MO> {
+    private static class MultipleMastersProxy<MO, SI> implements ReadablePropertyChangeListener<MO> {
 
         private final List<ReadableProperty<MO>> masters = new ArrayList<ReadableProperty<MO>>();
 
@@ -187,7 +187,7 @@ public final class Binder {
 
         private final List<WritableProperty<SI>> slaves = new ArrayList<WritableProperty<SI>>();
 
-        public MultipleMasterProxy(Collection<ReadableProperty<MO>> masters, Collection<Transformer> transformers) {
+        public MultipleMastersProxy(Collection<ReadableProperty<MO>> masters, Collection<Transformer> transformers) {
             if (masters != null) {
                 this.masters.addAll(masters);
             }
@@ -233,15 +233,39 @@ public final class Binder {
         // Nothing to be done
     }
 
-    public static <MO> SingleMasterContext<MO, MO> bind(ReadableProperty<MO> master) {
-        return new SingleMasterContext<MO, MO>(master, null);
+    /**
+     * Specifies the master property that is part of the binding.
+     *
+     * @param master Master property.
+     * @param <MO>   Type of value to be read from the master property.
+     *
+     * @return DSL object.
+     */
+    public static <MO> SingleMasterBinding<MO, MO> from(ReadableProperty<MO> master) {
+        return new SingleMasterBinding<MO, MO>(master, null);
     }
 
-    public static <MO> MultipleMasterContext<MO, Collection<MO>> bind(Collection<ReadableProperty<MO>> masters) {
-        return new MultipleMasterContext<MO, Collection<MO>>(masters, null);
+    /**
+     * Specifies the master properties that are part of the binding.
+     *
+     * @param masters Master properties.
+     * @param <MO>    Type of value to be read from the master properties.
+     *
+     * @return DSL object.
+     */
+    public static <MO> MultipleMastersBinding<MO, Collection<MO>> from(Collection<ReadableProperty<MO>> masters) {
+        return new MultipleMastersBinding<MO, Collection<MO>>(masters, null);
     }
 
-    public static <MO> MultipleMasterContext<MO, Collection<MO>> bind(ReadableProperty<MO>... masters) {
-        return new MultipleMasterContext<MO, Collection<MO>>(Arrays.asList(masters), null);
+    /**
+     * Specifies the master properties that are part of the binding.
+     *
+     * @param masters Master properties.
+     * @param <MO>    Type of value to be read from the master properties.
+     *
+     * @return DSL object.
+     */
+    public static <MO> MultipleMastersBinding<MO, Collection<MO>> from(ReadableProperty<MO>... masters) {
+        return new MultipleMastersBinding<MO, Collection<MO>>(Arrays.asList(masters), null);
     }
 }

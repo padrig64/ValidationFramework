@@ -31,7 +31,7 @@ package com.google.code.validationframework.base.binding;
  * <p/>
  * If you are using JavaFX, you should better use JavaFX's property binding mechanism. The binding mechanism provided by
  * the ValidationFramework is mostly meant for Swing and other frameworks that can benefit from it. JavaFX has a much
- * more furnished API to achieve similar goals.
+ * more furnished API to achieve similar goals and much more.
  *
  * @param <T> Type of property value.
  *
