@@ -27,25 +27,29 @@ package com.google.code.validationframework.swing.binding;
 
 import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.base.binding.AbstractReadableProperty;
-import com.google.code.validationframework.base.binding.WritableProperty;
+import com.google.code.validationframework.base.utils.ValueUtils;
 
 import java.awt.Component;
+import java.awt.Container;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 /**
- * Readable/writable property representing the visible property of a {@link Component}.
+ * Readable property representing the ancestor property of a {@link Component}.
  * <p/>
  * Note that change listeners will not be notified if the {@link Component} is not a {@link javax.swing.JComponent}.
  */
-public class ComponentVisibleProperty extends AbstractReadableProperty<Boolean> implements WritableProperty<Boolean>,
-        Disposable {
+public class ComponentAncestorProperty extends AbstractReadableProperty<Container> implements Disposable {
 
     private class PropertyChangeAdapter implements PropertyChangeListener {
 
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
-            setValue(component.isVisible());
+            if (evt.getNewValue() instanceof Container) {
+                setValue((Container) evt.getNewValue());
+            } else {
+                setValue(null);
+            }
         }
     }
 
@@ -53,52 +57,35 @@ public class ComponentVisibleProperty extends AbstractReadableProperty<Boolean> 
 
     private final PropertyChangeAdapter propertyChangeAdapter = new PropertyChangeAdapter();
 
-    private boolean settingValue = false;
+    private Container value = null;
 
-    private boolean value = false;
-
-    public ComponentVisibleProperty(Component component) {
+    public ComponentAncestorProperty(Component component) {
         this.component = component;
-        this.component.addPropertyChangeListener("visible", propertyChangeAdapter);
-        setValue(component.isVisible());
+        this.component.addPropertyChangeListener("ancestor", propertyChangeAdapter);
+        setValue(component.getParent());
     }
 
     /**
-     * @see com.google.code.validationframework.api.common.Disposable#dispose()
+     * @see Disposable#dispose()
      */
     @Override
     public void dispose() {
-        component.removePropertyChangeListener("visible", propertyChangeAdapter);
+        component.removePropertyChangeListener("ancestor", propertyChangeAdapter);
     }
 
     /**
      * @see AbstractReadableProperty#getValue()
      */
     @Override
-    public Boolean getValue() {
+    public Container getValue() {
         return value;
     }
 
-    /**
-     * @see WritableProperty#setValue(Object)
-     */
-    @Override
-    public void setValue(Boolean value) {
-        if (!settingValue) {
-            settingValue = true;
-
-            boolean normalizedValue = false;
-            if (value != null) {
-                normalizedValue = value;
-            }
-            if (this.value != normalizedValue) {
-                Boolean oldValue = this.value;
-                this.value = normalizedValue;
-                component.setVisible(normalizedValue);
-                notifyListeners(oldValue, normalizedValue);
-            }
-
-            settingValue = false;
+    public void setValue(Container value) {
+        if (!ValueUtils.areEqual(this.value, value)) {
+            Container oldValue = this.value;
+            this.value = value;
+            notifyListeners(oldValue, value);
         }
     }
 }

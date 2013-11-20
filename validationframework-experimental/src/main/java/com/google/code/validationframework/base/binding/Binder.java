@@ -241,7 +241,7 @@ public final class Binder {
      *
      * @return DSL object.
      */
-    public static <MO> SingleMasterBinding<MO, MO> from(ReadableProperty<MO> master) {
+    public static <MO> SingleMasterBinding<MO, MO> bindFrom(ReadableProperty<MO> master) {
         return new SingleMasterBinding<MO, MO>(master, null);
     }
 
@@ -253,7 +253,7 @@ public final class Binder {
      *
      * @return DSL object.
      */
-    public static <MO> MultipleMastersBinding<MO, Collection<MO>> from(Collection<ReadableProperty<MO>> masters) {
+    public static <MO> MultipleMastersBinding<MO, Collection<MO>> bindFrom(Collection<ReadableProperty<MO>> masters) {
         return new MultipleMastersBinding<MO, Collection<MO>>(masters, null);
     }
 
@@ -265,7 +265,7 @@ public final class Binder {
      *
      * @return DSL object.
      */
-    public static <MO> MultipleMastersBinding<MO, Collection<MO>> from(ReadableProperty<MO>... masters) {
+    public static <MO> MultipleMastersBinding<MO, Collection<MO>> bindFrom(ReadableProperty<MO>... masters) {
         return new MultipleMastersBinding<MO, Collection<MO>>(Arrays.asList(masters), null);
     }
 }

@@ -29,27 +29,25 @@ import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.base.binding.AbstractReadableProperty;
 import com.google.code.validationframework.base.binding.WritableProperty;
 
-import java.awt.Component;
+import javax.swing.JComponent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 /**
- * Readable/writable property representing the visible property of a {@link Component}.
- * <p/>
- * Note that change listeners will not be notified if the {@link Component} is not a {@link javax.swing.JComponent}.
+ * Readable/writable property representing the opaque property of a {@link JComponent}.
  */
-public class ComponentVisibleProperty extends AbstractReadableProperty<Boolean> implements WritableProperty<Boolean>,
+public class JComponentOpaqueProperty extends AbstractReadableProperty<Boolean> implements WritableProperty<Boolean>,
         Disposable {
 
     private class PropertyChangeAdapter implements PropertyChangeListener {
 
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
-            setValue(component.isVisible());
+            setValue(component.isOpaque());
         }
     }
 
-    private final Component component;
+    private final JComponent component;
 
     private final PropertyChangeAdapter propertyChangeAdapter = new PropertyChangeAdapter();
 
@@ -57,18 +55,18 @@ public class ComponentVisibleProperty extends AbstractReadableProperty<Boolean> 
 
     private boolean value = false;
 
-    public ComponentVisibleProperty(Component component) {
+    public JComponentOpaqueProperty(JComponent component) {
         this.component = component;
-        this.component.addPropertyChangeListener("visible", propertyChangeAdapter);
-        setValue(component.isVisible());
+        this.component.addPropertyChangeListener("opaque", propertyChangeAdapter);
+        setValue(component.isOpaque());
     }
 
     /**
-     * @see com.google.code.validationframework.api.common.Disposable#dispose()
+     * @see Disposable#dispose()
      */
     @Override
     public void dispose() {
-        component.removePropertyChangeListener("visible", propertyChangeAdapter);
+        component.removePropertyChangeListener("opaque", propertyChangeAdapter);
     }
 
     /**
@@ -94,7 +92,7 @@ public class ComponentVisibleProperty extends AbstractReadableProperty<Boolean> 
             if (this.value != normalizedValue) {
                 Boolean oldValue = this.value;
                 this.value = normalizedValue;
-                component.setVisible(normalizedValue);
+                component.setOpaque(normalizedValue);
                 notifyListeners(oldValue, normalizedValue);
             }
 
