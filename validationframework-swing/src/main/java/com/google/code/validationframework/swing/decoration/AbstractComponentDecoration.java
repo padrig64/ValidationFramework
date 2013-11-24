@@ -162,7 +162,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
     /**
      * Entity responsible of calling the {@link AbstractComponentDecoration#paint(Graphics)} method.
      * <p/>
-     * It works as a hook in the Swing paint mechanism.
+     * It works as a hook in the Swing painting mechanism.
      * <p/>
      * Note that the painter is made invisible whenever the decorated component is no longer showing on the screen, so
      * that the decoration does not try to paint when the component is on a hidden tab, for instance, and does not steal
@@ -330,7 +330,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
      * @see #getDecoratedComponentLayerInLayeredPane
      * @see #decorationPainter
      */
-    protected DecorationPainter decorationPainter = new DecorationPainter();
+    protected final DecorationPainter decorationPainter = new DecorationPainter();
 
     /**
      * Layered pane to which the decoration painter will be added.
@@ -351,6 +351,13 @@ public abstract class AbstractComponentDecoration implements Disposable {
      * @see ComponentTracker#hierarchyChanged(HierarchyEvent)
      */
     private boolean visible = true;
+
+    /**
+     * Flag indicating whether the decoration is to be painted (shown) even when the decorated component is disabled.
+     *
+     * @see #updateDecorationPainterVisibility()
+     */
+    private boolean paintWhenDisabled = true;
 
     /**
      * Constructor specifying the component to be decorated and the anchor link between the decorated component and its
@@ -416,6 +423,9 @@ public abstract class AbstractComponentDecoration implements Disposable {
             Integer layer = getDecoratedComponentLayerInLayeredPane(attachedLayeredPane);
             attachedLayeredPane.remove(decorationPainter);
             attachedLayeredPane.add(decorationPainter, layer);
+        } else {
+            // Remove decoration painter from previous layered pane as this could lead to memory leak
+            detachFromLayeredPane();
         }
     }
 
@@ -556,14 +566,36 @@ public abstract class AbstractComponentDecoration implements Disposable {
     }
 
     /**
+     * States whether the decoration is painted (shown) even when the decorated component is disabled.
+     *
+     * @return True if the decoration is painted (shown) even when the decorated component is disabled, false otherwise.
+     */
+    public boolean getPaintWhenDisabled() {
+        return paintWhenDisabled;
+    }
+
+    /**
+     * States whether the decoration is to be painted (shown) even when the decorated component is disabled.
+     *
+     * @param paintWhenDisabled True if decoration is to be painted (shown) even when the decorated component is
+     *                          disabled, false otherwise.
+     */
+    public void setPaintWhenDisabled(boolean paintWhenDisabled) {
+        this.paintWhenDisabled = paintWhenDisabled;
+        updateDecorationPainterVisibility();
+    }
+
+    /**
      * Updates the visibility of the decoration painter according to the visible state set by the programmer and the
      * state of the decorated component.
      *
      * @see DecorationPainter
      */
     private void updateDecorationPainterVisibility() {
-        boolean shouldBeVisible = (decoratedComponent != null) && decoratedComponent.isEnabled() &&
-                decoratedComponent.isShowing() && visible;
+        boolean shouldBeVisible = (decoratedComponent != null) && //
+                (paintWhenDisabled || decoratedComponent.isEnabled()) && //
+                decoratedComponent.isShowing() && //
+                visible;
         if (shouldBeVisible != decorationPainter.isVisible()) {
             decorationPainter.setVisible(shouldBeVisible);
         }
