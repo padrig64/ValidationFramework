@@ -48,7 +48,7 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
     /**
      * Listener to mouse events on the icon and showing/hiding the associated tooltip.
      */
-    private class DecorationPainterTracker extends MouseAdapter implements ComponentListener {
+    private class ToolTipVisibilityAdapter extends MouseAdapter implements ComponentListener {
 
         /**
          * @see MouseAdapter#mouseEntered(MouseEvent)
@@ -133,14 +133,14 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
      * <p/>
      * It is lazy-initialized to make sure we will have a parent and a window ancestor (owner of the dialog).
      *
-     * @see DecorationPainterTracker#createToolTipDialogIfNeeded()
+     * @see com.google.code.validationframework.swing.decoration.IconComponentDecoration.ToolTipVisibilityAdapter#createToolTipDialogIfNeeded()
      */
     private ToolTipDialog toolTipDialog = null;
 
     /**
      * Listener to mouse events on the icon and showing/hiding the associated tooltip.
      */
-    private final DecorationPainterTracker decorationPainterTracker = new DecorationPainterTracker();
+    private final ToolTipVisibilityAdapter toolTipVisibilityAdapter = new ToolTipVisibilityAdapter();
 
     /**
      * Tooltip text to appear on the decoration icon.
@@ -214,9 +214,9 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
         super(owner, anchorLinkWithOwner);
         this.icon = icon;
 
-        decorationPainter.addMouseListener(decorationPainterTracker);
-        decorationPainter.addMouseMotionListener(decorationPainterTracker);
-        decorationPainter.addComponentListener(decorationPainterTracker);
+        decorationPainter.addMouseListener(toolTipVisibilityAdapter);
+        decorationPainter.addMouseMotionListener(toolTipVisibilityAdapter);
+        decorationPainter.addComponentListener(toolTipVisibilityAdapter);
     }
 
     /**
@@ -225,9 +225,14 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
     @Override
     public void dispose() {
         super.dispose();
-        decorationPainter.removeMouseListener(decorationPainterTracker);
-        decorationPainter.removeMouseMotionListener(decorationPainterTracker);
-        decorationPainter.removeComponentListener(decorationPainterTracker);
+        decorationPainter.removeMouseListener(toolTipVisibilityAdapter);
+        decorationPainter.removeMouseMotionListener(toolTipVisibilityAdapter);
+        decorationPainter.removeComponentListener(toolTipVisibilityAdapter);
+        if(toolTipDialog != null) {
+            toolTipDialog.removeMouseListener(toolTipVisibilityAdapter);
+            toolTipDialog.removeMouseMotionListener(toolTipVisibilityAdapter);
+            toolTipDialog.removeComponentListener(toolTipVisibilityAdapter);
+        }
     }
 
     /**
@@ -304,13 +309,8 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
      * @see AbstractComponentDecoration#updateDecorationPainterVisibility()
      */
     private void updateToolTipDialogVisibility() {
-        // Get mouse location
-        Point mouseLocation = MouseInfo.getPointerInfo().getLocation();
-        SwingUtilities.convertPointFromScreen(mouseLocation, decorationPainter);
-
-        // Determine if tooltip dialog should be visible or not
-        boolean shouldBeVisible = decorationPainter.isVisible() && ((decorationPainter.getClipBounds() != null) &&
-                decorationPainter.getClipBounds().contains(mouseLocation));
+        // Determine whether tooltip should be/remain visible
+        boolean shouldBeVisible = isOverDecorationPainter() || isOverToolTipDialog();
 
         // Create tooltip dialog if needed
         if (shouldBeVisible) {
@@ -318,9 +318,28 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
         }
 
         // Update tooltip dialog visibility if changed
-        if (toolTipDialog != null && (toolTipDialog.isVisible() != shouldBeVisible)) {
+        if ((toolTipDialog != null) && (toolTipDialog.isVisible() != shouldBeVisible)) {
             toolTipDialog.setVisible(shouldBeVisible);
         }
+    }
+
+    private boolean isOverDecorationPainter() {
+        Point mouseLocation = MouseInfo.getPointerInfo().getLocation();
+        SwingUtilities.convertPointFromScreen(mouseLocation, decorationPainter);
+        return decorationPainter.isVisible() && ((decorationPainter.getClipBounds() != null) && decorationPainter
+                .getClipBounds().contains(mouseLocation));
+    }
+
+    private boolean isOverToolTipDialog() {
+        boolean overToolTip = false;
+
+        if((toolTipDialog != null) && toolTipDialog.isVisible()) {
+            Point mouseLocation = MouseInfo.getPointerInfo().getLocation();
+            SwingUtilities.convertPointFromScreen(mouseLocation, toolTipDialog);
+            overToolTip = toolTipDialog.contains(mouseLocation);
+        }
+
+        return overToolTip;
     }
 
     /**
@@ -336,6 +355,9 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
     private void createToolTipDialogIfNeeded() {
         if (toolTipDialog == null) {
             toolTipDialog = new ToolTipDialog(decorationPainter, anchorLinkWithToolTip);
+            toolTipDialog.addMouseListener(toolTipVisibilityAdapter);
+            toolTipDialog.addMouseMotionListener(toolTipVisibilityAdapter);
+            toolTipDialog.addComponentListener(toolTipVisibilityAdapter);
         }
         toolTipDialog.setText(toolTipText);
     }
