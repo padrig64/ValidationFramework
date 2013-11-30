@@ -71,6 +71,9 @@ public abstract class AbstractIconFeedback<RHI> implements ResultHandler<RHI>, D
             decoration = new IconComponentDecoration(decoratedComponent);
             decoration.setAnchorLink(anchorLinkWithOwner);
             decoration.setVisible(wasVisible);
+
+            // Hide decoration when decorated component is disabled
+            decoration.setPaintWhenDisabled(false);
         }
     }
 
