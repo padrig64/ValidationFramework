@@ -41,9 +41,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Abstract implementation of a simple validator.<br>It merely implements the methods to add and remove triggers, data
- * providers, rules and result handlers. However, the use the connection between triggers, data providers, rules and
- * result handlers, as well as all the validation logic is left to the sub-classes.
+ * Abstract implementation of a simple validator.
+ * <p/>
+ * It merely implements the methods to add and remove triggers, data providers, rules and result handlers. However, the
+ * use the connection between triggers, data providers, rules and result handlers, as well as all the validation logic
+ * is left to the sub-classes.
  *
  * @param <T>   Type of trigger initiating the validation.
  * @param <DP>  Type of data provider providing the input data to be validated.
@@ -52,9 +54,9 @@ import java.util.Map;
  * @param <RI>  Type of data the rules will check.
  * @param <RO>  Type of result the rules will produce.
  * @param <RH>  Type of result handlers to be used on validation output.
- * @param <RHI> Type of result the result handlers will handle.<br>It may or may not be the same as RO depending on the
- *              implementations.<br>For instance, an implementation could aggregate/transform the results before using
- *              the result handlers.
+ * @param <RHI> Type of result the result handlers will handle.<br>
+ *              It may or may not be the same as RO depending on the implementations.<br>
+ *              For instance, an implementation could aggregate/transform the results before using the result handlers.
  *
  * @see Trigger
  * @see DataProvider
@@ -81,7 +83,7 @@ public abstract class AbstractSimpleValidator<T extends Trigger, DP extends Data
          *
          * @param trigger Trigger that is listened to.
          */
-        public TriggerAdapter(final T trigger) {
+        public TriggerAdapter(T trigger) {
             this.trigger = trigger;
         }
 
@@ -89,7 +91,7 @@ public abstract class AbstractSimpleValidator<T extends Trigger, DP extends Data
          * @see TriggerListener#triggerValidation(TriggerEvent)
          */
         @Override
-        public void triggerValidation(final TriggerEvent event) {
+        public void triggerValidation(TriggerEvent event) {
             // Start validation logic
             processTrigger(trigger);
         }
@@ -121,15 +123,24 @@ public abstract class AbstractSimpleValidator<T extends Trigger, DP extends Data
     protected final List<RH> resultHandlers = new ArrayList<RH>();
 
     /**
+     * Gets the triggers known to this validator.
+     *
+     * @return Triggers.
+     */
+    public Collection<T> getTriggers() {
+        return new ArrayList<T>(triggers);
+    }
+
+    /**
      * @see SimpleValidator#addTrigger(Trigger)
      */
     @Override
-    public void addTrigger(final T trigger) {
+    public void addTrigger(T trigger) {
         triggers.add(trigger);
 
         // Hook to trigger only if not already done (the same trigger listener will be used if it was already hooked)
         if (!triggersToTriggerAdapters.containsKey(trigger)) {
-            final TriggerListener triggerAdapter = new TriggerAdapter(trigger);
+            TriggerListener triggerAdapter = new TriggerAdapter(trigger);
             triggersToTriggerAdapters.put(trigger, triggerAdapter);
             trigger.addTriggerListener(triggerAdapter);
         }
@@ -139,11 +150,11 @@ public abstract class AbstractSimpleValidator<T extends Trigger, DP extends Data
      * @see SimpleValidator#removeTrigger(Trigger)
      */
     @Override
-    public void removeTrigger(final T trigger) {
+    public void removeTrigger(T trigger) {
         triggers.remove(trigger);
 
         // Unhook from trigger
-        final TriggerListener triggerAdapter = triggersToTriggerAdapters.get(trigger);
+        TriggerListener triggerAdapter = triggersToTriggerAdapters.get(trigger);
         trigger.removeTriggerListener(triggerAdapter);
 
         // Check if trigger was added several times
@@ -154,10 +165,19 @@ public abstract class AbstractSimpleValidator<T extends Trigger, DP extends Data
     }
 
     /**
+     * Gets the data providers known to this validator.
+     *
+     * @return Data providers.
+     */
+    public Collection<DP> getDataProviders() {
+        return new ArrayList<DP>(dataProviders);
+    }
+
+    /**
      * @see SimpleValidator#addDataProvider(DataProvider)
      */
     @Override
-    public void addDataProvider(final DP dataProvider) {
+    public void addDataProvider(DP dataProvider) {
         dataProviders.add(dataProvider);
     }
 
@@ -165,15 +185,24 @@ public abstract class AbstractSimpleValidator<T extends Trigger, DP extends Data
      * @see SimpleValidator#removeDataProvider(DataProvider)
      */
     @Override
-    public void removeDataProvider(final DP dataProvider) {
+    public void removeDataProvider(DP dataProvider) {
         dataProviders.remove(dataProvider);
+    }
+
+    /**
+     * Gets the rules known to this validator.
+     *
+     * @return Rules.
+     */
+    public Collection<R> getRules() {
+        return new ArrayList<R>(rules);
     }
 
     /**
      * @see SimpleValidator#addRule(Rule)
      */
     @Override
-    public void addRule(final R rule) {
+    public void addRule(R rule) {
         rules.add(rule);
     }
 
@@ -181,15 +210,24 @@ public abstract class AbstractSimpleValidator<T extends Trigger, DP extends Data
      * @see SimpleValidator#removeRule(Rule)
      */
     @Override
-    public void removeRule(final R rule) {
+    public void removeRule(R rule) {
         rules.remove(rule);
+    }
+
+    /**
+     * Gets the result handlers known to this validator.
+     *
+     * @return result handlers.
+     */
+    public Collection<RH> getResultHandlers() {
+        return new ArrayList<RH>(resultHandlers);
     }
 
     /**
      * @see SimpleValidator#addResultHandler(ResultHandler)
      */
     @Override
-    public void addResultHandler(final RH resultHandler) {
+    public void addResultHandler(RH resultHandler) {
         resultHandlers.add(resultHandler);
     }
 
@@ -197,7 +235,7 @@ public abstract class AbstractSimpleValidator<T extends Trigger, DP extends Data
      * @see SimpleValidator#removeResultHandler(ResultHandler)
      */
     @Override
-    public void removeResultHandler(final RH resultHandler) {
+    public void removeResultHandler(RH resultHandler) {
         resultHandlers.remove(resultHandler);
     }
 
@@ -207,9 +245,9 @@ public abstract class AbstractSimpleValidator<T extends Trigger, DP extends Data
     @Override
     public void dispose() {
         // Disconnect all installed triggers
-        for (final T trigger : triggers) {
+        for (T trigger : triggers) {
             // Disconnect trigger adapter and forget about the trigger
-            final TriggerListener triggerAdapter = triggersToTriggerAdapters.remove(trigger);
+            TriggerListener triggerAdapter = triggersToTriggerAdapters.remove(trigger);
             if (triggerAdapter != null) {
                 trigger.removeTriggerListener(triggerAdapter);
             }
@@ -227,9 +265,9 @@ public abstract class AbstractSimpleValidator<T extends Trigger, DP extends Data
      *
      * @param elements Collection of elements to be disposed (for instance, data providers, rules, result handlers).
      */
-    private void dispose(final Collection<?> elements) {
+    private void dispose(Collection<?> elements) {
         // Dispose all disposable elements
-        for (final Object element : elements) {
+        for (Object element : elements) {
             if (element instanceof Disposable) {
                 ((Disposable) element).dispose();
             }
@@ -240,10 +278,12 @@ public abstract class AbstractSimpleValidator<T extends Trigger, DP extends Data
     }
 
     /**
-     * Performs the whole validation logic for the specified trigger.<br>Typically, data will be read from the data
-     * providers and passed to the rules, and the rule results will be processed by the result handlers.
+     * Performs the whole validation logic for the specified trigger.
+     * <p/>
+     * Typically, data will be read from the data providers and passed to the rules, and the rule results will be
+     * processed by the result handlers.
      *
      * @param trigger Trigger actually initiated.
      */
-    protected abstract void processTrigger(final T trigger);
+    protected abstract void processTrigger(T trigger);
 }
