@@ -4,6 +4,8 @@
 * Fixed bug where IconComponentDecoration tooltip was constantly remaining on screen
 * Added ParseTransformer in core
 * Added FormatTransformer in core
+* Added CompositeTrigger in core
+* Added convenience getters to the AbstractSimpleValidator
 
 # Version 2.1.5
 
