@@ -30,7 +30,9 @@ import java.text.Format;
 /**
  * Transformer using a {@link Format} to format the input object into a string.
  * <p/>
- * If the specified format object or the input object to be formatted are null, then the output will be null.
+ * If the specified format object or the input object to be formatted are null, then the output will be null. If the
+ * input object cannot be formatted (the {@link Format} object throwing an {@link IllegalArgumentException}), then the
+ * output will be null.
  *
  * @see ParseTransformer
  */
@@ -75,8 +77,12 @@ public class FormatTransformer implements Transformer<Object, String> {
     public String transform(Object input) {
         String output = null;
 
-        if (format != null && input != null) {
-            output = format.format(input);
+        if ((format != null) && (input != null)) {
+            try {
+                output = format.format(input);
+            } catch (IllegalArgumentException e) {
+                // Ignore: null will be returned
+            }
         }
 
         return output;
