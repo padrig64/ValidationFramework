@@ -34,9 +34,10 @@ import java.util.List;
 /**
  * Abstraction of a composite rule composed of sub-rules.
  *
- * @param <RI> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
- *             type of the component itself.
- * @param <RO> Type of validation result.<br>It can be, for instance, an enumeration or just a boolean.
+ * @param <RI> Type of data to be validated.<br>
+ *             It can be, for instance, the type of data handled by a component, or the type of the component itself.
+ * @param <RO> Type of validation result.<br>
+ *             It can be, for instance, an enumeration or just a boolean.
  *
  * @see Rule
  * @see Disposable
@@ -62,9 +63,9 @@ public abstract class AbstractCompositeRule<RI, RO> implements Rule<RI, RO>, Dis
      *
      * @see #addRule(Rule)
      */
-    public AbstractCompositeRule(final Rule<RI, RO>... rules) {
+    public AbstractCompositeRule(Rule<RI, RO>... rules) {
         if (rules != null) {
-            for (final Rule<RI, RO> rule : rules) {
+            for (Rule<RI, RO> rule : rules) {
                 addRule(rule);
             }
         }
@@ -75,7 +76,7 @@ public abstract class AbstractCompositeRule<RI, RO> implements Rule<RI, RO>, Dis
      *
      * @param rule Sub-rule to be added.
      */
-    public void addRule(final Rule<RI, RO> rule) {
+    public void addRule(Rule<RI, RO> rule) {
         rules.add(rule);
     }
 
@@ -84,7 +85,7 @@ public abstract class AbstractCompositeRule<RI, RO> implements Rule<RI, RO>, Dis
      *
      * @param rule Sub-rule tobe removed
      */
-    public void removeRule(final Rule<RI, RO> rule) {
+    public void removeRule(Rule<RI, RO> rule) {
         rules.remove(rule);
     }
 
@@ -93,7 +94,7 @@ public abstract class AbstractCompositeRule<RI, RO> implements Rule<RI, RO>, Dis
      */
     @Override
     public void dispose() {
-        for (final Rule<RI, RO> rule : rules) {
+        for (Rule<RI, RO> rule : rules) {
             if (rule instanceof Disposable) {
                 ((Disposable) rule).dispose();
             }

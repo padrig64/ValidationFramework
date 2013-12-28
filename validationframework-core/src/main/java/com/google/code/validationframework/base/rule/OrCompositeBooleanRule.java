@@ -50,43 +50,36 @@ public class OrCompositeBooleanRule<RI> extends AbstractCompositeRule<RI, Boolea
      *
      * @see OrBooleanAggregator
      */
-    private final Transformer<Collection<Boolean>, Boolean> aggregator;
+    private final Transformer<Collection<Boolean>, Boolean> aggregator = new OrBooleanAggregator();
 
     /**
      * @see AbstractCompositeRule#AbstractCompositeRule()
      */
     public OrCompositeBooleanRule() {
         super();
-        aggregator = new OrBooleanAggregator();
     }
 
     /**
      * @see AbstractCompositeRule#AbstractCompositeRule(Rule[])
      */
-    public OrCompositeBooleanRule(final Rule<RI, Boolean>... rules) {
+    public OrCompositeBooleanRule(Rule<RI, Boolean>... rules) {
         super(rules);
-        aggregator = new OrBooleanAggregator();
     }
 
     /**
      * @see AbstractCompositeRule#validate(Object)
      */
     @Override
-    public Boolean validate(final RI data) {
+    public Boolean validate(RI data) {
         // Collect results
-        final Collection<Boolean> results = new ArrayList<Boolean>();
-        for (final Rule<RI, Boolean> rule : rules) {
-            final Boolean result = rule.validate(data);
+        Collection<Boolean> results = new ArrayList<Boolean>();
+        for (Rule<RI, Boolean> rule : rules) {
+            Boolean result = rule.validate(data);
             results.add(result);
         }
 
         // Aggregate results
-        Boolean aggregated = null;
-        if (aggregator != null) {
-            aggregated = aggregator.transform(results);
-        }
-
-        return aggregated;
+        return aggregator.transform(results);
     }
 
     /**
