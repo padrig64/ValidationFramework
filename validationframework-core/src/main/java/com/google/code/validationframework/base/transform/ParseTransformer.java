@@ -35,8 +35,12 @@ import java.text.ParsePosition;
  * string invalid if there is still some characters left to be parsed. For example, if the given {@link Format} object
  * is a {@link java.text.DecimalFormat}, parsing the string "1.4sdf" strictly will not be consider the parsed value to
  * be 1.4.
+ * <p/>
+ * If the format object or the input string to be parsed are null, then the ouput will be null.
  *
  * @param <O> Type of parsed object.
+ *
+ * @see ParseTransformer
  */
 public class ParseTransformer<O> implements Transformer<String, O> {
 

@@ -3,6 +3,7 @@
 * Fixed possible memory leak by removing decoration from layered pane when decorated component no longer in the component hierarchy tree
 * Fixed bug where IconComponentDecoration tooltip was constantly remaining on screen
 * Added ParseTransformer in core
+* Added FormatTransformer in core
 
 # Version 2.1.5
 
