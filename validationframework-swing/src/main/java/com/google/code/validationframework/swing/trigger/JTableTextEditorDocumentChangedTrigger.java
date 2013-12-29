@@ -39,10 +39,22 @@ import java.beans.PropertyChangeListener;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Trigger initiating the validation whenever the document of the text editor of one particular cell or any cell is
+ * changed.
+ */
 public class JTableTextEditorDocumentChangedTrigger extends AbstractTrigger implements Disposable {
 
+    /**
+     * Entity responsible of tracking text editors whenever the table is being edited.
+     * <p/>
+     * This entity will create and install a trigger for any new text component responsible for editing the cell.
+     */
     private class SourceAdapter implements PropertyChangeListener {
 
+        /**
+         * Mapping between editors and the triggers installed on them.
+         */
         private final Map<Object, Disposable> editorToTrigger = new HashMap<Object, Disposable>();
 
         /**
@@ -55,23 +67,34 @@ public class JTableTextEditorDocumentChangedTrigger extends AbstractTrigger impl
                 detach(evt.getOldValue());
             }
 
-            // Attach to new only if it is the right cell
-            if (evt.getNewValue() instanceof DefaultCellEditor) {
-                attach((DefaultCellEditor) evt.getNewValue());
+            // Attach to new editor if possible
+            if (evt.getNewValue() != null) {
+                attach(evt.getNewValue());
             }
         }
 
-        private void attach(DefaultCellEditor editor) {
-            Component editorComponent = editor.getComponent();
-            if (editorComponent instanceof JTextComponent) {
-                JTextComponentDocumentChangedTrigger trigger = new JTextComponentDocumentChangedTrigger(
-                        (JTextComponent) editorComponent);
-                trigger.addTriggerListener(triggerForwarder);
-                editorToTrigger.put(editor, trigger);
-                // TODO Check if already there?
+        /**
+         * Installs a trigger on the editor component if it is a text component.
+         *
+         * @param editor Editor to install a trigger to.
+         */
+        private void attach(Object editor) {
+            if ((editor instanceof DefaultCellEditor) && !editorToTrigger.containsKey(editor)) {
+                Component editorComponent = ((DefaultCellEditor) editor).getComponent();
+                if (editorComponent instanceof JTextComponent) {
+                    JTextComponentDocumentChangedTrigger trigger = new JTextComponentDocumentChangedTrigger(
+                            (JTextComponent) editorComponent);
+                    trigger.addTriggerListener(triggerForwarder);
+                    editorToTrigger.put(editor, trigger);
+                }
             }
         }
 
+        /**
+         * Uninstalls the previously installed trigger on the editor component.
+         *
+         * @param editor Editor to uninstall the trigger from.
+         */
         private void detach(Object editor) {
             Disposable trigger = editorToTrigger.get(editor);
             if (trigger != null) {
@@ -81,6 +104,10 @@ public class JTableTextEditorDocumentChangedTrigger extends AbstractTrigger impl
         }
     }
 
+    /**
+     * Trigger listener that will forward the trigger events from the text component editing the cell to the trigger
+     * listeners installed on this {@link JTableTextEditorDocumentChangedTrigger}.
+     */
     private class TriggerForwarder implements TriggerListener {
 
         /**
@@ -112,12 +139,17 @@ public class JTableTextEditorDocumentChangedTrigger extends AbstractTrigger impl
             } else if (modelColumnIndex == ALL_COLUMNS) {
                 allow = isTriggerAllowedOnRow();
             } else {
-                allow = isTriggerAllowedOnCell();
+                allow = isTriggerAllowedOnRow() && isTriggerAllowedOnColumn();
             }
 
             return allow;
         }
 
+        /**
+         * Checks whether the trigger event is allowed to be fired according the particular row model index.
+         *
+         * @return True if trigger is allowed, false otherwise.
+         */
         private boolean isTriggerAllowedOnRow() {
             boolean allow = false;
 
@@ -133,6 +165,11 @@ public class JTableTextEditorDocumentChangedTrigger extends AbstractTrigger impl
             return allow;
         }
 
+        /**
+         * Checks whether the trigger event is allowed to be fired according the particular column model index.
+         *
+         * @return True if trigger is allowed, false otherwise.
+         */
         private boolean isTriggerAllowedOnColumn() {
             boolean allow = false;
 
@@ -147,41 +184,73 @@ public class JTableTextEditorDocumentChangedTrigger extends AbstractTrigger impl
 
             return allow;
         }
-
-        private boolean isTriggerAllowedOnCell() {
-            boolean allow = false;
-
-            try {
-                int viewRowIndex = table.convertRowIndexToView(modelRowIndex);
-                int viewColumnIndex = table.convertColumnIndexToView(modelColumnIndex);
-                if ((viewRowIndex == table.getEditingRow()) && (viewColumnIndex == table.getEditingColumn())) {
-                    allow = true;
-                }
-            } catch (IndexOutOfBoundsException e) {
-                allow = false;
-            }
-
-            return allow;
-        }
     }
 
+    /**
+     * Constant representing any row.
+     *
+     * @see #JTableTextEditorDocumentChangedTrigger(JTable, int, int)
+     */
     public static final int ALL_ROWS = -1;
+
+    /**
+     * Constant representing any column.
+     *
+     * @see #JTableTextEditorDocumentChangedTrigger(JTable, int, int)
+     */
     public static final int ALL_COLUMNS = -1;
 
-    private JTable table = null;
+    /**
+     * Table to be monitored.
+     */
+    private final JTable table;
 
+    /**
+     * Model index of the row of the cell to be monitored.
+     *
+     * @see #ALL_ROWS
+     */
     private final int modelRowIndex;
 
+    /**
+     * Model index of the column of the cell to be monitored.
+     *
+     * @see #ALL_COLUMNS
+     */
     private final int modelColumnIndex;
 
+    /**
+     * Entity tracking the editor on the table.
+     */
     private final SourceAdapter sourceAdapter = new SourceAdapter();
 
+    /**
+     * Trigger listener forwarding trigger events from the text component editor to the listeners of this trigger.
+     */
     private final TriggerListener triggerForwarder = new TriggerForwarder();
 
+    /**
+     * Constructor specifying the table whose text editor should trigger the validation.
+     * <p/>
+     * Validation will be triggered for any edited cell.
+     *
+     * @param table Table whose text editor should trigger the validation.
+     */
     public JTableTextEditorDocumentChangedTrigger(JTable table) {
         this(table, ALL_ROWS, ALL_COLUMNS);
     }
 
+    /**
+     * Constructor specifying the table and cell position whose text editor should trigger the validation.
+     *
+     * @param table            Table whose text editor should trigger the validation.
+     * @param modelRowIndex    Model row index of the cell whose text editor should trigger the validation.
+     * @param modelColumnIndex Model column index of the cell whose text editor should trigger the validation.
+     *
+     * @see #ALL_ROWS
+     * @see #ALL_COLUMNS
+     * @see #JTableTextEditorDocumentChangedTrigger(JTable)
+     */
     public JTableTextEditorDocumentChangedTrigger(JTable table, int modelRowIndex, int modelColumnIndex) {
         super();
         this.table = table;
@@ -204,9 +273,6 @@ public class JTableTextEditorDocumentChangedTrigger extends AbstractTrigger impl
      */
     @Override
     public void dispose() {
-        if (table != null) {
-            table.removePropertyChangeListener("tableCellEditor", sourceAdapter);
-            table = null;
-        }
+        table.removePropertyChangeListener("tableCellEditor", sourceAdapter);
     }
 }

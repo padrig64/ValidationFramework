@@ -6,6 +6,7 @@
 * Added FormatTransformer in core
 * Added CompositeTrigger in core
 * Added convenience getters to the AbstractSimpleValidator
+* Minor fixes to avoid a NullPointerException in the JTableTextEditorModelChangedTrigger and JTableComboBoxEditorModelChangedTrigger
 
 # Version 2.1.5
 
