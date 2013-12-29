@@ -50,7 +50,7 @@ public class JTableComboBoxEditorModelChangedTrigger extends AbstractTrigger imp
      * <p/>
      * This entity will create and install a trigger for any new combobox component responsible for editing the cell.
      */
-    private class SourceAdapter implements PropertyChangeListener {
+    private class SourceAdapter implements PropertyChangeListener, Disposable {
 
         /**
          * Mapping between editors and the triggers installed on them.
@@ -101,6 +101,19 @@ public class JTableComboBoxEditorModelChangedTrigger extends AbstractTrigger imp
                 trigger.dispose();
                 editorToTrigger.remove(editor);
             }
+        }
+
+        /**
+         * @see Disposable#dispose()
+         * @see JTableComboBoxEditorModelChangedTrigger#dispose()
+         */
+        @Override
+        public void dispose() {
+            // Detach all
+            for (Map.Entry<Object, Disposable> entry : editorToTrigger.entrySet()) {
+                entry.getValue().dispose();
+            }
+            editorToTrigger.clear();
         }
     }
 
@@ -274,5 +287,6 @@ public class JTableComboBoxEditorModelChangedTrigger extends AbstractTrigger imp
     @Override
     public void dispose() {
         table.removePropertyChangeListener("tableCellEditor", sourceAdapter);
+        sourceAdapter.dispose();
     }
 }
