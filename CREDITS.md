@@ -8,8 +8,6 @@
 
 **Silk icon set 1.3**
 
-Author: Mark James
-
-Website: [www.famfamfam.com/lab/icons/silk/](http://www.famfamfam.com/lab/icons/silk/)
-
+Author: Mark James  
+Website: [www.famfamfam.com/lab/icons/silk/](http://www.famfamfam.com/lab/icons/silk/)  
 License: Creative Commons Attribution 3.0 License
