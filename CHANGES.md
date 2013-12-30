@@ -1,4 +1,4 @@
-# Version 2.1.6 (to be released)
+# Version 2.1.6
 
 * Fixed possible memory leak by removing decoration from layered pane when decorated component no longer in the component hierarchy tree
 * Fixed bug where IconComponentDecoration tooltip was constantly remaining on screen
