@@ -1,8 +1,7 @@
 # TO FIX
 
 * Convenient constructor in the component decorations (abstract + cell + comp)
-* Allow decoration on disabled components
-* Implement the same on tab decoration
+* Implement the same on tab decoration (including disabled decoration on disabled tab)
 * Painting of translucent decorations
 * Remaining icontip's tooltips when quickly moving mouse (in/outside tables): only on Linux? still happening?
 * Icon decoration steals mouse event even outside clipping bounds

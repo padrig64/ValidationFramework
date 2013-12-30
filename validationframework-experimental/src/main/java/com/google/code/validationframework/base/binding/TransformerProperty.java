@@ -25,10 +25,11 @@
 
 package com.google.code.validationframework.base.binding;
 
+import com.google.code.validationframework.base.transform.Transformer;
 import com.google.code.validationframework.base.utils.ValueUtils;
 
 /**
- * Simple implementation of a property that is both readable and writable.
+ * Implementation of a readable and writable property whose output is the result of the transformation of the input.
  * <p/>
  * Slaved properties will only be updated if the new value set on this property differs from the previous one.
  * <p/>
@@ -36,14 +37,20 @@ import com.google.code.validationframework.base.utils.ValueUtils;
  * <p/>
  * Finally note that this class is not thread-safe.
  *
- * @param <T> Type of property value.
+ * @param <I>
+ * @param <O>
  */
-public class SimpleProperty<T> extends AbstractReadableProperty<T> implements WritableProperty<T> {
+public class TransformerProperty<I, O> extends AbstractReadableProperty<O> implements WritableProperty<I> {
 
     /**
-     * Property value.
+     * Transformer to be used to transform input values.
      */
-    private T value = null;
+    private final Transformer<I, O> transformer;
+
+    /**
+     * Property output value.
+     */
+    private O value = null;
 
     /**
      * Flag used to avoid any infinite recursion.
@@ -51,26 +58,31 @@ public class SimpleProperty<T> extends AbstractReadableProperty<T> implements Wr
     private boolean settingValue = false;
 
     /**
-     * Default constructor using null as the initial property value.
+     * Constructor specifying the transformer to be used to transform input values, using null as the initial input
+     * value.
+     *
+     * @param transformer Transformer to transform input values.
      */
-    public SimpleProperty() {
-        this(null);
+    public TransformerProperty(Transformer<I, O> transformer) {
+        this(transformer, null);
     }
 
     /**
-     * Constructor specifying the initial property value.
+     * Constructor specifying the transformer to be used to transform input values, and the initial input value.
      *
-     * @param value Initial property value.
+     * @param transformer Transformer to transform input values.
+     * @param value       Initial property value.
      */
-    public SimpleProperty(T value) {
-        this.value = value;
+    public TransformerProperty(Transformer<I, O> transformer, I value) {
+        this.transformer = transformer;
+        this.value = transformer.transform(value);
     }
 
     /**
      * @see AbstractReadableProperty#getValue()
      */
     @Override
-    public T getValue() {
+    public O getValue() {
         return value;
     }
 
@@ -78,15 +90,16 @@ public class SimpleProperty<T> extends AbstractReadableProperty<T> implements Wr
      * @see WritableProperty#setValue(Object)
      */
     @Override
-    public void setValue(T value) {
+    public void setValue(I value) {
         if (!settingValue) {
             settingValue = true;
 
             // Update slaves only if the new value is different than the previous value
-            if (!ValueUtils.areEqual(this.value, value)) {
-                T oldValue = this.value;
-                this.value = value;
-                notifyListeners(oldValue, value);
+            O newValue = transformer.transform(value);
+            if (!ValueUtils.areEqual(this.value, newValue)) {
+                O oldValue = this.value;
+                this.value = newValue;
+                notifyListeners(oldValue, newValue);
             }
 
             settingValue = false;
