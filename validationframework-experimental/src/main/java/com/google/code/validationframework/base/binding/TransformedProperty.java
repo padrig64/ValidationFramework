@@ -25,6 +25,7 @@
 
 package com.google.code.validationframework.base.binding;
 
+import com.google.code.validationframework.api.binding.WritableProperty;
 import com.google.code.validationframework.base.transform.Transformer;
 import com.google.code.validationframework.base.utils.ValueUtils;
 
@@ -40,7 +41,7 @@ import com.google.code.validationframework.base.utils.ValueUtils;
  * @param <I>
  * @param <O>
  */
-public class TransformerProperty<I, O> extends AbstractReadableProperty<O> implements WritableProperty<I> {
+public class TransformedProperty<I, O> extends AbstractReadableProperty<O> implements WritableProperty<I> {
 
     /**
      * Transformer to be used to transform input values.
@@ -63,7 +64,7 @@ public class TransformerProperty<I, O> extends AbstractReadableProperty<O> imple
      *
      * @param transformer Transformer to transform input values.
      */
-    public TransformerProperty(Transformer<I, O> transformer) {
+    public TransformedProperty(Transformer<I, O> transformer) {
         this(transformer, null);
     }
 
@@ -73,7 +74,7 @@ public class TransformerProperty<I, O> extends AbstractReadableProperty<O> imple
      * @param transformer Transformer to transform input values.
      * @param value       Initial property value.
      */
-    public TransformerProperty(Transformer<I, O> transformer, I value) {
+    public TransformedProperty(Transformer<I, O> transformer, I value) {
         this.transformer = transformer;
         this.value = transformer.transform(value);
     }

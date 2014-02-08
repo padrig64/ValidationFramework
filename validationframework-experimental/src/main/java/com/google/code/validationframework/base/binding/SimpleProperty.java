@@ -25,6 +25,7 @@
 
 package com.google.code.validationframework.base.binding;
 
+import com.google.code.validationframework.api.binding.WritableProperty;
 import com.google.code.validationframework.base.utils.ValueUtils;
 
 /**

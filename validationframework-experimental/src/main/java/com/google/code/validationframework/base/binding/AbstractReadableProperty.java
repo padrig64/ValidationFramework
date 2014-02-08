@@ -25,6 +25,9 @@
 
 package com.google.code.validationframework.base.binding;
 
+import com.google.code.validationframework.api.binding.ReadableProperty;
+import com.google.code.validationframework.api.binding.ReadablePropertyChangeListener;
+
 import java.util.ArrayList;
 import java.util.List;
 

@@ -26,7 +26,7 @@
 package com.google.code.validationframework.base.dataprovider;
 
 import com.google.code.validationframework.api.dataprovider.DataProvider;
-import com.google.code.validationframework.base.binding.ReadableProperty;
+import com.google.code.validationframework.api.binding.ReadableProperty;
 
 /**
  * Data provider returning the value of a given property.

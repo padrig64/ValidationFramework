@@ -26,7 +26,7 @@
 package com.google.code.validationframework.base.resulthandler;
 
 import com.google.code.validationframework.api.resulthandler.ResultHandler;
-import com.google.code.validationframework.base.binding.WritableProperty;
+import com.google.code.validationframework.api.binding.WritableProperty;
 
 /**
  * Result handler setting the value of a given property with the validation result.

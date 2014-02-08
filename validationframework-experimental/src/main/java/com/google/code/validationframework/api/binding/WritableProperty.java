@@ -23,9 +23,28 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.base.binding;
+package com.google.code.validationframework.api.binding;
 
-public interface ReadablePropertyChangeListener<T> {
+/**
+ * Interface to be implemented by writable properties whose value can be set by the programmer or slave to readable
+ * properties.
+ * <p/>
+ * If you are using JavaFX, you should better use JavaFX's property binding mechanism. The binding mechanism provided by
+ * the ValidationFramework is mostly meant for Swing and other frameworks that can benefit from it. JavaFX has a much
+ * more furnished API to achieve similar goals and much more.
+ *
+ * @param <T> Type of property value.
+ *
+ * @see ReadableProperty
+ */
+public interface WritableProperty<T> {
 
-    void propertyChanged(ReadableProperty<T> property, T oldValue, T newValue);
+    /**
+     * Sets the value of the property.
+     * <p/>
+     * This method can be called by the programmer or a {@link ReadableProperty} that is bound to it.
+     *
+     * @param value Property value.
+     */
+    void setValue(T value);
 }

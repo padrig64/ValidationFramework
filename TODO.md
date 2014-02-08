@@ -10,7 +10,7 @@
 # TO MAKE
 
 * More JavaFX 2 support
-* 
+*
 * ResultCollector disposes other validator?
 * JFormattedTextFieldOptionalFormatterRule
 * JFormattedTextFieldOptionalValueProvider
@@ -40,7 +40,6 @@
 * Mappable validator builder
 * Common settings (default icons, etc.)
 * Rule-based formatter
-* Reformat/Revert JFormattedTextField when focus lost? Save values allowed by the rules (wider than the default number formatter)
 * Icon decoration above combobox popups
 * Tab decoration depending on tab selection
 * Better icon tip anchoring for IconTipDecorator
