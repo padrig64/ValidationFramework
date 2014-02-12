@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Patrick Moawad
+ * Copyright (c) 2014, Patrick Moawad
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,8 +25,9 @@
 
 package com.google.code.validationframework.base.binding;
 
+import com.google.code.validationframework.api.binding.ChangeListener;
 import com.google.code.validationframework.api.binding.ReadableProperty;
-import com.google.code.validationframework.api.binding.ReadablePropertyChangeListener;
+import com.google.code.validationframework.base.utils.ValueUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,23 +46,23 @@ public abstract class AbstractReadableProperty<T> implements ReadableProperty<T>
     /**
      * Writable properties to be updated.
      */
-    private final List<ReadablePropertyChangeListener<T>> listeners = new
-            ArrayList<ReadablePropertyChangeListener<T>>();
+    private final List<ChangeListener<T>> listeners = new
+            ArrayList<ChangeListener<T>>();
 
     /**
-     * @see ReadableProperty#addChangeListener(ReadablePropertyChangeListener)
+     * @see ReadableProperty#addChangeListener(ChangeListener)
      */
     @Override
-    public void addChangeListener(ReadablePropertyChangeListener<T> listener) {
+    public void addChangeListener(ChangeListener<T> listener) {
         listeners.add(listener);
         listener.propertyChanged(this, null, getValue());
     }
 
     /**
-     * @see ReadableProperty#removeChangeListener(ReadablePropertyChangeListener)
+     * @see ReadableProperty#removeChangeListener(ChangeListener)
      */
     @Override
-    public void removeChangeListener(ReadablePropertyChangeListener<T> listener) {
+    public void removeChangeListener(ChangeListener<T> listener) {
         listeners.remove(listener);
     }
 
@@ -71,8 +72,14 @@ public abstract class AbstractReadableProperty<T> implements ReadableProperty<T>
      * @see #getValue()
      */
     protected void notifyListeners(T oldValue, T newValue) {
-        for (ReadablePropertyChangeListener<T> listener : listeners) {
-            listener.propertyChanged(this, oldValue, newValue);
+        notifyListeners(oldValue, newValue, false);
+    }
+
+    protected void notifyListeners(T oldValue, T newValue, boolean evenIfNoChange) {
+        if (evenIfNoChange || !ValueUtils.areEqual(oldValue, newValue)) {
+            for (ChangeListener<T> listener : listeners) {
+                listener.propertyChanged(this, oldValue, newValue);
+            }
         }
     }
 }

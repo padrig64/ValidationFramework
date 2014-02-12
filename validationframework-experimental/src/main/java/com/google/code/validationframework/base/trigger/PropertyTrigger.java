@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Patrick Moawad
+ * Copyright (c) 2014, Patrick Moawad
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,7 +28,7 @@ package com.google.code.validationframework.base.trigger;
 import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.api.trigger.TriggerEvent;
 import com.google.code.validationframework.api.binding.ReadableProperty;
-import com.google.code.validationframework.api.binding.ReadablePropertyChangeListener;
+import com.google.code.validationframework.api.binding.ChangeListener;
 
 /**
  * Trigger initiating the validation whenever the value of a specified property changes.
@@ -40,10 +40,10 @@ public class PropertyTrigger<T> extends AbstractTrigger {
     /**
      * Entity tracking changes of the property and triggering the validation.
      */
-    private class ChangeAdapter implements ReadablePropertyChangeListener<T> {
+    private class ChangeAdapter implements ChangeListener<T> {
 
         /**
-         * @see ReadablePropertyChangeListener#propertyChanged(ReadableProperty, Object, Object)
+         * @see com.google.code.validationframework.api.binding.ChangeListener#propertyChanged(ReadableProperty, Object, Object)
          */
         @Override
         public void propertyChanged(ReadableProperty<T> property, T oldValue, T newValue) {
@@ -59,7 +59,7 @@ public class PropertyTrigger<T> extends AbstractTrigger {
     /**
      * Property change listener to trigger the validation.
      */
-    private final ReadablePropertyChangeListener<T> propertyChangeAdapter = new ChangeAdapter();
+    private final ChangeListener<T> propertyChangeAdapter = new ChangeAdapter();
 
     /**
      * Constructor specifying the property whose changes should trigger the validation.

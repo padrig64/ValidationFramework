@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Patrick Moawad
+ * Copyright (c) 2014, Patrick Moawad
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,7 +39,7 @@ import java.beans.PropertyChangeListener;
  * <p/>
  * Note that change listeners will not be notified if the {@link Component} is not a {@link javax.swing.JComponent}.
  */
-public class ComponentAncestorProperty extends AbstractReadableProperty<Container> implements Disposable {
+public class AncestorProperty extends AbstractReadableProperty<Container> implements Disposable {
 
     private class PropertyChangeAdapter implements PropertyChangeListener {
 
@@ -59,7 +59,7 @@ public class ComponentAncestorProperty extends AbstractReadableProperty<Containe
 
     private Container value = null;
 
-    public ComponentAncestorProperty(Component component) {
+    public AncestorProperty(Component component) {
         this.component = component;
         this.component.addPropertyChangeListener("ancestor", propertyChangeAdapter);
         setValue(component.getParent());

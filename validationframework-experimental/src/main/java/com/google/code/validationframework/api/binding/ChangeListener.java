@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Patrick Moawad
+ * Copyright (c) 2014, Patrick Moawad
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,7 +25,7 @@
 
 package com.google.code.validationframework.api.binding;
 
-public interface ReadablePropertyChangeListener<T> {
+public interface ChangeListener<T> {
 
     void propertyChanged(ReadableProperty<T> property, T oldValue, T newValue);
 }

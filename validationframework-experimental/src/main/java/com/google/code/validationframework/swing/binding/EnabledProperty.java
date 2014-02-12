@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Patrick Moawad
+ * Copyright (c) 2014, Patrick Moawad
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,22 +29,23 @@ import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.base.binding.AbstractReadableProperty;
 import com.google.code.validationframework.api.binding.WritableProperty;
 
-import javax.swing.JToggleButton;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import java.awt.Component;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
-public class JToggleButtonSelectedProperty extends AbstractReadableProperty<Boolean> implements
-        WritableProperty<Boolean>, Disposable {
+public class EnabledProperty extends AbstractReadableProperty<Boolean> implements WritableProperty<Boolean>,
+        Disposable {
 
-    private class PropertyChangeAdapter implements ItemListener {
+    private class PropertyChangeAdapter implements PropertyChangeListener {
 
         @Override
-        public void itemStateChanged(ItemEvent e) {
-            setValue(component.isSelected());
+        public void propertyChange(PropertyChangeEvent evt) {
+            setValue(component.isEnabled());
         }
+
     }
 
-    private final JToggleButton component;
+    private final Component component;
 
     private final PropertyChangeAdapter propertyChangeAdapter = new PropertyChangeAdapter();
 
@@ -52,10 +53,10 @@ public class JToggleButtonSelectedProperty extends AbstractReadableProperty<Bool
 
     private boolean value = false;
 
-    public JToggleButtonSelectedProperty(JToggleButton component) {
+    public EnabledProperty(Component component) {
         this.component = component;
-        this.component.addItemListener(propertyChangeAdapter);
-        setValue(component.isSelected());
+        this.component.addPropertyChangeListener("enabled", propertyChangeAdapter);
+        setValue(component.isEnabled());
     }
 
     /**
@@ -63,7 +64,7 @@ public class JToggleButtonSelectedProperty extends AbstractReadableProperty<Bool
      */
     @Override
     public void dispose() {
-        component.removeItemListener(propertyChangeAdapter);
+        component.removePropertyChangeListener("enabled", propertyChangeAdapter);
     }
 
     /**
@@ -89,7 +90,7 @@ public class JToggleButtonSelectedProperty extends AbstractReadableProperty<Bool
             if (this.value != normalizedValue) {
                 Boolean oldValue = this.value;
                 this.value = normalizedValue;
-                component.setSelected(normalizedValue);
+                component.setEnabled(normalizedValue);
                 notifyListeners(oldValue, normalizedValue);
             }
 

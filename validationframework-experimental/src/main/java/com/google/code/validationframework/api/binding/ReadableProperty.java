@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Patrick Moawad
+ * Copyright (c) 2014, Patrick Moawad
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,7 +26,7 @@
 package com.google.code.validationframework.api.binding;
 
 /**
- * Interface to be implemented by readable property that can notify {@link ReadablePropertyChangeListener}s.
+ * Interface to be implemented by readable property that can notify {@link ChangeListener}s.
  * <p/>
  * If you are using JavaFX, you should better use JavaFX's property binding mechanism. The binding mechanism provided by
  * the ValidationFramework is mostly meant for Swing and other frameworks that can benefit from it. JavaFX has a much
@@ -45,14 +45,14 @@ public interface ReadableProperty<T> {
      *
      * @param listener {@link WritableProperty} to be slaved.
      */
-    void addChangeListener(ReadablePropertyChangeListener<T> listener);
+    void addChangeListener(ChangeListener<T> listener);
 
     /**
      * Removes the {@link WritableProperty}.
      *
      * @param listener {@link WritableProperty} that should no longer be slaved.
      */
-    void removeChangeListener(ReadablePropertyChangeListener<T> listener);
+    void removeChangeListener(ChangeListener<T> listener);
 
     /**
      * Gets the value of the property.

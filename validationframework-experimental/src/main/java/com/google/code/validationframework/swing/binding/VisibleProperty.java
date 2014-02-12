@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Patrick Moawad
+ * Copyright (c) 2014, Patrick Moawad
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -38,7 +38,7 @@ import java.beans.PropertyChangeListener;
  * <p/>
  * Note that change listeners will not be notified if the {@link Component} is not a {@link javax.swing.JComponent}.
  */
-public class ComponentVisibleProperty extends AbstractReadableProperty<Boolean> implements WritableProperty<Boolean>,
+public class VisibleProperty extends AbstractReadableProperty<Boolean> implements WritableProperty<Boolean>,
         Disposable {
 
     private class PropertyChangeAdapter implements PropertyChangeListener {
@@ -57,14 +57,14 @@ public class ComponentVisibleProperty extends AbstractReadableProperty<Boolean> 
 
     private boolean value = false;
 
-    public ComponentVisibleProperty(Component component) {
+    public VisibleProperty(Component component) {
         this.component = component;
         this.component.addPropertyChangeListener("visible", propertyChangeAdapter);
         setValue(component.isVisible());
     }
 
     /**
-     * @see com.google.code.validationframework.api.common.Disposable#dispose()
+     * @see Disposable#dispose()
      */
     @Override
     public void dispose() {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Patrick Moawad
+ * Copyright (c) 2014, Patrick Moawad
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,25 +29,22 @@ import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.base.binding.AbstractReadableProperty;
 import com.google.code.validationframework.api.binding.WritableProperty;
 
-import javax.swing.JComponent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+import javax.swing.JToggleButton;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
-/**
- * Readable/writable property representing the opaque property of a {@link JComponent}.
- */
-public class JComponentOpaqueProperty extends AbstractReadableProperty<Boolean> implements WritableProperty<Boolean>,
-        Disposable {
+public class SelectedProperty extends AbstractReadableProperty<Boolean> implements
+        WritableProperty<Boolean>, Disposable {
 
-    private class PropertyChangeAdapter implements PropertyChangeListener {
+    private class PropertyChangeAdapter implements ItemListener {
 
         @Override
-        public void propertyChange(PropertyChangeEvent evt) {
-            setValue(component.isOpaque());
+        public void itemStateChanged(ItemEvent e) {
+            setValue(component.isSelected());
         }
     }
 
-    private final JComponent component;
+    private final JToggleButton component;
 
     private final PropertyChangeAdapter propertyChangeAdapter = new PropertyChangeAdapter();
 
@@ -55,10 +52,10 @@ public class JComponentOpaqueProperty extends AbstractReadableProperty<Boolean> 
 
     private boolean value = false;
 
-    public JComponentOpaqueProperty(JComponent component) {
+    public SelectedProperty(JToggleButton component) {
         this.component = component;
-        this.component.addPropertyChangeListener("opaque", propertyChangeAdapter);
-        setValue(component.isOpaque());
+        this.component.addItemListener(propertyChangeAdapter);
+        setValue(component.isSelected());
     }
 
     /**
@@ -66,7 +63,7 @@ public class JComponentOpaqueProperty extends AbstractReadableProperty<Boolean> 
      */
     @Override
     public void dispose() {
-        component.removePropertyChangeListener("opaque", propertyChangeAdapter);
+        component.removeItemListener(propertyChangeAdapter);
     }
 
     /**
@@ -92,7 +89,7 @@ public class JComponentOpaqueProperty extends AbstractReadableProperty<Boolean> 
             if (this.value != normalizedValue) {
                 Boolean oldValue = this.value;
                 this.value = normalizedValue;
-                component.setOpaque(normalizedValue);
+                component.setSelected(normalizedValue);
                 notifyListeners(oldValue, normalizedValue);
             }
 

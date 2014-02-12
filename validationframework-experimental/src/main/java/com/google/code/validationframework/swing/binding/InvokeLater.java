@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Patrick Moawad
+ * Copyright (c) 2014, Patrick Moawad
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,8 +25,8 @@
 
 package com.google.code.validationframework.swing.binding;
 
+import com.google.code.validationframework.api.binding.ChangeListener;
 import com.google.code.validationframework.base.binding.AbstractReadableProperty;
-import com.google.code.validationframework.api.binding.ReadablePropertyChangeListener;
 import com.google.code.validationframework.api.binding.WritableProperty;
 
 import javax.swing.SwingUtilities;
@@ -57,19 +57,19 @@ public class InvokeLater<T> extends AbstractReadableProperty<T> implements Writa
         value = initialValue;
     }
 
-    public InvokeLater(ReadablePropertyChangeListener<T>... listeners) {
+    public InvokeLater(ChangeListener<T>... listeners) {
         if (listeners != null) {
-            for (ReadablePropertyChangeListener<T> listener : listeners) {
+            for (ChangeListener<T> listener : listeners) {
                 addChangeListener(listener);
             }
         }
     }
 
-    public InvokeLater(T initialValue, ReadablePropertyChangeListener<T>... listeners) {
+    public InvokeLater(T initialValue, ChangeListener<T>... listeners) {
         value = initialValue;
 
         if (listeners != null) {
-            for (ReadablePropertyChangeListener<T> listener : listeners) {
+            for (ChangeListener<T> listener : listeners) {
                 addChangeListener(listener);
             }
         }

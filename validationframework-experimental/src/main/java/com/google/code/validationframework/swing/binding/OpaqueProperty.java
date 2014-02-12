@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Patrick Moawad
+ * Copyright (c) 2014, Patrick Moawad
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,36 +28,37 @@ package com.google.code.validationframework.swing.binding;
 import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.base.binding.AbstractReadableProperty;
 import com.google.code.validationframework.api.binding.WritableProperty;
-import com.google.code.validationframework.base.utils.ValueUtils;
 
-import javax.swing.JFormattedTextField;
+import javax.swing.JComponent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-public class JFormattedTextFieldValueProperty extends AbstractReadableProperty<Object> implements
-        WritableProperty<Object>, Disposable {
+/**
+ * Readable/writable property representing the opaque property of a {@link JComponent}.
+ */
+public class OpaqueProperty extends AbstractReadableProperty<Boolean> implements WritableProperty<Boolean>,
+        Disposable {
 
     private class PropertyChangeAdapter implements PropertyChangeListener {
 
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
-            setValue(formattedTextField.getValue());
+            setValue(component.isOpaque());
         }
-
     }
 
-    private final JFormattedTextField formattedTextField;
+    private final JComponent component;
 
     private final PropertyChangeAdapter propertyChangeAdapter = new PropertyChangeAdapter();
 
     private boolean settingValue = false;
 
-    private Object value = null;
+    private boolean value = false;
 
-    public JFormattedTextFieldValueProperty(JFormattedTextField formattedTextField) {
-        this.formattedTextField = formattedTextField;
-        this.formattedTextField.addPropertyChangeListener("value", propertyChangeAdapter);
-        setValue(formattedTextField.getValue());
+    public OpaqueProperty(JComponent component) {
+        this.component = component;
+        this.component.addPropertyChangeListener("opaque", propertyChangeAdapter);
+        setValue(component.isOpaque());
     }
 
     /**
@@ -65,14 +66,14 @@ public class JFormattedTextFieldValueProperty extends AbstractReadableProperty<O
      */
     @Override
     public void dispose() {
-        formattedTextField.removePropertyChangeListener("value", propertyChangeAdapter);
+        component.removePropertyChangeListener("opaque", propertyChangeAdapter);
     }
 
     /**
      * @see AbstractReadableProperty#getValue()
      */
     @Override
-    public Object getValue() {
+    public Boolean getValue() {
         return value;
     }
 
@@ -80,15 +81,19 @@ public class JFormattedTextFieldValueProperty extends AbstractReadableProperty<O
      * @see WritableProperty#setValue(Object)
      */
     @Override
-    public void setValue(Object value) {
+    public void setValue(Boolean value) {
         if (!settingValue) {
             settingValue = true;
 
-            if (!ValueUtils.areEqual(this.value, value)) {
-                Object oldValue = this.value;
-                this.value = value;
-                formattedTextField.setValue(value);
-                notifyListeners(oldValue, value);
+            boolean normalizedValue = false;
+            if (value != null) {
+                normalizedValue = value;
+            }
+            if (this.value != normalizedValue) {
+                Boolean oldValue = this.value;
+                this.value = normalizedValue;
+                component.setOpaque(normalizedValue);
+                notifyListeners(oldValue, normalizedValue);
             }
 
             settingValue = false;
