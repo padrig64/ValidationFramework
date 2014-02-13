@@ -34,14 +34,19 @@ import java.text.ParseException;
 import java.text.ParsePosition;
 
 /**
- * Wrapper for {@link java.text.Format} objects that adds additional convenient features.
+ * Wrapper for {@link Format} objects that adds additional convenient features.
  * <p/>
  * The wrapper allows stricter parsing of input strings. This means that if an object has been successfully parsed from
  * an input string, but if there are still characters left, the input string will be considered invalid. This differs
- * from the default best-effort parsing from the super class.
+ * from the default best-effort parsing from the super class. For example, it may be useful to wrap the {@link java
+ * .text.DecimalFormat} to consider the string "0.7dfg" invalid.
  * <p/>
- * Also, the wrapper allows null objects to be formatted. The behavior is that it will just be ignore and not fire any
- * exception.
+ * Also, the wrapper allows null and empty strings to be parsed without throwing an exception. For example, it may be
+ * useful to wrap a {@link java.text.DecimalFormat} to consider an input field valid when the operator leaves it empty.
+ * <p/>
+ * Additionally, the wrapper allows null objects to be formatted. The behavior is that it will just be ignore and not
+ * fire any exception. Formatting a null object will result in an empty string. It may be useful to wrap a {@link
+ * Format} object that does not support null values.
  * <p/>
  * Finally, the wrapper allows to transform the parsed object before returning it. This can be useful when wrapping
  * a number format, for example, that does not return always the same type of parsed object (sometimes a Long, sometimes
@@ -49,6 +54,10 @@ import java.text.ParsePosition;
  * more useful to applications.
  *
  * @param <T> Type of parsed objects.
+ *
+ * @see #strictParsing
+ * @see #nullValueFormatting
+ * @see #nullOrEmptyTextParsing
  */
 public class FormatWrapper<T> extends Format {
 
@@ -60,6 +69,12 @@ public class FormatWrapper<T> extends Format {
     private final Format delegate;
 
     private final Transformer<Object, T> parsedObjectTransformer;
+
+    private boolean strictParsing = true;
+
+    private boolean nullOrEmptyTextParsing = true;
+
+    private boolean nullValueFormatting = true;
 
     public FormatWrapper(Format delegate) {
         this(delegate, null);
@@ -76,27 +91,55 @@ public class FormatWrapper<T> extends Format {
         }
     }
 
+    public boolean getStrictParsing() {
+        return strictParsing;
+    }
+
+    public void setStrictParsing(boolean strictParsing) {
+        this.strictParsing = strictParsing;
+    }
+
+    public boolean getNullOrEmptyTextParsing() {
+        return nullOrEmptyTextParsing;
+    }
+
+    public void setNullOrEmptyTextParsing(boolean nullOrEmptyTextParsing) {
+        this.nullOrEmptyTextParsing = nullOrEmptyTextParsing;
+    }
+
+    public boolean getNullValueFormatting() {
+        return nullValueFormatting;
+    }
+
+    public void setNullValueFormatting(boolean nullValueFormatting) {
+        this.nullValueFormatting = nullValueFormatting;
+    }
+
     /**
      * @see Format#parseObject(String)
      */
     @Override
     public T parseObject(String source) throws ParseException {
-        ParsePosition pos = new ParsePosition(0);
-        Object rawResult = parseObject(source, pos);
-
-        T transformedResult;
-        if (pos.getIndex() == 0) {
-            // Default behavior of super class
-            throw new ParseException("Failed parsing '" + source + "'", pos.getErrorIndex());
-        } else if (pos.getIndex() != source.length()) {
-            // Stricter parsing than in super class
-            throw new ParseException("Failed parsing '" + source + "'", pos.getIndex());
+        Object rawResult;
+        if (nullOrEmptyTextParsing && ((source == null) || source.isEmpty())) {
+            // Allow null and empty text, so do not use the delegate format
+            rawResult = null;
         } else {
-            // Transform output
-            transformedResult = parsedObjectTransformer.transform(rawResult);
+            // Delegate the parsing
+            ParsePosition pos = new ParsePosition(0);
+            rawResult = parseObject(source, pos);
+
+            if (pos.getIndex() == 0) {
+                // Default behavior of super class
+                throw new ParseException("Failed parsing '" + source + "'", pos.getErrorIndex());
+            } else if (strictParsing && (pos.getIndex() != source.length())) {
+                // Stricter parsing than in super class
+                throw new ParseException("Failed parsing '" + source + "'", pos.getIndex());
+            }
         }
 
-        return transformedResult;
+        // Transform output
+        return parsedObjectTransformer.transform(rawResult);
     }
 
     /**
@@ -104,16 +147,7 @@ public class FormatWrapper<T> extends Format {
      */
     @Override
     public Object parseObject(String source, ParsePosition pos) {
-        Object parsedObject;
-
-        if (delegate == null) {
-            parsedObject = source;
-            pos.setIndex(source.length());
-        } else {
-            parsedObject = delegate.parseObject(source, pos);
-        }
-
-        return parsedObject;
+        return delegate.parseObject(source, pos);
     }
 
     /**
@@ -123,8 +157,8 @@ public class FormatWrapper<T> extends Format {
     public StringBuffer format(Object obj, StringBuffer toAppendTo, FieldPosition pos) {
         StringBuffer formatted;
 
-        if ((obj == null) || (delegate == null)) {
-            // Allow null input object: just do not do anything with it
+        if (nullValueFormatting && (obj == null)) {
+            // Allow null input object: just do nothing with it
             formatted = toAppendTo;
         } else {
             formatted = delegate.format(obj, toAppendTo, pos);
