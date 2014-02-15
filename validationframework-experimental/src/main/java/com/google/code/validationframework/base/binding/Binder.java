@@ -25,6 +25,7 @@
 
 package com.google.code.validationframework.base.binding;
 
+import com.google.code.validationframework.api.binding.ChangeListener;
 import com.google.code.validationframework.api.binding.ReadableProperty;
 import com.google.code.validationframework.api.binding.WritableProperty;
 import com.google.code.validationframework.base.transform.Transformer;
@@ -51,9 +52,9 @@ public final class Binder {
 
         private final ReadableProperty<MO> master;
 
-        private final List<Transformer> transformers = new ArrayList<Transformer>();
+        private final List<Transformer<?, ?>> transformers = new ArrayList<Transformer<?, ?>>();
 
-        public SingleMasterBinding(ReadableProperty<MO> master, Collection<Transformer> transformers) {
+        public SingleMasterBinding(ReadableProperty<MO> master, Collection<Transformer<?, ?>> transformers) {
             this.master = master;
             if (transformers != null) {
                 this.transformers.addAll(transformers);
@@ -65,15 +66,31 @@ public final class Binder {
             return new SingleMasterBinding<MO, TSI>(master, transformers);
         }
 
-        public Bond<MO, SI> to(WritableProperty<SI> slave) {
-            return new Bond<MO, SI>(Collections.singleton(master), transformers, Collections.singleton(slave));
+        public CompositeReadableProperty<MO, SI> to(final WritableProperty<SI> slave) {
+            CompositeReadableProperty<MO, SI> bond = new CompositeReadableProperty<MO, SI>(Collections.singleton(master));
+            bond.addChangeListener(new ChangeListener<SI>() {
+                @Override
+                public void propertyChanged(ReadableProperty<SI> property, SI oldValue, SI newValue) {
+                    slave.setValue(newValue);
+                }
+            });
+            return bond;
         }
 
-        public Bond<MO, SI> to(Collection<WritableProperty<SI>> slaves) {
-            return new Bond<MO, SI>(Collections.singleton(master), transformers, slaves);
+        public CompositeReadableProperty<MO, SI> to(Collection<WritableProperty<SI>> slaves) {
+            CompositeReadableProperty<MO, SI> bond = new CompositeReadableProperty<MO, SI>(Collections.singleton(master), transformers);
+            for (final WritableProperty<SI> slave : slaves) {
+                bond.addChangeListener(new ChangeListener<SI>() {
+                    @Override
+                    public void propertyChanged(ReadableProperty<SI> property, SI oldValue, SI newValue) {
+                        slave.setValue(newValue);
+                    }
+                });
+            }
+            return bond;
         }
 
-        public Bond<MO, SI> to(WritableProperty<SI>... slaves) {
+        public CompositeReadableProperty<MO, SI> to(WritableProperty<SI>... slaves) {
             return to(Arrays.asList(slaves));
         }
     }
@@ -97,14 +114,20 @@ public final class Binder {
         }
 
         public Bond<MO, SI> to(WritableProperty<SI> slave) {
-            return new Bond<MO, SI>(masters, transformers, Collections.singleton(slave));
+            return new Bond<MO, SI>(masters, transformers, slave);
         }
 
-        public Bond<MO, SI> to(Collection<WritableProperty<SI>> slaves) {
-            return new Bond<MO, SI>(masters, transformers, slaves);
+        public Collection<Bond<MO, SI>> to(Collection<WritableProperty<SI>> slaves) {
+            Collection<Bond<MO, SI>> bonds = new ArrayList<Bond<MO, SI>>();
+
+            for (WritableProperty<SI> slave : slaves) {
+                bonds.add(new Bond<MO, SI>(masters, transformers, slave));
+            }
+
+            return bonds;
         }
 
-        public Bond<MO, SI> to(WritableProperty<SI>... slaves) {
+        public Collection<Bond<MO, SI>> to(WritableProperty<SI>... slaves) {
             return to(Arrays.asList(slaves));
         }
     }

@@ -27,26 +27,25 @@ package com.google.code.validationframework.base.binding;
 
 import com.google.code.validationframework.api.binding.ChangeListener;
 import com.google.code.validationframework.api.binding.ReadableProperty;
-import com.google.code.validationframework.api.binding.WritableProperty;
-import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.base.transform.CastTransformer;
 import com.google.code.validationframework.base.transform.Transformer;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
-public class Bond<MO, SI> implements Disposable {
+public class CompositeReadableProperty<I, O> extends AbstractReadableProperty<O> {
 
-    private class MasterAdapter implements ChangeListener<MO> {
+    private class ChangeAdapter implements ChangeListener<I> {
 
-        private final Transformer<Object, SI> lastTransformer = new CastTransformer<Object, SI>();
+        private final Transformer<Object, O> lastTransformer = new CastTransformer<Object, O>();
 
         @Override
-        public void propertyChanged(ReadableProperty<MO> property, MO oldValue, MO newValue) {
-            // Get value from all masters
-            List<MO> values = new ArrayList<MO>();
-            for (ReadableProperty<MO> master : masters) {
+        public void propertyChanged(ReadableProperty<I> property, I oldValue, I newValue) {
+            // Get value from all properties
+            List<I> values = new ArrayList<I>();
+            for (ReadableProperty<I> master : properties) {
                 values.add(master.getValue());
             }
 
@@ -55,51 +54,62 @@ public class Bond<MO, SI> implements Disposable {
             for (Transformer transformer : transformers) {
                 transformedValue = transformer.transform(transformedValue);
             }
-            SI slaveInputValue = lastTransformer.transform(transformedValue);
+            O slaveInputValue = lastTransformer.transform(transformedValue);
 
-            // Notify slave
-            slave.setValue(slaveInputValue);
+            // Notify slaves
+            setValue(slaveInputValue);
         }
     }
 
-    private final MasterAdapter masterAdapter = new MasterAdapter();
+    private final Collection<ReadableProperty<I>> properties = new ArrayList<ReadableProperty<I>>();
 
-    private final Collection<ReadableProperty<MO>> masters;
+    private final Collection<Transformer<?, ?>> transformers = new ArrayList<Transformer<?, ?>>();
 
-    private final Collection<Transformer> transformers;
+    private O value = null;
 
-    private final WritableProperty<SI> slave;
-
-    public Bond(Collection<ReadableProperty<MO>> masters, Collection<Transformer> transformers,
-                WritableProperty<SI> slave) {
-        this.masters = masters;
-        this.transformers = transformers;
-        this.slave = slave;
-
-        for (ReadableProperty<MO> master : masters) {
-            master.addChangeListener(masterAdapter);
-        }
-
-        // Slave initial values
-        masterAdapter.propertyChanged(null, null, null);
+    public CompositeReadableProperty() {
+        super();
     }
 
-    public Collection<ReadableProperty<MO>> getMasters() {
-        return masters;
+    public CompositeReadableProperty(ReadableProperty<I>... properties) {
+        super();
+        Collections.addAll(this.properties, properties);
+        // TODO Update composition value + notify
     }
 
-    public Collection<Transformer> getTransformers() {
-        return transformers;
+    public CompositeReadableProperty(Collection<ReadableProperty<I>> properties) {
+        super();
+        this.properties.addAll(properties);
+        // TODO Update composition value + notify
     }
 
-    public WritableProperty<SI> getSlave() {
-        return slave;
+    public CompositeReadableProperty(Collection<ReadableProperty<I>> properties, Collection<Transformer<?,
+            ?>> transformers) {
+        super();
+        this.properties.addAll(properties);
+        this.transformers.addAll(transformers);
+        // TODO Update composition value + notify
+    }
+
+    public void addProperty(ReadableProperty<I> property) {
+        properties.add(property);
+        // TODO Update composition value + notify
+    }
+
+    public void removeProperty(ReadableProperty property) {
+        properties.remove(property);
+        // TODO Update composition value + notify
     }
 
     @Override
-    public void dispose() {
-        for (ReadableProperty<MO> master : masters) {
-            master.removeChangeListener(masterAdapter);
-        }
+    public O getValue() {
+        // TODO
+        return value;
+    }
+
+    private void setValue(O value) {
+        O oldValue = this.value;
+        this.value = value;
+        notifyListeners(oldValue, value);
     }
 }

@@ -25,7 +25,7 @@
 
 package com.google.code.validationframework.api.binding;
 
-public interface ChangeListener<T> {
+public interface ChangeListener<O> {
 
-    void propertyChanged(ReadableProperty<T> property, T oldValue, T newValue);
+    void propertyChanged(ReadableProperty<O> property, O oldValue, O newValue);
 }

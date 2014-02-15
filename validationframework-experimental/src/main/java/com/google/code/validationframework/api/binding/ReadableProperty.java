@@ -32,11 +32,11 @@ package com.google.code.validationframework.api.binding;
  * the ValidationFramework is mostly meant for Swing and other frameworks that can benefit from it. JavaFX has a much
  * more furnished API to achieve similar goals and much more.
  *
- * @param <T> Type of property value.
+ * @param <O> Type of property value.
  *
  * @see WritableProperty
  */
-public interface ReadableProperty<T> {
+public interface ReadableProperty<O> {
 
     /**
      * Adds a {@link WritableProperty} as a slave.
@@ -45,14 +45,14 @@ public interface ReadableProperty<T> {
      *
      * @param listener {@link WritableProperty} to be slaved.
      */
-    void addChangeListener(ChangeListener<T> listener);
+    void addChangeListener(ChangeListener<O> listener);
 
     /**
      * Removes the {@link WritableProperty}.
      *
      * @param listener {@link WritableProperty} that should no longer be slaved.
      */
-    void removeChangeListener(ChangeListener<T> listener);
+    void removeChangeListener(ChangeListener<O> listener);
 
     /**
      * Gets the value of the property.
@@ -61,5 +61,5 @@ public interface ReadableProperty<T> {
      *
      * @return Property value.
      */
-    T getValue();
+    O getValue();
 }

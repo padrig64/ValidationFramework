@@ -33,11 +33,11 @@ package com.google.code.validationframework.api.binding;
  * the ValidationFramework is mostly meant for Swing and other frameworks that can benefit from it. JavaFX has a much
  * more furnished API to achieve similar goals and much more.
  *
- * @param <T> Type of property value.
+ * @param <I> Type of property value.
  *
  * @see ReadableProperty
  */
-public interface WritableProperty<T> {
+public interface WritableProperty<I> {
 
     /**
      * Sets the value of the property.
@@ -46,5 +46,5 @@ public interface WritableProperty<T> {
      *
      * @param value Property value.
      */
-    void setValue(T value);
+    void setValue(I value);
 }

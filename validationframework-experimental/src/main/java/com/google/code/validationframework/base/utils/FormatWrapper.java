@@ -66,14 +66,31 @@ public class FormatWrapper<T> extends Format {
      */
     private static final long serialVersionUID = -1976245584938560560L;
 
+    /**
+     * Delegate format used to format and parse.
+     */
     private final Format delegate;
 
+    /**
+     * Transformer used to convert successfully parsed objects to a specific type.
+     *
+     * By default, the transformation will just be a cast.
+     */
     private final Transformer<Object, T> parsedObjectTransformer;
 
+    /**
+     * Flag indicating whether strict parsing should be enabled.
+     */
     private boolean strictParsing = true;
 
+    /**
+     * Flag indicating whether the delegate format object should try to parse null or empty texts.
+     */
     private boolean nullOrEmptyTextParsing = true;
 
+    /**
+     * Flag indicating whether the delegate format object should try to format null values.
+     */
     private boolean nullValueFormatting = true;
 
     public FormatWrapper(Format delegate) {

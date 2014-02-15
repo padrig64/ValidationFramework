@@ -39,21 +39,21 @@ import java.util.List;
  * <p/>
  * Note that this class is not thread-safe.
  *
- * @param <T> Type of property value.
+ * @param <O> Type of property value.
  */
-public abstract class AbstractReadableProperty<T> implements ReadableProperty<T> {
+public abstract class AbstractReadableProperty<O> implements ReadableProperty<O> {
 
     /**
      * Writable properties to be updated.
      */
-    private final List<ChangeListener<T>> listeners = new
-            ArrayList<ChangeListener<T>>();
+    private final List<ChangeListener<O>> listeners = new
+            ArrayList<ChangeListener<O>>();
 
     /**
      * @see ReadableProperty#addChangeListener(ChangeListener)
      */
     @Override
-    public void addChangeListener(ChangeListener<T> listener) {
+    public void addChangeListener(ChangeListener<O> listener) {
         listeners.add(listener);
         listener.propertyChanged(this, null, getValue());
     }
@@ -62,7 +62,7 @@ public abstract class AbstractReadableProperty<T> implements ReadableProperty<T>
      * @see ReadableProperty#removeChangeListener(ChangeListener)
      */
     @Override
-    public void removeChangeListener(ChangeListener<T> listener) {
+    public void removeChangeListener(ChangeListener<O> listener) {
         listeners.remove(listener);
     }
 
@@ -71,13 +71,13 @@ public abstract class AbstractReadableProperty<T> implements ReadableProperty<T>
      *
      * @see #getValue()
      */
-    protected void notifyListeners(T oldValue, T newValue) {
+    protected void notifyListeners(O oldValue, O newValue) {
         notifyListeners(oldValue, newValue, false);
     }
 
-    protected void notifyListeners(T oldValue, T newValue, boolean evenIfNoChange) {
+    protected void notifyListeners(O oldValue, O newValue, boolean evenIfNoChange) {
         if (evenIfNoChange || !ValueUtils.areEqual(oldValue, newValue)) {
-            for (ChangeListener<T> listener : listeners) {
+            for (ChangeListener<O> listener : listeners) {
                 listener.propertyChanged(this, oldValue, newValue);
             }
         }
