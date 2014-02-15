@@ -41,7 +41,7 @@ import com.google.code.validationframework.base.utils.ValueUtils;
  * @param <I>
  * @param <O>
  */
-public class TransformedProperty<I, O> extends AbstractReadableProperty<O> implements WritableProperty<I> {
+public class TransformedProperty<I, O> extends AbstractReadableWritableProperty<I, O> {
 
     /**
      * Transformer to be used to transform input values.

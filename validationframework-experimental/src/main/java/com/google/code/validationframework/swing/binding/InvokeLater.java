@@ -35,7 +35,7 @@ public class InvokeLater<T> extends AbstractReadableProperty<T> implements Writa
 
     private class Postponer implements Runnable {
 
-        private T oldValue;
+        private final T oldValue;
 
         public Postponer(T oldValue) {
             this.oldValue = oldValue;

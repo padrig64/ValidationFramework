@@ -39,7 +39,7 @@ import com.google.code.validationframework.base.utils.ValueUtils;
  *
  * @param <T> Type of property value.
  */
-public class SimpleProperty<T> extends AbstractReadableProperty<T> implements WritableProperty<T> {
+public class SimpleProperty<T> extends AbstractReadableWritableProperty<T, T> {
 
     /**
      * Property value.
