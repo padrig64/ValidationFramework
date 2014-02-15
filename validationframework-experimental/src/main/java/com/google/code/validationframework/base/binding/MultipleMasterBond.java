@@ -25,43 +25,13 @@
 
 package com.google.code.validationframework.base.binding;
 
-import com.google.code.validationframework.api.binding.ChangeListener;
 import com.google.code.validationframework.api.binding.ReadableProperty;
 import com.google.code.validationframework.api.binding.WritableProperty;
-import com.google.code.validationframework.api.common.Disposable;
-import com.google.code.validationframework.base.transform.CastTransformer;
 import com.google.code.validationframework.base.transform.Transformer;
 
 import java.util.Collection;
 
-public class MultipleMasterBond<MO, SI> implements Disposable {
-
-    private class MasterAdapter implements ChangeListener<Collection<MO>> {
-
-        private final Transformer<Object, SI> lastTransformer = new CastTransformer<Object, SI>();
-
-        @Override
-        public void propertyChanged(ReadableProperty<Collection<MO>> property, Collection<MO> oldValues,
-                                    Collection<MO> newValues) {
-            // Transform value
-            Object transformedValue = newValues; // TODO Handle one master value
-            for (Transformer transformer : transformers) {
-                transformedValue = transformer.transform(transformedValue);
-            }
-            SI slaveInputValue = lastTransformer.transform(transformedValue);
-
-            // Notify slave
-            slaves.setValue(slaveInputValue);
-        }
-    }
-
-    private final MasterAdapter masterAdapter = new MasterAdapter();
-
-    private final CompositeReadableProperty<MO> masters;
-
-    private final Collection<Transformer<?, ?>> transformers;
-
-    private final CompositeWritableProperty<SI> slaves;
+public class MultipleMasterBond<MO, SI> extends AbstractBond<Collection<MO>, SI> {
 
     public MultipleMasterBond(Collection<ReadableProperty<MO>> masters, Collection<Transformer<?, ?>> transformers,
                               Collection<WritableProperty<SI>> slaves) {
@@ -70,18 +40,6 @@ public class MultipleMasterBond<MO, SI> implements Disposable {
 
     public MultipleMasterBond(CompositeReadableProperty<MO> masters, Collection<Transformer<?, ?>> transformers,
                               CompositeWritableProperty<SI> slaves) {
-        this.masters = masters;
-        this.transformers = transformers;
-        this.slaves = slaves;
-
-        masters.addChangeListener(masterAdapter);
-
-        // Slave initial values
-        masterAdapter.propertyChanged(null, null, null);
-    }
-
-    @Override
-    public void dispose() {
-        masters.removeChangeListener(masterAdapter);
+        super(masters, transformers, slaves);
     }
 }
