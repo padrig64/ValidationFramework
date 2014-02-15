@@ -25,7 +25,6 @@
 
 package com.google.code.validationframework.base.binding;
 
-import com.google.code.validationframework.api.binding.ChangeListener;
 import com.google.code.validationframework.api.binding.ReadableProperty;
 import com.google.code.validationframework.api.binding.WritableProperty;
 import com.google.code.validationframework.base.transform.Transformer;
@@ -45,6 +44,8 @@ import java.util.List;
  *
  * @see ReadableProperty
  * @see WritableProperty
+ * @see SingleMasterBond
+ * @see MultipleMasterBond
  */
 public final class Binder {
 
@@ -66,68 +67,47 @@ public final class Binder {
             return new SingleMasterBinding<MO, TSI>(master, transformers);
         }
 
-        public CompositeReadableProperty<MO, SI> to(final WritableProperty<SI> slave) {
-            CompositeReadableProperty<MO, SI> bond = new CompositeReadableProperty<MO, SI>(Collections.singleton(master));
-            bond.addChangeListener(new ChangeListener<SI>() {
-                @Override
-                public void propertyChanged(ReadableProperty<SI> property, SI oldValue, SI newValue) {
-                    slave.setValue(newValue);
-                }
-            });
-            return bond;
+        public SingleMasterBond<MO, SI> to(WritableProperty<SI> slave) {
+            return new SingleMasterBond<MO, SI>(master, transformers, Collections.singleton(slave));
         }
 
-        public CompositeReadableProperty<MO, SI> to(Collection<WritableProperty<SI>> slaves) {
-            CompositeReadableProperty<MO, SI> bond = new CompositeReadableProperty<MO, SI>(Collections.singleton(master), transformers);
-            for (final WritableProperty<SI> slave : slaves) {
-                bond.addChangeListener(new ChangeListener<SI>() {
-                    @Override
-                    public void propertyChanged(ReadableProperty<SI> property, SI oldValue, SI newValue) {
-                        slave.setValue(newValue);
-                    }
-                });
-            }
-            return bond;
+        public SingleMasterBond<MO, SI> to(Collection<WritableProperty<SI>> slaves) {
+            return new SingleMasterBond<MO, SI>(master, transformers, slaves);
         }
 
-        public CompositeReadableProperty<MO, SI> to(WritableProperty<SI>... slaves) {
+        public SingleMasterBond<MO, SI> to(WritableProperty<SI>... slaves) {
             return to(Arrays.asList(slaves));
         }
     }
 
-    public static class MultipleMastersBinding<MO, SI> {
+    public static class MultipleMasterBinding<MO, SI> {
 
         private final Collection<ReadableProperty<MO>> masters;
 
-        private final List<Transformer> transformers = new ArrayList<Transformer>();
+        private final List<Transformer<?, ?>> transformers = new ArrayList<Transformer<?, ?>>();
 
-        public MultipleMastersBinding(Collection<ReadableProperty<MO>> masters, Collection<Transformer> transformers) {
+        public MultipleMasterBinding(Collection<ReadableProperty<MO>> masters, Collection<Transformer<?,
+                ?>> transformers) {
             this.masters = masters;
             if (transformers != null) {
                 this.transformers.addAll(transformers);
             }
         }
 
-        public <TSI> MultipleMastersBinding<MO, TSI> transform(Transformer<SI, TSI> transformer) {
+        public <TSI> MultipleMasterBinding<MO, TSI> transform(Transformer<SI, TSI> transformer) {
             transformers.add(transformer);
-            return new MultipleMastersBinding<MO, TSI>(masters, transformers);
+            return new MultipleMasterBinding<MO, TSI>(masters, transformers);
         }
 
-        public Bond<MO, SI> to(WritableProperty<SI> slave) {
-            return new Bond<MO, SI>(masters, transformers, slave);
+        public MultipleMasterBond<MO, SI> to(WritableProperty<SI> slave) {
+            return new MultipleMasterBond<MO, SI>(masters, transformers, Collections.singleton(slave));
         }
 
-        public Collection<Bond<MO, SI>> to(Collection<WritableProperty<SI>> slaves) {
-            Collection<Bond<MO, SI>> bonds = new ArrayList<Bond<MO, SI>>();
-
-            for (WritableProperty<SI> slave : slaves) {
-                bonds.add(new Bond<MO, SI>(masters, transformers, slave));
-            }
-
-            return bonds;
+        public MultipleMasterBond<MO, SI> to(Collection<WritableProperty<SI>> slaves) {
+            return new MultipleMasterBond<MO, SI>(masters, transformers, slaves);
         }
 
-        public Collection<Bond<MO, SI>> to(WritableProperty<SI>... slaves) {
+        public MultipleMasterBond<MO, SI> to(WritableProperty<SI>... slaves) {
             return to(Arrays.asList(slaves));
         }
     }
@@ -159,8 +139,8 @@ public final class Binder {
      *
      * @return DSL object.
      */
-    public static <MO> MultipleMastersBinding<MO, Collection<MO>> from(Collection<ReadableProperty<MO>> masters) {
-        return new MultipleMastersBinding<MO, Collection<MO>>(masters, null);
+    public static <MO> MultipleMasterBinding<MO, Collection<MO>> from(Collection<ReadableProperty<MO>> masters) {
+        return new MultipleMasterBinding<MO, Collection<MO>>(masters, null);
     }
 
     /**
@@ -171,7 +151,7 @@ public final class Binder {
      *
      * @return DSL object.
      */
-    public static <MO> MultipleMastersBinding<MO, Collection<MO>> from(ReadableProperty<MO>... masters) {
-        return new MultipleMastersBinding<MO, Collection<MO>>(Arrays.asList(masters), null);
+    public static <MO> MultipleMasterBinding<MO, Collection<MO>> from(ReadableProperty<MO>... masters) {
+        return new MultipleMasterBinding<MO, Collection<MO>>(Arrays.asList(masters), null);
     }
 }

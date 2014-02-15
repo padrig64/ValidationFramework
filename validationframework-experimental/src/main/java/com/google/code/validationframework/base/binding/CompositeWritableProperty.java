@@ -25,74 +25,50 @@
 
 package com.google.code.validationframework.base.binding;
 
-import com.google.code.validationframework.api.binding.ChangeListener;
-import com.google.code.validationframework.api.binding.ReadableProperty;
+import com.google.code.validationframework.api.binding.WritableProperty;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
-public class CompositeReadableProperty<T> extends AbstractReadableProperty<Collection<T>> {
+public class CompositeWritableProperty<T> implements WritableProperty<T> {
 
-    private class ChangeAdapter implements ChangeListener<T> {
 
-        @Override
-        public void propertyChanged(ReadableProperty<T> property, T oldValue, T newValue) {
-            updateFromProperties();
-        }
-    }
+    private final Collection<WritableProperty<T>> properties = new ArrayList<WritableProperty<T>>();
 
-    private final Collection<ReadableProperty<T>> properties = new ArrayList<ReadableProperty<T>>();
+    private T value = null;
 
-    private Collection<T> values = null;
-
-    public CompositeReadableProperty() {
+    public CompositeWritableProperty() {
         super();
     }
 
-    public CompositeReadableProperty(ReadableProperty<T>... properties) {
+    public CompositeWritableProperty(WritableProperty<T>... properties) {
         super();
         Collections.addAll(this.properties, properties);
-        updateFromProperties();
+        setValue(value);
     }
 
-    public CompositeReadableProperty(Collection<ReadableProperty<T>> properties) {
+    public CompositeWritableProperty(Collection<WritableProperty<T>> properties) {
         super();
         this.properties.addAll(properties);
-        updateFromProperties();
+        setValue(value);
     }
 
-    public void addProperty(ReadableProperty<T> property) {
+    public void addProperty(WritableProperty<T> property) {
         properties.add(property);
-        updateFromProperties();
+        setValue(value);
     }
 
-    public void removeProperty(ReadableProperty<T> property) {
+    public void removeProperty(WritableProperty<T> property) {
         properties.remove(property);
-        updateFromProperties();
     }
 
     @Override
-    public Collection<T> getValue() {
-        return values;
-    }
+    public void setValue(T value) {
+        this.value = value;
 
-    private void updateFromProperties() {
-        // Get value from all properties
-        // TODO Update only the one that was modified instead of re-getting all the values
-        List<T> values = new ArrayList<T>();
-        for (ReadableProperty<T> master : properties) {
-            values.add(master.getValue());
+        for (WritableProperty<T> property : properties) {
+            property.setValue(value);
         }
-
-        // Notify slaves
-        setValue(values);
-    }
-
-    private void setValue(Collection<T> values) {
-        Collection<T> oldValues = this.values;
-        this.values = values;
-        notifyListeners(oldValues, values);
     }
 }

@@ -32,11 +32,9 @@ import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.base.transform.CastTransformer;
 import com.google.code.validationframework.base.transform.Transformer;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
-public class Bond<MO, SI> implements Disposable {
+public abstract class AbstractBond<MO, SI> implements Disposable {
 
     private class MasterAdapter implements ChangeListener<MO> {
 
@@ -44,62 +42,45 @@ public class Bond<MO, SI> implements Disposable {
 
         @Override
         public void propertyChanged(ReadableProperty<MO> property, MO oldValue, MO newValue) {
-            // Get value from all masters
-            List<MO> values = new ArrayList<MO>();
-            for (ReadableProperty<MO> master : masters) {
-                values.add(master.getValue());
-            }
-
             // Transform value
-            Object transformedValue = values;
+            Object transformedValue = newValue;
             for (Transformer transformer : transformers) {
                 transformedValue = transformer.transform(transformedValue);
             }
             SI slaveInputValue = lastTransformer.transform(transformedValue);
 
             // Notify slave
-            slave.setValue(slaveInputValue);
+            slaves.setValue(slaveInputValue);
         }
     }
 
     private final MasterAdapter masterAdapter = new MasterAdapter();
 
-    private final Collection<ReadableProperty<MO>> masters;
+    private final ReadableProperty<MO> master;
 
-    private final Collection<Transformer> transformers;
+    private final Collection<Transformer<?, ?>> transformers;
 
-    private final WritableProperty<SI> slave;
+    private final CompositeWritableProperty<SI> slaves;
 
-    public Bond(Collection<ReadableProperty<MO>> masters, Collection<Transformer> transformers,
-                WritableProperty<SI> slave) {
-        this.masters = masters;
+    public AbstractBond(ReadableProperty<MO> master, Collection<Transformer<?, ?>> transformers,
+                        Collection<WritableProperty<SI>> slaves) {
+        this(master, transformers, new CompositeWritableProperty<SI>(slaves));
+    }
+
+    public AbstractBond(ReadableProperty<MO> master, Collection<Transformer<?, ?>> transformers,
+                        CompositeWritableProperty<SI> slaves) {
+        this.master = master;
         this.transformers = transformers;
-        this.slave = slave;
+        this.slaves = slaves;
 
-        for (ReadableProperty<MO> master : masters) {
-            master.addChangeListener(masterAdapter);
-        }
+        master.addChangeListener(masterAdapter);
 
         // Slave initial values
         masterAdapter.propertyChanged(null, null, null);
     }
 
-    public Collection<ReadableProperty<MO>> getMasters() {
-        return masters;
-    }
-
-    public Collection<Transformer> getTransformers() {
-        return transformers;
-    }
-
-    public WritableProperty<SI> getSlave() {
-        return slave;
-    }
-
     @Override
     public void dispose() {
-        for (ReadableProperty<MO> master : masters) {
-            master.removeChangeListener(masterAdapter);
-        }
+        master.removeChangeListener(masterAdapter);
     }
 }
