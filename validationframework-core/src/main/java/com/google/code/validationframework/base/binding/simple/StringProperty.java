@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Patrick Moawad
+ * Copyright (c) 2014, Patrick Moawad
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,28 +23,26 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.swing.binding;
-
-import com.google.code.validationframework.base.binding.SimpleProperty;
-
-import java.awt.Font;
+package com.google.code.validationframework.base.binding.simple;
 
 /**
- * Simple property holding a {@link Font} value.
+ * Simple property holding a {@link String} value.
+ *
+ * @see SimpleProperty
  */
-public class FontProperty extends SimpleProperty<Font> {
+public class StringProperty extends SimpleProperty<String> {
 
     /**
      * @see SimpleProperty#SimpleProperty()
      */
-    public FontProperty() {
+    public StringProperty() {
         super();
     }
 
     /**
      * @see SimpleProperty#SimpleProperty(Object)
      */
-    public FontProperty(Font value) {
+    public StringProperty(String value) {
         super(value);
     }
 }

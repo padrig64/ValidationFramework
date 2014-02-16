@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Patrick Moawad
+ * Copyright (c) 2014, Patrick Moawad
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,24 +23,30 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.base.binding;
+package com.google.code.validationframework.swing.binding.simple;
+
+import com.google.code.validationframework.base.binding.simple.SimpleProperty;
+
+import java.awt.Color;
 
 /**
- * Simple property holding a {@link Byte} value.
+ * Simple property holding a {@link Color} value.
+ *
+ * @see SimpleProperty
  */
-public class ByteProperty extends SimpleProperty<Byte> {
+public class ColorProperty extends SimpleProperty<Color> {
 
     /**
      * @see SimpleProperty#SimpleProperty()
      */
-    public ByteProperty() {
+    public ColorProperty() {
         super();
     }
 
     /**
      * @see SimpleProperty#SimpleProperty(Object)
      */
-    public ByteProperty(Byte value) {
+    public ColorProperty(Color value) {
         super(value);
     }
 }

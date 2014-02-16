@@ -23,14 +23,26 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.api.binding;
+package com.google.code.validationframework.base.binding.simple;
 
 /**
- * Interface that can be used to mark properties as being both readable and writable.
+ * Simple property holding a {@link Short} value.
  *
- * @param <I> Type of data that can be written to this property.
- * @param <O> Type of data that can be read from this property.
+ * @see SimpleProperty
  */
-public interface ReadableWritableProperty<I, O> extends WritableProperty<I>, ReadableProperty<O> {
-    // Nothing more to be done
+public class ShortProperty extends SimpleProperty<Short> {
+
+    /**
+     * @see SimpleProperty#SimpleProperty()
+     */
+    public ShortProperty() {
+        super();
+    }
+
+    /**
+     * @see SimpleProperty#SimpleProperty(Object)
+     */
+    public ShortProperty(Short value) {
+        super(value);
+    }
 }

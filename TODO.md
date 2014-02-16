@@ -59,7 +59,7 @@
 * Data providers with different getters
 * Validation flow logging
 * Use of IDs
-* Re-use instances of T, DP, R, RH, V
+* Re-use instances of W, DP, R, RH, V
 * Heterogeneous Group
 * All features described in the README file
 * Dialog strategies

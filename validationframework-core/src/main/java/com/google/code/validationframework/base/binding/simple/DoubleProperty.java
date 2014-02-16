@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Patrick Moawad
+ * Copyright (c) 2014, Patrick Moawad
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,24 +23,26 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.base.binding;
+package com.google.code.validationframework.base.binding.simple;
 
 /**
- * Simple property holding a {@link Boolean} value.
+ * Simple property holding a {@link Double} value.
+ *
+ * @see SimpleProperty
  */
-public class BooleanProperty extends SimpleProperty<Boolean> {
+public class DoubleProperty extends SimpleProperty<Double> {
 
     /**
      * @see SimpleProperty#SimpleProperty()
      */
-    public BooleanProperty() {
+    public DoubleProperty() {
         super();
     }
 
     /**
      * @see SimpleProperty#SimpleProperty(Object)
      */
-    public BooleanProperty(Boolean value) {
+    public DoubleProperty(Double value) {
         super(value);
     }
 }

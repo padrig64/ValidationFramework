@@ -33,56 +33,56 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class CompositeReadableProperty<T> extends AbstractReadableProperty<Collection<T>> {
+public class CompositeReadableProperty<R> extends AbstractReadableProperty<Collection<R>> {
 
-    private class ChangeAdapter implements ChangeListener<T> {
+    private class ChangeAdapter implements ChangeListener<R> {
 
         @Override
-        public void propertyChanged(ReadableProperty<T> property, T oldValue, T newValue) {
+        public void propertyChanged(ReadableProperty<R> property, R oldValue, R newValue) {
             updateFromProperties();
         }
     }
 
-    private final Collection<ReadableProperty<T>> properties = new ArrayList<ReadableProperty<T>>();
+    private final Collection<ReadableProperty<R>> properties = new ArrayList<ReadableProperty<R>>();
 
-    private Collection<T> values = null;
+    private Collection<R> values = null;
 
     public CompositeReadableProperty() {
         super();
     }
 
-    public CompositeReadableProperty(ReadableProperty<T>... properties) {
+    public CompositeReadableProperty(ReadableProperty<R>... properties) {
         super();
         Collections.addAll(this.properties, properties);
         updateFromProperties();
     }
 
-    public CompositeReadableProperty(Collection<ReadableProperty<T>> properties) {
+    public CompositeReadableProperty(Collection<ReadableProperty<R>> properties) {
         super();
         this.properties.addAll(properties);
         updateFromProperties();
     }
 
-    public void addProperty(ReadableProperty<T> property) {
+    public void addProperty(ReadableProperty<R> property) {
         properties.add(property);
         updateFromProperties();
     }
 
-    public void removeProperty(ReadableProperty<T> property) {
+    public void removeProperty(ReadableProperty<R> property) {
         properties.remove(property);
         updateFromProperties();
     }
 
     @Override
-    public Collection<T> getValue() {
+    public Collection<R> getValue() {
         return values;
     }
 
     private void updateFromProperties() {
         // Get value from all properties
         // TODO Update only the one that was modified instead of re-getting all the values
-        List<T> values = new ArrayList<T>();
-        for (ReadableProperty<T> master : properties) {
+        List<R> values = new ArrayList<R>();
+        for (ReadableProperty<R> master : properties) {
             values.add(master.getValue());
         }
 
@@ -90,8 +90,8 @@ public class CompositeReadableProperty<T> extends AbstractReadableProperty<Colle
         setValue(values);
     }
 
-    private void setValue(Collection<T> values) {
-        Collection<T> oldValues = this.values;
+    private void setValue(Collection<R> values) {
+        Collection<R> oldValues = this.values;
         this.values = values;
         notifyListeners(oldValues, values);
     }

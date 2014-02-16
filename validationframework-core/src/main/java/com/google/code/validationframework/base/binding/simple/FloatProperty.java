@@ -23,11 +23,26 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.base.binding;
+package com.google.code.validationframework.base.binding.simple;
 
-import com.google.code.validationframework.api.binding.ReadableWritableProperty;
+/**
+ * Simple property holding a {@link Float} value.
+ *
+ * @see SimpleProperty
+ */
+public class FloatProperty extends SimpleProperty<Float> {
 
-public abstract class AbstractReadableWritableProperty<I, O> extends AbstractReadableProperty<O> implements
-        ReadableWritableProperty<I, O> {
-    // Nothing more to be done
+    /**
+     * @see SimpleProperty#SimpleProperty()
+     */
+    public FloatProperty() {
+        super();
+    }
+
+    /**
+     * @see SimpleProperty#SimpleProperty(Object)
+     */
+    public FloatProperty(Float value) {
+        super(value);
+    }
 }

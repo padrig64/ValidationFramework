@@ -35,25 +35,25 @@ import java.util.List;
 /**
  * Abstract implementation of a {@link ReadableProperty}.
  * <p/>
- * Sub-classes should call the {@link #notifyListeners(Object, Object)} method whenever the property value changes.
+ * Sub-classes should call the {@link #notifyListeners(Object, Object)} or {@link #notifyListeners(Object, Object,
+ * boolean)} methods whenever the property value changes.
  * <p/>
  * Note that this class is not thread-safe.
  *
- * @param <O> Type of property value.
+ * @param <R> Type of data that can be read from this property.
  */
-public abstract class AbstractReadableProperty<O> implements ReadableProperty<O> {
+public abstract class AbstractReadableProperty<R> implements ReadableProperty<R> {
 
     /**
      * Writable properties to be updated.
      */
-    private final List<ChangeListener<O>> listeners = new
-            ArrayList<ChangeListener<O>>();
+    private final List<ChangeListener<R>> listeners = new ArrayList<ChangeListener<R>>();
 
     /**
      * @see ReadableProperty#addChangeListener(ChangeListener)
      */
     @Override
-    public void addChangeListener(ChangeListener<O> listener) {
+    public void addChangeListener(ChangeListener<R> listener) {
         listeners.add(listener);
         listener.propertyChanged(this, null, getValue());
     }
@@ -62,22 +62,39 @@ public abstract class AbstractReadableProperty<O> implements ReadableProperty<O>
      * @see ReadableProperty#removeChangeListener(ChangeListener)
      */
     @Override
-    public void removeChangeListener(ChangeListener<O> listener) {
+    public void removeChangeListener(ChangeListener<R> listener) {
         listeners.remove(listener);
     }
 
     /**
-     * Updates the slaved writable properties with this property's value.
+     * Notifies the listeners that the property value has changed, if it has changed.
+     * <p/>
+     * Note that the listeners will be notified only if the old value is different than the new value.
      *
+     * @param oldValue Previous value.
+     * @param newValue New value.
+     *
+     * @see #notifyListeners(Object, Object, boolean)
      * @see #getValue()
      */
-    protected void notifyListeners(O oldValue, O newValue) {
+    protected void notifyListeners(R oldValue, R newValue) {
         notifyListeners(oldValue, newValue, false);
     }
 
-    protected void notifyListeners(O oldValue, O newValue, boolean evenIfNoChange) {
+    /**
+     * Notifies the listeners that the property value has changed.
+     *
+     * @param oldValue       Previous value.
+     * @param newValue       New value.
+     * @param evenIfNoChange True to notify the listeners even if the new value and the old value are equal, false to
+     *                       notify the listeners only if they are not equal.
+     *
+     * @see #notifyListeners(Object, Object)
+     * @see #getValue()
+     */
+    protected void notifyListeners(R oldValue, R newValue, boolean evenIfNoChange) {
         if (evenIfNoChange || !ValueUtils.areEqual(oldValue, newValue)) {
-            for (ChangeListener<O> listener : listeners) {
+            for (ChangeListener<R> listener : listeners) {
                 listener.propertyChanged(this, oldValue, newValue);
             }
         }

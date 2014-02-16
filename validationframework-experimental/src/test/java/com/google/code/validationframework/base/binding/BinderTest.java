@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Patrick Moawad
+ * Copyright (c) 2014, Patrick Moawad
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,6 +25,9 @@
 
 package com.google.code.validationframework.base.binding;
 
+import com.google.code.validationframework.base.binding.simple.BooleanProperty;
+import com.google.code.validationframework.base.binding.simple.IntegerProperty;
+import com.google.code.validationframework.base.binding.simple.SimpleProperty;
 import com.google.code.validationframework.base.transform.AndBooleanAggregator;
 import com.google.code.validationframework.base.transform.ToStringTransformer;
 import org.junit.Test;

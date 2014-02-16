@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Patrick Moawad
+ * Copyright (c) 2014, Patrick Moawad
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,24 +23,26 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.base.binding;
+package com.google.code.validationframework.base.binding.simple;
 
 /**
- * Simple property holding a {@link Integer} value.
+ * Simple property holding a {@link Object} value.
+ *
+ * @see SimpleProperty
  */
-public class IntegerProperty extends SimpleProperty<Integer> {
+public class ObjectProperty extends SimpleProperty<Object> {
 
     /**
      * @see SimpleProperty#SimpleProperty()
      */
-    public IntegerProperty() {
+    public ObjectProperty() {
         super();
     }
 
     /**
-     * @see SimpleProperty#SimpleProperty(Object)
+     * @see SimpleProperty#SimpleProperty()
      */
-    public IntegerProperty(Integer value) {
+    public ObjectProperty(Object value) {
         super(value);
     }
 }

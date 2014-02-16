@@ -31,43 +31,43 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
-public class CompositeWritableProperty<T> implements WritableProperty<T> {
+public class CompositeWritableProperty<W> implements WritableProperty<W> {
 
 
-    private final Collection<WritableProperty<T>> properties = new ArrayList<WritableProperty<T>>();
+    private final Collection<WritableProperty<W>> properties = new ArrayList<WritableProperty<W>>();
 
-    private T value = null;
+    private W value = null;
 
     public CompositeWritableProperty() {
         super();
     }
 
-    public CompositeWritableProperty(WritableProperty<T>... properties) {
+    public CompositeWritableProperty(WritableProperty<W>... properties) {
         super();
         Collections.addAll(this.properties, properties);
         setValue(value);
     }
 
-    public CompositeWritableProperty(Collection<WritableProperty<T>> properties) {
+    public CompositeWritableProperty(Collection<WritableProperty<W>> properties) {
         super();
         this.properties.addAll(properties);
         setValue(value);
     }
 
-    public void addProperty(WritableProperty<T> property) {
+    public void addProperty(WritableProperty<W> property) {
         properties.add(property);
         setValue(value);
     }
 
-    public void removeProperty(WritableProperty<T> property) {
+    public void removeProperty(WritableProperty<W> property) {
         properties.remove(property);
     }
 
     @Override
-    public void setValue(T value) {
+    public void setValue(W value) {
         this.value = value;
 
-        for (WritableProperty<T> property : properties) {
+        for (WritableProperty<W> property : properties) {
             property.setValue(value);
         }
     }

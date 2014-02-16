@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Patrick Moawad
+ * Copyright (c) 2014, Patrick Moawad
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,24 +23,43 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.base.binding;
+package com.google.code.validationframework.api.binding;
 
 /**
- * Simple property holding a {@link Number} value.
+ * Interface to be implemented by readable property that can notify {@link ChangeListener}s.
+ * <p/>
+ * If you are using JavaFX, you should better use JavaFX's property binding mechanism. The binding mechanism provided by
+ * the ValidationFramework is very simple and mostly meant for Swing and other frameworks that can benefit from it.
+ * JavaFX has a much more furnished API to achieve similar goals and much more.
+ *
+ * @param <R> Type of data that can be read from this property.
+ *
+ * @see WritableProperty
  */
-public class NumberProperty extends SimpleProperty<Number> {
+public interface ReadableProperty<R> {
 
     /**
-     * @see SimpleProperty#SimpleProperty()
+     * Adds a {@link WritableProperty} as a slave.
+     * <p/>
+     * Anytime readable property value changes, the slaved {@link WritableProperty}s will also be set.
+     *
+     * @param listener {@link WritableProperty} to be slaved.
      */
-    public NumberProperty() {
-        super();
-    }
+    void addChangeListener(ChangeListener<R> listener);
 
     /**
-     * @see SimpleProperty#SimpleProperty(Object)
+     * Removes the {@link WritableProperty}.
+     *
+     * @param listener {@link WritableProperty} that should no longer be slaved.
      */
-    public NumberProperty(Number value) {
-        super(value);
-    }
+    void removeChangeListener(ChangeListener<R> listener);
+
+    /**
+     * Gets the value of the property.
+     * <p/>
+     * This method can be called by the programmer or a {@link WritableProperty} that is bound to it.
+     *
+     * @return Property value.
+     */
+    R getValue();
 }

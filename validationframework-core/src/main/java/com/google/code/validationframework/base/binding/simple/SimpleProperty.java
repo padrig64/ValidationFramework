@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Patrick Moawad
+ * Copyright (c) 2014, Patrick Moawad
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,14 +23,14 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.base.binding;
+package com.google.code.validationframework.base.binding.simple;
 
 import com.google.code.validationframework.api.binding.WritableProperty;
-import com.google.code.validationframework.base.transform.Transformer;
+import com.google.code.validationframework.base.binding.AbstractReadableWritableProperty;
 import com.google.code.validationframework.base.utils.ValueUtils;
 
 /**
- * Implementation of a readable and writable property whose output is the result of the transformation of the input.
+ * Simple implementation of a property that is both readable and writable.
  * <p/>
  * Slaved properties will only be updated if the new value set on this property differs from the previous one.
  * <p/>
@@ -38,20 +38,14 @@ import com.google.code.validationframework.base.utils.ValueUtils;
  * <p/>
  * Finally note that this class is not thread-safe.
  *
- * @param <I>
- * @param <O>
+ * @param <T> Type of data that can be read from and written to this property.
  */
-public class TransformedProperty<I, O> extends AbstractReadableWritableProperty<I, O> {
+public class SimpleProperty<T> extends AbstractReadableWritableProperty<T, T> {
 
     /**
-     * Transformer to be used to transform input values.
+     * Property value.
      */
-    private final Transformer<I, O> transformer;
-
-    /**
-     * Property output value.
-     */
-    private O value = null;
+    private T value = null;
 
     /**
      * Flag used to avoid any infinite recursion.
@@ -59,31 +53,26 @@ public class TransformedProperty<I, O> extends AbstractReadableWritableProperty<
     private boolean settingValue = false;
 
     /**
-     * Constructor specifying the transformer to be used to transform input values, using null as the initial input
-     * value.
-     *
-     * @param transformer Transformer to transform input values.
+     * Default constructor using null as the initial property value.
      */
-    public TransformedProperty(Transformer<I, O> transformer) {
-        this(transformer, null);
+    public SimpleProperty() {
+        this(null);
     }
 
     /**
-     * Constructor specifying the transformer to be used to transform input values, and the initial input value.
+     * Constructor specifying the initial property value.
      *
-     * @param transformer Transformer to transform input values.
-     * @param value       Initial property value.
+     * @param value Initial property value.
      */
-    public TransformedProperty(Transformer<I, O> transformer, I value) {
-        this.transformer = transformer;
-        this.value = transformer.transform(value);
+    public SimpleProperty(T value) {
+        this.value = value;
     }
 
     /**
-     * @see AbstractReadableProperty#getValue()
+     * @see AbstractReadableWritableProperty#getValue()
      */
     @Override
-    public O getValue() {
+    public T getValue() {
         return value;
     }
 
@@ -91,16 +80,15 @@ public class TransformedProperty<I, O> extends AbstractReadableWritableProperty<
      * @see WritableProperty#setValue(Object)
      */
     @Override
-    public void setValue(I value) {
+    public void setValue(T value) {
         if (!settingValue) {
             settingValue = true;
 
             // Update slaves only if the new value is different than the previous value
-            O newValue = transformer.transform(value);
-            if (!ValueUtils.areEqual(this.value, newValue)) {
-                O oldValue = this.value;
-                this.value = newValue;
-                notifyListeners(oldValue, newValue);
+            if (!ValueUtils.areEqual(this.value, value)) {
+                T oldValue = this.value;
+                this.value = value;
+                notifyListeners(oldValue, value);
             }
 
             settingValue = false;

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Patrick Moawad
+ * Copyright (c) 2014, Patrick Moawad
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,22 +25,20 @@
 
 package com.google.code.validationframework.base.binding;
 
+import com.google.code.validationframework.api.binding.ReadableWritableProperty;
+
 /**
- * Simple property holding a {@link Float} value.
+ * Abstract implementation of a {@link ReadableWritableProperty}.
+ * <p/>
+ * Sub-classes should call the {@link #notifyListeners(Object, Object)} or {@link #notifyListeners(Object, Object,
+ * boolean)} methods whenever the property value changes.
+ * <p/>
+ * Note that this class is not thread-safe.
+ *
+ * @param <R> Type of data that can be read from this property.
+ * @param <W> Type of data that can be written to this property.
  */
-public class FloatProperty extends SimpleProperty<Float> {
-
-    /**
-     * @see SimpleProperty#SimpleProperty()
-     */
-    public FloatProperty() {
-        super();
-    }
-
-    /**
-     * @see SimpleProperty#SimpleProperty(Object)
-     */
-    public FloatProperty(Float value) {
-        super(value);
-    }
+public abstract class AbstractReadableWritableProperty<R, W> extends AbstractReadableProperty<R> implements
+        ReadableWritableProperty<R, W> {
+    // Nothing more to be done
 }

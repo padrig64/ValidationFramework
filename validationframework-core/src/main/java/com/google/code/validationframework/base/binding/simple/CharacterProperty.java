@@ -23,9 +23,26 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.api.binding;
+package com.google.code.validationframework.base.binding.simple;
 
-public interface ChangeListener<O> {
+/**
+ * Simple property holding a {@link Character} value.
+ *
+ * @see SimpleProperty
+ */
+public class CharacterProperty extends SimpleProperty<Character> {
 
-    void propertyChanged(ReadableProperty<O> property, O oldValue, O newValue);
+    /**
+     * @see SimpleProperty#SimpleProperty()
+     */
+    public CharacterProperty() {
+        super();
+    }
+
+    /**
+     * @see SimpleProperty#SimpleProperty(Object)
+     */
+    public CharacterProperty(Character value) {
+        super(value);
+    }
 }

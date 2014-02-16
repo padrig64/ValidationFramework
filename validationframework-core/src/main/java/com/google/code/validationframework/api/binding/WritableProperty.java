@@ -23,28 +23,28 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.swing.binding;
-
-import com.google.code.validationframework.base.binding.SimpleProperty;
-
-import java.awt.Color;
+package com.google.code.validationframework.api.binding;
 
 /**
- * Simple property holding a {@link Color} value.
+ * Interface to be implemented by writable properties whose value can be set by the programmer or slave to readable
+ * properties.
+ * <p/>
+ * If you are using JavaFX, you should better use JavaFX's property binding mechanism. The binding mechanism provided by
+ * the ValidationFramework is very simple and mostly meant for Swing and other frameworks that can benefit from it.
+ * JavaFX has a much more furnished API to achieve similar goals and much more.
+ *
+ * @param <W> Type of data that can be written to this property.
+ *
+ * @see ReadableProperty
  */
-public class ColorProperty extends SimpleProperty<Color> {
+public interface WritableProperty<W> {
 
     /**
-     * @see SimpleProperty#SimpleProperty()
+     * Sets the value of the property.
+     * <p/>
+     * This method can be called by the programmer or a {@link ReadableProperty} that is bound to it.
+     *
+     * @param value Property value.
      */
-    public ColorProperty() {
-        super();
-    }
-
-    /**
-     * @see SimpleProperty#SimpleProperty(Object)
-     */
-    public ColorProperty(Color value) {
-        super(value);
-    }
+    void setValue(W value);
 }

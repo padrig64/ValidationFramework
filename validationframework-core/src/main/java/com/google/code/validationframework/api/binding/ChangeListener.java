@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Patrick Moawad
+ * Copyright (c) 2014, Patrick Moawad
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,24 +23,27 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.base.binding;
+package com.google.code.validationframework.api.binding;
 
 /**
- * Simple property holding a {@link String} value.
+ * Interface to be implemented by listeners to changes of {@link ReadableProperty}.
+ * <p/>
+ * If you are using JavaFX, you should better use JavaFX's property binding mechanism. The binding mechanism provided by
+ * the ValidationFramework is very simple and mostly meant for Swing and other frameworks that can benefit from it.
+ * JavaFX has a much more furnished API to achieve similar goals and much more.
+ *
+ * @param <R> Type of data that can be read from the changed readable property.
+ *
+ * @see ReadableProperty
  */
-public class StringProperty extends SimpleProperty<String> {
+public interface ChangeListener<R> {
 
     /**
-     * @see SimpleProperty#SimpleProperty()
+     * Triggered whenever the readable property changes.
+     *
+     * @param property Readable property that changed.
+     * @param oldValue Previous property value.
+     * @param newValue New property value.
      */
-    public StringProperty() {
-        super();
-    }
-
-    /**
-     * @see SimpleProperty#SimpleProperty(Object)
-     */
-    public StringProperty(String value) {
-        super(value);
-    }
+    void propertyChanged(ReadableProperty<R> property, R oldValue, R newValue);
 }
