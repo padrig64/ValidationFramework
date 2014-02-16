@@ -55,7 +55,6 @@ public abstract class AbstractReadableProperty<R> implements ReadableProperty<R>
     @Override
     public void addChangeListener(ChangeListener<R> listener) {
         listeners.add(listener);
-        listener.propertyChanged(this, null, getValue());
     }
 
     /**

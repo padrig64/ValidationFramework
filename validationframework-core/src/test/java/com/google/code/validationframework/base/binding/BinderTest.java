@@ -35,6 +35,9 @@ import org.junit.Test;
 import static com.google.code.validationframework.base.binding.Binder.from;
 import static org.junit.Assert.assertEquals;
 
+/**
+ * @see Binder
+ */
 public class BinderTest {
 
     @Test

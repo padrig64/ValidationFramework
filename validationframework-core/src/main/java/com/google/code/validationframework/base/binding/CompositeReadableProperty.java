@@ -33,6 +33,14 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * {@link ReadableProperty} gathering several other readable properties of the same type.
+ * <p/>
+ * Whenever a sub-property changes, this composite property will trigger its listeners. Also, reading the value from
+ * this property will return the collection of values from all sub-properties.
+ *
+ * @param <R> Type of data that can be read from the sub-properties.
+ */
 public class CompositeReadableProperty<R> extends AbstractReadableProperty<Collection<R>> {
 
     private class ChangeAdapter implements ChangeListener<R> {
@@ -51,15 +59,15 @@ public class CompositeReadableProperty<R> extends AbstractReadableProperty<Colle
         super();
     }
 
-    public CompositeReadableProperty(ReadableProperty<R>... properties) {
-        super();
-        Collections.addAll(this.properties, properties);
-        updateFromProperties();
-    }
-
     public CompositeReadableProperty(Collection<ReadableProperty<R>> properties) {
         super();
         this.properties.addAll(properties);
+        updateFromProperties();
+    }
+
+    public CompositeReadableProperty(ReadableProperty<R>... properties) {
+        super();
+        Collections.addAll(this.properties, properties);
         updateFromProperties();
     }
 

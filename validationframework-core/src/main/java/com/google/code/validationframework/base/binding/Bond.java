@@ -115,7 +115,7 @@ public class Bond<MO, SI> implements Disposable {
         master.addChangeListener(masterAdapter);
 
         // Slave initial values
-        masterAdapter.propertyChanged(null, null, null);
+        masterAdapter.propertyChanged(master, null, master.getValue());
     }
 
     /**

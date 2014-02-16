@@ -42,15 +42,15 @@ public class CompositeWritableProperty<W> implements WritableProperty<W> {
         super();
     }
 
-    public CompositeWritableProperty(WritableProperty<W>... properties) {
-        super();
-        Collections.addAll(this.properties, properties);
-        setValue(value);
-    }
-
     public CompositeWritableProperty(Collection<WritableProperty<W>> properties) {
         super();
         this.properties.addAll(properties);
+        setValue(value);
+    }
+
+    public CompositeWritableProperty(WritableProperty<W>... properties) {
+        super();
+        Collections.addAll(this.properties, properties);
         setValue(value);
     }
 
