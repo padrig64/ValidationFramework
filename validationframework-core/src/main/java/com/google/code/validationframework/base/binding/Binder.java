@@ -47,8 +47,7 @@ import java.util.List;
  *
  * @see ReadableProperty
  * @see WritableProperty
- * @see SingleMasterBond
- * @see MultipleMasterBond
+ * @see Bond
  */
 public final class Binder {
 
@@ -103,8 +102,8 @@ public final class Binder {
          *
          * @return Bond between the master and the slave.
          */
-        public SingleMasterBond<MO, SI> to(WritableProperty<SI> slave) {
-            return new SingleMasterBond<MO, SI>(master, transformers, Collections.singleton(slave));
+        public Bond<MO, SI> to(WritableProperty<SI> slave) {
+            return to(Collections.singleton(slave));
         }
 
         /**
@@ -115,8 +114,8 @@ public final class Binder {
          *
          * @return Bond between the master and the slaves.
          */
-        public SingleMasterBond<MO, SI> to(Collection<WritableProperty<SI>> slaves) {
-            return new SingleMasterBond<MO, SI>(master, transformers, slaves);
+        public Bond<MO, SI> to(Collection<WritableProperty<SI>> slaves) {
+            return new Bond<MO, SI>(master, transformers, slaves);
         }
 
         /**
@@ -127,7 +126,7 @@ public final class Binder {
          *
          * @return Bond between the master and the slaves.
          */
-        public SingleMasterBond<MO, SI> to(WritableProperty<SI>... slaves) {
+        public Bond<MO, SI> to(WritableProperty<SI>... slaves) {
             return to(Arrays.asList(slaves));
         }
     }
@@ -184,8 +183,8 @@ public final class Binder {
          *
          * @return Bond between the masters and the slave.
          */
-        public MultipleMasterBond<MO, SI> to(WritableProperty<SI> slave) {
-            return new MultipleMasterBond<MO, SI>(masters, transformers, Collections.singleton(slave));
+        public Bond<Collection<MO>, SI> to(WritableProperty<SI> slave) {
+            return to(Collections.singleton(slave));
         }
 
         /**
@@ -196,8 +195,8 @@ public final class Binder {
          *
          * @return Bond between the masters and the slaves.
          */
-        public MultipleMasterBond<MO, SI> to(Collection<WritableProperty<SI>> slaves) {
-            return new MultipleMasterBond<MO, SI>(masters, transformers, slaves);
+        public Bond<Collection<MO>, SI> to(Collection<WritableProperty<SI>> slaves) {
+            return new Bond<Collection<MO>, SI>(new CompositeReadableProperty<MO>(masters), transformers, slaves);
         }
 
         /**
@@ -208,7 +207,7 @@ public final class Binder {
          *
          * @return Bond between the masters and the slaves.
          */
-        public MultipleMasterBond<MO, SI> to(WritableProperty<SI>... slaves) {
+        public Bond<Collection<MO>, SI> to(WritableProperty<SI>... slaves) {
             return to(Arrays.asList(slaves));
         }
     }

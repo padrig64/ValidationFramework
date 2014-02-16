@@ -25,17 +25,121 @@
 
 package com.google.code.validationframework.base.binding;
 
+import com.google.code.validationframework.api.binding.ChangeListener;
+import com.google.code.validationframework.api.binding.ReadableProperty;
+import com.google.code.validationframework.api.binding.WritableProperty;
 import com.google.code.validationframework.api.common.Disposable;
+import com.google.code.validationframework.base.transform.CastTransformer;
+import com.google.code.validationframework.base.transform.Transformer;
+
+import java.util.Collection;
 
 /**
- * Interface implemented by bonds between readable and writable properties, and typically created using the {@link
- * Binder}.
+ * Simple implementation of a bond between master properties and slave properties.
  * <p/>
- * A bond can be broken by call its {@link Disposable#dispose()} method.
+ * It is typically created using the {@link Binder}.
+ *
+ * @param <MO> Type of data that can be read from master properties.
+ * @param <SI> Type of data that can be written to master properties.
  *
  * @see Binder
- * @see Disposable
+ * @see CompositeReadableProperty
+ * @see CompositeWritableProperty
  */
-public interface Bond extends Disposable {
-    // Nothing more to be done
+public class Bond<MO, SI> implements Disposable {
+
+    /**
+     * Listener to master property changes and updating the slave property.
+     */
+    private class MasterAdapter implements ChangeListener<MO> {
+
+        /**
+         * Last transformer used to cast the transformed data to the type of the slave input.
+         */
+        private final Transformer<Object, SI> lastTransformer = new CastTransformer<Object, SI>();
+
+        /**
+         * @see ChangeListener#propertyChanged(ReadableProperty, Object, Object)
+         */
+        @Override
+        public void propertyChanged(ReadableProperty<MO> property, MO oldValue, MO newValue) {
+            // Transform value
+            Object transformedValue = newValue;
+            for (Transformer transformer : transformers) {
+                transformedValue = transformer.transform(transformedValue);
+            }
+            SI slaveInputValue = lastTransformer.transform(transformedValue);
+
+            // Notify slave(s)
+            slave.setValue(slaveInputValue);
+        }
+    }
+
+    /**
+     * Listener to master property changes and updating the slave property.
+     */
+    private final MasterAdapter masterAdapter = new MasterAdapter();
+
+    /**
+     * Master (possibly composite) that is part of the bond.
+     */
+    private final ReadableProperty<MO> master;
+
+    /**
+     * Transformers to be part of the bond.
+     */
+    private final Collection<Transformer<?, ?>> transformers;
+
+    /**
+     * Slave (possibly composite) that is part of the bond.
+     */
+    private final WritableProperty<SI> slave;
+
+    /**
+     * Constructor specifying the master property, the transformers and the slaves that are part of the binding.
+     * <p/>
+     * Note that the master property can be a composition of multiple properties, for instance, using the {@link
+     * CompositeReadableProperty}.
+     * <p/>
+     * For type safety, it is highly advised to use the {@link Binder} to create the bond.
+     *
+     * @param master       Master (possibly composite) property to be part of the bond.
+     * @param transformers Transformers to be part of the bond.
+     * @param slave        Slave (possibly composite) property to be part of the bond.
+     */
+    public Bond(ReadableProperty<MO> master, Collection<Transformer<?, ?>> transformers, WritableProperty<SI> slave) {
+        this.master = master;
+        this.transformers = transformers;
+        this.slave = slave;
+
+        master.addChangeListener(masterAdapter);
+
+        // Slave initial values
+        masterAdapter.propertyChanged(null, null, null);
+    }
+
+    /**
+     * Constructor specifying the master property, the transformers and the slaves that are part of the binding.
+     * <p/>
+     * Note that the master property can be a composition of multiple properties, for instance, using the {@link
+     * CompositeReadableProperty}.
+     * <p/>
+     * For type safety, it is highly advised to use the {@link Binder} to create the bond.
+     *
+     * @param master       Master (possibly composite) property to be part of the bond.
+     * @param transformers Transformers to be part of the bond.
+     * @param slaves       Slave properties to be part of the bond.
+     */
+    public Bond(ReadableProperty<MO> master, Collection<Transformer<?, ?>> transformers,
+                Collection<WritableProperty<SI>> slaves) {
+        this(master, transformers, new CompositeWritableProperty<SI>(slaves));
+    }
+
+    /**
+     * @see Disposable#dispose()
+     */
+    @Override
+    public void dispose() {
+        master.removeChangeListener(masterAdapter);
+    }
 }
