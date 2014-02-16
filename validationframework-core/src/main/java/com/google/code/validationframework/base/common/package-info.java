@@ -23,23 +23,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.base.binding;
-
-import com.google.code.validationframework.api.binding.ReadableProperty;
-import com.google.code.validationframework.api.binding.WritableProperty;
-import com.google.code.validationframework.base.transform.Transformer;
-
-import java.util.Collection;
-
-public class SingleMasterBond<MO, SI> extends AbstractBond<MO, SI> {
-
-    public SingleMasterBond(ReadableProperty<MO> master, Collection<Transformer<?, ?>> transformers,
-                            Collection<WritableProperty<SI>> slaves) {
-        super(master, transformers, slaves);
-    }
-
-    public SingleMasterBond(ReadableProperty<MO> master, Collection<Transformer<?, ?>> transformers,
-                            CompositeWritableProperty<SI> slaves) {
-        super(master, transformers, slaves);
-    }
-}
+/**
+ * This package contains common base classes and interfaces that can be used all over the ValidationFramework.
+ */
+package com.google.code.validationframework.base.common;

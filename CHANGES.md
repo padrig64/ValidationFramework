@@ -1,3 +1,7 @@
+# Version 2.1.7 (to be released)
+
+* Added lightweight property binding to base to allow binding and transformation of properties.
+
 # Version 2.1.6
 
 * Fixed possible memory leak by removing decoration from layered pane when decorated component no longer in the component hierarchy tree

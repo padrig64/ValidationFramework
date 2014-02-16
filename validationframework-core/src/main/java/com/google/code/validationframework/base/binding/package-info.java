@@ -23,23 +23,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/**
+ * This package contains the base implementation of properties and their binding.
+ */
 package com.google.code.validationframework.base.binding;
-
-import com.google.code.validationframework.api.binding.ReadableProperty;
-import com.google.code.validationframework.api.binding.WritableProperty;
-import com.google.code.validationframework.base.transform.Transformer;
-
-import java.util.Collection;
-
-public class MultipleMasterBond<MO, SI> extends AbstractBond<Collection<MO>, SI> {
-
-    public MultipleMasterBond(Collection<ReadableProperty<MO>> masters, Collection<Transformer<?, ?>> transformers,
-                              Collection<WritableProperty<SI>> slaves) {
-        this(new CompositeReadableProperty<MO>(masters), transformers, new CompositeWritableProperty<SI>(slaves));
-    }
-
-    public MultipleMasterBond(CompositeReadableProperty<MO> masters, Collection<Transformer<?, ?>> transformers,
-                              CompositeWritableProperty<SI> slaves) {
-        super(masters, transformers, slaves);
-    }
-}
