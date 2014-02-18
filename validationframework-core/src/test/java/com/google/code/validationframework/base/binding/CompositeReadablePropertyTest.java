@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
@@ -54,38 +55,61 @@ public class CompositeReadablePropertyTest {
             this.refElements = new ArrayList<T>(refElements);
         }
 
+        @SuppressWarnings("unchecked")
         @Override
         public boolean matches(Object actualElements) {
             boolean match = false;
 
-            if ((actualElements instanceof Collection<?>) && ((Collection<?>) actualElements).size() == refElements
-                    .size()) {
-                match = true;
-                List<T> actual = new ArrayList<T>((Collection<T>) actualElements);
-                for (int i = 0; (i < refElements.size()) && match; i++) {
-                    match = actual.get(i).equals(refElements.get(i));
-                }
+            if (actualElements instanceof Collection<?>) {
+                match = haveEqualElements(refElements, (Collection<T>) actualElements);
             }
 
             return match;
         }
 
         public void describeTo(Description description) {
-            // TODO
+            // Do nothing
         }
     }
 
-    public static Collection<Integer> sameValues(Collection<Integer> values) {
+    private static <T> boolean haveEqualElements(Collection<T> first, Collection<T> second) {
+        boolean match = false;
 
-        return argThat(new CollectionMatcher<Integer>(values));
+        // First, check size
+        if (first.size() == second.size()) {
+
+            // Then, check each element
+            match = true;
+            List<T> firstList = new ArrayList<T>(first);
+            List<T> secondList = new ArrayList<T>(second);
+            for (int i = 0; (i < first.size()) && match; i++) {
+                match = firstList.get(i).equals(secondList.get(i));
+            }
+        }
+
+        return match;
     }
 
     @Test
-    public void testMultipleProperty() {
-        Collection<Integer> expectedOldValues = new ArrayList<Integer>();
-        expectedOldValues.add(1);
-        expectedOldValues.add(2);
+    public void testValueAfterChange() {
+        IntegerProperty compoundProperty1 = new IntegerProperty(1);
+        IntegerProperty compoundProperty2 = new IntegerProperty(2);
+        CompositeReadableProperty<Integer> compositeProperty = new CompositeReadableProperty<Integer>
+                (compoundProperty1, compoundProperty2);
 
+        compoundProperty1.setValue(5);
+        compoundProperty2.setValue(6);
+
+        // Verify values
+        Collection<Integer> expectedNewValues = new ArrayList<Integer>();
+        expectedNewValues.add(5);
+        expectedNewValues.add(6);
+        assertTrue(haveEqualElements(expectedNewValues, compositeProperty.getValue()));
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testPropertyChangeEvent() {
         IntegerProperty compoundProperty1 = new IntegerProperty(1);
         IntegerProperty compoundProperty2 = new IntegerProperty(2);
         CompositeReadableProperty<Integer> compositeProperty = new CompositeReadableProperty<Integer>
@@ -97,16 +121,22 @@ public class CompositeReadablePropertyTest {
         compoundProperty1.setValue(5);
         compoundProperty2.setValue(6);
 
+        // Verify first change event
+        Collection<Integer> expectedOldValues = new ArrayList<Integer>();
+        expectedOldValues.add(1);
+        expectedOldValues.add(2);
         Collection<Integer> expectedNewValues = new ArrayList<Integer>();
         expectedNewValues.add(5);
         expectedNewValues.add(2);
-        verify(mockListener).propertyChanged(eq(compositeProperty), sameValues(expectedOldValues),
-                sameValues(expectedNewValues));
+        verify(mockListener).propertyChanged(eq(compositeProperty), argThat(new CollectionMatcher<Integer>
+                (expectedOldValues)), argThat(new CollectionMatcher<Integer>(expectedNewValues)));
 
-        expectedNewValues.clear();
+        // Verify second change event
+        expectedOldValues = expectedNewValues;
+        expectedNewValues = new ArrayList<Integer>();
         expectedNewValues.add(5);
         expectedNewValues.add(6);
-        verify(mockListener).propertyChanged(eq(compositeProperty), sameValues(expectedOldValues),
-                sameValues(expectedNewValues));
+        verify(mockListener).propertyChanged(eq(compositeProperty), argThat(new CollectionMatcher<Integer>
+                (expectedOldValues)), argThat(new CollectionMatcher<Integer>(expectedNewValues)));
     }
 }

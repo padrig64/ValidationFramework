@@ -30,36 +30,64 @@ import com.google.code.validationframework.api.binding.ReadableProperty;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * {@link ReadableProperty} gathering several other readable properties of the same type.
  * <p/>
- * Whenever a sub-property changes, this composite property will trigger its listeners. Also, reading the value from
- * this property will return the collection of values from all sub-properties.
+ * Whenever a sub-property changes, this composite property will trigger its change listeners. Also, reading the value
+ * from this property will return the collection of values from all sub-properties.
+ * <p/>
+ * The value returned by {@link #getValue()} will never be null, but it may very well be an empty collection.
  *
  * @param <R> Type of data that can be read from the sub-properties.
  */
 public class CompositeReadableProperty<R> extends AbstractReadableProperty<Collection<R>> {
 
+    /**
+     * Listener to changes in the sub-properties.
+     */
     private class ChangeAdapter implements ChangeListener<R> {
 
+        /**
+         * @see ChangeListener#propertyChanged(ReadableProperty, Object, Object)
+         */
         @Override
         public void propertyChanged(ReadableProperty<R> property, R oldValue, R newValue) {
             updateFromProperties();
         }
     }
 
+    /**
+     * Sub-properties
+     */
     private final Collection<ReadableProperty<R>> properties = new ArrayList<ReadableProperty<R>>();
 
+    /**
+     * Listener to changes in the sub-properties.
+     */
     private final ChangeListener<R> changeAdapter = new ChangeAdapter();
 
-    private Collection<R> values = null;
+    /**
+     * Collection of current values of the sub-properties.
+     */
+    private Collection<R> values = Collections.emptyList();
 
+    /**
+     * Default constructor.
+     * <p/>
+     * The default value of this property will be an empty list. It will not be null.
+     */
     public CompositeReadableProperty() {
         super();
     }
 
+    /**
+     * Constructor specifying the sub-properties to be added.
+     *
+     * @param properties Sub-properties to be added.
+     */
     public CompositeReadableProperty(Collection<ReadableProperty<R>> properties) {
         super();
 
@@ -68,6 +96,11 @@ public class CompositeReadableProperty<R> extends AbstractReadableProperty<Colle
         }
     }
 
+    /**
+     * Constructor specifying the sub-properties to be added.
+     *
+     * @param properties Sub-properties to be added.
+     */
     public CompositeReadableProperty(ReadableProperty<R>... properties) {
         super();
 
@@ -76,26 +109,47 @@ public class CompositeReadableProperty<R> extends AbstractReadableProperty<Colle
         }
     }
 
+    /**
+     * Adds the specified sub-property.
+     * <p/>
+     * This will trigger the change listeners.
+     *
+     * @param property Sub-property to be added.
+     */
     public void addProperty(ReadableProperty<R> property) {
         property.addChangeListener(changeAdapter);
         properties.add(property);
         updateFromProperties();
     }
 
+    /**
+     * Removes the specified sub-properties.
+     * <p/>
+     * This will trigger the change listeners.
+     *
+     * @param property Sub-property to be removed.
+     */
     public void removeProperty(ReadableProperty<R> property) {
         property.removeChangeListener(changeAdapter);
         properties.remove(property);
         updateFromProperties();
     }
 
+    /**
+     * @see AbstractReadableProperty#getValue()
+     */
     @Override
     public Collection<R> getValue() {
         return values;
     }
 
+    /**
+     * Updates the current collection of values from the sub-properties and notifies the listeners.
+     * <p/>
+     * TODO Update only the one that was modified instead of re-getting all the values
+     */
     private void updateFromProperties() {
         // Get value from all properties
-        // TODO Update only the one that was modified instead of re-getting all the values
         List<R> values = new ArrayList<R>();
         for (ReadableProperty<R> master : properties) {
             values.add(master.getValue());
@@ -105,6 +159,11 @@ public class CompositeReadableProperty<R> extends AbstractReadableProperty<Colle
         setValue(values);
     }
 
+    /**
+     * Sets the new collection of values to be returned by {@link #getValue()}.
+     *
+     * @param values New collection of values.
+     */
     private void setValue(Collection<R> values) {
         Collection<R> oldValues = this.values;
         this.values = values;
