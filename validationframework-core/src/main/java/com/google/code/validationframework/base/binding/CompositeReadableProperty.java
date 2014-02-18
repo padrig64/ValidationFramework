@@ -30,7 +30,6 @@ import com.google.code.validationframework.api.binding.ReadableProperty;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -53,6 +52,8 @@ public class CompositeReadableProperty<R> extends AbstractReadableProperty<Colle
 
     private final Collection<ReadableProperty<R>> properties = new ArrayList<ReadableProperty<R>>();
 
+    private final ChangeListener<R> changeAdapter = new ChangeAdapter();
+
     private Collection<R> values = null;
 
     public CompositeReadableProperty() {
@@ -61,22 +62,28 @@ public class CompositeReadableProperty<R> extends AbstractReadableProperty<Colle
 
     public CompositeReadableProperty(Collection<ReadableProperty<R>> properties) {
         super();
-        this.properties.addAll(properties);
-        updateFromProperties();
+
+        for (ReadableProperty<R> property : properties) {
+            addProperty(property);
+        }
     }
 
     public CompositeReadableProperty(ReadableProperty<R>... properties) {
         super();
-        Collections.addAll(this.properties, properties);
-        updateFromProperties();
+
+        for (ReadableProperty<R> property : properties) {
+            addProperty(property);
+        }
     }
 
     public void addProperty(ReadableProperty<R> property) {
+        property.addChangeListener(changeAdapter);
         properties.add(property);
         updateFromProperties();
     }
 
     public void removeProperty(ReadableProperty<R> property) {
+        property.removeChangeListener(changeAdapter);
         properties.remove(property);
         updateFromProperties();
     }

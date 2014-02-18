@@ -79,10 +79,15 @@ public class BinderTest {
         from(master1, master2, master3).transform(new AndBooleanAggregator()).to(slave);
 
         assertEquals(false, slave.getValue());
+
+        master2.setValue(true);
+        master3.setValue(true);
+
+        assertEquals(true, slave.getValue());
     }
 
     @Test
-    public void testMasterSlaveLoop() {
+    public void testMasterToSlaveToMaster() {
         IntegerProperty first = new IntegerProperty(5);
         IntegerProperty second = new IntegerProperty(4);
 
