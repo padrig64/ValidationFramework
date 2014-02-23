@@ -31,38 +31,76 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
+/**
+ * {@link WritableProperty} gathering several other writable properties of the same type.
+ * <p/>
+ * Whenever the value of this composite property is set, it will set the same value on all the sub-properties.
+ *
+ * @param <W> Type of data that can be set on the sub-properties.
+ */
 public class CompositeWritableProperty<W> implements WritableProperty<W> {
 
-
+    /**
+     * Sub-properties.
+     */
     private final Collection<WritableProperty<W>> properties = new ArrayList<WritableProperty<W>>();
 
+    /**
+     * Last value set.
+     */
     private W value = null;
 
+    /**
+     * Default constructor.
+     */
     public CompositeWritableProperty() {
         super();
     }
 
+    /**
+     * Constructor specifying the sub-properties to be added.
+     *
+     * @param properties Sub-properties to be added.
+     */
     public CompositeWritableProperty(Collection<WritableProperty<W>> properties) {
         super();
         this.properties.addAll(properties);
         setValue(value);
     }
 
+    /**
+     * Constructor specifying the sub-properties to be added.
+     *
+     * @param properties Sub-properties to be added.
+     */
     public CompositeWritableProperty(WritableProperty<W>... properties) {
         super();
         Collections.addAll(this.properties, properties);
         setValue(value);
     }
 
+    /**
+     * Adds the specified sub-property.
+     *
+     * @param property Sub-property to be added.
+     */
     public void addProperty(WritableProperty<W> property) {
         properties.add(property);
         setValue(value);
     }
 
+    /**
+     * Removes the specified sub-property.
+     *
+     * @param property Sub-property to be removed.
+     */
     public void removeProperty(WritableProperty<W> property) {
         properties.remove(property);
     }
 
+    /**
+     * @see WritableProperty#setValue(Object)
+     */
     @Override
     public void setValue(W value) {
         this.value = value;

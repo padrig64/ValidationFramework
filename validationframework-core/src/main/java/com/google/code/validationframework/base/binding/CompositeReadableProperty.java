@@ -63,7 +63,7 @@ public class CompositeReadableProperty<R> extends AbstractReadableProperty<Colle
     }
 
     /**
-     * Sub-properties
+     * Sub-properties.
      */
     private final Collection<ReadableProperty<R>> properties = new ArrayList<ReadableProperty<R>>();
 
