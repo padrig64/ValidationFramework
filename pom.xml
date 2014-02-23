@@ -30,7 +30,7 @@
         <developerConnection>scm:git:git@github.com:padrig64/ValidationFramework.git</developerConnection>
         <url>git@github.com:padrig64/ValidationFramework.git</url>
       <tag>validationframework-parent-2.1.3</tag>
-  </scm>
+    </scm>
 
     <developers>
         <developer>

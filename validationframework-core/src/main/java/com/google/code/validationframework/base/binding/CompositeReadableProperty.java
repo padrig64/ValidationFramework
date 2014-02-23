@@ -27,6 +27,7 @@ package com.google.code.validationframework.base.binding;
 
 import com.google.code.validationframework.api.binding.ChangeListener;
 import com.google.code.validationframework.api.binding.ReadableProperty;
+import com.google.code.validationframework.base.utils.ValueUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -55,7 +56,9 @@ public class CompositeReadableProperty<R> extends AbstractReadableProperty<Colle
          */
         @Override
         public void propertyChanged(ReadableProperty<R> property, R oldValue, R newValue) {
-            updateFromProperties();
+            if (!ValueUtils.areEqual(oldValue, newValue)) {
+                updateFromProperties();
+            }
         }
     }
 
@@ -145,11 +148,9 @@ public class CompositeReadableProperty<R> extends AbstractReadableProperty<Colle
 
     /**
      * Updates the current collection of values from the sub-properties and notifies the listeners.
-     * <p/>
-     * TODO Update only the one that was modified instead of re-getting all the values
      */
     private void updateFromProperties() {
-        // Get value from all properties
+        // Get value from all properties: use a new collection so that equals() returns false
         List<R> values = new ArrayList<R>();
         for (ReadableProperty<R> master : properties) {
             values.add(master.getValue());
