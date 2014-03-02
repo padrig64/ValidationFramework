@@ -1,6 +1,7 @@
 # Version 2.1.7 (to be released)
 
-* Added lightweight property binding to base to allow binding and transformation of properties.
+* Added lightweight property binding to base to allow binding and transformation of properties
+* Added convenient FormatWrapper to allow stricter parsing, parsing of null/empty text, and formatting null values
 
 # Version 2.1.6
 
