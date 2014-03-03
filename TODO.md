@@ -3,15 +3,13 @@
 * Convenient constructor in the component decorations (abstract + cell + comp)
 * Implement the same on tab and cell decoration (including disabled decoration on disabled tab)
 * Painting of translucent decorations
-* Remaining icontip's tooltips when quickly moving mouse (in/outside tables): only on Linux? still happening?
 * Icon decoration steals mouse event even outside clipping bounds
 * Consistent behavior of dispose() methods
 
 # TO MAKE
 
 * More JavaFX 2 support
-*
-* ResultCollector disposes other validator?
+
 * JFormattedTextFieldOptionalFormatterRule
 * JFormattedTextFieldOptionalValueProvider
 * JTableCellEditorCanceledTrigger
@@ -50,8 +48,6 @@
 
 # TO THINK ABOUT
 
-* General-purpose conditional logic
-* Binding
 * Predicates
 * Component state conditional rules
 * Different rules for different data providers in same validator (with result aggregation)
@@ -62,4 +58,5 @@
 * Re-use instances of W, DP, R, RH, V
 * Heterogeneous Group
 * All features described in the README file
+* General-purpose conditional logic
 * Dialog strategies
