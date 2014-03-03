@@ -94,7 +94,7 @@ public abstract class AbstractReadableProperty<R> implements ReadableProperty<R>
     protected void notifyListeners(R oldValue, R newValue, boolean evenIfNoChange) {
         if (evenIfNoChange || !ValueUtils.areEqual(oldValue, newValue)) {
             for (ChangeListener<R> listener : listeners) {
-                listener.propertyChanged(this, oldValue, newValue);
+                listener.valueChanged(this, oldValue, newValue);
             }
         }
     }

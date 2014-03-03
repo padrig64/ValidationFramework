@@ -59,10 +59,10 @@ public class Bond<MO, SI> implements Disposable {
         private final Transformer<Object, SI> lastTransformer = new CastTransformer<Object, SI>();
 
         /**
-         * @see ChangeListener#propertyChanged(ReadableProperty, Object, Object)
+         * @see ChangeListener#valueChanged(ReadableProperty, Object, Object)
          */
         @Override
-        public void propertyChanged(ReadableProperty<MO> property, MO oldValue, MO newValue) {
+        public void valueChanged(ReadableProperty<MO> property, MO oldValue, MO newValue) {
             // Transform value
             Object transformedValue = newValue;
             for (Transformer transformer : transformers) {
@@ -115,7 +115,7 @@ public class Bond<MO, SI> implements Disposable {
         master.addChangeListener(masterAdapter);
 
         // Slave initial values
-        masterAdapter.propertyChanged(master, null, master.getValue());
+        masterAdapter.valueChanged(master, null, master.getValue());
     }
 
     /**

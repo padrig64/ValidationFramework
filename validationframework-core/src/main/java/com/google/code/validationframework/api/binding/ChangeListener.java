@@ -39,11 +39,11 @@ package com.google.code.validationframework.api.binding;
 public interface ChangeListener<R> {
 
     /**
-     * Triggered whenever the readable property changes.
+     * Triggered whenever the readable property value changes.
      *
      * @param property Readable property that changed.
      * @param oldValue Previous property value.
      * @param newValue New property value.
      */
-    void propertyChanged(ReadableProperty<R> property, R oldValue, R newValue);
+    void valueChanged(ReadableProperty<R> property, R oldValue, R newValue);
 }

@@ -128,7 +128,7 @@ public class CompositeReadablePropertyTest {
         Collection<Integer> expectedNewValues = new ArrayList<Integer>();
         expectedNewValues.add(5);
         expectedNewValues.add(2);
-        verify(mockListener).propertyChanged(eq(compositeProperty), argThat(new CollectionMatcher<Integer>
+        verify(mockListener).valueChanged(eq(compositeProperty), argThat(new CollectionMatcher<Integer>
                 (expectedOldValues)), argThat(new CollectionMatcher<Integer>(expectedNewValues)));
 
         // Verify second change event
@@ -136,7 +136,7 @@ public class CompositeReadablePropertyTest {
         expectedNewValues = new ArrayList<Integer>();
         expectedNewValues.add(5);
         expectedNewValues.add(6);
-        verify(mockListener).propertyChanged(eq(compositeProperty), argThat(new CollectionMatcher<Integer>
+        verify(mockListener).valueChanged(eq(compositeProperty), argThat(new CollectionMatcher<Integer>
                 (expectedOldValues)), argThat(new CollectionMatcher<Integer>(expectedNewValues)));
     }
 }

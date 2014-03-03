@@ -52,10 +52,10 @@ public class CompositeReadableProperty<R> extends AbstractReadableProperty<Colle
     private class ChangeAdapter implements ChangeListener<R> {
 
         /**
-         * @see ChangeListener#propertyChanged(ReadableProperty, Object, Object)
+         * @see ChangeListener#valueChanged(ReadableProperty, Object, Object)
          */
         @Override
-        public void propertyChanged(ReadableProperty<R> property, R oldValue, R newValue) {
+        public void valueChanged(ReadableProperty<R> property, R oldValue, R newValue) {
             if (!ValueUtils.areEqual(oldValue, newValue)) {
                 updateFromProperties();
             }

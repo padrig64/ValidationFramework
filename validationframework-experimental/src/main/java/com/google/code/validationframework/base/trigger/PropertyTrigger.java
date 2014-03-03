@@ -43,10 +43,10 @@ public class PropertyTrigger<T> extends AbstractTrigger {
     private class ChangeAdapter implements ChangeListener<T> {
 
         /**
-         * @see com.google.code.validationframework.api.binding.ChangeListener#propertyChanged(ReadableProperty, Object, Object)
+         * @see ChangeListener#valueChanged(ReadableProperty, Object, Object)
          */
         @Override
-        public void propertyChanged(ReadableProperty<T> property, T oldValue, T newValue) {
+        public void valueChanged(ReadableProperty<T> property, T oldValue, T newValue) {
             fireTriggerEvent(new TriggerEvent(property));
         }
     }
