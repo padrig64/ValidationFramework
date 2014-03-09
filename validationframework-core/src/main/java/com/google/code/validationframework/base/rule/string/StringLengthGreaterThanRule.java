@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Patrick Moawad
+ * Copyright (c) 2014, Patrick Moawad
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -49,7 +49,7 @@ public class StringLengthGreaterThanRule extends AbstractStringBooleanRule {
      *
      * @param lengthLimit String length to which the data string length is to be compared.
      */
-    public StringLengthGreaterThanRule(final int lengthLimit) {
+    public StringLengthGreaterThanRule(int lengthLimit) {
         super();
         setLengthLimit(lengthLimit);
     }
@@ -68,7 +68,7 @@ public class StringLengthGreaterThanRule extends AbstractStringBooleanRule {
      *
      * @param lengthLimit String length to which the data string length is compared.
      */
-    public void setLengthLimit(final int lengthLimit) {
+    public void setLengthLimit(int lengthLimit) {
         this.lengthLimit = lengthLimit;
     }
 
@@ -76,7 +76,7 @@ public class StringLengthGreaterThanRule extends AbstractStringBooleanRule {
      * @see AbstractStringBooleanRule#validate(Object)
      */
     @Override
-    public Boolean validate(final String data) {
+    public Boolean validate(String data) {
         int length = 0;
         if (data != null) {
             length = trimIfNeeded(data).length();

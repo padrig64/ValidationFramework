@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Patrick Moawad
+ * Copyright (c) 2014, Patrick Moawad
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,7 +39,7 @@ public class JTextAreaTextProvider extends BaseJTextComponentTextProvider<JTextA
     /**
      * @see BaseJTextComponentTextProvider#BaseJTextComponentTextProvider(javax.swing.text.JTextComponent)
      */
-    public JTextAreaTextProvider(final JTextArea textComponent) {
+    public JTextAreaTextProvider(JTextArea textComponent) {
         super(textComponent);
     }
 }

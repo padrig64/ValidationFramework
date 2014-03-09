@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Patrick Moawad
+ * Copyright (c) 2014, Patrick Moawad
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,7 +39,7 @@ public class JCheckBoxValueProvider extends BaseJToggleButtonValueProvider<JChec
     /**
      * @see BaseJToggleButtonValueProvider#BaseJToggleButtonValueProvider(javax.swing.JToggleButton)
      */
-    public JCheckBoxValueProvider(final JCheckBox toggleComponent) {
+    public JCheckBoxValueProvider(JCheckBox toggleComponent) {
         super(toggleComponent);
     }
 }

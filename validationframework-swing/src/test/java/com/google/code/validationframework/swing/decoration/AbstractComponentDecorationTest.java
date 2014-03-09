@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Patrick Moawad
+ * Copyright (c) 2014, Patrick Moawad
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,7 +25,6 @@
 
 package com.google.code.validationframework.swing.decoration;
 
-import com.google.code.validationframework.swing.decoration.AbstractComponentDecoration;
 import com.google.code.validationframework.swing.decoration.anchor.Anchor;
 import com.google.code.validationframework.swing.decoration.anchor.AnchorLink;
 import org.junit.Test;
@@ -42,7 +41,7 @@ public class AbstractComponentDecorationTest {
         /**
          * @see AbstractComponentDecoration#AbstractComponentDecoration(JComponent, AnchorLink)
          */
-        public DummyComponentDecoration(final JComponent decoratedComponent, final AnchorLink anchorLink) {
+        public DummyComponentDecoration(JComponent decoratedComponent, AnchorLink anchorLink) {
             super(decoratedComponent, anchorLink);
         }
 
@@ -66,19 +65,19 @@ public class AbstractComponentDecorationTest {
          * @see AbstractComponentDecoration#paint(Graphics)
          */
         @Override
-        public void paint(final Graphics g) {
+        public void paint(Graphics g) {
             // Nothing to be done
         }
     }
 
     @Test
     public void testMultipleDispose() {
-        final JFrame frame = new JFrame();
-        final JTextField textField = new JTextField();
+        JFrame frame = new JFrame();
+        JTextField textField = new JTextField();
         frame.setContentPane(textField);
 
-        final DummyComponentDecoration decoration = new DummyComponentDecoration(textField,
-                new AnchorLink(Anchor.TOP_LEFT, Anchor.TOP_LEFT));
+        DummyComponentDecoration decoration = new DummyComponentDecoration(textField, new AnchorLink(Anchor.TOP_LEFT,
+                Anchor.TOP_LEFT));
 
         decoration.setVisible(false);
         decoration.setVisible(true);

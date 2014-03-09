@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Patrick Moawad
+ * Copyright (c) 2014, Patrick Moawad
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -47,7 +47,7 @@ public class JSliderValueProvider implements DataProvider<Integer> {
      *
      * @param slider Slider to get the value from.
      */
-    public JSliderValueProvider(final JSlider slider) {
+    public JSliderValueProvider(JSlider slider) {
         this.slider = slider;
     }
 

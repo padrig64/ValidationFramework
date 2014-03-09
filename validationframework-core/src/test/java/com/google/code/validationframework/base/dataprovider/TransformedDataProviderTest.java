@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Patrick Moawad
+ * Copyright (c) 2014, Patrick Moawad
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,8 +26,6 @@
 package com.google.code.validationframework.base.dataprovider;
 
 import com.google.code.validationframework.api.dataprovider.DataProvider;
-import com.google.code.validationframework.api.resulthandler.ResultHandler;
-import com.google.code.validationframework.base.resulthandler.TransformedResultHandler;
 import com.google.code.validationframework.base.transform.ToStringTransformer;
 import org.junit.Test;
 

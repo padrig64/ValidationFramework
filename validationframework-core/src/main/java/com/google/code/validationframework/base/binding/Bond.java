@@ -30,7 +30,6 @@ import com.google.code.validationframework.api.binding.ValueChangeListener;
 import com.google.code.validationframework.api.binding.WritableProperty;
 import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.api.transform.Transformer;
-import com.google.code.validationframework.base.transform.CastTransformer;
 
 import java.util.Collection;
 
@@ -54,21 +53,12 @@ public class Bond<MO, SI> implements Disposable {
     private class MasterAdapter implements ValueChangeListener<MO> {
 
         /**
-         * Last transformer used to cast the transformed data to the type of the slave input.
-         */
-        private final Transformer<Object, SI> lastTransformer = new CastTransformer<Object, SI>();
-
-        /**
          * @see ValueChangeListener#valueChanged(ReadableProperty, Object, Object)
          */
         @Override
         public void valueChanged(ReadableProperty<MO> property, MO oldValue, MO newValue) {
             // Transform value
-            Object transformedValue = newValue;
-            for (Transformer transformer : transformers) {
-                transformedValue = transformer.transform(transformedValue);
-            }
-            SI slaveInputValue = lastTransformer.transform(transformedValue);
+            SI slaveInputValue = transformer.transform(newValue);
 
             // Notify slave(s)
             slave.setValue(slaveInputValue);
@@ -86,9 +76,9 @@ public class Bond<MO, SI> implements Disposable {
     private final ReadableProperty<MO> master;
 
     /**
-     * Transformers to be part of the bond.
+     * Transformer (possible composite) to be part of the bond.
      */
-    private final Collection<Transformer<?, ?>> transformers;
+    private final Transformer<MO, SI> transformer;
 
     /**
      * Slave (possibly composite) that is part of the bond.
@@ -103,13 +93,13 @@ public class Bond<MO, SI> implements Disposable {
      * <p/>
      * For type safety, it is highly advised to use the {@link Binder} to create the bond.
      *
-     * @param master       Master (possibly composite) property to be part of the bond.
-     * @param transformers Transformers to be part of the bond.
-     * @param slave        Slave (possibly composite) property to be part of the bond.
+     * @param master      Master (possibly composite) property to be part of the bond.
+     * @param transformer Transformer (possibly composite) to be part of the bond.
+     * @param slave       Slave (possibly composite) property to be part of the bond.
      */
-    public Bond(ReadableProperty<MO> master, Collection<Transformer<?, ?>> transformers, WritableProperty<SI> slave) {
+    public Bond(ReadableProperty<MO> master, Transformer<MO, SI> transformer, WritableProperty<SI> slave) {
         this.master = master;
-        this.transformers = transformers;
+        this.transformer = transformer;
         this.slave = slave;
 
         master.addValueChangeListener(masterAdapter);
@@ -126,13 +116,12 @@ public class Bond<MO, SI> implements Disposable {
      * <p/>
      * For type safety, it is highly advised to use the {@link Binder} to create the bond.
      *
-     * @param master       Master (possibly composite) property to be part of the bond.
-     * @param transformers Transformers to be part of the bond.
-     * @param slaves       Slave properties to be part of the bond.
+     * @param master      Master (possibly composite) property to be part of the bond.
+     * @param transformer Transformer (possible composite) to be part of the bond.
+     * @param slaves      Slave properties to be part of the bond.
      */
-    public Bond(ReadableProperty<MO> master, Collection<Transformer<?, ?>> transformers,
-                Collection<WritableProperty<SI>> slaves) {
-        this(master, transformers, new CompositeWritableProperty<SI>(slaves));
+    public Bond(ReadableProperty<MO> master, Transformer<MO, SI> transformer, Collection<WritableProperty<SI>> slaves) {
+        this(master, transformer, new CompositeWritableProperty<SI>(slaves));
     }
 
     /**

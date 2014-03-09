@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Patrick Moawad
+ * Copyright (c) 2014, Patrick Moawad
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,10 +35,10 @@ public class ButtonGroupSelectionProvider extends ButtonGroupSelectedButtonModel
 
     /**
      * @deprecated Use {@link ButtonGroupSelectedButtonModelProvider#ButtonGroupSelectedButtonModelProvider
-     *             (ButtonGroup)} instead.
+     * (ButtonGroup)} instead.
      */
     @Deprecated
-    public ButtonGroupSelectionProvider(final ButtonGroup buttonGroup) {
+    public ButtonGroupSelectionProvider(ButtonGroup buttonGroup) {
         super(buttonGroup);
     }
 }

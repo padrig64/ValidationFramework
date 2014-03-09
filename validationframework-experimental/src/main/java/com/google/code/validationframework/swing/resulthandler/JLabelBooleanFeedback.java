@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Patrick Moawad
+ * Copyright (c) 2014, Patrick Moawad
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -43,7 +43,7 @@ public class JLabelBooleanFeedback implements ResultHandler<Boolean> {
         return label;
     }
 
-    public void setLabel(final JLabel label) {
+    public void setLabel(JLabel label) {
         this.label = label;
 
         if (this.label == null) {
@@ -53,12 +53,12 @@ public class JLabelBooleanFeedback implements ResultHandler<Boolean> {
     }
 
     @Override
-    public void handleResult(final Boolean result) {
+    public void handleResult(Boolean result) {
         lastResult = result;
         showResult(result);
     }
 
-    private void showResult(final Boolean result) {
+    private void showResult(Boolean result) {
         // TODO
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Patrick Moawad
+ * Copyright (c) 2014, Patrick Moawad
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,7 +33,7 @@ public class NumberLessThanOrEqualToRuleTest {
 
     @Test
     public void testDouble0() {
-        final NumberLessThanOrEqualToRule<Double> rule = new NumberLessThanOrEqualToRule<Double>(0.0);
+        NumberLessThanOrEqualToRule<Double> rule = new NumberLessThanOrEqualToRule<Double>(0.0);
 
         assertEquals(Boolean.TRUE, rule.validate(0.0));
         assertEquals(Boolean.FALSE, rule.validate(65.453));
@@ -44,7 +44,7 @@ public class NumberLessThanOrEqualToRuleTest {
 
     @Test
     public void testDoubleNaN() {
-        final NumberLessThanOrEqualToRule<Double> rule = new NumberLessThanOrEqualToRule<Double>(Double.NaN);
+        NumberLessThanOrEqualToRule<Double> rule = new NumberLessThanOrEqualToRule<Double>(Double.NaN);
 
         assertEquals(Boolean.TRUE, rule.validate(0.0)); // Default behavior of Double
         assertEquals(Boolean.TRUE, rule.validate(65.453)); // Default behavior of Double
@@ -55,7 +55,7 @@ public class NumberLessThanOrEqualToRuleTest {
 
     @Test
     public void testDoubleNull() {
-        final NumberLessThanOrEqualToRule<Double> rule = new NumberLessThanOrEqualToRule<Double>(null);
+        NumberLessThanOrEqualToRule<Double> rule = new NumberLessThanOrEqualToRule<Double>(null);
 
         assertEquals(Boolean.FALSE, rule.validate(0.0));
         assertEquals(Boolean.FALSE, rule.validate(65.453));

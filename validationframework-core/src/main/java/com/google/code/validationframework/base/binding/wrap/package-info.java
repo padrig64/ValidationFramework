@@ -23,44 +23,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.swing.resulthandler.bool;
-
-import com.google.code.validationframework.swing.resulthandler.AbstractComponentResultHandler;
-
-import java.awt.Component;
-
 /**
- * Result handler making one or several components visible (respectively invisible) when the result is valid
- * (respectively invalid).
+ * This package contains the base implementation of property wrappers.
  */
-public class ComponentVisibilityBooleanResultHandler extends AbstractComponentResultHandler<Boolean> {
-
-    /**
-     * @see AbstractComponentResultHandler#AbstractComponentResultHandler()
-     */
-    public ComponentVisibilityBooleanResultHandler() {
-        super();
-    }
-
-    /**
-     * @see AbstractComponentResultHandler#AbstractComponentResultHandler(Component...)
-     */
-    public ComponentVisibilityBooleanResultHandler(Component... components) {
-        super(components);
-    }
-
-    /**
-     * @see AbstractComponentResultHandler#handleResult(Object)
-     */
-    @Override
-    public void handleResult(Boolean result) {
-        boolean visible = false;
-        if (result != null) {
-            visible = result;
-        }
-
-        for (Component component : components) {
-            component.setVisible(visible);
-        }
-    }
-}
+package com.google.code.validationframework.base.binding.wrap;

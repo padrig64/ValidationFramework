@@ -23,44 +23,57 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.swing.resulthandler.bool;
+package com.google.code.validationframework.base.transform;
 
-import com.google.code.validationframework.swing.resulthandler.AbstractComponentResultHandler;
+import com.google.code.validationframework.api.transform.Transformer;
 
-import java.awt.Component;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
- * Result handler making one or several components visible (respectively invisible) when the result is valid
- * (respectively invalid).
+ * Composite transformer.
+ *
+ * @param <I> Type of input of the first transformer of the chain.
+ * @param <O> Type of output of the last transformer of the chain.
  */
-public class ComponentVisibilityBooleanResultHandler extends AbstractComponentResultHandler<Boolean> {
+public class ChainedTransformer<I, O> implements Transformer<I, O> {
 
     /**
-     * @see AbstractComponentResultHandler#AbstractComponentResultHandler()
+     * Transformers that are part of the chain.
      */
-    public ComponentVisibilityBooleanResultHandler() {
-        super();
+    private final Collection<Transformer<?, ?>> transformers = new ArrayList<Transformer<?, ?>>();
+
+    /**
+     * Last transformer casting the output to the wanted type.
+     */
+    private final Transformer<Object, O> lastTransformer = new CastTransformer<Object, O>();
+
+    /**
+     * Adds the specified transformer to the chain.
+     *
+     * @param transformer Transformer to be added.
+     * @param <TO>        Type of output of the specified transformer.
+     *
+     * @return This.
+     */
+    @SuppressWarnings("unchecked")
+    public <TO> ChainedTransformer<I, TO> chain(Transformer<O, TO> transformer) {
+        transformers.add(transformer);
+        return (ChainedTransformer<I, TO>) this;
     }
 
     /**
-     * @see AbstractComponentResultHandler#AbstractComponentResultHandler(Component...)
+     * @see Transformer#transform(Object)
      */
-    public ComponentVisibilityBooleanResultHandler(Component... components) {
-        super(components);
-    }
-
-    /**
-     * @see AbstractComponentResultHandler#handleResult(Object)
-     */
+    @SuppressWarnings("unchecked")
     @Override
-    public void handleResult(Boolean result) {
-        boolean visible = false;
-        if (result != null) {
-            visible = result;
+    public O transform(I input) {
+        Object rawOutput = input;
+
+        for (Transformer transformer : transformers) {
+            rawOutput = transformer.transform(rawOutput);
         }
 
-        for (Component component : components) {
-            component.setVisible(visible);
-        }
+        return lastTransformer.transform(rawOutput);
     }
 }

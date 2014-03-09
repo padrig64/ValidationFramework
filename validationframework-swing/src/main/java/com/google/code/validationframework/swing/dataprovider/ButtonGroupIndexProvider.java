@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Patrick Moawad
+ * Copyright (c) 2014, Patrick Moawad
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,7 @@ public class ButtonGroupIndexProvider extends ButtonGroupSelectedIndexProvider {
      * @deprecated Use {@link ButtonGroupSelectedIndexProvider#ButtonGroupSelectedIndexProvider(ButtonGroup)} instead.
      */
     @Deprecated
-    public ButtonGroupIndexProvider(final ButtonGroup buttonGroup) {
+    public ButtonGroupIndexProvider(ButtonGroup buttonGroup) {
         super(buttonGroup);
     }
 }

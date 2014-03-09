@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Patrick Moawad
+ * Copyright (c) 2014, Patrick Moawad
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,7 +39,7 @@ public class JTextPaneDocumentChangedTrigger extends BaseJTextComponentDocumentC
      *
      * @param source Text pane to listen to
      */
-    public JTextPaneDocumentChangedTrigger(final JTextPane source) {
+    public JTextPaneDocumentChangedTrigger(JTextPane source) {
         super(source);
     }
 }

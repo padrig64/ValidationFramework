@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Patrick Moawad
+ * Copyright (c) 2014, Patrick Moawad
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,7 +25,6 @@
 
 package com.google.code.validationframework.swing.resulthandler.bool;
 
-import com.google.code.validationframework.swing.resulthandler.bool.IconBooleanFeedback;
 import org.junit.Test;
 
 import javax.swing.JFrame;
@@ -35,11 +34,11 @@ public class IconBooleanFeedbackTest {
 
     @Test
     public void testMultipleDispose() {
-        final JFrame frame = new JFrame();
-        final JTextField textField = new JTextField();
+        JFrame frame = new JFrame();
+        JTextField textField = new JTextField();
         frame.setContentPane(textField);
 
-        final IconBooleanFeedback feedback = new IconBooleanFeedback(textField);
+        IconBooleanFeedback feedback = new IconBooleanFeedback(textField);
 
         feedback.handleResult(true);
         feedback.dispose();

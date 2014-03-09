@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Patrick Moawad
+ * Copyright (c) 2014, Patrick Moawad
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,7 +25,6 @@
 
 package com.google.code.validationframework.swing.decoration;
 
-import com.google.code.validationframework.swing.decoration.IconComponentDecoration;
 import org.junit.Test;
 
 import javax.swing.ImageIcon;
@@ -36,11 +35,11 @@ public class IconComponentDecorationTest {
 
     @Test
     public void testMultipleDispose() {
-        final JFrame frame = new JFrame();
-        final JTextField textField = new JTextField();
+        JFrame frame = new JFrame();
+        JTextField textField = new JTextField();
         frame.setContentPane(textField);
 
-        final IconComponentDecoration decoration = new IconComponentDecoration(textField, new ImageIcon());
+        IconComponentDecoration decoration = new IconComponentDecoration(textField, new ImageIcon());
 
         decoration.setVisible(false);
         decoration.setVisible(true);

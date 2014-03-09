@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Patrick Moawad
+ * Copyright (c) 2014, Patrick Moawad
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,7 +33,7 @@ public class NumberEqualToRuleTest {
 
     @Test
     public void testDouble0() {
-        final NumberEqualToRule<Double> rule = new NumberEqualToRule<Double>(0.0);
+        NumberEqualToRule<Double> rule = new NumberEqualToRule<Double>(0.0);
 
         assertEquals(Boolean.TRUE, rule.validate(0.0));
         assertEquals(Boolean.FALSE, rule.validate(65.453));
@@ -44,7 +44,7 @@ public class NumberEqualToRuleTest {
 
     @Test
     public void testDoubleNaN() {
-        final NumberEqualToRule<Double> rule = new NumberEqualToRule<Double>(Double.NaN);
+        NumberEqualToRule<Double> rule = new NumberEqualToRule<Double>(Double.NaN);
 
         assertEquals(Boolean.FALSE, rule.validate(0.0));
         assertEquals(Boolean.FALSE, rule.validate(65.453));
@@ -55,7 +55,7 @@ public class NumberEqualToRuleTest {
 
     @Test
     public void testDoubleNull() {
-        final NumberEqualToRule<Double> rule = new NumberEqualToRule<Double>(null);
+        NumberEqualToRule<Double> rule = new NumberEqualToRule<Double>(null);
 
         assertEquals(Boolean.FALSE, rule.validate(0.0));
         assertEquals(Boolean.FALSE, rule.validate(65.453));

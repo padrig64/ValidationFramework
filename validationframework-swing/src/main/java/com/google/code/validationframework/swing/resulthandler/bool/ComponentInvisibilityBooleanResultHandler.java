@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Patrick Moawad
+ * Copyright (c) 2014, Patrick Moawad
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -45,7 +45,7 @@ public class ComponentInvisibilityBooleanResultHandler extends AbstractComponent
     /**
      * @see AbstractComponentResultHandler#AbstractComponentResultHandler(Component...)
      */
-    public ComponentInvisibilityBooleanResultHandler(final Component... components) {
+    public ComponentInvisibilityBooleanResultHandler(Component... components) {
         super(components);
     }
 
@@ -53,13 +53,13 @@ public class ComponentInvisibilityBooleanResultHandler extends AbstractComponent
      * @see AbstractComponentResultHandler#handleResult(Object)
      */
     @Override
-    public void handleResult(final Boolean result) {
+    public void handleResult(Boolean result) {
         boolean visible = true;
         if (result != null) {
             visible = !result;
         }
 
-        for (final Component component : components) {
+        for (Component component : components) {
             component.setEnabled(visible);
         }
     }

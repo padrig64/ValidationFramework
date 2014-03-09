@@ -28,12 +28,11 @@ package com.google.code.validationframework.base.binding;
 import com.google.code.validationframework.api.binding.ReadableProperty;
 import com.google.code.validationframework.api.binding.WritableProperty;
 import com.google.code.validationframework.api.transform.Transformer;
+import com.google.code.validationframework.base.transform.ChainedTransformer;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 /**
  * Utility class that can be used to help binding properties and transform their values.
@@ -65,21 +64,19 @@ public final class Binder {
         private final ReadableProperty<MO> master;
 
         /**
-         * Master property value transformers.
+         * Master property value transformer.
          */
-        private final List<Transformer<?, ?>> transformers = new ArrayList<Transformer<?, ?>>();
+        private final ChainedTransformer<MO, SI> transformer;
 
         /**
-         * Constructor specifying the master property to be bound and the transformers to be applied.
+         * Constructor specifying the master property to be bound and the transformer to be applied.
          *
-         * @param master       Master property that are part of the bind.
-         * @param transformers Transformers to be applied.
+         * @param master      Master property that is part of the bond.
+         * @param transformer Transformer to be applied.
          */
-        public SingleMasterBinding(ReadableProperty<MO> master, Collection<Transformer<?, ?>> transformers) {
+        public SingleMasterBinding(ReadableProperty<MO> master, Transformer<MO, SI> transformer) {
             this.master = master;
-            if (transformers != null) {
-                this.transformers.addAll(transformers);
-            }
+            this.transformer = new ChainedTransformer<MO, MO>().chain(transformer);
         }
 
         /**
@@ -91,8 +88,7 @@ public final class Binder {
          * @return Builder object to continue building the bond.
          */
         public <TSI> SingleMasterBinding<MO, TSI> transform(Transformer<SI, TSI> transformer) {
-            transformers.add(transformer);
-            return new SingleMasterBinding<MO, TSI>(master, transformers);
+            return new SingleMasterBinding<MO, TSI>(master, this.transformer.chain(transformer));
         }
 
         /**
@@ -115,7 +111,7 @@ public final class Binder {
          * @return Bond between the master and the slaves.
          */
         public Bond<MO, SI> to(Collection<WritableProperty<SI>> slaves) {
-            return new Bond<MO, SI>(master, transformers, slaves);
+            return new Bond<MO, SI>(master, transformer, slaves);
         }
 
         /**
@@ -145,22 +141,20 @@ public final class Binder {
         private final Collection<ReadableProperty<MO>> masters;
 
         /**
-         * Master properties values transformers.
+         * Master properties values transformer.
          */
-        private final List<Transformer<?, ?>> transformers = new ArrayList<Transformer<?, ?>>();
+        private final ChainedTransformer<Collection<MO>, SI> transformer;
 
         /**
-         * Constructor specifying the master properties to be bound and the transformers to be applied.
+         * Constructor specifying the master properties to be bound and the transformer to be applied.
          *
-         * @param masters      Master properties that are part of the bind.
-         * @param transformers Transformers to be applied.
+         * @param masters     Master properties that are part of the bond.
+         * @param transformer Transformer to be applied.
          */
-        public MultipleMasterBinding(Collection<ReadableProperty<MO>> masters, Collection<Transformer<?,
-                ?>> transformers) {
+        public MultipleMasterBinding(Collection<ReadableProperty<MO>> masters, Transformer<Collection<MO>,
+                SI> transformer) {
             this.masters = masters;
-            if (transformers != null) {
-                this.transformers.addAll(transformers);
-            }
+            this.transformer = new ChainedTransformer<Collection<MO>, Collection<MO>>().chain(transformer);
         }
 
         /**
@@ -172,8 +166,7 @@ public final class Binder {
          * @return Builder object to continue building the bond.
          */
         public <TSI> MultipleMasterBinding<MO, TSI> transform(Transformer<SI, TSI> transformer) {
-            transformers.add(transformer);
-            return new MultipleMasterBinding<MO, TSI>(masters, transformers);
+            return new MultipleMasterBinding<MO, TSI>(masters, this.transformer.chain(transformer));
         }
 
         /**
@@ -196,7 +189,7 @@ public final class Binder {
          * @return Bond between the masters and the slaves.
          */
         public Bond<Collection<MO>, SI> to(Collection<WritableProperty<SI>> slaves) {
-            return new Bond<Collection<MO>, SI>(new CompositeReadableProperty<MO>(masters), transformers, slaves);
+            return new Bond<Collection<MO>, SI>(new CompositeReadableProperty<MO>(masters), transformer, slaves);
         }
 
         /**

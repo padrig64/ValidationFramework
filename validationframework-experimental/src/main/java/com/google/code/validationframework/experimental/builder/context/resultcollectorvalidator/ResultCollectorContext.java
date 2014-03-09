@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Patrick Moawad
+ * Copyright (c) 2014, Patrick Moawad
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,24 +34,24 @@ import java.util.List;
 
 public class ResultCollectorContext {
 
-    public <D> RuleContext<D> collect(final ResultCollector<?, D> resultCollector) {
-        final List<ResultCollector<?, D>> registeredResultCollectors = new ArrayList<ResultCollector<?, D>>();
+    public <D> RuleContext<D> collect(ResultCollector<?, D> resultCollector) {
+        List<ResultCollector<?, D>> registeredResultCollectors = new ArrayList<ResultCollector<?, D>>();
         if (resultCollector != null) {
             registeredResultCollectors.add(resultCollector);
         }
         return new RuleContext<D>(registeredResultCollectors);
     }
 
-    public <D> RuleContext<D> collect(final ResultCollector<?, D>... resultCollectors) {
-        final List<ResultCollector<?, D>> registeredResultCollectors = new ArrayList<ResultCollector<?, D>>();
+    public <D> RuleContext<D> collect(ResultCollector<?, D>... resultCollectors) {
+        List<ResultCollector<?, D>> registeredResultCollectors = new ArrayList<ResultCollector<?, D>>();
         if (resultCollectors != null) {
             Collections.addAll(registeredResultCollectors, resultCollectors);
         }
         return new RuleContext<D>(registeredResultCollectors);
     }
 
-    public <D> RuleContext<D> collect(final Collection<ResultCollector<?, D>> resultCollectors) {
-        final List<ResultCollector<?, D>> registeredResultCollectors = new ArrayList<ResultCollector<?, D>>();
+    public <D> RuleContext<D> collect(Collection<ResultCollector<?, D>> resultCollectors) {
+        List<ResultCollector<?, D>> registeredResultCollectors = new ArrayList<ResultCollector<?, D>>();
         if (resultCollectors != null) {
             registeredResultCollectors.addAll(resultCollectors);
         }

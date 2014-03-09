@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Patrick Moawad
+ * Copyright (c) 2014, Patrick Moawad
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,7 +25,6 @@
 
 package com.google.code.validationframework.swing.resulthandler.bool;
 
-import com.google.code.validationframework.swing.resulthandler.bool.CellIconBooleanFeedback;
 import org.junit.Test;
 
 import javax.swing.JFrame;
@@ -36,15 +35,15 @@ public class CellIconBooleanFeedbackTest {
 
     @Test
     public void testMultipleDispose() {
-        final JFrame frame = new JFrame();
-        final DefaultTableModel tableModel = new DefaultTableModel(5, 5);
+        JFrame frame = new JFrame();
+        DefaultTableModel tableModel = new DefaultTableModel(5, 5);
         for (int i = 0; i < 5; i++) {
             tableModel.insertRow(i, new String[]{"1", "2", "3", "4", "5"});
         }
-        final JTable table = new JTable(tableModel);
+        JTable table = new JTable(tableModel);
         frame.setContentPane(table);
 
-        final CellIconBooleanFeedback feedback = new CellIconBooleanFeedback(table, 2, 2);
+        CellIconBooleanFeedback feedback = new CellIconBooleanFeedback(table, 2, 2);
 
         feedback.handleResult(true);
         feedback.dispose();

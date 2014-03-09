@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Patrick Moawad
+ * Copyright (c) 2014, Patrick Moawad
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -45,7 +45,7 @@ public class ComponentDisablingBooleanResultHandler extends AbstractComponentRes
     /**
      * @see AbstractComponentResultHandler#AbstractComponentResultHandler(Component...)
      */
-    public ComponentDisablingBooleanResultHandler(final Component... components) {
+    public ComponentDisablingBooleanResultHandler(Component... components) {
         super(components);
     }
 
@@ -53,13 +53,13 @@ public class ComponentDisablingBooleanResultHandler extends AbstractComponentRes
      * @see AbstractComponentResultHandler#handleResult(Object)
      */
     @Override
-    public void handleResult(final Boolean result) {
+    public void handleResult(Boolean result) {
         boolean enabled = true;
         if (result != null) {
             enabled = !result;
         }
 
-        for (final Component component : components) {
+        for (Component component : components) {
             component.setEnabled(enabled);
         }
     }

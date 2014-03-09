@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Patrick Moawad
+ * Copyright (c) 2014, Patrick Moawad
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,7 +33,7 @@ public class NumberGreaterThanRuleTest {
 
     @Test
     public void testDouble0() {
-        final NumberGreaterThanRule<Double> rule = new NumberGreaterThanRule<Double>(0.0);
+        NumberGreaterThanRule<Double> rule = new NumberGreaterThanRule<Double>(0.0);
 
         assertEquals(Boolean.FALSE, rule.validate(0.0));
         assertEquals(Boolean.TRUE, rule.validate(65.453));
@@ -44,7 +44,7 @@ public class NumberGreaterThanRuleTest {
 
     @Test
     public void testDoubleNaN() {
-        final NumberGreaterThanRule<Double> rule = new NumberGreaterThanRule<Double>(Double.NaN);
+        NumberGreaterThanRule<Double> rule = new NumberGreaterThanRule<Double>(Double.NaN);
 
         assertEquals(Boolean.FALSE, rule.validate(0.0)); // Default behavior of Double
         assertEquals(Boolean.FALSE, rule.validate(65.453)); // Default behavior of Double
@@ -55,7 +55,7 @@ public class NumberGreaterThanRuleTest {
 
     @Test
     public void testDoubleNull() {
-        final NumberGreaterThanRule<Double> rule = new NumberGreaterThanRule<Double>(null);
+        NumberGreaterThanRule<Double> rule = new NumberGreaterThanRule<Double>(null);
 
         assertEquals(Boolean.TRUE, rule.validate(0.0));
         assertEquals(Boolean.TRUE, rule.validate(65.453));

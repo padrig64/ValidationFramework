@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Patrick Moawad
+ * Copyright (c) 2014, Patrick Moawad
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,6 +24,7 @@
  */
 
 /**
- * This package contains core implementations of interface {@link Transformer}.
+ * This package contains core implementations of interface {@link com.google.code.validationframework.api.transform
+ * .Transformer}.
  */
 package com.google.code.validationframework.base.transform;
