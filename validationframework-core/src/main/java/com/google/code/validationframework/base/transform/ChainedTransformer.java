@@ -52,7 +52,9 @@ public class ChainedTransformer<I, O> implements Transformer<I, O> {
      * Constructor specifying the first transformer.
      */
     public ChainedTransformer(Transformer<I, O> transformer) {
-        transformers.add(transformer);
+        if (transformer != null) {
+            transformers.add(transformer);
+        }
     }
 
     /**
@@ -65,7 +67,9 @@ public class ChainedTransformer<I, O> implements Transformer<I, O> {
      */
     @SuppressWarnings("unchecked")
     public <TO> ChainedTransformer<I, TO> chain(Transformer<O, TO> transformer) {
-        transformers.add(transformer);
+        if (transformer != null) {
+            transformers.add(transformer);
+        }
         return (ChainedTransformer<I, TO>) this;
     }
 

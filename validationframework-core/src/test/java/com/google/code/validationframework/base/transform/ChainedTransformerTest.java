@@ -38,9 +38,11 @@ public class ChainedTransformerTest {
 
     @Test
     public void testBoolean() {
+        // Test with no transformer
+        ChainedTransformer<Boolean, Boolean> transformer = new ChainedTransformer<Boolean, Boolean>(null);
+
         // Test with one transformer
-        ChainedTransformer<Boolean, Boolean> transformer = new ChainedTransformer<Boolean,
-                Boolean>(new NegateBooleanTransformer());
+        transformer = transformer.chain(new NegateBooleanTransformer());
         assertTrue(transformer.transform(false));
 
         // Test with two transformers
