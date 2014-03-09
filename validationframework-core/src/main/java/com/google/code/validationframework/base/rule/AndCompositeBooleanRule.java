@@ -27,8 +27,8 @@ package com.google.code.validationframework.base.rule;
 
 import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.api.rule.Rule;
+import com.google.code.validationframework.api.transform.Transformer;
 import com.google.code.validationframework.base.transform.AndBooleanAggregator;
-import com.google.code.validationframework.base.transform.Transformer;
 
 import java.util.ArrayList;
 import java.util.Collection;

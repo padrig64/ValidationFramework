@@ -28,11 +28,11 @@ package com.google.code.validationframework.base.validator.generalvalidator.dsl;
 import com.google.code.validationframework.api.dataprovider.DataProvider;
 import com.google.code.validationframework.api.resulthandler.ResultHandler;
 import com.google.code.validationframework.api.rule.Rule;
+import com.google.code.validationframework.api.transform.Transformer;
 import com.google.code.validationframework.api.trigger.Trigger;
 import com.google.code.validationframework.api.validator.SimpleValidator;
 import com.google.code.validationframework.base.resulthandler.ResultCollector;
 import com.google.code.validationframework.base.resulthandler.SimpleResultCollector;
-import com.google.code.validationframework.base.transform.Transformer;
 import com.google.code.validationframework.base.validator.generalvalidator.GeneralValidator;
 
 import java.util.ArrayList;
@@ -106,9 +106,9 @@ public class SingleResultCollectorContext<DPO> {
      * Adds a new result collector as trigger and data provider to the validator under construction, in order to collect
      * the results of the specified validator.
      *
-     * @param validator Validator to collect the result from.<br>A result collector will be created, added as a result
-     *                  handler to the specified validator, and added as a trigger and data provider in the validator
-     *                  under construction.
+     * @param validator Validator to collect the result from.<br>
+     *                  A result collector will be created, added as a result handler to the specified validator, and
+     *                  added as a trigger and data provider in the validator under construction.
      *
      * @return Context allowing further construction of the validator using the DSL.
      */
@@ -182,6 +182,7 @@ public class SingleResultCollectorContext<DPO> {
         }
 
         // Change context
-        return new SingleRuleContext<DPO, DPO, RO>(addedTriggers, addedDataProviders, GeneralValidator.MappingStrategy.SPLIT, null, addedRules);
+        return new SingleRuleContext<DPO, DPO, RO>(addedTriggers, addedDataProviders,
+                GeneralValidator.MappingStrategy.SPLIT, null, addedRules);
     }
 }

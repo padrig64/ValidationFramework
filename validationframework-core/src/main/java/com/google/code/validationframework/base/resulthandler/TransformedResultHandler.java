@@ -27,8 +27,8 @@ package com.google.code.validationframework.base.resulthandler;
 
 import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.api.resulthandler.ResultHandler;
+import com.google.code.validationframework.api.transform.Transformer;
 import com.google.code.validationframework.base.transform.CastTransformer;
-import com.google.code.validationframework.base.transform.Transformer;
 
 /**
  * Wrapper for result handlers that will transform the result to another type.
@@ -76,7 +76,7 @@ public class TransformedResultHandler<RHI, TRHI> implements ResultHandler<RHI>, 
 
     /**
      * @deprecated Use {@link #TransformedResultHandler(Transformer, ResultHandler)} instead.<br>
-     *             This method will be removed in a future release.
+     * This method will be removed in a future release.
      */
     @Deprecated
     public TransformedResultHandler(ResultHandler<TRHI> wrappedResultHandler, Transformer<RHI,
@@ -94,7 +94,7 @@ public class TransformedResultHandler<RHI, TRHI> implements ResultHandler<RHI>, 
      */
     @Override
     public void handleResult(RHI result) {
-        if ((wrappedResultHandler != null) && (resultTransformer != null)) {
+        if (wrappedResultHandler != null) {
             wrappedResultHandler.handleResult(resultTransformer.transform(result));
         }
     }

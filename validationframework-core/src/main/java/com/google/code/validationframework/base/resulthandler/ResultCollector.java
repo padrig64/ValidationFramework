@@ -28,19 +28,23 @@ package com.google.code.validationframework.base.resulthandler;
 import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.api.dataprovider.DataProvider;
 import com.google.code.validationframework.api.resulthandler.ResultHandler;
+import com.google.code.validationframework.api.transform.Transformer;
 import com.google.code.validationframework.api.trigger.TriggerEvent;
 import com.google.code.validationframework.base.transform.CastTransformer;
-import com.google.code.validationframework.base.transform.Transformer;
 import com.google.code.validationframework.base.trigger.AbstractTrigger;
 
 /**
- * Result collector providing the result from one validator as validation input to another validator.<br>So this
- * collector is meant to be registered as a result handler to one validator, and as a trigger and data provider to
- * one or several other validators.<br>This can be useful to aggregate the validation results from a group in
- * independent fields, for instance to enable or disable an Apply button on a dialog.
+ * Result collector providing the result from one validator as validation input to another validator.
+ * <p/>
+ * So this collector is meant to be registered as a result handler to one validator, and as a trigger and data provider
+ * to one or several other validators.
+ * <p/>
+ * This can be useful to aggregate the validation results from a group in independent fields, for instance to enable or
+ * disable an Apply button on a dialog.
  *
  * @param <VO>  Type of result collected from another validator.
- * @param <DPO> Type of data provided by the collector.<br>It could be the same as VO.
+ * @param <DPO> Type of data provided by the collector.<br>
+ *              It could be the same as VO.
  *
  * @see ResultHandler
  * @see AbstractTrigger

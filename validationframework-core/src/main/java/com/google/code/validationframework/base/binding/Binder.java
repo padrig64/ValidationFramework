@@ -27,7 +27,7 @@ package com.google.code.validationframework.base.binding;
 
 import com.google.code.validationframework.api.binding.ReadableProperty;
 import com.google.code.validationframework.api.binding.WritableProperty;
-import com.google.code.validationframework.base.transform.Transformer;
+import com.google.code.validationframework.api.transform.Transformer;
 
 import java.util.ArrayList;
 import java.util.Arrays;

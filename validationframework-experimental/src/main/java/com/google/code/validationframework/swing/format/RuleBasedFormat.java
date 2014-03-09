@@ -26,7 +26,7 @@
 package com.google.code.validationframework.swing.format;
 
 import com.google.code.validationframework.api.rule.Rule;
-import com.google.code.validationframework.base.transform.Aggregator;
+import com.google.code.validationframework.api.transform.Aggregator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -64,13 +64,13 @@ public class RuleBasedFormat<E, O> extends Format {
         super();
     }
 
-    public RuleBasedFormat(final Format wrappedFormat) {
+    public RuleBasedFormat(Format wrappedFormat) {
         super();
         setWrappedFormat(wrappedFormat);
     }
 
-    public RuleBasedFormat(final Aggregator<E, Boolean> preResultAggregator, final Format wrappedFormat,
-                           final Aggregator<O, Boolean> postResultAggregator) {
+    public RuleBasedFormat(Aggregator<E, Boolean> preResultAggregator, Format wrappedFormat, Aggregator<O,
+            Boolean> postResultAggregator) {
         super();
         setWrappedFormat(wrappedFormat);
         setPreResultAggregator(preResultAggregator);
@@ -81,15 +81,15 @@ public class RuleBasedFormat<E, O> extends Format {
         return wrappedFormat;
     }
 
-    public void setWrappedFormat(final Format wrappedFormat) {
+    public void setWrappedFormat(Format wrappedFormat) {
         this.wrappedFormat = wrappedFormat;
     }
 
-    public void addPreRule(final Rule<String, E> preRule) {
+    public void addPreRule(Rule<String, E> preRule) {
         preRules.add(preRule);
     }
 
-    public void removePreRule(final Rule<String, E> preRule) {
+    public void removePreRule(Rule<String, E> preRule) {
         preRules.remove(preRule);
     }
 
@@ -97,15 +97,15 @@ public class RuleBasedFormat<E, O> extends Format {
         return preResultAggregator;
     }
 
-    public void setPreResultAggregator(final Aggregator<E, Boolean> preResultAggregator) {
+    public void setPreResultAggregator(Aggregator<E, Boolean> preResultAggregator) {
         this.preResultAggregator = preResultAggregator;
     }
 
-    public void addPostRule(final Rule<Object, O> postRule) {
+    public void addPostRule(Rule<Object, O> postRule) {
         postRules.add(postRule);
     }
 
-    public void removePostRule(final Rule<Object, O> postRule) {
+    public void removePostRule(Rule<Object, O> postRule) {
         postRules.remove(postRule);
     }
 
@@ -113,7 +113,7 @@ public class RuleBasedFormat<E, O> extends Format {
         return postResultAggregator;
     }
 
-    public void setPostResultAggregator(final Aggregator<O, Boolean> postResultAggregator) {
+    public void setPostResultAggregator(Aggregator<O, Boolean> postResultAggregator) {
         this.postResultAggregator = postResultAggregator;
     }
 
@@ -121,18 +121,18 @@ public class RuleBasedFormat<E, O> extends Format {
      * @see Format#format(Object)
      */
     @Override
-    public Object parseObject(final String source) throws ParseException {
+    public Object parseObject(String source) throws ParseException {
         checkPreRules(source);
-        final Object object = super.parseObject(source);
+        Object object = super.parseObject(source);
         checkPostRules(object);
 
         return object;
     }
 
-    private void checkPreRules(final String input) throws ParseException {
+    private void checkPreRules(String input) throws ParseException {
         // Check pre-rules one by one
-        final Collection<E> preResults = new ArrayList<E>();
-        for (final Rule<String, E> rule : preRules) {
+        Collection<E> preResults = new ArrayList<E>();
+        for (Rule<String, E> rule : preRules) {
             preResults.add(rule.validate(input));
         }
 
@@ -140,17 +140,17 @@ public class RuleBasedFormat<E, O> extends Format {
         if (preResultAggregator == null) {
             LOGGER.warn("No result aggregator set for the pre-rules");
         } else {
-            final Boolean preAggregatedResult = preResultAggregator.transform(preResults);
+            Boolean preAggregatedResult = preResultAggregator.transform(preResults);
             if (Boolean.FALSE.equals(preAggregatedResult)) {
                 throw new ParseException("", -1);
             }
         }
     }
 
-    private void checkPostRules(final Object input) throws ParseException {
+    private void checkPostRules(Object input) throws ParseException {
         // Check post-rules one by one
-        final Collection<O> postResults = new ArrayList<O>();
-        for (final Rule<Object, O> rule : postRules) {
+        Collection<O> postResults = new ArrayList<O>();
+        for (Rule<Object, O> rule : postRules) {
             postResults.add(rule.validate(input));
         }
 
@@ -158,7 +158,7 @@ public class RuleBasedFormat<E, O> extends Format {
         if (postResultAggregator == null) {
             LOGGER.warn("No result aggregator set for the post-rules");
         } else {
-            final Boolean postAggregatedResult = postResultAggregator.transform(postResults);
+            Boolean postAggregatedResult = postResultAggregator.transform(postResults);
             if (Boolean.FALSE.equals(postAggregatedResult)) {
                 throw new ParseException("", -1);
             }
@@ -169,7 +169,7 @@ public class RuleBasedFormat<E, O> extends Format {
      * @see Format#format(Object, StringBuffer, FieldPosition)
      */
     @Override
-    public StringBuffer format(final Object obj, final StringBuffer toAppendTo, final FieldPosition pos) {
+    public StringBuffer format(Object obj, StringBuffer toAppendTo, FieldPosition pos) {
         // Just forward the call to the wrapped format
         return wrappedFormat.format(obj, toAppendTo, pos);
     }
@@ -178,7 +178,7 @@ public class RuleBasedFormat<E, O> extends Format {
      * @see Format#parseObject(String, ParsePosition)
      */
     @Override
-    public Object parseObject(final String source, final ParsePosition pos) {
+    public Object parseObject(String source, ParsePosition pos) {
         // Just forward the call to the wrapped format
         return wrappedFormat.parseObject(source, pos);
     }

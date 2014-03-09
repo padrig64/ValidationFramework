@@ -27,8 +27,8 @@ package com.google.code.validationframework.base.rule.bool;
 
 import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.api.rule.Rule;
+import com.google.code.validationframework.api.transform.Transformer;
 import com.google.code.validationframework.base.transform.AndBooleanAggregator;
-import com.google.code.validationframework.base.transform.Transformer;
 
 import java.util.Collection;
 
@@ -71,7 +71,7 @@ public class AndBooleanRule implements Rule<Collection<Boolean>, Boolean>, Dispo
      * @param emptyCollectionValid Result for empty and null collections.
      * @param nullElementValid     Boolean value for null elements.
      */
-    public AndBooleanRule(final boolean emptyCollectionValid, final boolean nullElementValid) {
+    public AndBooleanRule(boolean emptyCollectionValid, boolean nullElementValid) {
         aggregator = new AndBooleanAggregator(emptyCollectionValid, nullElementValid);
     }
 
@@ -79,7 +79,7 @@ public class AndBooleanRule implements Rule<Collection<Boolean>, Boolean>, Dispo
      * @see Rule#validate(Object)
      */
     @Override
-    public Boolean validate(final Collection<Boolean> elements) {
+    public Boolean validate(Collection<Boolean> elements) {
         Boolean aggregated = null;
 
         if (aggregator != null) {

@@ -1,5 +1,6 @@
-# Version 2.1.7 (to be released)
+# Version 3.0.0 (to be released)
 
+* Moved the Tranformer and Aggregator interfaces from the base package to the API package
 * Added lightweight property binding to base to allow binding and transformation of properties
 * Added convenient FormatWrapper to allow stricter parsing, parsing of null/empty text, and formatting null values
 

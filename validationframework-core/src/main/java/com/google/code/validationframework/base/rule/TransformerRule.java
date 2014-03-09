@@ -27,7 +27,7 @@ package com.google.code.validationframework.base.rule;
 
 import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.api.rule.Rule;
-import com.google.code.validationframework.base.transform.Transformer;
+import com.google.code.validationframework.api.transform.Transformer;
 
 /**
  * Rule making use of a {@link Transformer} to produce the results.

@@ -25,6 +25,9 @@
 
 package com.google.code.validationframework.base.transform;
 
+import com.google.code.validationframework.api.transform.Aggregator;
+import com.google.code.validationframework.api.transform.Transformer;
+
 import java.util.Collection;
 
 /**
@@ -35,23 +38,30 @@ import java.util.Collection;
 public class AndBooleanAggregator implements Aggregator<Boolean, Boolean> {
 
     /**
-     * Default boolean value to be used when transforming an empty or null collection.<br>This value can be null.
+     * Default boolean value to be used when transforming an empty or null collection.
+     * <p/>
+     * This value can be null.
      */
     public static final Boolean DEFAULT_EMPTY_COLLECTION_VALUE = true;
 
     /**
-     * Default boolean value to be used when transforming a null value from the collection.<br>This value can be null.
+     * Default boolean value to be used when transforming a null value from the collection.
+     * <p/>
+     * This value can be null.
      */
     public static final Boolean DEFAULT_NULL_ELEMENT_VALUE = false;
 
     /**
-     * Boolean value to be used when transforming an empty collection.<br>This value can be null.
+     * Boolean value to be used when transforming an empty collection.
+     * <p/>
+     * This value can be null.
      */
     private final Boolean emptyCollectionValid;
 
     /**
-     * Boolean value to be used when transforming a null value from the collection.<br>If this value is set to null,
-     * then the element will be ignored from the aggregation.
+     * Boolean value to be used when transforming a null value from the collection.
+     * <p/>
+     * If this value is set to null, then the element will be ignored from the aggregation.
      */
     private final Boolean nullElementValid;
 
@@ -69,8 +79,8 @@ public class AndBooleanAggregator implements Aggregator<Boolean, Boolean> {
      * Constructor specifying the boolean values for empty and null collections, and null elements.
      *
      * @param emptyCollectionValue Value for empty and null collections.
-     * @param nullElementValue     Value for null elements in the transformed collection.<br>If this value is set to
-     *                             null, then the element will be ignored from the aggregation.
+     * @param nullElementValue     Value for null elements in the transformed collection.<br>
+     *                             If this value is set to null, then the element will be ignored from the aggregation.
      */
     public AndBooleanAggregator(Boolean emptyCollectionValue, Boolean nullElementValue) {
         this.emptyCollectionValid = emptyCollectionValue;

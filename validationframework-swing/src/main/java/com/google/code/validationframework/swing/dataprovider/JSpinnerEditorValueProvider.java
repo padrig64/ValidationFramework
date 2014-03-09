@@ -26,8 +26,8 @@
 package com.google.code.validationframework.swing.dataprovider;
 
 import com.google.code.validationframework.api.dataprovider.DataProvider;
+import com.google.code.validationframework.api.transform.Transformer;
 import com.google.code.validationframework.base.transform.CastTransformer;
-import com.google.code.validationframework.base.transform.Transformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,10 +37,12 @@ import javax.swing.text.JTextComponent;
 import java.text.ParseException;
 
 /**
- * Data provider reading the value from a spinner.<br>Note that the value is not read from the model, but instead
- * corresponds to the current text.
+ * Data provider reading the value from a spinner.
+ * <p/>
+ * Note that the value is not read from the model, but instead corresponds to the current text.
  *
- * @param <DPO> Type of data in the spinner editor.<br>You may use {@link Object}.
+ * @param <DPO> Type of data in the spinner editor.<br>
+ *              You may use {@link Object}.
  *
  * @see DataProvider
  * @see JSpinner
@@ -53,8 +55,10 @@ public class JSpinnerEditorValueProvider<DPO> implements DataProvider<DPO> {
     private static final Logger LOGGER = LoggerFactory.getLogger(JSpinnerEditorValueProvider.class);
 
     /**
-     * Spinner to get the data from.<br>Note that the text and the formatter are retrieved every time they are needed so
-     * that we do not have to listener to changes in the spinner to track them.
+     * Spinner to get the data from.
+     * <p/>
+     * Note that the text and the formatter are retrieved every time they are needed so that we do not have to listener
+     * to changes in the spinner to track them.
      */
     private final JSpinner spinner;
 
@@ -68,7 +72,7 @@ public class JSpinnerEditorValueProvider<DPO> implements DataProvider<DPO> {
      *
      * @param spinner Spinner to get the value from.
      */
-    public JSpinnerEditorValueProvider(final JSpinner spinner) {
+    public JSpinnerEditorValueProvider(JSpinner spinner) {
         this(spinner, new CastTransformer<Object, DPO>());
     }
 
@@ -78,7 +82,7 @@ public class JSpinnerEditorValueProvider<DPO> implements DataProvider<DPO> {
      * @param spinner     Spinner to get the value from.
      * @param transformer Transformer used to convert the object parsed from the spinner to the expected type.
      */
-    public JSpinnerEditorValueProvider(final JSpinner spinner, final Transformer<Object, DPO> transformer) {
+    public JSpinnerEditorValueProvider(JSpinner spinner, Transformer<Object, DPO> transformer) {
         this.spinner = spinner;
         this.transformer = transformer;
     }
@@ -101,9 +105,9 @@ public class JSpinnerEditorValueProvider<DPO> implements DataProvider<DPO> {
 
         try {
             // Parse text
-            final JFormattedTextField.AbstractFormatter formatter = getFormatter();
+            JFormattedTextField.AbstractFormatter formatter = getFormatter();
             if (formatter != null) {
-                final Object dataValue = formatter.stringToValue(getText());
+                Object dataValue = formatter.stringToValue(getText());
 
                 // Convert it to the required type
                 typedValue = transformer.transform(dataValue);
@@ -116,8 +120,9 @@ public class JSpinnerEditorValueProvider<DPO> implements DataProvider<DPO> {
     }
 
     /**
-     * Retrieves the text currently in the text component of the spinner, if any.<br>Note that if editor of the
-     * spinner has been customized, this method may need to be adapted in a sub-class.
+     * Retrieves the text currently in the text component of the spinner, if any.
+     * <p/>
+     * Note that if editor of the spinner has been customized, this method may need to be adapted in a sub-class.
      *
      * @return Spinner text or null if not found.
      */
@@ -125,7 +130,7 @@ public class JSpinnerEditorValueProvider<DPO> implements DataProvider<DPO> {
         String text = null;
 
         // Try to find a text component in the spinner
-        final JTextComponent textEditorComponent;
+        JTextComponent textEditorComponent;
         if (spinner.getEditor() instanceof JTextComponent) {
             textEditorComponent = (JTextComponent) spinner.getEditor();
         } else if (spinner.getEditor() instanceof JSpinner.DefaultEditor) {
@@ -144,8 +149,9 @@ public class JSpinnerEditorValueProvider<DPO> implements DataProvider<DPO> {
     }
 
     /**
-     * Retrieves the formatter currently in the text component of the spinner, if any.<br>Note that if editor of the
-     * spinner has been customized, this method may need to be adapted in a sub-class.
+     * Retrieves the formatter currently in the text component of the spinner, if any.
+     * <p/>
+     * Note that if editor of the spinner has been customized, this method may need to be adapted in a sub-class.
      *
      * @return Spinner formatter or null if not found.
      */
@@ -153,7 +159,7 @@ public class JSpinnerEditorValueProvider<DPO> implements DataProvider<DPO> {
         JFormattedTextField.AbstractFormatter formatter = null;
 
         // Try to find a text component in the spinner
-        final JFormattedTextField textEditorComponent;
+        JFormattedTextField textEditorComponent;
         if (spinner.getEditor() instanceof JFormattedTextField) {
             textEditorComponent = (JFormattedTextField) spinner.getEditor();
         } else if (spinner.getEditor() instanceof JSpinner.DefaultEditor) {

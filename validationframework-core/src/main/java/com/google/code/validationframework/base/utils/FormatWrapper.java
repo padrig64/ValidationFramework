@@ -25,8 +25,8 @@
 
 package com.google.code.validationframework.base.utils;
 
+import com.google.code.validationframework.api.transform.Transformer;
 import com.google.code.validationframework.base.transform.CastTransformer;
-import com.google.code.validationframework.base.transform.Transformer;
 
 import java.text.FieldPosition;
 import java.text.Format;

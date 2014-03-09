@@ -1,6 +1,7 @@
 package com.google.code.validationframework.base.transform;
 
 import com.google.code.validationframework.api.common.Disposable;
+import com.google.code.validationframework.api.transform.Transformer;
 
 import java.util.ArrayList;
 import java.util.Collection;

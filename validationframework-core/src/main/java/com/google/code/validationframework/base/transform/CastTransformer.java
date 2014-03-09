@@ -25,6 +25,7 @@
 
 package com.google.code.validationframework.base.transform;
 
+import com.google.code.validationframework.api.transform.Transformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

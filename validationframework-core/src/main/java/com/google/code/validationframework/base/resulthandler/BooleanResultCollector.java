@@ -25,7 +25,7 @@
 
 package com.google.code.validationframework.base.resulthandler;
 
-import com.google.code.validationframework.base.transform.Transformer;
+import com.google.code.validationframework.api.transform.Transformer;
 
 /**
  * Simpler alternative to the {@link ResultCollector} collecting and providing boolean results.

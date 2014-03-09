@@ -23,56 +23,24 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.base.transform;
-
-import com.google.code.validationframework.api.transform.Transformer;
+package com.google.code.validationframework.api.transform;
 
 /**
- * Transformer negating the boolean input.
+ * Interface to be implemented by entities transforming one object into another.
+ * <p/>
+ * It can be used, for instance, to transform data before validation, or to transform results before their handling.
  *
- * @see Transformer
+ * @param <I> Type of the input object to be transformed.
+ * @param <O> Type of the output object after transformation.
  */
-public class NegateBooleanTransformer implements Transformer<Boolean, Boolean> {
+public interface Transformer<I, O> {
 
     /**
-     * Default result to be returned for the negation of null input.
-     */
-    private static final Boolean DEFAULT_NULL_NEGATION = null;
-
-    /**
-     * Result to be returned for the negation of null input.
-     */
-    private final Boolean nullNegation;
-
-    /**
-     * Default constructor considering null to be the result returned for the negation of null input.
-     */
-    public NegateBooleanTransformer() {
-        this(DEFAULT_NULL_NEGATION);
-    }
-
-    /**
-     * Constructor specifying the result to be returned for the negation of null input.
+     * Transforms the specified input.
      *
-     * @param nullNegation Result to be returned for the negation of null input.
+     * @param input Input to be transformed.
+     *
+     * @return Transformation result.
      */
-    public NegateBooleanTransformer(Boolean nullNegation) {
-        this.nullNegation = nullNegation;
-    }
-
-    /**
-     * @see Transformer#transform(Object)
-     */
-    @Override
-    public Boolean transform(Boolean input) {
-        Boolean output;
-
-        if (input == null) {
-            output = nullNegation;
-        } else {
-            output = !input;
-        }
-
-        return output;
-    }
+    O transform(I input);
 }

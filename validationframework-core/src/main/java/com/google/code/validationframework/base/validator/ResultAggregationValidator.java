@@ -28,8 +28,8 @@ package com.google.code.validationframework.base.validator;
 import com.google.code.validationframework.api.dataprovider.DataProvider;
 import com.google.code.validationframework.api.resulthandler.ResultHandler;
 import com.google.code.validationframework.api.rule.Rule;
+import com.google.code.validationframework.api.transform.Aggregator;
 import com.google.code.validationframework.api.trigger.Trigger;
-import com.google.code.validationframework.base.transform.Aggregator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,16 +38,17 @@ import java.util.Collection;
 
 /**
  * Concrete implementation of a simple validator that aggregates the results of all the rules into a single result
- * before passing it to the results handlers.<br>This can be useful, for instance, to combine boolean results using the
- * AND or OR operations.
+ * before passing it to the results handlers.
+ * <p/>
+ * This can be useful, for instance, to combine boolean results using the AND or OR operations.
  * <p/>
  * Use {@link com.google.code.validationframework.base.validator.generalvalidator.GeneralValidator} or
  * {@link com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder} instead.
  *
- * @param <RI>  Type of data to be validated.<br>It can be, for instance, the type of data handled by a component,
- *              or the type of the component itself.
- * @param <RO>  Type of validation result produced by the rules.<br>It can be, for instance, an enumeration or just a
- *              boolean.
+ * @param <RI>  Type of data to be validated.<br>
+ *              It can be, for instance, the type of data handled by a component, or the type of the component itself.
+ * @param <RO>  Type of validation result produced by the rules.<br>
+ *              It can be, for instance, an enumeration or just a boolean.
  * @param <RHI> Type of aggregated result.
  *
  * @see AbstractSimpleValidator

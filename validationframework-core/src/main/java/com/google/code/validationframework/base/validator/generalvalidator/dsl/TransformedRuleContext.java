@@ -28,8 +28,8 @@ package com.google.code.validationframework.base.validator.generalvalidator.dsl;
 import com.google.code.validationframework.api.dataprovider.DataProvider;
 import com.google.code.validationframework.api.resulthandler.ResultHandler;
 import com.google.code.validationframework.api.rule.Rule;
+import com.google.code.validationframework.api.transform.Transformer;
 import com.google.code.validationframework.api.trigger.Trigger;
-import com.google.code.validationframework.base.transform.Transformer;
 import com.google.code.validationframework.base.validator.generalvalidator.GeneralValidator;
 
 import java.util.ArrayList;
@@ -85,14 +85,13 @@ public class TransformedRuleContext<DPO, RI, RO, TRO> {
     /**
      * Constructor specifying the already known elements of the validator under construction.
      *
-     * @param addedTriggers              Triggers to be added.
-     * @param addedDataProviders         Data providers to be added.
-     * @param dataProviderToRuleMapping  Data provider to rule mapping to be set.
-     * @param addedRuleInputTransformers Rule input transformers to be added.
-     * @param addedRules                 Rules to be added.
-     * @param ruleToResultHandlerMapping Rule to result handler mapping to be set.
-     * @param addedResultHandlerInputTransformers
-     *                                   Result handler input transformers to be added.
+     * @param addedTriggers                       Triggers to be added.
+     * @param addedDataProviders                  Data providers to be added.
+     * @param dataProviderToRuleMapping           Data provider to rule mapping to be set.
+     * @param addedRuleInputTransformers          Rule input transformers to be added.
+     * @param addedRules                          Rules to be added.
+     * @param ruleToResultHandlerMapping          Rule to result handler mapping to be set.
+     * @param addedResultHandlerInputTransformers Result handler input transformers to be added.
      */
     public TransformedRuleContext(Collection<Trigger> addedTriggers, //
                                   Collection<DataProvider<DPO>> addedDataProviders, //
@@ -164,6 +163,7 @@ public class TransformedRuleContext<DPO, RI, RO, TRO> {
 
         // Change context
         return new ResultHandlerContext<DPO, RI, RO, TRO>(addedTriggers, addedDataProviders,
-                dataProviderToRuleMapping, addedRuleInputTransformers, addedRules, ruleToResultHandlerMapping, addedResultHandlerInputTransformers, addedResultHandlers);
+                dataProviderToRuleMapping, addedRuleInputTransformers, addedRules, ruleToResultHandlerMapping,
+                addedResultHandlerInputTransformers, addedResultHandlers);
     }
 }

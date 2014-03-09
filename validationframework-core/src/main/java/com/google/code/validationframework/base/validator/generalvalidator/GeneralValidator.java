@@ -29,9 +29,9 @@ import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.api.dataprovider.DataProvider;
 import com.google.code.validationframework.api.resulthandler.ResultHandler;
 import com.google.code.validationframework.api.rule.Rule;
+import com.google.code.validationframework.api.transform.Transformer;
 import com.google.code.validationframework.api.trigger.Trigger;
 import com.google.code.validationframework.base.resulthandler.ResultCollector;
-import com.google.code.validationframework.base.transform.Transformer;
 import com.google.code.validationframework.base.validator.AbstractSimpleValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,18 +66,22 @@ import java.util.List;
  * will be put in a collection and transformed as a whole using the series of result handler input {@link Transformer}s,
  * before being passed to each result handler.
  * <p/>
- * The general validation flow can be represented by the following pattern:<br>triggers -> data providers -> data
- * provider output transformers -> data provider to rule mapping -> rule input transformers -> rules -> rule output
- * transformers -> rule output to result handler input transformers -> result handler input transformers -> result
- * handlers
+ * The general validation flow can be represented by the following pattern:<br>
+ * triggers -> data providers -> data provider output transformers -> data provider to rule mapping -> rule input
+ * transformers -> rules -> rule output transformers -> rule output to result handler input transformers -> result
+ * handler input transformers -> result handlers
  * <p/>
  * Note that the use of transformers is optional. By default, the data provider to rule mapping is set to {@link
  * MappingStrategy#SPLIT} and the rule to result handler mapping is set to {@link MappingStrategy#SPLIT}.
  *
- * @param <DPO> Type of data provider output.<br>This may or may not be the same type as the rule input.
- * @param <RI>  Type of rule input.<br>This may or may not be the same type as the data provider output.
- * @param <RO>  Type of rule output.<br>This may or may not be the same type as the result handler input.
- * @param <RHI> Type of result handler input.<br>This may or may not be the same type as the rule output.
+ * @param <DPO> Type of data provider output.<br>
+ *              This may or may not be the same type as the rule input.
+ * @param <RI>  Type of rule input.<br>
+ *              This may or may not be the same type as the data provider output.
+ * @param <RO>  Type of rule output.<br>
+ *              This may or may not be the same type as the result handler input.
+ * @param <RHI> Type of result handler input.<br>
+ *              This may or may not be the same type as the rule output.
  *
  * @see com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder
  * @see com.google.code.validationframework.base.validator.AbstractSimpleValidator

@@ -26,8 +26,8 @@
 package com.google.code.validationframework.swing.dataprovider;
 
 import com.google.code.validationframework.api.dataprovider.DataProvider;
+import com.google.code.validationframework.api.transform.Transformer;
 import com.google.code.validationframework.base.transform.CastTransformer;
-import com.google.code.validationframework.base.transform.Transformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,10 +37,12 @@ import java.awt.Component;
 import java.text.ParseException;
 
 /**
- * Provider of the value of the current formatted text editor component from a given table.<br>Note that if the table is
- * not in editing state, no value can be provided.
+ * Provider of the value of the current formatted text editor component from a given table.
+ * <p/>
+ * Note that if the table is not in editing state, no value can be provided.
  *
- * @param <DPO> Type of data in the text editor.<br>You may use {@link Object}.
+ * @param <DPO> Type of data in the text editor.<br>
+ *              You may use {@link Object}.
  *
  * @see DataProvider
  * @see JTable
@@ -68,7 +70,7 @@ public class JTableTextEditorValueProvider<DPO> implements DataProvider<DPO> {
      *
      * @param table Editable table.
      */
-    public JTableTextEditorValueProvider(final JTable table) {
+    public JTableTextEditorValueProvider(JTable table) {
         this(table, new CastTransformer<Object, DPO>());
     }
 
@@ -81,7 +83,7 @@ public class JTableTextEditorValueProvider<DPO> implements DataProvider<DPO> {
      * @param transformer Transformer used to convert the object parsed from the formatted text editor component to the
      *                    expected type.
      */
-    public JTableTextEditorValueProvider(final JTable table, final Transformer<Object, DPO> transformer) {
+    public JTableTextEditorValueProvider(JTable table, Transformer<Object, DPO> transformer) {
         this.table = table;
         this.transformer = transformer;
     }
@@ -103,15 +105,15 @@ public class JTableTextEditorValueProvider<DPO> implements DataProvider<DPO> {
         DPO typedValue = null;
 
         // Get the formatted textfield editor from the table, if any
-        final Component editorComponent = table.getEditorComponent();
+        Component editorComponent = table.getEditorComponent();
         if (editorComponent instanceof JFormattedTextField) {
-            final JFormattedTextField formattedTextField = (JFormattedTextField) editorComponent;
+            JFormattedTextField formattedTextField = (JFormattedTextField) editorComponent;
 
             // Parse text
             Object dataValue = null;
             try {
-                final String dataText = formattedTextField.getText();
-                final JFormattedTextField.AbstractFormatter formatter = formattedTextField.getFormatter();
+                String dataText = formattedTextField.getText();
+                JFormattedTextField.AbstractFormatter formatter = formattedTextField.getFormatter();
                 if (formatter != null) {
                     dataValue = formatter.stringToValue(dataText);
                 }

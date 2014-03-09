@@ -26,15 +26,16 @@
 package com.google.code.validationframework.swing.dataprovider;
 
 import com.google.code.validationframework.api.dataprovider.DataProvider;
+import com.google.code.validationframework.api.transform.Transformer;
 import com.google.code.validationframework.base.transform.CastTransformer;
-import com.google.code.validationframework.base.transform.Transformer;
 
 import javax.swing.JList;
 
 /**
  * Data provider retrieving the selected value of a list.
  *
- * @param <DPO> Type of data in the list.<br>You may use {@link Object}.
+ * @param <DPO> Type of data in the list.<br>
+ *              You may use {@link Object}.
  *
  * @see DataProvider
  * @see JList
@@ -56,12 +57,13 @@ public class JListSelectedValueProvider<DPO> implements DataProvider<DPO> {
     private final Transformer<Object, DPO> transformer;
 
     /**
-     * Constructor specifying the list to get the selected value from.<br>By default, the list value will be cast to
-     * DPO.
+     * Constructor specifying the list to get the selected value from.
+     * <p/>
+     * By default, the list value will be cast to DPO.
      *
      * @param list List to get the selected value from.
      */
-    public JListSelectedValueProvider(final JList list) {
+    public JListSelectedValueProvider(JList list) {
         this(list, new CastTransformer<Object, DPO>());
     }
 
@@ -72,7 +74,7 @@ public class JListSelectedValueProvider<DPO> implements DataProvider<DPO> {
      * @param list        List to get the selected value from.
      * @param transformer Transformer to convert the list value.
      */
-    public JListSelectedValueProvider(final JList list, final Transformer<Object, DPO> transformer) {
+    public JListSelectedValueProvider(JList list, Transformer<Object, DPO> transformer) {
         this.list = list;
         this.transformer = transformer;
     }

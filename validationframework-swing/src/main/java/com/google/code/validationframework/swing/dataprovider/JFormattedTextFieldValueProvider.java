@@ -26,15 +26,16 @@
 package com.google.code.validationframework.swing.dataprovider;
 
 import com.google.code.validationframework.api.dataprovider.DataProvider;
+import com.google.code.validationframework.api.transform.Transformer;
 import com.google.code.validationframework.base.transform.CastTransformer;
-import com.google.code.validationframework.base.transform.Transformer;
 
 import javax.swing.JFormattedTextField;
 import java.text.ParseException;
 
 /**
- * Data provider reading the value from a formatted textfield.<br>Note that the value is not read from the model, but
- * instead corresponds to the current text.
+ * Data provider reading the value from a formatted textfield.
+ * <p/>
+ * Note that the value is not read from the model, but instead corresponds to the current text.
  *
  * @see DataProvider
  * @see JFormattedTextField
@@ -43,8 +44,10 @@ import java.text.ParseException;
 public class JFormattedTextFieldValueProvider<DPO> implements DataProvider<DPO> {
 
     /**
-     * Formatted textfield to get the data from.<br>Note that the text and the formatter are retrieved every time
-     * they are needed so that we do not have to listener to changes in the formatted textfield to track them.
+     * Formatted textfield to get the data from.
+     * <p/>
+     * Note that the text and the formatter are retrieved every time they are needed so that we do not have to listener
+     * to changes in the formatted textfield to track them.
      */
     private final JFormattedTextField formattedTextField;
 
@@ -58,7 +61,7 @@ public class JFormattedTextFieldValueProvider<DPO> implements DataProvider<DPO> 
      *
      * @param formattedTextField Formatted textfield to get the value from.
      */
-    public JFormattedTextFieldValueProvider(final JFormattedTextField formattedTextField) {
+    public JFormattedTextFieldValueProvider(JFormattedTextField formattedTextField) {
         this(formattedTextField, new CastTransformer<Object, DPO>());
     }
 
@@ -69,7 +72,7 @@ public class JFormattedTextFieldValueProvider<DPO> implements DataProvider<DPO> 
      * @param formattedTextField Formatted textfield to get the value from.
      * @param transformer        Transformer used to convert the object parsed from the spinner to the expected type.
      */
-    public JFormattedTextFieldValueProvider(final JFormattedTextField formattedTextField, final Transformer<Object,
+    public JFormattedTextFieldValueProvider(JFormattedTextField formattedTextField, Transformer<Object,
             DPO> transformer) {
         this.formattedTextField = formattedTextField;
         this.transformer = transformer;
@@ -93,10 +96,10 @@ public class JFormattedTextFieldValueProvider<DPO> implements DataProvider<DPO> 
 
         try {
             // Parse text
-            final String dataText = formattedTextField.getText();
-            final JFormattedTextField.AbstractFormatter formatter = formattedTextField.getFormatter();
+            String dataText = formattedTextField.getText();
+            JFormattedTextField.AbstractFormatter formatter = formattedTextField.getFormatter();
             if (formatter != null) {
-                final Object dataValue = formatter.stringToValue(dataText);
+                Object dataValue = formatter.stringToValue(dataText);
 
                 // Convert it to the required type
                 typedValue = transformer.transform(dataValue);

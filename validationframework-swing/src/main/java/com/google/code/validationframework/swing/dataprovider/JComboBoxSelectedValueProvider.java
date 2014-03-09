@@ -26,15 +26,16 @@
 package com.google.code.validationframework.swing.dataprovider;
 
 import com.google.code.validationframework.api.dataprovider.DataProvider;
+import com.google.code.validationframework.api.transform.Transformer;
 import com.google.code.validationframework.base.transform.CastTransformer;
-import com.google.code.validationframework.base.transform.Transformer;
 
 import javax.swing.JComboBox;
 
 /**
  * Data provider retrieving the selected value of a combobox.
  *
- * @param <DPO> Type of data in the combobox.<br>You may use {@link Object}.
+ * @param <DPO> Type of data in the combobox.<br>
+ *              You may use {@link Object}.
  *
  * @see DataProvider
  * @see JComboBoxSelectedIndexProvider
@@ -54,12 +55,13 @@ public class JComboBoxSelectedValueProvider<DPO> implements DataProvider<DPO> {
     private final Transformer<Object, DPO> transformer;
 
     /**
-     * Constructor specifying the combobox to get the selected value from.<br>By default, the combobox value will be
-     * cast to DPO.
+     * Constructor specifying the combobox to get the selected value from.
+     * <p/>
+     * By default, the combobox value will be cast to DPO.
      *
      * @param comboBox Combobox to get the selected value from.
      */
-    public JComboBoxSelectedValueProvider(final JComboBox comboBox) {
+    public JComboBoxSelectedValueProvider(JComboBox comboBox) {
         this(comboBox, new CastTransformer<Object, DPO>());
     }
 
@@ -70,7 +72,7 @@ public class JComboBoxSelectedValueProvider<DPO> implements DataProvider<DPO> {
      * @param comboBox    Combobox to get the selected value from.
      * @param transformer Transformer to convert the combobox value.
      */
-    public JComboBoxSelectedValueProvider(final JComboBox comboBox, final Transformer<Object, DPO> transformer) {
+    public JComboBoxSelectedValueProvider(JComboBox comboBox, Transformer<Object, DPO> transformer) {
         this.comboBox = comboBox;
         this.transformer = transformer;
     }

@@ -26,8 +26,8 @@
 package com.google.code.validationframework.swing.dataprovider;
 
 import com.google.code.validationframework.api.dataprovider.DataProvider;
+import com.google.code.validationframework.api.transform.Transformer;
 import com.google.code.validationframework.base.transform.CastTransformer;
-import com.google.code.validationframework.base.transform.Transformer;
 
 import javax.swing.JList;
 import java.util.ArrayList;
@@ -36,7 +36,8 @@ import java.util.Collection;
 /**
  * Data provider retrieving the selected values of a list.
  *
- * @param <DPO> Type of data in the list.<br>You may use {@link Object}.
+ * @param <DPO> Type of data in the list.<br>
+ *              You may use {@link Object}.
  *
  * @see DataProvider
  * @see JList
@@ -58,12 +59,13 @@ public class JListSelectedValuesProvider<DPO> implements DataProvider<Collection
     private final Transformer<Object, DPO> transformer;
 
     /**
-     * Constructor specifying the list to get the selected values from.<br>By default, the list values will be cast to
-     * DPO.
+     * Constructor specifying the list to get the selected values from.
+     * <p/>
+     * By default, the list values will be cast to DPO.
      *
      * @param list List to get the selected values from.
      */
-    public JListSelectedValuesProvider(final JList list) {
+    public JListSelectedValuesProvider(JList list) {
         this(list, new CastTransformer<Object, DPO>());
     }
 
@@ -74,7 +76,7 @@ public class JListSelectedValuesProvider<DPO> implements DataProvider<Collection
      * @param list        List to get the selected values from.
      * @param transformer Transformer to convert the list values.
      */
-    public JListSelectedValuesProvider(final JList list, final Transformer<Object, DPO> transformer) {
+    public JListSelectedValuesProvider(JList list, Transformer<Object, DPO> transformer) {
         this.list = list;
         this.transformer = transformer;
     }
@@ -93,9 +95,9 @@ public class JListSelectedValuesProvider<DPO> implements DataProvider<Collection
      */
     @Override
     public Collection<DPO> getData() {
-        final Collection<DPO> values = new ArrayList<DPO>();
+        Collection<DPO> values = new ArrayList<DPO>();
 
-        for (final Object value : list.getSelectedValues()) {
+        for (Object value : list.getSelectedValues()) {
             values.add(transformer.transform(value));
         }
 

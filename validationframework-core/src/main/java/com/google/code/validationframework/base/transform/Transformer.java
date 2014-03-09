@@ -26,20 +26,13 @@
 package com.google.code.validationframework.base.transform;
 
 /**
- * Interface to be implemented by entities transforming one object into another.<br>It can be used, for instance, to
- * transform data before validation, or to transform results before their handling.
- *
- * @param <I> Type of the input object to be transformed.
- * @param <O> Type of the output object after transformation.
+ * @deprecated Use {@link com.google.code.validationframework.api.transform.Transformer} instead.
  */
-public interface Transformer<I, O> {
+@Deprecated
+public interface Transformer<I, O> extends com.google.code.validationframework.api.transform.Transformer<I, O> {
 
     /**
-     * Transforms the specified input.
-     *
-     * @param input Input to be transformed.
-     *
-     * @return Transformation result.
+     * @see com.google.code.validationframework.api.transform.Transformer#transform(Object)
      */
     O transform(I input);
 }

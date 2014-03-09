@@ -28,10 +28,7 @@ package com.google.code.validationframework.base.transform;
 import java.util.Collection;
 
 /**
- * Convenience interface that can be implemented by transformers aggregating a collection of input data.
- *
- * @param <E> Type of the element object to be aggregated.
- * @param <O> Type of the output object after aggregation.
+ * @deprecated Use {@link com.google.code.validationframework.api.transform.Aggregator} instead.
  */
 public interface Aggregator<E, O> extends Transformer<Collection<E>, O> {
     // Nothing to be done

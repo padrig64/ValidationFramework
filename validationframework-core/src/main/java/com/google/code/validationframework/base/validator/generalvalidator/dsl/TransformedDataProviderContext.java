@@ -27,8 +27,8 @@ package com.google.code.validationframework.base.validator.generalvalidator.dsl;
 
 import com.google.code.validationframework.api.dataprovider.DataProvider;
 import com.google.code.validationframework.api.rule.Rule;
+import com.google.code.validationframework.api.transform.Transformer;
 import com.google.code.validationframework.api.trigger.Trigger;
-import com.google.code.validationframework.base.transform.Transformer;
 import com.google.code.validationframework.base.validator.generalvalidator.GeneralValidator;
 
 import java.util.ArrayList;
@@ -133,6 +133,7 @@ public class TransformedDataProviderContext<DPO, TDPO> {
         }
 
         // Change context
-        return new MultipleRuleContext<DPO, TDPO, RO>(addedTriggers, addedDataProviders, dataProviderToRuleMapping, addedRuleInputTransformers, addedRules);
+        return new MultipleRuleContext<DPO, TDPO, RO>(addedTriggers, addedDataProviders, dataProviderToRuleMapping,
+                addedRuleInputTransformers, addedRules);
     }
 }

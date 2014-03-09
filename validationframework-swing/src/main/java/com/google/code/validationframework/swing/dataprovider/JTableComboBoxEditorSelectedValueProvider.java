@@ -26,8 +26,8 @@
 package com.google.code.validationframework.swing.dataprovider;
 
 import com.google.code.validationframework.api.dataprovider.DataProvider;
+import com.google.code.validationframework.api.transform.Transformer;
 import com.google.code.validationframework.base.transform.CastTransformer;
-import com.google.code.validationframework.base.transform.Transformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,10 +36,12 @@ import javax.swing.JTable;
 import java.awt.Component;
 
 /**
- * Provider of the selected value of the current combobox editor component from a given table.<br>Note that if the table
- * is not in editing, no value can be provided.
+ * Provider of the selected value of the current combobox editor component from a given table.
+ * <p/>
+ * Note that if the table is not in editing, no value can be provided.
  *
- * @param <DPO> Type of data in the combobox editor.<br>You may use {@link Object}.
+ * @param <DPO> Type of data in the combobox editor.<br>
+ *              You may use {@link Object}.
  *
  * @see DataProvider
  * @see JTable
@@ -67,7 +69,7 @@ public class JTableComboBoxEditorSelectedValueProvider<DPO> implements DataProvi
      *
      * @param table Editable table.
      */
-    public JTableComboBoxEditorSelectedValueProvider(final JTable table) {
+    public JTableComboBoxEditorSelectedValueProvider(JTable table) {
         this(table, new CastTransformer<Object, DPO>());
     }
 
@@ -79,7 +81,7 @@ public class JTableComboBoxEditorSelectedValueProvider<DPO> implements DataProvi
      * @param transformer Transformer used to convert the selected object from the combobox editor component to the
      *                    expected type.
      */
-    public JTableComboBoxEditorSelectedValueProvider(final JTable table, final Transformer<Object, DPO> transformer) {
+    public JTableComboBoxEditorSelectedValueProvider(JTable table, Transformer<Object, DPO> transformer) {
         this.table = table;
         this.transformer = transformer;
     }
@@ -101,12 +103,12 @@ public class JTableComboBoxEditorSelectedValueProvider<DPO> implements DataProvi
         DPO typedValue = null;
 
         // Get the combobox editor from the table, if any
-        final Component editorComponent = table.getEditorComponent();
+        Component editorComponent = table.getEditorComponent();
         if (editorComponent instanceof JComboBox) {
-            final JComboBox comboBox = (JComboBox) editorComponent;
+            JComboBox comboBox = (JComboBox) editorComponent;
 
             // Get the selected value from the combobox
-            final Object dataValue = comboBox.getSelectedItem();
+            Object dataValue = comboBox.getSelectedItem();
 
             // Convert it to the required type
             typedValue = transformer.transform(dataValue);

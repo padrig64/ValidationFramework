@@ -27,8 +27,8 @@ package com.google.code.validationframework.base.rule.bool;
 
 import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.api.rule.Rule;
+import com.google.code.validationframework.api.transform.Transformer;
 import com.google.code.validationframework.base.transform.OrBooleanAggregator;
-import com.google.code.validationframework.base.transform.Transformer;
 
 import java.util.Collection;
 
@@ -71,7 +71,7 @@ public class OrBooleanRule implements Rule<Collection<Boolean>, Boolean>, Dispos
      * @param emptyCollectionValid Result for empty and null collections.
      * @param nullElementValid     Boolean value for null elements.
      */
-    public OrBooleanRule(final boolean emptyCollectionValid, final boolean nullElementValid) {
+    public OrBooleanRule(boolean emptyCollectionValid, boolean nullElementValid) {
         aggregator = new OrBooleanAggregator(emptyCollectionValid, nullElementValid);
     }
 
@@ -79,7 +79,7 @@ public class OrBooleanRule implements Rule<Collection<Boolean>, Boolean>, Dispos
      * @see Rule#validate(Object)
      */
     @Override
-    public Boolean validate(final Collection<Boolean> elements) {
+    public Boolean validate(Collection<Boolean> elements) {
         Boolean aggregated = null;
 
         if (aggregator != null) {

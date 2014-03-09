@@ -25,7 +25,7 @@
 
 package com.google.code.validationframework.base.binding;
 
-import com.google.code.validationframework.base.transform.Transformer;
+import com.google.code.validationframework.api.transform.Transformer;
 import com.google.code.validationframework.base.utils.ValueUtils;
 
 /**

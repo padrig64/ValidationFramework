@@ -26,15 +26,16 @@
 package com.google.code.validationframework.swing.dataprovider;
 
 import com.google.code.validationframework.api.dataprovider.DataProvider;
+import com.google.code.validationframework.api.transform.Transformer;
 import com.google.code.validationframework.base.transform.CastTransformer;
-import com.google.code.validationframework.base.transform.Transformer;
 
 import javax.swing.JSpinner;
 
 /**
  * Data provider reading the value from the model of a spinner.
  *
- * @param <DPO> Type of data in the spinner.<br>You may use {@link Object}.
+ * @param <DPO> Type of data in the spinner.<br>
+ *              You may use {@link Object}.
  *
  * @see DataProvider
  * @see JSpinner
@@ -52,11 +53,13 @@ public class JSpinnerModelValueProvider<DPO> implements DataProvider<DPO> {
     private final Transformer<Object, DPO> transformer;
 
     /**
-     * Constructor specifying the spinner to get the value from.<br>By default, the spinner value will be cast to DPO.
+     * Constructor specifying the spinner to get the value from.
+     * <p/>
+     * By default, the spinner value will be cast to DPO.
      *
      * @param spinner Spinner to get the value from.
      */
-    public JSpinnerModelValueProvider(final JSpinner spinner) {
+    public JSpinnerModelValueProvider(JSpinner spinner) {
         this(spinner, new CastTransformer<Object, DPO>());
     }
 
@@ -67,7 +70,7 @@ public class JSpinnerModelValueProvider<DPO> implements DataProvider<DPO> {
      * @param spinner     Spinner to get the value from.
      * @param transformer Transformer to convert the spinner value.
      */
-    public JSpinnerModelValueProvider(final JSpinner spinner, final Transformer<Object, DPO> transformer) {
+    public JSpinnerModelValueProvider(JSpinner spinner, Transformer<Object, DPO> transformer) {
         this.spinner = spinner;
         this.transformer = transformer;
     }

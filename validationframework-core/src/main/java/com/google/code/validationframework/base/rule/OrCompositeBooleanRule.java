@@ -27,8 +27,8 @@ package com.google.code.validationframework.base.rule;
 
 import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.api.rule.Rule;
+import com.google.code.validationframework.api.transform.Transformer;
 import com.google.code.validationframework.base.transform.OrBooleanAggregator;
-import com.google.code.validationframework.base.transform.Transformer;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -37,8 +37,8 @@ import java.util.Collection;
  * Composite rule checking data of a known specific type using sub-rules, and returning a boolean as an aggregation of
  * the boolean results from its sub-rules.
  *
- * @param <RI> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
- *             type of the component itself.
+ * @param <RI> Type of data to be validated.<br>
+ *             It can be, for instance, the type of data handled by a component, or the type of the component itself.
  *
  * @see AbstractCompositeRule
  * @see AndCompositeBooleanRule

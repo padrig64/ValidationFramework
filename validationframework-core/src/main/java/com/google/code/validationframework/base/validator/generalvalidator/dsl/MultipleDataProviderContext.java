@@ -27,8 +27,8 @@ package com.google.code.validationframework.base.validator.generalvalidator.dsl;
 
 import com.google.code.validationframework.api.dataprovider.DataProvider;
 import com.google.code.validationframework.api.rule.Rule;
+import com.google.code.validationframework.api.transform.Transformer;
 import com.google.code.validationframework.api.trigger.Trigger;
-import com.google.code.validationframework.base.transform.Transformer;
 import com.google.code.validationframework.base.validator.generalvalidator.GeneralValidator;
 
 import java.util.ArrayList;
@@ -97,8 +97,9 @@ public class MultipleDataProviderContext<DPO> {
     }
 
     /**
-     * Makes the validator process each data provider independently.<br>This corresponds to the use of {@link
-     * GeneralValidator.MappingStrategy#SPLIT}.
+     * Makes the validator process each data provider independently.
+     * <p/>
+     * This corresponds to the use of {@link GeneralValidator.MappingStrategy#SPLIT}.
      *
      * @return Context allowing further construction of the validator using the DSL.
      *

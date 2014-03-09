@@ -23,56 +23,16 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.base.transform;
+package com.google.code.validationframework.api.transform;
 
-import com.google.code.validationframework.api.transform.Transformer;
+import java.util.Collection;
 
 /**
- * Transformer negating the boolean input.
+ * Convenience interface that can be implemented by transformers aggregating a collection of input data.
  *
- * @see Transformer
+ * @param <E> Type of the element object to be aggregated.
+ * @param <O> Type of the output object after aggregation.
  */
-public class NegateBooleanTransformer implements Transformer<Boolean, Boolean> {
-
-    /**
-     * Default result to be returned for the negation of null input.
-     */
-    private static final Boolean DEFAULT_NULL_NEGATION = null;
-
-    /**
-     * Result to be returned for the negation of null input.
-     */
-    private final Boolean nullNegation;
-
-    /**
-     * Default constructor considering null to be the result returned for the negation of null input.
-     */
-    public NegateBooleanTransformer() {
-        this(DEFAULT_NULL_NEGATION);
-    }
-
-    /**
-     * Constructor specifying the result to be returned for the negation of null input.
-     *
-     * @param nullNegation Result to be returned for the negation of null input.
-     */
-    public NegateBooleanTransformer(Boolean nullNegation) {
-        this.nullNegation = nullNegation;
-    }
-
-    /**
-     * @see Transformer#transform(Object)
-     */
-    @Override
-    public Boolean transform(Boolean input) {
-        Boolean output;
-
-        if (input == null) {
-            output = nullNegation;
-        } else {
-            output = !input;
-        }
-
-        return output;
-    }
+public interface Aggregator<E, O> extends Transformer<Collection<E>, O> {
+    // Nothing to be done
 }

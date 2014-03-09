@@ -25,6 +25,8 @@
 
 package com.google.code.validationframework.base.transform;
 
+import com.google.code.validationframework.api.transform.Transformer;
+
 import java.text.Format;
 import java.text.ParsePosition;
 

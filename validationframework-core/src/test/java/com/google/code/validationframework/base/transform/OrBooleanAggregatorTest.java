@@ -1,5 +1,6 @@
 package com.google.code.validationframework.base.transform;
 
+import com.google.code.validationframework.api.transform.Aggregator;
 import org.junit.Test;
 
 import java.util.ArrayList;
