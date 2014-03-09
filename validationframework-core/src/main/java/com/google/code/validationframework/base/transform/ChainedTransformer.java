@@ -49,6 +49,13 @@ public class ChainedTransformer<I, O> implements Transformer<I, O> {
     private final Transformer<Object, O> lastTransformer = new CastTransformer<Object, O>();
 
     /**
+     * Constructor specifying the first transformer.
+     */
+    public ChainedTransformer(Transformer<I, O> transformer) {
+        transformers.add(transformer);
+    }
+
+    /**
      * Adds the specified transformer to the chain.
      *
      * @param transformer Transformer to be added.

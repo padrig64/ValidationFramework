@@ -76,7 +76,7 @@ public final class Binder {
          */
         public SingleMasterBinding(ReadableProperty<MO> master, Transformer<MO, SI> transformer) {
             this.master = master;
-            this.transformer = new ChainedTransformer<MO, MO>().chain(transformer);
+            this.transformer = new ChainedTransformer<MO, SI>(transformer);
         }
 
         /**
@@ -154,7 +154,7 @@ public final class Binder {
         public MultipleMasterBinding(Collection<ReadableProperty<MO>> masters, Transformer<Collection<MO>,
                 SI> transformer) {
             this.masters = masters;
-            this.transformer = new ChainedTransformer<Collection<MO>, Collection<MO>>().chain(transformer);
+            this.transformer = new ChainedTransformer<Collection<MO>, SI>(transformer);
         }
 
         /**
