@@ -25,7 +25,7 @@
 
 package com.google.code.validationframework.base.binding;
 
-import com.google.code.validationframework.api.binding.ChangeListener;
+import com.google.code.validationframework.api.binding.ValueChangeListener;
 import com.google.code.validationframework.api.binding.ReadableProperty;
 import com.google.code.validationframework.api.binding.WritableProperty;
 import com.google.code.validationframework.api.common.Disposable;
@@ -51,7 +51,7 @@ public class Bond<MO, SI> implements Disposable {
     /**
      * Listener to master property changes and updating the slave property.
      */
-    private class MasterAdapter implements ChangeListener<MO> {
+    private class MasterAdapter implements ValueChangeListener<MO> {
 
         /**
          * Last transformer used to cast the transformed data to the type of the slave input.
@@ -59,7 +59,7 @@ public class Bond<MO, SI> implements Disposable {
         private final Transformer<Object, SI> lastTransformer = new CastTransformer<Object, SI>();
 
         /**
-         * @see ChangeListener#valueChanged(ReadableProperty, Object, Object)
+         * @see ValueChangeListener#valueChanged(ReadableProperty, Object, Object)
          */
         @Override
         public void valueChanged(ReadableProperty<MO> property, MO oldValue, MO newValue) {
@@ -112,7 +112,7 @@ public class Bond<MO, SI> implements Disposable {
         this.transformers = transformers;
         this.slave = slave;
 
-        master.addChangeListener(masterAdapter);
+        master.addValueChangeListener(masterAdapter);
 
         // Slave initial values
         masterAdapter.valueChanged(master, null, master.getValue());
@@ -140,6 +140,6 @@ public class Bond<MO, SI> implements Disposable {
      */
     @Override
     public void dispose() {
-        master.removeChangeListener(masterAdapter);
+        master.removeValueChangeListener(masterAdapter);
     }
 }

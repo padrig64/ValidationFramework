@@ -25,7 +25,7 @@
 
 package com.google.code.validationframework.base.binding;
 
-import com.google.code.validationframework.api.binding.ChangeListener;
+import com.google.code.validationframework.api.binding.ValueChangeListener;
 import com.google.code.validationframework.api.binding.ReadableProperty;
 import com.google.code.validationframework.base.utils.ValueUtils;
 
@@ -49,10 +49,10 @@ public class CompositeReadableProperty<R> extends AbstractReadableProperty<Colle
     /**
      * Listener to changes in the sub-properties.
      */
-    private class ChangeAdapter implements ChangeListener<R> {
+    private class ValueChangeAdapter implements ValueChangeListener<R> {
 
         /**
-         * @see ChangeListener#valueChanged(ReadableProperty, Object, Object)
+         * @see ValueChangeListener#valueChanged(ReadableProperty, Object, Object)
          */
         @Override
         public void valueChanged(ReadableProperty<R> property, R oldValue, R newValue) {
@@ -70,7 +70,7 @@ public class CompositeReadableProperty<R> extends AbstractReadableProperty<Colle
     /**
      * Listener to changes in the sub-properties.
      */
-    private final ChangeListener<R> changeAdapter = new ChangeAdapter();
+    private final ValueChangeListener<R> changeAdapter = new ValueChangeAdapter();
 
     /**
      * Collection of current values of the sub-properties.
@@ -120,7 +120,7 @@ public class CompositeReadableProperty<R> extends AbstractReadableProperty<Colle
      * @param property Sub-property to be added.
      */
     public void addProperty(ReadableProperty<R> property) {
-        property.addChangeListener(changeAdapter);
+        property.addValueChangeListener(changeAdapter);
         properties.add(property);
         updateFromProperties();
     }
@@ -133,7 +133,7 @@ public class CompositeReadableProperty<R> extends AbstractReadableProperty<Colle
      * @param property Sub-property to be removed.
      */
     public void removeProperty(ReadableProperty<R> property) {
-        property.removeChangeListener(changeAdapter);
+        property.removeValueChangeListener(changeAdapter);
         properties.remove(property);
         updateFromProperties();
     }

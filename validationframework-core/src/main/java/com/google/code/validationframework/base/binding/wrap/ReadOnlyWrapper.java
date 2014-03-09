@@ -25,7 +25,7 @@
 
 package com.google.code.validationframework.base.binding.wrap;
 
-import com.google.code.validationframework.api.binding.ChangeListener;
+import com.google.code.validationframework.api.binding.ValueChangeListener;
 import com.google.code.validationframework.api.binding.ReadableProperty;
 import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.base.binding.AbstractReadableProperty;
@@ -45,10 +45,10 @@ public class ReadOnlyWrapper<R> extends AbstractReadableProperty<R> implements D
      * Entity responsible for forwarding the change events from the wrapped property to the listeners of the read-only
      * wrapper.
      */
-    private class ChangeForwarder implements ChangeListener<R> {
+    private class ValueChangeForwarder implements ValueChangeListener<R> {
 
         /**
-         * @see ChangeListener#valueChanged(ReadableProperty, Object, Object)
+         * @see ValueChangeListener#valueChanged(ReadableProperty, Object, Object)
          */
         @Override
         public void valueChanged(ReadableProperty<R> property, R oldValue, R newValue) {
@@ -64,7 +64,7 @@ public class ReadOnlyWrapper<R> extends AbstractReadableProperty<R> implements D
     /**
      * Listener to changes on the wrapped property.
      */
-    private final ChangeListener<R> changeAdapter = new ChangeForwarder();
+    private final ValueChangeListener<R> changeAdapter = new ValueChangeForwarder();
 
     /**
      * Constructor specifying the property to be wrapped, typically a property that is both readable and writable.
@@ -73,7 +73,7 @@ public class ReadOnlyWrapper<R> extends AbstractReadableProperty<R> implements D
      */
     public ReadOnlyWrapper(ReadableProperty<R> wrappedProperty) {
         this.wrappedProperty = wrappedProperty;
-        this.wrappedProperty.addChangeListener(changeAdapter);
+        this.wrappedProperty.addValueChangeListener(changeAdapter);
     }
 
     /**
@@ -89,6 +89,6 @@ public class ReadOnlyWrapper<R> extends AbstractReadableProperty<R> implements D
      */
     @Override
     public void dispose() {
-        wrappedProperty.removeChangeListener(changeAdapter);
+        wrappedProperty.removeValueChangeListener(changeAdapter);
     }
 }

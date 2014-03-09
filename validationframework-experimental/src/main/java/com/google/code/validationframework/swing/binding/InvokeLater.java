@@ -25,7 +25,7 @@
 
 package com.google.code.validationframework.swing.binding;
 
-import com.google.code.validationframework.api.binding.ChangeListener;
+import com.google.code.validationframework.api.binding.ValueChangeListener;
 import com.google.code.validationframework.base.binding.AbstractReadableProperty;
 import com.google.code.validationframework.api.binding.WritableProperty;
 
@@ -57,20 +57,20 @@ public class InvokeLater<T> extends AbstractReadableProperty<T> implements Writa
         value = initialValue;
     }
 
-    public InvokeLater(ChangeListener<T>... listeners) {
+    public InvokeLater(ValueChangeListener<T>... listeners) {
         if (listeners != null) {
-            for (ChangeListener<T> listener : listeners) {
-                addChangeListener(listener);
+            for (ValueChangeListener<T> listener : listeners) {
+                addValueChangeListener(listener);
             }
         }
     }
 
-    public InvokeLater(T initialValue, ChangeListener<T>... listeners) {
+    public InvokeLater(T initialValue, ValueChangeListener<T>... listeners) {
         value = initialValue;
 
         if (listeners != null) {
-            for (ChangeListener<T> listener : listeners) {
-                addChangeListener(listener);
+            for (ValueChangeListener<T> listener : listeners) {
+                addValueChangeListener(listener);
             }
         }
     }

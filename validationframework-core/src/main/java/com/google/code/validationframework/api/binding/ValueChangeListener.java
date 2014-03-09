@@ -36,7 +36,7 @@ package com.google.code.validationframework.api.binding;
  *
  * @see ReadableProperty
  */
-public interface ChangeListener<R> {
+public interface ValueChangeListener<R> {
 
     /**
      * Triggered whenever the readable property value changes.

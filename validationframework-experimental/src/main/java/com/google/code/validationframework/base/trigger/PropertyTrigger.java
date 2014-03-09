@@ -28,7 +28,7 @@ package com.google.code.validationframework.base.trigger;
 import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.api.trigger.TriggerEvent;
 import com.google.code.validationframework.api.binding.ReadableProperty;
-import com.google.code.validationframework.api.binding.ChangeListener;
+import com.google.code.validationframework.api.binding.ValueChangeListener;
 
 /**
  * Trigger initiating the validation whenever the value of a specified property changes.
@@ -40,10 +40,10 @@ public class PropertyTrigger<T> extends AbstractTrigger {
     /**
      * Entity tracking changes of the property and triggering the validation.
      */
-    private class ChangeAdapter implements ChangeListener<T> {
+    private class ValueChangeAdapter implements ValueChangeListener<T> {
 
         /**
-         * @see ChangeListener#valueChanged(ReadableProperty, Object, Object)
+         * @see com.google.code.validationframework.api.binding.ValueChangeListener#valueChanged(ReadableProperty, Object, Object)
          */
         @Override
         public void valueChanged(ReadableProperty<T> property, T oldValue, T newValue) {
@@ -59,7 +59,7 @@ public class PropertyTrigger<T> extends AbstractTrigger {
     /**
      * Property change listener to trigger the validation.
      */
-    private final ChangeListener<T> propertyChangeAdapter = new ChangeAdapter();
+    private final ValueChangeListener<T> propertyChangeAdapter = new ValueChangeAdapter();
 
     /**
      * Constructor specifying the property whose changes should trigger the validation.
@@ -70,7 +70,7 @@ public class PropertyTrigger<T> extends AbstractTrigger {
         super();
 
         this.property = property;
-        this.property.addChangeListener(propertyChangeAdapter);
+        this.property.addValueChangeListener(propertyChangeAdapter);
     }
 
     /**
@@ -80,7 +80,7 @@ public class PropertyTrigger<T> extends AbstractTrigger {
     public void dispose() {
         super.dispose();
 
-        property.removeChangeListener(propertyChangeAdapter);
+        property.removeValueChangeListener(propertyChangeAdapter);
         if (property instanceof Disposable) {
             ((Disposable) property).dispose();
         }

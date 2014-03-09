@@ -25,7 +25,7 @@
 
 package com.google.code.validationframework.base.binding;
 
-import com.google.code.validationframework.api.binding.ChangeListener;
+import com.google.code.validationframework.api.binding.ValueChangeListener;
 import com.google.code.validationframework.api.binding.ReadableProperty;
 import com.google.code.validationframework.base.utils.ValueUtils;
 
@@ -47,21 +47,21 @@ public abstract class AbstractReadableProperty<R> implements ReadableProperty<R>
     /**
      * Writable properties to be updated.
      */
-    private final List<ChangeListener<R>> listeners = new ArrayList<ChangeListener<R>>();
+    private final List<ValueChangeListener<R>> listeners = new ArrayList<ValueChangeListener<R>>();
 
     /**
-     * @see ReadableProperty#addChangeListener(ChangeListener)
+     * @see ReadableProperty#addValueChangeListener(com.google.code.validationframework.api.binding.ValueChangeListener)
      */
     @Override
-    public void addChangeListener(ChangeListener<R> listener) {
+    public void addValueChangeListener(ValueChangeListener<R> listener) {
         listeners.add(listener);
     }
 
     /**
-     * @see ReadableProperty#removeChangeListener(ChangeListener)
+     * @see ReadableProperty#removeValueChangeListener(com.google.code.validationframework.api.binding.ValueChangeListener)
      */
     @Override
-    public void removeChangeListener(ChangeListener<R> listener) {
+    public void removeValueChangeListener(ValueChangeListener<R> listener) {
         listeners.remove(listener);
     }
 
@@ -93,7 +93,7 @@ public abstract class AbstractReadableProperty<R> implements ReadableProperty<R>
      */
     protected void notifyListeners(R oldValue, R newValue, boolean evenIfNoChange) {
         if (evenIfNoChange || !ValueUtils.areEqual(oldValue, newValue)) {
-            for (ChangeListener<R> listener : listeners) {
+            for (ValueChangeListener<R> listener : listeners) {
                 listener.valueChanged(this, oldValue, newValue);
             }
         }

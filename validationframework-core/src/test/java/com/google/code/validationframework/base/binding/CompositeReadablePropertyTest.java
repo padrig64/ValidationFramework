@@ -25,7 +25,7 @@
 
 package com.google.code.validationframework.base.binding;
 
-import com.google.code.validationframework.api.binding.ChangeListener;
+import com.google.code.validationframework.api.binding.ValueChangeListener;
 import com.google.code.validationframework.base.binding.simple.IntegerProperty;
 import org.hamcrest.Description;
 import org.junit.Test;
@@ -115,9 +115,9 @@ public class CompositeReadablePropertyTest {
         CompositeReadableProperty<Integer> compositeProperty = new CompositeReadableProperty<Integer>
                 (compoundProperty1, compoundProperty2);
 
-        ChangeListener<Collection<Integer>> mockListener = (ChangeListener<Collection<Integer>>) mock(ChangeListener
+        ValueChangeListener<Collection<Integer>> mockListener = (ValueChangeListener<Collection<Integer>>) mock(ValueChangeListener
                 .class);
-        compositeProperty.addChangeListener(mockListener);
+        compositeProperty.addValueChangeListener(mockListener);
         compoundProperty1.setValue(5);
         compoundProperty2.setValue(6);
 
