@@ -23,37 +23,28 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.base.dataprovider;
-
-import com.google.code.validationframework.api.dataprovider.DataProvider;
-import com.google.code.validationframework.api.property.ReadableProperty;
+package com.google.code.validationframework.api.property;
 
 /**
- * Data provider returning the value of a given property.
+ * Interface to be implemented by writable properties whose value can be set by the programmer or slave to readable
+ * properties.
+ * <p/>
+ * If you are using JavaFX, you should better use JavaFX's property binding mechanism. The binding mechanism provided by
+ * the ValidationFramework is very simple and mostly meant for Swing and other frameworks that can benefit from it.
+ * JavaFX has a much more furnished API to achieve similar goals and much more.
  *
- * @param <DPO> Type of provided value.
+ * @param <W> Type of data that can be written to this property.
+ *
+ * @see ReadableProperty
  */
-public class PropertyDataProvider<DPO> implements DataProvider<DPO> {
+public interface WritableProperty<W> {
 
     /**
-     * Property whose value should be read.
-     */
-    private final ReadableProperty<DPO> property;
-
-    /**
-     * Constructor specifying the property to read the value from.
+     * Sets the value of the property.
+     * <p/>
+     * This method can be called by the programmer or a {@link ReadableProperty} that is bound to it.
      *
-     * @param property Property whose value should be read.
+     * @param value Property value.
      */
-    public PropertyDataProvider(ReadableProperty<DPO> property) {
-        this.property = property;
-    }
-
-    /**
-     * @see DataProvider#getData()
-     */
-    @Override
-    public DPO getData() {
-        return property.getValue();
-    }
+    void setValue(W value);
 }

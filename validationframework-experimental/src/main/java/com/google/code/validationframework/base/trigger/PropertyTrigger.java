@@ -27,8 +27,8 @@ package com.google.code.validationframework.base.trigger;
 
 import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.api.trigger.TriggerEvent;
-import com.google.code.validationframework.api.binding.ReadableProperty;
-import com.google.code.validationframework.api.binding.ValueChangeListener;
+import com.google.code.validationframework.api.property.ReadableProperty;
+import com.google.code.validationframework.api.property.ValueChangeListener;
 
 /**
  * Trigger initiating the validation whenever the value of a specified property changes.
@@ -43,7 +43,7 @@ public class PropertyTrigger<T> extends AbstractTrigger {
     private class ValueChangeAdapter implements ValueChangeListener<T> {
 
         /**
-         * @see com.google.code.validationframework.api.binding.ValueChangeListener#valueChanged(ReadableProperty, Object, Object)
+         * @see com.google.code.validationframework.api.property.ValueChangeListener#valueChanged(ReadableProperty, Object, Object)
          */
         @Override
         public void valueChanged(ReadableProperty<T> property, T oldValue, T newValue) {

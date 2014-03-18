@@ -1,0 +1,16 @@
+on(Trigger).on(Trigger)
+on(Trigger).if(Condition)
+on(Trigger).read(DataProvider<DPO>)
+on(Trigger).read(ReadableProperty<DPO)
+
+if(Condition).read(DataProvider<DPO>)
+if(Condition).read(ReadableProperty<DPO>)
+
+read(DataProvider<DPO>).read(DataProvider<DPO>)
+read(DataProvider<DPO>).read(ReadableProperty<DPO>)
+read(ReadableProperty<DPO>).read(DataProvider<DPO>)
+read(ReadableProperty<DPO>).read(ReadableProperty<DPO>)
+read(DataProvider<DPO>).transform(Transformer<DPO, TDPO>)
+read(ReadableProperty<DPO>).transform(Transformer<DPO, TDPO>)
+
+transform(

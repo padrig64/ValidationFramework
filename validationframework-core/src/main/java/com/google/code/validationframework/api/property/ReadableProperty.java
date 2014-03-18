@@ -23,37 +23,43 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.base.dataprovider;
-
-import com.google.code.validationframework.api.dataprovider.DataProvider;
-import com.google.code.validationframework.api.property.ReadableProperty;
+package com.google.code.validationframework.api.property;
 
 /**
- * Data provider returning the value of a given property.
+ * Interface to be implemented by readable property that can notify {@link ValueChangeListener}s.
+ * <p/>
+ * If you are using JavaFX, you should better use JavaFX's property binding mechanism. The binding mechanism provided by
+ * the ValidationFramework is very simple and mostly meant for Swing and other frameworks that can benefit from it.
+ * JavaFX has a much more furnished API to achieve similar goals and much more.
  *
- * @param <DPO> Type of provided value.
+ * @param <R> Type of data that can be read from this property.
+ *
+ * @see WritableProperty
  */
-public class PropertyDataProvider<DPO> implements DataProvider<DPO> {
+public interface ReadableProperty<R> {
 
     /**
-     * Property whose value should be read.
-     */
-    private final ReadableProperty<DPO> property;
-
-    /**
-     * Constructor specifying the property to read the value from.
+     * Adds a {@link WritableProperty} as a slave.
+     * <p/>
+     * Anytime readable property value changes, the slaved {@link WritableProperty}s will also be set.
      *
-     * @param property Property whose value should be read.
+     * @param listener {@link WritableProperty} to be slaved.
      */
-    public PropertyDataProvider(ReadableProperty<DPO> property) {
-        this.property = property;
-    }
+    void addValueChangeListener(ValueChangeListener<R> listener);
 
     /**
-     * @see DataProvider#getData()
+     * Removes the {@link WritableProperty}.
+     *
+     * @param listener {@link WritableProperty} that should no longer be slaved.
      */
-    @Override
-    public DPO getData() {
-        return property.getValue();
-    }
+    void removeValueChangeListener(ValueChangeListener<R> listener);
+
+    /**
+     * Gets the value of the property.
+     * <p/>
+     * This method can be called by the programmer or a {@link WritableProperty} that is bound to it.
+     *
+     * @return Property value.
+     */
+    R getValue();
 }

@@ -23,37 +23,8 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.base.dataprovider;
-
-import com.google.code.validationframework.api.dataprovider.DataProvider;
-import com.google.code.validationframework.api.property.ReadableProperty;
-
 /**
- * Data provider returning the value of a given property.
- *
- * @param <DPO> Type of provided value.
+ * This package contains the implementation of simple properties that are both readable and writable, without
+ * transforming data.
  */
-public class PropertyDataProvider<DPO> implements DataProvider<DPO> {
-
-    /**
-     * Property whose value should be read.
-     */
-    private final ReadableProperty<DPO> property;
-
-    /**
-     * Constructor specifying the property to read the value from.
-     *
-     * @param property Property whose value should be read.
-     */
-    public PropertyDataProvider(ReadableProperty<DPO> property) {
-        this.property = property;
-    }
-
-    /**
-     * @see DataProvider#getData()
-     */
-    @Override
-    public DPO getData() {
-        return property.getValue();
-    }
-}
+package com.google.code.validationframework.base.property.simple;

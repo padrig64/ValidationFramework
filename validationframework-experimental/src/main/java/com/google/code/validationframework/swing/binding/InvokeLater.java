@@ -25,9 +25,9 @@
 
 package com.google.code.validationframework.swing.binding;
 
-import com.google.code.validationframework.api.binding.ValueChangeListener;
-import com.google.code.validationframework.base.binding.AbstractReadableProperty;
-import com.google.code.validationframework.api.binding.WritableProperty;
+import com.google.code.validationframework.api.property.ValueChangeListener;
+import com.google.code.validationframework.base.property.AbstractReadableProperty;
+import com.google.code.validationframework.api.property.WritableProperty;
 
 import javax.swing.SwingUtilities;
 

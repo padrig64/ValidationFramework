@@ -25,7 +25,7 @@
 
 package com.google.code.validationframework.swing.binding.simple;
 
-import com.google.code.validationframework.base.binding.simple.SimpleProperty;
+import com.google.code.validationframework.base.property.simple.SimpleProperty;
 
 import java.awt.Font;
 

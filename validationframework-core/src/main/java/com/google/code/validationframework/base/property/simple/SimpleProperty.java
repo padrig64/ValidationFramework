@@ -23,56 +23,56 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.swing.binding;
+package com.google.code.validationframework.base.property.simple;
 
-import com.google.code.validationframework.api.common.Disposable;
-import com.google.code.validationframework.base.property.AbstractReadableProperty;
 import com.google.code.validationframework.api.property.WritableProperty;
+import com.google.code.validationframework.base.property.AbstractReadableWritableProperty;
 import com.google.code.validationframework.base.utils.ValueUtils;
 
-import javax.swing.JFormattedTextField;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+/**
+ * Simple implementation of a property that is both readable and writable.
+ * <p/>
+ * Slaved properties will only be updated if the new value set on this property differs from the previous one.
+ * <p/>
+ * Note that binding can be bi-directional. Infinite recursion will be prevented.
+ * <p/>
+ * Finally note that this class is not thread-safe.
+ *
+ * @param <T> Type of data that can be read from and written to this property.
+ */
+public class SimpleProperty<T> extends AbstractReadableWritableProperty<T, T> {
 
-public class ValueProperty extends AbstractReadableProperty<Object> implements
-        WritableProperty<Object>, Disposable {
+    /**
+     * Property value.
+     */
+    private T value = null;
 
-    private class PropertyChangeAdapter implements PropertyChangeListener {
-
-        @Override
-        public void propertyChange(PropertyChangeEvent evt) {
-            setValue(formattedTextField.getValue());
-        }
-
-    }
-
-    private final JFormattedTextField formattedTextField;
-
-    private final PropertyChangeAdapter propertyChangeAdapter = new PropertyChangeAdapter();
-
+    /**
+     * Flag used to avoid any infinite recursion.
+     */
     private boolean settingValue = false;
 
-    private Object value = null;
-
-    public ValueProperty(JFormattedTextField formattedTextField) {
-        this.formattedTextField = formattedTextField;
-        this.formattedTextField.addPropertyChangeListener("value", propertyChangeAdapter);
-        setValue(formattedTextField.getValue());
+    /**
+     * Default constructor using null as the initial property value.
+     */
+    public SimpleProperty() {
+        this(null);
     }
 
     /**
-     * @see Disposable#dispose()
+     * Constructor specifying the initial property value.
+     *
+     * @param value Initial property value.
      */
-    @Override
-    public void dispose() {
-        formattedTextField.removePropertyChangeListener("value", propertyChangeAdapter);
+    public SimpleProperty(T value) {
+        this.value = value;
     }
 
     /**
-     * @see AbstractReadableProperty#getValue()
+     * @see AbstractReadableWritableProperty#getValue()
      */
     @Override
-    public Object getValue() {
+    public T getValue() {
         return value;
     }
 
@@ -80,14 +80,14 @@ public class ValueProperty extends AbstractReadableProperty<Object> implements
      * @see WritableProperty#setValue(Object)
      */
     @Override
-    public void setValue(Object value) {
+    public void setValue(T value) {
         if (!settingValue) {
             settingValue = true;
 
+            // Update slaves only if the new value is different than the previous value
             if (!ValueUtils.areEqual(this.value, value)) {
-                Object oldValue = this.value;
+                T oldValue = this.value;
                 this.value = value;
-                formattedTextField.setValue(value);
                 notifyListeners(oldValue, value);
             }
 

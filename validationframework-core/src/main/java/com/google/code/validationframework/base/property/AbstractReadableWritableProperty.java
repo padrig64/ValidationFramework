@@ -23,37 +23,22 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.base.dataprovider;
+package com.google.code.validationframework.base.property;
 
-import com.google.code.validationframework.api.dataprovider.DataProvider;
-import com.google.code.validationframework.api.property.ReadableProperty;
+import com.google.code.validationframework.api.property.ReadableWritableProperty;
 
 /**
- * Data provider returning the value of a given property.
+ * Abstract implementation of a {@link ReadableWritableProperty}.
+ * <p/>
+ * Sub-classes should call the {@link #notifyListeners(Object, Object)} or {@link #notifyListeners(Object, Object,
+ * boolean)} methods whenever the property value changes.
+ * <p/>
+ * Note that this class is not thread-safe.
  *
- * @param <DPO> Type of provided value.
+ * @param <R> Type of data that can be read from this property.
+ * @param <W> Type of data that can be written to this property.
  */
-public class PropertyDataProvider<DPO> implements DataProvider<DPO> {
-
-    /**
-     * Property whose value should be read.
-     */
-    private final ReadableProperty<DPO> property;
-
-    /**
-     * Constructor specifying the property to read the value from.
-     *
-     * @param property Property whose value should be read.
-     */
-    public PropertyDataProvider(ReadableProperty<DPO> property) {
-        this.property = property;
-    }
-
-    /**
-     * @see DataProvider#getData()
-     */
-    @Override
-    public DPO getData() {
-        return property.getValue();
-    }
+public abstract class AbstractReadableWritableProperty<R, W> extends AbstractReadableProperty<R> implements
+        ReadableWritableProperty<R, W> {
+    // Nothing more to be done
 }
