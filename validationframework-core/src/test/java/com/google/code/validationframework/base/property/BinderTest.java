@@ -25,6 +25,7 @@
 
 package com.google.code.validationframework.base.property;
 
+import com.google.code.validationframework.base.binding.Binder;
 import com.google.code.validationframework.base.property.simple.BooleanProperty;
 import com.google.code.validationframework.base.property.simple.IntegerProperty;
 import com.google.code.validationframework.base.property.simple.SimpleProperty;
@@ -32,11 +33,11 @@ import com.google.code.validationframework.base.transform.AndBooleanAggregator;
 import com.google.code.validationframework.base.transform.ToStringTransformer;
 import org.junit.Test;
 
-import static com.google.code.validationframework.base.property.Binder.from;
+import static com.google.code.validationframework.base.binding.Binder.read;
 import static org.junit.Assert.assertEquals;
 
 /**
- * @see Binder
+ * @see com.google.code.validationframework.base.binding.Binder
  */
 public class BinderTest {
 
@@ -44,7 +45,7 @@ public class BinderTest {
     public void testMasterToSlave() {
         SimpleProperty<Integer> master = new SimpleProperty<Integer>(5);
         SimpleProperty<Integer> slave = new SimpleProperty<Integer>(0);
-        Binder.from(master).to(slave);
+        Binder.read(master).write(slave);
 
         assertEquals(Integer.valueOf(5), master.getValue());
         assertEquals(master.getValue(), slave.getValue());
@@ -59,7 +60,7 @@ public class BinderTest {
     public void testMasterToSlaveWithTransformation() {
         SimpleProperty<Integer> master = new SimpleProperty<Integer>(5);
         SimpleProperty<String> slave = new SimpleProperty<String>("0");
-        Binder.from(master).transform(new ToStringTransformer<Integer>()).to(slave);
+        Binder.read(master).transform(new ToStringTransformer<Integer>()).write(slave);
 
         assertEquals(Integer.valueOf(5), master.getValue());
         assertEquals("5", slave.getValue());
@@ -76,7 +77,7 @@ public class BinderTest {
         BooleanProperty master2 = new BooleanProperty(false);
         BooleanProperty master3 = new BooleanProperty(false);
         BooleanProperty slave = new BooleanProperty();
-        from(master1, master2, master3).transform(new AndBooleanAggregator()).to(slave);
+        read(master1, master2, master3).transform(new AndBooleanAggregator()).write(slave);
 
         assertEquals(false, slave.getValue());
 
@@ -92,8 +93,8 @@ public class BinderTest {
         IntegerProperty second = new IntegerProperty(4);
 
         // The following should not result in an StackOverflowError
-        Binder.from(first).to(second);
-        Binder.from(second).to(first);
+        Binder.read(first).write(second);
+        Binder.read(second).write(first);
 
         first.setValue(12);
         assertEquals(Integer.valueOf(12), second.getValue());

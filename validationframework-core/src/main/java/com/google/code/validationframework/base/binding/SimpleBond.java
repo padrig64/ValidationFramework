@@ -23,13 +23,14 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.base.property;
+package com.google.code.validationframework.base.binding;
 
 import com.google.code.validationframework.api.property.ReadableProperty;
 import com.google.code.validationframework.api.property.ValueChangeListener;
 import com.google.code.validationframework.api.property.WritableProperty;
 import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.api.transform.Transformer;
+import com.google.code.validationframework.base.property.CompositeWritableProperty;
 
 import java.util.Collection;
 
@@ -42,10 +43,10 @@ import java.util.Collection;
  * @param <SI> Type of data that can be written to master properties.
  *
  * @see Binder
- * @see CompositeReadableProperty
- * @see CompositeWritableProperty
+ * @see com.google.code.validationframework.base.property.CompositeReadableProperty
+ * @see com.google.code.validationframework.base.property.CompositeWritableProperty
  */
-public class Bond<MO, SI> implements Disposable {
+public class SimpleBond<MO, SI> implements Disposable {
 
     /**
      * Listener to master property changes and updating the slave property.
@@ -89,7 +90,7 @@ public class Bond<MO, SI> implements Disposable {
      * Constructor specifying the master property, the transformers and the slaves that are part of the binding.
      * <p/>
      * Note that the master property can be a composition of multiple properties, for instance, using the {@link
-     * CompositeReadableProperty}.
+     * com.google.code.validationframework.base.property.CompositeReadableProperty}.
      * <p/>
      * For type safety, it is highly advised to use the {@link Binder} to create the bond.
      *
@@ -97,7 +98,7 @@ public class Bond<MO, SI> implements Disposable {
      * @param transformer Transformer (possibly composite) to be part of the bond.
      * @param slave       Slave (possibly composite) property to be part of the bond.
      */
-    public Bond(ReadableProperty<MO> master, Transformer<MO, SI> transformer, WritableProperty<SI> slave) {
+    public SimpleBond(ReadableProperty<MO> master, Transformer<MO, SI> transformer, WritableProperty<SI> slave) {
         this.master = master;
         this.transformer = transformer;
         this.slave = slave;
@@ -112,7 +113,7 @@ public class Bond<MO, SI> implements Disposable {
      * Constructor specifying the master property, the transformers and the slaves that are part of the binding.
      * <p/>
      * Note that the master property can be a composition of multiple properties, for instance, using the {@link
-     * CompositeReadableProperty}.
+     * com.google.code.validationframework.base.property.CompositeReadableProperty}.
      * <p/>
      * For type safety, it is highly advised to use the {@link Binder} to create the bond.
      *
@@ -120,7 +121,8 @@ public class Bond<MO, SI> implements Disposable {
      * @param transformer Transformer (possible composite) to be part of the bond.
      * @param slaves      Slave properties to be part of the bond.
      */
-    public Bond(ReadableProperty<MO> master, Transformer<MO, SI> transformer, Collection<WritableProperty<SI>> slaves) {
+    public SimpleBond(ReadableProperty<MO> master, Transformer<MO, SI> transformer, Collection<WritableProperty<SI>>
+            slaves) {
         this(master, transformer, new CompositeWritableProperty<SI>(slaves));
     }
 

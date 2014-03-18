@@ -23,11 +23,12 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.base.property;
+package com.google.code.validationframework.base.binding;
 
 import com.google.code.validationframework.api.property.ReadableProperty;
 import com.google.code.validationframework.api.property.WritableProperty;
 import com.google.code.validationframework.api.transform.Transformer;
+import com.google.code.validationframework.base.property.CompositeReadableProperty;
 import com.google.code.validationframework.base.transform.ChainedTransformer;
 
 import java.util.Arrays;
@@ -37,8 +38,8 @@ import java.util.Collections;
 /**
  * Utility class that can be used to help binding properties and transform their values.
  * <p/>
- * This binder utility will create {@link Bond}s between properties. These bonds can be broken by calling their {@link
- * Bond#dispose()} method.
+ * This binder utility will create {@link SimpleBond}s between properties. These bonds can be broken by calling their {@link
+ * SimpleBond#dispose()} method.
  * <p/>
  * If you are using JavaFX, you should better use JavaFX's property binding mechanism. The binding mechanism provided by
  * the ValidationFramework is very simple and mostly meant for Swing and other frameworks that can benefit from it.
@@ -46,7 +47,7 @@ import java.util.Collections;
  *
  * @see ReadableProperty
  * @see WritableProperty
- * @see Bond
+ * @see SimpleBond
  */
 public final class Binder {
 
@@ -98,8 +99,8 @@ public final class Binder {
          *
          * @return Bond between the master and the slave.
          */
-        public Bond<MO, SI> to(WritableProperty<SI> slave) {
-            return to(Collections.singleton(slave));
+        public SimpleBond<MO, SI> write(WritableProperty<SI> slave) {
+            return write(Collections.singleton(slave));
         }
 
         /**
@@ -110,8 +111,8 @@ public final class Binder {
          *
          * @return Bond between the master and the slaves.
          */
-        public Bond<MO, SI> to(Collection<WritableProperty<SI>> slaves) {
-            return new Bond<MO, SI>(master, transformer, slaves);
+        public SimpleBond<MO, SI> write(Collection<WritableProperty<SI>> slaves) {
+            return new SimpleBond<MO, SI>(master, transformer, slaves);
         }
 
         /**
@@ -122,8 +123,8 @@ public final class Binder {
          *
          * @return Bond between the master and the slaves.
          */
-        public Bond<MO, SI> to(WritableProperty<SI>... slaves) {
-            return to(Arrays.asList(slaves));
+        public SimpleBond<MO, SI> write(WritableProperty<SI>... slaves) {
+            return write(Arrays.asList(slaves));
         }
     }
 
@@ -176,8 +177,8 @@ public final class Binder {
          *
          * @return Bond between the masters and the slave.
          */
-        public Bond<Collection<MO>, SI> to(WritableProperty<SI> slave) {
-            return to(Collections.singleton(slave));
+        public SimpleBond<Collection<MO>, SI> write(WritableProperty<SI> slave) {
+            return write(Collections.singleton(slave));
         }
 
         /**
@@ -188,8 +189,8 @@ public final class Binder {
          *
          * @return Bond between the masters and the slaves.
          */
-        public Bond<Collection<MO>, SI> to(Collection<WritableProperty<SI>> slaves) {
-            return new Bond<Collection<MO>, SI>(new CompositeReadableProperty<MO>(masters), transformer, slaves);
+        public SimpleBond<Collection<MO>, SI> write(Collection<WritableProperty<SI>> slaves) {
+            return new SimpleBond<Collection<MO>, SI>(new CompositeReadableProperty<MO>(masters), transformer, slaves);
         }
 
         /**
@@ -200,8 +201,8 @@ public final class Binder {
          *
          * @return Bond between the masters and the slaves.
          */
-        public Bond<Collection<MO>, SI> to(WritableProperty<SI>... slaves) {
-            return to(Arrays.asList(slaves));
+        public SimpleBond<Collection<MO>, SI> write(WritableProperty<SI>... slaves) {
+            return write(Arrays.asList(slaves));
         }
     }
 
@@ -220,7 +221,7 @@ public final class Binder {
      *
      * @return DSL object.
      */
-    public static <MO> SingleMasterBinding<MO, MO> from(ReadableProperty<MO> master) {
+    public static <MO> SingleMasterBinding<MO, MO> read(ReadableProperty<MO> master) {
         return new SingleMasterBinding<MO, MO>(master, null);
     }
 
@@ -232,7 +233,7 @@ public final class Binder {
      *
      * @return DSL object.
      */
-    public static <MO> MultipleMasterBinding<MO, Collection<MO>> from(Collection<ReadableProperty<MO>> masters) {
+    public static <MO> MultipleMasterBinding<MO, Collection<MO>> read(Collection<ReadableProperty<MO>> masters) {
         return new MultipleMasterBinding<MO, Collection<MO>>(masters, null);
     }
 
@@ -244,7 +245,7 @@ public final class Binder {
      *
      * @return DSL object.
      */
-    public static <MO> MultipleMasterBinding<MO, Collection<MO>> from(ReadableProperty<MO>... masters) {
+    public static <MO> MultipleMasterBinding<MO, Collection<MO>> read(ReadableProperty<MO>... masters) {
         return new MultipleMasterBinding<MO, Collection<MO>>(Arrays.asList(masters), null);
     }
 }
