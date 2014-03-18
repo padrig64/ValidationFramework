@@ -23,7 +23,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.swing.binding;
+package com.google.code.validationframework.swing.property;
 
 import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.base.property.AbstractReadableProperty;
@@ -33,20 +33,16 @@ import java.awt.Component;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-/**
- * Readable/writable property representing the visible property of a {@link Component}.
- * <p/>
- * Note that change listeners will not be notified if the {@link Component} is not a {@link javax.swing.JComponent}.
- */
-public class VisibleProperty extends AbstractReadableProperty<Boolean> implements WritableProperty<Boolean>,
+public class EnabledProperty extends AbstractReadableProperty<Boolean> implements WritableProperty<Boolean>,
         Disposable {
 
     private class PropertyChangeAdapter implements PropertyChangeListener {
 
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
-            setValue(component.isVisible());
+            setValue(component.isEnabled());
         }
+
     }
 
     private final Component component;
@@ -57,10 +53,10 @@ public class VisibleProperty extends AbstractReadableProperty<Boolean> implement
 
     private boolean value = false;
 
-    public VisibleProperty(Component component) {
+    public EnabledProperty(Component component) {
         this.component = component;
-        this.component.addPropertyChangeListener("visible", propertyChangeAdapter);
-        setValue(component.isVisible());
+        this.component.addPropertyChangeListener("enabled", propertyChangeAdapter);
+        setValue(component.isEnabled());
     }
 
     /**
@@ -68,7 +64,7 @@ public class VisibleProperty extends AbstractReadableProperty<Boolean> implement
      */
     @Override
     public void dispose() {
-        component.removePropertyChangeListener("visible", propertyChangeAdapter);
+        component.removePropertyChangeListener("enabled", propertyChangeAdapter);
     }
 
     /**
@@ -94,7 +90,7 @@ public class VisibleProperty extends AbstractReadableProperty<Boolean> implement
             if (this.value != normalizedValue) {
                 Boolean oldValue = this.value;
                 this.value = normalizedValue;
-                component.setVisible(normalizedValue);
+                component.setEnabled(normalizedValue);
                 notifyListeners(oldValue, normalizedValue);
             }
 

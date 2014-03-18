@@ -23,55 +23,41 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.swing.binding;
+package com.google.code.validationframework.swing.property;
 
 import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.base.property.AbstractReadableProperty;
+import com.google.code.validationframework.api.property.WritableProperty;
 import com.google.code.validationframework.base.utils.ValueUtils;
 
-import java.awt.Component;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import javax.swing.JFormattedTextField;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
-public class RolloverProperty extends AbstractReadableProperty<Boolean> implements Disposable {
+public class ValueProperty extends AbstractReadableProperty<Object> implements
+        WritableProperty<Object>, Disposable {
 
-    private class RolloverAdapter implements MouseListener {
-
-        @Override
-        public void mouseEntered(MouseEvent e) {
-            setValue(true);
-        }
+    private class PropertyChangeAdapter implements PropertyChangeListener {
 
         @Override
-        public void mouseExited(MouseEvent e) {
-            setValue(false);
+        public void propertyChange(PropertyChangeEvent evt) {
+            setValue(formattedTextField.getValue());
         }
 
-        @Override
-        public void mousePressed(MouseEvent e) {
-            // Nothing to be done
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
-            // Nothing to be done
-        }
-
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            // Nothing to be done
-        }
     }
 
-    private boolean rollover = false;
+    private final JFormattedTextField formattedTextField;
 
-    private final Component component;
+    private final PropertyChangeAdapter propertyChangeAdapter = new PropertyChangeAdapter();
 
-    private final MouseListener rolloverAdapter = new RolloverAdapter();
+    private boolean settingValue = false;
 
-    public RolloverProperty(Component component) {
-        this.component = component;
-        this.component.addMouseListener(rolloverAdapter);
+    private Object value = null;
+
+    public ValueProperty(JFormattedTextField formattedTextField) {
+        this.formattedTextField = formattedTextField;
+        this.formattedTextField.addPropertyChangeListener("value", propertyChangeAdapter);
+        setValue(formattedTextField.getValue());
     }
 
     /**
@@ -79,22 +65,33 @@ public class RolloverProperty extends AbstractReadableProperty<Boolean> implemen
      */
     @Override
     public void dispose() {
-        component.removeMouseListener(rolloverAdapter);
+        formattedTextField.removePropertyChangeListener("value", propertyChangeAdapter);
     }
 
     /**
      * @see AbstractReadableProperty#getValue()
      */
     @Override
-    public Boolean getValue() {
-        return rollover;
+    public Object getValue() {
+        return value;
     }
 
-    private void setValue(boolean rollover) {
-        if (!ValueUtils.areEqual(this.rollover, rollover)) {
-            boolean oldValue = this.rollover;
-            this.rollover = rollover;
-            notifyListeners(oldValue, rollover);
+    /**
+     * @see WritableProperty#setValue(Object)
+     */
+    @Override
+    public void setValue(Object value) {
+        if (!settingValue) {
+            settingValue = true;
+
+            if (!ValueUtils.areEqual(this.value, value)) {
+                Object oldValue = this.value;
+                this.value = value;
+                formattedTextField.setValue(value);
+                notifyListeners(oldValue, value);
+            }
+
+            settingValue = false;
         }
     }
 }

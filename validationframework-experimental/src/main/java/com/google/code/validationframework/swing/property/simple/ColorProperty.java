@@ -23,7 +23,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.swing.binding.simple;
+package com.google.code.validationframework.swing.property.simple;
 
 import com.google.code.validationframework.base.property.simple.SimpleProperty;
 

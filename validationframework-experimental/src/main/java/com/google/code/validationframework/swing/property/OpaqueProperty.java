@@ -23,40 +23,42 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.swing.binding;
+package com.google.code.validationframework.swing.property;
 
 import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.base.property.AbstractReadableProperty;
-import com.google.code.validationframework.base.utils.ValueUtils;
+import com.google.code.validationframework.api.property.WritableProperty;
 
-import java.awt.Component;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
+import javax.swing.JComponent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
-public class FocusedProperty extends AbstractReadableProperty<Boolean> implements Disposable {
+/**
+ * Readable/writable property representing the opaque property of a {@link JComponent}.
+ */
+public class OpaqueProperty extends AbstractReadableProperty<Boolean> implements WritableProperty<Boolean>,
+        Disposable {
 
-    private class FocusAdapter implements FocusListener {
+    private class PropertyChangeAdapter implements PropertyChangeListener {
 
         @Override
-        public void focusGained(FocusEvent e) {
-            setValue(true);
-        }
-
-        @Override
-        public void focusLost(FocusEvent e) {
-            setValue(false);
+        public void propertyChange(PropertyChangeEvent evt) {
+            setValue(component.isOpaque());
         }
     }
 
-    private boolean focused = false;
+    private final JComponent component;
 
-    private final Component component;
+    private final PropertyChangeAdapter propertyChangeAdapter = new PropertyChangeAdapter();
 
-    private final FocusListener focusAdapter = new FocusAdapter();
+    private boolean settingValue = false;
 
-    public FocusedProperty(Component component) {
+    private boolean value = false;
+
+    public OpaqueProperty(JComponent component) {
         this.component = component;
-        this.component.addFocusListener(focusAdapter);
+        this.component.addPropertyChangeListener("opaque", propertyChangeAdapter);
+        setValue(component.isOpaque());
     }
 
     /**
@@ -64,7 +66,7 @@ public class FocusedProperty extends AbstractReadableProperty<Boolean> implement
      */
     @Override
     public void dispose() {
-        component.removeFocusListener(focusAdapter);
+        component.removePropertyChangeListener("opaque", propertyChangeAdapter);
     }
 
     /**
@@ -72,14 +74,29 @@ public class FocusedProperty extends AbstractReadableProperty<Boolean> implement
      */
     @Override
     public Boolean getValue() {
-        return focused;
+        return value;
     }
 
-    private void setValue(boolean focused) {
-        if (!ValueUtils.areEqual(this.focused, focused)) {
-            boolean oldValue = this.focused;
-            this.focused = focused;
-            notifyListeners(oldValue, focused);
+    /**
+     * @see WritableProperty#setValue(Object)
+     */
+    @Override
+    public void setValue(Boolean value) {
+        if (!settingValue) {
+            settingValue = true;
+
+            boolean normalizedValue = false;
+            if (value != null) {
+                normalizedValue = value;
+            }
+            if (this.value != normalizedValue) {
+                Boolean oldValue = this.value;
+                this.value = normalizedValue;
+                component.setOpaque(normalizedValue);
+                notifyListeners(oldValue, normalizedValue);
+            }
+
+            settingValue = false;
         }
     }
 }

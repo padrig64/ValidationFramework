@@ -23,39 +23,46 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.swing.binding;
+package com.google.code.validationframework.swing.property;
 
 import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.base.property.AbstractReadableProperty;
-import com.google.code.validationframework.api.property.WritableProperty;
+import com.google.code.validationframework.base.utils.ValueUtils;
 
-import javax.swing.JToggleButton;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import java.awt.Component;
+import java.awt.Container;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
-public class SelectedProperty extends AbstractReadableProperty<Boolean> implements
-        WritableProperty<Boolean>, Disposable {
+/**
+ * Readable property representing the ancestor property of a {@link Component}.
+ * <p/>
+ * Note that change listeners will not be notified if the {@link Component} is not a {@link javax.swing.JComponent}.
+ */
+public class AncestorProperty extends AbstractReadableProperty<Container> implements Disposable {
 
-    private class PropertyChangeAdapter implements ItemListener {
+    private class PropertyChangeAdapter implements PropertyChangeListener {
 
         @Override
-        public void itemStateChanged(ItemEvent e) {
-            setValue(component.isSelected());
+        public void propertyChange(PropertyChangeEvent evt) {
+            if (evt.getNewValue() instanceof Container) {
+                setValue((Container) evt.getNewValue());
+            } else {
+                setValue(null);
+            }
         }
     }
 
-    private final JToggleButton component;
+    private final Component component;
 
     private final PropertyChangeAdapter propertyChangeAdapter = new PropertyChangeAdapter();
 
-    private boolean settingValue = false;
+    private Container value = null;
 
-    private boolean value = false;
-
-    public SelectedProperty(JToggleButton component) {
+    public AncestorProperty(Component component) {
         this.component = component;
-        this.component.addItemListener(propertyChangeAdapter);
-        setValue(component.isSelected());
+        this.component.addPropertyChangeListener("ancestor", propertyChangeAdapter);
+        setValue(component.getParent());
     }
 
     /**
@@ -63,37 +70,22 @@ public class SelectedProperty extends AbstractReadableProperty<Boolean> implemen
      */
     @Override
     public void dispose() {
-        component.removeItemListener(propertyChangeAdapter);
+        component.removePropertyChangeListener("ancestor", propertyChangeAdapter);
     }
 
     /**
      * @see AbstractReadableProperty#getValue()
      */
     @Override
-    public Boolean getValue() {
+    public Container getValue() {
         return value;
     }
 
-    /**
-     * @see WritableProperty#setValue(Object)
-     */
-    @Override
-    public void setValue(Boolean value) {
-        if (!settingValue) {
-            settingValue = true;
-
-            boolean normalizedValue = false;
-            if (value != null) {
-                normalizedValue = value;
-            }
-            if (this.value != normalizedValue) {
-                Boolean oldValue = this.value;
-                this.value = normalizedValue;
-                component.setSelected(normalizedValue);
-                notifyListeners(oldValue, normalizedValue);
-            }
-
-            settingValue = false;
+    public void setValue(Container value) {
+        if (!ValueUtils.areEqual(this.value, value)) {
+            Container oldValue = this.value;
+            this.value = value;
+            notifyListeners(oldValue, value);
         }
     }
 }

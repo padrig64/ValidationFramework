@@ -23,33 +23,29 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.swing.binding;
+package com.google.code.validationframework.swing.property;
 
 import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.base.property.AbstractReadableProperty;
-import com.google.code.validationframework.base.utils.ValueUtils;
+import com.google.code.validationframework.api.property.WritableProperty;
 
 import java.awt.Component;
-import java.awt.Container;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 /**
- * Readable property representing the ancestor property of a {@link Component}.
+ * Readable/writable property representing the visible property of a {@link Component}.
  * <p/>
  * Note that change listeners will not be notified if the {@link Component} is not a {@link javax.swing.JComponent}.
  */
-public class AncestorProperty extends AbstractReadableProperty<Container> implements Disposable {
+public class VisibleProperty extends AbstractReadableProperty<Boolean> implements WritableProperty<Boolean>,
+        Disposable {
 
     private class PropertyChangeAdapter implements PropertyChangeListener {
 
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
-            if (evt.getNewValue() instanceof Container) {
-                setValue((Container) evt.getNewValue());
-            } else {
-                setValue(null);
-            }
+            setValue(component.isVisible());
         }
     }
 
@@ -57,12 +53,14 @@ public class AncestorProperty extends AbstractReadableProperty<Container> implem
 
     private final PropertyChangeAdapter propertyChangeAdapter = new PropertyChangeAdapter();
 
-    private Container value = null;
+    private boolean settingValue = false;
 
-    public AncestorProperty(Component component) {
+    private boolean value = false;
+
+    public VisibleProperty(Component component) {
         this.component = component;
-        this.component.addPropertyChangeListener("ancestor", propertyChangeAdapter);
-        setValue(component.getParent());
+        this.component.addPropertyChangeListener("visible", propertyChangeAdapter);
+        setValue(component.isVisible());
     }
 
     /**
@@ -70,22 +68,37 @@ public class AncestorProperty extends AbstractReadableProperty<Container> implem
      */
     @Override
     public void dispose() {
-        component.removePropertyChangeListener("ancestor", propertyChangeAdapter);
+        component.removePropertyChangeListener("visible", propertyChangeAdapter);
     }
 
     /**
      * @see AbstractReadableProperty#getValue()
      */
     @Override
-    public Container getValue() {
+    public Boolean getValue() {
         return value;
     }
 
-    public void setValue(Container value) {
-        if (!ValueUtils.areEqual(this.value, value)) {
-            Container oldValue = this.value;
-            this.value = value;
-            notifyListeners(oldValue, value);
+    /**
+     * @see WritableProperty#setValue(Object)
+     */
+    @Override
+    public void setValue(Boolean value) {
+        if (!settingValue) {
+            settingValue = true;
+
+            boolean normalizedValue = false;
+            if (value != null) {
+                normalizedValue = value;
+            }
+            if (this.value != normalizedValue) {
+                Boolean oldValue = this.value;
+                this.value = normalizedValue;
+                component.setVisible(normalizedValue);
+                notifyListeners(oldValue, normalizedValue);
+            }
+
+            settingValue = false;
         }
     }
 }

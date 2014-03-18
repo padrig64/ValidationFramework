@@ -23,40 +23,40 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.swing.binding;
+package com.google.code.validationframework.swing.property;
 
 import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.base.property.AbstractReadableProperty;
-import com.google.code.validationframework.api.property.WritableProperty;
+import com.google.code.validationframework.base.utils.ValueUtils;
 
 import java.awt.Component;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
-public class EnabledProperty extends AbstractReadableProperty<Boolean> implements WritableProperty<Boolean>,
-        Disposable {
+public class FocusedProperty extends AbstractReadableProperty<Boolean> implements Disposable {
 
-    private class PropertyChangeAdapter implements PropertyChangeListener {
+    private class FocusAdapter implements FocusListener {
 
         @Override
-        public void propertyChange(PropertyChangeEvent evt) {
-            setValue(component.isEnabled());
+        public void focusGained(FocusEvent e) {
+            setValue(true);
         }
 
+        @Override
+        public void focusLost(FocusEvent e) {
+            setValue(false);
+        }
     }
+
+    private boolean focused = false;
 
     private final Component component;
 
-    private final PropertyChangeAdapter propertyChangeAdapter = new PropertyChangeAdapter();
+    private final FocusListener focusAdapter = new FocusAdapter();
 
-    private boolean settingValue = false;
-
-    private boolean value = false;
-
-    public EnabledProperty(Component component) {
+    public FocusedProperty(Component component) {
         this.component = component;
-        this.component.addPropertyChangeListener("enabled", propertyChangeAdapter);
-        setValue(component.isEnabled());
+        this.component.addFocusListener(focusAdapter);
     }
 
     /**
@@ -64,7 +64,7 @@ public class EnabledProperty extends AbstractReadableProperty<Boolean> implement
      */
     @Override
     public void dispose() {
-        component.removePropertyChangeListener("enabled", propertyChangeAdapter);
+        component.removeFocusListener(focusAdapter);
     }
 
     /**
@@ -72,29 +72,14 @@ public class EnabledProperty extends AbstractReadableProperty<Boolean> implement
      */
     @Override
     public Boolean getValue() {
-        return value;
+        return focused;
     }
 
-    /**
-     * @see WritableProperty#setValue(Object)
-     */
-    @Override
-    public void setValue(Boolean value) {
-        if (!settingValue) {
-            settingValue = true;
-
-            boolean normalizedValue = false;
-            if (value != null) {
-                normalizedValue = value;
-            }
-            if (this.value != normalizedValue) {
-                Boolean oldValue = this.value;
-                this.value = normalizedValue;
-                component.setEnabled(normalizedValue);
-                notifyListeners(oldValue, normalizedValue);
-            }
-
-            settingValue = false;
+    private void setValue(boolean focused) {
+        if (!ValueUtils.areEqual(this.focused, focused)) {
+            boolean oldValue = this.focused;
+            this.focused = focused;
+            notifyListeners(oldValue, focused);
         }
     }
 }
