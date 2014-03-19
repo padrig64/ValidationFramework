@@ -23,30 +23,26 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.swing.property.simple;
-
-import com.google.code.validationframework.base.property.simple.SimpleProperty;
-
-import java.awt.Color;
+package com.google.code.validationframework.base.property.simple;
 
 /**
- * Simple property holding a {@link Color} value.
+ * Simple property holding a {@link Byte} value.
  *
  * @see SimpleProperty
  */
-public class ColorProperty extends SimpleProperty<Color> {
+public class SimpleByteProperty extends SimpleProperty<Byte> {
 
     /**
      * @see SimpleProperty#SimpleProperty()
      */
-    public ColorProperty() {
+    public SimpleByteProperty() {
         super();
     }
 
     /**
      * @see SimpleProperty#SimpleProperty(Object)
      */
-    public ColorProperty(Color value) {
+    public SimpleByteProperty(Byte value) {
         super(value);
     }
 }

@@ -26,23 +26,23 @@
 package com.google.code.validationframework.base.property.simple;
 
 /**
- * Simple property holding a {@link String} value.
+ * Simple property holding a {@link Double} value.
  *
  * @see SimpleProperty
  */
-public class StringProperty extends SimpleProperty<String> {
+public class SimpleDoubleProperty extends SimpleProperty<Double> {
 
     /**
      * @see SimpleProperty#SimpleProperty()
      */
-    public StringProperty() {
+    public SimpleDoubleProperty() {
         super();
     }
 
     /**
      * @see SimpleProperty#SimpleProperty(Object)
      */
-    public StringProperty(String value) {
+    public SimpleDoubleProperty(Double value) {
         super(value);
     }
 }

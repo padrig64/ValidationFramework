@@ -23,30 +23,26 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.swing.property.simple;
-
-import com.google.code.validationframework.base.property.simple.SimpleProperty;
-
-import java.awt.Font;
+package com.google.code.validationframework.base.property.simple;
 
 /**
- * Simple property holding a {@link Font} value.
+ * Simple property holding a {@link Float} value.
  *
  * @see SimpleProperty
  */
-public class FontProperty extends SimpleProperty<Font> {
+public class SimpleFloatProperty extends SimpleProperty<Float> {
 
     /**
      * @see SimpleProperty#SimpleProperty()
      */
-    public FontProperty() {
+    public SimpleFloatProperty() {
         super();
     }
 
     /**
      * @see SimpleProperty#SimpleProperty(Object)
      */
-    public FontProperty(Font value) {
+    public SimpleFloatProperty(Float value) {
         super(value);
     }
 }

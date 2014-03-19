@@ -23,26 +23,30 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.base.property.simple;
+package com.google.code.validationframework.swing.property.simple;
+
+import com.google.code.validationframework.base.property.simple.SimpleProperty;
+
+import java.awt.Font;
 
 /**
- * Simple property holding a {@link Double} value.
+ * Simple property holding a {@link Font} value.
  *
  * @see SimpleProperty
  */
-public class DoubleProperty extends SimpleProperty<Double> {
+public class SimpleFontProperty extends SimpleProperty<Font> {
 
     /**
      * @see SimpleProperty#SimpleProperty()
      */
-    public DoubleProperty() {
+    public SimpleFontProperty() {
         super();
     }
 
     /**
      * @see SimpleProperty#SimpleProperty(Object)
      */
-    public DoubleProperty(Double value) {
+    public SimpleFontProperty(Font value) {
         super(value);
     }
 }

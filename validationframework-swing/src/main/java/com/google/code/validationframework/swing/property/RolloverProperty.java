@@ -30,45 +30,61 @@ import com.google.code.validationframework.base.property.AbstractReadablePropert
 import com.google.code.validationframework.base.utils.ValueUtils;
 
 import java.awt.Component;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+/**
+ * Read-only property representing the rollover state of a component.
+ * <p/>
+ * If the mouse is over the component, the property value will be true.
+ */
 public class RolloverProperty extends AbstractReadableProperty<Boolean> implements Disposable {
 
-    private class RolloverAdapter implements MouseListener {
+    /**
+     * Rollover state tracker.
+     */
+    private class RolloverAdapter extends MouseAdapter {
 
+        /**
+         * @see MouseAdapter#mouseEntered(MouseEvent)
+         */
         @Override
         public void mouseEntered(MouseEvent e) {
             setValue(true);
         }
 
+        /**
+         * @see MouseAdapter#mouseExited(MouseEvent)
+         */
         @Override
         public void mouseExited(MouseEvent e) {
             setValue(false);
         }
-
-        @Override
-        public void mousePressed(MouseEvent e) {
-            // Nothing to be done
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
-            // Nothing to be done
-        }
-
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            // Nothing to be done
-        }
     }
 
+    /**
+     * Current property value.
+     */
     private boolean rollover = false;
 
+    /**
+     * Component to track the rollover state for.
+     */
     private final Component component;
 
+    /**
+     * Rollover state tracker.
+     */
     private final MouseListener rolloverAdapter = new RolloverAdapter();
 
+    /**
+     * Constructor specifying the component for which the property applies.
+     *
+     * @param component Component whose rollover state is to be tracked.
+     *
+     * @see #dispose()
+     */
     public RolloverProperty(Component component) {
         this.component = component;
         this.component.addMouseListener(rolloverAdapter);
@@ -90,6 +106,11 @@ public class RolloverProperty extends AbstractReadableProperty<Boolean> implemen
         return rollover;
     }
 
+    /**
+     * Applies the specified value and notifies the value change listeners if needed.
+     *
+     * @param rollover New value.
+     */
     private void setValue(boolean rollover) {
         if (!ValueUtils.areEqual(this.rollover, rollover)) {
             boolean oldValue = this.rollover;

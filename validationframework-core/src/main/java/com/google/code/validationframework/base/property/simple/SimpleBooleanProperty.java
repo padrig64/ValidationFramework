@@ -26,23 +26,23 @@
 package com.google.code.validationframework.base.property.simple;
 
 /**
- * Simple property holding a {@link Object} value.
+ * Simple property holding a {@link Boolean} value.
  *
  * @see SimpleProperty
  */
-public class ObjectProperty extends SimpleProperty<Object> {
+public class SimpleBooleanProperty extends SimpleProperty<Boolean> {
 
     /**
      * @see SimpleProperty#SimpleProperty()
      */
-    public ObjectProperty() {
+    public SimpleBooleanProperty() {
         super();
     }
 
     /**
-     * @see SimpleProperty#SimpleProperty()
+     * @see SimpleProperty#SimpleProperty(Object)
      */
-    public ObjectProperty(Object value) {
+    public SimpleBooleanProperty(Boolean value) {
         super(value);
     }
 }

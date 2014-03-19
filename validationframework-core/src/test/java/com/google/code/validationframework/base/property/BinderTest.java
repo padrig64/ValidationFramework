@@ -26,8 +26,8 @@
 package com.google.code.validationframework.base.property;
 
 import com.google.code.validationframework.base.binding.Binder;
-import com.google.code.validationframework.base.property.simple.BooleanProperty;
-import com.google.code.validationframework.base.property.simple.IntegerProperty;
+import com.google.code.validationframework.base.property.simple.SimpleBooleanProperty;
+import com.google.code.validationframework.base.property.simple.SimpleIntegerProperty;
 import com.google.code.validationframework.base.property.simple.SimpleProperty;
 import com.google.code.validationframework.base.transform.AndBooleanAggregator;
 import com.google.code.validationframework.base.transform.ToStringTransformer;
@@ -73,10 +73,10 @@ public class BinderTest {
 
     @Test
     public void testMasterToSlaveWithAggregation() {
-        BooleanProperty master1 = new BooleanProperty(true);
-        BooleanProperty master2 = new BooleanProperty(false);
-        BooleanProperty master3 = new BooleanProperty(false);
-        BooleanProperty slave = new BooleanProperty();
+        SimpleBooleanProperty master1 = new SimpleBooleanProperty(true);
+        SimpleBooleanProperty master2 = new SimpleBooleanProperty(false);
+        SimpleBooleanProperty master3 = new SimpleBooleanProperty(false);
+        SimpleBooleanProperty slave = new SimpleBooleanProperty();
         read(master1, master2, master3).transform(new AndBooleanAggregator()).write(slave);
 
         assertEquals(false, slave.getValue());
@@ -89,8 +89,8 @@ public class BinderTest {
 
     @Test
     public void testMasterToSlaveToMaster() {
-        IntegerProperty first = new IntegerProperty(5);
-        IntegerProperty second = new IntegerProperty(4);
+        SimpleIntegerProperty first = new SimpleIntegerProperty(5);
+        SimpleIntegerProperty second = new SimpleIntegerProperty(4);
 
         // The following should not result in an StackOverflowError
         Binder.read(first).write(second);

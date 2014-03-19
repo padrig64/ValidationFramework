@@ -23,7 +23,26 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+package com.google.code.validationframework.base.property.simple;
+
 /**
- * This package contains the base implementation of properties.
+ * Simple property holding a {@link Short} value.
+ *
+ * @see SimpleProperty
  */
-package com.google.code.validationframework.base.property;
+public class SimpleShortProperty extends SimpleProperty<Short> {
+
+    /**
+     * @see SimpleProperty#SimpleProperty()
+     */
+    public SimpleShortProperty() {
+        super();
+    }
+
+    /**
+     * @see SimpleProperty#SimpleProperty(Object)
+     */
+    public SimpleShortProperty(Short value) {
+        super(value);
+    }
+}

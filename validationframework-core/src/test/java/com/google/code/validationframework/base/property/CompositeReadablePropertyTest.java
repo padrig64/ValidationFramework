@@ -26,7 +26,7 @@
 package com.google.code.validationframework.base.property;
 
 import com.google.code.validationframework.api.property.ValueChangeListener;
-import com.google.code.validationframework.base.property.simple.IntegerProperty;
+import com.google.code.validationframework.base.property.simple.SimpleIntegerProperty;
 import org.hamcrest.Description;
 import org.junit.Test;
 import org.mockito.ArgumentMatcher;
@@ -92,8 +92,8 @@ public class CompositeReadablePropertyTest {
 
     @Test
     public void testValueAfterChange() {
-        IntegerProperty compoundProperty1 = new IntegerProperty(1);
-        IntegerProperty compoundProperty2 = new IntegerProperty(2);
+        SimpleIntegerProperty compoundProperty1 = new SimpleIntegerProperty(1);
+        SimpleIntegerProperty compoundProperty2 = new SimpleIntegerProperty(2);
         CompositeReadableProperty<Integer> compositeProperty = new CompositeReadableProperty<Integer>
                 (compoundProperty1, compoundProperty2);
 
@@ -110,8 +110,8 @@ public class CompositeReadablePropertyTest {
     @SuppressWarnings("unchecked")
     @Test
     public void testPropertyChangeEvent() {
-        IntegerProperty compoundProperty1 = new IntegerProperty(1);
-        IntegerProperty compoundProperty2 = new IntegerProperty(2);
+        SimpleIntegerProperty compoundProperty1 = new SimpleIntegerProperty(1);
+        SimpleIntegerProperty compoundProperty2 = new SimpleIntegerProperty(2);
         CompositeReadableProperty<Integer> compositeProperty = new CompositeReadableProperty<Integer>
                 (compoundProperty1, compoundProperty2);
 

@@ -23,26 +23,30 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.base.property.simple;
+package com.google.code.validationframework.swing.property.simple;
+
+import com.google.code.validationframework.base.property.simple.SimpleProperty;
+
+import javax.swing.Icon;
 
 /**
- * Simple property holding a {@link Character} value.
+ * Simple property holding an {@link Icon} value.
  *
  * @see SimpleProperty
  */
-public class CharacterProperty extends SimpleProperty<Character> {
+public class SimpleIconProperty extends SimpleProperty<Icon> {
 
     /**
      * @see SimpleProperty#SimpleProperty()
      */
-    public CharacterProperty() {
+    public SimpleIconProperty() {
         super();
     }
 
     /**
      * @see SimpleProperty#SimpleProperty(Object)
      */
-    public CharacterProperty(Character value) {
+    public SimpleIconProperty(Icon value) {
         super(value);
     }
 }

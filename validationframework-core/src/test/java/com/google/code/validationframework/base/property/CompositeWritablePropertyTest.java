@@ -25,7 +25,7 @@
 
 package com.google.code.validationframework.base.property;
 
-import com.google.code.validationframework.base.property.simple.IntegerProperty;
+import com.google.code.validationframework.base.property.simple.SimpleIntegerProperty;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -42,9 +42,9 @@ public class CompositeWritablePropertyTest {
         compositeProperty.setValue(5);
 
         // Create sub-properties with different values
-        IntegerProperty compoundProperty1 = new IntegerProperty(1);
-        IntegerProperty compoundProperty2 = new IntegerProperty(2);
-        IntegerProperty compoundProperty3 = new IntegerProperty(3);
+        SimpleIntegerProperty compoundProperty1 = new SimpleIntegerProperty(1);
+        SimpleIntegerProperty compoundProperty2 = new SimpleIntegerProperty(2);
+        SimpleIntegerProperty compoundProperty3 = new SimpleIntegerProperty(3);
 
         // Add sub-properties to composition
         compositeProperty.addProperty(compoundProperty1);

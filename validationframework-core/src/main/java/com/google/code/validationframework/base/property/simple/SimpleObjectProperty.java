@@ -26,23 +26,23 @@
 package com.google.code.validationframework.base.property.simple;
 
 /**
- * Simple property holding a {@link Long} value.
+ * Simple property holding a {@link Object} value.
  *
  * @see SimpleProperty
  */
-public class LongProperty extends SimpleProperty<Long> {
+public class SimpleObjectProperty extends SimpleProperty<Object> {
 
     /**
      * @see SimpleProperty#SimpleProperty()
      */
-    public LongProperty() {
+    public SimpleObjectProperty() {
         super();
     }
 
     /**
-     * @see SimpleProperty#SimpleProperty(Object)
+     * @see SimpleProperty#SimpleProperty()
      */
-    public LongProperty(Long value) {
+    public SimpleObjectProperty(Object value) {
         super(value);
     }
 }

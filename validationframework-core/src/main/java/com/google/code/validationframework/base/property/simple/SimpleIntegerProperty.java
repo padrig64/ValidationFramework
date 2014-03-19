@@ -26,23 +26,23 @@
 package com.google.code.validationframework.base.property.simple;
 
 /**
- * Simple property holding a {@link Number} value.
+ * Simple property holding a {@link Integer} value.
  *
  * @see SimpleProperty
  */
-public class NumberProperty extends SimpleProperty<Number> {
+public class SimpleIntegerProperty extends SimpleProperty<Integer> {
 
     /**
      * @see SimpleProperty#SimpleProperty()
      */
-    public NumberProperty() {
+    public SimpleIntegerProperty() {
         super();
     }
 
     /**
      * @see SimpleProperty#SimpleProperty(Object)
      */
-    public NumberProperty(Number value) {
+    public SimpleIntegerProperty(Integer value) {
         super(value);
     }
 }

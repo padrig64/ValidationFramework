@@ -26,38 +26,66 @@
 package com.google.code.validationframework.swing.property;
 
 import com.google.code.validationframework.api.property.ValueChangeListener;
-import com.google.code.validationframework.base.property.AbstractReadableProperty;
-import com.google.code.validationframework.api.property.WritableProperty;
+import com.google.code.validationframework.base.property.AbstractReadableWritableProperty;
 
 import javax.swing.SwingUtilities;
 
-public class InvokeLater<T> extends AbstractReadableProperty<T> implements WritableProperty<T> {
+/**
+ * Wrapper for readable/writable properties that will notify the value change listeners later on the EDT thread.
+ *
+ * @param <T> Type of data that can be read from and written to this property.
+ */
+public class InvokeLaterWrapper<T> extends AbstractReadableWritableProperty<T, T> {
 
+    /**
+     * Entity responsible for notifying the value change listeners.
+     */
     private class Postponer implements Runnable {
 
+        /**
+         * Previous property value.
+         */
         private final T oldValue;
 
+        /**
+         * Constructor specifying the previous property value.
+         *
+         * @param oldValue Previous property value.
+         */
         public Postponer(T oldValue) {
             this.oldValue = oldValue;
         }
 
+        /**
+         * @see Runnable#run()
+         */
         @Override
         public void run() {
             notifyListeners(oldValue, getValue());
         }
     }
 
+    /**
+     * Latest value set.
+     */
     private T value = null;
 
-    public InvokeLater() {
+    /**
+     * Default constructor.
+     */
+    public InvokeLaterWrapper() {
         // Nothing to be done
     }
 
-    public InvokeLater(T initialValue) {
+    /**
+     * Constructor specifying the initial value.
+     * @param initialValue
+     */
+    public InvokeLaterWrapper(T initialValue) {
         value = initialValue;
     }
 
-    public InvokeLater(ValueChangeListener<T>... listeners) {
+    public InvokeLaterWrapper(ValueChangeListener<T>... listeners) {
         if (listeners != null) {
             for (ValueChangeListener<T> listener : listeners) {
                 addValueChangeListener(listener);
@@ -65,7 +93,7 @@ public class InvokeLater<T> extends AbstractReadableProperty<T> implements Writa
         }
     }
 
-    public InvokeLater(T initialValue, ValueChangeListener<T>... listeners) {
+    public InvokeLaterWrapper(T initialValue, ValueChangeListener<T>... listeners) {
         value = initialValue;
 
         if (listeners != null) {

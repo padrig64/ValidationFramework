@@ -26,23 +26,23 @@
 package com.google.code.validationframework.base.property.simple;
 
 /**
- * Simple property holding a {@link Float} value.
+ * Simple property holding a {@link Character} value.
  *
  * @see SimpleProperty
  */
-public class FloatProperty extends SimpleProperty<Float> {
+public class SimpleCharacterProperty extends SimpleProperty<Character> {
 
     /**
      * @see SimpleProperty#SimpleProperty()
      */
-    public FloatProperty() {
+    public SimpleCharacterProperty() {
         super();
     }
 
     /**
      * @see SimpleProperty#SimpleProperty(Object)
      */
-    public FloatProperty(Float value) {
+    public SimpleCharacterProperty(Character value) {
         super(value);
     }
 }

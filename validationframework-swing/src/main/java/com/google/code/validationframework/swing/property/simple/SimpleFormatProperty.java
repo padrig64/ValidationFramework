@@ -23,7 +23,30 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+package com.google.code.validationframework.swing.property.simple;
+
+import com.google.code.validationframework.base.property.simple.SimpleProperty;
+
+import java.text.Format;
+
 /**
- * This package contains the base implementation of properties.
+ * Simple property holding a {@link Format} value.
+ *
+ * @see SimpleProperty
  */
-package com.google.code.validationframework.base.property;
+public class SimpleFormatProperty extends SimpleProperty<Format> {
+
+    /**
+     * @see SimpleProperty#SimpleProperty()
+     */
+    public SimpleFormatProperty() {
+        super();
+    }
+
+    /**
+     * @see SimpleProperty#SimpleProperty(Object)
+     */
+    public SimpleFormatProperty(Format value) {
+        super(value);
+    }
+}

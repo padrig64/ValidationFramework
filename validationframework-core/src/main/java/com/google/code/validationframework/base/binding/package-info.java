@@ -23,26 +23,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.base.property.simple;
-
 /**
- * Simple property holding a {@link Boolean} value.
- *
- * @see SimpleProperty
+ * This package contains the base implementation of property binders and the resulting bonds.
  */
-public class BooleanProperty extends SimpleProperty<Boolean> {
-
-    /**
-     * @see SimpleProperty#SimpleProperty()
-     */
-    public BooleanProperty() {
-        super();
-    }
-
-    /**
-     * @see SimpleProperty#SimpleProperty(Object)
-     */
-    public BooleanProperty(Boolean value) {
-        super(value);
-    }
-}
+package com.google.code.validationframework.base.binding;
