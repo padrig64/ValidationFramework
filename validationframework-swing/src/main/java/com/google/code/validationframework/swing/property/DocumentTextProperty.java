@@ -25,9 +25,8 @@
 
 package com.google.code.validationframework.swing.property;
 
-import com.google.code.validationframework.api.property.WritableProperty;
 import com.google.code.validationframework.api.common.Disposable;
-import com.google.code.validationframework.base.property.AbstractReadableProperty;
+import com.google.code.validationframework.base.property.AbstractReadableWritableProperty;
 
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -36,38 +35,67 @@ import javax.swing.text.JTextComponent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-public class DocumentTextProperty extends AbstractReadableProperty<String> implements WritableProperty<String>,
-        Disposable {
+/**
+ * Read/writable property representing the text in the document of a {@see JTextComponent} (for instance, a textfield,
+ * a textarea, etc.).
+ * <p/>
+ * This property will always be synchronized with the contents of the document. Also, it is possible to modify the
+ * component text by calling its {@link JTextComponent#setText(String)} method, or by modifying the contents of its
+ * {@link Document}, or by call the {@link #setValue(String)} method. In all cases, this property will notify its
+ * listeners of any change.
+ */
+public class DocumentTextProperty extends AbstractReadableWritableProperty<String, String> implements Disposable {
 
+    /**
+     * Entity tracking changes of/in the document.
+     */
     private class ContentAdapter implements DocumentListener, PropertyChangeListener {
 
+        /**
+         * @see PropertyChangeListener#propertyChange(PropertyChangeEvent)
+         */
         @Override
         public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
             if ("document".equals(propertyChangeEvent.getPropertyName())) {
+                // Unhook from previous document
                 if (propertyChangeEvent.getOldValue() instanceof Document) {
                     ((Document) propertyChangeEvent.getOldValue()).removeDocumentListener(this);
                 }
+
+                // Hook to new document
                 if (propertyChangeEvent.getNewValue() instanceof Document) {
                     ((Document) propertyChangeEvent.getNewValue()).addDocumentListener(this);
                 }
             }
         }
 
+        /**
+         * @see DocumentListener#insertUpdate(DocumentEvent)
+         */
         @Override
         public void insertUpdate(DocumentEvent documentEvent) {
             updateValue();
         }
 
+        /**
+         * @see DocumentListener#removeUpdate(DocumentEvent)
+         */
         @Override
         public void removeUpdate(DocumentEvent documentEvent) {
             updateValue();
         }
 
+        /**
+         * @see DocumentListener#changedUpdate(DocumentEvent)
+         */
         @Override
         public void changedUpdate(DocumentEvent documentEvent) {
             updateValue();
         }
 
+        /**
+         * Updates the value of the property, possibly notifying the value change listeners.
+         */
         private void updateValue() {
             updatingFromDocument = true;
             setValue(textComponent.getText());
@@ -75,37 +103,66 @@ public class DocumentTextProperty extends AbstractReadableProperty<String> imple
         }
     }
 
+    /**
+     * Text component this property applies to.
+     */
     private final JTextComponent textComponent;
 
-    private final ContentAdapter contentAdapter = new ContentAdapter();
+    /**
+     * Document changes tracker.
+     */
+    private final ContentAdapter documentTracker = new ContentAdapter();
 
+    /**
+     * Property value.
+     */
     private String value = null;
 
+    /**
+     * Flag indicating whether the call to {@link #setValue(String)} comes from the document change.
+     * <p/>
+     * This is used to distinguish whether the call to {@link #setValue(String)} is direct (call from the outside) or
+     * indirect (change of the document itself from the outside or by the user).
+     */
     private boolean updatingFromDocument = false;
 
+    /**
+     * Constructor specifying the text component to which the property applies.
+     *
+     * @param textComponent Text component to which the property applies.
+     */
     public DocumentTextProperty(JTextComponent textComponent) {
         this.textComponent = textComponent;
 
         // Hook to component
-        textComponent.addPropertyChangeListener("document", contentAdapter);
-        textComponent.getDocument().addDocumentListener(contentAdapter);
+        textComponent.addPropertyChangeListener("document", documentTracker);
+        textComponent.getDocument().addDocumentListener(documentTracker);
 
         // Set initial value
         setValue(textComponent.getText());
     }
 
+    /**
+     * @see Disposable#dispose()
+     */
     @Override
     public void dispose() {
-        // Unhook from components
-        textComponent.removePropertyChangeListener("document", contentAdapter);
-        textComponent.getDocument().removeDocumentListener(contentAdapter);
+        // Unhook from component
+        textComponent.removePropertyChangeListener("document", documentTracker);
+        textComponent.getDocument().removeDocumentListener(documentTracker);
     }
 
+    /**
+     * @see AbstractReadableWritableProperty#getValue()
+     */
     @Override
     public String getValue() {
         return value;
     }
 
+    /**
+     * @see AbstractReadableWritableProperty#setValue(Object)
+     */
     @Override
     public void setValue(String value) {
         if (updatingFromDocument) {
@@ -113,6 +170,7 @@ public class DocumentTextProperty extends AbstractReadableProperty<String> imple
             this.value = value;
             notifyListeners(oldValue, this.value);
         } else {
+            // Use setText() because it already does all what is needed to update the document
             textComponent.setText(value);
         }
     }
