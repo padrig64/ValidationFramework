@@ -39,7 +39,7 @@ import com.google.code.validationframework.base.property.AbstractReadablePropert
  *
  * @param <R> Type of data that can be read from the wrapped property.
  */
-public class ReadOnlyWrapper<R> extends AbstractReadableProperty<R> implements Disposable {
+public class ReadOnlyPropertyWrapper<R> extends AbstractReadableProperty<R> implements Disposable {
 
     /**
      * Entity responsible for forwarding the change events from the wrapped property to the listeners of the read-only
@@ -71,7 +71,7 @@ public class ReadOnlyWrapper<R> extends AbstractReadableProperty<R> implements D
      *
      * @param wrappedProperty Property to be wrapped.
      */
-    public ReadOnlyWrapper(ReadableProperty<R> wrappedProperty) {
+    public ReadOnlyPropertyWrapper(ReadableProperty<R> wrappedProperty) {
         this.wrappedProperty = wrappedProperty;
         this.wrappedProperty.addValueChangeListener(changeAdapter);
     }

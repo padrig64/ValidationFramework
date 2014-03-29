@@ -25,11 +25,12 @@
 
 package com.google.code.validationframework.demo.swing;
 
+import com.google.code.validationframework.api.property.WritableProperty;
 import com.google.code.validationframework.base.resulthandler.ResultCollector;
 import com.google.code.validationframework.base.rule.bool.AndBooleanRule;
 import com.google.code.validationframework.base.rule.string.StringNotEmptyRule;
 import com.google.code.validationframework.swing.dataprovider.JTextFieldTextProvider;
-import com.google.code.validationframework.swing.property.JComponentEnabledProperty;
+import com.google.code.validationframework.swing.property.ComponentEnabledProperty;
 import com.google.code.validationframework.swing.property.JToggleButtonSelectedProperty;
 import com.google.code.validationframework.swing.resulthandler.bool.ComponentEnablingBooleanResultHandler;
 import com.google.code.validationframework.swing.resulthandler.bool.IconBooleanFeedback;
@@ -39,7 +40,6 @@ import net.miginfocom.swing.MigLayout;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -84,20 +84,20 @@ public class TabbedPaneDemoApp extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         // Create content pane
-        JPanel contentPane = new JPanel(new MigLayout("fill, wrap 1", "[]", "[]unrelated[]unrelated[]"));
+        JPanel contentPane = new JPanel(new MigLayout("fill, wrap 1", "[]", "[]related[]unrelated[]unrelated[]"));
         setContentPane(contentPane);
 
         // Checkbox to enable the tabbed pane
-        JCheckBox enableCheckBox = new JCheckBox("Enable tabbed pane");
-        contentPane.add(enableCheckBox);
+        JCheckBox tabbedPaneEnabledCheckBox = new JCheckBox("Enable tabbed pane");
+        tabbedPaneEnabledCheckBox.setSelected(true);
+        contentPane.add(tabbedPaneEnabledCheckBox);
+        JCheckBox firstTabEnabledCheckBox = new JCheckBox("Enable first tab");
+        firstTabEnabledCheckBox.setSelected(true);
+        contentPane.add(firstTabEnabledCheckBox);
 
         // Tabbed pane
-        JTabbedPane tabbedPane = new JTabbedPane();
+        final JTabbedPane tabbedPane = new JTabbedPane();
         contentPane.add(tabbedPane, "grow");
-
-        // Enable tabbed pane only if checkbox is selected
-        read(new JToggleButtonSelectedProperty(enableCheckBox)) //
-                .write(new JComponentEnabledProperty(tabbedPane));
 
         // Create tabs
         Set<ResultCollector<?, Boolean>> tabResultCollectors = new HashSet<ResultCollector<?, Boolean>>();
@@ -107,6 +107,21 @@ public class TabbedPaneDemoApp extends JFrame {
             installTabValidator(tabbedPane, i, fieldResultCollectors, tabResultCollectors);
             tabbedPane.setTitleAt(i, "Tab");
         }
+
+        // Enable tabbed pane only if checkbox is selected
+        read(new JToggleButtonSelectedProperty(tabbedPaneEnabledCheckBox)) //
+                .write(new ComponentEnabledProperty(tabbedPane));
+
+        // Enable first tab only if checkbox is selected
+        read(new JToggleButtonSelectedProperty(firstTabEnabledCheckBox)) //
+                .write(new WritableProperty<Boolean>() {
+                    @Override
+                    public void setValue(Boolean value) {
+                        if (tabbedPane.getTabCount() > 0) {
+                            tabbedPane.setEnabledAt(0, (value != null) && value);
+                        }
+                    }
+                });
 
         // Install global validator
         installGlobalValidator(tabResultCollectors, applyButton);
@@ -129,11 +144,7 @@ public class TabbedPaneDemoApp extends JFrame {
         JPanel panel = new JPanel();
         panel.setLayout(new MigLayout("fill, wrap 2", "[][grow, fill]"));
 
-        panel.add(new JLabel("Choice:"));
-        JComboBox comboBox = new JComboBox(new String[]{"Option 1", "Option 2", "Option 3", "Option 4", "Option 5"});
-        panel.add(comboBox);
-
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 2; i++) {
             panel.add(new JLabel("Field " + (i + 1) + ":"));
 
             // Create formatted textfield
@@ -171,7 +182,7 @@ public class TabbedPaneDemoApp extends JFrame {
         // Create validator for the whole tab
         collect(fieldResultCollectors) //
                 .check(new AndBooleanRule()) //
-                .handleWith(new TabIconBooleanFeedback(tabbedPane, i, "One or several invalid input fields")) //
+                .handleWith(new TabIconBooleanFeedback(tabbedPane, i, "This tab contains errors.")) //
                 .handleWith(tabResultCollector) //
                 .getValidator().trigger();
     }

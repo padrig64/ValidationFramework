@@ -30,23 +30,23 @@ package com.google.code.validationframework.swing.property;
 import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.base.property.AbstractReadableWritableProperty;
 
-import javax.swing.JComponent;
+import java.awt.Component;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 /**
- * Readable/writable property representing the enabled state of a {@link JComponent}.
+ * Readable/writable property representing the enabled state of a {@link Component}.
  * <p/>
  * It is possible to control the enabled state of the component by setting the value of this property or by calling the
- * {@link JComponent#setEnabled(boolean)} method of that component.
+ * {@link Component#setEnabled(boolean)} method of that component.
+ * <p/>
+ * Please note that a plain {@link Component} does not a fire property change event when it gets enabled/disabled. A
+ * Swing {@link javax.swing.JComponent} does. However, the type {@link Component} is used by this property instead of
+ * {@link javax.swing.JComponent} for convenience.
  * <p/>
  * If the value of this property is set to null, the component enabled state will not be changed.
- * <p/>
- * Note that the type {@link JComponent} is used instead of the type {@link java.awt.Component} because a plain
- * {@link java.awt.Component} does not fire property change event when it gets enabled/disabled.
  */
-public class JComponentEnabledProperty extends AbstractReadableWritableProperty<Boolean,
-        Boolean> implements Disposable {
+public class ComponentEnabledProperty extends AbstractReadableWritableProperty<Boolean, Boolean> implements Disposable {
 
     /**
      * Enabled state tracker.
@@ -67,7 +67,7 @@ public class JComponentEnabledProperty extends AbstractReadableWritableProperty<
     /**
      * Component to track the enabled state for.
      */
-    private final JComponent component;
+    private final Component component;
 
     /**
      * Enabled state tracker.
@@ -89,7 +89,7 @@ public class JComponentEnabledProperty extends AbstractReadableWritableProperty<
      *
      * @param component Component whose enabled property is to be tracked.
      */
-    public JComponentEnabledProperty(JComponent component) {
+    public ComponentEnabledProperty(Component component) {
         super();
 
         // Hook to component
