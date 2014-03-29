@@ -69,7 +69,7 @@ public class IconComponentDecorationInCardLayoutDemoApp extends JFrame implement
 
             add(new JLabel("Field: "));
 
-            final JTextField textField = new JTextField();
+            JTextField textField = new JTextField();
             textField.setColumns(8);
             textField.setName("Textfield " + count);
             add(textField);
@@ -78,7 +78,7 @@ public class IconComponentDecorationInCardLayoutDemoApp extends JFrame implement
             count++;
         }
 
-        private void installValidator(final JTextField textField) {
+        private void installValidator(JTextField textField) {
             on(new JTextFieldDocumentChangedTrigger(textField)) //
                     .read(new JTextFieldTextProvider(textField)) //
                     .check(new StringLengthLessThanOrEqualToRule(5 + count)) //
@@ -112,11 +112,11 @@ public class IconComponentDecorationInCardLayoutDemoApp extends JFrame implement
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         // Create content pane
-        final JPanel contentPane = new JPanel(new MigLayout("fill, wrap 1", "[]", "[grow]unrelated[]"));
+        JPanel contentPane = new JPanel(new MigLayout("fill, wrap 1", "[]", "[grow]unrelated[]"));
         setContentPane(contentPane);
 
         // Combobox
-        final JComboBox comboBox = new JComboBox();
+        JComboBox comboBox = new JComboBox();
         contentPane.add(comboBox, "grow");
         comboBox.addItem("First");
         comboBox.addItem("Second");
@@ -136,29 +136,29 @@ public class IconComponentDecorationInCardLayoutDemoApp extends JFrame implement
 
         // Set size
         pack();
-        final Dimension size = getSize();
+        Dimension size = getSize();
 //		size.width += 100;
 //		setMinimumSize(size);
 
         // Set location
-        final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation((screenSize.width - size.width) / 2, (screenSize.height - size.height) / 3);
     }
 
     @Override
-    public void itemStateChanged(final ItemEvent evt) {
-        final CardLayout cl = (CardLayout) (cardContainer.getLayout());
+    public void itemStateChanged(ItemEvent evt) {
+        CardLayout cl = (CardLayout) (cardContainer.getLayout());
         cl.show(cardContainer, (String) evt.getItem());
     }
 
-    public static void main(final String[] args) {
+    public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
 
                 // Set look-and-feel
                 try {
-                    for (final UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+                    for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                         if ("Nimbus".equals(info.getName())) {
                             UIManager.setLookAndFeel(info.getClassName());
                             break;

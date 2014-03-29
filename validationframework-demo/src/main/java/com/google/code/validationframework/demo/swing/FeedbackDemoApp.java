@@ -25,6 +25,8 @@
 
 package com.google.code.validationframework.demo.swing;
 
+import com.google.code.validationframework.api.property.ReadableProperty;
+import com.google.code.validationframework.api.property.ValueChangeListener;
 import com.google.code.validationframework.api.rule.Rule;
 import com.google.code.validationframework.api.transform.Transformer;
 import com.google.code.validationframework.base.resulthandler.ResultCollector;
@@ -35,6 +37,7 @@ import com.google.code.validationframework.base.trigger.ManualTrigger;
 import com.google.code.validationframework.base.validator.generalvalidator.GeneralValidator;
 import com.google.code.validationframework.swing.dataprovider.JFormattedTextFieldTextProvider;
 import com.google.code.validationframework.swing.dataprovider.JTextFieldTextProvider;
+import com.google.code.validationframework.swing.property.JTextComponentTextProperty;
 import com.google.code.validationframework.swing.resulthandler.AbstractColorFeedback;
 import com.google.code.validationframework.swing.resulthandler.AbstractIconFeedback;
 import com.google.code.validationframework.swing.resulthandler.AbstractStickerFeedback;
@@ -270,6 +273,14 @@ public class FeedbackDemoApp extends JFrame {
         courseFormatter.setMaximum(359.0);
         JFormattedTextField formattedTextField5 = new JFormattedTextField(courseFormatter);
         contentPane.add(formattedTextField5, "growx");
+
+        ReadableProperty<String> text = new JTextComponentTextProperty(formattedTextField4);
+        text.addValueChangeListener(new ValueChangeListener<String>() {
+            @Override
+            public void valueChanged(ReadableProperty<String> property, String oldValue, String newValue) {
+                System.out.println("Rollover: " + oldValue + " => " + newValue);
+            }
+        });
 
         // Apply button
         JButton applyButton = new JButton("Apply");

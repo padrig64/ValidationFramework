@@ -27,33 +27,35 @@ package com.google.code.validationframework.demo.swing;
 
 import com.google.code.validationframework.base.resulthandler.ResultCollector;
 import com.google.code.validationframework.base.rule.bool.AndBooleanRule;
-import com.google.code.validationframework.swing.dataprovider.JFormattedTextFieldTextProvider;
+import com.google.code.validationframework.base.rule.string.StringNotEmptyRule;
+import com.google.code.validationframework.swing.dataprovider.JTextFieldTextProvider;
+import com.google.code.validationframework.swing.property.JComponentEnabledProperty;
+import com.google.code.validationframework.swing.property.JToggleButtonSelectedProperty;
 import com.google.code.validationframework.swing.resulthandler.bool.ComponentEnablingBooleanResultHandler;
 import com.google.code.validationframework.swing.resulthandler.bool.IconBooleanFeedback;
 import com.google.code.validationframework.swing.resulthandler.bool.TabIconBooleanFeedback;
-import com.google.code.validationframework.swing.rule.JFormattedTextFieldFormatterRule;
-import com.google.code.validationframework.swing.trigger.JFormattedTextFieldDocumentChangedTrigger;
+import com.google.code.validationframework.swing.trigger.JTextFieldDocumentChangedTrigger;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
-import javax.swing.text.NumberFormatter;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.text.DecimalFormat;
 import java.util.HashSet;
 import java.util.Set;
 
+import static com.google.code.validationframework.base.binding.Binder.read;
 import static com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder.collect;
 import static com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder.on;
 
@@ -82,17 +84,25 @@ public class TabbedPaneDemoApp extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         // Create content pane
-        final JPanel contentPane = new JPanel(new MigLayout("fill, wrap 1", "[]", "[]unrelated[]"));
+        JPanel contentPane = new JPanel(new MigLayout("fill, wrap 1", "[]", "[]unrelated[]unrelated[]"));
         setContentPane(contentPane);
 
+        // Checkbox to enable the tabbed pane
+        JCheckBox enableCheckBox = new JCheckBox("Enable tabbed pane");
+        contentPane.add(enableCheckBox);
+
         // Tabbed pane
-        final JTabbedPane tabbedPane = new JTabbedPane();
+        JTabbedPane tabbedPane = new JTabbedPane();
         contentPane.add(tabbedPane, "grow");
 
+        // Enable tabbed pane only if checkbox is selected
+        read(new JToggleButtonSelectedProperty(enableCheckBox)) //
+                .write(new JComponentEnabledProperty(tabbedPane));
+
         // Create tabs
-        final Set<ResultCollector<?, Boolean>> tabResultCollectors = new HashSet<ResultCollector<?, Boolean>>();
+        Set<ResultCollector<?, Boolean>> tabResultCollectors = new HashSet<ResultCollector<?, Boolean>>();
         for (int i = 0; i < 3; i++) {
-            final Set<ResultCollector<?, Boolean>> fieldResultCollectors = new HashSet<ResultCollector<?, Boolean>>();
+            Set<ResultCollector<?, Boolean>> fieldResultCollectors = new HashSet<ResultCollector<?, Boolean>>();
             tabbedPane.add("Tab " + i, createTabContent(fieldResultCollectors));
             installTabValidator(tabbedPane, i, fieldResultCollectors, tabResultCollectors);
             tabbedPane.setTitleAt(i, "Tab");
@@ -106,39 +116,31 @@ public class TabbedPaneDemoApp extends JFrame {
 
         // Set size
         pack();
-        final Dimension size = getSize();
+        Dimension size = getSize();
         size.width += 100;
         setMinimumSize(size);
 
         // Set location
-        final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation((screenSize.width - size.width) / 2, (screenSize.height - size.height) / 3);
     }
 
-    private Component createTabContent(final Set<ResultCollector<?, Boolean>> fieldResultCollectors) {
-        final JPanel panel = new JPanel();
+    private Component createTabContent(Set<ResultCollector<?, Boolean>> fieldResultCollectors) {
+        JPanel panel = new JPanel();
         panel.setLayout(new MigLayout("fill, wrap 2", "[][grow, fill]"));
 
         panel.add(new JLabel("Choice:"));
-        final JComboBox comboBox = new JComboBox(new String[]{"Option 1", "Option 2", "Option 3", "Option 4",
-                "Option 5"});
+        JComboBox comboBox = new JComboBox(new String[]{"Option 1", "Option 2", "Option 3", "Option 4", "Option 5"});
         panel.add(comboBox);
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 1; i++) {
             panel.add(new JLabel("Field " + (i + 1) + ":"));
 
-            // Create formatter for the formatted textfield
-            final NumberFormatter formatter = new NumberFormatter();
-            formatter.setMinimum(0.0);
-            formatter.setMinimum(30.0);
-            final DecimalFormat format = new DecimalFormat("0.0");
-            formatter.setFormat(format);
-
             // Create formatted textfield
-            final JFormattedTextField field = new JFormattedTextField(formatter);
+            JTextField field = new JTextField();
             panel.add(field);
             field.setColumns(10);
-            field.setFocusLostBehavior(JFormattedTextField.COMMIT);
+            field.setText("Value");
 
             // Create field validator
             installFieldValidator(field, fieldResultCollectors);
@@ -147,47 +149,48 @@ public class TabbedPaneDemoApp extends JFrame {
         return panel;
     }
 
-    private void installFieldValidator(final JFormattedTextField field, final Set<ResultCollector<?,
-            Boolean>> fieldResultCollectors) {
+    private void installFieldValidator(JTextField field, Set<ResultCollector<?, Boolean>> fieldResultCollectors) {
         // Create result collector for the validator of the whole tab
-        final ResultCollector<Boolean, Boolean> fieldResultCollector = new ResultCollector<Boolean, Boolean>();
+        ResultCollector<Boolean, Boolean> fieldResultCollector = new ResultCollector<Boolean, Boolean>();
         fieldResultCollectors.add(fieldResultCollector);
 
-        on(new JFormattedTextFieldDocumentChangedTrigger(field)) //
-                .read(new JFormattedTextFieldTextProvider(field)) //
-                .check(new JFormattedTextFieldFormatterRule(field)) //
+        on(new JTextFieldDocumentChangedTrigger(field)) //
+                .read(new JTextFieldTextProvider(field)) //
+                .check(new StringNotEmptyRule()) //
                 .handleWith(new IconBooleanFeedback(field)) //
-                .handleWith(fieldResultCollector);
+                .handleWith(fieldResultCollector) //
+                .getValidator().trigger();
     }
 
-    private void installTabValidator(final JTabbedPane tabbedPane, final int i, final Set<ResultCollector<?,
-            Boolean>> fieldResultCollectors, final Set<ResultCollector<?, Boolean>> tabResultCollectors) {
+    private void installTabValidator(JTabbedPane tabbedPane, int i, Set<ResultCollector<?,
+            Boolean>> fieldResultCollectors, Set<ResultCollector<?, Boolean>> tabResultCollectors) {
         // Create result collector for the global validator
-        final ResultCollector<Boolean, Boolean> tabResultCollector = new ResultCollector<Boolean, Boolean>();
+        ResultCollector<Boolean, Boolean> tabResultCollector = new ResultCollector<Boolean, Boolean>();
         tabResultCollectors.add(tabResultCollector);
 
         // Create validator for the whole tab
         collect(fieldResultCollectors) //
                 .check(new AndBooleanRule()) //
                 .handleWith(new TabIconBooleanFeedback(tabbedPane, i, "One or several invalid input fields")) //
-                .handleWith(tabResultCollector);
+                .handleWith(tabResultCollector) //
+                .getValidator().trigger();
     }
 
-    private void installGlobalValidator(final Set<ResultCollector<?, Boolean>> tabResultCollectors,
-                                        final Component... buttons) {
+    private void installGlobalValidator(Set<ResultCollector<?, Boolean>> tabResultCollectors, Component... buttons) {
         collect(tabResultCollectors) //
                 .check(new AndBooleanRule()) //
-                .handleWith(new ComponentEnablingBooleanResultHandler(buttons));
+                .handleWith(new ComponentEnablingBooleanResultHandler(buttons)) //
+                .getValidator().trigger();
     }
 
-    public static void main(final String[] args) {
+    public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
 
                 // Set look-and-feel
                 try {
-                    for (final UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+                    for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                         if ("Nimbus".equals(info.getName())) {
                             UIManager.setLookAndFeel(info.getClassName());
                             break;

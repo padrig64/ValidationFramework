@@ -65,7 +65,7 @@ public class TableDemoApp extends JFrame {
         }
 
         @Override
-        public void actionPerformed(final ActionEvent e) {
+        public void actionPerformed(ActionEvent e) {
             table.setModel(createTableModel());
 
             if (validator != null) {
@@ -102,7 +102,7 @@ public class TableDemoApp extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         // Add contents
-        final JPanel contentPane = new JPanel(new MigLayout("fill, wrap 1", "[]", "[grow]unrelated[]"));
+        JPanel contentPane = new JPanel(new MigLayout("fill, wrap 1", "[]", "[grow]unrelated[]"));
         setContentPane(contentPane);
 
         contentPane.add(new JScrollPane(table), "grow");
@@ -111,19 +111,19 @@ public class TableDemoApp extends JFrame {
 
         // Set size
         pack();
-        final Dimension size = getSize();
+        Dimension size = getSize();
         size.width += 100;
         setMinimumSize(size);
 
         // Set location
-        final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation((screenSize.width - size.width) / 2, (screenSize.height - size.height) / 3);
     }
 
     private JTable createTable() {
-        final JTable table = new JTable(createTableModel());
+        JTable table = new JTable(createTableModel());
 
-        final JComboBox comboBoxEditorComponent = new JComboBox();
+        JComboBox comboBoxEditorComponent = new JComboBox();
         comboBoxEditorComponent.addItem("Option 1");
         comboBoxEditorComponent.addItem("Option 2");
         comboBoxEditorComponent.addItem("Option 3");
@@ -135,7 +135,7 @@ public class TableDemoApp extends JFrame {
 
     private TableModel createTableModel() {
         // Create table model
-        final DefaultTableModel model = new DefaultTableModel();
+        DefaultTableModel model = new DefaultTableModel();
 
         // Fill table model
         model.addColumn("First column");
@@ -143,7 +143,7 @@ public class TableDemoApp extends JFrame {
         model.addColumn("Third column");
         model.addColumn("Fourth column");
 
-        final Random random = new Random(System.currentTimeMillis());
+        Random random = new Random(System.currentTimeMillis());
         for (int i = 0; i < 50; i++) {
             model.addRow(new String[]{"ABCD", Integer.toString(random.nextInt()), "ZZ", "123.456"});
         }
@@ -151,7 +151,7 @@ public class TableDemoApp extends JFrame {
         return model;
     }
 
-    private void installValidators(final JTable table) {
+    private void installValidators(JTable table) {
         validator = on(new JTableTextEditorDocumentChangedTrigger(table, 1, 1)) //
                 .read(new JTableTextEditorTextProvider(table)) //
                 .check(new StringLengthGreaterThanOrEqualToRule(3)) //
@@ -160,14 +160,14 @@ public class TableDemoApp extends JFrame {
                 .getValidator();
     }
 
-    public static void main(final String[] args) {
+    public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
 
                 // Set look-and-feel
                 try {
-                    for (final UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+                    for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                         if ("Nimbus".equals(info.getName())) {
                             UIManager.setLookAndFeel(info.getClassName());
                             break;

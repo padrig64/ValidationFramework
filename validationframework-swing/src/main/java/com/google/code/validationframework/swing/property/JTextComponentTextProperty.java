@@ -37,14 +37,14 @@ import java.beans.PropertyChangeListener;
 
 /**
  * Read/writable property representing the text in the document of a {@see JTextComponent} (for instance, a textfield,
- * a textarea, etc.).
+ * a text area, etc.).
  * <p/>
  * This property will always be synchronized with the contents of the document. Also, it is possible to modify the
  * component text by calling its {@link JTextComponent#setText(String)} method, or by modifying the contents of its
  * {@link Document}, or by call the {@link #setValue(String)} method. In all cases, this property will notify its
  * listeners of any change.
  */
-public class DocumentTextProperty extends AbstractReadableWritableProperty<String, String> implements Disposable {
+public class JTextComponentTextProperty extends AbstractReadableWritableProperty<String, String> implements Disposable {
 
     /**
      * Entity tracking changes of/in the document.
@@ -131,7 +131,7 @@ public class DocumentTextProperty extends AbstractReadableWritableProperty<Strin
      *
      * @param textComponent Text component to which the property applies.
      */
-    public DocumentTextProperty(JTextComponent textComponent) {
+    public JTextComponentTextProperty(JTextComponent textComponent) {
         this.textComponent = textComponent;
 
         // Hook to component

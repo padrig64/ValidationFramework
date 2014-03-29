@@ -233,6 +233,8 @@ public class TabIconBooleanFeedback implements ResultHandler<Boolean>, Disposabl
                     remove(iconLabel);
                 }
             }
+
+            updateRendererPreferredSize();
         }
 
         /**
