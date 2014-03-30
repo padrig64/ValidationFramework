@@ -32,6 +32,9 @@ import com.google.code.validationframework.api.resulthandler.ResultHandler;
 import com.google.code.validationframework.base.property.simple.SimpleBooleanProperty;
 import com.google.code.validationframework.base.property.wrap.NegateBooleanPropertyWrapper;
 import com.google.code.validationframework.base.transform.AndBooleanAggregator;
+import com.google.code.validationframework.swing.decoration.anchor.Anchor;
+import com.google.code.validationframework.swing.decoration.anchor.AnchorLink;
+import com.google.code.validationframework.swing.decoration.support.ToolTipDialog;
 import com.google.code.validationframework.swing.decoration.utils.IconUtils;
 import com.google.code.validationframework.swing.property.ComponentEnabledProperty;
 import com.google.code.validationframework.swing.property.ComponentVisibleProperty;
@@ -44,11 +47,15 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -64,6 +71,11 @@ import static com.google.code.validationframework.base.binding.Binder.read;
  */
 public class TabIconBooleanFeedback implements ResultHandler<Boolean>, Disposable {
 
+    /**
+     * Panel holding the validation icons (valid and invalid).
+     * <p/>
+     * It is used to easily add the extra spacing between the displayed icon and the tab title.
+     */
     private static class ValidationIconPanel extends JPanel {
 
         /**
@@ -71,10 +83,21 @@ public class TabIconBooleanFeedback implements ResultHandler<Boolean>, Disposabl
          */
         private static final long serialVersionUID = -8668703592473240174L;
 
+        /**
+         * Extra space to be added in the preferred width.
+         */
         private final int extraWidth;
 
+        /**
+         * Constructor specifying the extra space to be added in the preferred width, and all components holding the
+         * validation icons to be added as children.
+         *
+         * @param extraWidth Extra space to be added in the preferred width.
+         * @param children   Components holding the validation icons.
+         */
         public ValidationIconPanel(int extraWidth, JComponent... children) {
             super(new FlowLayout(FlowLayout.LEADING, 0, 0));
+
             this.extraWidth = extraWidth;
             setOpaque(false);
 
@@ -84,9 +107,13 @@ public class TabIconBooleanFeedback implements ResultHandler<Boolean>, Disposabl
             }
         }
 
+        /**
+         * @see JPanel#getPreferredSize()
+         */
         @Override
         public Dimension getPreferredSize() {
             Dimension size = new Dimension();
+
             for (Component component : getComponents()) {
                 Dimension componentSize = component.getPreferredSize();
                 if (component.isVisible()) {
@@ -94,9 +121,11 @@ public class TabIconBooleanFeedback implements ResultHandler<Boolean>, Disposabl
                 }
                 size.height = Math.max(size.height, componentSize.height);
             }
+
             if (size.width > 0) {
                 size.width += extraWidth;
             }
+
             return size;
         }
     }
@@ -127,11 +156,6 @@ public class TabIconBooleanFeedback implements ResultHandler<Boolean>, Disposabl
         private final JLabel invalidIconLabel;
 
         /**
-         * Entity handling the display of the tooltip and the mouse events in the icon.
-         */
-//        private final IconToolTipAdapter toolTipAdapter;
-
-        /**
          * Flag indicating the last known enabled state of the tab.
          * <p/>
          * It is used to check if the enabled state changed when painting because the {@link JTabbedPane} does not
@@ -144,16 +168,9 @@ public class TabIconBooleanFeedback implements ResultHandler<Boolean>, Disposabl
         private boolean paintTitleEnabled;
 
         /**
-         * Tooltip text on the valid icon explaining the valid results, or null.
+         * Property holding the validation result to be displayed.
          */
-//        private final String validText;
-
-        /**
-         * Tooltip text on the invalid icon explaining the invalid results, or null.
-         */
-//        private final String invalidText;
-
-        private final ReadableWritableProperty<Boolean, Boolean> lastResult = new SimpleBooleanProperty();
+        private final ReadableWritableProperty<Boolean, Boolean> lastResultProperty = new SimpleBooleanProperty();
 
         /**
          * Constructor specifying the layout constraints of the icon and title text.
@@ -169,9 +186,6 @@ public class TabIconBooleanFeedback implements ResultHandler<Boolean>, Disposabl
             setOpaque(false);
 
             ReadableProperty<Boolean> tabEnabledProperty = new ComponentEnabledProperty(this);
-
-//            this.validText = validText; // TODO
-//            this.invalidText = invalidText; // TODO
 
             // Initialize the label showing the title
             titleLabel = new JLabel(tabbedPane.getTitleAt(tabIndex));
@@ -189,42 +203,53 @@ public class TabIconBooleanFeedback implements ResultHandler<Boolean>, Disposabl
             // Initialize the panel holding the validation icons
             ValidationIconPanel iconPanel = new ValidationIconPanel(iconTextGap, validIconLabel, invalidIconLabel);
             read(tabEnabledProperty).write(new ComponentEnabledProperty(iconPanel));
-            add(iconPanel, getBorderLayoutPosition(iconPosition));
+            add(iconPanel, getBorderLayoutConstraint(iconPosition));
 
             // Handle the visibility of the validation icons
             ComponentVisibleProperty validIconVisibleProperty = new ComponentVisibleProperty(validIconLabel);
-            read(lastResult, tabEnabledProperty).transform(new AndBooleanAggregator()).write(validIconVisibleProperty);
+            read(lastResultProperty, tabEnabledProperty).transform(new AndBooleanAggregator()).write
+                    (validIconVisibleProperty);
             ComponentVisibleProperty invalidIconVisibleProperty = new ComponentVisibleProperty(invalidIconLabel);
-            read(new NegateBooleanPropertyWrapper(lastResult), tabEnabledProperty) //
+            read(new NegateBooleanPropertyWrapper(lastResultProperty), tabEnabledProperty) //
                     .transform(new AndBooleanAggregator()) //
                     .write(invalidIconVisibleProperty);
 
-            // TODO Set up icon label
-//            toolTipAdapter = new IconToolTipAdapter(validIconLabel, null, new AnchorLink(Anchor.BOTTOM_RIGHT,
-//                    Anchor.TOP_LEFT));
-//            validIconLabel.addMouseListener(toolTipAdapter);
+            // Initialize validation result tooltips
+            IconToolTipAdapter toolTipAdapter = new IconToolTipAdapter(validIconLabel, validText,
+                    new AnchorLink(Anchor.BOTTOM_RIGHT, Anchor.TOP_LEFT));
+            validIconLabel.addMouseListener(toolTipAdapter);
+            toolTipAdapter = new IconToolTipAdapter(invalidIconLabel, invalidText,
+                    new AnchorLink(Anchor.BOTTOM_RIGHT, Anchor.TOP_LEFT));
+            invalidIconLabel.addMouseListener(toolTipAdapter);
         }
 
-        private String getBorderLayoutPosition(int position) {
-            String layoutPosition;
+        /**
+         * Gets a constraint to be used in a border layout from the specified {@link SwingConstants} position.
+         *
+         * @param position Position constant.
+         *
+         * @return Border layout constraint.
+         */
+        private String getBorderLayoutConstraint(int position) {
+            String constraint;
 
             switch (position) {
                 case SwingConstants.LEADING:
                 case SwingConstants.LEFT:
-                    layoutPosition = BorderLayout.WEST;
+                    constraint = BorderLayout.WEST;
                     break;
 
                 case SwingConstants.TRAILING:
                 case SwingConstants.RIGHT:
-                    layoutPosition = BorderLayout.EAST;
+                    constraint = BorderLayout.EAST;
                     break;
 
                 default:
                     LOGGER.error("Invalid icon position: " + position);
-                    layoutPosition = BorderLayout.WEST;
+                    constraint = BorderLayout.WEST;
             }
 
-            return layoutPosition;
+            return constraint;
         }
 
         /**
@@ -252,7 +277,7 @@ public class TabIconBooleanFeedback implements ResultHandler<Boolean>, Disposabl
                 } else {
                     // Change in tab enabled state
                     paintTitleEnabled = tabEnabled;
-                    if(paintTitleEnabled == isEnabled()) {
+                    if (paintTitleEnabled == isEnabled()) {
                         super.paint(g);
                     } else {
                         setEnabled(paintTitleEnabled);
@@ -268,111 +293,129 @@ public class TabIconBooleanFeedback implements ResultHandler<Boolean>, Disposabl
          * @param result Result to be shown.
          */
         public void setResult(Boolean result) {
-            lastResult.setValue((result != null) && result);
+            lastResultProperty.setValue((result != null) && result);
         }
     }
 
-//    /**
-//     * Entity handling the tooltip display for the validation icon.
-//     * <p/>
-//     * It adjust the text to be displayed, shows the tooltip whenever the mouse enters the validation icon,
-// and forward
-//     * mouse events to the parent component (the title renderer).
-//     */
-//    private static class IconToolTipAdapter implements MouseListener {
-//
-//        private ToolTipDialog toolTipDialog = null;
-//
-//        private final JComponent owner;
-//
-//        private String toolTipText = "";
-//
-//        private final AnchorLink anchorLinkWithToolTip;
-//
-//        public IconToolTipAdapter(JComponent owner, String toolTipText, AnchorLink anchorLinkWithToolTip) {
-//            super();
-//            this.owner = owner;
-//            this.anchorLinkWithToolTip = anchorLinkWithToolTip;
-//            setToolTipText(toolTipText);
-//        }
-//
-//        /**
-//         * @see MouseListener#mouseEntered(MouseEvent)
-//         */
-//        @Override
-//        public void mouseEntered(MouseEvent e) {
-//            if (toolTipDialog == null) {
-//                toolTipDialog = new ToolTipDialog(owner, anchorLinkWithToolTip);
-//                toolTipDialog.setText(toolTipText);
-//            }
-//            if (owner.isEnabled()) { // TODO Listen to owner property changes
-//                toolTipDialog.setVisible(true);
-//            }
-//        }
-//
-//        /**
-//         * @see MouseListener#mouseExited(MouseEvent)
-//         */
-//        @Override
-//        public void mouseExited(MouseEvent e) {
-//            toolTipDialog.setVisible(false);
-//        }
-//
-//        /**
-//         * @see MouseListener#mousePressed(MouseEvent)
-//         */
-//        @Override
-//        public void mousePressed(MouseEvent e) {
-//            forwardToParent(e);
-//        }
-//
-//        /**
-//         * @see MouseListener#mouseReleased(MouseEvent)
-//         */
-//        @Override
-//        public void mouseReleased(MouseEvent e) {
-//            forwardToParent(e);
-//        }
-//
-//        /**
-//         * @see MouseListener#mouseClicked(MouseEvent)
-//         */
-//        @Override
-//        public void mouseClicked(MouseEvent e) {
-//            forwardToParent(e);
-//        }
-//
-//        /**
-//         * Forwards the specified mouse events to the parent tabbed pane.
-//         *
-//         * @param e Mouse event to be forwarded.
-//         */
-//        private void forwardToParent(MouseEvent e) {
-//            // Find parent tabbed pane
-//            Container parent = owner.getParent();
-//            while ((parent != null) && !(parent instanceof JTabbedPane)) {
-//                parent = parent.getParent();
-//            }
-//
-//            // Forward event to tabbed pane if found
-//            if (parent != null) {
-//                MouseEvent transformedEvent = SwingUtilities.convertMouseEvent(owner, e, parent);
-//                parent.dispatchEvent(transformedEvent);
-//            }
-//        }
-//
-//        /**
-//         * Sets the tooltip text to be displayed for the icon.
-//         *
-//         * @param toolTipText Tooltip text to be displayed for the icon.
-//         */
-//        public void setToolTipText(String toolTipText) {
-//            this.toolTipText = toolTipText;
-//            if (toolTipDialog != null) {
-//                toolTipDialog.setText(toolTipText);
-//            }
-//        }
-//    }
+    /**
+     * Entity handling the tooltip display for the validation icon.
+     * <p/>
+     * It adjust the text to be displayed, shows the tooltip whenever the mouse enters the validation icon, and forward
+     * mouse events to the parent component (the title renderer).
+     */
+    private static class IconToolTipAdapter implements MouseListener {
+
+        /**
+         * Tooltip component.
+         */
+        private ToolTipDialog toolTipDialog = null;
+
+        /**
+         * Component owning the tooltip.
+         */
+        private final JComponent owner;
+
+        /**
+         * Tooltip text.
+         */
+        private String toolTipText = "";
+
+        /**
+         * Anchor between the tooltip and its owner.
+         */
+        private final AnchorLink anchorLinkWithToolTip;
+
+        /**
+         * Constructor.
+         *
+         * @param owner                 Component owning the tooltip.
+         * @param toolTipText           Tooltip text.
+         * @param anchorLinkWithToolTip Anchor between the tooltip and its owner.
+         */
+        public IconToolTipAdapter(JComponent owner, String toolTipText, AnchorLink anchorLinkWithToolTip) {
+            super();
+            this.owner = owner;
+            this.anchorLinkWithToolTip = anchorLinkWithToolTip;
+            setToolTipText(toolTipText);
+        }
+
+        /**
+         * @see MouseListener#mouseEntered(MouseEvent)
+         */
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            if (toolTipDialog == null) {
+                toolTipDialog = new ToolTipDialog(owner, anchorLinkWithToolTip);
+                toolTipDialog.setText(toolTipText);
+            }
+            if (owner.isEnabled()) { // TODO Listen to owner property changes
+                toolTipDialog.setVisible(true);
+            }
+        }
+
+        /**
+         * @see MouseListener#mouseExited(MouseEvent)
+         */
+        @Override
+        public void mouseExited(MouseEvent e) {
+            toolTipDialog.setVisible(false);
+        }
+
+        /**
+         * @see MouseListener#mousePressed(MouseEvent)
+         */
+        @Override
+        public void mousePressed(MouseEvent e) {
+            forwardToParent(e);
+        }
+
+        /**
+         * @see MouseListener#mouseReleased(MouseEvent)
+         */
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            forwardToParent(e);
+        }
+
+        /**
+         * @see MouseListener#mouseClicked(MouseEvent)
+         */
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            forwardToParent(e);
+        }
+
+        /**
+         * Forwards the specified mouse events to the parent tabbed pane.
+         *
+         * @param e Mouse event to be forwarded.
+         */
+        private void forwardToParent(MouseEvent e) {
+            // Find parent tabbed pane
+            Container parent = owner.getParent();
+            while ((parent != null) && !(parent instanceof JTabbedPane)) {
+                parent = parent.getParent();
+            }
+
+            // Forward event to tabbed pane if found
+            if (parent != null) {
+                MouseEvent transformedEvent = SwingUtilities.convertMouseEvent(owner, e, parent);
+                parent.dispatchEvent(transformedEvent);
+            }
+        }
+
+        /**
+         * Sets the tooltip text to be displayed for the icon.
+         *
+         * @param toolTipText Tooltip text to be displayed for the icon.
+         */
+        public void setToolTipText(String toolTipText) {
+            this.toolTipText = toolTipText;
+            if (toolTipDialog != null) {
+                toolTipDialog.setText(toolTipText);
+            }
+        }
+    }
 
     /**
      * Entity tracking the properties of the tab and updates its title renderer accordingly.
