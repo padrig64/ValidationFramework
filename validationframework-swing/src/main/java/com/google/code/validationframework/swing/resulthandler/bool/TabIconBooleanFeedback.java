@@ -141,7 +141,7 @@ public class TabIconBooleanFeedback implements ResultHandler<Boolean>, Disposabl
          * @see JTabbedPane#setEnabledAt(int, boolean)
          * @see #paint(Graphics)
          */
-//        private boolean titleEnabled;
+        private boolean paintTitleEnabled;
 
         /**
          * Tooltip text on the valid icon explaining the valid results, or null.
@@ -163,7 +163,7 @@ public class TabIconBooleanFeedback implements ResultHandler<Boolean>, Disposabl
          *                     {@link SwingConstants#LEFT} or {@link SwingConstants#RIGHT}.
          * @param iconTextGap  Gap between the icon and the text.
          */
-        public TitleRenderer(int tabIndex, int iconPosition, int iconTextGap, Icon validIcon, final String validText,
+        public TitleRenderer(int tabIndex, int iconPosition, int iconTextGap, Icon validIcon, String validText,
                              Icon invalidIcon, String invalidText) {
             super(new BorderLayout(0, 0));
             setOpaque(false);
@@ -237,25 +237,30 @@ public class TabIconBooleanFeedback implements ResultHandler<Boolean>, Disposabl
             titleLabel.setText(text);
         }
 
-//        /**
-//         * @see JPanel#paint(Graphics)
-//         * @see #titleEnabled
-//         */
-//        @Override
-//        public void paint(Graphics g) {
-//            if (tabbedPane != null) {
-//                // Check if tab enabled state changed since last paint
-//                boolean tabEnabled = tabbedPane.isEnabledAt(tabIndex);
-//                if (tabEnabled == titleEnabled) {
-//                    // No change in tab enabled state
-//                    super.paint(g);
-//                } else {
-//                    titleEnabled = tabEnabled;
-//                    setEnabled(titleEnabled);
-//                    // Will paint later
-//                }
-//            }
-//        }
+        /**
+         * @see JPanel#paint(Graphics)
+         * @see #paintTitleEnabled
+         */
+        @Override
+        public void paint(Graphics g) {
+            if (tabbedPane != null) {
+                // Check if tab enabled state changed since last paint
+                boolean tabEnabled = tabbedPane.isEnabled() && tabbedPane.isEnabledAt(tabIndex);
+                if (tabEnabled == paintTitleEnabled) {
+                    // No change in tab enabled state since last time
+                    super.paint(g);
+                } else {
+                    // Change in tab enabled state
+                    paintTitleEnabled = tabEnabled;
+                    if(paintTitleEnabled == isEnabled()) {
+                        super.paint(g);
+                    } else {
+                        setEnabled(paintTitleEnabled);
+                        // Will repaint later anyway
+                    }
+                }
+            }
+        }
 
         /**
          * Shows the result on the tab title renderer.
@@ -264,12 +269,6 @@ public class TabIconBooleanFeedback implements ResultHandler<Boolean>, Disposabl
          */
         public void setResult(Boolean result) {
             lastResult.setValue((result != null) && result);
-        }
-
-        @Override
-        public void paint(Graphics g) {
-            // TODO
-            super.paint(g);
         }
     }
 
