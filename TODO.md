@@ -1,7 +1,5 @@
 # TO FIX
 
-* Convenient constructor in the component decorations (abstract + cell + comp)
-* Implement the same on tab and cell decoration (including disabled decoration on disabled tab)
 * Painting of translucent decorations
 * Icon decoration steals mouse event even outside clipping bounds
 * Consistent behavior of dispose() methods
@@ -21,6 +19,8 @@
 * NumericRangesValidRule
 
 * Make consistent use of generics for Swing data providers
+* Allow disabled icon decoration on disabled tab
+* Consistent constructor for decorations (abstract + cell + comp)
 * Specify result for null rule input
 * Make validation of min + max + min/max group + global easier
 * Implement Disposable where appropriate
@@ -48,6 +48,7 @@
 
 # TO THINK ABOUT
 
+* Common builder API to build validators and property bindings
 * Predicates
 * Component state conditional rules
 * Different rules for different data providers in same validator (with result aggregation)

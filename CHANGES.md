@@ -1,8 +1,9 @@
 # Version 3.0.0 (to be released)
 
 * Moved the Transformer and Aggregator interfaces from the base package to the API package
-* Added lightweight property binding to base to allow binding and transformation of properties
-* Added convenient FormatWrapper to allow stricter parsing, parsing of null/empty text, and formatting null values
+* Added lightweight property binding in core and for Swing to allow binding and transformation of properties
+* Added convenient FormatWrapper in core to allow stricter parsing, parsing of null/empty text, and formatting null values
+* Added ChainedTransformer in core
 
 # Version 2.1.6
 
