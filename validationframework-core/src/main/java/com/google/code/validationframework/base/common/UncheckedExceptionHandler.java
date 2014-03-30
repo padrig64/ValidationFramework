@@ -39,5 +39,5 @@ public interface UncheckedExceptionHandler extends ExceptionHandler<RuntimeExcep
      *
      * @param error Error to be handled.
      */
-    public void handleError(Error error);
+    void handleError(Error error);
 }

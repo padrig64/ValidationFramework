@@ -102,62 +102,6 @@ public class IconComponentDecorationDemo extends JFrame {
         setLocation((screenSize.width - size.width) / 2, (screenSize.height - size.height) / 3);
     }
 
-//    public class Validator extends JComponent {
-//        private Set<JComponent> invalidFields = new HashSet<JComponent>();
-//
-//        private BufferedImage warningIcon;
-//
-//        public Validator() {
-//            loadImages();
-//        }
-//
-//        public void removeWarning(JComponent field) {
-//            if (invalidFields.contains(field)) {
-//                invalidFields.remove(field);
-//                repaintBadge(field);
-//            }
-//        }
-//
-//        public void addWarning(JComponent field) {
-//            invalidFields.add(field);
-//            repaintBadge(field);
-//        }
-//
-//        private void repaintBadge(JComponent field) {
-//            Point p = field.getLocationOnScreen();
-//            SwingUtilities.convertPointFromScreen(p, this);
-//            int x = p.x - warningIcon.getWidth() / 2;
-//            int y = (int) (p.y + field.getHeight() - warningIcon.getHeight() / 1.5);
-//            repaint(x, y, warningIcon.getWidth(), warningIcon.getHeight());
-//        }
-//
-//        private void loadImages() {
-//            try {
-//                warningIcon = ImageIO.read(getClass().getResource("/images/defaults/info.png"));
-//            } catch (IOException ex) {
-//                ex.printStackTrace();
-//            }
-//        }
-//
-//        @Override
-//        protected void paintComponent(Graphics g) {
-//            for (JComponent invalid : invalidFields) {
-//                if (invalid.getParent() instanceof JViewport) {
-//                    JViewport viewport = (JViewport) invalid.getParent();
-//                    // the parent of the viewport is a JScrollPane
-//                    invalid = (JComponent) viewport.getParent();
-//                }
-//                Point p = invalid.getLocationOnScreen();
-//                SwingUtilities.convertPointFromScreen(p, this);
-//                int x = p.x - warningIcon.getWidth() / 2;
-//                int y = (int) (p.y + invalid.getHeight() - warningIcon.getHeight() / 1.5);
-//                if (g.getClipBounds().intersects(x, y, warningIcon.getWidth(), warningIcon.getHeight())) {
-//                    g.drawImage(warningIcon, x, y, null);
-//                }
-//            }
-//        }
-//    }
-
     private Component createTabConstantInfo() {
         JPanel panel = new JPanel(new MigLayout("fill"));
 

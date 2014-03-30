@@ -151,13 +151,13 @@ public class CompositeReadableProperty<R> extends AbstractReadableProperty<Colle
      */
     private void updateFromProperties() {
         // Get value from all properties: use a new collection so that equals() returns false
-        List<R> values = new ArrayList<R>();
+        List<R> newValues = new ArrayList<R>();
         for (ReadableProperty<R> master : properties) {
-            values.add(master.getValue());
+            newValues.add(master.getValue());
         }
 
         // Notify slaves
-        setValue(values);
+        setValue(newValues);
     }
 
     /**

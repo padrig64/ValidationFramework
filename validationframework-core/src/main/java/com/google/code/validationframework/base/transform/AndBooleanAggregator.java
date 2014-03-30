@@ -26,7 +26,6 @@
 package com.google.code.validationframework.base.transform;
 
 import com.google.code.validationframework.api.transform.Aggregator;
-import com.google.code.validationframework.api.transform.Transformer;
 
 import java.util.Collection;
 
@@ -88,7 +87,7 @@ public class AndBooleanAggregator implements Aggregator<Boolean, Boolean> {
     }
 
     /**
-     * @see Transformer#transform(Object)
+     * @see Aggregator#transform(Object)
      */
     @Override
     public Boolean transform(Collection<Boolean> elements) {

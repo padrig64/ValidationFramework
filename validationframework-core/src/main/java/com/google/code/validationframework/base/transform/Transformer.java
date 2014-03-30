@@ -30,9 +30,5 @@ package com.google.code.validationframework.base.transform;
  */
 @Deprecated
 public interface Transformer<I, O> extends com.google.code.validationframework.api.transform.Transformer<I, O> {
-
-    /**
-     * @see com.google.code.validationframework.api.transform.Transformer#transform(Object)
-     */
-    O transform(I input);
+    // Nothing more to be done
 }

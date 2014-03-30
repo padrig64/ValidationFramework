@@ -29,6 +29,8 @@ import com.google.code.validationframework.api.transform.Transformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.Serializable;
+
 /**
  * Transformer transforming input by casting.
  *
@@ -37,7 +39,7 @@ import org.slf4j.LoggerFactory;
  *
  * @see Transformer
  */
-public class CastTransformer<I, O> implements Transformer<I, O> {
+public class CastTransformer<I, O> implements Transformer<I, O>, Serializable {
 
     /**
      * Type of behavior in case of an error while casting.
@@ -64,6 +66,11 @@ public class CastTransformer<I, O> implements Transformer<I, O> {
          */
         TRHOW_EXCEPTION
     }
+
+    /**
+     * Generated serial UID.
+     */
+    private static final long serialVersionUID = -1055074777411651306L;
 
     /**
      * Logger for this class.

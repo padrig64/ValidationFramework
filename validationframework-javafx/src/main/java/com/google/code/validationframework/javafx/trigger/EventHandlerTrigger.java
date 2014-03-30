@@ -78,7 +78,8 @@ public class EventHandlerTrigger<E extends Event> extends AbstractTrigger implem
      */
     @Override
     public void handle(E e) {
-        if (eventTypes.isEmpty() || eventTypes.contains(E.ANY) || eventTypes.contains(e.getEventType()))
+        if (eventTypes.isEmpty() || eventTypes.contains(E.ANY) || eventTypes.contains(e.getEventType())) {
             fireTriggerEvent(new TriggerEvent(e.getSource()));
+        }
     }
 }

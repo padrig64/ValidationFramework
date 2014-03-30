@@ -25,7 +25,6 @@
 
 package com.google.code.validationframework.base.property.simple;
 
-import com.google.code.validationframework.api.property.WritableProperty;
 import com.google.code.validationframework.base.property.AbstractReadableWritableProperty;
 import com.google.code.validationframework.base.utils.ValueUtils;
 
@@ -77,7 +76,7 @@ public class SimpleProperty<T> extends AbstractReadableWritableProperty<T, T> {
     }
 
     /**
-     * @see WritableProperty#setValue(Object)
+     * @see AbstractReadableWritableProperty#setValue(Object)
      */
     @Override
     public void setValue(T value) {
