@@ -33,28 +33,58 @@ import java.awt.Component;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
-public class FocusedProperty extends AbstractReadableProperty<Boolean> implements Disposable {
+/**
+ * Read-only property representing the focused state of a component.
+ * <p/>
+ * This property is not writable because of the difficulty of remaining platform-independent and because focus handling
+ * is asynchronous: setting the property value to true would not guarantee that the component will be focused and it
+ * would also not be immediate either.
+ */
+public class ComponentFocusedProperty extends AbstractReadableProperty<Boolean> implements Disposable {
 
+    /**
+     * Focus tracker.
+     */
     private class FocusAdapter implements FocusListener {
 
+        /**
+         * @see FocusListener#focusGained(FocusEvent)
+         */
         @Override
         public void focusGained(FocusEvent e) {
             setValue(true);
         }
 
+        /**
+         * @see FocusListener#focusLost(FocusEvent)
+         */
         @Override
         public void focusLost(FocusEvent e) {
             setValue(false);
         }
     }
 
+    /**
+     * Flag stating whether the component is focused or not.
+     */
     private boolean focused = false;
 
+    /**
+     * Component whose focus is to be tracked.
+     */
     private final Component component;
 
+    /**
+     * Focus tracker.
+     */
     private final FocusListener focusAdapter = new FocusAdapter();
 
-    public FocusedProperty(Component component) {
+    /**
+     * Constructor specifying the component whose focus is to be tracked.
+     *
+     * @param component Component whose focus is to be tracked.
+     */
+    public ComponentFocusedProperty(Component component) {
         this.component = component;
         this.component.addFocusListener(focusAdapter);
     }
@@ -75,6 +105,11 @@ public class FocusedProperty extends AbstractReadableProperty<Boolean> implement
         return focused;
     }
 
+    /**
+     * Sets the value of this property.
+     *
+     * @param focused True if the component is focused, false otherwise.
+     */
     private void setValue(boolean focused) {
         if (!ValueUtils.areEqual(this.focused, focused)) {
             boolean oldValue = this.focused;
