@@ -92,7 +92,7 @@ public class TabbedPaneDemoApp extends JFrame {
         tabbedPaneEnabledCheckBox.setSelected(true);
         contentPane.add(tabbedPaneEnabledCheckBox);
         JCheckBox firstTabEnabledCheckBox = new JCheckBox("Enable first tab");
-        firstTabEnabledCheckBox.setSelected(true);
+        firstTabEnabledCheckBox.setSelected(false);
         contentPane.add(firstTabEnabledCheckBox);
 
         // Tabbed pane

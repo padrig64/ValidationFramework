@@ -165,7 +165,7 @@ public class TabIconBooleanFeedback implements ResultHandler<Boolean>, Disposabl
          * @see JTabbedPane#setEnabledAt(int, boolean)
          * @see #paint(Graphics)
          */
-        private boolean paintTitleEnabled;
+        private boolean paintTitleAsEnabled;
 
         /**
          * Property holding the validation result to be displayed.
@@ -184,6 +184,8 @@ public class TabIconBooleanFeedback implements ResultHandler<Boolean>, Disposabl
                              Icon invalidIcon, String invalidText) {
             super(new BorderLayout(0, 0));
             setOpaque(false);
+
+            paintTitleAsEnabled = tabbedPane.isEnabled() && tabbedPane.isEnabledAt(tabIndex);
 
             ReadableProperty<Boolean> tabEnabledProperty = new ComponentEnabledProperty(this);
 
@@ -264,23 +266,23 @@ public class TabIconBooleanFeedback implements ResultHandler<Boolean>, Disposabl
 
         /**
          * @see JPanel#paint(Graphics)
-         * @see #paintTitleEnabled
+         * @see #paintTitleAsEnabled
          */
         @Override
         public void paint(Graphics g) {
             if (tabbedPane != null) {
                 // Check if tab enabled state changed since last paint
                 boolean tabEnabled = tabbedPane.isEnabled() && tabbedPane.isEnabledAt(tabIndex);
-                if (tabEnabled == paintTitleEnabled) {
+                if (tabEnabled == paintTitleAsEnabled) {
                     // No change in tab enabled state since last time
                     super.paint(g);
                 } else {
                     // Change in tab enabled state
-                    paintTitleEnabled = tabEnabled;
-                    if (paintTitleEnabled == isEnabled()) {
+                    paintTitleAsEnabled = tabEnabled;
+                    if (paintTitleAsEnabled == isEnabled()) {
                         super.paint(g);
                     } else {
-                        setEnabled(paintTitleEnabled);
+                        setEnabled(paintTitleAsEnabled);
                         // Will repaint later anyway
                     }
                 }
