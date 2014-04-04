@@ -28,27 +28,26 @@
 package com.google.code.validationframework.swing.property;
 
 import com.google.code.validationframework.api.common.Disposable;
+import com.google.code.validationframework.api.transform.Transformer;
 import com.google.code.validationframework.base.property.AbstractReadableWritableProperty;
+import com.google.code.validationframework.base.transform.CastTransformer;
 
-import javax.swing.JToggleButton;
+import javax.swing.JComboBox;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
 /**
- * Readable/writable property representing the selected state of a {@link JToggleButton}.
+ * Readable/writable property representing the selected value of a {@link JComboBox}.
  * <p/>
- * This includes toggle buttons, radio buttons and checkboxes.
+ * It is possible to control the selected value of the component by setting the value of this property or by calling the
+ * {@link JComboBox#setSelectedItem(Object)} or {@link JComboBox#setSelectedIndex(int)} methods of that component.
  * <p/>
- * It is possible to control the selected state of the component by setting the value of this property or by calling the
- * {@link JToggleButton#setSelected(boolean)} method of that component.
- * <p/>
- * If the value of this property is set to null, the component selected state will not be changed.
+ * If the value of this property is set to null, the component selected value will not be changed.
  */
-public class JToggleButtonSelectedProperty extends AbstractReadableWritableProperty<Boolean,
-        Boolean> implements Disposable {
+public class JComboBoxSelectedValueProperty<T> extends AbstractReadableWritableProperty<T, T> implements Disposable {
 
     /**
-     * Selected state tracker.
+     * Selected value tracker.
      */
     private class EventAdapter implements ItemListener {
 
@@ -58,28 +57,31 @@ public class JToggleButtonSelectedProperty extends AbstractReadableWritablePrope
         @Override
         public void itemStateChanged(ItemEvent e) {
             updatingFromComponent = true;
-            setValue(component.isSelected());
+            T selectedItem = castTransformer.transform(component.getSelectedItem());
+            setValue(selectedItem);
             updatingFromComponent = false;
         }
     }
 
     /**
-     * Component to track the selected state for.
+     * Component to track the selected value for.
      */
-    private final JToggleButton component;
+    private final JComboBox component;
 
     /**
-     * Selected state tracker.
+     * Selected value tracker.
      */
     private final EventAdapter eventAdapter = new EventAdapter();
+
+    private final Transformer<Object, T> castTransformer = new CastTransformer<Object, T>();
 
     /**
      * Current property value.
      */
-    private Boolean value = null;
+    private T value = null;
 
     /**
-     * Flag indicating whether the {@link #setValue(Boolean)} call is due to a item state change event.
+     * Flag indicating whether the {@link #setValue(Object)} call is due to a selection change event.
      */
     private boolean updatingFromComponent = false;
 
@@ -88,7 +90,7 @@ public class JToggleButtonSelectedProperty extends AbstractReadableWritablePrope
      *
      * @param component Component whose selected property is to be tracked.
      */
-    public JToggleButtonSelectedProperty(JToggleButton component) {
+    public JComboBoxSelectedValueProperty(JComboBox component) {
         super();
 
         // Hook to component
@@ -96,7 +98,7 @@ public class JToggleButtonSelectedProperty extends AbstractReadableWritablePrope
         this.component.addItemListener(eventAdapter);
 
         // Set initial value
-        value = component.isSelected();
+        value = castTransformer.transform(component.getSelectedItem());
     }
 
     /**
@@ -112,7 +114,7 @@ public class JToggleButtonSelectedProperty extends AbstractReadableWritablePrope
      * @see AbstractReadableWritableProperty#getValue()
      */
     @Override
-    public Boolean getValue() {
+    public T getValue() {
         return value;
     }
 
@@ -120,13 +122,13 @@ public class JToggleButtonSelectedProperty extends AbstractReadableWritablePrope
      * @see AbstractReadableWritableProperty#setValue(Object)
      */
     @Override
-    public void setValue(Boolean value) {
+    public void setValue(T value) {
         if (updatingFromComponent) {
-            Boolean oldValue = this.value;
+            T oldValue = this.value;
             this.value = value;
             notifyListeners(oldValue, this.value);
         } else if (value != null) {
-            component.setSelected(value);
+            component.setSelectedItem(value);
         }
     }
 }

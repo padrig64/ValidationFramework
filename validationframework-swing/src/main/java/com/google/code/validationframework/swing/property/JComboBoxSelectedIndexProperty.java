@@ -30,71 +30,71 @@ package com.google.code.validationframework.swing.property;
 import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.base.property.AbstractReadableWritableProperty;
 
-import javax.swing.text.JTextComponent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+import javax.swing.JComboBox;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 /**
- * Readable/writable property representing the editable state of a {@link JTextComponent}.
+ * Readable/writable property representing the selected index of a {@link JComboBox}.
  * <p/>
- * It is possible to control the editable state of the component by setting the value of this property or by calling the
- * {@link JTextComponent#setEditable(boolean)} method of that component.
+ * It is possible to control the selected index of the component by setting the value of this property or by calling the
+ * {@link JComboBox#setSelectedIndex(int)} or {@link JComboBox#setSelectedItem(Object)} methods of that component.
  * <p/>
- * If the value of this property is set to null, the component editable state will not be changed.
+ * If the value of this property is set to null, the component selected index will not be changed.
  */
-public class JTextComponentEditableProperty extends AbstractReadableWritableProperty<Boolean,
-        Boolean> implements Disposable {
+public class JComboBoxSelectedIndexProperty extends AbstractReadableWritableProperty<Integer,
+        Integer> implements Disposable {
 
     /**
-     * Editable state tracker.
+     * Selected index tracker.
      */
-    private class EventAdapter implements PropertyChangeListener {
+    private class EventAdapter implements ItemListener {
 
         /**
-         * @see PropertyChangeListener#propertyChange(PropertyChangeEvent)
+         * @see ItemListener#itemStateChanged(ItemEvent)
          */
         @Override
-        public void propertyChange(PropertyChangeEvent evt) {
+        public void itemStateChanged(ItemEvent e) {
             updatingFromComponent = true;
-            setValue(component.isEditable());
+            setValue(component.getSelectedIndex());
             updatingFromComponent = false;
         }
     }
 
     /**
-     * Component to track the editable state for.
+     * Component to track the selected index for.
      */
-    private final JTextComponent component;
+    private final JComboBox component;
 
     /**
-     * Editable state tracker.
+     * Selected index tracker.
      */
     private final EventAdapter eventAdapter = new EventAdapter();
 
     /**
      * Current property value.
      */
-    private Boolean value = null;
+    private Integer value = null;
 
     /**
-     * Flag indicating whether the {@link #setValue(Boolean)} call is due to a property change event.
+     * Flag indicating whether the {@link #setValue(Integer)} call is due to a selection change event.
      */
     private boolean updatingFromComponent = false;
 
     /**
      * Constructor specifying the component for which the property applies.
      *
-     * @param component Component whose editable property is to be tracked.
+     * @param component Component whose selected property is to be tracked.
      */
-    public JTextComponentEditableProperty(JTextComponent component) {
+    public JComboBoxSelectedIndexProperty(JComboBox component) {
         super();
 
         // Hook to component
         this.component = component;
-        this.component.addPropertyChangeListener("editable", eventAdapter);
+        this.component.addItemListener(eventAdapter);
 
         // Set initial value
-        value = component.isEditable();
+        value = component.getSelectedIndex();
     }
 
     /**
@@ -103,14 +103,14 @@ public class JTextComponentEditableProperty extends AbstractReadableWritableProp
     @Override
     public void dispose() {
         // Unhook from component
-        component.removePropertyChangeListener("editable", eventAdapter);
+        component.removeItemListener(eventAdapter);
     }
 
     /**
      * @see AbstractReadableWritableProperty#getValue()
      */
     @Override
-    public Boolean getValue() {
+    public Integer getValue() {
         return value;
     }
 
@@ -118,13 +118,13 @@ public class JTextComponentEditableProperty extends AbstractReadableWritableProp
      * @see AbstractReadableWritableProperty#setValue(Object)
      */
     @Override
-    public void setValue(Boolean value) {
+    public void setValue(Integer value) {
         if (updatingFromComponent) {
-            Boolean oldValue = this.value;
+            Integer oldValue = this.value;
             this.value = value;
             notifyListeners(oldValue, this.value);
         } else if (value != null) {
-            component.setEditable(value);
+            component.setSelectedIndex(value);
         }
     }
 }
