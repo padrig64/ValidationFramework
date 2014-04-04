@@ -1,3 +1,7 @@
+# Version 3.0.4 (to be released)
+
+* Added JComboBoxSelectedItemProperty and JComboBoxSelectedIndexProperties in the Swing package
+
 # Version 3.0.3
 
 * Moved the Transformer and Aggregator interfaces from the base package to the API package (reason for the major release)
