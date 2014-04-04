@@ -36,7 +36,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 /**
- * Read/writable property representing the text in the document of a {@see JTextComponent} (for instance, a textfield,
+ * Read/writable property representing the text in the document of a {@link JTextComponent} (for instance, a textfield,
  * a text area, etc.).
  * <p/>
  * This property will always be synchronized with the contents of the document. Also, it is possible to modify the

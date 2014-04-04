@@ -15,7 +15,7 @@
     <packaging>pom</packaging>
 
     <name>Validation Framework</name>
-    <description>Parent POM of Validation Framework components</description>
+    <description>Parent POM of ValidationFramework components</description>
     <url>http://code.google.com/p/validationframework/</url>
 
     <licenses>
