@@ -47,7 +47,6 @@ public class ValidationFrameworkExperimentalIT {
 
     @SuppressWarnings("unchecked")
     @Test
-    @Ignore
     public void simpleValidatorBuilder() {
         DataTrigger dataTrigger = new DataTrigger();
         ResultHandler<Boolean> mockResultHandler = Mockito.mock(ResultHandler.class);

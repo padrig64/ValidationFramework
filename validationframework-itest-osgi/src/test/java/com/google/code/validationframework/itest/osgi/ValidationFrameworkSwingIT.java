@@ -85,7 +85,6 @@ public class ValidationFrameworkSwingIT {
     }
 
     @Test
-    @Ignore
     public void swingInputAndResultHandling() throws Exception {
         // Assume a non-headless environment
         Assume.assumeTrue(!GraphicsEnvironment.isHeadless());
