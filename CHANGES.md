@@ -1,4 +1,4 @@
-# Version 3.0.0 (to be released)
+# Version 3.0.0
 
 * Moved the Transformer and Aggregator interfaces from the base package to the API package (reason for the major release)
 * Added simple property binding in core and for Swing to allow binding and transformation of properties (see wiki)

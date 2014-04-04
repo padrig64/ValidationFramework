@@ -7,6 +7,7 @@ import com.google.code.validationframework.swing.resulthandler.bool.ComponentEna
 import com.google.code.validationframework.swing.resulthandler.bool.IconBooleanFeedback;
 import com.google.code.validationframework.swing.trigger.JTextFieldDocumentChangedTrigger;
 import org.junit.Assume;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Configuration;
@@ -84,12 +85,13 @@ public class ValidationFrameworkSwingIT {
     }
 
     @Test
+    @Ignore
     public void swingInputAndResultHandling() throws Exception {
         // Assume a non-headless environment
         Assume.assumeTrue(!GraphicsEnvironment.isHeadless());
 
         // Create TestFrame on EDT and obtain it
-        final RunnableFuture<TestFrame> testFrameFuture = new FutureTask<TestFrame>(new Callable<TestFrame>() {
+        RunnableFuture<TestFrame> testFrameFuture = new FutureTask<TestFrame>(new Callable<TestFrame>() {
             @Override
             public TestFrame call() throws Exception {
                 return new TestFrame();
@@ -101,7 +103,7 @@ public class ValidationFrameworkSwingIT {
         // Simulate the string as input to the textField inside the test frame
         for (final char c : "Hello World".toCharArray()) {
             // Assert that the button on the TestFrame is still disabled
-            final RunnableFuture<Boolean> value = new FutureTask<Boolean>(new Callable<Boolean>() {
+            RunnableFuture<Boolean> value = new FutureTask<Boolean>(new Callable<Boolean>() {
                 @Override
                 public Boolean call() throws Exception {
                     return testFrame.button.isEnabled();
@@ -121,7 +123,7 @@ public class ValidationFrameworkSwingIT {
         }
 
         // Assert that button on the test frame is enabled after input
-        final RunnableFuture<Boolean> value = new FutureTask<Boolean>(new Callable<Boolean>() {
+        RunnableFuture<Boolean> value = new FutureTask<Boolean>(new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
                 return testFrame.button.isEnabled();

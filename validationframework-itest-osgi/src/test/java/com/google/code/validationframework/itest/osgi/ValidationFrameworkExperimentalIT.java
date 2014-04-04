@@ -5,6 +5,7 @@ import com.google.code.validationframework.api.resulthandler.ResultHandler;
 import com.google.code.validationframework.base.rule.string.StringRegexRule;
 import com.google.code.validationframework.base.trigger.ManualTrigger;
 import com.google.code.validationframework.base.validator.generalvalidator.GeneralValidator;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -31,7 +32,7 @@ public class ValidationFrameworkExperimentalIT {
             return data;
         }
 
-        public void trigger(final String data) {
+        public void trigger(String data) {
             this.data = data;
             super.trigger();
         }
@@ -46,11 +47,12 @@ public class ValidationFrameworkExperimentalIT {
 
     @SuppressWarnings("unchecked")
     @Test
+    @Ignore
     public void simpleValidatorBuilder() {
-        final DataTrigger dataTrigger = new DataTrigger();
-        final ResultHandler<Boolean> mockResultHandler = Mockito.mock(ResultHandler.class);
+        DataTrigger dataTrigger = new DataTrigger();
+        ResultHandler<Boolean> mockResultHandler = Mockito.mock(ResultHandler.class);
 
-        final GeneralValidator<String, String, Boolean, Boolean> validator = on(dataTrigger) //
+        GeneralValidator<String, String, Boolean, Boolean> validator = on(dataTrigger) //
                 .read(dataTrigger) //
                 .check(new StringRegexRule("^Hello World$")) //
                 .handleWith(mockResultHandler) //
