@@ -53,7 +53,7 @@
         <mavengpgplugin.version>1.4</mavengpgplugin.version>
         <mavenjavadocplugin.version>2.9</mavenjavadocplugin.version>
         <mavensourceplugin.version>2.2.1</mavensourceplugin.version>
-        <mavenreleaseplugin.version>2.3.2</mavenreleaseplugin.version>
+        <mavenreleaseplugin.version>2.5</mavenreleaseplugin.version>
 
         <!-- Dependencies versions -->
 
