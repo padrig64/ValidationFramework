@@ -25,7 +25,9 @@
 
 package com.google.code.validationframework.base.transform;
 
+import com.google.code.validationframework.api.property.ReadableWritableProperty;
 import com.google.code.validationframework.api.transform.Transformer;
+import com.google.code.validationframework.base.property.simple.SimpleFormatProperty;
 
 import java.text.Format;
 
@@ -41,9 +43,9 @@ import java.text.Format;
 public class FormatTransformer implements Transformer<Object, String> {
 
     /**
-     * Format object to be used for formatting.
+     * Format property to be used for formatting.
      */
-    private Format format = null;
+    private final ReadableWritableProperty<Format, Format> formatProperty;
 
     /**
      * Constructor specifying the format object to be used for formatting.
@@ -51,7 +53,16 @@ public class FormatTransformer implements Transformer<Object, String> {
      * @param format Format object to be used for formatting.
      */
     public FormatTransformer(Format format) {
-        this.format = format;
+        this(new SimpleFormatProperty(format));
+    }
+
+    /**
+     * Constructor specifying the format object to be used for formatting.
+     *
+     * @param formatProperty Format property to be used for formatting.
+     */
+    public FormatTransformer(ReadableWritableProperty<Format, Format> formatProperty) {
+        this.formatProperty = formatProperty;
     }
 
     /**
@@ -59,8 +70,8 @@ public class FormatTransformer implements Transformer<Object, String> {
      *
      * @return Format object used for formatting.
      */
-    public Format getFormat() {
-        return format;
+    public final Format getFormat() {
+        return formatProperty.getValue();
     }
 
     /**
@@ -68,8 +79,8 @@ public class FormatTransformer implements Transformer<Object, String> {
      *
      * @param format Format object to be used for formatting.
      */
-    public void setFormat(Format format) {
-        this.format = format;
+    public final void setFormat(Format format) {
+        formatProperty.setValue(format);
     }
 
     /**
@@ -79,9 +90,9 @@ public class FormatTransformer implements Transformer<Object, String> {
     public String transform(Object input) {
         String output = null;
 
-        if ((format != null) && (input != null)) {
+        if ((formatProperty.getValue() != null) && (input != null)) {
             try {
-                output = format.format(input);
+                output = formatProperty.getValue().format(input);
             } catch (IllegalArgumentException e) {
                 // Ignore: null will be returned
             }

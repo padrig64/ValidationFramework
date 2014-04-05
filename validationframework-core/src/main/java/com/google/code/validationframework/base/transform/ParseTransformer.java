@@ -25,7 +25,9 @@
 
 package com.google.code.validationframework.base.transform;
 
+import com.google.code.validationframework.api.property.ReadableWritableProperty;
 import com.google.code.validationframework.api.transform.Transformer;
+import com.google.code.validationframework.base.property.simple.SimpleFormatProperty;
 
 import java.text.Format;
 import java.text.ParsePosition;
@@ -38,7 +40,7 @@ import java.text.ParsePosition;
  * is a {@link java.text.DecimalFormat}, parsing the string "1.4sdf" strictly will not be consider the parsed value to
  * be 1.4.
  * <p/>
- * If the format object or the input string to be parsed are null, then the ouput will be null.
+ * If the format object or the input string to be parsed are null, then the output will be null.
  *
  * @param <O> Type of parsed object.
  *
@@ -47,9 +49,9 @@ import java.text.ParsePosition;
 public class ParseTransformer<O> implements Transformer<String, O> {
 
     /**
-     * Format object to be used for parsing.
+     * Format object to be used for parsing;
      */
-    private Format parser = null;
+    private final ReadableWritableProperty<Format, Format> parserProperty;
 
     /**
      * Flag indicating whether strict parsing is enabled or not.
@@ -83,8 +85,39 @@ public class ParseTransformer<O> implements Transformer<String, O> {
      * @param strictParsing True to enable strict parsing, false otherwise.
      */
     public ParseTransformer(Format parser, boolean strictParsing) {
-        setParser(parser);
-        setStrictParsing(strictParsing);
+        this(new SimpleFormatProperty(parser), strictParsing);
+    }
+
+    /**
+     * Constructor specifying the {@link Format} property to be used for parsing.
+     * <p/>
+     * Note that by default, strict parsing is enabled.
+     *
+     * @param parserProperty Format property to be used for parsing.
+     */
+    public ParseTransformer(ReadableWritableProperty<Format, Format> parserProperty) {
+        this(parserProperty, true);
+    }
+
+    /**
+     * Constructor specifying the {@link Format} object to be used for parsing and whether or not strict parsing should
+     * be enabled or not.
+     *
+     * @param parserProperty Format property to be used for parsing.
+     * @param strictParsing  True to enable strict parsing, false otherwise.
+     */
+    public ParseTransformer(ReadableWritableProperty<Format, Format> parserProperty, boolean strictParsing) {
+        this.parserProperty = parserProperty;
+        this.strictParsing = strictParsing;
+    }
+
+    /**
+     * Gets the property holding the format object used for parsing.
+     *
+     * @return Format property.
+     */
+    public ReadableWritableProperty<Format, Format> getParserProperty() {
+        return parserProperty;
     }
 
     /**
@@ -92,8 +125,8 @@ public class ParseTransformer<O> implements Transformer<String, O> {
      *
      * @return Format object used for parsing.
      */
-    public Format getParser() {
-        return parser;
+    public final Format getParser() {
+        return parserProperty.getValue();
     }
 
     /**
@@ -101,8 +134,8 @@ public class ParseTransformer<O> implements Transformer<String, O> {
      *
      * @param parser Format object to be used for parsing.
      */
-    public void setParser(Format parser) {
-        this.parser = parser;
+    public final void setParser(Format parser) {
+        parserProperty.setValue(parser);
     }
 
     /**
@@ -130,10 +163,10 @@ public class ParseTransformer<O> implements Transformer<String, O> {
     public O transform(String input) {
         O value = null;
 
-        if ((input != null) && (parser != null)) {
+        if ((input != null) && (parserProperty.getValue() != null)) {
             // Parse
             ParsePosition pos = new ParsePosition(0);
-            Object object = parser.parseObject(input, pos);
+            Object object = parserProperty.getValue().parseObject(input, pos);
 
             // Cast if valid
             if ((pos.getIndex() != 0) && (!strictParsing || (pos.getIndex() == input.length()))) {

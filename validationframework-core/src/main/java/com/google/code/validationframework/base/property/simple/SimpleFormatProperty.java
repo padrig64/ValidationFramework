@@ -23,31 +23,27 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.swing.property.simple;
+package com.google.code.validationframework.base.property.simple;
 
 import java.text.Format;
 
 /**
- * @deprecated Use {@link com.google.code.validationframework.base.property.simple.SimpleFormatProperty} instead.
+ * Simple property holding a {@link Format} value.
+ *
+ * @see SimpleProperty
  */
-@Deprecated
-public class SimpleFormatProperty extends com.google.code.validationframework.base.property.simple
-        .SimpleFormatProperty {
+public class SimpleFormatProperty extends SimpleProperty<Format> {
 
     /**
-     * @deprecated Use {@link com.google.code.validationframework.base.property.simple
-     * .SimpleFormatProperty#SimpleFormatProperty()} instead.
+     * @see SimpleProperty#SimpleProperty()
      */
-    @Deprecated
     public SimpleFormatProperty() {
         super();
     }
 
     /**
-     * @deprecated Use {@link com.google.code.validationframework.base.property.simple
-     * .SimpleFormatProperty#SimpleFormatProperty(Format)} instead.
+     * @see SimpleProperty#SimpleProperty(Object)
      */
-    @Deprecated
     public SimpleFormatProperty(Format value) {
         super(value);
     }
