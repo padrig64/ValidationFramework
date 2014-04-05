@@ -1,6 +1,6 @@
 # Version 3.0.4 (to be released)
 
-* Added JComboBoxSelectedItemProperty and JComboBoxSelectedIndexProperties in the Swing package
+* Added JComboBoxSelectedItemProperty and JComboBoxSelectedIndexProperty in the Swing package
 
 # Version 3.0.3
 
