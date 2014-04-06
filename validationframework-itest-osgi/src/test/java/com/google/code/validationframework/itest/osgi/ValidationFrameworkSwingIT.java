@@ -7,7 +7,6 @@ import com.google.code.validationframework.swing.resulthandler.bool.ComponentEna
 import com.google.code.validationframework.swing.resulthandler.bool.IconBooleanFeedback;
 import com.google.code.validationframework.swing.trigger.JTextFieldDocumentChangedTrigger;
 import org.junit.Assume;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Configuration;
@@ -40,8 +39,10 @@ import static org.ops4j.pax.exam.CoreOptions.wrappedBundle;
 public class ValidationFrameworkSwingIT {
     @Configuration
     public Option[] config() {
-        return options(mavenBundle("com.google.code.validationframework", "validationframework-core").versionAsInProject(), //
-                mavenBundle("com.google.code.validationframework", "validationframework-experimental").versionAsInProject(), //
+        return options(mavenBundle("com.google.code.validationframework",
+                        "validationframework-core").versionAsInProject(), //
+                mavenBundle("com.google.code.validationframework", "validationframework-experimental")
+                        .versionAsInProject(), //
                 mavenBundle("com.google.code.validationframework", "validationframework-swing").versionAsInProject(), //
                 wrappedBundle(mavenBundle("net.java.timingframework", "timingframework-core").versionAsInProject()), //
                 wrappedBundle(mavenBundle("net.java.timingframework", "timingframework-swing").versionAsInProject()), //
@@ -84,7 +85,6 @@ public class ValidationFrameworkSwingIT {
         }
     }
 
-    @Ignore
     @Test
     public void swingInputAndResultHandling() throws Exception {
         // Assume a non-headless environment

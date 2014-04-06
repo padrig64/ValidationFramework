@@ -5,7 +5,6 @@ import com.google.code.validationframework.api.resulthandler.ResultHandler;
 import com.google.code.validationframework.base.rule.string.StringRegexRule;
 import com.google.code.validationframework.base.trigger.ManualTrigger;
 import com.google.code.validationframework.base.validator.generalvalidator.GeneralValidator;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -45,7 +44,6 @@ public class ValidationFrameworkExperimentalIT {
                 "validationframework-experimental").versionAsInProject(), TestOptions.junitAndMockitoBundles());
     }
 
-    @Ignore
     @SuppressWarnings("unchecked")
     @Test
     public void simpleValidatorBuilder() {
