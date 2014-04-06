@@ -1,4 +1,4 @@
-# Version 3.1.0 (to be released)
+# Version 3.1.0
 
 * Added JComboBoxSelectedItemProperty and JComboBoxSelectedIndexProperty in the Swing package
 * Moved the SimpleFormatProperty to core
