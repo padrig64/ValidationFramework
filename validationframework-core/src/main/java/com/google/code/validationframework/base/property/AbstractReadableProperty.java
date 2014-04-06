@@ -35,8 +35,14 @@ import java.util.List;
 /**
  * Abstract implementation of a {@link ReadableProperty}.
  * <p/>
- * Sub-classes should call the {@link #notifyListeners(Object, Object)} or {@link #notifyListeners(Object, Object,
- * boolean)} methods whenever the property value changes.
+ * Sub-classes should call the {@link #maybeNotifyListeners(Object, Object)} method whenever the property value changes.
+ * <p/>
+ * This abstract implementation allows to inhibit the firing of value change events. When the property is inhibited,
+ * changing its value will not fire any value change event. When the property is un-inhibited again, one single value
+ * change event will be fired only if the last property value is different than the property value of the last change
+ * event fired.
+ * <p/>
+ * By default, the property is not inhibited.
  * <p/>
  * Note that this class is not thread-safe.
  *
@@ -48,6 +54,32 @@ public abstract class AbstractReadableProperty<R> implements ReadableProperty<R>
      * Writable properties to be updated.
      */
     private final List<ValueChangeListener<R>> listeners = new ArrayList<ValueChangeListener<R>>();
+
+    /**
+     * Flag stating whether the inhibit the firing of value change events.
+     */
+    private boolean inhibited = false;
+
+    /**
+     * Number of inhibited value change events since the property was inhibited.
+     */
+    private int inhibitCount = 0;
+
+    /**
+     * Property value when the last (non-inhibited) value change event was fired.
+     * <p/>
+     * It should be updated only if {@link #inhibited} is false. It should be read read only when un-inhibiting and
+     * {@link #inhibitCount} is 0.
+     */
+    private R lastNonInhibitedValue = null;
+
+    /**
+     * Property value when the last value change event was inhibited (not fired).
+     * <p/>
+     * It should be updated at least when {@link #inhibited} is true. It should be read only when un-inhibiting and
+     * {@link #inhibitCount} is 0.
+     */
+    private R lastInhibitedValue = null;
 
     /**
      * @see ReadableProperty#addValueChangeListener(ValueChangeListener)
@@ -66,36 +98,80 @@ public abstract class AbstractReadableProperty<R> implements ReadableProperty<R>
     }
 
     /**
-     * Notifies the listeners that the property value has changed, if it has changed.
+     * States whether this property is inhibited.
+     *
+     * @return True if this property is inhibited, false otherwise.
+     */
+    public boolean isInhibited() {
+        return inhibited;
+    }
+
+    /**
+     * States whether this property should be inhibited.
+     *
+     * @param inhibited True if this property should be inhibited, false otherwise.
+     */
+    public void setInhibited(boolean inhibited) {
+        boolean wasInhibited = this.inhibited;
+        this.inhibited = inhibited;
+
+        if (wasInhibited && !inhibited) {
+            if (inhibitCount > 0) {
+                maybeNotifyListeners(lastNonInhibitedValue, lastInhibitedValue);
+            }
+            inhibitCount = 0;
+        }
+    }
+
+    /**
+     * Notifies the listeners that the property value has changed, if all the conditions are fulfilled (typically, if
+     * the old and new values are different, and if the property is not inhibited).
      * <p/>
-     * Note that the listeners will be notified only if the old value is different than the new value.
+     * Sub-classes should typically call this method when they are ready to fire value change events.
+     * <p/>
+     * However, sub-classes may override this method to perform additional checks.
      *
      * @param oldValue Previous value.
      * @param newValue New value.
      *
-     * @see #notifyListeners(Object, Object, boolean)
-     * @see #getValue()
+     * @see #notifyListenersIfUninhibited(Object, Object)
+     * @see #doNotifyListeners(Object, Object)
      */
-    protected void notifyListeners(R oldValue, R newValue) {
-        notifyListeners(oldValue, newValue, false);
+    protected void maybeNotifyListeners(R oldValue, R newValue) {
+        if (!ValueUtils.areEqual(oldValue, newValue)) {
+            notifyListenersIfUninhibited(oldValue, newValue);
+        }
     }
 
     /**
-     * Notifies the listeners that the property value has changed.
+     * Notifies the listeners that the property value has changed, if the property is not inhibited.
      *
-     * @param oldValue       Previous value.
-     * @param newValue       New value.
-     * @param evenIfNoChange True to notify the listeners even if the new value and the old value are equal, false to
-     *                       notify the listeners only if they are not equal.
+     * @param oldValue Previous value.
+     * @param newValue New value.
      *
-     * @see #notifyListeners(Object, Object)
-     * @see #getValue()
+     * @see #maybeNotifyListeners(Object, Object)
+     * @see #doNotifyListeners(Object, Object)
      */
-    protected void notifyListeners(R oldValue, R newValue, boolean evenIfNoChange) {
-        if (evenIfNoChange || !ValueUtils.areEqual(oldValue, newValue)) {
-            for (ValueChangeListener<R> listener : listeners) {
-                listener.valueChanged(this, oldValue, newValue);
-            }
+    private void notifyListenersIfUninhibited(R oldValue, R newValue) {
+        if (inhibited) {
+            inhibitCount++;
+            lastInhibitedValue = newValue;
+        } else {
+            lastInhibitedValue = newValue; // Just in case, even though not really necessary
+            lastNonInhibitedValue = newValue;
+            doNotifyListeners(oldValue, newValue);
+        }
+    }
+
+    /**
+     * Notifies the listeners that the property value has changed, unconditionally.
+     *
+     * @param oldValue Previous value.
+     * @param newValue New value.
+     */
+    private void doNotifyListeners(R oldValue, R newValue) {
+        for (ValueChangeListener<R> listener : listeners) {
+            listener.valueChanged(this, oldValue, newValue);
         }
     }
 }

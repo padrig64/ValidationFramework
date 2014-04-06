@@ -1,9 +1,10 @@
-# Version 3.0.4 (to be released)
+# Version 3.1.0 (to be released)
 
 * Added JComboBoxSelectedItemProperty and JComboBoxSelectedIndexProperty in the Swing package
 * Moved the SimpleFormatProperty to core
 * Made the FormatTransformer and ParseTransformer use a format property to allow binding on the used Format object
 * Added simple NumberTo*Transformers in core
+* Made it possible to inhibit firing of value change events of readable properties
 
 # Version 3.0.3
 

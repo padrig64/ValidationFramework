@@ -50,7 +50,7 @@ public class NegateBooleanPropertyWrapper extends AbstractReadableProperty<Boole
         public void valueChanged(ReadableProperty<Boolean> property, Boolean oldValue, Boolean newValue) {
             Boolean transformedOldValue = transformer.transform(oldValue);
             Boolean transformedNewValue = transformer.transform(newValue);
-            notifyListeners(transformedOldValue, transformedNewValue);
+            maybeNotifyListeners(transformedOldValue, transformedNewValue);
         }
     }
 

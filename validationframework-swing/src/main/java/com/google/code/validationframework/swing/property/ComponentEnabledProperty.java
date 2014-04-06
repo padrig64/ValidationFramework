@@ -125,7 +125,7 @@ public class ComponentEnabledProperty extends AbstractReadableWritableProperty<B
         if (updatingFromComponent) {
             Boolean oldValue = this.value;
             this.value = value;
-            notifyListeners(oldValue, this.value);
+            maybeNotifyListeners(oldValue, this.value);
         } else if (value != null) {
             component.setEnabled(value);
         }

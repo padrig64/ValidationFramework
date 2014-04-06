@@ -168,6 +168,6 @@ public class CompositeReadableProperty<R> extends AbstractReadableProperty<Colle
     private void setValue(Collection<R> values) {
         Collection<R> oldValues = this.values;
         this.values = values;
-        notifyListeners(oldValues, values);
+        maybeNotifyListeners(oldValues, values);
     }
 }

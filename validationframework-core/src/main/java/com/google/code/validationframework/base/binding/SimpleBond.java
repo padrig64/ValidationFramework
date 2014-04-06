@@ -25,10 +25,10 @@
 
 package com.google.code.validationframework.base.binding;
 
+import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.api.property.ReadableProperty;
 import com.google.code.validationframework.api.property.ValueChangeListener;
 import com.google.code.validationframework.api.property.WritableProperty;
-import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.api.transform.Transformer;
 import com.google.code.validationframework.base.property.CompositeWritableProperty;
 
@@ -44,7 +44,8 @@ import java.util.Collection;
  *
  * @see Binder
  * @see com.google.code.validationframework.base.property.CompositeReadableProperty
- * @see com.google.code.validationframework.base.property.CompositeWritableProperty
+ * @see CompositeWritableProperty
+ * @see com.google.code.validationframework.base.transform.ChainedTransformer
  */
 public class SimpleBond<MO, SI> implements Disposable {
 
@@ -121,8 +122,8 @@ public class SimpleBond<MO, SI> implements Disposable {
      * @param transformer Transformer (possible composite) to be part of the bond.
      * @param slaves      Slave properties to be part of the bond.
      */
-    public SimpleBond(ReadableProperty<MO> master, Transformer<MO, SI> transformer, Collection<WritableProperty<SI>>
-            slaves) {
+    public SimpleBond(ReadableProperty<MO> master, Transformer<MO, SI> transformer,
+                      Collection<WritableProperty<SI>> slaves) {
         this(master, transformer, new CompositeWritableProperty<SI>(slaves));
     }
 

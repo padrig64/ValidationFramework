@@ -168,7 +168,7 @@ public class JTextComponentTextProperty extends AbstractReadableWritableProperty
         if (updatingFromDocument) {
             String oldValue = this.value;
             this.value = value;
-            notifyListeners(oldValue, this.value);
+            maybeNotifyListeners(oldValue, this.value);
         } else {
             // Use setText() because it already does all what is needed to update the document
             textComponent.setText(value);

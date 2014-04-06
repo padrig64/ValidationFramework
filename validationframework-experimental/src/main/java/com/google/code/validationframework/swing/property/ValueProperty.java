@@ -88,7 +88,7 @@ public class ValueProperty extends AbstractReadableProperty<Object> implements
                 Object oldValue = this.value;
                 this.value = value;
                 formattedTextField.setValue(value);
-                notifyListeners(oldValue, value);
+                maybeNotifyListeners(oldValue, value);
             }
 
             settingValue = false;

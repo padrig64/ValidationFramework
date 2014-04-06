@@ -52,7 +52,7 @@ public class ReadOnlyPropertyWrapper<R> extends AbstractReadableProperty<R> impl
          */
         @Override
         public void valueChanged(ReadableProperty<R> property, R oldValue, R newValue) {
-            notifyListeners(oldValue, newValue);
+            maybeNotifyListeners(oldValue, newValue);
         }
     }
 

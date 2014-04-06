@@ -61,7 +61,7 @@ public class InvokeLaterWrapper<T> extends AbstractReadableWritableProperty<T, T
          */
         @Override
         public void run() {
-            notifyListeners(oldValue, getValue());
+            maybeNotifyListeners(oldValue, getValue());
         }
     }
 

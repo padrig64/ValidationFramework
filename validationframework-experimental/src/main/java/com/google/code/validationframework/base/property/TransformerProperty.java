@@ -99,7 +99,7 @@ public class TransformerProperty<R, W> extends AbstractReadableWritableProperty<
             if (!ValueUtils.areEqual(this.value, newValue)) {
                 R oldValue = this.value;
                 this.value = newValue;
-                notifyListeners(oldValue, newValue);
+                maybeNotifyListeners(oldValue, newValue);
             }
 
             settingValue = false;

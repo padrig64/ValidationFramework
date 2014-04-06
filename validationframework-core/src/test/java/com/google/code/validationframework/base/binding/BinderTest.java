@@ -23,9 +23,8 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.base.property;
+package com.google.code.validationframework.base.binding;
 
-import com.google.code.validationframework.base.binding.Binder;
 import com.google.code.validationframework.base.property.simple.SimpleBooleanProperty;
 import com.google.code.validationframework.base.property.simple.SimpleIntegerProperty;
 import com.google.code.validationframework.base.property.simple.SimpleProperty;

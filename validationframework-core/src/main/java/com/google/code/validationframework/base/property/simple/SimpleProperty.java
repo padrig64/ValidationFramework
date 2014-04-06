@@ -87,7 +87,7 @@ public class SimpleProperty<T> extends AbstractReadableWritableProperty<T, T> {
             if (!ValueUtils.areEqual(this.value, value)) {
                 T oldValue = this.value;
                 this.value = value;
-                notifyListeners(oldValue, value);
+                maybeNotifyListeners(oldValue, value);
             }
 
             settingValue = false;

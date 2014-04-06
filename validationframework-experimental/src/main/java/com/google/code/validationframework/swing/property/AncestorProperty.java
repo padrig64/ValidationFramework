@@ -85,7 +85,7 @@ public class AncestorProperty extends AbstractReadableProperty<Container> implem
         if (!ValueUtils.areEqual(this.value, value)) {
             Container oldValue = this.value;
             this.value = value;
-            notifyListeners(oldValue, value);
+            maybeNotifyListeners(oldValue, value);
         }
     }
 }
