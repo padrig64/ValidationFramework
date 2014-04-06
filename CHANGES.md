@@ -1,6 +1,6 @@
 # Version 3.1.0
 
-* Added JComboBoxSelectedItemProperty and JComboBoxSelectedIndexProperty in the Swing package
+* Added JComboBoxSelectedIndexProperty and JComboBoxSelectedValueProperty in the Swing package
 * Moved the SimpleFormatProperty to core
 * Made the FormatTransformer and ParseTransformer use a format property to allow binding on the used Format object
 * Added simple NumberTo*Transformers in core
