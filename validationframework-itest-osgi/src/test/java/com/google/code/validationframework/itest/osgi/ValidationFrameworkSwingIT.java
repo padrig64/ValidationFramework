@@ -84,6 +84,7 @@ public class ValidationFrameworkSwingIT {
         }
     }
 
+    @Ignore
     @Test
     public void swingInputAndResultHandling() throws Exception {
         // Assume a non-headless environment

@@ -45,6 +45,7 @@ public class ValidationFrameworkExperimentalIT {
                 "validationframework-experimental").versionAsInProject(), TestOptions.junitAndMockitoBundles());
     }
 
+    @Ignore
     @SuppressWarnings("unchecked")
     @Test
     public void simpleValidatorBuilder() {
