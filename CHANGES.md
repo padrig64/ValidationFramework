@@ -1,3 +1,8 @@
+# Version 3.1.1 (to be released)
+
+* Made the FormatTransformerWrapper return the toString() of the input when no format is specified
+* Improved implementation of the SimpleProperty
+
 # Version 3.1.0
 
 * Added JComboBoxSelectedIndexProperty and JComboBoxSelectedValueProperty in the Swing package

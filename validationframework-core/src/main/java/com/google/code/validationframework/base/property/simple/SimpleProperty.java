@@ -26,7 +26,6 @@
 package com.google.code.validationframework.base.property.simple;
 
 import com.google.code.validationframework.base.property.AbstractReadableWritableProperty;
-import com.google.code.validationframework.base.utils.ValueUtils;
 
 /**
  * Simple implementation of a property that is both readable and writable.
@@ -84,11 +83,9 @@ public class SimpleProperty<T> extends AbstractReadableWritableProperty<T, T> {
             settingValue = true;
 
             // Update slaves only if the new value is different than the previous value
-            if (!ValueUtils.areEqual(this.value, value)) {
-                T oldValue = this.value;
-                this.value = value;
-                maybeNotifyListeners(oldValue, value);
-            }
+            T oldValue = this.value;
+            this.value = value;
+            maybeNotifyListeners(oldValue, value);
 
             settingValue = false;
         }

@@ -40,7 +40,7 @@ import java.text.Format;
  *
  * @see ParseTransformer
  */
-public class FormatTransformer implements Transformer<Object, String> {
+public class FormatTransformer<T> implements Transformer<T, String> {
 
     /**
      * Format property to be used for formatting.
@@ -87,14 +87,19 @@ public class FormatTransformer implements Transformer<Object, String> {
      * @see Transformer#transform(Object)
      */
     @Override
-    public String transform(Object input) {
-        String output = null;
+    public String transform(T input) {
+        String output;
 
-        if ((formatProperty.getValue() != null) && (input != null)) {
+        if (input == null) {
+            output = null;
+        } else if (formatProperty.getValue() == null) {
+            output = input.toString();
+        } else {
             try {
                 output = formatProperty.getValue().format(input);
             } catch (IllegalArgumentException e) {
                 // Ignore: null will be returned
+                output = null;
             }
         }
 
