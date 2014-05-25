@@ -4,6 +4,7 @@
 * Improved implementation of the SimpleProperty
 * Fixed useless firing of value change events when binding properties
 * Added PrintStreamValueChangeAdapter to help debugging
+* Added convenience method in the FormatTransformer to get the format property
 
 # Version 3.1.0
 

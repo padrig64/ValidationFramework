@@ -66,6 +66,15 @@ public class FormatTransformer<T> implements Transformer<T, String> {
     }
 
     /**
+     * Gets the property holding the format object used for formatting.
+     *
+     * @return Format property.
+     */
+    public ReadableWritableProperty<Format, Format> getFormatProperty() {
+        return formatProperty;
+    }
+
+    /**
      * Gets the format object used for formatting.
      *
      * @return Format object used for formatting.
