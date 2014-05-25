@@ -33,12 +33,12 @@ import com.google.code.validationframework.base.transform.ChainedTransformer;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 
 /**
  * Utility class that can be used to help binding properties and transform their values.
  * <p/>
- * This binder utility will create {@link SimpleBond}s between properties. These bonds can be broken by calling their {@link
+ * This binder utility will create {@link SimpleBond}s between properties. These bonds can be broken by calling their
+ * {@link
  * SimpleBond#dispose()} method.
  * <p/>
  * If you are using JavaFX, you should better use JavaFX's property binding mechanism. The binding mechanism provided by
@@ -100,7 +100,7 @@ public final class Binder {
          * @return Bond between the master and the slave.
          */
         public SimpleBond<MO, SI> write(WritableProperty<SI> slave) {
-            return write(Collections.singleton(slave));
+            return new SimpleBond<MO, SI>(master, transformer, slave);
         }
 
         /**
@@ -178,7 +178,7 @@ public final class Binder {
          * @return Bond between the masters and the slave.
          */
         public SimpleBond<Collection<MO>, SI> write(WritableProperty<SI> slave) {
-            return write(Collections.singleton(slave));
+            return new SimpleBond<Collection<MO>, SI>(new CompositeReadableProperty<MO>(masters), transformer, slave);
         }
 
         /**

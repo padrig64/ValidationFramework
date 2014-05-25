@@ -59,11 +59,7 @@ public class SimpleBond<MO, SI> implements Disposable {
          */
         @Override
         public void valueChanged(ReadableProperty<MO> property, MO oldValue, MO newValue) {
-            // Transform value
-            SI slaveInputValue = transformer.transform(newValue);
-
-            // Notify slave(s)
-            slave.setValue(slaveInputValue);
+            updateSlaves(newValue);
         }
     }
 
@@ -75,17 +71,17 @@ public class SimpleBond<MO, SI> implements Disposable {
     /**
      * Master (possibly composite) that is part of the bond.
      */
-    private final ReadableProperty<MO> master;
+    private ReadableProperty<MO> master;
 
     /**
      * Transformer (possible composite) to be part of the bond.
      */
-    private final Transformer<MO, SI> transformer;
+    private Transformer<MO, SI> transformer;
 
     /**
      * Slave (possibly composite) that is part of the bond.
      */
-    private final WritableProperty<SI> slave;
+    private WritableProperty<SI> slave;
 
     /**
      * Constructor specifying the master property, the transformers and the slaves that are part of the binding.
@@ -100,14 +96,7 @@ public class SimpleBond<MO, SI> implements Disposable {
      * @param slave       Slave (possibly composite) property to be part of the bond.
      */
     public SimpleBond(ReadableProperty<MO> master, Transformer<MO, SI> transformer, WritableProperty<SI> slave) {
-        this.master = master;
-        this.transformer = transformer;
-        this.slave = slave;
-
-        master.addValueChangeListener(masterAdapter);
-
-        // Slave initial values
-        masterAdapter.valueChanged(master, null, master.getValue());
+        init(master, transformer, slave);
     }
 
     /**
@@ -124,7 +113,45 @@ public class SimpleBond<MO, SI> implements Disposable {
      */
     public SimpleBond(ReadableProperty<MO> master, Transformer<MO, SI> transformer,
                       Collection<WritableProperty<SI>> slaves) {
-        this(master, transformer, new CompositeWritableProperty<SI>(slaves));
+        // Initialize bond
+        CompositeWritableProperty<SI> compositeSlave = new CompositeWritableProperty<SI>();
+        init(master, transformer, compositeSlave);
+
+        // Add slave properties only after initialization, otherwise they will first be set to null
+        for (WritableProperty<SI> slave : slaves) {
+            compositeSlave.addProperty(slave);
+        }
+    }
+
+    /**
+     * Initializes the bond.
+     *
+     * @param master      Master (possibly composite) property.
+     * @param transformer Value transformer.
+     * @param slave       Slave (possibly composite) property.
+     */
+    private void init(ReadableProperty<MO> master, Transformer<MO, SI> transformer, WritableProperty<SI> slave) {
+        this.master = master;
+        this.transformer = transformer;
+        this.slave = slave;
+
+        master.addValueChangeListener(masterAdapter);
+
+        // Slave initial values
+        updateSlaves(master.getValue());
+    }
+
+    /**
+     * Sets the value of the slaves according the value of the master.
+     *
+     * @param masterOutputValue Master value.
+     */
+    private void updateSlaves(MO masterOutputValue) {
+        // Transform value
+        SI slaveInputValue = transformer.transform(masterOutputValue);
+
+        // Notify slave(s)
+        slave.setValue(slaveInputValue);
     }
 
     /**
