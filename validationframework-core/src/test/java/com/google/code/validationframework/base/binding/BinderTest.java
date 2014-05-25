@@ -25,10 +25,8 @@
 
 package com.google.code.validationframework.base.binding;
 
-import com.google.code.validationframework.api.property.ReadableProperty;
 import com.google.code.validationframework.api.property.ReadableWritableProperty;
 import com.google.code.validationframework.api.property.ValueChangeListener;
-import com.google.code.validationframework.base.property.PrintStreamValueChangeAdapter;
 import com.google.code.validationframework.base.property.simple.SimpleBooleanProperty;
 import com.google.code.validationframework.base.property.simple.SimpleIntegerProperty;
 import com.google.code.validationframework.base.property.simple.SimpleProperty;
@@ -39,6 +37,10 @@ import org.junit.Test;
 
 import static com.google.code.validationframework.base.binding.Binder.read;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 /**
  * @see Binder
@@ -107,34 +109,40 @@ public class BinderTest {
         assertEquals(Integer.valueOf(36), first.getValue());
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void testEventsFireWithOneSlave() {
         ReadableWritableProperty<String, String> master = new SimpleStringProperty("New value");
         ReadableWritableProperty<String, String> slave = new SimpleStringProperty("Initial value");
-        slave.addValueChangeListener(new PrintStreamValueChangeAdapter<String>("Slave"));
-        slave.addValueChangeListener(new ValueChangeListener<String>() {
-            @Override
-            public void valueChanged(ReadableProperty<String> property, String oldValue, String newValue) {
-                System.out.println("BinderTest.valueChanged");
-            }
-        });
+
+        ValueChangeListener<String> slaveListenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
+        slave.addValueChangeListener(slaveListenerMock);
 
         read(master).write(slave);
+
+        // Check exactly one event fired
+        verify(slaveListenerMock).valueChanged(slave, "Initial value", "New value");
+        verify(slaveListenerMock).valueChanged(any(SimpleStringProperty.class), anyString(), anyString());
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void testEventsFiredWithSeveralSaves() {
         ReadableWritableProperty<String, String> master = new SimpleStringProperty("New value");
         ReadableWritableProperty<String, String> slave1 = new SimpleStringProperty("Initial value 1");
         ReadableWritableProperty<String, String> slave2 = new SimpleStringProperty("Initial value 2");
-        slave1.addValueChangeListener(new PrintStreamValueChangeAdapter<String>("Slave"));
-        slave1.addValueChangeListener(new ValueChangeListener<String>() {
-            @Override
-            public void valueChanged(ReadableProperty<String> property, String oldValue, String newValue) {
-                System.out.println("BinderTest.valueChanged");
-            }
-        });
+
+        ValueChangeListener<String> slave1ListenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
+        slave1.addValueChangeListener(slave1ListenerMock);
+        ValueChangeListener<String> slave2ListenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
+        slave2.addValueChangeListener(slave2ListenerMock);
 
         read(master).write(slave1, slave2);
+
+        // Check exactly one event fired for each slave
+        verify(slave1ListenerMock).valueChanged(slave1, "Initial value 1", "New value");
+        verify(slave1ListenerMock).valueChanged(any(SimpleStringProperty.class), anyString(), anyString());
+        verify(slave2ListenerMock).valueChanged(slave2, "Initial value 2", "New value");
+        verify(slave2ListenerMock).valueChanged(any(SimpleStringProperty.class), anyString(), anyString());
     }
 }
