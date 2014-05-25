@@ -3,6 +3,7 @@
 * Made the FormatTransformerWrapper return the toString() of the input when no format is specified
 * Improved implementation of the SimpleProperty
 * Fixed useless firing of value change events when binding properties
+* Added PrintStreamValueChangeAdapter to help debugging
 
 # Version 3.1.0
 
