@@ -30,6 +30,8 @@ import com.google.code.validationframework.api.property.ValueChangeListener;
 import com.google.code.validationframework.base.utils.ValueUtils;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -80,6 +82,17 @@ public abstract class AbstractReadableProperty<R> implements ReadableProperty<R>
      * {@link #inhibitCount} is 0.
      */
     private R lastInhibitedValue = null;
+
+    /**
+     * Gets the registered value change listeners.
+     * <p/>
+     * Note that the returned collection is not modifiable.
+     *
+     * @return Value change listeners.
+     */
+    public Collection<ValueChangeListener<R>> getValueChangeListeners() {
+        return Collections.unmodifiableList(listeners);
+    }
 
     /**
      * @see ReadableProperty#addValueChangeListener(ValueChangeListener)

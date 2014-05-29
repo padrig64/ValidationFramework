@@ -33,31 +33,27 @@ package com.google.code.validationframework.api.property;
  * JavaFX has a much more furnished API to achieve similar goals and much more.
  *
  * @param <R> Type of data that can be read from this property.
- *
- * @see WritableProperty
  */
 public interface ReadableProperty<R> {
 
     /**
-     * Adds a {@link WritableProperty} as a slave.
+     * Adds a value change listener.
      * <p/>
-     * Anytime readable property value changes, the slaved {@link WritableProperty}s will also be set.
+     * Anytime readable property value changes, the listener will be notified.
      *
-     * @param listener {@link WritableProperty} to be slaved.
+     * @param listener Value change listener to be added.
      */
     void addValueChangeListener(ValueChangeListener<R> listener);
 
     /**
-     * Removes the {@link WritableProperty}.
+     * Removes the value change listener.
      *
-     * @param listener {@link WritableProperty} that should no longer be slaved.
+     * @param listener Value change listener to be removed..
      */
     void removeValueChangeListener(ValueChangeListener<R> listener);
 
     /**
      * Gets the value of the property.
-     * <p/>
-     * This method can be called by the programmer or a {@link WritableProperty} that is bound to it.
      *
      * @return Property value.
      */

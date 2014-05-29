@@ -5,6 +5,7 @@
 * Fixed useless firing of value change events when binding properties
 * Added PrintStreamValueChangeAdapter to help debugging
 * Added convenience method in the FormatTransformer to get the format property
+* Added method in AbstractReadableProperty to get the value change listeners
 
 # Version 3.1.0
 
