@@ -1,6 +1,4 @@
 /*
- * %%Ignore-License
- *
  * Copyright (c) 2013, Patrick Moawad
  * All rights reserved.
  *
