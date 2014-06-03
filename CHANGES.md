@@ -6,6 +6,7 @@
 * Added PrintStreamValueChangeAdapter to help debugging
 * Added convenience method in the FormatTransformer to get the format property
 * Added method in AbstractReadableProperty to get the value change listeners
+* Added JLabel and JButton related properties
 
 # Version 3.1.0
 
