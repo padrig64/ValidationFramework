@@ -29,21 +29,22 @@ import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.base.property.AbstractReadableWritableProperty;
 
 import java.awt.Component;
+import java.awt.Point;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
 /**
- * Readable/writable property representing the visible state of a {@link Component}.
+ * Readable/writable property representing the location of a {@link Component}, relatively to its parent.
  * <p/>
- * It is possible to control the visible state of the component by setting the value of this property or by calling the
- * {@link Component#setVisible(boolean)} method of that component.
+ * It is possible to control the location of the component by setting the value of this property or by calling the
+ * {@link Component#setLocation(Point)} method of that component.
  * <p/>
- * If the value of this property is set to null, the component visible state will not be changed.
+ * However, note that the layout manager of the parent container may also modify the location of the component.
  */
-public class ComponentVisibleProperty extends AbstractReadableWritableProperty<Boolean, Boolean> implements Disposable {
+public class ComponentLocationProperty extends AbstractReadableWritableProperty<Point, Point> implements Disposable {
 
     /**
-     * Visible state tracker.
+     * Location tracker.
      */
     private class EventAdapter implements ComponentListener {
 
@@ -52,7 +53,7 @@ public class ComponentVisibleProperty extends AbstractReadableWritableProperty<B
          */
         @Override
         public void componentShown(ComponentEvent e) {
-            updateFromComponent();
+            // Nothing to be done
         }
 
         /**
@@ -60,7 +61,7 @@ public class ComponentVisibleProperty extends AbstractReadableWritableProperty<B
          */
         @Override
         public void componentHidden(ComponentEvent e) {
-            updateFromComponent();
+            // Nothing to be done
         }
 
         /**
@@ -76,45 +77,45 @@ public class ComponentVisibleProperty extends AbstractReadableWritableProperty<B
          */
         @Override
         public void componentMoved(ComponentEvent e) {
-            // Nothing to be done
+            updateFromComponent();
         }
 
         /**
-         * Sets the value of the property based on the visible state of the component.
+         * Sets the value of the property based on the location of the component.
          */
         private void updateFromComponent() {
             updatingFromComponent = true;
-            setValue(component.isVisible());
+            setValue(component.getLocation());
             updatingFromComponent = false;
         }
     }
 
     /**
-     * Component to track the visible state for.
+     * Component to track the location of.
      */
     private final Component component;
 
     /**
-     * Visible state tracker.
+     * Location tracker.
      */
     private final EventAdapter eventAdapter = new EventAdapter();
 
     /**
      * Current property value.
      */
-    private Boolean value = null;
+    private Point value = null;
 
     /**
-     * Flag indicating whether the {@link #setValue(Boolean)} call is due to a property change event.
+     * Flag indicating whether the {@link #setValue(Point)} call is due to a property change event.
      */
     private boolean updatingFromComponent = false;
 
     /**
      * Constructor specifying the component for which the property applies.
      *
-     * @param component Component whose visible property is to be tracked.
+     * @param component Component whose location property is to be tracked.
      */
-    public ComponentVisibleProperty(Component component) {
+    public ComponentLocationProperty(Component component) {
         super();
 
         // Hook to component
@@ -122,7 +123,7 @@ public class ComponentVisibleProperty extends AbstractReadableWritableProperty<B
         this.component.addComponentListener(eventAdapter);
 
         // Set initial value
-        value = component.isVisible();
+        value = component.getLocation();
     }
 
     /**
@@ -138,7 +139,7 @@ public class ComponentVisibleProperty extends AbstractReadableWritableProperty<B
      * @see AbstractReadableWritableProperty#getValue()
      */
     @Override
-    public Boolean getValue() {
+    public Point getValue() {
         return value;
     }
 
@@ -146,13 +147,13 @@ public class ComponentVisibleProperty extends AbstractReadableWritableProperty<B
      * @see AbstractReadableWritableProperty#setValue(Object)
      */
     @Override
-    public void setValue(Boolean value) {
+    public void setValue(Point value) {
         if (updatingFromComponent) {
-            Boolean oldValue = this.value;
+            Point oldValue = this.value;
             this.value = value;
             maybeNotifyListeners(oldValue, this.value);
         } else if (value != null) {
-            component.setVisible(value);
+            component.setLocation(value);
         }
     }
 }
