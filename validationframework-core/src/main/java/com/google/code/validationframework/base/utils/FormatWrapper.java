@@ -127,6 +127,15 @@ public class FormatWrapper<T> extends Format {
     }
 
     /**
+     * Gets the delegate format used to format and parse.
+     *
+     * @return Delegate format.
+     */
+    public Format getDelegateFormat() {
+        return delegate;
+    }
+
+    /**
      * States whether strict parsing is enabled.
      *
      * @return True if strict parsing is enabled, false otherwise.
