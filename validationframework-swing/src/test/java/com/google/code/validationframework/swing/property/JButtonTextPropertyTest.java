@@ -29,7 +29,7 @@ import com.google.code.validationframework.api.property.ReadableWritableProperty
 import com.google.code.validationframework.api.property.ValueChangeListener;
 import org.junit.Test;
 
-import javax.swing.JLabel;
+import javax.swing.JButton;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
@@ -38,75 +38,75 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 /**
- * @see JLabelTextProperty
+ * @see JButtonTextProperty
  */
-public class JLabelTextPropertyTest {
+public class JButtonTextPropertyTest {
 
     @SuppressWarnings("unchecked")
     @Test
     public void testNullFromProperty() {
-        JLabel label = new JLabel("Text");
-        ReadableWritableProperty<String, String> textProperty = new JLabelTextProperty(label);
+        JButton button = new JButton("Text");
+        ReadableWritableProperty<String, String> textProperty = new JButtonTextProperty(button);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
         textProperty.addValueChangeListener(listenerMock);
 
         assertEquals("Text", textProperty.getValue());
         textProperty.setValue(null);
-        assertEquals(null, label.getText());
+        assertEquals(null, button.getText());
 
         // Check exactly one event fired
         verify(listenerMock).valueChanged(textProperty, "Text", null);
-        verify(listenerMock).valueChanged(any(JLabelTextProperty.class), anyString(), anyString());
+        verify(listenerMock).valueChanged(any(JButtonTextProperty.class), anyString(), anyString());
     }
 
     @SuppressWarnings("unchecked")
     @Test
     public void testNonNullFromProperty() {
-        JLabel label = new JLabel("Text");
-        ReadableWritableProperty<String, String> textProperty = new JLabelTextProperty(label);
+        JButton button = new JButton("Text");
+        ReadableWritableProperty<String, String> textProperty = new JButtonTextProperty(button);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
         textProperty.addValueChangeListener(listenerMock);
 
         assertEquals("Text", textProperty.getValue());
         textProperty.setValue("Another text");
-        assertEquals("Another text", label.getText());
+        assertEquals("Another text", button.getText());
 
         // Check exactly one event fired
         verify(listenerMock).valueChanged(textProperty, "Text", "Another text");
-        verify(listenerMock).valueChanged(any(JLabelTextProperty.class), anyString(), anyString());
+        verify(listenerMock).valueChanged(any(JButtonTextProperty.class), anyString(), anyString());
     }
 
     @SuppressWarnings("unchecked")
     @Test
     public void testNullFromComponent() {
-        JLabel label = new JLabel("Text");
-        ReadableWritableProperty<String, String> textProperty = new JLabelTextProperty(label);
+        JButton button = new JButton("Text");
+        ReadableWritableProperty<String, String> textProperty = new JButtonTextProperty(button);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
         textProperty.addValueChangeListener(listenerMock);
 
         assertEquals("Text", textProperty.getValue());
-        label.setText(null);
+        button.setText(null);
         assertEquals(null, textProperty.getValue());
 
         // Check exactly one event fired
         verify(listenerMock).valueChanged(textProperty, "Text", null);
-        verify(listenerMock).valueChanged(any(JLabelTextProperty.class), anyString(), anyString());
+        verify(listenerMock).valueChanged(any(JButtonTextProperty.class), anyString(), anyString());
     }
 
     @SuppressWarnings("unchecked")
     @Test
     public void testNonNullFromComponent() {
-        JLabel label = new JLabel("Text");
-        ReadableWritableProperty<String, String> textProperty = new JLabelTextProperty(label);
+        JButton button = new JButton("Text");
+        ReadableWritableProperty<String, String> textProperty = new JButtonTextProperty(button);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
         textProperty.addValueChangeListener(listenerMock);
 
         assertEquals("Text", textProperty.getValue());
-        label.setText("Another text");
+        button.setText("Another text");
         assertEquals("Another text", textProperty.getValue());
 
         // Check exactly one event fired
         verify(listenerMock).valueChanged(textProperty, "Text", "Another text");
-        verify(listenerMock).valueChanged(any(JLabelTextProperty.class), anyString(), anyString());
+        verify(listenerMock).valueChanged(any(JButtonTextProperty.class), anyString(), anyString());
     }
 }
