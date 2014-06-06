@@ -40,6 +40,9 @@ import java.awt.event.ComponentListener;
  * {@link Component#setLocation(Point)} method of that component.
  * <p/>
  * However, note that the layout manager of the parent container may also modify the location of the component.
+ * <p/>
+ * Note that changing the X or Y coordinate of the {@link Point} object directly will have no effect on this property.
+ * It is therefore not advised.
  */
 public class ComponentLocationProperty extends AbstractReadableWritableProperty<Point, Point> implements Disposable {
 

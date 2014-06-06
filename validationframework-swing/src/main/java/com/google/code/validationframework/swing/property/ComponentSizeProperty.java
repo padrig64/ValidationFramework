@@ -40,6 +40,9 @@ import java.awt.event.ComponentListener;
  * Component#setSize(Dimension)} method of that component.
  * <p/>
  * However, note that the layout manager of the parent container may also modify the size of the component.
+ * <p/>
+ * Note that changing the width or height attribute of the {@link Dimension} object directly will have no effect on this
+ * property. It is therefore not advised.
  */
 public class ComponentSizeProperty extends AbstractReadableWritableProperty<Dimension,
         Dimension> implements Disposable {
