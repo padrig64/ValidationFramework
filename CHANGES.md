@@ -10,6 +10,7 @@
 * Added text and icon related properties for JLabel and JButton
 * Added component size and location related properties
 * Added component minimum/preferred/maximum size related properties
+* Added window/dialog/frame related properties
 
 # Version 3.1.0
 
