@@ -34,6 +34,9 @@ import javax.swing.JButton;
  * JButton#setText(String)} method of that button.
  * <p/>
  * If the value of this property is set to null, the button will be emptied.
+ *
+ * @see JButton#getText()
+ * @see JButton#setText(String)
  */
 public class JButtonTextProperty extends AbstractComponentProperty<JButton, String> {
 

@@ -25,12 +25,7 @@
 
 package com.google.code.validationframework.swing.property;
 
-import com.google.code.validationframework.api.common.Disposable;
-import com.google.code.validationframework.base.property.AbstractReadableWritableProperty;
-
 import javax.swing.JToggleButton;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 
 /**
  * Readable/writable property representing the selected state of a {@link JToggleButton}.
@@ -40,91 +35,33 @@ import java.awt.event.ItemListener;
  * It is possible to control the selected state of the component by setting the value of this property or by calling the
  * {@link JToggleButton#setSelected(boolean)} method of that component.
  * <p/>
- * If the value of this property is set to null, the component selected state will not be changed.
+ * Finally note that null values are not supported by this property.
+ *
+ * @see JToggleButton#isSelected()
+ * @see JToggleButton#setSelected(boolean)
  */
-public class JToggleButtonSelectedProperty extends AbstractReadableWritableProperty<Boolean,
-        Boolean> implements Disposable {
+public class JToggleButtonSelectedProperty extends AbstractComponentProperty<JToggleButton, Boolean> {
 
     /**
-     * Selected state tracker.
-     */
-    private class EventAdapter implements ItemListener {
-
-        /**
-         * @see ItemListener#itemStateChanged(ItemEvent)
-         */
-        @Override
-        public void itemStateChanged(ItemEvent e) {
-            updatingFromComponent = true;
-            setValue(component.isSelected());
-            updatingFromComponent = false;
-        }
-    }
-
-    /**
-     * Component to track the selected state for.
-     */
-    private final JToggleButton component;
-
-    /**
-     * Selected state tracker.
-     */
-    private final EventAdapter eventAdapter = new EventAdapter();
-
-    /**
-     * Current property value.
-     */
-    private Boolean value = null;
-
-    /**
-     * Flag indicating whether the {@link #setValue(Boolean)} call is due to a item state change event.
-     */
-    private boolean updatingFromComponent = false;
-
-    /**
-     * Constructor specifying the component for which the property applies.
-     *
-     * @param component Component whose selected property is to be tracked.
+     * @see AbstractComponentProperty#AbstractComponentProperty(java.awt.Component, String)
      */
     public JToggleButtonSelectedProperty(JToggleButton component) {
-        super();
-
-        // Hook to component
-        this.component = component;
-        this.component.addItemListener(eventAdapter);
-
-        // Set initial value
-        value = component.isSelected();
+        super(component, "selected");
     }
 
     /**
-     * @see Disposable#dispose()
+     * @see AbstractComponentProperty#getPropertyValueFromComponent()
      */
     @Override
-    public void dispose() {
-        // Unhook from component
-        component.removeItemListener(eventAdapter);
+    protected Boolean getPropertyValueFromComponent() {
+        return component.isEnabled();
     }
 
     /**
-     * @see AbstractReadableWritableProperty#getValue()
+     * @see AbstractComponentProperty#setPropertyValueToComponent(Object)
      */
     @Override
-    public Boolean getValue() {
-        return value;
-    }
-
-    /**
-     * @see AbstractReadableWritableProperty#setValue(Object)
-     */
-    @Override
-    public void setValue(Boolean value) {
-        if (updatingFromComponent) {
-            Boolean oldValue = this.value;
-            this.value = value;
-            maybeNotifyListeners(oldValue, this.value);
-        } else if (value != null) {
-            component.setSelected(value);
-        }
+    protected void setPropertyValueToComponent(Boolean value) {
+        component.setSelected(Boolean.TRUE.equals(value));
     }
 }

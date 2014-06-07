@@ -34,6 +34,9 @@ import javax.swing.JLabel;
  * JLabel#setText(String)} method of that label.
  * <p/>
  * If the value of this property is set to null, the label will be emptied.
+ *
+ * @see JLabel#getText()
+ * @see JLabel#setText(String)
  */
 public class JLabelTextProperty extends AbstractComponentProperty<JLabel, String> {
 

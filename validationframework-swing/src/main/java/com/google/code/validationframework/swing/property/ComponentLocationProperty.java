@@ -43,6 +43,11 @@ import java.awt.event.ComponentListener;
  * <p/>
  * Note that changing the X or Y coordinate of the {@link Point} object directly will have no effect on this property.
  * It is therefore not advised.
+ * <p/>
+ * Finally note that null values are not supported by this property.
+ *
+ * @see Component#getLocation()
+ * @see Component#setLocation(Point)
  */
 public class ComponentLocationProperty extends AbstractReadableWritableProperty<Point, Point> implements Disposable {
 
@@ -155,7 +160,7 @@ public class ComponentLocationProperty extends AbstractReadableWritableProperty<
             Point oldValue = this.value;
             this.value = value;
             maybeNotifyListeners(oldValue, this.value);
-        } else if (value != null) {
+        } else {
             component.setLocation(value);
         }
     }

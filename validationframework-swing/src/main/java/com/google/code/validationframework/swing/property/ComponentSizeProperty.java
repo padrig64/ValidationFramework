@@ -43,6 +43,11 @@ import java.awt.event.ComponentListener;
  * <p/>
  * Note that changing the width or height attribute of the {@link Dimension} object directly will have no effect on this
  * property. It is therefore not advised.
+ * <p/>
+ * Finally note that null values are not supported by this property.
+ *
+ * @see Component#getSize()
+ * @see Component#setSize(Dimension)
  */
 public class ComponentSizeProperty extends AbstractReadableWritableProperty<Dimension,
         Dimension> implements Disposable {
@@ -156,7 +161,7 @@ public class ComponentSizeProperty extends AbstractReadableWritableProperty<Dime
             Dimension oldValue = this.value;
             this.value = value;
             maybeNotifyListeners(oldValue, this.value);
-        } else if (value != null) {
+        } else {
             component.setSize(value);
         }
     }

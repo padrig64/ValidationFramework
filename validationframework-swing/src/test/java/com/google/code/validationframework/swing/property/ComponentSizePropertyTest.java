@@ -29,53 +29,72 @@ import com.google.code.validationframework.api.property.ReadableWritableProperty
 import com.google.code.validationframework.api.property.ValueChangeListener;
 import org.junit.Test;
 
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 /**
- * @see ComponentEnabledProperty
+ * @see ComponentSizeProperty
  */
-public class ComponentEnabledPropertyTest {
+public class ComponentSizePropertyTest {
 
     @SuppressWarnings("unchecked")
     @Test
     public void testNonNullFromProperty() {
+        JFrame window = new JFrame();
+        Container contentPane = new JPanel(null);
+        window.setContentPane(contentPane);
         Component component = new JLabel();
-        ReadableWritableProperty<Boolean, Boolean> property = new ComponentEnabledProperty(component);
-        ValueChangeListener<Boolean> listenerMock = (ValueChangeListener<Boolean>) mock(ValueChangeListener.class);
+        contentPane.add(component);
+
+        ReadableWritableProperty<Dimension, Dimension> property = new ComponentSizeProperty(component);
+        ValueChangeListener<Dimension> listenerMock = (ValueChangeListener<Dimension>) mock(ValueChangeListener.class);
         property.addValueChangeListener(listenerMock);
 
-        assertTrue(property.getValue());
-        assertTrue(component.isEnabled());
-        property.setValue(false);
-        assertFalse(component.isEnabled());
+        assertEquals(new Dimension(0, 0), property.getValue());
+        assertEquals(new Dimension(0, 0), component.getSize());
+        property.setValue(new Dimension(11, 12));
+        assertEquals(new Dimension(11, 12), component.getSize());
 
         // Check exactly one event fired
-        verify(listenerMock).valueChanged(property, true, false);
-        verify(listenerMock).valueChanged(any(ComponentEnabledProperty.class), anyBoolean(), anyBoolean());
+        verify(listenerMock).valueChanged(property, new Dimension(0, 0), new Dimension(11, 12));
+        verify(listenerMock).valueChanged(any(ComponentSizeProperty.class), any(Dimension.class), any(Dimension.class));
     }
 
     @SuppressWarnings("unchecked")
     @Test
     public void testNonNullFromComponent() {
+        JFrame window = new JFrame();
+        Container contentPane = new JPanel(null);
+        window.setContentPane(contentPane);
         Component component = new JLabel();
-        ReadableWritableProperty<Boolean, Boolean> property = new ComponentEnabledProperty(component);
-        ValueChangeListener<Boolean> listenerMock = (ValueChangeListener<Boolean>) mock(ValueChangeListener.class);
+        contentPane.add(component);
+
+        ReadableWritableProperty<Dimension, Dimension> property = new ComponentSizeProperty(component);
+        ValueChangeListener<Dimension> listenerMock = (ValueChangeListener<Dimension>) mock(ValueChangeListener.class);
         property.addValueChangeListener(listenerMock);
 
-        assertTrue(property.getValue());
-        component.setEnabled(false);
-        assertFalse(property.getValue());
+        assertEquals(new Dimension(0, 0), property.getValue());
+        assertEquals(new Dimension(0, 0), component.getSize());
+        component.setSize(new Dimension(13, 14));
+        // Wait a little bit because the location may be applied asynchronously
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        assertEquals(new Dimension(13, 14), property.getValue());
 
         // Check exactly one event fired
-        verify(listenerMock).valueChanged(property, true, false);
-        verify(listenerMock).valueChanged(any(ComponentEnabledProperty.class), anyBoolean(), anyBoolean());
+        verify(listenerMock).valueChanged(property, new Dimension(0, 0), new Dimension(13, 14));
+        verify(listenerMock).valueChanged(any(ComponentSizeProperty.class), any(Dimension.class), any(Dimension.class));
     }
 }

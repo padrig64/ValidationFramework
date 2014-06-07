@@ -38,7 +38,10 @@ import java.awt.event.ComponentListener;
  * It is possible to control the visible state of the component by setting the value of this property or by calling the
  * {@link Component#setVisible(boolean)} method of that component.
  * <p/>
- * If the value of this property is set to null, the component visible state will not be changed.
+ * Finally note that null values are not supported by this property.
+ *
+ * @see Component#isVisible()
+ * @see Component#setVisible(boolean)
  */
 public class ComponentVisibleProperty extends AbstractReadableWritableProperty<Boolean, Boolean> implements Disposable {
 
@@ -151,7 +154,7 @@ public class ComponentVisibleProperty extends AbstractReadableWritableProperty<B
             Boolean oldValue = this.value;
             this.value = value;
             maybeNotifyListeners(oldValue, this.value);
-        } else if (value != null) {
+        } else {
             component.setVisible(value);
         }
     }

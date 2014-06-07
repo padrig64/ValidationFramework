@@ -37,7 +37,10 @@ import java.awt.Component;
  * Swing {@link javax.swing.JComponent} does. However, the type {@link Component} is used by this property instead of
  * {@link javax.swing.JComponent} for convenience.
  * <p/>
- * If the value of this property is set to null, the component will be made disabled.
+ * Finally note that null values are not supported by this property.
+ *
+ * @see Component#isEnabled()
+ * @see Component#setEnabled(boolean)
  */
 public class ComponentEnabledProperty extends AbstractComponentProperty<Component, Boolean> {
 
@@ -61,6 +64,6 @@ public class ComponentEnabledProperty extends AbstractComponentProperty<Componen
      */
     @Override
     protected void setPropertyValueToComponent(Boolean value) {
-        component.setEnabled(Boolean.TRUE.equals(value));
+        component.setEnabled(value);
     }
 }

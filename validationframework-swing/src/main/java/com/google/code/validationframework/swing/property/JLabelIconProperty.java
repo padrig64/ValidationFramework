@@ -35,6 +35,9 @@ import javax.swing.JLabel;
  * JLabel#setIcon(Icon)} method of that label.
  * <p/>
  * If the value of this property is set to null, the label will have no icon.
+ *
+ * @see JLabel#getIcon()
+ * @see JLabel#setIcon(Icon)
  */
 public class JLabelIconProperty extends AbstractComponentProperty<JLabel, Icon> {
 

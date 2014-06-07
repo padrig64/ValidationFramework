@@ -39,6 +39,8 @@ import java.awt.event.FocusListener;
  * This property is not writable because of the difficulty of remaining platform-independent and because focus handling
  * is asynchronous: setting the property value to true would not guarantee that the component will be focused and it
  * would also not be immediate either.
+ *
+ * @see Component#isFocusOwner()
  */
 public class ComponentFocusedProperty extends AbstractReadableProperty<Boolean> implements Disposable {
 
@@ -87,6 +89,9 @@ public class ComponentFocusedProperty extends AbstractReadableProperty<Boolean> 
     public ComponentFocusedProperty(Component component) {
         this.component = component;
         this.component.addFocusListener(focusAdapter);
+
+        // Set initial value
+        focused = component.isFocusOwner();
     }
 
     /**

@@ -43,6 +43,10 @@ import java.beans.PropertyChangeListener;
  * component text by calling its {@link JTextComponent#setText(String)} method, or by modifying the contents of its
  * {@link Document}, or by call the {@link #setValue(String)} method. In all cases, this property will notify its
  * listeners of any change.
+ *
+ * @see JTextComponent#getText()
+ * @see JTextComponent#setText(String)
+ * @see Document
  */
 public class JTextComponentTextProperty extends AbstractReadableWritableProperty<String, String> implements Disposable {
 

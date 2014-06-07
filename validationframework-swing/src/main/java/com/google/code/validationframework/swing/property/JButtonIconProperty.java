@@ -35,6 +35,9 @@ import javax.swing.JButton;
  * JButton#setIcon(Icon)} method of that button.
  * <p/>
  * If the value of this property is set to null, the button will have no icon.
+ *
+ * @see JButton#getIcon()
+ * @see JButton#setIcon(Icon)
  */
 public class JButtonIconProperty extends AbstractComponentProperty<JButton, Icon> {
 

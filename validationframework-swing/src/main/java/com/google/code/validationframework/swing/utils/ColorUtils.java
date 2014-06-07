@@ -50,17 +50,17 @@ public final class ColorUtils {
      *
      * @return Color resulting from the color blending.
      */
-    public static Color alphaBlend(final Color src, final Color dst) {
+    public static Color alphaBlend(Color src, Color dst) {
         Color blend;
 
-        final float srcA = (float) src.getAlpha() / 255.0f;
-        final float dstA = (float) dst.getAlpha() / 255.0f;
-        final float outA = srcA + dstA * (1 - srcA);
+        float srcA = (float) src.getAlpha() / 255.0f;
+        float dstA = (float) dst.getAlpha() / 255.0f;
+        float outA = srcA + dstA * (1 - srcA);
 
         if (outA > 0) {
-            final float outR = ((float) src.getRed() * srcA + (float) dst.getRed() * dstA * (1.0f - srcA)) / outA;
-            final float outG = ((float) src.getGreen() * srcA + (float) dst.getGreen() * dstA * (1.0f - srcA)) / outA;
-            final float outB = ((float) src.getBlue() * srcA + (float) dst.getBlue() * dstA * (1.0f - srcA)) / outA;
+            float outR = ((float) src.getRed() * srcA + (float) dst.getRed() * dstA * (1.0f - srcA)) / outA;
+            float outG = ((float) src.getGreen() * srcA + (float) dst.getGreen() * dstA * (1.0f - srcA)) / outA;
+            float outB = ((float) src.getBlue() * srcA + (float) dst.getBlue() * dstA * (1.0f - srcA)) / outA;
             blend = new Color((int) outR, (int) outG, (int) outB, (int) (outA * 255.0f));
         } else {
             blend = new Color(0, 0, 0, 0);
@@ -80,8 +80,8 @@ public final class ColorUtils {
      *
      * @return String representation of the specified color.
      */
-    public static String toString(final Color c) {
-        final StringBuilder sb = new StringBuilder();
+    public static String toString(Color c) {
+        StringBuilder sb = new StringBuilder();
 
         sb.append(c.getClass().getSimpleName()); // Can be a ColorUIResource
         sb.append("[");

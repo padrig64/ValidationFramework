@@ -39,6 +39,10 @@ import java.awt.event.ItemListener;
  * {@link JComboBox#setSelectedIndex(int)} or {@link JComboBox#setSelectedItem(Object)} methods of that component.
  * <p/>
  * If the value of this property is set to null, the component selected index will not be changed.
+ *
+ * @see JComboBox#getSelectedIndex()
+ * @see JComboBox#setSelectedIndex(int)
+ * @see JComboBoxSelectedValueProperty
  */
 public class JComboBoxSelectedIndexProperty extends AbstractReadableWritableProperty<Integer,
         Integer> implements Disposable {
@@ -121,7 +125,7 @@ public class JComboBoxSelectedIndexProperty extends AbstractReadableWritableProp
             Integer oldValue = this.value;
             this.value = value;
             maybeNotifyListeners(oldValue, this.value);
-        } else if (value != null) {
+        } else {
             component.setSelectedIndex(value);
         }
     }
