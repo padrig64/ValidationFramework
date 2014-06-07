@@ -33,7 +33,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 /**
- * Abstract implementation of a readable/writable property representing a bean property of a {@link Component}.
+ * Abstract implementation of a readable/writable property representing a bean property of a {@link Component} that can
+ * be tracked using a {@link PropertyChangeListener}.
  * <p/>
  * It is possible to control the bean property of the component by setting the value of this property or by calling the
  * bean property setter method of that component.

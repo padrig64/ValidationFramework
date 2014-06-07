@@ -25,12 +25,8 @@
 
 package com.google.code.validationframework.swing.property;
 
-import com.google.code.validationframework.api.common.Disposable;
-import com.google.code.validationframework.base.property.AbstractReadableWritableProperty;
-
+import javax.swing.JButton;
 import java.awt.Component;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 /**
  * Readable/writable property representing the enabled state of a {@link Component}.
@@ -44,87 +40,29 @@ import java.beans.PropertyChangeListener;
  * <p/>
  * If the value of this property is set to null, the component enabled state will not be changed.
  */
-public class ComponentEnabledProperty extends AbstractReadableWritableProperty<Boolean, Boolean> implements Disposable {
+public class ComponentEnabledProperty extends AbstractComponentProperty<Component, Boolean> {
 
     /**
-     * Enabled state tracker.
+     * @see AbstractComponentProperty#AbstractComponentProperty(java.awt.Component, String)
      */
-    private class EventAdapter implements PropertyChangeListener {
-
-        /**
-         * @see PropertyChangeListener#propertyChange(PropertyChangeEvent)
-         */
-        @Override
-        public void propertyChange(PropertyChangeEvent evt) {
-            updatingFromComponent = true;
-            setValue(component.isEnabled());
-            updatingFromComponent = false;
-        }
+    public ComponentEnabledProperty(JButton button) {
+        super(button, "enabled");
     }
 
     /**
-     * Component to track the enabled state for.
-     */
-    private final Component component;
-
-    /**
-     * Enabled state tracker.
-     */
-    private final EventAdapter eventAdapter = new EventAdapter();
-
-    /**
-     * Current property value.
-     */
-    private Boolean value = null;
-
-    /**
-     * Flag indicating whether the {@link #setValue(Boolean)} call is due to a property change event.
-     */
-    private boolean updatingFromComponent = false;
-
-    /**
-     * Constructor specifying the component for which the property applies.
-     *
-     * @param component Component whose enabled property is to be tracked.
-     */
-    public ComponentEnabledProperty(Component component) {
-        super();
-
-        // Hook to component
-        this.component = component;
-        this.component.addPropertyChangeListener("enabled", eventAdapter);
-
-        // Set initial value
-        value = component.isEnabled();
-    }
-
-    /**
-     * @see Disposable#dispose()
+     * @see AbstractComponentProperty#getPropertyValueFromComponent()
      */
     @Override
-    public void dispose() {
-        // Unhook from component
-        component.removePropertyChangeListener("enabled", eventAdapter);
+    protected Boolean getPropertyValueFromComponent() {
+        return component.isEnabled();
     }
 
     /**
-     * @see AbstractReadableWritableProperty#getValue()
+     * @see AbstractComponentProperty#setPropertyValueToComponent(Object)
      */
     @Override
-    public Boolean getValue() {
-        return value;
-    }
-
-    /**
-     * @see AbstractReadableWritableProperty#setValue(Object)
-     */
-    @Override
-    public void setValue(Boolean value) {
-        if (updatingFromComponent) {
-            Boolean oldValue = this.value;
-            this.value = value;
-            maybeNotifyListeners(oldValue, this.value);
-        } else if (value != null) {
+    protected void setPropertyValueToComponent(Boolean value) {
+        if (value != null) {
             component.setEnabled(value);
         }
     }
