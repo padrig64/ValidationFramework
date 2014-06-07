@@ -34,7 +34,8 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
 /**
- * Readable/writable property representing the location of a {@link Component}, relatively to its parent.
+ * Readable/writable property representing the location of a {@link Component} (possibly a {@link java.awt.Window}),
+ * relatively to its parent.
  * <p/>
  * It is possible to control the location of the component by setting the value of this property or by calling the
  * {@link Component#setLocation(Point)} method of that component.
