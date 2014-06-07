@@ -65,6 +65,12 @@ public class ComponentLocationPropertyTest {
         assertEquals(new Point(0, 0), property.getValue());
         assertEquals(new Point(0, 0), component.getLocation());
         property.setValue(new Point(11, 12));
+        // Wait a little bit because the location may be applied asynchronously
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         assertEquals(new Point(11, 12), component.getLocation());
 
         // Check exactly one event fired

@@ -5,10 +5,11 @@
 * Fixed useless firing of value change events when binding properties
 * Added PrintStreamValueChangeAdapter to help debugging
 * Added convenience method in the FormatTransformer to get the format property
-* Added method in AbstractReadableProperty to get the value change listeners
-* Added JLabel and JButton related properties
-* Added component size and location related properties
 * Added method to the FormatWrapper to get the delegate format
+* Added method in AbstractReadableProperty to get the value change listeners
+* Added text and icon related properties for JLabel and JButton
+* Added component size and location related properties
+* Added component minimum/preferred/maximum size related properties
 
 # Version 3.1.0
 

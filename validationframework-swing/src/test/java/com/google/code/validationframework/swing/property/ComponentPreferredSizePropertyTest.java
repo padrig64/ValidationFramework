@@ -42,37 +42,28 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 /**
- * @see ComponentSizeProperty
+ * @see ComponentPreferredSizeProperty
  */
-public class ComponentSizePropertyTest {
+public class ComponentPreferredSizePropertyTest {
 
     @SuppressWarnings("unchecked")
     @Test
     public void testNonNullFromProperty() {
-        JFrame window = new JFrame();
-        Container contentPane = new JPanel(null);
-        window.setContentPane(contentPane);
         Component component = new JLabel();
-        contentPane.add(component);
 
-        ReadableWritableProperty<Dimension, Dimension> property = new ComponentSizeProperty(component);
+        ReadableWritableProperty<Dimension, Dimension> property = new ComponentPreferredSizeProperty(component);
         ValueChangeListener<Dimension> listenerMock = (ValueChangeListener<Dimension>) mock(ValueChangeListener.class);
         property.addValueChangeListener(listenerMock);
 
         assertEquals(new Dimension(0, 0), property.getValue());
-        assertEquals(new Dimension(0, 0), component.getSize());
+        assertEquals(new Dimension(0, 0), component.getPreferredSize());
         property.setValue(new Dimension(11, 12));
-        // Wait a little bit because the location may be applied asynchronously
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        assertEquals(new Dimension(11, 12), component.getSize());
+        assertEquals(new Dimension(11, 12), component.getPreferredSize());
 
         // Check exactly one event fired
         verify(listenerMock).valueChanged(property, new Dimension(0, 0), new Dimension(11, 12));
-        verify(listenerMock).valueChanged(any(ComponentSizeProperty.class), any(Dimension.class), any(Dimension.class));
+        verify(listenerMock).valueChanged(any(ComponentPreferredSizeProperty.class), any(Dimension.class),
+                any(Dimension.class));
     }
 
     @SuppressWarnings("unchecked")
@@ -84,23 +75,18 @@ public class ComponentSizePropertyTest {
         Component component = new JLabel();
         contentPane.add(component);
 
-        ReadableWritableProperty<Dimension, Dimension> property = new ComponentSizeProperty(component);
+        ReadableWritableProperty<Dimension, Dimension> property = new ComponentPreferredSizeProperty(component);
         ValueChangeListener<Dimension> listenerMock = (ValueChangeListener<Dimension>) mock(ValueChangeListener.class);
         property.addValueChangeListener(listenerMock);
 
         assertEquals(new Dimension(0, 0), property.getValue());
-        assertEquals(new Dimension(0, 0), component.getSize());
-        component.setSize(new Dimension(13, 14));
-        // Wait a little bit because the location may be applied asynchronously
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        assertEquals(new Dimension(0, 0), component.getPreferredSize());
+        component.setPreferredSize(new Dimension(13, 14));
         assertEquals(new Dimension(13, 14), property.getValue());
 
         // Check exactly one event fired
         verify(listenerMock).valueChanged(property, new Dimension(0, 0), new Dimension(13, 14));
-        verify(listenerMock).valueChanged(any(ComponentSizeProperty.class), any(Dimension.class), any(Dimension.class));
+        verify(listenerMock).valueChanged(any(ComponentPreferredSizeProperty.class), any(Dimension.class),
+                any(Dimension.class));
     }
 }

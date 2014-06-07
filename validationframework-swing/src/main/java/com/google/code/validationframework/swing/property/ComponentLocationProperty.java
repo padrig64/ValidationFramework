@@ -42,7 +42,7 @@ import java.awt.event.ComponentListener;
  * However, note that the layout manager of the parent container may also modify the location of the component.
  * <p/>
  * Note that changing the X or Y coordinate of the {@link Point} object directly will have no effect on this property.
- * It is therefore not advised.
+ * It is therefore not advised to do so.
  * <p/>
  * Finally note that null values are not supported by this property.
  *
