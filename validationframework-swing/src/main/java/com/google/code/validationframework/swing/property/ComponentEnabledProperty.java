@@ -25,7 +25,6 @@
 
 package com.google.code.validationframework.swing.property;
 
-import javax.swing.JButton;
 import java.awt.Component;
 
 /**
@@ -38,15 +37,15 @@ import java.awt.Component;
  * Swing {@link javax.swing.JComponent} does. However, the type {@link Component} is used by this property instead of
  * {@link javax.swing.JComponent} for convenience.
  * <p/>
- * If the value of this property is set to null, the component enabled state will not be changed.
+ * If the value of this property is set to null, the component will be made disabled.
  */
 public class ComponentEnabledProperty extends AbstractComponentProperty<Component, Boolean> {
 
     /**
      * @see AbstractComponentProperty#AbstractComponentProperty(java.awt.Component, String)
      */
-    public ComponentEnabledProperty(JButton button) {
-        super(button, "enabled");
+    public ComponentEnabledProperty(Component component) {
+        super(component, "enabled");
     }
 
     /**
@@ -62,8 +61,6 @@ public class ComponentEnabledProperty extends AbstractComponentProperty<Componen
      */
     @Override
     protected void setPropertyValueToComponent(Boolean value) {
-        if (value != null) {
-            component.setEnabled(value);
-        }
+        component.setEnabled(Boolean.TRUE.equals(value));
     }
 }
