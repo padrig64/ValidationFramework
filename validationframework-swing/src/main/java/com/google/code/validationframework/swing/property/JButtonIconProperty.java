@@ -25,13 +25,8 @@
 
 package com.google.code.validationframework.swing.property;
 
-import com.google.code.validationframework.api.common.Disposable;
-import com.google.code.validationframework.base.property.AbstractReadableWritableProperty;
-
 import javax.swing.Icon;
 import javax.swing.JButton;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 /**
  * Readable/writable property representing the icon bean property of a {@link JButton}.
@@ -41,88 +36,28 @@ import java.beans.PropertyChangeListener;
  * <p/>
  * If the value of this property is set to null, the button will have no icon.
  */
-public class JButtonIconProperty extends AbstractReadableWritableProperty<Icon, Icon> implements Disposable {
+public class JButtonIconProperty extends AbstractComponentProperty<JButton, Icon> {
 
     /**
-     * Bean property tracker.
-     */
-    private class EventAdapter implements PropertyChangeListener {
-
-        /**
-         * @see PropertyChangeListener#propertyChange(PropertyChangeEvent)
-         */
-        @Override
-        public void propertyChange(PropertyChangeEvent evt) {
-            updatingFromComponent = true;
-            setValue(button.getIcon());
-            updatingFromComponent = false;
-        }
-    }
-
-    /**
-     * Button to track the icon of.
-     */
-    private final JButton button;
-
-    /**
-     * Bean property tracker.
-     */
-    private final EventAdapter eventAdapter = new EventAdapter();
-
-    /**
-     * Current property value.
-     */
-    private Icon value = null;
-
-    /**
-     * Flag indicating whether the {@link #setValue(Icon)} call is due to a property change event.
-     */
-    private boolean updatingFromComponent = false;
-
-    /**
-     * Constructor specifying the button for which the property applies.
-     *
-     * @param button Button whose icon property is to be tracked.
+     * @see AbstractComponentProperty#AbstractComponentProperty(java.awt.Component, String)
      */
     public JButtonIconProperty(JButton button) {
-        super();
-
-        // Hook to component
-        this.button = button;
-        this.button.addPropertyChangeListener("icon", eventAdapter);
-
-        // Set initial value
-        value = button.getIcon();
+        super(button, "icon");
     }
 
     /**
-     * @see Disposable#dispose()
+     * @see AbstractComponentProperty#getPropertyValueFromComponent()
      */
     @Override
-    public void dispose() {
-        // Unhook from component
-        button.removePropertyChangeListener("icon", eventAdapter);
+    protected Icon getPropertyValueFromComponent() {
+        return component.getIcon();
     }
 
     /**
-     * @see AbstractReadableWritableProperty#getValue()
+     * @see AbstractComponentProperty#setPropertyValueToComponent(Object)
      */
     @Override
-    public Icon getValue() {
-        return value;
-    }
-
-    /**
-     * @see AbstractReadableWritableProperty#setValue(Object)
-     */
-    @Override
-    public void setValue(Icon value) {
-        if (updatingFromComponent) {
-            Icon oldValue = this.value;
-            this.value = value;
-            maybeNotifyListeners(oldValue, this.value);
-        } else {
-            button.setIcon(value);
-        }
+    protected void setPropertyValueToComponent(Icon value) {
+        component.setIcon(value);
     }
 }

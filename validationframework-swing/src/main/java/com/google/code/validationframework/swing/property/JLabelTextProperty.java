@@ -25,12 +25,7 @@
 
 package com.google.code.validationframework.swing.property;
 
-import com.google.code.validationframework.api.common.Disposable;
-import com.google.code.validationframework.base.property.AbstractReadableWritableProperty;
-
 import javax.swing.JLabel;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 /**
  * Readable/writable property representing the text bean property of a {@link JLabel}.
@@ -40,88 +35,28 @@ import java.beans.PropertyChangeListener;
  * <p/>
  * If the value of this property is set to null, the label will be emptied.
  */
-public class JLabelTextProperty extends AbstractReadableWritableProperty<String, String> implements Disposable {
+public class JLabelTextProperty extends AbstractComponentProperty<JLabel, String> {
 
     /**
-     * Bean property tracker.
-     */
-    private class EventAdapter implements PropertyChangeListener {
-
-        /**
-         * @see PropertyChangeListener#propertyChange(PropertyChangeEvent)
-         */
-        @Override
-        public void propertyChange(PropertyChangeEvent evt) {
-            updatingFromComponent = true;
-            setValue(label.getText());
-            updatingFromComponent = false;
-        }
-    }
-
-    /**
-     * Label to track the text of.
-     */
-    private final JLabel label;
-
-    /**
-     * Bean property tracker.
-     */
-    private final EventAdapter eventAdapter = new EventAdapter();
-
-    /**
-     * Current property value.
-     */
-    private String value = null;
-
-    /**
-     * Flag indicating whether the {@link #setValue(String)} call is due to a property change event.
-     */
-    private boolean updatingFromComponent = false;
-
-    /**
-     * Constructor specifying the label for which the property applies.
-     *
-     * @param label Label whose text property is to be tracked.
+     * @see AbstractComponentProperty#AbstractComponentProperty(java.awt.Component, String)
      */
     public JLabelTextProperty(JLabel label) {
-        super();
-
-        // Hook to component
-        this.label = label;
-        this.label.addPropertyChangeListener("text", eventAdapter);
-
-        // Set initial value
-        value = label.getText();
+        super(label, "text");
     }
 
     /**
-     * @see Disposable#dispose()
+     * @see AbstractComponentProperty#getPropertyValueFromComponent()
      */
     @Override
-    public void dispose() {
-        // Unhook from component
-        label.removePropertyChangeListener("text", eventAdapter);
+    protected String getPropertyValueFromComponent() {
+        return component.getText();
     }
 
     /**
-     * @see AbstractReadableWritableProperty#getValue()
+     * @see AbstractComponentProperty#setPropertyValueToComponent(Object)
      */
     @Override
-    public String getValue() {
-        return value;
-    }
-
-    /**
-     * @see AbstractReadableWritableProperty#setValue(Object)
-     */
-    @Override
-    public void setValue(String value) {
-        if (updatingFromComponent) {
-            String oldValue = this.value;
-            this.value = value;
-            maybeNotifyListeners(oldValue, this.value);
-        } else {
-            label.setText(value);
-        }
+    protected void setPropertyValueToComponent(String value) {
+        component.setText(value);
     }
 }

@@ -25,12 +25,7 @@
 
 package com.google.code.validationframework.swing.property;
 
-import com.google.code.validationframework.api.common.Disposable;
-import com.google.code.validationframework.base.property.AbstractReadableWritableProperty;
-
 import javax.swing.JButton;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 /**
  * Readable/writable property representing the text bean property of a {@link JButton}.
@@ -40,88 +35,28 @@ import java.beans.PropertyChangeListener;
  * <p/>
  * If the value of this property is set to null, the button will be emptied.
  */
-public class JButtonTextProperty extends AbstractReadableWritableProperty<String, String> implements Disposable {
+public class JButtonTextProperty extends AbstractComponentProperty<JButton, String> {
 
     /**
-     * Bean property tracker.
-     */
-    private class EventAdapter implements PropertyChangeListener {
-
-        /**
-         * @see PropertyChangeListener#propertyChange(PropertyChangeEvent)
-         */
-        @Override
-        public void propertyChange(PropertyChangeEvent evt) {
-            updatingFromComponent = true;
-            setValue(button.getText());
-            updatingFromComponent = false;
-        }
-    }
-
-    /**
-     * Button to track the text of.
-     */
-    private final JButton button;
-
-    /**
-     * Bean property tracker.
-     */
-    private final EventAdapter eventAdapter = new EventAdapter();
-
-    /**
-     * Current property value.
-     */
-    private String value = null;
-
-    /**
-     * Flag indicating whether the {@link #setValue(String)} call is due to a property change event.
-     */
-    private boolean updatingFromComponent = false;
-
-    /**
-     * Constructor specifying the button for which the property applies.
-     *
-     * @param button Button whose text property is to be tracked.
+     * @see AbstractComponentProperty#AbstractComponentProperty(java.awt.Component, String)
      */
     public JButtonTextProperty(JButton button) {
-        super();
-
-        // Hook to component
-        this.button = button;
-        this.button.addPropertyChangeListener("text", eventAdapter);
-
-        // Set initial value
-        value = button.getText();
+        super(button, "text");
     }
 
     /**
-     * @see Disposable#dispose()
+     * @see AbstractComponentProperty#getPropertyValueFromComponent()
      */
     @Override
-    public void dispose() {
-        // Unhook from component
-        button.removePropertyChangeListener("text", eventAdapter);
+    protected String getPropertyValueFromComponent() {
+        return component.getText();
     }
 
     /**
-     * @see AbstractReadableWritableProperty#getValue()
+     * @see AbstractComponentProperty#setPropertyValueToComponent(Object)
      */
     @Override
-    public String getValue() {
-        return value;
-    }
-
-    /**
-     * @see AbstractReadableWritableProperty#setValue(Object)
-     */
-    @Override
-    public void setValue(String value) {
-        if (updatingFromComponent) {
-            String oldValue = this.value;
-            this.value = value;
-            maybeNotifyListeners(oldValue, this.value);
-        } else {
-            button.setText(value);
-        }
+    protected void setPropertyValueToComponent(String value) {
+        component.setText(value);
     }
 }
