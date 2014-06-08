@@ -25,42 +25,19 @@
 
 package com.google.code.validationframework.swing.property;
 
-import javax.swing.Icon;
-import javax.swing.JButton;
+import javax.swing.JMenuItem;
 
 /**
- * Readable/writable property representing the icon bean property of a {@link JButton}.
- * <p/>
- * It is possible to control the icon of the button by setting the value of this property or by calling the {@link
- * JButton#setIcon(Icon)} method of that button.
- * <p/>
- * If the value of this property is set to null, the button will have no icon.
+ * Read-only property representing the pressed state of a {@link JMenuItem}.
  *
- * @see JButton#getIcon()
- * @see JButton#setIcon(Icon)
+ * @see ButtonPressedProperty
  */
-public class JButtonIconProperty extends AbstractComponentProperty<JButton, Icon> {
+public class JMenuItemPressedProperty extends ButtonPressedProperty {
 
     /**
-     * @see AbstractComponentProperty#AbstractComponentProperty(java.awt.Component, String)
+     * @see ButtonPressedProperty#ButtonPressedProperty(javax.swing.AbstractButton)
      */
-    public JButtonIconProperty(JButton button) {
-        super(button, "icon");
-    }
-
-    /**
-     * @see AbstractComponentProperty#getPropertyValueFromComponent()
-     */
-    @Override
-    protected Icon getPropertyValueFromComponent() {
-        return component.getIcon();
-    }
-
-    /**
-     * @see AbstractComponentProperty#setPropertyValueToComponent(Object)
-     */
-    @Override
-    protected void setPropertyValueToComponent(Icon value) {
-        component.setIcon(value);
+    public JMenuItemPressedProperty(JMenuItem menuItem) {
+        super(menuItem);
     }
 }
