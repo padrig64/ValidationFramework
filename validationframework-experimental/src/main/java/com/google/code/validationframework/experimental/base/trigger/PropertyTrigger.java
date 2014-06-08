@@ -23,12 +23,13 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.base.trigger;
+package com.google.code.validationframework.experimental.base.trigger;
 
 import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.api.trigger.TriggerEvent;
 import com.google.code.validationframework.api.property.ReadableProperty;
 import com.google.code.validationframework.api.property.ValueChangeListener;
+import com.google.code.validationframework.base.trigger.AbstractTrigger;
 
 /**
  * Trigger initiating the validation whenever the value of a specified property changes.

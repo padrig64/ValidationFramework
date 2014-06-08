@@ -23,9 +23,10 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.base.property;
+package com.google.code.validationframework.experimental.base.property;
 
 import com.google.code.validationframework.api.transform.Transformer;
+import com.google.code.validationframework.base.property.AbstractReadableWritableProperty;
 import com.google.code.validationframework.base.utils.ValueUtils;
 
 /**

@@ -23,42 +23,37 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.swing.resulthandler;
+package com.google.code.validationframework.experimental.base.dataprovider;
 
-import com.google.code.validationframework.api.resulthandler.ResultHandler;
+import com.google.code.validationframework.api.dataprovider.DataProvider;
+import com.google.code.validationframework.api.property.ReadableProperty;
 
-import javax.swing.JLabel;
+/**
+ * Data provider returning the value of a given property.
+ *
+ * @param <DPO> Type of provided value.
+ */
+public class PropertyDataProvider<DPO> implements DataProvider<DPO> {
 
-public class JLabelBooleanFeedback implements ResultHandler<Boolean> {
+    /**
+     * Property whose value should be read.
+     */
+    private final ReadableProperty<DPO> property;
 
-    private JLabel label = new JLabel();
-
-    private Boolean lastResult = null;
-
-    public JLabelBooleanFeedback() {
-        super();
+    /**
+     * Constructor specifying the property to read the value from.
+     *
+     * @param property Property whose value should be read.
+     */
+    public PropertyDataProvider(ReadableProperty<DPO> property) {
+        this.property = property;
     }
 
-    public JLabel getLabel() {
-        return label;
-    }
-
-    public void setLabel(JLabel label) {
-        this.label = label;
-
-        if (this.label == null) {
-            this.label = new JLabel();
-            showResult(lastResult);
-        }
-    }
-
+    /**
+     * @see DataProvider#getData()
+     */
     @Override
-    public void handleResult(Boolean result) {
-        lastResult = result;
-        showResult(result);
-    }
-
-    private void showResult(Boolean result) {
-        // TODO
+    public DPO getData() {
+        return property.getValue();
     }
 }

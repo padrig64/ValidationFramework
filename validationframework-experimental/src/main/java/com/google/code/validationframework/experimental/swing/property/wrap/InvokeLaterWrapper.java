@@ -23,7 +23,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.swing.property.wrap;
+package com.google.code.validationframework.experimental.swing.property.wrap;
 
 import com.google.code.validationframework.api.property.ValueChangeListener;
 import com.google.code.validationframework.base.property.AbstractReadableWritableProperty;
