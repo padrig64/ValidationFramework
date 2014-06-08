@@ -130,7 +130,7 @@ public class MultipleRuleContext<DPO, RI, RO> {
      *
      * @return Context allowing further construction of the validator using the DSL.
      *
-     * @see {@link GeneralValidator.MappingStrategy#SPLIT}.
+     * @see GeneralValidator.MappingStrategy#SPLIT
      */
     public ForEachRuleContext<DPO, RI, RO> forEach() {
         // Change context

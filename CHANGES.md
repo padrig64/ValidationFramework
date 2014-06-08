@@ -11,6 +11,7 @@
 * Added component size and location related properties
 * Added component minimum/preferred/maximum size related properties
 * Added window/dialog/frame related properties
+* Added pressed property for buttons, toggle buttons and menu items
 
 # Version 3.1.0
 
