@@ -1,4 +1,4 @@
-# Version 3.1.1 (to be released)
+# Version 3.1.1
 
 * Made the FormatTransformer return the toString() of the input when no format is specified
 * Added convenience method in the FormatTransformer to get the format property
