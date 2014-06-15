@@ -25,6 +25,8 @@
 
 package com.google.code.validationframework.base.utils;
 
+import java.util.Comparator;
+
 /**
  * Utility class dealing with various objects and values.
  */
@@ -38,8 +40,9 @@ public final class ValueUtils {
     }
 
     /**
-     * Compares the two given values by taking null and NaN values into account.<br>Two null values will be considered
-     * equal. Two NaN values (either Double or Float) will be considered equal.
+     * Compares the two given values by taking null and NaN values into account.
+     * <p/>
+     * Two null values will be considered equal. Two NaN values (either Double or Float) will be considered equal.
      *
      * @param value1 First value.
      * @param value2 Second value.
@@ -47,8 +50,24 @@ public final class ValueUtils {
      * @return True if both values are equal or if both are null.
      */
     public static boolean areEqual(Object value1, Object value2) {
-        return ((value1 == null) && (value2 == null)) || (isNaN(value1) && isNaN(value2)) ||
+        return ((value1 == null) && (value2 == null)) || //
+                (isNaN(value1) && isNaN(value2)) || //
                 ((value1 != null) && value1.equals(value2));
+    }
+
+    /**
+     * Compares the two given values by taking null values into account and the specified comparator.
+     *
+     * @param value1     First value.
+     * @param value2     Second value.
+     * @param comparator Comparator to be used to compare the two values in case they are both non null.
+     * @param <T>        Type of values to be compared.
+     *
+     * @return True if both values are null, or equal according to the comparator.
+     */
+    public static <T> boolean areEqual(T value1, T value2, Comparator<T> comparator) {
+        return ((value1 == null) && (value2 == null)) || //
+                ((value1 != null) && (value2 != null) && (comparator.compare(value1, value2) == 0));
     }
 
     /**
@@ -59,7 +78,7 @@ public final class ValueUtils {
      * @return True if the value is NaN, false otherwise.
      */
     private static boolean isNaN(Object value) {
-        return ((value instanceof Float) && Float.isNaN((Float) value)) || ((value instanceof Double) && Double.isNaN
-                ((Double) value));
+        return ((value instanceof Float) && Float.isNaN((Float) value)) || //
+                ((value instanceof Double) && Double.isNaN((Double) value));
     }
 }

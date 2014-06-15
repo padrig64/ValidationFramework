@@ -1,3 +1,7 @@
+# Version 3.2.1 (to be released)
+
+* Added convenient comparison method in ValueUtils
+
 # Version 3.1.1
 
 * Made the FormatTransformer return the toString() of the input when no format is specified
