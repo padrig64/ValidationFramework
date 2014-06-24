@@ -1,6 +1,7 @@
 # Version 3.2.1 (to be released)
 
 * Added tooltip text property for JComponent
+* Added foreground color and background color properties for Component
 * Added convenient comparison method in ValueUtils
 
 # Version 3.1.1
