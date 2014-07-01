@@ -31,6 +31,8 @@ import com.google.code.validationframework.api.property.ReadableWritableProperty
  * Abstract implementation of a {@link ReadableWritableProperty}.
  * <p/>
  * Sub-classes should call the {@link #maybeNotifyListeners(Object, Object)} method whenever the property value changes.
+ * Sub-classes should prevent recursion by checking the result of {@link #isNotifyingListeners()} when setting the new
+ * value.
  * <p/>
  * Note that this class is not thread-safe.
  *

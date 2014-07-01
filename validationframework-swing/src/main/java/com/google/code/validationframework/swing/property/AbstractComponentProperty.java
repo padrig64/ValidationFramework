@@ -128,12 +128,14 @@ public abstract class AbstractComponentProperty<C extends Component, P> extends 
      */
     @Override
     public void setValue(P value) {
-        if (updatingFromComponent) {
-            P oldValue = this.value;
-            this.value = value;
-            maybeNotifyListeners(oldValue, this.value);
-        } else {
-            setPropertyValueToComponent(value);
+        if (!isNotifyingListeners()) {
+            if (updatingFromComponent) {
+                P oldValue = this.value;
+                this.value = value;
+                maybeNotifyListeners(oldValue, this.value);
+            } else {
+                setPropertyValueToComponent(value);
+            }
         }
     }
 

@@ -46,11 +46,6 @@ public class SimpleProperty<T> extends AbstractReadableWritableProperty<T, T> {
     private T value = null;
 
     /**
-     * Flag used to avoid any infinite recursion.
-     */
-    private boolean settingValue = false;
-
-    /**
      * Default constructor using null as the initial property value.
      */
     public SimpleProperty() {
@@ -79,15 +74,11 @@ public class SimpleProperty<T> extends AbstractReadableWritableProperty<T, T> {
      */
     @Override
     public void setValue(T value) {
-        if (!settingValue) {
-            settingValue = true;
-
+        if (!isNotifyingListeners()) {
             // Update slaves only if the new value is different than the previous value
             T oldValue = this.value;
             this.value = value;
             maybeNotifyListeners(oldValue, value);
-
-            settingValue = false;
         }
     }
 }

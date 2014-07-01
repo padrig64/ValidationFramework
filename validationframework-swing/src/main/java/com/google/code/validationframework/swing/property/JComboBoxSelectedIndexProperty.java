@@ -121,12 +121,14 @@ public class JComboBoxSelectedIndexProperty extends AbstractReadableWritableProp
      */
     @Override
     public void setValue(Integer value) {
-        if (updatingFromComponent) {
-            Integer oldValue = this.value;
-            this.value = value;
-            maybeNotifyListeners(oldValue, this.value);
-        } else {
-            component.setSelectedIndex(value);
+        if (!isNotifyingListeners()) {
+            if (updatingFromComponent) {
+                Integer oldValue = this.value;
+                this.value = value;
+                maybeNotifyListeners(oldValue, this.value);
+            } else {
+                component.setSelectedIndex(value);
+            }
         }
     }
 }

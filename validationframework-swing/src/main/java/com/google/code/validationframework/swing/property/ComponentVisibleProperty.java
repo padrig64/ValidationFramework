@@ -150,12 +150,14 @@ public class ComponentVisibleProperty extends AbstractReadableWritableProperty<B
      */
     @Override
     public void setValue(Boolean value) {
-        if (updatingFromComponent) {
-            Boolean oldValue = this.value;
-            this.value = value;
-            maybeNotifyListeners(oldValue, this.value);
-        } else {
-            component.setVisible(value);
+        if (!isNotifyingListeners()) {
+            if (updatingFromComponent) {
+                Boolean oldValue = this.value;
+                this.value = value;
+                maybeNotifyListeners(oldValue, this.value);
+            } else {
+                component.setVisible(value);
+            }
         }
     }
 }

@@ -157,12 +157,14 @@ public class ComponentLocationProperty extends AbstractReadableWritableProperty<
      */
     @Override
     public void setValue(Point value) {
-        if (updatingFromComponent) {
-            Point oldValue = this.value;
-            this.value = value;
-            maybeNotifyListeners(oldValue, this.value);
-        } else {
-            component.setLocation(value);
+        if (!isNotifyingListeners()) {
+            if (updatingFromComponent) {
+                Point oldValue = this.value;
+                this.value = value;
+                maybeNotifyListeners(oldValue, this.value);
+            } else {
+                component.setLocation(value);
+            }
         }
     }
 }

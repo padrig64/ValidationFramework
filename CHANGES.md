@@ -1,5 +1,6 @@
 # Version 3.2.1 (to be released)
 
+* Prevented recursion when setting the value of readable writable properties 
 * Added tooltip text property for JComponent
 * Added foreground color and background color properties for Component
 * Added convenient comparison method in ValueUtils

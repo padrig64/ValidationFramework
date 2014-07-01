@@ -28,7 +28,7 @@ package com.google.code.validationframework.swing.property;
 import javax.swing.JComponent;
 
 /**
- * Readable/writable property representing the tooltip text client property of a {@see JComponent}.
+ * Readable/writable property representing the tooltip text client property of a {@link JComponent}.
  * <p/>
  * It is possible to control the tooltip text of the component by setting the value of this property or by calling the
  * {@link JComponent#setToolTipText(String)} method of that component.

@@ -125,12 +125,14 @@ public class JComboBoxSelectedValueProperty<T> extends AbstractReadableWritableP
      */
     @Override
     public void setValue(T value) {
-        if (updatingFromComponent) {
-            T oldValue = this.value;
-            this.value = value;
-            maybeNotifyListeners(oldValue, this.value);
-        } else {
-            component.setSelectedItem(value);
+        if (!isNotifyingListeners()) {
+            if (updatingFromComponent) {
+                T oldValue = this.value;
+                this.value = value;
+                maybeNotifyListeners(oldValue, this.value);
+            } else {
+                component.setSelectedItem(value);
+            }
         }
     }
 }

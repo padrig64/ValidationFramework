@@ -38,6 +38,8 @@ import java.util.List;
  * Abstract implementation of a {@link ReadableProperty}.
  * <p/>
  * Sub-classes should call the {@link #maybeNotifyListeners(Object, Object)} method whenever the property value changes.
+ * Sub-classes that are also writable should prevent recursion by checking the result of {@link #isNotifyingListeners()}
+ * when setting the new value.
  * <p/>
  * This abstract implementation allows to inhibit the firing of value change events. When the property is inhibited,
  * changing its value will not fire any value change event. When the property is un-inhibited again, one single value
@@ -82,6 +84,13 @@ public abstract class AbstractReadableProperty<R> implements ReadableProperty<R>
      * {@link #inhibitCount} is 0.
      */
     private R lastInhibitedValue = null;
+
+    /**
+     * Flag indicating whether the property is currently notifying its value change listeners.
+     * <p/>
+     * This can be used, for instance, to avoid recursion (in case of bi-directional binding).
+     */
+    private boolean notifyingListeners = false;
 
     /**
      * Gets the registered value change listeners.
@@ -177,14 +186,25 @@ public abstract class AbstractReadableProperty<R> implements ReadableProperty<R>
     }
 
     /**
+     * States whether the property is currently notifying its value change listeners.
+     *
+     * @return True if the property is notifying its listeners, false otherwise.
+     */
+    protected boolean isNotifyingListeners() {
+        return notifyingListeners;
+    }
+
+    /**
      * Notifies the listeners that the property value has changed, unconditionally.
      *
      * @param oldValue Previous value.
      * @param newValue New value.
      */
     private void doNotifyListeners(R oldValue, R newValue) {
+        notifyingListeners = true;
         for (ValueChangeListener<R> listener : listeners) {
             listener.valueChanged(this, oldValue, newValue);
         }
+        notifyingListeners = false;
     }
 }

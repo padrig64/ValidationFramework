@@ -158,12 +158,14 @@ public class ComponentSizeProperty extends AbstractReadableWritableProperty<Dime
      */
     @Override
     public void setValue(Dimension value) {
-        if (updatingFromComponent) {
-            Dimension oldValue = this.value;
-            this.value = value;
-            maybeNotifyListeners(oldValue, this.value);
-        } else {
-            component.setSize(value);
+        if (!isNotifyingListeners()) {
+            if (updatingFromComponent) {
+                Dimension oldValue = this.value;
+                this.value = value;
+                maybeNotifyListeners(oldValue, this.value);
+            } else {
+                component.setSize(value);
+            }
         }
     }
 }
