@@ -54,7 +54,7 @@ public class JToggleButtonSelectedProperty extends AbstractComponentProperty<JTo
      */
     @Override
     protected Boolean getPropertyValueFromComponent() {
-        return component.isEnabled();
+        return component.isSelected();
     }
 
     /**
