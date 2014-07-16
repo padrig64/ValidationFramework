@@ -1,4 +1,4 @@
-# Version 3.2.1 (to be released)
+# Version 3.2.0 (to be released)
 
 * Prevented recursion when setting the value of readable writable properties 
 * Added tooltip text property for JComponent
