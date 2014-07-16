@@ -4,6 +4,8 @@
 * Added tooltip text property for JComponent
 * Added foreground color and background color properties for Component
 * Added convenient comparison method in ValueUtils
+* Added ConstantTransformer to always return a specific value
+* Fixed JToggleButtonSelectedProperty value
 
 # Version 3.1.1
 
