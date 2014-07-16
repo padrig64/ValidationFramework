@@ -82,7 +82,7 @@ public class PrintStreamResultHandler<RHI> implements ResultHandler<RHI> {
      *
      * @param stream Print stream to write the results to.
      */
-    public PrintStreamResultHandler(final PrintStream stream) {
+    public PrintStreamResultHandler(PrintStream stream) {
         this(stream, DEFAULT_PREFIX, DEFAULT_SUFFIX);
     }
 
@@ -92,7 +92,7 @@ public class PrintStreamResultHandler<RHI> implements ResultHandler<RHI> {
      *
      * @param prefix Prefix to be prepended to the result.
      */
-    public PrintStreamResultHandler(final String prefix) {
+    public PrintStreamResultHandler(String prefix) {
         this(DEFAULT_STREAM, prefix, DEFAULT_SUFFIX);
     }
 
@@ -105,7 +105,7 @@ public class PrintStreamResultHandler<RHI> implements ResultHandler<RHI> {
      * @param prefix Prefix to be prepended to the result.
      * @param suffix Suffix to be appened to the result.
      */
-    public PrintStreamResultHandler(final PrintStream stream, final String prefix, final String suffix) {
+    public PrintStreamResultHandler(PrintStream stream, String prefix, String suffix) {
         this.stream = stream;
         this.prefix = prefix;
         this.suffix = suffix;
@@ -115,8 +115,8 @@ public class PrintStreamResultHandler<RHI> implements ResultHandler<RHI> {
      * @see ResultHandler#handleResult(Object)
      */
     @Override
-    public void handleResult(final RHI result) {
-        final StringBuilder builder = new StringBuilder();
+    public void handleResult(RHI result) {
+        StringBuilder builder = new StringBuilder();
         builder.append(prefix);
         builder.append(result);
         builder.append(suffix);

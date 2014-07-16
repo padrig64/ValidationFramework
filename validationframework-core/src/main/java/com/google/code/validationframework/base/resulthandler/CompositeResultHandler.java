@@ -60,9 +60,9 @@ public class CompositeResultHandler<RHI> implements ResultHandler<RHI>, Disposab
      *
      * @see #addResultHandler(ResultHandler)
      */
-    public CompositeResultHandler(final ResultHandler<RHI>... resultHandlers) {
+    public CompositeResultHandler(ResultHandler<RHI>... resultHandlers) {
         if (resultHandlers != null) {
-            for (final ResultHandler<RHI> resultHandler : resultHandlers) {
+            for (ResultHandler<RHI> resultHandler : resultHandlers) {
                 addResultHandler(resultHandler);
             }
         }
@@ -73,7 +73,7 @@ public class CompositeResultHandler<RHI> implements ResultHandler<RHI>, Disposab
      *
      * @param resultHandler Delegate result handler to be added.
      */
-    public void addResultHandler(final ResultHandler<RHI> resultHandler) {
+    public void addResultHandler(ResultHandler<RHI> resultHandler) {
         resultHandlers.add(resultHandler);
     }
 
@@ -82,7 +82,7 @@ public class CompositeResultHandler<RHI> implements ResultHandler<RHI>, Disposab
      *
      * @param resultHandler Delegate result handler to be removed.
      */
-    public void removeResultHandler(final ResultHandler<RHI> resultHandler) {
+    public void removeResultHandler(ResultHandler<RHI> resultHandler) {
         resultHandlers.remove(resultHandler);
     }
 
@@ -94,8 +94,8 @@ public class CompositeResultHandler<RHI> implements ResultHandler<RHI>, Disposab
      * @see ResultHandler#handleResult(Object)
      */
     @Override
-    public void handleResult(final RHI result) {
-        for (final ResultHandler<RHI> resultHandler : resultHandlers) {
+    public void handleResult(RHI result) {
+        for (ResultHandler<RHI> resultHandler : resultHandlers) {
             resultHandler.handleResult(result);
         }
     }
@@ -105,7 +105,7 @@ public class CompositeResultHandler<RHI> implements ResultHandler<RHI>, Disposab
      */
     @Override
     public void dispose() {
-        for (final ResultHandler<RHI> resultHandler : resultHandlers) {
+        for (ResultHandler<RHI> resultHandler : resultHandlers) {
             if (resultHandler instanceof Disposable) {
                 ((Disposable) resultHandler).dispose();
             }

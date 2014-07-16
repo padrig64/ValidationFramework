@@ -53,7 +53,7 @@ public class MapCompositeDataProvider<K, DPO> implements DataProvider<Map<K, DPO
      * @param key          Key associated to the data provider.
      * @param dataProvider Data provider associated to the key.
      */
-    public void addDataProvider(final K key, final DataProvider<DPO> dataProvider) {
+    public void addDataProvider(K key, DataProvider<DPO> dataProvider) {
         dataProviders.put(key, dataProvider);
     }
 
@@ -62,7 +62,7 @@ public class MapCompositeDataProvider<K, DPO> implements DataProvider<Map<K, DPO
      *
      * @param key Key associated to the data provider to be remove.
      */
-    public void removeDataProvider(final K key) {
+    public void removeDataProvider(K key) {
         dataProviders.remove(key);
     }
 
@@ -71,10 +71,10 @@ public class MapCompositeDataProvider<K, DPO> implements DataProvider<Map<K, DPO
      */
     @Override
     public Map<K, DPO> getData() {
-        final Map<K, DPO> dataList = new HashMap<K, DPO>();
+        Map<K, DPO> dataList = new HashMap<K, DPO>();
 
         // Read the data from all data providers and put them in the map
-        for (final Map.Entry<K, DataProvider<DPO>> entry : dataProviders.entrySet()) {
+        for (Map.Entry<K, DataProvider<DPO>> entry : dataProviders.entrySet()) {
             dataList.put(entry.getKey(), entry.getValue().getData());
         }
 
@@ -86,8 +86,8 @@ public class MapCompositeDataProvider<K, DPO> implements DataProvider<Map<K, DPO
      */
     @Override
     public void dispose() {
-        for(final DataProvider<DPO> dataProvider : dataProviders.values()) {
-            if(dataProvider instanceof Disposable) {
+        for (DataProvider<DPO> dataProvider : dataProviders.values()) {
+            if (dataProvider instanceof Disposable) {
                 ((Disposable) dataProvider).dispose();
             }
         }

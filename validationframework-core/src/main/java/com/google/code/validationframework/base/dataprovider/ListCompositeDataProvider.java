@@ -59,9 +59,9 @@ public class ListCompositeDataProvider<DPO> implements DataProvider<List<DPO>>, 
      *
      * @param dataProviders First data providers to be added.
      */
-    public ListCompositeDataProvider(final DataProvider<DPO>... dataProviders) {
+    public ListCompositeDataProvider(DataProvider<DPO>... dataProviders) {
         if (dataProviders != null) {
-            for (final DataProvider<DPO> dataProvider : dataProviders) {
+            for (DataProvider<DPO> dataProvider : dataProviders) {
                 addDataProvider(dataProvider);
             }
         }
@@ -72,9 +72,9 @@ public class ListCompositeDataProvider<DPO> implements DataProvider<List<DPO>>, 
      *
      * @param dataProviders First data providers to be added.
      */
-    public ListCompositeDataProvider(final Collection<DataProvider<DPO>> dataProviders) {
+    public ListCompositeDataProvider(Collection<DataProvider<DPO>> dataProviders) {
         if (dataProviders != null) {
-            for (final DataProvider<DPO> dataProvider : dataProviders) {
+            for (DataProvider<DPO> dataProvider : dataProviders) {
                 addDataProvider(dataProvider);
             }
         }
@@ -85,7 +85,7 @@ public class ListCompositeDataProvider<DPO> implements DataProvider<List<DPO>>, 
      *
      * @param dataProvider Data provider to be added.
      */
-    public void addDataProvider(final DataProvider<DPO> dataProvider) {
+    public void addDataProvider(DataProvider<DPO> dataProvider) {
         dataProviders.add(dataProvider);
     }
 
@@ -94,7 +94,7 @@ public class ListCompositeDataProvider<DPO> implements DataProvider<List<DPO>>, 
      *
      * @param dataProvider Data provider to be removed.
      */
-    public void removeDataProvider(final DataProvider<DPO> dataProvider) {
+    public void removeDataProvider(DataProvider<DPO> dataProvider) {
         dataProviders.remove(dataProvider);
     }
 
@@ -103,10 +103,10 @@ public class ListCompositeDataProvider<DPO> implements DataProvider<List<DPO>>, 
      */
     @Override
     public List<DPO> getData() {
-        final List<DPO> dataList = new ArrayList<DPO>();
+        List<DPO> dataList = new ArrayList<DPO>();
 
         // Read data from all data providers and put them in the list
-        for (final DataProvider<DPO> dataProvider : dataProviders) {
+        for (DataProvider<DPO> dataProvider : dataProviders) {
             dataList.add(dataProvider.getData());
         }
 
@@ -118,8 +118,8 @@ public class ListCompositeDataProvider<DPO> implements DataProvider<List<DPO>>, 
      */
     @Override
     public void dispose() {
-        for(final DataProvider<DPO> dataProvider : dataProviders) {
-            if(dataProvider instanceof Disposable) {
+        for (DataProvider<DPO> dataProvider : dataProviders) {
+            if (dataProvider instanceof Disposable) {
                 ((Disposable) dataProvider).dispose();
             }
         }
