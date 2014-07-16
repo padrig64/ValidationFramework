@@ -25,41 +25,40 @@
 
 package com.google.code.validationframework.swing.property;
 
+import javax.swing.JFormattedTextField;
 import javax.swing.text.JTextComponent;
 
 /**
- * Readable/writable property representing the editable state of a {@link JTextComponent}.
+ * Readable/writable property representing the value of a {@link JFormattedTextField}.
  * <p/>
- * It is possible to control the editable state of the component by setting the value of this property or by calling the
- * {@link JTextComponent#setEditable(boolean)} method of that component.
- * <p/>
- * Finally note that null values are not supported by this property.
+ * It is possible to control the value of the compoennt by setting the value of this property or by calling the
+ * {@link JFormattedTextField#setValue(Object)} method of that component.
  *
  * @see JTextComponent#isEditable()
  * @see JTextComponent#setEditable(boolean)
  */
-public class JTextComponentEditableProperty extends AbstractComponentProperty<JTextComponent, Boolean> {
+public class JFormattedTextFieldValueProperty extends AbstractComponentProperty<JFormattedTextField, Object> {
 
     /**
      * @see AbstractComponentProperty#AbstractComponentProperty(java.awt.Component, String)
      */
-    public JTextComponentEditableProperty(JTextComponent component) {
-        super(component, "editable");
+    public JFormattedTextFieldValueProperty(JFormattedTextField component) {
+        super(component, "value");
     }
 
     /**
      * @see AbstractComponentProperty#getPropertyValueFromComponent()
      */
     @Override
-    protected Boolean getPropertyValueFromComponent() {
-        return component.isEditable();
+    protected Object getPropertyValueFromComponent() {
+        return component.getValue();
     }
 
     /**
      * @see AbstractComponentProperty#setPropertyValueToComponent(Object)
      */
     @Override
-    protected void setPropertyValueToComponent(Boolean value) {
-        component.setEditable(value);
+    protected void setPropertyValueToComponent(Object value) {
+        component.setValue(value);
     }
 }
