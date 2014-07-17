@@ -1,3 +1,7 @@
+# Version 3.2.1 (to be released)
+
+* Fixed JToggleButtonSelectedProperty value
+
 # Version 3.2.0
 
 * Prevented recursion when setting the value of readable writable properties 
@@ -6,7 +10,6 @@
 * Added value property for JFormattedTextField
 * Added convenient comparison method in ValueUtils
 * Added ConstantTransformer to always return a specific value
-* Fixed JToggleButtonSelectedProperty value
 
 # Version 3.1.1
 

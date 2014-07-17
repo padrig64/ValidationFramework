@@ -75,6 +75,9 @@ public class JComboBoxSelectedValueProperty<T> extends AbstractReadableWritableP
      */
     private final EventAdapter eventAdapter = new EventAdapter();
 
+    /**
+     * Transformer to get the value of the combobox of the specified type.
+     */
     private final Transformer<Object, T> castTransformer = new CastTransformer<Object, T>();
 
     /**
