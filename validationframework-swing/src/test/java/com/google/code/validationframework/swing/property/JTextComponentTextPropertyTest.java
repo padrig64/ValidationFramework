@@ -37,6 +37,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 /**
@@ -46,7 +47,7 @@ public class JTextComponentTextPropertyTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void testNonNullFromProperty() throws BadLocationException {
+    public void testNonNullFromPropertyWithoutInitialText() throws BadLocationException {
         JTextComponent component = new JTextField();
         ReadableWritableProperty<String, String> property = new JTextComponentTextProperty(component);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
@@ -65,7 +66,7 @@ public class JTextComponentTextPropertyTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void testNonNullFromComponent() throws BadLocationException {
+    public void testNonNullFromComponentWithoutInitialText() throws BadLocationException {
         JTextComponent component = new JTextField();
         ReadableWritableProperty<String, String> property = new JTextComponentTextProperty(component);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
@@ -80,5 +81,43 @@ public class JTextComponentTextPropertyTest {
         // Check exactly one event fired
         verify(listenerMock).valueChanged(property, "", "new text");
         verify(listenerMock).valueChanged(any(JTextComponentTextProperty.class), anyString(), anyString());
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testNonNullFromPropertyWithInitialText() throws BadLocationException {
+        JTextComponent component = new JTextField("initial text");
+        ReadableWritableProperty<String, String> property = new JTextComponentTextProperty(component);
+        ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
+        property.addValueChangeListener(listenerMock);
+
+        assertEquals("initial text", component.getDocument().getText(0, component.getDocument().getLength()));
+        assertEquals("initial text", component.getText());
+        assertEquals("initial text", property.getValue());
+        property.setValue("new text");
+        assertEquals("new text", component.getText());
+
+        // Check exactly one event fired
+        verify(listenerMock).valueChanged(property, "initial text", "new text");
+        verify(listenerMock).valueChanged(any(JTextComponentTextProperty.class), anyString(), anyString());
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testNonNullFromComponentWithInitialText() throws BadLocationException {
+        JTextComponent component = new JTextField("initial text");
+        ReadableWritableProperty<String, String> property = new JTextComponentTextProperty(component);
+        ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
+        property.addValueChangeListener(listenerMock);
+
+        assertEquals("initial text", component.getDocument().getText(0, component.getDocument().getLength()));
+        assertEquals("initial text", component.getText());
+        assertEquals("initial text", property.getValue());
+        component.setText("new text");
+        assertEquals("new text", property.getValue());
+
+        // Check exactly one event fired
+        verify(listenerMock).valueChanged(property, "", "new text");
+        verify(listenerMock, times(2)).valueChanged(any(JTextComponentTextProperty.class), anyString(), anyString());
     }
 }

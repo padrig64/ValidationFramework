@@ -43,9 +43,13 @@ import java.beans.PropertyChangeListener;
  * component text by calling its {@link JTextComponent#setText(String)} method, or by modifying the contents of its
  * {@link Document}, or by call the {@link #setValue(String)} method. In all cases, this property will notify its
  * listeners of any change.
+ * <p/>
+ * However, please note that calling {@link JTextComponent#setText(String)} is very likely to make this property fire
+ * two value change events, because replacing is usually first done by removing the old text and inserting the new one.
  *
  * @see JTextComponent#getText()
  * @see JTextComponent#setText(String)
+ * @see javax.swing.text.AbstractDocument#replace(int, int, String, javax.swing.text.AttributeSet)
  * @see Document
  */
 public class JTextComponentTextProperty extends AbstractReadableWritableProperty<String, String> implements Disposable {
@@ -101,9 +105,14 @@ public class JTextComponentTextProperty extends AbstractReadableWritableProperty
          * Updates the value of the property, possibly notifying the value change listeners.
          */
         private void updateValue() {
-            updatingFromDocument = true;
-            setValue(textComponent.getText());
-            updatingFromDocument = false;
+            if (!settingPropertyValue) {
+                updatingFromComponent = true;
+                try {
+                    setValue(textComponent.getText());
+                } finally {
+                    updatingFromComponent = false;
+                }
+            }
         }
     }
 
@@ -128,7 +137,9 @@ public class JTextComponentTextProperty extends AbstractReadableWritableProperty
      * This is used to distinguish whether the call to {@link #setValue(String)} is direct (call from the outside) or
      * indirect (change of the document itself from the outside or by the user).
      */
-    private boolean updatingFromDocument = false;
+    private boolean settingPropertyValue = false;
+
+    private boolean updatingFromComponent = false;
 
     /**
      * Constructor specifying the text component to which the property applies.
@@ -170,13 +181,17 @@ public class JTextComponentTextProperty extends AbstractReadableWritableProperty
     @Override
     public void setValue(String value) {
         if (!isNotifyingListeners()) {
-            if (updatingFromDocument) {
+            settingPropertyValue = true;
+            try {
                 String oldValue = this.value;
                 this.value = value;
-                maybeNotifyListeners(oldValue, this.value);
-            } else {
-                // Use setText() because it already does all what is needed to update the document
-                textComponent.setText(value);
+                if (!updatingFromComponent) {
+                    // Use setText() because it already does all what is needed to update the document
+                    textComponent.setText(value);
+                }
+                maybeNotifyListeners(oldValue, value);
+            } finally {
+                settingPropertyValue = false;
             }
         }
     }

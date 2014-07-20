@@ -1,7 +1,8 @@
 # Version 3.2.1 (to be released)
 
 * Fixed JToggleButtonSelectedProperty value
-* Fixed initial value for ButtonPressedProperty and JTextComponentTestProperty
+* Fixed initial value for ButtonPressedProperty and JTextComponentTextProperty
+* Made the JTextComponentTextProperty fire less events when setting its value
 
 # Version 3.2.0
 
