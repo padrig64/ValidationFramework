@@ -81,6 +81,9 @@ public class ButtonPressedProperty extends AbstractReadableProperty<Boolean> imp
     public ButtonPressedProperty(AbstractButton button) {
         this.button = button;
         this.button.addChangeListener(pressedStateAdapter);
+
+        // Set initial value
+        this.pressed = button.getModel().isPressed();
     }
 
     /**

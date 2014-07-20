@@ -143,7 +143,7 @@ public class JTextComponentTextProperty extends AbstractReadableWritableProperty
         textComponent.getDocument().addDocumentListener(documentTracker);
 
         // Set initial value
-        setValue(textComponent.getText());
+        this.value = textComponent.getText();
     }
 
     /**
