@@ -52,7 +52,7 @@ public class JTextComponentTextPropertyTest {
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
         property.addValueChangeListener(listenerMock);
 
-//        assertEquals("", component.getDocument().getText(0, component.getDocument().getLength()));
+        assertEquals("", component.getDocument().getText(0, component.getDocument().getLength()));
         assertEquals("", component.getText());
         assertEquals("", property.getValue());
         property.setValue("new text");
@@ -66,7 +66,7 @@ public class JTextComponentTextPropertyTest {
     @SuppressWarnings("unchecked")
     @Test
     public void testNonNullFromComponent() throws BadLocationException {
-        JTextComponent component = new JTextField("");
+        JTextComponent component = new JTextField();
         ReadableWritableProperty<String, String> property = new JTextComponentTextProperty(component);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
         property.addValueChangeListener(listenerMock);
