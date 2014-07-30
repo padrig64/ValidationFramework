@@ -4,6 +4,7 @@
 * Fixed initial value for ButtonPressedProperty and JTextComponentTextProperty
 * Made the JTextComponentTextProperty fire less events when setting its value
 * Added PropertyValueChangeTrigger to trigger validation when the value of a ReadableProperty changes
+* Added PropertyValueProvider to retrieve the value from a ReadableProperty
 
 # Version 3.2.0
 
