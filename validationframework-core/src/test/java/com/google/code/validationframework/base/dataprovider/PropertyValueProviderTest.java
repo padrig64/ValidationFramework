@@ -38,7 +38,7 @@ import static org.junit.Assert.assertEquals;
 public class PropertyValueProviderTest {
 
     @Test
-    public void testValue() {
+    public void testReadingValue() {
         ReadableWritableProperty<String, String> property = new SimpleStringProperty("Text");
         DataProvider<String> dataProvider = new PropertyValueProvider<String>(property);
         assertEquals("Text", dataProvider.getData());

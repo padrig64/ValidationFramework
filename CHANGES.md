@@ -5,6 +5,7 @@
 * Made the JTextComponentTextProperty fire less events when setting its value
 * Added PropertyValueChangeTrigger to trigger validation when the value of a ReadableProperty changes
 * Added PropertyValueProvider to retrieve the value from a ReadableProperty
+* Added PropertyResultHandler to set the validation result into a WritableProperty
 
 # Version 3.2.0
 

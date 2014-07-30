@@ -23,40 +23,40 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.base.dataprovider;
+package com.google.code.validationframework.base.resulthandler;
 
-import com.google.code.validationframework.api.dataprovider.DataProvider;
-import com.google.code.validationframework.api.property.ReadableProperty;
+import com.google.code.validationframework.api.property.WritableProperty;
+import com.google.code.validationframework.api.resulthandler.ResultHandler;
 
 /**
- * Data provider reading the value of a {@link ReadableProperty}.
+ * Result handler set the value of a {@link WritableProperty} with the validation result.
  *
- * @param <DPO> Type of data to be read from the property.
+ * @param <RHI> Type of validation result to be set on the property.
  *
- * @see ReadableProperty
+ * @see WritableProperty
  */
-public class PropertyValueProvider<DPO> implements DataProvider<DPO> {
+public class PropertyResultHandler<RHI> implements ResultHandler<RHI> {
 
     /**
-     * Property to get the value from.
+     * Property to be set with the validation result.
      */
-    private final ReadableProperty<DPO> property;
+    private final WritableProperty<RHI> property;
 
     /**
-     * Constructor specifying the property to get the value from.
+     * Constructor specifying the property to be set with the validation result.
      *
-     * @param property Property to get the value from.
+     * @param property Property to be set with the validation result.
      */
-    public PropertyValueProvider(ReadableProperty<DPO> property) {
+    public PropertyResultHandler(WritableProperty<RHI> property) {
         this.property = property;
     }
 
     /**
-     * @see DataProvider#getData()
-     * @see ReadableProperty#getValue()
+     * @see ResultHandler#handleResult(Object)
+     * @see WritableProperty#setValue(Object)
      */
     @Override
-    public DPO getData() {
-        return property.getValue();
+    public void handleResult(RHI result) {
+        property.setValue(result);
     }
 }
