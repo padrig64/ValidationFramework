@@ -1,6 +1,6 @@
 # TO FIX
 
-* Painting of translucent decorations
+* Painting of translucent decorations on OS X
 * Icon decoration steals mouse event even outside clipping bounds
 * Consistent behavior of dispose() methods
 
@@ -48,9 +48,9 @@
 
 # TO THINK ABOUT
 
-* Common builder API to build validators and property bindings
-* Predicates
-* Component state conditional rules
+* Common builder API to build validators and property bindings for general-purpose conditional logic
+* Predicates/conditions
+* Validation rules depending on component state (visible, enabled, etc.)
 * Different rules for different data providers in same validator (with result aggregation)
 * Thread-safety (triggers from multiple-threads)
 * Data providers with different getters
@@ -58,6 +58,5 @@
 * Use of IDs
 * Re-use instances of W, DP, R, RH, V
 * Heterogeneous Group
-* All features described in the README file
-* General-purpose conditional logic
+* All features described in the wiki
 * Dialog strategies
