@@ -26,10 +26,12 @@
 package com.google.code.validationframework.base.validator.generalvalidator.dsl;
 
 import com.google.code.validationframework.api.dataprovider.DataProvider;
+import com.google.code.validationframework.api.property.WritableProperty;
 import com.google.code.validationframework.api.resulthandler.ResultHandler;
 import com.google.code.validationframework.api.rule.Rule;
 import com.google.code.validationframework.api.transform.Transformer;
 import com.google.code.validationframework.api.trigger.Trigger;
+import com.google.code.validationframework.base.resulthandler.PropertyResultHandler;
 import com.google.code.validationframework.base.validator.generalvalidator.GeneralValidator;
 
 import java.util.Collection;
@@ -137,6 +139,10 @@ public class ResultHandlerContext<DPO, RI, RO, RHI> {
 
         // Stay in the same context and re-use the same instance because no type has changed
         return this;
+    }
+
+    public ResultHandlerContext<DPO, RI, RO, RHI> handleWith(WritableProperty<RHI> property) {
+        return handleWith(new PropertyResultHandler<RHI>(property));
     }
 
     /**

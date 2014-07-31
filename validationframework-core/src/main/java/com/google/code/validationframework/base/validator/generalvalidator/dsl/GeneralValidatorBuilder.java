@@ -26,11 +26,14 @@
 package com.google.code.validationframework.base.validator.generalvalidator.dsl;
 
 import com.google.code.validationframework.api.dataprovider.DataProvider;
+import com.google.code.validationframework.api.property.ReadableProperty;
 import com.google.code.validationframework.api.resulthandler.ResultHandler;
 import com.google.code.validationframework.api.trigger.Trigger;
 import com.google.code.validationframework.api.validator.SimpleValidator;
+import com.google.code.validationframework.base.dataprovider.PropertyValueProvider;
 import com.google.code.validationframework.base.resulthandler.ResultCollector;
 import com.google.code.validationframework.base.resulthandler.SimpleResultCollector;
+import com.google.code.validationframework.base.trigger.PropertyValueChangeTrigger;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -69,6 +72,10 @@ public final class GeneralValidatorBuilder {
         return new TriggerContext(addedTriggers);
     }
 
+    public static TriggerContext on(ReadableProperty<?> property) {
+        return on(new PropertyValueChangeTrigger(property));
+    }
+
     /**
      * Adds the specified triggers to the validator under construction.
      *
@@ -98,6 +105,17 @@ public final class GeneralValidatorBuilder {
         if (resultCollector != null) {
             addedTriggers.add(resultCollector);
             addedDataProviders.add(resultCollector);
+        }
+
+        return new SingleResultCollectorContext<DPO>(addedTriggers, addedDataProviders);
+    }
+
+    public static <DPO> SingleResultCollectorContext<DPO> collect(ReadableProperty<DPO> property) {
+        List<Trigger> addedTriggers = new ArrayList<Trigger>();
+        List<DataProvider<DPO>> addedDataProviders = new ArrayList<DataProvider<DPO>>();
+        if (property != null) {
+            addedTriggers.add(new PropertyValueChangeTrigger(property));
+            addedDataProviders.add(new PropertyValueProvider<DPO>(property));
         }
 
         return new SingleResultCollectorContext<DPO>(addedTriggers, addedDataProviders);

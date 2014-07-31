@@ -26,7 +26,10 @@
 package com.google.code.validationframework.base.validator.generalvalidator.dsl;
 
 import com.google.code.validationframework.api.dataprovider.DataProvider;
+import com.google.code.validationframework.api.property.ReadableProperty;
 import com.google.code.validationframework.api.trigger.Trigger;
+import com.google.code.validationframework.base.dataprovider.PropertyValueProvider;
+import com.google.code.validationframework.base.trigger.PropertyValueChangeTrigger;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -69,6 +72,10 @@ public class TriggerContext {
         return this;
     }
 
+    public TriggerContext on(ReadableProperty<?> property) {
+        return on(new PropertyValueChangeTrigger(property));
+    }
+
     /**
      * Adds the specified triggers to the validator under construction.
      *
@@ -101,6 +108,10 @@ public class TriggerContext {
 
         // Change context
         return new SingleDataProviderContext<DPO>(addedTriggers, addedDataProviders);
+    }
+
+    public <DPO> SingleDataProviderContext<DPO> read(ReadableProperty<DPO> property) {
+        return read(new PropertyValueProvider<DPO>(property));
     }
 
     /**

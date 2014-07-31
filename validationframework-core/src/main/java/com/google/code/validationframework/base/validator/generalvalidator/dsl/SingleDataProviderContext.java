@@ -26,9 +26,11 @@
 package com.google.code.validationframework.base.validator.generalvalidator.dsl;
 
 import com.google.code.validationframework.api.dataprovider.DataProvider;
+import com.google.code.validationframework.api.property.ReadableProperty;
 import com.google.code.validationframework.api.rule.Rule;
 import com.google.code.validationframework.api.transform.Transformer;
 import com.google.code.validationframework.api.trigger.Trigger;
+import com.google.code.validationframework.base.dataprovider.PropertyValueProvider;
 import com.google.code.validationframework.base.validator.generalvalidator.GeneralValidator;
 
 import java.util.ArrayList;
@@ -80,6 +82,10 @@ public class SingleDataProviderContext<DPO> {
 
         // Change context
         return new MultipleDataProviderContext<DPO>(addedTriggers, addedDataProviders);
+    }
+
+    public MultipleDataProviderContext<DPO> read(ReadableProperty<DPO> property) {
+        return read(new PropertyValueProvider<DPO>(property));
     }
 
     /**

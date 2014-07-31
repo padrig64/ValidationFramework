@@ -26,13 +26,16 @@
 package com.google.code.validationframework.base.validator.generalvalidator.dsl;
 
 import com.google.code.validationframework.api.dataprovider.DataProvider;
+import com.google.code.validationframework.api.property.ReadableProperty;
 import com.google.code.validationframework.api.resulthandler.ResultHandler;
 import com.google.code.validationframework.api.rule.Rule;
 import com.google.code.validationframework.api.transform.Transformer;
 import com.google.code.validationframework.api.trigger.Trigger;
 import com.google.code.validationframework.api.validator.SimpleValidator;
+import com.google.code.validationframework.base.dataprovider.PropertyValueProvider;
 import com.google.code.validationframework.base.resulthandler.ResultCollector;
 import com.google.code.validationframework.base.resulthandler.SimpleResultCollector;
+import com.google.code.validationframework.base.trigger.PropertyValueChangeTrigger;
 import com.google.code.validationframework.base.validator.generalvalidator.GeneralValidator;
 
 import java.util.ArrayList;
@@ -79,6 +82,16 @@ public class SingleResultCollectorContext<DPO> {
         if (resultCollector != null) {
             addedTriggers.add(resultCollector);
             addedDataProviders.add(resultCollector);
+        }
+
+        // Change context
+        return new MultipleResultCollectorContext<DPO>(addedTriggers, addedDataProviders);
+    }
+
+    public MultipleResultCollectorContext<DPO> collect(ReadableProperty<DPO> property) {
+        if (property != null) {
+            addedTriggers.add(new PropertyValueChangeTrigger(property));
+            addedDataProviders.add(new PropertyValueProvider<DPO>(property));
         }
 
         // Change context

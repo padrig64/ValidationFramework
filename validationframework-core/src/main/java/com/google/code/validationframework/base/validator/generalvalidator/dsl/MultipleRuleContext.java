@@ -26,10 +26,12 @@
 package com.google.code.validationframework.base.validator.generalvalidator.dsl;
 
 import com.google.code.validationframework.api.dataprovider.DataProvider;
+import com.google.code.validationframework.api.property.WritableProperty;
 import com.google.code.validationframework.api.resulthandler.ResultHandler;
 import com.google.code.validationframework.api.rule.Rule;
 import com.google.code.validationframework.api.transform.Transformer;
 import com.google.code.validationframework.api.trigger.Trigger;
+import com.google.code.validationframework.base.resulthandler.PropertyResultHandler;
 import com.google.code.validationframework.base.validator.generalvalidator.GeneralValidator;
 
 import java.util.ArrayList;
@@ -175,6 +177,10 @@ public class MultipleRuleContext<DPO, RI, RO> {
         return new ResultHandlerContext<DPO, RI, RO, Collection<RO>>(addedTriggers, addedDataProviders,
                 dataProviderToRuleMapping, addedRuleInputTransformers, addedRules,
                 GeneralValidator.MappingStrategy.JOIN, null, addedResultHandlers);
+    }
+
+    public ResultHandlerContext<DPO, RI, RO, Collection<RO>> handleWith(WritableProperty<Collection<RO>> property) {
+        return handleWith(new PropertyResultHandler<Collection<RO>>(property));
     }
 
     /**
