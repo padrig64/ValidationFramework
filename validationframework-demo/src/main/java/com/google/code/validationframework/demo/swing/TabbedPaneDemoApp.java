@@ -25,8 +25,10 @@
 
 package com.google.code.validationframework.demo.swing;
 
+import com.google.code.validationframework.api.property.ReadableProperty;
 import com.google.code.validationframework.api.property.WritableProperty;
-import com.google.code.validationframework.base.resulthandler.ResultCollector;
+import com.google.code.validationframework.base.property.CompositeReadableProperty;
+import com.google.code.validationframework.base.property.simple.SimpleBooleanProperty;
 import com.google.code.validationframework.base.rule.bool.AndBooleanRule;
 import com.google.code.validationframework.base.rule.string.StringNotEmptyRule;
 import com.google.code.validationframework.swing.dataprovider.JTextFieldTextProvider;
@@ -100,9 +102,9 @@ public class TabbedPaneDemoApp extends JFrame {
         contentPane.add(tabbedPane, "grow");
 
         // Create tabs
-        Set<ResultCollector<?, Boolean>> tabResultCollectors = new HashSet<ResultCollector<?, Boolean>>();
+        Set<ReadableProperty<Boolean>> tabResultCollectors = new HashSet<ReadableProperty<Boolean>>();
         for (int i = 0; i < 3; i++) {
-            Set<ResultCollector<?, Boolean>> fieldResultCollectors = new HashSet<ResultCollector<?, Boolean>>();
+            Set<ReadableProperty<Boolean>> fieldResultCollectors = new HashSet<ReadableProperty<Boolean>>();
             tabbedPane.add("Tab " + i, createTabContent(fieldResultCollectors));
             installTabValidator(tabbedPane, i, fieldResultCollectors, tabResultCollectors);
             tabbedPane.setTitleAt(i, "Tab");
@@ -140,7 +142,7 @@ public class TabbedPaneDemoApp extends JFrame {
         setLocation((screenSize.width - size.width) / 2, (screenSize.height - size.height) / 3);
     }
 
-    private Component createTabContent(Set<ResultCollector<?, Boolean>> fieldResultCollectors) {
+    private Component createTabContent(Set<ReadableProperty<Boolean>> fieldResultCollectors) {
         JPanel panel = new JPanel();
         panel.setLayout(new MigLayout("fill, wrap 2", "[][grow, fill]"));
 
@@ -160,9 +162,9 @@ public class TabbedPaneDemoApp extends JFrame {
         return panel;
     }
 
-    private void installFieldValidator(JTextField field, Set<ResultCollector<?, Boolean>> fieldResultCollectors) {
+    private void installFieldValidator(JTextField field, Set<ReadableProperty<Boolean>> fieldResultCollectors) {
         // Create result collector for the validator of the whole tab
-        ResultCollector<Boolean, Boolean> fieldResultCollector = new ResultCollector<Boolean, Boolean>();
+        SimpleBooleanProperty fieldResultCollector = new SimpleBooleanProperty();
         fieldResultCollectors.add(fieldResultCollector);
 
         on(new JTextFieldDocumentChangedTrigger(field)) //
@@ -173,22 +175,22 @@ public class TabbedPaneDemoApp extends JFrame {
                 .getValidator().trigger();
     }
 
-    private void installTabValidator(JTabbedPane tabbedPane, int i, Set<ResultCollector<?,
-            Boolean>> fieldResultCollectors, Set<ResultCollector<?, Boolean>> tabResultCollectors) {
+    private void installTabValidator(JTabbedPane tabbedPane, int i, Set<ReadableProperty<Boolean>>
+            fieldResultCollectors, Set<ReadableProperty<Boolean>> tabResultCollectors) {
         // Create result collector for the global validator
-        ResultCollector<Boolean, Boolean> tabResultCollector = new ResultCollector<Boolean, Boolean>();
+        SimpleBooleanProperty tabResultCollector = new SimpleBooleanProperty();
         tabResultCollectors.add(tabResultCollector);
 
         // Create validator for the whole tab
-        collect(fieldResultCollectors) //
+        collect(new CompositeReadableProperty<Boolean>(fieldResultCollectors)) //
                 .check(new AndBooleanRule()) //
                 .handleWith(new TabIconBooleanFeedback(tabbedPane, i, "This tab contains errors.")) //
                 .handleWith(tabResultCollector) //
                 .getValidator().trigger();
     }
 
-    private void installGlobalValidator(Set<ResultCollector<?, Boolean>> tabResultCollectors, Component... buttons) {
-        collect(tabResultCollectors) //
+    private void installGlobalValidator(Set<ReadableProperty<Boolean>> tabResultCollectors, Component... buttons) {
+        collect(new CompositeReadableProperty<Boolean>(tabResultCollectors)) //
                 .check(new AndBooleanRule()) //
                 .handleWith(new ComponentEnablingBooleanResultHandler(buttons)) //
                 .getValidator().trigger();
