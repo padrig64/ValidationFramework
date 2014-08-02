@@ -6,6 +6,7 @@
 * Added PropertyValueChangeTrigger to trigger validation when the value of a ReadableProperty changes
 * Added PropertyValueProvider to retrieve the value from a ReadableProperty
 * Added PropertyResultHandler to set the validation result into a WritableProperty
+* Added ResultHandlerProperty to set the property value in to a ResultHandler
 * Added possibility to use readable/writable properties in the GeneralValidator builder (deprecates use of ResultCollector)
 
 # Version 3.2.0
