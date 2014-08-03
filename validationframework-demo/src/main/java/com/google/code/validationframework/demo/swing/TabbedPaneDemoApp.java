@@ -28,9 +28,10 @@ package com.google.code.validationframework.demo.swing;
 import com.google.code.validationframework.api.property.ReadableProperty;
 import com.google.code.validationframework.api.property.WritableProperty;
 import com.google.code.validationframework.base.property.CompositeReadableProperty;
+import com.google.code.validationframework.base.property.ResultHandlerProperty;
 import com.google.code.validationframework.base.property.simple.SimpleBooleanProperty;
-import com.google.code.validationframework.base.rule.bool.AndBooleanRule;
 import com.google.code.validationframework.base.rule.string.StringNotEmptyRule;
+import com.google.code.validationframework.base.transform.AndBooleanAggregator;
 import com.google.code.validationframework.swing.dataprovider.JTextFieldTextProvider;
 import com.google.code.validationframework.swing.property.ComponentEnabledProperty;
 import com.google.code.validationframework.swing.property.JToggleButtonSelectedProperty;
@@ -54,13 +55,14 @@ import javax.swing.WindowConstants;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Collection;
 
 import static com.google.code.validationframework.base.binding.Binder.read;
-import static com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder.collect;
 import static com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder.on;
 
+/**
+ * Example showing how validation can be composited inside window.
+ */
 public class TabbedPaneDemoApp extends JFrame {
 
     /**
@@ -102,11 +104,11 @@ public class TabbedPaneDemoApp extends JFrame {
         contentPane.add(tabbedPane, "grow");
 
         // Create tabs
-        Set<ReadableProperty<Boolean>> tabResultCollectors = new HashSet<ReadableProperty<Boolean>>();
+        CompositeReadableProperty<Boolean> tabbedPaneResultsProperty = new CompositeReadableProperty<Boolean>();
         for (int i = 0; i < 3; i++) {
-            Set<ReadableProperty<Boolean>> fieldResultCollectors = new HashSet<ReadableProperty<Boolean>>();
-            tabbedPane.add("Tab " + i, createTabContent(fieldResultCollectors));
-            installTabValidator(tabbedPane, i, fieldResultCollectors, tabResultCollectors);
+            CompositeReadableProperty<Boolean> tabResultsProperty = new CompositeReadableProperty<Boolean>();
+            tabbedPane.add("Tab " + i, createTabContent(tabResultsProperty));
+            tabbedPaneResultsProperty.addProperty(installTabValidation(tabbedPane, i, tabResultsProperty));
             tabbedPane.setTitleAt(i, "Tab");
         }
 
@@ -126,7 +128,7 @@ public class TabbedPaneDemoApp extends JFrame {
                 });
 
         // Install global validator
-        installGlobalValidator(tabResultCollectors, applyButton);
+        installGlobalValidation(tabbedPaneResultsProperty, applyButton);
 
         // Apply button
         contentPane.add(applyButton, "align right");
@@ -142,7 +144,14 @@ public class TabbedPaneDemoApp extends JFrame {
         setLocation((screenSize.width - size.width) / 2, (screenSize.height - size.height) / 3);
     }
 
-    private Component createTabContent(Set<ReadableProperty<Boolean>> fieldResultCollectors) {
+    /**
+     * Creates some content to put in a tab in the tabbed pane.
+     *
+     * @param tabResultsProperty Composite property to put the tab-wise result into.
+     *
+     * @return Component representing the tab content and to be added to the tabbed pane.
+     */
+    private Component createTabContent(CompositeReadableProperty<Boolean> tabResultsProperty) {
         JPanel panel = new JPanel();
         panel.setLayout(new MigLayout("fill, wrap 2", "[][grow, fill]"));
 
@@ -156,46 +165,79 @@ public class TabbedPaneDemoApp extends JFrame {
             field.setText("Value");
 
             // Create field validator
-            installFieldValidator(field, fieldResultCollectors);
+            tabResultsProperty.addProperty(installFieldValidation(field));
         }
 
         return panel;
     }
 
-    private void installFieldValidator(JTextField field, Set<ReadableProperty<Boolean>> fieldResultCollectors) {
-        // Create result collector for the validator of the whole tab
-        SimpleBooleanProperty fieldResultCollector = new SimpleBooleanProperty();
-        fieldResultCollectors.add(fieldResultCollector);
-
+    /**
+     * Sets up a validator for the specified field.
+     *
+     * @param field Field on which a validator should be installed.
+     *
+     * @return Property representing the result of the field validation and that can be used for tab-wise validation.
+     */
+    private ReadableProperty<Boolean> installFieldValidation(JTextField field) {
+        // FieLd is valid if not empty
+        SimpleBooleanProperty fieldResult = new SimpleBooleanProperty();
         on(new JTextFieldDocumentChangedTrigger(field)) //
                 .read(new JTextFieldTextProvider(field)) //
                 .check(new StringNotEmptyRule()) //
                 .handleWith(new IconBooleanFeedback(field)) //
-                .handleWith(fieldResultCollector) //
+                .handleWith(fieldResult) //
                 .getValidator().trigger();
+
+        // Tab will be valid only if all fields are valid
+        return fieldResult;
     }
 
-    private void installTabValidator(JTabbedPane tabbedPane, int i, Set<ReadableProperty<Boolean>>
-            fieldResultCollectors, Set<ReadableProperty<Boolean>> tabResultCollectors) {
-        // Create result collector for the global validator
-        SimpleBooleanProperty tabResultCollector = new SimpleBooleanProperty();
-        tabResultCollectors.add(tabResultCollector);
+    /**
+     * Sets up the tab-wise validation.
+     * <p/>
+     * A tab is considered valid only if all of its fields are valid.
+     *
+     * @param tabbedPane         Tabbed pane holding the tab on which the validation should be installed.
+     * @param i                  Index of the tab in the tabbed pane.
+     * @param tabResultsProperty Results of the individual fields inside the tab.
+     *
+     * @return Property representing the result of the tab-wise validation and that can be used for tabbed pane-wise
+     * validation.
+     */
+    private ReadableProperty<Boolean> installTabValidation(JTabbedPane tabbedPane, int i,
+                                                           ReadableProperty<Collection<Boolean>> tabResultsProperty) {
+        // Tab is valid only if all fields are valid
+        SimpleBooleanProperty tabResultProperty = new SimpleBooleanProperty();
+        read(tabResultsProperty).transform(new AndBooleanAggregator()).write(tabResultProperty);
 
-        // Create validator for the whole tab
-        collect(new CompositeReadableProperty<Boolean>(fieldResultCollectors)) //
-                .check(new AndBooleanRule()) //
-                .handleWith(new TabIconBooleanFeedback(tabbedPane, i, "This tab contains errors.")) //
-                .handleWith(tabResultCollector) //
-                .getValidator().trigger();
+        // Handle tab-wise result
+        read(tabResultProperty).write(new ResultHandlerProperty<Boolean>(new TabIconBooleanFeedback(tabbedPane, i,
+                "This tab contains errors.")));
+
+        // Tabbed pane will be valid only if all tabs are valid
+        return tabResultProperty;
     }
 
-    private void installGlobalValidator(Set<ReadableProperty<Boolean>> tabResultCollectors, Component... buttons) {
-        collect(new CompositeReadableProperty<Boolean>(tabResultCollectors)) //
-                .check(new AndBooleanRule()) //
-                .handleWith(new ComponentEnablingBooleanResultHandler(buttons)) //
-                .getValidator().trigger();
+    /**
+     * Sets up the tabbed-pane wise (global validation).
+     * <p/>
+     * The tabbed pane is considered valid only if all of its tabs are valid.
+     *
+     * @param tabbedPaneResultsProperty Results of the individual tabs inside the tabbed pane.
+     * @param buttons                   Components to be enabled/disabled depending on the global result.
+     */
+    private void installGlobalValidation(ReadableProperty<Collection<Boolean>> tabbedPaneResultsProperty,
+                                         Component... buttons) {
+        read(tabbedPaneResultsProperty) //
+                .transform(new AndBooleanAggregator()) //
+                .write(new ResultHandlerProperty<Boolean>(new ComponentEnablingBooleanResultHandler(buttons)));
     }
 
+    /**
+     * Main.
+     *
+     * @param args Ignored.
+     */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
