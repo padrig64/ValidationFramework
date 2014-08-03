@@ -35,7 +35,6 @@ import com.google.code.validationframework.base.transform.AndBooleanAggregator;
 import com.google.code.validationframework.swing.dataprovider.JTextFieldTextProvider;
 import com.google.code.validationframework.swing.property.ComponentEnabledProperty;
 import com.google.code.validationframework.swing.property.JToggleButtonSelectedProperty;
-import com.google.code.validationframework.swing.resulthandler.bool.ComponentEnablingBooleanResultHandler;
 import com.google.code.validationframework.swing.resulthandler.bool.IconBooleanFeedback;
 import com.google.code.validationframework.swing.resulthandler.bool.TabIconBooleanFeedback;
 import com.google.code.validationframework.swing.trigger.JTextFieldDocumentChangedTrigger;
@@ -61,7 +60,11 @@ import static com.google.code.validationframework.base.binding.Binder.read;
 import static com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder.on;
 
 /**
- * Example showing how validation can be composited inside window.
+ * Example shows:
+ * . how validation can be composited inside window;
+ * . how validation can be added to single components;
+ * . how tabbed panes can be decorated depending on the validation result;
+ * . how properties can be used for conditional logic.
  */
 public class TabbedPaneDemoApp extends JFrame {
 
@@ -224,13 +227,13 @@ public class TabbedPaneDemoApp extends JFrame {
      * The tabbed pane is considered valid only if all of its tabs are valid.
      *
      * @param tabbedPaneResultsProperty Results of the individual tabs inside the tabbed pane.
-     * @param buttons                   Components to be enabled/disabled depending on the global result.
+     * @param button                    Component to be enabled/disabled depending on the global result.
      */
     private void installGlobalValidation(ReadableProperty<Collection<Boolean>> tabbedPaneResultsProperty,
-                                         Component... buttons) {
+                                         Component button) {
         read(tabbedPaneResultsProperty) //
                 .transform(new AndBooleanAggregator()) //
-                .write(new ResultHandlerProperty<Boolean>(new ComponentEnablingBooleanResultHandler(buttons)));
+                .write(new ComponentEnabledProperty(button));
     }
 
     /**
