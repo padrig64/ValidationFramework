@@ -8,6 +8,7 @@
 * Added PropertyResultHandler to set the validation result into a WritableProperty
 * Added ResultHandlerProperty to set the property value in to a ResultHandler
 * Added possibility to use readable/writable properties in the GeneralValidator builder (deprecates use of ResultCollector)
+* Made IconComponentDecoration create a ToolTipDialog window only if there is a text to show
 
 # Version 3.2.0
 

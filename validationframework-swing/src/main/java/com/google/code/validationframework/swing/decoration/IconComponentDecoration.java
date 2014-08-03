@@ -133,7 +133,8 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
      * <p/>
      * It is lazy-initialized to make sure we will have a parent and a window ancestor (owner of the dialog).
      *
-     * @see com.google.code.validationframework.swing.decoration.IconComponentDecoration.ToolTipVisibilityAdapter#createToolTipDialogIfNeeded()
+     * @see com.google.code.validationframework.swing.decoration.IconComponentDecoration
+     * .ToolTipVisibilityAdapter#createToolTipDialogIfNeeded()
      */
     private ToolTipDialog toolTipDialog = null;
 
@@ -228,7 +229,7 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
         decorationPainter.removeMouseListener(toolTipVisibilityAdapter);
         decorationPainter.removeMouseMotionListener(toolTipVisibilityAdapter);
         decorationPainter.removeComponentListener(toolTipVisibilityAdapter);
-        if(toolTipDialog != null) {
+        if (toolTipDialog != null) {
             toolTipDialog.removeMouseListener(toolTipVisibilityAdapter);
             toolTipDialog.removeMouseMotionListener(toolTipVisibilityAdapter);
             toolTipDialog.removeComponentListener(toolTipVisibilityAdapter);
@@ -333,7 +334,7 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
     private boolean isOverToolTipDialog() {
         boolean overToolTip = false;
 
-        if((toolTipDialog != null) && toolTipDialog.isVisible()) {
+        if ((toolTipDialog != null) && toolTipDialog.isVisible()) {
             Point mouseLocation = MouseInfo.getPointerInfo().getLocation();
             SwingUtilities.convertPointFromScreen(mouseLocation, toolTipDialog);
             overToolTip = toolTipDialog.contains(mouseLocation);
@@ -353,13 +354,18 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
      * other windows of the application.
      */
     private void createToolTipDialogIfNeeded() {
-        if (toolTipDialog == null) {
+        // Not need to create the dialog if there is not text to show
+        if ((toolTipDialog == null) && (toolTipText != null) && toolTipText.isEmpty()) {
             toolTipDialog = new ToolTipDialog(decorationPainter, anchorLinkWithToolTip);
             toolTipDialog.addMouseListener(toolTipVisibilityAdapter);
             toolTipDialog.addMouseMotionListener(toolTipVisibilityAdapter);
             toolTipDialog.addComponentListener(toolTipVisibilityAdapter);
         }
-        toolTipDialog.setText(toolTipText);
+
+        // But if there is (already) a dialog, update it with the text
+        if (toolTipDialog != null) {
+            toolTipDialog.setText(toolTipText);
+        }
     }
 
     /**
