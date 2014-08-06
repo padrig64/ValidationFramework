@@ -118,8 +118,8 @@ public class SimpleBond<MO, SI> implements Disposable {
         init(master, transformer, compositeSlave);
 
         // Add slave properties only after initialization, otherwise they will first be set to null
-        for (WritableProperty<SI> slave : slaves) {
-            compositeSlave.addProperty(slave);
+        for (WritableProperty<SI> wrappedSlave : slaves) {
+            compositeSlave.addProperty(wrappedSlave);
         }
     }
 
