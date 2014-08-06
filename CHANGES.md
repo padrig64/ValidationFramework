@@ -10,6 +10,7 @@
 * Added InvokeLaterPropertyWrapper to notify the value change listeners later on the EDT
 * Added possibility to use readable/writable properties in the GeneralValidator builder (deprecates use of ResultCollector)
 * Made IconComponentDecoration create a ToolTipDialog window only if there is a text to show
+* Updated to SLF4J 1.7.7
 
 # Version 3.2.0
 
