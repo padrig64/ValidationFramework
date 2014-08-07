@@ -29,6 +29,7 @@ import com.google.code.validationframework.api.property.ReadableWritableProperty
 import com.google.code.validationframework.api.property.ValueChangeListener;
 import com.google.code.validationframework.base.property.simple.SimpleBooleanProperty;
 import com.google.code.validationframework.base.transform.OrBooleanAggregator;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static com.google.code.validationframework.base.binding.Binder.read;
@@ -45,6 +46,7 @@ import static org.mockito.Mockito.verifyZeroInteractions;
  */
 public class InvokeLaterPropertyWrapperTest {
 
+    @Ignore
     @Test
     public void testNoEventFired() throws InterruptedException {
         ReadableWritableProperty<Boolean, Boolean> rolloverProperty1 = new SimpleBooleanProperty(false);
@@ -73,6 +75,7 @@ public class InvokeLaterPropertyWrapperTest {
         verifyZeroInteractions(rolloverListener);
     }
 
+    @Ignore
     @Test
     public void testEventsFired() throws InterruptedException {
         ReadableWritableProperty<Boolean, Boolean> rolloverProperty1 = new SimpleBooleanProperty(false);
