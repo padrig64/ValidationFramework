@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.google.code.validationframework</groupId>
         <artifactId>validationframework-parent</artifactId>
-        <version>3.2.1</version>
+        <version>3.2.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>validationframework-demo</artifactId>
