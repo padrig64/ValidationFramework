@@ -1,3 +1,7 @@
+# Version 3.2.5 (to be released)
+
+* Fixed bug #7: tooltip on IconComponentDecoration now shows again
+
 # Version 3.2.4
 
 * Fixed JToggleButtonSelectedProperty value

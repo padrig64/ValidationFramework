@@ -355,7 +355,7 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
      */
     private void createToolTipDialogIfNeeded() {
         // Not need to create the dialog if there is not text to show
-        if ((toolTipDialog == null) && (toolTipText != null) && toolTipText.isEmpty()) {
+        if ((toolTipDialog == null) && (toolTipText != null) && !toolTipText.isEmpty()) {
             toolTipDialog = new ToolTipDialog(decorationPainter, anchorLinkWithToolTip);
             toolTipDialog.addMouseListener(toolTipVisibilityAdapter);
             toolTipDialog.addMouseMotionListener(toolTipVisibilityAdapter);
