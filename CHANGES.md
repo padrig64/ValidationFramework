@@ -1,4 +1,4 @@
-# Version 3.2.5 (to be released)
+# Version 3.2.5
 
 * Fixed bug #7: tooltip on IconComponentDecoration now shows again
 

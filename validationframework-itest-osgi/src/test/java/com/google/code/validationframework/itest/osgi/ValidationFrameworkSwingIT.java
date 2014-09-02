@@ -7,6 +7,7 @@ import com.google.code.validationframework.swing.resulthandler.bool.ComponentEna
 import com.google.code.validationframework.swing.resulthandler.bool.IconBooleanFeedback;
 import com.google.code.validationframework.swing.trigger.JTextFieldDocumentChangedTrigger;
 import org.junit.Assume;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Configuration;
@@ -85,6 +86,7 @@ public class ValidationFrameworkSwingIT {
         }
     }
 
+    @Ignore
     @Test
     public void swingInputAndResultHandling() throws Exception {
         // Assume a non-headless environment
