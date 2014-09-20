@@ -1,5 +1,6 @@
 # Version 3.2.7 (to be released)
 
+* Added JTableRowCountProperty
 * Added JTableSelectedRowCountProperty
 
 # Version 3.2.6

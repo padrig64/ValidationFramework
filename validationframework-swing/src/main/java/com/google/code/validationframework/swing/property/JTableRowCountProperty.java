@@ -29,63 +29,64 @@ import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.base.property.AbstractReadableProperty;
 
 import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.TableModel;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 /**
- * Read-only property representing the number of selected rows in a {@link JTable}.
+ * Read-only property representing the number of rows in a {@link JTable}.
+ * <p/>
+ * Note that this row count corresponds to the view and therefore may differ from the row count in the table model.
  */
-public class JTableSelectedRowCountProperty extends AbstractReadableProperty<Integer> implements Disposable {
+public class JTableRowCountProperty extends AbstractReadableProperty<Integer> implements Disposable {
 
     /**
-     * Entity tracking changes of selection (and selection model).
+     * Entity tracking changes in the table model.
      */
-    private class SelectionAdapter implements ListSelectionListener, PropertyChangeListener {
+    private class RowAdapter implements TableModelListener, PropertyChangeListener {
 
         /**
          * @see PropertyChangeListener#propertyChange(PropertyChangeEvent)
          */
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
-            if ("selectionModel".equals(evt.getPropertyName())) {
-                // Unregister from previous selection model
-                if (evt.getOldValue() instanceof ListSelectionModel) {
-                    ((ListSelectionModel) evt.getOldValue()).removeListSelectionListener(this);
+            if ("model".equals(evt.getPropertyName())) {
+                // Unregister from previous table model
+                if (evt.getOldValue() instanceof TableModel) {
+                    ((TableModel) evt.getOldValue()).removeTableModelListener(this);
                 }
 
-                // Register to new selection model
-                if (evt.getNewValue() instanceof ListSelectionModel) {
-                    ((ListSelectionModel) evt.getNewValue()).addListSelectionListener(this);
+                // Register to new table model
+                if (evt.getNewValue() instanceof TableModel) {
+                    ((TableModel) evt.getNewValue()).addTableModelListener(this);
 
-                    // Update value from new selection model
+                    // Update value
                     updateValue();
                 }
             }
         }
 
         /**
-         * @see ListSelectionListener#valueChanged(ListSelectionEvent)
+         * @see TableModelListener#tableChanged(TableModelEvent)
          */
         @Override
-        public void valueChanged(ListSelectionEvent e) {
-            if (!e.getValueIsAdjusting()) {
-                updateValue();
-            }
+        public void tableChanged(TableModelEvent e) {
+            // Could be optimized, but good enough for now
+            updateValue();
         }
     }
 
     /**
-     * Table whose selection count is to be tracked.
+     * Table whose row count is to be tracked.
      */
     private JTable table = null;
 
     /**
-     * Entity tracking changes of selection (and selection model).
+     * Entity tracking changes in the table model.
      */
-    private final SelectionAdapter selectionAdapter = new SelectionAdapter();
+    private final RowAdapter rowAdapter = new RowAdapter();
 
     /**
      * Current property value.
@@ -93,15 +94,15 @@ public class JTableSelectedRowCountProperty extends AbstractReadableProperty<Int
     private int count = 0;
 
     /**
-     * Constructor specifying the table whose selection count is represented by this property.
+     * Constructor specifying the table whose row count is represented by this property.
      *
-     * @param table Table whose selection count is to be tracked.
+     * @param table Table whose row count is to be tracked.
      */
-    public JTableSelectedRowCountProperty(JTable table) {
+    public JTableRowCountProperty(JTable table) {
         this.table = table;
-        table.addPropertyChangeListener("selectionModel", selectionAdapter);
-        table.getSelectionModel().addListSelectionListener(selectionAdapter);
-        count = table.getSelectedRowCount();
+        table.addPropertyChangeListener("model", rowAdapter);
+        table.getModel().addTableModelListener(rowAdapter);
+        count = table.getRowCount();
     }
 
     /**
@@ -110,8 +111,8 @@ public class JTableSelectedRowCountProperty extends AbstractReadableProperty<Int
     @Override
     public void dispose() {
         if (table != null) {
-            table.getSelectionModel().removeListSelectionListener(selectionAdapter);
-            table.removePropertyChangeListener("selectionModel", selectionAdapter);
+            table.getModel().removeTableModelListener(rowAdapter);
+            table.removePropertyChangeListener("model", rowAdapter);
             table = null;
         }
     }
@@ -125,12 +126,12 @@ public class JTableSelectedRowCountProperty extends AbstractReadableProperty<Int
     }
 
     /**
-     * Updates the value of this property based on the table's selection model and notify the listeners.
+     * Updates the value of this property and notify the listeners.
      */
     private void updateValue() {
         if (table != null) {
             int oldCount = this.count;
-            this.count = table.getSelectedRowCount();
+            this.count = table.getRowCount();
             maybeNotifyListeners(oldCount, count);
         }
     }
