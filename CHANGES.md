@@ -1,3 +1,7 @@
+# Version 3.2.7 (to be released)
+
+* Added JTableSelectedRowCountProperty
+
 # Version 3.2.6
 
 * Fixed bug #7: tooltip on IconComponentDecoration now shows again
