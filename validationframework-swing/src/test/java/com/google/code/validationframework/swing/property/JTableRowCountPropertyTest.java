@@ -59,13 +59,13 @@ public class JTableRowCountPropertyTest {
         // Create table model
         tableModel = new DefaultTableModel();
 
-        tableModel.addColumn("1");
-        tableModel.addColumn("2");
-        tableModel.addColumn("3");
+        tableModel.addColumn("A");
+        tableModel.addColumn("B");
+        tableModel.addColumn("C");
 
         tableModel.addRow(new Object[]{1, 2, 3});
-        tableModel.addRow(new Object[]{1, 2, 3});
-        tableModel.addRow(new Object[]{1, 2, 3});
+        tableModel.addRow(new Object[]{4, 5, 6});
+        tableModel.addRow(new Object[]{7, 8, 9});
 
         // Create table
         table = new JTable(tableModel);
@@ -78,9 +78,10 @@ public class JTableRowCountPropertyTest {
 
     @Test
     public void testRowsInserted() {
+        // Check initial state
         assertEquals(Integer.valueOf(table.getRowCount()), property.getValue());
 
-        // Check value changes
+        // Test property value changes
         tableModel.addRow(new Object[]{1, 2, 3});
         assertEquals(Integer.valueOf(table.getRowCount()), property.getValue());
 
@@ -95,6 +96,7 @@ public class JTableRowCountPropertyTest {
 
     @Test
     public void testRowsRemoved() {
+        // Check initial state
         assertEquals(Integer.valueOf(table.getRowCount()), property.getValue());
 
         // Test property value changes
@@ -112,6 +114,7 @@ public class JTableRowCountPropertyTest {
 
     @Test
     public void testRowsUpdated() {
+        // Check initial state
         assertEquals(Integer.valueOf(table.getRowCount()), property.getValue());
 
         // Test property value changes
@@ -127,6 +130,7 @@ public class JTableRowCountPropertyTest {
 
     @Test
     public void testStructureChanged() {
+        // Check initial state
         assertEquals(Integer.valueOf(table.getRowCount()), property.getValue());
 
         // Test property value changes
@@ -148,6 +152,7 @@ public class JTableRowCountPropertyTest {
 
     @Test
     public void testDataChanged() {
+        // Check initial state
         assertEquals(Integer.valueOf(table.getRowCount()), property.getValue());
 
         // Test property value changes
@@ -167,6 +172,7 @@ public class JTableRowCountPropertyTest {
 
     @Test
     public void testNewModel() {
+        // Check initial state
         assertEquals(Integer.valueOf(table.getRowCount()), property.getValue());
 
         // Test property value changes
