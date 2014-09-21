@@ -2,6 +2,7 @@
 
 * Added JTableRowCountProperty
 * Added JTableSelectedRowCountProperty
+* Fixed issue where the value of the JTextComponentTextProperty was not immediately updated upon replacement of the document
 
 # Version 3.2.6
 

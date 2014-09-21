@@ -73,6 +73,9 @@ public class JTextComponentTextProperty extends AbstractReadableWritableProperty
                 // Hook to new document
                 if (propertyChangeEvent.getNewValue() instanceof Document) {
                     ((Document) propertyChangeEvent.getNewValue()).addDocumentListener(this);
+
+                    // Update value from new document
+                    updateValue();
                 }
             }
         }
