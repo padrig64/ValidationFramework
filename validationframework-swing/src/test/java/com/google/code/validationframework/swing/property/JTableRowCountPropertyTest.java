@@ -26,6 +26,7 @@
 package com.google.code.validationframework.swing.property;
 
 import com.google.code.validationframework.api.property.ReadableProperty;
+import com.google.code.validationframework.api.property.ValueChangeListener;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -33,102 +34,147 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 /**
  * @see JTableRowCountProperty
  */
 public class JTableRowCountPropertyTest {
 
-    private DefaultTableModel tableModel = null;
+    private DefaultTableModel tableModel;
 
-    private JTable table = null;
+    private JTable table;
 
+    private ReadableProperty<Integer> property;
+
+    private ValueChangeListener<Integer> listenerMock;
+
+    @SuppressWarnings("unchecked")
     @Before
     public void setUp() {
+        // Create table model
         tableModel = new DefaultTableModel();
+
         tableModel.addColumn("1");
         tableModel.addColumn("2");
         tableModel.addColumn("3");
 
+        tableModel.addRow(new Object[]{1, 2, 3});
+        tableModel.addRow(new Object[]{1, 2, 3});
+        tableModel.addRow(new Object[]{1, 2, 3});
+
+        // Create table
         table = new JTable(tableModel);
+
+        // Create property
+        property = new JTableRowCountProperty(table);
+        listenerMock = (ValueChangeListener<Integer>) mock(ValueChangeListener.class);
+        property.addValueChangeListener(listenerMock);
     }
 
     @Test
     public void testRowsInserted() {
-        ReadableProperty<Integer> property = new JTableRowCountProperty(table);
         assertEquals(Integer.valueOf(table.getRowCount()), property.getValue());
 
+        // Check value changes
         tableModel.addRow(new Object[]{1, 2, 3});
         assertEquals(Integer.valueOf(table.getRowCount()), property.getValue());
 
-        tableModel.setRowCount(3);
+        tableModel.setRowCount(6);
         assertEquals(Integer.valueOf(table.getRowCount()), property.getValue());
+
+        // Check fired events
+        verify(listenerMock).valueChanged(property, 3, 4);
+        verify(listenerMock).valueChanged(property, 4, 6);
+        verify(listenerMock, times(2)).valueChanged(any(JTableRowCountProperty.class), anyInt(), anyInt());
     }
 
     @Test
     public void testRowsRemoved() {
-        tableModel.addRow(new Object[]{1, 2, 3});
-        tableModel.addRow(new Object[]{1, 2, 3});
-        tableModel.addRow(new Object[]{1, 2, 3});
-
-        ReadableProperty<Integer> property = new JTableRowCountProperty(table);
         assertEquals(Integer.valueOf(table.getRowCount()), property.getValue());
 
+        // Test property value changes
         tableModel.removeRow(0);
         assertEquals(Integer.valueOf(table.getRowCount()), property.getValue());
 
         tableModel.setRowCount(1);
         assertEquals(Integer.valueOf(table.getRowCount()), property.getValue());
+
+        // Check fired events
+        verify(listenerMock).valueChanged(property, 3, 2);
+        verify(listenerMock).valueChanged(property, 2, 1);
+        verify(listenerMock, times(2)).valueChanged(any(JTableRowCountProperty.class), anyInt(), anyInt());
     }
 
     @Test
     public void testRowsUpdated() {
-        tableModel.addRow(new Object[]{1, 2, 3});
-        tableModel.addRow(new Object[]{1, 2, 3});
-        tableModel.addRow(new Object[]{1, 2, 3});
-
-        ReadableProperty<Integer> property = new JTableRowCountProperty(table);
         assertEquals(Integer.valueOf(table.getRowCount()), property.getValue());
 
+        // Test property value changes
         tableModel.setValueAt(5, 0, 0);
         assertEquals(Integer.valueOf(table.getRowCount()), property.getValue());
 
         tableModel.moveRow(0, 0, 1);
         assertEquals(Integer.valueOf(table.getRowCount()), property.getValue());
+
+        // Check fired events
+        verify(listenerMock, times(0)).valueChanged(any(JTableRowCountProperty.class), anyInt(), anyInt());
     }
 
     @Test
     public void testStructureChanged() {
-        tableModel.addRow(new Object[]{1, 2, 3});
-        tableModel.addRow(new Object[]{1, 2, 3});
-        tableModel.addRow(new Object[]{1, 2, 3});
-
-        ReadableProperty<Integer> property = new JTableRowCountProperty(table);
         assertEquals(Integer.valueOf(table.getRowCount()), property.getValue());
 
+        // Test property value changes
         tableModel.addColumn("New column");
         assertEquals(Integer.valueOf(table.getRowCount()), property.getValue());
 
-        Object[][] data = new Object[][]{{1, 2, 3}, {1, 2, 3}, {1, 2, 3}};
-        Object[] identifiers = new Object[]{1, 2, 3};
+        Object[][] data = new Object[][]{{1, 2, 3}, {1, 2, 3}};
+        Object[] identifiers = new Object[]{1, 2};
         tableModel.setDataVector(data, identifiers);
         assertEquals(Integer.valueOf(table.getRowCount()), property.getValue());
 
         tableModel.setColumnCount(2);
         assertEquals(Integer.valueOf(table.getRowCount()), property.getValue());
+
+        // Check fired events
+        verify(listenerMock).valueChanged(property, 3, 2);
+        verify(listenerMock).valueChanged(any(JTableRowCountProperty.class), anyInt(), anyInt());
     }
 
     @Test
     public void testDataChanged() {
-        tableModel.addRow(new Object[]{1, 2, 3});
-        tableModel.addRow(new Object[]{1, 2, 3});
-        tableModel.addRow(new Object[]{1, 2, 3});
+        assertEquals(Integer.valueOf(table.getRowCount()), property.getValue());
 
-        ReadableProperty<Integer> property = new JTableRowCountProperty(table);
+        // Test property value changes
+        tableModel.getDataVector().remove(0);
+        tableModel.fireTableDataChanged();
         assertEquals(Integer.valueOf(table.getRowCount()), property.getValue());
 
         tableModel.getDataVector().clear();
         tableModel.fireTableDataChanged();
         assertEquals(Integer.valueOf(table.getRowCount()), property.getValue());
+
+        // Check fired events
+        verify(listenerMock).valueChanged(property, 3, 2);
+        verify(listenerMock).valueChanged(property, 2, 0);
+        verify(listenerMock, times(2)).valueChanged(any(JTableRowCountProperty.class), anyInt(), anyInt());
+    }
+
+    @Test
+    public void testNewModel() {
+        assertEquals(Integer.valueOf(table.getRowCount()), property.getValue());
+
+        // Test property value changes
+        table.setModel(new DefaultTableModel());
+        assertEquals(Integer.valueOf(table.getRowCount()), property.getValue());
+
+        // Check fired events
+        verify(listenerMock).valueChanged(property, 3, 0);
+        verify(listenerMock).valueChanged(any(JTableRowCountProperty.class), anyInt(), anyInt());
     }
 }
