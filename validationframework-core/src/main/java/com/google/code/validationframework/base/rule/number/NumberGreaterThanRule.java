@@ -28,12 +28,14 @@ package com.google.code.validationframework.base.rule.number;
 import com.google.code.validationframework.api.rule.Rule;
 
 /**
- * Rule checking whether the data, being a number, is strictly greater than a specific value.<br>Note that if the data
- * and the specified value are both null, they will be considered equal. If they are by NaN, they will be considered
- * equal. And everything is considered bigger than null.
+ * Rule checking whether the data, being a number, is strictly greater than a specific value.
+ * <p/>
+ * Note that if the data and the specified value are both null or both NaN, they will be considered equal. Everything is
+ * considered bigger than null.
  *
- * @param <RI> Type of number handled by this rule.<br>It also it is not really required for the internal logic of the
- *             rule, it helps in reducing compilation warnings and/or errors when add a rule in a validator.
+ * @param <RI> Type of number handled by this rule.<br>
+ *             It is not strictly required for the internal logic of the rule, but it helps in reducing compilation
+ *             warnings and/or errors.
  *
  * @see Rule
  */
@@ -56,7 +58,7 @@ public class NumberGreaterThanRule<RI extends Number> implements Rule<RI, Boolea
      *
      * @param minimumValue Value to which the data is to be compared.
      */
-    public NumberGreaterThanRule(final RI minimumValue) {
+    public NumberGreaterThanRule(RI minimumValue) {
         setMinimumValue(minimumValue);
     }
 
@@ -74,7 +76,7 @@ public class NumberGreaterThanRule<RI extends Number> implements Rule<RI, Boolea
      *
      * @param minimumValue Value to which the data is to be compared.
      */
-    public void setMinimumValue(final RI minimumValue) {
+    public void setMinimumValue(RI minimumValue) {
         this.minimumValue = minimumValue;
     }
 
@@ -83,8 +85,8 @@ public class NumberGreaterThanRule<RI extends Number> implements Rule<RI, Boolea
      */
     @SuppressWarnings("unchecked")
     @Override
-    public Boolean validate(final RI data) {
-        final boolean valid;
+    public Boolean validate(RI data) {
+        boolean valid;
 
         if ((data == null) && (minimumValue == null)) {
             valid = false;
@@ -94,7 +96,7 @@ public class NumberGreaterThanRule<RI extends Number> implements Rule<RI, Boolea
         } else if (minimumValue == null) {
             // data is not null, everything is bigger than null
             valid = true;
-        } else if (data instanceof Comparable) {
+        } else if (data instanceof Comparable<?>) {
             // Both are not null
             valid = (((Comparable) data).compareTo(minimumValue) > 0);
         } else if (minimumValue instanceof Comparable<?>) {

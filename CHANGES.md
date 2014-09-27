@@ -3,6 +3,11 @@
 * Added JTableRowCountProperty
 * Added JTableSelectedRowCountProperty
 * Added JListSelectedItemCountProperty
+* Added NumberEqualToTransformer
+* Added NumberGreaterThanOrEqualToTransformer
+* Added NumberGreaterThanTransformer
+* Added NumberLessThanOrEqualToTransformer
+* Added NumberLessThanTransformer
 * Fixed issue where the value of the JTextComponentTextProperty was not immediately updated upon replacement of the document
 
 # Version 3.2.6

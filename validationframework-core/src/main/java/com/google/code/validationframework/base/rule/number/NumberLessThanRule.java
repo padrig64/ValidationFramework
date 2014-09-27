@@ -28,12 +28,14 @@ package com.google.code.validationframework.base.rule.number;
 import com.google.code.validationframework.api.rule.Rule;
 
 /**
- * Rule checking whether the data, being a number, is strictly less than a specific value.<br>Note that if the data and
- * the specified value are both null, they will be considered equal. If they are by NaN, they will be considered equal.
- * And everything is considered bigger than null.
+ * Rule checking whether the data, being a number, is strictly less than a specific value.
+ * <p/>
+ * Note that if the data and the specified value are both null or both NaN, they will be considered equal. Everything is
+ * considered bigger than null.
  *
- * @param <RI> Type of number handled by this rule.<br>It also it is not really required for the internal logic of the
- *             rule, it helps in reducing compilation warnings and/or errors when add a rule in a validator.
+ * @param <RI> Type of number handled by this rule.<br>
+ *             It is not strictly required for the internal logic of the rule, but it helps in reducing compilation
+ *             warnings and/or errors.
  *
  * @see Rule
  */
@@ -56,7 +58,7 @@ public class NumberLessThanRule<RI extends Number> implements Rule<RI, Boolean> 
      *
      * @param maximumValue Value to which the data is to be compared.
      */
-    public NumberLessThanRule(final RI maximumValue) {
+    public NumberLessThanRule(RI maximumValue) {
         setMaximumValue(maximumValue);
     }
 
@@ -74,7 +76,7 @@ public class NumberLessThanRule<RI extends Number> implements Rule<RI, Boolean> 
      *
      * @param maximumValue Value to which the data is to be compared.
      */
-    public void setMaximumValue(final RI maximumValue) {
+    public void setMaximumValue(RI maximumValue) {
         this.maximumValue = maximumValue;
     }
 
@@ -83,8 +85,8 @@ public class NumberLessThanRule<RI extends Number> implements Rule<RI, Boolean> 
      */
     @SuppressWarnings("unchecked")
     @Override
-    public Boolean validate(final RI data) {
-        final boolean valid;
+    public Boolean validate(RI data) {
+        boolean valid;
 
         if ((data == null) && (maximumValue == null)) {
             valid = false;
@@ -94,7 +96,7 @@ public class NumberLessThanRule<RI extends Number> implements Rule<RI, Boolean> 
         } else if (maximumValue == null) {
             // data is not null, everything is bigger than null
             valid = false;
-        } else if (data instanceof Comparable) {
+        } else if (data instanceof Comparable<?>) {
             // Both are not null
             valid = (((Comparable) data).compareTo(maximumValue) < 0);
         } else if (maximumValue instanceof Comparable<?>) {

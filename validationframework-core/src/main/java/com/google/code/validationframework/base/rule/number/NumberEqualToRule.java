@@ -28,11 +28,13 @@ package com.google.code.validationframework.base.rule.number;
 import com.google.code.validationframework.api.rule.Rule;
 
 /**
- * Rule checking whether the data, being a number, is equal to a specific value.<br>Note that if the data and the
- * specified value are both null, they will be considered equal. And if they are by NaN, they will be considered equal.
+ * Rule checking whether the data, being a number, is equal to a specific value.
+ * <p/>
+ * Note that if the data and the specified value are both null or both NaN, they will be considered equal.
  *
- * @param <RI> Type of number handled by this rule.<br>It also it is not really required for the internal logic of the
- *             rule, it helps in reducing compilation warnings and/or errors when add a rule in a validator.
+ * @param <RI> Type of number handled by this rule.<br>
+ *             It is not strictly required for the internal logic of the rule, but it helps in reducing compilation
+ *             warnings and/or errors.
  *
  * @see Rule
  */
@@ -55,7 +57,7 @@ public class NumberEqualToRule<RI extends Number> implements Rule<RI, Boolean> {
      *
      * @param exactValue Value to which the data is to be compared.
      */
-    public NumberEqualToRule(final RI exactValue) {
+    public NumberEqualToRule(RI exactValue) {
         setExactValue(exactValue);
     }
 
@@ -73,7 +75,7 @@ public class NumberEqualToRule<RI extends Number> implements Rule<RI, Boolean> {
      *
      * @param exactValue Value to which the data is to be compared.
      */
-    public void setExactValue(final RI exactValue) {
+    public void setExactValue(RI exactValue) {
         this.exactValue = exactValue;
     }
 
@@ -82,8 +84,8 @@ public class NumberEqualToRule<RI extends Number> implements Rule<RI, Boolean> {
      */
     @SuppressWarnings("unchecked")
     @Override
-    public Boolean validate(final RI data) {
-        final boolean valid;
+    public Boolean validate(RI data) {
+        boolean valid;
 
         if ((data == null) && (exactValue == null)) {
             valid = true;
@@ -93,7 +95,7 @@ public class NumberEqualToRule<RI extends Number> implements Rule<RI, Boolean> {
         } else if (exactValue == null) {
             // data is not null
             valid = false;
-        } else if (data instanceof Comparable) {
+        } else if (data instanceof Comparable<?>) {
             // Both are not null
             valid = (((Comparable) data).compareTo(exactValue) == 0);
         } else if (exactValue instanceof Comparable<?>) {

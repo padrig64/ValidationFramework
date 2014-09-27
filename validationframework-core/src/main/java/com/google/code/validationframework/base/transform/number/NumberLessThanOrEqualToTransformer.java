@@ -23,33 +23,33 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.base.rule.number;
+package com.google.code.validationframework.base.transform.number;
 
-import com.google.code.validationframework.api.rule.Rule;
+import com.google.code.validationframework.api.transform.Transformer;
 
 /**
- * Rule checking whether the data, being a number, is less than or equal to a specific value.
+ * Transformer checking whether the input data, being a number, is less than or equal to a specific value.
  * <p/>
- * Note that if the data and the specified value are both null or both NaN, they will be considered equal. Everything is
- * considered bigger than null.
+ * Note that if the input data and the specified value are both null or both NaN, they will be considered equal.
+ * Everything is considered bigger than null.
  *
- * @param <RI> Type of number handled by this rule.<br>
- *             It is not strictly required for the internal logic of the rule, but it helps in reducing compilation
- *             warnings and/or errors.
+ * @param <I> Type of number handled by this transformer.<br>
+ *            It is not strictly required for the internal logic of the transformer, but it helps in reducing
+ *            compilation warnings and/or errors.
  *
- * @see Rule
+ * @see Transformer
  */
-public class NumberLessThanOrEqualToRule<RI extends Number> implements Rule<RI, Boolean> {
+public class NumberLessThanOrEqualToTransformer<I extends Number> implements Transformer<I, Boolean> {
 
     /**
      * Value to which the data is to be compared.
      */
-    private RI maximumValue = null;
+    private I maximumValue = null;
 
     /**
      * Default constructor.
      */
-    public NumberLessThanOrEqualToRule() {
+    public NumberLessThanOrEqualToTransformer() {
         // Nothing to be done
     }
 
@@ -58,7 +58,7 @@ public class NumberLessThanOrEqualToRule<RI extends Number> implements Rule<RI, 
      *
      * @param maximumValue Value to which the data is to be compared.
      */
-    public NumberLessThanOrEqualToRule(RI maximumValue) {
+    public NumberLessThanOrEqualToTransformer(I maximumValue) {
         setMaximumValue(maximumValue);
     }
 
@@ -76,35 +76,35 @@ public class NumberLessThanOrEqualToRule<RI extends Number> implements Rule<RI, 
      *
      * @param maximumValue Value to which the data is to be compared.
      */
-    public void setMaximumValue(RI maximumValue) {
+    public void setMaximumValue(I maximumValue) {
         this.maximumValue = maximumValue;
     }
 
     /**
-     * @see Rule#validate(Object)
+     * @see Transformer#transform(Object)
      */
     @SuppressWarnings("unchecked")
     @Override
-    public Boolean validate(RI data) {
+    public Boolean transform(I input) {
         boolean valid;
 
-        if ((data == null) && (maximumValue == null)) {
+        if ((input == null) && (maximumValue == null)) {
             valid = true;
-        } else if (data == null) {
+        } else if (input == null) {
             // exactValue is not null, everything is bigger than null
             valid = true;
         } else if (maximumValue == null) {
-            // data is not null, everything is bigger than null
+            // input is not null, everything is bigger than null
             valid = false;
-        } else if (data instanceof Comparable<?>) {
+        } else if (input instanceof Comparable<?>) {
             // Both are not null
-            valid = (((Comparable) data).compareTo(maximumValue) <= 0);
+            valid = (((Comparable) input).compareTo(maximumValue) <= 0);
         } else if (maximumValue instanceof Comparable<?>) {
             // Both are not null
-            valid = (((Comparable) maximumValue).compareTo(data) >= 0);
+            valid = (((Comparable) maximumValue).compareTo(input) >= 0);
         } else {
             // Both are not null
-            valid = data.equals(maximumValue);
+            valid = input.equals(maximumValue);
         }
 
         return valid;
