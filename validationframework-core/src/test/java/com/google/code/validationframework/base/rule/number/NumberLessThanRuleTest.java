@@ -29,6 +29,9 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * @see NumberLessThanRule
+ */
 public class NumberLessThanRuleTest {
 
     @Test

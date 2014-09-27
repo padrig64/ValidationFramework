@@ -23,47 +23,48 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.base.rule.number;
+package com.google.code.validationframework.base.transform.number;
 
+import com.google.code.validationframework.api.transform.Transformer;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
 /**
- * @see NumberGreaterThanRule
+ * @see NumberLessThanTransformer
  */
-public class NumberGreaterThanRuleTest {
+public class NumberLessThanTransformerTest {
 
     @Test
     public void testDouble0() {
-        NumberGreaterThanRule<Double> rule = new NumberGreaterThanRule<Double>(0.0);
+        Transformer<Double, Boolean> rule = new NumberLessThanTransformer<Double>(0.0);
 
-        assertEquals(Boolean.FALSE, rule.validate(0.0));
-        assertEquals(Boolean.TRUE, rule.validate(65.453));
-        assertEquals(Boolean.FALSE, rule.validate(-1.12));
-        assertEquals(Boolean.TRUE, rule.validate(Double.NaN)); // Default behavior of Double
-        assertEquals(Boolean.FALSE, rule.validate(null));
+        assertEquals(Boolean.FALSE, rule.transform(0.0));
+        assertEquals(Boolean.FALSE, rule.transform(65.453));
+        assertEquals(Boolean.TRUE, rule.transform(-1.12));
+        assertEquals(Boolean.FALSE, rule.transform(Double.NaN)); // Default behavior of Double
+        assertEquals(Boolean.TRUE, rule.transform(null));
     }
 
     @Test
     public void testDoubleNaN() {
-        NumberGreaterThanRule<Double> rule = new NumberGreaterThanRule<Double>(Double.NaN);
+        Transformer<Double, Boolean> rule = new NumberLessThanTransformer<Double>(Double.NaN);
 
-        assertEquals(Boolean.FALSE, rule.validate(0.0)); // Default behavior of Double
-        assertEquals(Boolean.FALSE, rule.validate(65.453)); // Default behavior of Double
-        assertEquals(Boolean.FALSE, rule.validate(-1.12)); // Default behavior of Double
-        assertEquals(Boolean.FALSE, rule.validate(Double.NaN)); // Default behavior of Double
-        assertEquals(Boolean.FALSE, rule.validate(null));
+        assertEquals(Boolean.TRUE, rule.transform(0.0)); // Default behavior of Double
+        assertEquals(Boolean.TRUE, rule.transform(65.453)); // Default behavior of Double
+        assertEquals(Boolean.TRUE, rule.transform(-1.12)); // Default behavior of Double
+        assertEquals(Boolean.FALSE, rule.transform(Double.NaN)); // Default behavior of Double
+        assertEquals(Boolean.TRUE, rule.transform(null));
     }
 
     @Test
     public void testDoubleNull() {
-        NumberGreaterThanRule<Double> rule = new NumberGreaterThanRule<Double>(null);
+        Transformer<Double, Boolean> rule = new NumberLessThanTransformer<Double>(null);
 
-        assertEquals(Boolean.TRUE, rule.validate(0.0));
-        assertEquals(Boolean.TRUE, rule.validate(65.453));
-        assertEquals(Boolean.TRUE, rule.validate(-1.12));
-        assertEquals(Boolean.TRUE, rule.validate(Double.NaN));
-        assertEquals(Boolean.FALSE, rule.validate(null));
+        assertEquals(Boolean.FALSE, rule.transform(0.0));
+        assertEquals(Boolean.FALSE, rule.transform(65.453));
+        assertEquals(Boolean.FALSE, rule.transform(-1.12));
+        assertEquals(Boolean.FALSE, rule.transform(Double.NaN));
+        assertEquals(Boolean.FALSE, rule.transform(null));
     }
 }
