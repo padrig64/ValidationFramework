@@ -66,7 +66,7 @@ import static com.google.code.validationframework.base.validator.generalvalidato
  * . how tabbed panes can be decorated depending on the validation result;
  * . how properties can be used for conditional logic.
  */
-public class TabbedPaneDemoApp extends JFrame {
+public class TabbedPaneDemo extends JFrame {
 
     /**
      * Generated serial UID.
@@ -78,7 +78,7 @@ public class TabbedPaneDemoApp extends JFrame {
     /**
      * Default constructor.
      */
-    public TabbedPaneDemoApp() {
+    public TabbedPaneDemo() {
         super();
         init();
     }
@@ -265,7 +265,7 @@ public class TabbedPaneDemoApp extends JFrame {
                 }
 
                 // Show window
-                new TabbedPaneDemoApp().setVisible(true);
+                new TabbedPaneDemo().setVisible(true);
             }
         });
     }

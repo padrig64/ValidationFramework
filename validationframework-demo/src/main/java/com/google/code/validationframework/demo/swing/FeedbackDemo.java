@@ -76,7 +76,7 @@ import java.text.NumberFormat;
 import static com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder.collect;
 import static com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder.on;
 
-public class FeedbackDemoApp extends JFrame {
+public class FeedbackDemo extends JFrame {
 
     /**
      * UIResource in case look-and-feel changes while result is visible. The new look-and-feel is allowed to replace it
@@ -221,7 +221,7 @@ public class FeedbackDemoApp extends JFrame {
     /**
      * Default constructor.
      */
-    public FeedbackDemoApp() {
+    public FeedbackDemo() {
         super();
         init();
     }
@@ -417,7 +417,7 @@ public class FeedbackDemoApp extends JFrame {
                 }
 
                 // Show window
-                new FeedbackDemoApp().setVisible(true);
+                new FeedbackDemo().setVisible(true);
             }
         });
     }

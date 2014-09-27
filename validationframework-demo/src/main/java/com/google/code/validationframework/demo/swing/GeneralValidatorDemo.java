@@ -74,7 +74,7 @@ import java.text.NumberFormat;
 import static com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder.collect;
 import static com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder.on;
 
-public class GeneralValidatorDemoApp extends JFrame {
+public class GeneralValidatorDemo extends JFrame {
 
     /**
      * UIResource in case look-and-feel changes while result is visible. The new look-and-feel is allowed to replace it
@@ -219,7 +219,7 @@ public class GeneralValidatorDemoApp extends JFrame {
     /**
      * Default constructor.
      */
-    public GeneralValidatorDemoApp() {
+    public GeneralValidatorDemo() {
         super();
         init();
     }
@@ -388,7 +388,7 @@ public class GeneralValidatorDemoApp extends JFrame {
                 }
 
                 // Show window
-                new GeneralValidatorDemoApp().setVisible(true);
+                new GeneralValidatorDemo().setVisible(true);
             }
         });
     }
