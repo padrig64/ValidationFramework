@@ -1,13 +1,14 @@
 # Version 3.2.7 (to be released)
 
-* Added JTableRowCountProperty
-* Added JTableSelectedRowCountProperty
-* Added JListSelectedItemCountProperty
 * Added NumberEqualToTransformer
 * Added NumberGreaterThanOrEqualToTransformer
 * Added NumberGreaterThanTransformer
 * Added NumberLessThanOrEqualToTransformer
 * Added NumberLessThanTransformer
+* Added JListSelectedItemCountProperty
+* Added JTableRowCountProperty
+* Added JTableSelectedRowCountProperty
+* Added JTableSelectedRowIndexProperty
 * Added JTableRowIndexToModelTransformer
 * Added JTableRowIndexToViewTransformer
 * Added JTableColumnIndexToModelTransformer

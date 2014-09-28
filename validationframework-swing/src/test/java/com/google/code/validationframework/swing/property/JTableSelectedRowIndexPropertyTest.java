@@ -25,7 +25,7 @@
 
 package com.google.code.validationframework.swing.property;
 
-import com.google.code.validationframework.api.property.ReadableProperty;
+import com.google.code.validationframework.api.property.ReadableWritableProperty;
 import com.google.code.validationframework.api.property.ValueChangeListener;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,15 +43,15 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 /**
- * @see JTableSelectedRowCountProperty
+ * @see JTableSelectedRowIndexProperty
  */
-public class JTableSelectedRowCountPropertyTest {
+public class JTableSelectedRowIndexPropertyTest {
 
     private JTable table;
 
     private ListSelectionModel selectionModel;
 
-    private ReadableProperty<Integer> property;
+    private ReadableWritableProperty<Integer, Integer> property;
 
     private ValueChangeListener<Integer> listenerMock;
 
@@ -74,7 +74,7 @@ public class JTableSelectedRowCountPropertyTest {
         selectionModel = table.getSelectionModel();
 
         // Create property
-        property = new JTableSelectedRowCountProperty(table);
+        property = new JTableSelectedRowIndexProperty(table);
         listenerMock = (ValueChangeListener<Integer>) mock(ValueChangeListener.class);
         property.addValueChangeListener(listenerMock);
     }
@@ -82,65 +82,91 @@ public class JTableSelectedRowCountPropertyTest {
     @Test
     public void testSelectionChanges() {
         // Check initial state
-        assertEquals(Integer.valueOf(table.getSelectedRowCount()), property.getValue());
+        assertEquals(Integer.valueOf(table.getSelectedRow()), property.getValue());
 
         // Test property value changes
-        selectionModel.addSelectionInterval(0, 1);
-        assertEquals(Integer.valueOf(table.getSelectedRowCount()), property.getValue());
+        selectionModel.addSelectionInterval(0, 0);
+        assertEquals(Integer.valueOf(table.getSelectedRow()), property.getValue());
 
-        selectionModel.addSelectionInterval(2, 2);
-        assertEquals(Integer.valueOf(table.getSelectedRowCount()), property.getValue());
+        selectionModel.setSelectionInterval(2, 2);
+        assertEquals(Integer.valueOf(table.getSelectedRow()), property.getValue());
 
-        selectionModel.removeSelectionInterval(1, 1);
-        assertEquals(Integer.valueOf(table.getSelectedRowCount()), property.getValue());
+        selectionModel.removeSelectionInterval(2, 2);
+        assertEquals(Integer.valueOf(table.getSelectedRow()), property.getValue());
 
         selectionModel.setSelectionInterval(1, 1);
 
         selectionModel.clearSelection();
-        assertEquals(Integer.valueOf(table.getSelectedRowCount()), property.getValue());
+        assertEquals(Integer.valueOf(table.getSelectedRow()), property.getValue());
 
         // Check fired events
+        verify(listenerMock).valueChanged(property, -1, 0);
         verify(listenerMock).valueChanged(property, 0, 2);
-        verify(listenerMock).valueChanged(property, 2, 3);
-        verify(listenerMock).valueChanged(property, 3, 2);
-        verify(listenerMock).valueChanged(property, 2, 1);
-        verify(listenerMock).valueChanged(property, 1, 0);
-        verify(listenerMock, times(5)).valueChanged(any(JTableSelectedRowCountProperty.class), anyInt(), anyInt());
+        verify(listenerMock).valueChanged(property, 2, -1);
+        verify(listenerMock).valueChanged(property, -1, 1);
+        verify(listenerMock).valueChanged(property, 1, -1);
+        verify(listenerMock, times(5)).valueChanged(any(JTableSelectedRowIndexProperty.class), anyInt(), anyInt());
     }
 
     @Test
     public void testNewModel() {
         // Check initial state
-        assertEquals(Integer.valueOf(table.getSelectedRowCount()), property.getValue());
+        assertEquals(Integer.valueOf(table.getSelectedRow()), property.getValue());
 
         // Test property value changes
-        selectionModel.setSelectionInterval(0, 1);
-        assertEquals(Integer.valueOf(table.getSelectedRowCount()), property.getValue());
+        selectionModel.setSelectionInterval(1, 1);
+        assertEquals(Integer.valueOf(table.getSelectedRow()), property.getValue());
 
         table.setModel(new DefaultTableModel());
-        assertEquals(Integer.valueOf(table.getSelectedRowCount()), property.getValue());
+        assertEquals(Integer.valueOf(table.getSelectedRow()), property.getValue());
 
         // Check fired events
-        verify(listenerMock).valueChanged(property, 0, 2);
-        verify(listenerMock).valueChanged(property, 2, 0);
-        verify(listenerMock, times(2)).valueChanged(any(JTableSelectedRowCountProperty.class), anyInt(), anyInt());
+        verify(listenerMock).valueChanged(property, -1, 1);
+        verify(listenerMock).valueChanged(property, 1, -1);
+        verify(listenerMock, times(2)).valueChanged(any(JTableSelectedRowIndexProperty.class), anyInt(), anyInt());
     }
 
     @Test
     public void testNewSelectionModel() {
         // Check initial state
-        assertEquals(Integer.valueOf(table.getSelectedRowCount()), property.getValue());
+        assertEquals(Integer.valueOf(table.getSelectedRow()), property.getValue());
 
         // Test property value changes
-        selectionModel.setSelectionInterval(0, 1);
-        assertEquals(Integer.valueOf(table.getSelectedRowCount()), property.getValue());
+        selectionModel.setSelectionInterval(1, 1);
+        assertEquals(Integer.valueOf(table.getSelectedRow()), property.getValue());
 
         table.setSelectionModel(new DefaultListSelectionModel());
-        assertEquals(Integer.valueOf(table.getSelectedRowCount()), property.getValue());
+        assertEquals(Integer.valueOf(table.getSelectedRow()), property.getValue());
 
         // Check fired events
-        verify(listenerMock).valueChanged(property, 0, 2);
-        verify(listenerMock).valueChanged(property, 2, 0);
-        verify(listenerMock, times(2)).valueChanged(any(JTableSelectedRowCountProperty.class), anyInt(), anyInt());
+        verify(listenerMock).valueChanged(property, -1, 1);
+        verify(listenerMock).valueChanged(property, 1, -1);
+        verify(listenerMock, times(2)).valueChanged(any(JTableSelectedRowIndexProperty.class), anyInt(), anyInt());
+    }
+
+    @Test
+    public void testSelectFromProperty() {
+        // Check initial state
+        assertEquals(Integer.valueOf(table.getSelectedRow()), property.getValue());
+
+        // Test selection model changes
+        property.setValue(1);
+        assertEquals(Integer.valueOf(table.getSelectedRow()), property.getValue());
+
+        property.setValue(-1);
+        assertEquals(Integer.valueOf(table.getSelectedRow()), property.getValue());
+
+        property.setValue(2);
+        assertEquals(Integer.valueOf(table.getSelectedRow()), property.getValue());
+
+        property.setValue(null);
+        assertEquals(Integer.valueOf(table.getSelectedRow()), property.getValue());
+
+        // Check fired events
+        verify(listenerMock).valueChanged(property, -1, 1);
+        verify(listenerMock).valueChanged(property, 1, -1);
+        verify(listenerMock).valueChanged(property, -1, 2);
+        verify(listenerMock).valueChanged(property, 2, -1);
+        verify(listenerMock, times(4)).valueChanged(any(JTableSelectedRowIndexProperty.class), anyInt(), anyInt());
     }
 }
