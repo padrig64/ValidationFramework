@@ -23,55 +23,38 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.base.transform;
+package com.google.code.validationframework.base.transform.collection;
 
+import com.google.code.validationframework.api.transform.Transformer;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
 /**
- * @see CollectionElementTransformer
+ * @see GetCollectionSizeTransformer
  */
-public class CollectionElementTransformerTest {
+public class GetCollectionSizeTransformerTest {
 
     @Test
     public void testNonNull() {
-        CollectionElementTransformer<Long, String> transformer = new CollectionElementTransformer<Long,
-                String>(new ToStringTransformer<Long>());
+        Transformer<Collection<String>, Integer> transformer = new GetCollectionSizeTransformer<Collection<String>>();
 
-        // Prepare input to be transformed
-        List<Long> input = new ArrayList<Long>();
-        for (long i = 1000; i < 1030; i++) {
-            input.add(i);
-        }
+        Collection<String> collection = new ArrayList<String>();
+        assertEquals(Integer.valueOf(0), transformer.transform(collection));
 
-        // Perform transformation
-        Collection<String> output = transformer.transform(input);
+        collection.add("One");
+        assertEquals(Integer.valueOf(1), transformer.transform(collection));
 
-        // Check output
-        int i = 0;
-        for (String outputElement : output) {
-            assertEquals(input.get(i++).longValue(), Long.parseLong(outputElement));
-        }
-    }
+        collection.add("Two");
+        assertEquals(Integer.valueOf(2), transformer.transform(collection));
 
-    @Test
-    public void testNull() {
-        CollectionElementTransformer<Long, String> transformer = new CollectionElementTransformer<Long,
-                String>(new ToStringTransformer<Long>("null value"));
+        collection.add("Three");
+        assertEquals(Integer.valueOf(3), transformer.transform(collection));
 
-        // Prepare input to be transformed
-        List<Long> input = new ArrayList<Long>();
-        input.add(null);
-
-        // Perform transformation
-        Collection<String> output = transformer.transform(input);
-
-        // Check output
-        assertEquals("null value", output.iterator().next());
+        collection.clear();
+        assertEquals(Integer.valueOf(0), transformer.transform(collection));
     }
 }

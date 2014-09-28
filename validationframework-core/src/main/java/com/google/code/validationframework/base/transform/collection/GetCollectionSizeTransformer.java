@@ -23,14 +23,24 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.base.transform;
+package com.google.code.validationframework.base.transform.collection;
+
+import com.google.code.validationframework.api.transform.Transformer;
 
 import java.util.Collection;
 
 /**
- * @deprecated Use {@link com.google.code.validationframework.api.transform.Aggregator} instead.
+ * Transformer getting a collection as input and returning its size as output.
+ *
+ * @param <I> Type of collection to get the size from.
  */
-@Deprecated
-public interface Aggregator<E, O> extends Transformer<Collection<E>, O> {
-    // Nothing to be done
+public class GetCollectionSizeTransformer<I extends Collection<?>> implements Transformer<I, Integer> {
+
+    /**
+     * @see Transformer#transform(Object)
+     */
+    @Override
+    public Integer transform(I input) {
+        return input.size();
+    }
 }
