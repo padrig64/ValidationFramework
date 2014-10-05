@@ -23,25 +23,15 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.base.transform.map;
+package com.google.code.validationframework.experimental.api.property;
 
-import com.google.code.validationframework.api.transform.Transformer;
+import java.util.List;
 
-import java.util.Collection;
-import java.util.Map;
+public interface ListValueChangeListener<V> {
 
-/**
- * Transformer getting a map as input and returning its size as output.
- *
- * @param <I> Type of map to get the size from.
- */
-public class GetMapSizeTransformer<I extends Map<?, ?>> implements Transformer<I, Integer> {
+    void valueAdded(List<V> list, int index, V newValue);
 
-    /**
-     * @see Transformer#transform(Object)
-     */
-    @Override
-    public Integer transform(I input) {
-        return input.size();
-    }
+    void valueChanged(List<V> list, int index, V oldValue, V newValue);
+
+    void valueRemoved(List<V> list, int index, V oldValue);
 }
