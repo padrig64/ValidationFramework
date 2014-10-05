@@ -1,47 +1,57 @@
 package com.google.code.validationframework.experimental.base.property;
 
+import com.google.code.validationframework.base.utils.ValueUtils;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-public class HashMapWrapper<K, V> implements Map<K, V> {
+public class MapWrapper<K, V> implements Map<K, V> {
 
-    private final Map<K, V> internal = new HashMap<K, V>();
+    private final Map<K, V> wrapped;
+
+    public MapWrapper() {
+        this(new HashMap<K, V>());
+    }
+
+    public MapWrapper(Map<K, V> wrapped) {
+        this.wrapped = wrapped;
+    }
 
     @Override
     public int size() {
-        return internal.size();
+        return wrapped.size();
     }
 
     @Override
     public boolean isEmpty() {
-        return internal.isEmpty();
+        return wrapped.isEmpty();
     }
 
     @Override
     public boolean containsKey(Object key) {
-        return internal.containsKey(key);
+        return wrapped.containsKey(key);
     }
 
     @Override
     public boolean containsValue(Object value) {
-        return internal.containsValue(value);
+        return wrapped.containsValue(value);
     }
 
     @Override
     public V get(Object key) {
-        return internal.get(key);
+        return wrapped.get(key);
     }
 
     @Override
     public V put(K key, V value) {
-        boolean updated = internal.containsKey(key);
+        boolean willBeModified = wrapped.containsKey(key);
 
-        V oldValue = internal.put(key, value);
+        V oldValue = wrapped.put(key, value);
 
-        if (updated) {
+        if (willBeModified) {
             System.out.println("UPDATED: k=" + key + " ov=" + oldValue + " nv=" + value);
         } else {
             System.out.println("ADDED: k=" + key + " nv=" + value);
@@ -52,7 +62,6 @@ public class HashMapWrapper<K, V> implements Map<K, V> {
 
     @Override
     public void putAll(Map<? extends K, ? extends V> map) {
-//        internal.putAll(map);
         for (Entry<? extends K, ? extends V> entry : map.entrySet()) {
             put(entry.getKey(), entry.getValue());
         }
@@ -60,10 +69,10 @@ public class HashMapWrapper<K, V> implements Map<K, V> {
 
     @Override
     public V remove(Object key) {
-        boolean removed = internal.containsKey(key);
-        V oldValue = internal.remove(key);
+        boolean willBeModified = wrapped.containsKey(key);
+        V oldValue = wrapped.remove(key);
 
-        if (removed) {
+        if (willBeModified) {
             System.out.println("REMOVED: k=" + key + " ov=" + oldValue);
         }
 
@@ -72,26 +81,26 @@ public class HashMapWrapper<K, V> implements Map<K, V> {
 
     @Override
     public void clear() {
-        if (!internal.isEmpty()) {
-            Map<K, V> oldEntries = new HashMap<K, V>(internal);
-            internal.clear();
+        if (!wrapped.isEmpty()) {
+            Map<K, V> oldEntries = new HashMap<K, V>(wrapped);
+            wrapped.clear();
             System.out.println("CLEARED");
         }
     }
 
     @Override
     public Set<K> keySet() {
-        return new KeySetWrapper(internal.keySet());
+        return new KeySetWrapper(wrapped.keySet());
     }
 
     @Override
     public Collection<V> values() {
-        return new ValuesCollectionWrapper(internal.values());
+        return new ValuesCollectionWrapper(wrapped.values());
     }
 
     @Override
     public Set<Entry<K, V>> entrySet() {
-        return new EntrySetWrapper(internal.entrySet());
+        return new EntrySetWrapper(wrapped.entrySet());
     }
 
     private class KeySetWrapper implements Set<K> {
@@ -134,27 +143,36 @@ public class HashMapWrapper<K, V> implements Map<K, V> {
 
         @Override
         public Iterator<K> iterator() {
-            // TODO
-            return wrapped.iterator();
+            return new KeySetIteratorWrapper(wrapped.iterator());
         }
 
         @Override
         public boolean add(K key) {
-            // Cannot add because no value can be specified
+            // Cannot add key because no value can be specified
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public boolean addAll(Collection<? extends K> c) {
+            // Cannot add keys because no value can be specified
             throw new UnsupportedOperationException();
         }
 
         @Override
         public boolean remove(Object key) {
-            boolean removed = HashMapWrapper.this.containsKey(key);
-            HashMapWrapper.this.remove(key);
-            return removed;
+            // Call remove() on the map so that event can be fired with all needed info
+            boolean willBeModified = MapWrapper.this.containsKey(key);
+            MapWrapper.this.remove(key);
+            return willBeModified;
         }
 
         @Override
-        public boolean addAll(Collection<? extends K> c) {
-            // Cannot add because no value can be specified
-            throw new UnsupportedOperationException();
+        public boolean removeAll(Collection<?> c) {
+            boolean modified = false;
+            for (Object key : c) {
+                modified |= remove(key);
+            }
+            return modified;
         }
 
         @Override
@@ -164,15 +182,8 @@ public class HashMapWrapper<K, V> implements Map<K, V> {
         }
 
         @Override
-        public boolean removeAll(Collection<?> c) {
-            // TODO
-            return wrapped.removeAll(c);
-        }
-
-        @Override
         public void clear() {
-            // TODO
-            wrapped.clear();
+            MapWrapper.this.clear();
         }
     }
 
@@ -196,7 +207,8 @@ public class HashMapWrapper<K, V> implements Map<K, V> {
 
         @Override
         public void remove() {
-            // Will call remove() on the map
+            // TODO Never called?
+            System.out.println("KeySetIteratorWrapper.remove");
             wrapped.remove();
         }
     }
@@ -247,26 +259,36 @@ public class HashMapWrapper<K, V> implements Map<K, V> {
 
         @Override
         public boolean add(V v) {
-            // TODO
-            return wrapped.add(v);
-        }
-
-        @Override
-        public boolean remove(Object o) {
-            // TODO
-            return wrapped.remove(o);
+            // Cannot add value because no key can be specified
+            throw new UnsupportedOperationException();
         }
 
         @Override
         public boolean addAll(Collection<? extends V> c) {
-            // TODO
-            return wrapped.addAll(c);
+            // Cannot add values because no key can be specified
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public boolean remove(Object value) {
+            boolean modified = false;
+            for (Entry<K, V> entry : MapWrapper.this.entrySet()) {
+                if (ValueUtils.areEqual(entry.getValue(), value)) {
+                    modified = wrapped.remove(value);
+                    System.out.println("REMOVED: k=" + entry.getKey() + " ov=" + value);
+                    break;
+                }
+            }
+            return modified;
         }
 
         @Override
         public boolean removeAll(Collection<?> c) {
-            // TODO
-            return wrapped.removeAll(c);
+            boolean modified = false;
+            for (Object value : c) {
+                modified |= remove(value);
+            }
+            return modified;
         }
 
         @Override
@@ -277,8 +299,7 @@ public class HashMapWrapper<K, V> implements Map<K, V> {
 
         @Override
         public void clear() {
-            // TODO
-            wrapped.clear();
+            MapWrapper.this.clear();
         }
     }
 
@@ -333,27 +354,27 @@ public class HashMapWrapper<K, V> implements Map<K, V> {
         }
 
         @Override
-        public boolean remove(Object o) {
-            // TODO
-            return wrapped.remove(o);
-        }
-
-        @Override
         public boolean addAll(Collection<? extends Entry<K, V>> c) {
             // TODO
             return wrapped.addAll(c);
         }
 
         @Override
-        public boolean retainAll(Collection<?> c) {
+        public boolean remove(Object o) {
             // TODO
-            return wrapped.retainAll(c);
+            return wrapped.remove(o);
         }
 
         @Override
         public boolean removeAll(Collection<?> c) {
             // TODO
             return wrapped.removeAll(c);
+        }
+
+        @Override
+        public boolean retainAll(Collection<?> c) {
+            // TODO
+            return wrapped.retainAll(c);
         }
 
         @Override
