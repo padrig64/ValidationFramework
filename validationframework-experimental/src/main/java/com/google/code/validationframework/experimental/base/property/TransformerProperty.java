@@ -32,7 +32,8 @@ import com.google.code.validationframework.base.utils.ValueUtils;
 /**
  * Implementation of a readable and writable property whose output is the result of the transformation of the input.
  * <p/>
- * Slaved properties will only be updated if the new value set on this property differs from the previous one.
+ * Listeners will only be notified if the new output value resulting from a new input value differs from the previous
+ * one.
  * <p/>
  * Note that binding can be bi-directional. Infinite recursion will be prevented.
  * <p/>
