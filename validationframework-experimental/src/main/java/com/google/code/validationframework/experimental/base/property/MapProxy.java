@@ -80,6 +80,15 @@ public class MapProxy<K, V> implements Map<K, V> {
     }
 
     /**
+     * Default constructor using a {@link HashMap} and adding the specified map proxy listeners.
+     *
+     * @param listeners Map proxy listeners to be added.
+     */
+    public MapProxy(MapProxyListener<K, V>... listeners) {
+        this(new HashMap<K, V>(), listeners);
+    }
+
+    /**
      * Constructor specifying the map to be proxied.
      *
      * @param map Proxied map.
@@ -87,6 +96,18 @@ public class MapProxy<K, V> implements Map<K, V> {
     public MapProxy(Map<K, V> map) {
         this.map = map;
         this.readOnlyMap = Collections.unmodifiableMap(map);
+    }
+
+    /**
+     * Constructor specifying the map to be proxied and adding the specified map proxy listeners.
+     *
+     * @param map       Proxied map.
+     * @param listeners Map proxy listeners to be added.
+     */
+    public MapProxy(Map<K, V> map, MapProxyListener<K, V>... listeners) {
+        this.map = map;
+        this.readOnlyMap = Collections.unmodifiableMap(map);
+        Collections.addAll(this.listeners, listeners);
     }
 
     /**
@@ -278,44 +299,44 @@ public class MapProxy<K, V> implements Map<K, V> {
     public void clear() {
         if (!map.isEmpty()) {
             Map<K, V> removed = new HashMap<K, V>(map);
-            removed.clear();
+            map.clear();
             fireRemoved(removed);
         }
     }
 
     /**
-     * Gets an unmodifiable set containing all keys in the wrapped map.
+     * Gets a set containing all keys in the read-only version of the proxied map.
      *
-     * @return Unmodifiable key set.
+     * @return Key set that cannot be used to modify the proxied map.
      *
      * @see Map#keySet()
      */
     @Override
     public Set<K> keySet() {
-        return Collections.unmodifiableSet(map.keySet());
+        return readOnlyMap.keySet();
     }
 
     /**
-     * Gets an unmodifiable collection containing all values in the wrapped map.
+     * Gets a collection containing all values in the read-only version of the proxied map.
      *
-     * @return Unmodifiable value collection.
+     * @return Value collection that cannot be used to modified the proxied map.
      *
      * @see Map#values()
      */
     @Override
     public Collection<V> values() {
-        return Collections.unmodifiableCollection(map.values());
+        return readOnlyMap.values();
     }
 
     /**
-     * Gets an unmodifiable set containing all entries in the wrapped map.
+     * Gets a set containing all entries in the read-only version of the proxied map.
      *
-     * @return Unmodifiable entry set.
+     * @return Entry set that cannot be use to modified the proxied map.
      *
      * @see Map#entrySet()
      */
     @Override
     public Set<Entry<K, V>> entrySet() {
-        return Collections.unmodifiableSet(map.entrySet());
+        return readOnlyMap.entrySet();
     }
 }
