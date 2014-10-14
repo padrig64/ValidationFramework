@@ -16,6 +16,8 @@
 * Moved CollectionElementTransformer to 'collection' sub-package
 * Added GetCollectionSizeTransformer
 * Added GetMapSizeTransformer
+* Added JDialogTitleProperty
+* Added JFrameTitleProperty
 * Fixed issue where the value of the JTextComponentTextProperty was not immediately updated upon replacement of the document
 
 # Version 3.2.6
