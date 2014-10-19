@@ -1,5 +1,7 @@
 # Version 3.2.7 (to be released)
 
+* Added interfaces for readable/writable list properties and map properties
+* Added SimpleListProperty and SimpleMapProperty
 * Added NumberEqualToTransformer
 * Added NumberGreaterThanOrEqualToTransformer
 * Added NumberGreaterThanTransformer
