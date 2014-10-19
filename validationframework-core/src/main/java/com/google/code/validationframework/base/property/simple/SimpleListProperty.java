@@ -23,8 +23,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.base.property;
+package com.google.code.validationframework.base.property.simple;
 
+import com.google.code.validationframework.base.property.AbstractReadableWritableListProperty;
 import com.google.code.validationframework.base.utils.ValueUtils;
 
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ import java.util.ListIterator;
  *
  * @param <T> Type of values handled by this list property and the proxied list.
  */
-public class ListProxy<T> extends AbstractReadableWritableListProperty<T, T> implements List<T> {
+public class SimpleListProperty<T> extends AbstractReadableWritableListProperty<T, T> implements List<T> {
 
     /**
      * Proxied list.
@@ -54,7 +55,7 @@ public class ListProxy<T> extends AbstractReadableWritableListProperty<T, T> imp
     /**
      * Default constructor using an {@link ArrayList}.
      */
-    public ListProxy() {
+    public SimpleListProperty() {
         this(new ArrayList<T>());
     }
 
@@ -63,7 +64,7 @@ public class ListProxy<T> extends AbstractReadableWritableListProperty<T, T> imp
      *
      * @param list List to be proxied.
      */
-    public ListProxy(List<T> list) {
+    public SimpleListProperty(List<T> list) {
         this.list = list;
         this.readOnlyList = Collections.unmodifiableList(list);
     }

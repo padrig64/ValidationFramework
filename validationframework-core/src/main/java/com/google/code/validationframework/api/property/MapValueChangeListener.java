@@ -25,13 +25,38 @@
 
 package com.google.code.validationframework.api.property;
 
-import java.util.List;
+import java.util.Map;
 
-public interface ListValueChangeListener<V> {
+/**
+ * Interface to be implemented by listener to changes in a {@link ReadableMapProperty}.
+ *
+ * @param <K> Type of keys maintained by the map property.
+ * @param <R> Type mapped values that can be read from the map property.
+ */
+public interface MapValueChangeListener<K, R> {
 
-    void valueAdded(List<V> list, int index, V newValue);
+    /**
+     * Called when entries have been added to the map property.
+     *
+     * @param mapProperty Map property to which values have been added.
+     * @param newValues   Newly added values.
+     */
+    void valuesAdded(ReadableMapProperty<K, R> mapProperty, Map<K, R> newValues);
 
-    void valueChanged(List<V> list, int index, V oldValue, V newValue);
+    /**
+     * Called when entries have been replaced in map property.
+     *
+     * @param mapProperty Map property in which values have been replaced.
+     * @param oldValues   Previous values.
+     * @param newValues   New values.
+     */
+    void valuesChanged(ReadableMapProperty<K, R> mapProperty, Map<K, R> oldValues, Map<K, R> newValues);
 
-    void valueRemoved(List<V> list, int index, V oldValue);
+    /**
+     * Called when entries have been removed from the map property.
+     *
+     * @param mapProperty Map property from which values have been removed.
+     * @param oldValues   Removed values.
+     */
+    void valuesRemoved(ReadableMapProperty<K, R> mapProperty, Map<K, R> oldValues);
 }

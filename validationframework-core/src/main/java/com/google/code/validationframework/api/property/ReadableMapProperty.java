@@ -25,40 +25,71 @@
 
 package com.google.code.validationframework.api.property;
 
-import java.util.List;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
 
 /**
- * Interface to be implemented by listener to changes in a {@link ReadableListProperty}.
+ * Interface to be implemented by readable map properties.
+ * <p/>
+ * Note that most of the methods are based on the {@link java.util.Map} interface.
  *
- * @param <R> Type of values in the list property.
+ * @param <K> Type of keys maintained by this map property.
+ * @param <R> Type of values that can be read from this map property.
  */
-public interface ListValueChangeListener<R> {
+public interface ReadableMapProperty<K, R> {
 
     /**
-     * Called whenever values have been added to the list property.
+     * Adds the specified map value change listener.
      *
-     * @param listProperty List property to which the values have been added.
-     * @param startIndex   Index of the first added value.
-     * @param newValues    Newly added values.
+     * @param listener Listener to be added.
      */
-    void valuesAdded(ReadableListProperty<R> listProperty, int startIndex, List<R> newValues);
+    void addValueChangeListener(MapValueChangeListener<K, R> listener);
 
     /**
-     * Called whenever values have been replaced in the list property.
+     * Removes the specified map value change listener.
      *
-     * @param listProperty List property in which the values have been replaced.
-     * @param startIndex   Index of the first replaced value.
-     * @param oldValues    Previous values.
-     * @param newValues    New values.
+     * @param listener Listener to be removed.
      */
-    void valuesChanged(ReadableListProperty<R> listProperty, int startIndex, List<R> oldValues, List<R> newValues);
+    void removeValueChangeListener(MapValueChangeListener<K, R> listener);
 
     /**
-     * Called whenever values have been removed from the list property.
-     *
-     * @param listProperty List property from which the values have been removed.
-     * @param startIndex   Index of the first removed value.
-     * @param oldValues    Removed values.
+     * @see Map#size()
      */
-    void valuesRemoved(ReadableListProperty<R> listProperty, int startIndex, List<R> oldValues);
+    int size();
+
+    /**
+     * @see Map#isEmpty()
+     */
+    boolean isEmpty();
+
+    /**
+     * @see Map#containsKey(Object)
+     */
+    boolean containsKey(Object key);
+
+    /**
+     * @see Map#containsValue(Object)
+     */
+    boolean containsValue(Object value);
+
+    /**
+     * @see Map#get(Object)
+     */
+    R get(Object key);
+
+    /**
+     * @see Map#keySet()
+     */
+    Set<K> keySet();
+
+    /**
+     * @see Map#values()
+     */
+    Collection<R> values();
+
+    /**
+     * @see Map#entrySet()
+     */
+    Set<Map.Entry<K, R>> entrySet();
 }

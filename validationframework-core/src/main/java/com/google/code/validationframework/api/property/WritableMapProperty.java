@@ -25,40 +25,35 @@
 
 package com.google.code.validationframework.api.property;
 
-import java.util.List;
+import java.util.Map;
 
 /**
- * Interface to be implemented by listener to changes in a {@link ReadableListProperty}.
+ * Interface to be implemented by writable map properties.
+ * <p/>
+ * Note that most of the methods are based on the {@link java.util.Map} interface.
  *
- * @param <R> Type of values in the list property.
+ * @param <K> Type of keys maintained by this map property.
+ * @param <W> Type of values that can be written to this map property.
  */
-public interface ListValueChangeListener<R> {
+public interface WritableMapProperty<K, W> {
 
     /**
-     * Called whenever values have been added to the list property.
-     *
-     * @param listProperty List property to which the values have been added.
-     * @param startIndex   Index of the first added value.
-     * @param newValues    Newly added values.
+     * @see Map#put(Object, Object)
      */
-    void valuesAdded(ReadableListProperty<R> listProperty, int startIndex, List<R> newValues);
+    public W put(K key, W value);
 
     /**
-     * Called whenever values have been replaced in the list property.
-     *
-     * @param listProperty List property in which the values have been replaced.
-     * @param startIndex   Index of the first replaced value.
-     * @param oldValues    Previous values.
-     * @param newValues    New values.
+     * @see Map#remove(Object)
      */
-    void valuesChanged(ReadableListProperty<R> listProperty, int startIndex, List<R> oldValues, List<R> newValues);
+    public W remove(Object key);
 
     /**
-     * Called whenever values have been removed from the list property.
-     *
-     * @param listProperty List property from which the values have been removed.
-     * @param startIndex   Index of the first removed value.
-     * @param oldValues    Removed values.
+     * @see Map#putAll(Map)
      */
-    void valuesRemoved(ReadableListProperty<R> listProperty, int startIndex, List<R> oldValues);
+    public void putAll(Map<? extends K, ? extends W> m);
+
+    /**
+     * @see Map#clear()
+     */
+    public void clear();
 }
