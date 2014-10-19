@@ -25,6 +25,7 @@
 
 package com.google.code.validationframework.base.property.simple;
 
+import com.google.code.validationframework.api.property.ListValueChangeListener;
 import com.google.code.validationframework.base.property.AbstractReadableWritableListProperty;
 import com.google.code.validationframework.base.utils.ValueUtils;
 
@@ -60,6 +61,15 @@ public class SimpleListProperty<T> extends AbstractReadableWritableListProperty<
     }
 
     /**
+     * Constructor using a {@link ArrayList} and adding the specified listeners.
+     *
+     * @param listeners Listeners to be added.
+     */
+    public SimpleListProperty(ListValueChangeListener<T>... listeners) {
+        this(new ArrayList<T>(), listeners);
+    }
+
+    /**
      * Constructor specifying the list to be proxied.
      *
      * @param list List to be proxied.
@@ -67,6 +77,21 @@ public class SimpleListProperty<T> extends AbstractReadableWritableListProperty<
     public SimpleListProperty(List<T> list) {
         this.list = list;
         this.readOnlyList = Collections.unmodifiableList(list);
+    }
+
+    /**
+     * Constructor specifying the list to be proxied and adding the specified listeners.
+     *
+     * @param list      Proxied list.
+     * @param listeners Listeners to be added.
+     */
+    public SimpleListProperty(List<T> list, ListValueChangeListener<T>... listeners) {
+        this.list = list;
+        this.readOnlyList = Collections.unmodifiableList(list);
+
+        for (ListValueChangeListener<T> listener : listeners) {
+            addValueChangeListener(listener);
+        }
     }
 
     /**

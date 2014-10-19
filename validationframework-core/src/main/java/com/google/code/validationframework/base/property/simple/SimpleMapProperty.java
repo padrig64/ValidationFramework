@@ -68,9 +68,9 @@ public class SimpleMapProperty<K, V> extends AbstractReadableWritableMapProperty
     }
 
     /**
-     * Default constructor using a {@link HashMap} and adding the specified map proxy listeners.
+     * Constructor using a {@link HashMap} and adding the specified listeners.
      *
-     * @param listeners Map proxy listeners to be added.
+     * @param listeners Listeners to be added.
      */
     public SimpleMapProperty(MapValueChangeListener<K, V>... listeners) {
         this(new HashMap<K, V>(), listeners);
@@ -87,10 +87,10 @@ public class SimpleMapProperty<K, V> extends AbstractReadableWritableMapProperty
     }
 
     /**
-     * Constructor specifying the map to be proxied and adding the specified map proxy listeners.
+     * Constructor specifying the map to be proxied and adding the specified listeners.
      *
      * @param map       Proxied map.
-     * @param listeners Map proxy listeners to be added.
+     * @param listeners Listeners to be added.
      */
     public SimpleMapProperty(Map<K, V> map, MapValueChangeListener<K, V>... listeners) {
         this.map = map;
@@ -147,14 +147,16 @@ public class SimpleMapProperty<K, V> extends AbstractReadableWritableMapProperty
     @Override
     public V put(K key, V value) {
         boolean alreadyExists = map.containsKey(key);
-        V previousValue = map.put(key, value);
+        V oldValue = map.put(key, value);
 
         if (alreadyExists) {
             // Changed existing entry
-            if (!ValueUtils.areEqual(previousValue, value)) {
-                Map<K, V> changed = new HashMap<K, V>();
-                changed.put(key, value);
-                doNotifyListenersOfChangedValues(null, changed); // TODO
+            if (!ValueUtils.areEqual(oldValue, value)) {
+                Map<K, V> oldValues = new HashMap<K, V>();
+                oldValues.put(key, oldValue);
+                Map<K, V> newValues = new HashMap<K, V>();
+                newValues.put(key, value);
+                doNotifyListenersOfChangedValues(oldValues, newValues);
             }
         } else {
             // Added new entry
@@ -163,7 +165,7 @@ public class SimpleMapProperty<K, V> extends AbstractReadableWritableMapProperty
             doNotifyListenersOfAddedValues(added);
         }
 
-        return previousValue;
+        return oldValue;
     }
 
     /**
@@ -171,30 +173,32 @@ public class SimpleMapProperty<K, V> extends AbstractReadableWritableMapProperty
      */
     @Override
     public void putAll(Map<? extends K, ? extends V> entries) {
-        Map<K, V> added = new HashMap<K, V>();
-        Map<K, V> changed = new HashMap<K, V>();
+        Map<K, V> newAddedValues = new HashMap<K, V>();
+        Map<K, V> changedOldValues = new HashMap<K, V>();
+        Map<K, V> changedNewValues = new HashMap<K, V>();
 
         for (Entry<? extends K, ? extends V> entry : entries.entrySet()) {
             boolean alreadyExists = map.containsKey(entry.getKey());
-            V previousValue = map.put(entry.getKey(), entry.getValue());
+            V oldValue = map.put(entry.getKey(), entry.getValue());
 
             if (alreadyExists) {
                 // Changed existing entry
-                if (!ValueUtils.areEqual(previousValue, entry.getValue())) {
-                    changed.put(entry.getKey(), entry.getValue());
+                if (!ValueUtils.areEqual(oldValue, entry.getValue())) {
+                    changedOldValues.put(entry.getKey(), oldValue);
+                    changedNewValues.put(entry.getKey(), entry.getValue());
                 }
             } else {
                 // Added new entry
-                added.put(entry.getKey(), entry.getValue());
+                newAddedValues.put(entry.getKey(), entry.getValue());
             }
         }
 
         // Notify the listeners
-        if (!added.isEmpty()) {
-            doNotifyListenersOfAddedValues(added);
+        if (!newAddedValues.isEmpty()) {
+            doNotifyListenersOfAddedValues(newAddedValues);
         }
-        if (!changed.isEmpty()) {
-            doNotifyListenersOfChangedValues(null, changed); // TODO
+        if (!changedNewValues.isEmpty()) {
+            doNotifyListenersOfChangedValues(changedOldValues, changedNewValues);
         }
     }
 
