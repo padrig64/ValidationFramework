@@ -15,7 +15,7 @@
 * Added JTableRowIndexToViewTransformer
 * Added JTableColumnIndexToModelTransformer
 * Added JTableColumnIndexToViewTransformer
-* Moved CollectionElementTransformer to 'collection' sub-package
+* Moved CollectionElementTransformer to 'collection' sub-package for consistency
 * Added GetCollectionSizeTransformer
 * Added GetMapSizeTransformer
 * Added JDialogTitleProperty
@@ -42,7 +42,7 @@
 
 # Version 3.2.0
 
-* Prevented recursion when setting the value of readable writable properties 
+* Prevented recursion when setting the value of readable writable properties
 * Added tooltip text property for JComponent
 * Added foreground color and background color properties for Component
 * Added value property for JFormattedTextField
