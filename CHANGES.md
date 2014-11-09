@@ -2,6 +2,7 @@
 
 * Added interfaces for readable/writable list properties and map properties
 * Added SimpleListProperty and SimpleMapProperty
+* Added EqualsTransformer and NotEqualsTransformer
 * Added NumberEqualToTransformer
 * Added NumberGreaterThanOrEqualToTransformer
 * Added NumberGreaterThanTransformer

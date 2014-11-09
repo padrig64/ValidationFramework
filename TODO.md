@@ -6,6 +6,7 @@
 
 # TO MAKE
 
+* Collection- and Map-related transformers
 * More JavaFX 2 support
 
 * JFormattedTextFieldOptionalFormatterRule
