@@ -1,4 +1,4 @@
-# Version 3.2.7 (to be released)
+# Version 3.2.7
 
 * Added interfaces for readable/writable list properties and map properties
 * Added SimpleListProperty and SimpleMapProperty
