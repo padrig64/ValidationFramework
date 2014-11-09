@@ -27,7 +27,6 @@ package com.google.code.validationframework.base.transform.map;
 
 import com.google.code.validationframework.api.transform.Transformer;
 
-import java.util.Collection;
 import java.util.Map;
 
 /**

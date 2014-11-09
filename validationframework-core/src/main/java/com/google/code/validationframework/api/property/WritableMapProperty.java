@@ -40,20 +40,20 @@ public interface WritableMapProperty<K, W> {
     /**
      * @see Map#put(Object, Object)
      */
-    public W put(K key, W value);
+    W put(K key, W value);
 
     /**
      * @see Map#remove(Object)
      */
-    public W remove(Object key);
+    W remove(Object key);
 
     /**
      * @see Map#putAll(Map)
      */
-    public void putAll(Map<? extends K, ? extends W> m);
+    void putAll(Map<? extends K, ? extends W> m);
 
     /**
      * @see Map#clear()
      */
-    public void clear();
+    void clear();
 }

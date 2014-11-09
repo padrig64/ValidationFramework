@@ -23,41 +23,25 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.base.property;
+package com.google.code.validationframework.base.transform.map;
 
+import com.google.code.validationframework.api.transform.Transformer;
+
+import java.util.Collection;
 import java.util.Map;
 
 /**
- * Interface to be implemented by listeners to changes made on a {@link Map} using a {@link MapProxy}.
+ * Transformer getting a map as input and returning its keys as output.
  *
- * @param <K> Type of keys maintained by the proxied map.
- * @param <V> Type mapped values.
- *
- * @see MapProxy
+ * @param <I> Type of map to get the keys from.
  */
-public interface MapProxyListener<K, V> {
+public class GetMapKeysTransformer<I extends Map<K, ?>, K> implements Transformer<I, Collection<K>> {
 
     /**
-     * Called when entries have been added to the proxied map.
-     *
-     * @param mapProxy Map proxy holding the modified map.
-     * @param added    Entries added to the proxied map.
+     * @see Transformer#transform(Object)
      */
-    void entriesAdded(MapProxy<K, V> mapProxy, Map<K, V> added);
-
-    /**
-     * Called when entries have been changed in the proxied map.
-     *
-     * @param mapProxy Map proxy holding the modified map.
-     * @param changed  Entries changed in the proxied map.
-     */
-    void entriesChanged(MapProxy<K, V> mapProxy, Map<K, V> changed);
-
-    /**
-     * Called when entries have been removed from the proxied map.
-     *
-     * @param mapProxy Map proxy holding the modified map.
-     * @param removed  Entries removed from the proxied map.
-     */
-    void entriesRemoved(MapProxy<K, V> mapProxy, Map<K, V> removed);
+    @Override
+    public Collection<K> transform(I input) {
+        return input.keySet();
+    }
 }

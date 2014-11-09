@@ -25,6 +25,7 @@
 
 package com.google.code.validationframework.base.property.simple;
 
+import java.io.Serializable;
 import java.text.Format;
 
 /**
@@ -32,7 +33,12 @@ import java.text.Format;
  *
  * @see SimpleProperty
  */
-public class SimpleFormatProperty extends SimpleProperty<Format> {
+public class SimpleFormatProperty extends SimpleProperty<Format> implements Serializable {
+
+    /**
+     * Generated serial UID.
+     */
+    private static final long serialVersionUID = 1593026157834301677L;
 
     /**
      * @see SimpleProperty#SimpleProperty()

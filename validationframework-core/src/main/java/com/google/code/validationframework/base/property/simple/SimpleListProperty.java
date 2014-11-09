@@ -297,7 +297,7 @@ public class SimpleListProperty<T> extends AbstractReadableWritableListProperty<
      */
     @SuppressWarnings("unchecked")
     @Override
-    public <T1> T1[] toArray(T1[] a) {
+    public <U> U[] toArray(U[] a) {
         return list.toArray(a);
     }
 

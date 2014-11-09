@@ -25,12 +25,19 @@
 
 package com.google.code.validationframework.base.property.simple;
 
+import java.io.Serializable;
+
 /**
  * Simple property holding a {@link Long} value.
  *
  * @see SimpleProperty
  */
-public class SimpleLongProperty extends SimpleProperty<Long> {
+public class SimpleLongProperty extends SimpleProperty<Long> implements Serializable {
+
+    /**
+     * Generated serial UID.
+     */
+    private static final long serialVersionUID = -6278888028263402208L;
 
     /**
      * @see SimpleProperty#SimpleProperty()

@@ -23,15 +23,25 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.api.property;
+package com.google.code.validationframework.base.transform.map;
 
+import com.google.code.validationframework.api.transform.Transformer;
+
+import java.util.Collection;
 import java.util.Map;
 
-public interface MapEntryChangeListener<K, V> {
+/**
+ * Transformer getting a map as input and returning its values as output.
+ *
+ * @param <I> Type of map to get the values from.
+ */
+public class GetMapValuesTransformer<I extends Map<?, V>, V> implements Transformer<I, Collection<V>> {
 
-    void entryAdded(Map<K, V> map, K key, V newValue);
-
-    void entryChanged(Map<K, V> map, K key, V oldValue, V newValue);
-
-    void entryRemoved(Map<K, V> map, K key, V oldValue);
+    /**
+     * @see Transformer#transform(Object)
+     */
+    @Override
+    public Collection<V> transform(I input) {
+        return input.values();
+    }
 }

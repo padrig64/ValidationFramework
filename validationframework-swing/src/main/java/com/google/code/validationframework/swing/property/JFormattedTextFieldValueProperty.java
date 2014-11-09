@@ -26,16 +26,15 @@
 package com.google.code.validationframework.swing.property;
 
 import javax.swing.JFormattedTextField;
-import javax.swing.text.JTextComponent;
 
 /**
  * Readable/writable property representing the value of a {@link JFormattedTextField}.
  * <p/>
- * It is possible to control the value of the compoennt by setting the value of this property or by calling the
+ * It is possible to control the value of the component by setting the value of this property or by calling the
  * {@link JFormattedTextField#setValue(Object)} method of that component.
  *
- * @see JTextComponent#isEditable()
- * @see JTextComponent#setEditable(boolean)
+ * @see JFormattedTextField#getValue()
+ * @see JFormattedTextField#setValue(Object)
  */
 public class JFormattedTextFieldValueProperty extends AbstractComponentProperty<JFormattedTextField, Object> {
 
