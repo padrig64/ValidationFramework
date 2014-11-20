@@ -1,3 +1,7 @@
+# Version 3.2.8
+
+* Fixed type erasure problem of the remove() method in the SimpleListProperty
+
 # Version 3.2.7
 
 * Added interfaces for readable/writable list properties and map properties

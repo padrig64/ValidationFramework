@@ -64,7 +64,7 @@ public interface WritableListProperty<W> {
     /**
      * @see java.util.List#remove(Object)
      */
-    boolean remove(W item);
+    boolean remove(Object item);
 
     /**
      * @see java.util.List#remove(int)
