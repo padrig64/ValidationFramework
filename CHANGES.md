@@ -1,6 +1,7 @@
-# Version 3.2.8
+# Version 3.2.8 (to be released)
 
 * Fixed type erasure problem of the remove() method in the SimpleListProperty
+* Added JButtonMnemonicProperty and JLabelDisplayedMnemonicProperty
 
 # Version 3.2.7
 
