@@ -2,6 +2,7 @@
 
 * Fixed type erasure problem of the remove() method in the SimpleListProperty
 * Added JButtonMnemonicProperty and JLabelDisplayedMnemonicProperty
+* Added convenient getter and clear methods in the CompositeReadableProperty and CompositeWritable properties
 
 # Version 3.2.7
 

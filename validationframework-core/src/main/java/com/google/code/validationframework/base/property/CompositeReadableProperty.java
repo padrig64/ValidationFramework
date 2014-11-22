@@ -25,8 +25,8 @@
 
 package com.google.code.validationframework.base.property;
 
-import com.google.code.validationframework.api.property.ValueChangeListener;
 import com.google.code.validationframework.api.property.ReadableProperty;
+import com.google.code.validationframework.api.property.ValueChangeListener;
 import com.google.code.validationframework.base.utils.ValueUtils;
 
 import java.util.ArrayList;
@@ -113,6 +113,15 @@ public class CompositeReadableProperty<R> extends AbstractReadableProperty<Colle
     }
 
     /**
+     * Gets all sub-properties.
+     *
+     * @return Collection containing all sub-properties.
+     */
+    public Collection<ReadableProperty<R>> getProperties() {
+        return new ArrayList<ReadableProperty<R>>(properties);
+    }
+
+    /**
      * Adds the specified sub-property.
      * <p/>
      * This will trigger the change listeners.
@@ -131,10 +140,22 @@ public class CompositeReadableProperty<R> extends AbstractReadableProperty<Colle
      * This will trigger the change listeners.
      *
      * @param property Sub-property to be removed.
+     *
+     * @see #clear();
      */
     public void removeProperty(ReadableProperty<R> property) {
         property.removeValueChangeListener(changeAdapter);
         properties.remove(property);
+        updateFromProperties();
+    }
+
+    /**
+     * Removes all sub-properties.
+     *
+     * @see #removeProperty(ReadableProperty)
+     */
+    public void clear() {
+        properties.clear();
         updateFromProperties();
     }
 

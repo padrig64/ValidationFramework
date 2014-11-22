@@ -80,6 +80,15 @@ public class CompositeWritableProperty<W> implements WritableProperty<W> {
     }
 
     /**
+     * Gets all sub-properties.
+     *
+     * @return Collection containing all sub-properties.
+     */
+    public Collection<WritableProperty<W>> getProperties() {
+        return new ArrayList<WritableProperty<W>>(properties);
+    }
+
+    /**
      * Adds the specified sub-property.
      *
      * @param property Sub-property to be added.
@@ -96,6 +105,15 @@ public class CompositeWritableProperty<W> implements WritableProperty<W> {
      */
     public void removeProperty(WritableProperty<W> property) {
         properties.remove(property);
+    }
+
+    /**
+     * Removes all sub-properties.
+     *
+     * @see #removeProperty(WritableProperty)
+     */
+    public void clear() {
+        properties.clear();
     }
 
     /**
