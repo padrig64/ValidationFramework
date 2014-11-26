@@ -1,6 +1,7 @@
 # Version 3.3.0 (to be released)
 
 * Added contains(Object) method to the ReadableListProperty interface
+* Added interfaces and abstract implementations of a set property
 * Fixed type erasure problem of the remove() method in the SimpleListProperty
 * Added JButtonMnemonicProperty and JLabelDisplayedMnemonicProperty
 * Added ActionProperty
