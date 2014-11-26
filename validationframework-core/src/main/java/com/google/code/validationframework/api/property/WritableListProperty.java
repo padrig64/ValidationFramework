@@ -77,6 +77,11 @@ public interface WritableListProperty<W> {
     boolean removeAll(Collection<?> items);
 
     /**
+     * @see java.util.List#retainAll(Collection)
+     */
+    boolean retainAll(Collection<?> c);
+
+    /**
      * @see java.util.List#clear()
      */
     void clear();
