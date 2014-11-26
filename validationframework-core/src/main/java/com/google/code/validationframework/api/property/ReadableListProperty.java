@@ -62,4 +62,9 @@ public interface ReadableListProperty<R> extends Iterable<R> {
      * @see java.util.List#get(int)
      */
     R get(int index);
+
+    /**
+     * @see java.util.List#contains(Object)
+     */
+    boolean contains(Object o);
 }
