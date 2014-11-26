@@ -25,6 +25,8 @@
 
 package com.google.code.validationframework.api.property;
 
+import java.util.Collection;
+
 /**
  * Interface to be implemented by readable list properties.
  * <p/>
@@ -67,4 +69,9 @@ public interface ReadableListProperty<R> extends Iterable<R> {
      * @see java.util.List#contains(Object)
      */
     boolean contains(Object o);
+
+    /**
+     * @see java.util.List#containsAll(Collection)
+     */
+    boolean containsAll(Collection<?> c);
 }
