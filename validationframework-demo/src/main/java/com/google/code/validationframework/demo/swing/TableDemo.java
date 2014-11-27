@@ -29,6 +29,8 @@ import com.google.code.validationframework.base.resulthandler.PrintStreamResultH
 import com.google.code.validationframework.base.rule.string.StringLengthGreaterThanOrEqualToRule;
 import com.google.code.validationframework.base.validator.generalvalidator.GeneralValidator;
 import com.google.code.validationframework.swing.dataprovider.JTableTextEditorTextProvider;
+import com.google.code.validationframework.swing.decoration.anchor.Anchor;
+import com.google.code.validationframework.swing.decoration.anchor.AnchorLink;
 import com.google.code.validationframework.swing.resulthandler.bool.CellIconBooleanFeedback;
 import com.google.code.validationframework.swing.trigger.JTableTextEditorDocumentChangedTrigger;
 import net.miginfocom.swing.MigLayout;
@@ -152,11 +154,13 @@ public class TableDemo extends JFrame {
     }
 
     private void installValidators(JTable table) {
+        CellIconBooleanFeedback resultHandler = new CellIconBooleanFeedback(table, 1, 1, "Invalid text");
+        resultHandler.setAnchorLink(new AnchorLink(new Anchor(1.0f, 0.5f), new Anchor(1.0f, 0.5f)));
         validator = on(new JTableTextEditorDocumentChangedTrigger(table, 1, 1)) //
                 .read(new JTableTextEditorTextProvider(table)) //
                 .check(new StringLengthGreaterThanOrEqualToRule(3)) //
                 .handleWith(new PrintStreamResultHandler<Boolean>("(1,1) => ")) //
-                .handleWith(new CellIconBooleanFeedback(table, 1, 1, "Invalid text")) //
+                .handleWith(resultHandler) //
                 .getValidator();
     }
 

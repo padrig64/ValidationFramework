@@ -378,9 +378,11 @@ public abstract class AbstractCellIconFeedback<RHI> extends AbstractIconFeedback
             int viewColumnIndex = table.convertColumnIndexToView(modelColumnIndex);
 
             Rectangle cellBounds = table.getCellRect(viewRowIndex, viewColumnIndex, true);
-            Anchor cellMasterAnchor = new Anchor(0.0f, cellBounds.x + dragOffsetX, 0.0f,
-                    cellBounds.y + cellBounds.height);
-            absoluteAnchorLink = new AnchorLink(cellMasterAnchor, anchorLinkWithCell.getSlaveAnchor());
+            Anchor relativeCellAnchor = anchorLinkWithCell.getMasterAnchor();
+            Anchor absoluteCellAnchor = new Anchor(0.0f, cellBounds.x + dragOffsetX + (int) (cellBounds.width *
+                    relativeCellAnchor.getRelativeX()) + relativeCellAnchor.getOffsetX(), 0.0f, cellBounds.y + (int)
+                    (cellBounds.height * relativeCellAnchor.getRelativeY()) + relativeCellAnchor.getOffsetY());
+            absoluteAnchorLink = new AnchorLink(absoluteCellAnchor, anchorLinkWithCell.getSlaveAnchor());
         } else {
             // Maybe the table has been emptied? or the row has been filtered out? or invalid row/column index?
             LOGGER.debug("Cell at model row and/or column indices is not visible: (" + modelRowIndex + "," +

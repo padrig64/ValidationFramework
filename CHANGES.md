@@ -7,6 +7,7 @@
 * Added interfaces and abstract implementations of a set property
 * Fixed type erasure problem of the remove() method in the SimpleListProperty
 * Fixed a possible IllegalStateException in the AbstractComponentDecoration when calculating the clipping bounds
+* Fixed anchored positioning of the decoration in the AbstractCellIconFeedback
 * Added JButtonMnemonicProperty and JLabelDisplayedMnemonicProperty
 * Added ActionProperty
 * Added convenient getter and clear methods in the CompositeReadableProperty and CompositeWritable properties
