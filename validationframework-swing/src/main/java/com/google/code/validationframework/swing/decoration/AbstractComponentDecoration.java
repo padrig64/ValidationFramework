@@ -652,7 +652,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
         if (layeredPane == null) {
             decorationBoundsInLayeredPane = new Rectangle();
         } else {
-            // Calculate location of the decorated component in the layered pane contained the decoration painter
+            // Calculate location of the decorated component in the layered pane containing the decoration painter
             Point decoratedComponentLocationInLayeredPane = SwingUtilities.convertPoint(decoratedComponent.getParent
                     (), decoratedComponent.getLocation(), layeredPane);
 
@@ -673,13 +673,15 @@ public abstract class AbstractComponentDecoration implements Disposable {
      * @param relativeLocationToOwner Location of the decoration painter relatively to the decorated component.
      */
     private void updateDecorationPainterClippedBounds(JLayeredPane layeredPane, Point relativeLocationToOwner) {
-        if (layeredPane == null) {
+        if ((layeredPane == null) || !decoratedComponent.isValid()) {
             decorationPainter.setClipBounds(null);
         } else {
             JComponent clippingComponent = getEffectiveClippingAncestor();
             if (clippingComponent == null) {
-                LOGGER.error("No decoration clipping component can be found for decorated component: " +
-                        decoratedComponent);
+                LOGGER.error("No decoration clipping component can be found for decorated component: " + decoratedComponent);
+                decorationPainter.setClipBounds(null);
+            } else if(!clippingComponent.isShowing()) {
+                LOGGER.warn("Clipping component is not showing: " + clippingComponent);
                 decorationPainter.setClipBounds(null);
             } else {
                 Rectangle ownerBoundsInParent = decoratedComponent.getBounds();
