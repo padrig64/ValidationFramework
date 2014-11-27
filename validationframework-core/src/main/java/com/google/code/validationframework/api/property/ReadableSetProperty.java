@@ -25,6 +25,8 @@
 
 package com.google.code.validationframework.api.property;
 
+import java.util.Collection;
+
 /**
  * Interface to be implemented by readable set properties.
  * <p/>
@@ -57,4 +59,14 @@ public interface ReadableSetProperty<R> extends Iterable<R> {
      * @see java.util.Set#isEmpty()
      */
     boolean isEmpty();
+
+    /**
+     * @see java.util.Set#contains(Object)
+     */
+    boolean contains(Object o);
+
+    /**
+     * @see java.util.Set#containsAll(Collection)
+     */
+    boolean containsAll(Collection<?> c);
 }
