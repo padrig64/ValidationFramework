@@ -274,4 +274,12 @@ public class SimpleMapProperty<K, V> extends AbstractReadableWritableMapProperty
     public Set<Entry<K, V>> entrySet() {
         return readOnlyMap.entrySet();
     }
+
+    /**
+     * @see AbstractReadableWritableMapProperty#asUnmodifiableMap()
+     */
+    @Override
+    public Map<K, V> asUnmodifiableMap() {
+        return readOnlyMap;
+    }
 }

@@ -184,8 +184,19 @@ public class SimpleSetProperty<T> extends AbstractReadableWritableSetProperty<T,
         return set.toArray(a);
     }
 
+    /**
+     * @see Set#iterator()
+     */
     @Override
     public Iterator<T> iterator() {
         return readOnlySet.iterator();
+    }
+
+    /**
+     * @see AbstractReadableWritableSetProperty#asUnmodifiableSet()
+     */
+    @Override
+    public Set<T> asUnmodifiableSet() {
+        return readOnlySet;
     }
 }

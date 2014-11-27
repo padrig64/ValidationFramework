@@ -92,4 +92,15 @@ public interface ReadableMapProperty<K, R> {
      * @see Map#entrySet()
      */
     Set<Map.Entry<K, R>> entrySet();
+
+    /**
+     * Returns a {@link Map} containing the same elements as this map property, and that cannot be modified directly.
+     * <p/>
+     * Unless specified otherwise in the implementing classes, the returned map always represents the contains of this
+     * map property, meaning that if items are added/updated/removed from this map property, the contents of the
+     * unmodifiable map will also change.
+     *
+     * @return Unmodifiable map containing the same elements as this map property.
+     */
+    Map<K, R> asUnmodifiableMap();
 }

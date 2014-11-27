@@ -26,6 +26,7 @@
 package com.google.code.validationframework.api.property;
 
 import java.util.Collection;
+import java.util.Set;
 
 /**
  * Interface to be implemented by readable set properties.
@@ -69,4 +70,15 @@ public interface ReadableSetProperty<R> extends Iterable<R> {
      * @see java.util.Set#containsAll(Collection)
      */
     boolean containsAll(Collection<?> c);
+
+    /**
+     * Returns a {@link Set} containing the same elements as this set property, and that cannot be modified directly.
+     * <p/>
+     * Unless specified otherwise in the implementing classes, the returned set always represents the contains of this
+     * set property, meaning that if items are added/removed from this set property, the contents of the unmodifiable
+     * set will also change.
+     *
+     * @return Unmodifiable set containing the same elements as this set property.
+     */
+    Set<R> asUnmodifiableSet();
 }

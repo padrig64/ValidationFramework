@@ -2,6 +2,8 @@
 
 * Added contains() and containsAll() methods to the ReadableListProperty interface
 * Added retainAll() method to the WritableListProperty interface
+* Added asUnmodifiableList() method to the ReadableListProperty interface
+* Added asUnmodifiableMap() method to the ReadableMapProperty interface
 * Added interfaces and abstract implementations of a set property
 * Fixed type erasure problem of the remove() method in the SimpleListProperty
 * Added JButtonMnemonicProperty and JLabelDisplayedMnemonicProperty

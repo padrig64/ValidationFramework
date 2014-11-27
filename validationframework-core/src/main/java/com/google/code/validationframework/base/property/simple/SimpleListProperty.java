@@ -335,4 +335,12 @@ public class SimpleListProperty<T> extends AbstractReadableWritableListProperty<
     public List<T> subList(int fromIndex, int toIndex) {
         return readOnlyList.subList(fromIndex, toIndex);
     }
+
+    /**
+     * @see AbstractReadableWritableListProperty#asUnmodifiableList()
+     */
+    @Override
+    public List<T> asUnmodifiableList() {
+        return readOnlyList;
+    }
 }
