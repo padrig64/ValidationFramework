@@ -673,7 +673,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
      * @param relativeLocationToOwner Location of the decoration painter relatively to the decorated component.
      */
     private void updateDecorationPainterClippedBounds(JLayeredPane layeredPane, Point relativeLocationToOwner) {
-        if ((layeredPane == null) || !decoratedComponent.isValid()) {
+        if (layeredPane == null) {
             decorationPainter.setClipBounds(null);
         } else {
             JComponent clippingComponent = getEffectiveClippingAncestor();
