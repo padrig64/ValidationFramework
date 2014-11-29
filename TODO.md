@@ -1,5 +1,6 @@
 # TO FIX
 
+* Painting of decoration when decorated component is still (0,0,0,0) and invalid
 * Painting of translucent decorations on OS X
 * Icon decoration steals mouse event even outside clipping bounds
 * Consistent behavior of dispose() methods
