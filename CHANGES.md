@@ -11,6 +11,7 @@
 * Added JButtonMnemonicProperty and JLabelDisplayedMnemonicProperty
 * Added ActionProperty
 * Added convenient getter and clear methods in the CompositeReadableProperty and CompositeWritable properties
+* Added convenient defaults to the Anchor class (CENTER_TOP, CENTER_BOTTOM, CENTER_LEFT and CENTER_RIGHT)
 
 # Version 3.2.7
 

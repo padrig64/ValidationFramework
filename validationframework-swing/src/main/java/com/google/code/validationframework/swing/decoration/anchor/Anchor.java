@@ -29,47 +29,71 @@ import java.awt.Dimension;
 import java.awt.Point;
 
 /**
- * Entity representing an anchor.<br>An anchor is, for instance, a virtual point on a component relatively to its
- * bounds, and can be used as the point to attach decoration.
+ * Entity representing an anchor.
+ * <p/>
+ * An anchor is, for instance, a virtual point on a component relatively to its bounds, and can be used as the point to
+ * attach decoration.
  */
 public class Anchor {
 
     /**
-     * Convenience anchor representing a point at the top left hand corner.
+     * Convenient anchor representing a point at the top left hand corner.
      */
     public static final Anchor TOP_LEFT = new Anchor(0.0f, 0.0f);
 
     /**
-     * Convenience anchor representing a point at the top right hand corner.
+     * Convenient anchor representing a point at the top right hand corner.
      */
     public static final Anchor TOP_RIGHT = new Anchor(1.0f, 0.0f);
 
     /**
-     * Convenience anchor representing a point at the bottom left hand corner.
+     * Convenient anchor representing a point at the bottom left hand corner.
      */
     public static final Anchor BOTTOM_LEFT = new Anchor(0.0f, 1.0f);
 
     /**
-     * Convenience anchor representing a point at the bottom right hand corner.
+     * Convenient anchor representing a point at the bottom right hand corner.
      */
     public static final Anchor BOTTOM_RIGHT = new Anchor(1.0f, 1.0f);
 
     /**
-     * Convenience anchor representing a point at the center.
+     * Convenient anchor representing a point at the center of the top edge.
      */
-    public static final Anchor CENTER = new Anchor(0.5F, 0.5f);
+    public static final Anchor CENTER_TOP = new Anchor(0.5f, 0.0f);
 
     /**
-     * Relative position in percentage relatively to the origin and length on the X axis.<br>For instance,
-     * on a component whose bounds are defined by the rectangle [X,Y,W,H], a value of 0.0f would represent X,
-     * and a value of 1.0f would represent X+W.
+     * Convenient anchor representing a point at the center of the bottom edge.
+     */
+    public static final Anchor CENTER_BOTTOM = new Anchor(0.5f, 1.0f);
+
+    /**
+     * Convenient anchor representing a point at the center of the right edge.
+     */
+    public static final Anchor CENTER_LEFT = new Anchor(0.0f, 0.5f);
+
+    /**
+     * Convenient anchor representing a point at the center of the right edge.
+     */
+    public static final Anchor CENTER_RIGHT = new Anchor(1.0f, 0.5f);
+
+    /**
+     * Convenient anchor representing a point at the center.
+     */
+    public static final Anchor CENTER = new Anchor(0.5f, 0.5f);
+
+    /**
+     * Relative position in percentage relatively to the origin and length on the X axis.
+     * <p/>
+     * For instance, on a component whose bounds are defined by the rectangle [X,Y,W,H], a value of 0.0f would represent
+     * X, and a value of 1.0f would represent X+W.
      */
     private final float relativeX;
 
     /**
-     * Relative position in percentage relatively to the origin and length on the Y axis.<br>For instance,
-     * on a component whose bounds are defined by the rectangle [X,Y,W,H], a value of 0.0f would represent Y,
-     * and a value of 1.0f would represent Y+H.
+     * Relative position in percentage relatively to the origin and length on the Y axis.
+     * <p/>
+     * For instance, on a component whose bounds are defined by the rectangle [X,Y,W,H], a value of 0.0f would represent
+     * Y, and a value of 1.0f would represent Y+H.
      */
     private final float relativeY;
 
@@ -88,7 +112,7 @@ public class Anchor {
      *
      * @param anchor Anchor to copy from.
      */
-    public Anchor(final Anchor anchor) {
+    public Anchor(Anchor anchor) {
         this(anchor.getRelativeX(), anchor.getOffsetX(), anchor.getRelativeY(), anchor.getOffsetY());
     }
 
@@ -101,7 +125,7 @@ public class Anchor {
      * @see #relativeX
      * @see #relativeY
      */
-    public Anchor(final float relativeX, final float relativeY) {
+    public Anchor(float relativeX, float relativeY) {
         this(relativeX, 0, relativeY, 0);
     }
 
@@ -118,7 +142,7 @@ public class Anchor {
      * @see #relativeY
      * @see #offsetY
      */
-    public Anchor(final float relativeX, final int offsetX, final float relativeY, final int offsetY) {
+    public Anchor(float relativeX, int offsetX, float relativeY, int offsetY) {
         this.relativeX = relativeX;
         this.offsetX = offsetX;
         this.relativeY = relativeY;
@@ -162,7 +186,7 @@ public class Anchor {
      *
      * @see #getAnchorPoint(int, int)
      */
-    public Point getAnchorPoint(final Dimension size) {
+    public Point getAnchorPoint(Dimension size) {
         return getAnchorPoint(size.width, size.height);
     }
 
@@ -176,7 +200,7 @@ public class Anchor {
      *
      * @see #getAnchorPoint(Dimension)
      */
-    public Point getAnchorPoint(final int width, final int height) {
+    public Point getAnchorPoint(int width, int height) {
         return new Point((int) (relativeX * width + offsetX), (int) (relativeY * height + offsetY));
     }
 }
