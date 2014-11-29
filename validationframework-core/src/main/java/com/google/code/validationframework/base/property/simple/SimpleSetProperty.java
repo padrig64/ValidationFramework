@@ -28,6 +28,7 @@ package com.google.code.validationframework.base.property.simple;
 import com.google.code.validationframework.api.property.SetValueChangeListener;
 import com.google.code.validationframework.base.property.AbstractReadableWritableSetProperty;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -116,37 +117,105 @@ public class SimpleSetProperty<T> extends AbstractReadableWritableSetProperty<T,
      */
     @Override
     public boolean add(T item) {
-        // TODO
-        return false;
+        boolean modified = set.add(item);
+
+        if (modified) {
+            doNotifyListenersOfAddedValues(Collections.singleton(item));
+        }
+
+        return modified;
     }
 
+    /**
+     * @see AbstractReadableWritableSetProperty#addAll(Collection)
+     * @see Set#addAll(Collection)
+     */
     @Override
     public boolean addAll(Collection<? extends T> items) {
-        // TODO
-        return false;
+        Set<T> added = new HashSet<T>();
+
+        for (T item : items) {
+            if (set.add(item)) {
+                added.add(item);
+            }
+        }
+
+        if (!added.isEmpty()) {
+            doNotifyListenersOfAddedValues(added);
+        }
+
+        return !added.isEmpty();
     }
 
+    /**
+     * @see AbstractReadableWritableSetProperty#remove(Object)
+     * @see Set#remove(Object)
+     */
     @Override
     public boolean remove(Object item) {
-        // TODO
-        return false;
+        boolean modified = set.remove(item);
+
+        if (modified) {
+            doNotifyListenersOfRemovedValues(Collections.singleton((T) item));
+        }
+
+        return modified;
     }
 
+    /**
+     * @see AbstractReadableWritableSetProperty#removeAll(Collection)
+     * @see Set#removeAll(Collection)
+     */
     @Override
     public boolean removeAll(Collection<?> items) {
-        // TODO
-        return false;
+        Set<T> removed = new HashSet<T>();
+
+        for (Object item : items) {
+            if (set.remove(item)) {
+                removed.add((T) item);
+            }
+        }
+
+        if (!removed.isEmpty()) {
+            doNotifyListenersOfRemovedValues(removed);
+        }
+
+        return !removed.isEmpty();
     }
 
+    /**
+     * @see AbstractReadableWritableSetProperty#retainAll(Collection)
+     * @see Set#retainAll(Collection)
+     */
     @Override
-    public boolean retainAll(Collection<?> c) {
-        // TODO
-        return false;
+    public boolean retainAll(Collection<?> items) {
+        Set<T> toBeRemoved = new HashSet<T>();
+
+        for (T item : set) {
+            if (!items.contains(item)) {
+                toBeRemoved.add(item);
+            }
+        }
+
+        if(!toBeRemoved.isEmpty()) {
+            set.removeAll(toBeRemoved);
+            doNotifyListenersOfRemovedValues(toBeRemoved);
+        }
+
+        return !toBeRemoved.isEmpty();
     }
 
+    /**
+     * @see AbstractReadableWritableSetProperty#clear()
+     * @see Set#clear()
+     */
     @Override
     public void clear() {
-        // TODO
+        if (!set.isEmpty()) {
+            Set<T> removed = new HashSet<T>(set);
+            set.clear();
+            doNotifyListenersOfRemovedValues(removed);
+        }
     }
 
     /**
@@ -154,8 +223,8 @@ public class SimpleSetProperty<T> extends AbstractReadableWritableSetProperty<T,
      * @see Set#contains(Object)
      */
     @Override
-    public boolean contains(Object o) {
-        return set.contains(o);
+    public boolean contains(Object item) {
+        return set.contains(item);
     }
 
     /**
@@ -163,8 +232,8 @@ public class SimpleSetProperty<T> extends AbstractReadableWritableSetProperty<T,
      * @see Set#containsAll(Collection)
      */
     @Override
-    public boolean containsAll(Collection<?> c) {
-        return set.containsAll(c);
+    public boolean containsAll(Collection<?> items) {
+        return set.containsAll(items);
     }
 
     /**

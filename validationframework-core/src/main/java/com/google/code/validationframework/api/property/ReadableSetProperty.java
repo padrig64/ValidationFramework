@@ -64,12 +64,12 @@ public interface ReadableSetProperty<R> extends Iterable<R> {
     /**
      * @see java.util.Set#contains(Object)
      */
-    boolean contains(Object o);
+    boolean contains(Object item);
 
     /**
      * @see java.util.Set#containsAll(Collection)
      */
-    boolean containsAll(Collection<?> c);
+    boolean containsAll(Collection<?> items);
 
     /**
      * Returns a {@link Set} containing the same elements as this set property, and that cannot be modified directly.

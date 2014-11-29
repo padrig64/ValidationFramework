@@ -69,12 +69,12 @@ public interface ReadableListProperty<R> extends Iterable<R> {
     /**
      * @see java.util.List#contains(Object)
      */
-    boolean contains(Object o);
+    boolean contains(Object item);
 
     /**
      * @see java.util.List#containsAll(Collection)
      */
-    boolean containsAll(Collection<?> c);
+    boolean containsAll(Collection<?> items);
 
     /**
      * Returns a {@link List} containing the same elements as this list property, and that cannot be modified directly.

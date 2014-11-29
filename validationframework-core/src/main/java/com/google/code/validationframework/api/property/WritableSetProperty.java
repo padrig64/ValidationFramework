@@ -53,8 +53,14 @@ public interface WritableSetProperty<W> {
 
     /**
      * @see java.util.Set#removeAll(Collection)
+     * @see java.util.Set#retainAll(java.util.Collection)
      */
     boolean removeAll(Collection<?> items);
+
+    /**
+     * @see java.util.Set#retainAll(java.util.Collection)
+     */
+    boolean retainAll(Collection<?> items);
 
     /**
      * @see java.util.Set#clear()

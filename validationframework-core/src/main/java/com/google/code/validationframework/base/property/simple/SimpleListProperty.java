@@ -231,6 +231,7 @@ public class SimpleListProperty<T> extends AbstractReadableWritableListProperty<
     @Override
     public boolean retainAll(Collection<?> items) {
         Collection<T> toBeRemoved = new ArrayList<T>();
+
         for (T item : list) {
             if (!items.contains(item)) {
                 toBeRemoved.add(item);
