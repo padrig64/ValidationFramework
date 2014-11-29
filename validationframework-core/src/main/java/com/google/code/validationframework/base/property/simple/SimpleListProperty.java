@@ -161,7 +161,7 @@ public class SimpleListProperty<T> extends AbstractReadableWritableListProperty<
     @Override
     public void add(int index, T item) {
         list.add(index, item);
-        doNotifyListenersOfAddedValues(index, Collections.unmodifiableList(Collections.singletonList(item)));
+        doNotifyListenersOfAddedValues(index, Collections.singletonList(item));
     }
 
     /**
@@ -184,7 +184,7 @@ public class SimpleListProperty<T> extends AbstractReadableWritableListProperty<
     @Override
     public T remove(int index) {
         T oldItem = list.remove(index);
-        doNotifyListenersOfRemovedValues(index, Collections.unmodifiableList(Collections.singletonList(oldItem)));
+        doNotifyListenersOfRemovedValues(index, Collections.singletonList(oldItem));
         return oldItem;
     }
 
@@ -196,7 +196,7 @@ public class SimpleListProperty<T> extends AbstractReadableWritableListProperty<
     public boolean addAll(Collection<? extends T> items) {
         int firstIndex = list.size();
         boolean added = list.addAll(items);
-        doNotifyListenersOfAddedValues(firstIndex, Collections.unmodifiableList(new ArrayList<T>(items)));
+        doNotifyListenersOfAddedValues(firstIndex, new ArrayList<T>(items));
         return added;
     }
 
@@ -207,7 +207,7 @@ public class SimpleListProperty<T> extends AbstractReadableWritableListProperty<
     @Override
     public boolean addAll(int index, Collection<? extends T> items) {
         boolean added = list.addAll(index, items);
-        doNotifyListenersOfAddedValues(index, Collections.unmodifiableList(new ArrayList<T>(items)));
+        doNotifyListenersOfAddedValues(index, new ArrayList<T>(items));
         return added;
     }
 
@@ -248,7 +248,7 @@ public class SimpleListProperty<T> extends AbstractReadableWritableListProperty<
     @Override
     public void clear() {
         if (!list.isEmpty()) {
-            List<T> removed = Collections.unmodifiableList(new ArrayList<T>(list));
+            List<T> removed = new ArrayList<T>(list);
             list.clear();
             doNotifyListenersOfRemovedValues(0, removed);
         }

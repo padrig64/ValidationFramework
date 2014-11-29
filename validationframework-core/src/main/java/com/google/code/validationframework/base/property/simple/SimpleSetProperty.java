@@ -28,7 +28,6 @@ package com.google.code.validationframework.base.property.simple;
 import com.google.code.validationframework.api.property.SetValueChangeListener;
 import com.google.code.validationframework.base.property.AbstractReadableWritableSetProperty;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -197,7 +196,7 @@ public class SimpleSetProperty<T> extends AbstractReadableWritableSetProperty<T,
             }
         }
 
-        if(!toBeRemoved.isEmpty()) {
+        if (!toBeRemoved.isEmpty()) {
             set.removeAll(toBeRemoved);
             doNotifyListenersOfRemovedValues(toBeRemoved);
         }

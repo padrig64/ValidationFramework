@@ -29,6 +29,7 @@ import com.google.code.validationframework.api.property.ReadableSetProperty;
 import com.google.code.validationframework.api.property.SetValueChangeListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -66,8 +67,9 @@ public abstract class AbstractReadableSetProperty<R> implements ReadableSetPrope
      * @param newItems Newly added items.
      */
     protected void doNotifyListenersOfAddedValues(Set<R> newItems) {
+        Set<R> unmodifiable = Collections.unmodifiableSet(newItems);
         for (SetValueChangeListener<R> listener : listeners) {
-            listener.valuesAdded(this, newItems);
+            listener.valuesAdded(this, unmodifiable);
         }
     }
 
@@ -77,8 +79,9 @@ public abstract class AbstractReadableSetProperty<R> implements ReadableSetPrope
      * @param oldItems Removed items.
      */
     protected void doNotifyListenersOfRemovedValues(Set<R> oldItems) {
+        Set<R> unmodifiable = Collections.unmodifiableSet(oldItems);
         for (SetValueChangeListener<R> listener : listeners) {
-            listener.valuesRemoved(this, oldItems);
+            listener.valuesRemoved(this, unmodifiable);
         }
     }
 }

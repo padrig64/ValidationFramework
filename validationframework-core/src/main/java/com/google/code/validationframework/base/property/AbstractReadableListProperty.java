@@ -29,6 +29,7 @@ import com.google.code.validationframework.api.property.ListValueChangeListener;
 import com.google.code.validationframework.api.property.ReadableListProperty;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -61,38 +62,51 @@ public abstract class AbstractReadableListProperty<R> implements ReadableListPro
 
     /**
      * Notifies the change listeners that items have been added.
+     * <p/>
+     * Note that the specified list of items will be wrapped in an unmodifiable list before being passed to the
+     * listeners.
      *
      * @param startIndex Index of the first added item.
      * @param newItems   Newly added items.
      */
     protected void doNotifyListenersOfAddedValues(int startIndex, List<R> newItems) {
+        List<R> unmodifiable = Collections.unmodifiableList(newItems);
         for (ListValueChangeListener<R> listener : listeners) {
-            listener.valuesAdded(this, startIndex, newItems);
+            listener.valuesAdded(this, startIndex, unmodifiable);
         }
     }
 
     /**
      * Notifies the change listeners that items have been replaced.
+     * <p/>
+     * Note that the specified lists of items will be wrapped in unmodifiable lists before being passed to the
+     * listeners.
      *
      * @param startIndex Index of the first replaced item.
      * @param oldItems   Previous items.
      * @param newItems   New items.
      */
     protected void doNotifyListenersOfChangedValues(int startIndex, List<R> oldItems, List<R> newItems) {
+        List<R> oldUnmodifiable = Collections.unmodifiableList(oldItems);
+        List<R> newUnmodifiable = Collections.unmodifiableList(newItems);
         for (ListValueChangeListener<R> listener : listeners) {
-            listener.valuesChanged(this, startIndex, oldItems, newItems);
+            listener.valuesChanged(this, startIndex, oldUnmodifiable, newUnmodifiable);
         }
     }
 
     /**
      * Notifies the change listeners that items have been removed.
+     * <p/>
+     * Note that the specified list of items will be wrapped in an unmodifiable list before being passed to the
+     * listeners.
      *
      * @param startIndex Index of the first removed item.
      * @param oldItems   Removed items.
      */
     protected void doNotifyListenersOfRemovedValues(int startIndex, List<R> oldItems) {
+        List<R> unmodifiable = Collections.unmodifiableList(oldItems);
         for (ListValueChangeListener<R> listener : listeners) {
-            listener.valuesRemoved(this, startIndex, oldItems);
+            listener.valuesRemoved(this, startIndex, unmodifiable);
         }
     }
 }

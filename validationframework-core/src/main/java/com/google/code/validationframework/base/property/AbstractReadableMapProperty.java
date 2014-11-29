@@ -29,6 +29,7 @@ import com.google.code.validationframework.api.property.MapValueChangeListener;
 import com.google.code.validationframework.api.property.ReadableMapProperty;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -63,35 +64,47 @@ public abstract class AbstractReadableMapProperty<K, R> implements ReadableMapPr
 
     /**
      * Notifies the change listeners that values have been added.
+     * <p/>
+     * Note that the specified map of values will be wrapped in an unmodifiable map before being passed to the
+     * listeners.
      *
      * @param newValues Newly added values.
      */
     protected void doNotifyListenersOfAddedValues(Map<K, R> newValues) {
+        Map<K, R> unmodifiable = Collections.unmodifiableMap(newValues);
         for (MapValueChangeListener<K, R> listener : listeners) {
-            listener.valuesAdded(this, newValues);
+            listener.valuesAdded(this, unmodifiable);
         }
     }
 
     /**
      * Notifies the change listeners that values have been replaced.
+     * <p/>
+     * Note that the specified maps of values will be wrapped in unmodifiable maps before being passed to the listeners.
      *
      * @param oldValues Previous values.
      * @param newValues New values.
      */
     protected void doNotifyListenersOfChangedValues(Map<K, R> oldValues, Map<K, R> newValues) {
+        Map<K, R> oldUnmodifiable = Collections.unmodifiableMap(oldValues);
+        Map<K, R> newUnmodifiable = Collections.unmodifiableMap(newValues);
         for (MapValueChangeListener<K, R> listener : listeners) {
-            listener.valuesChanged(this, oldValues, newValues);
+            listener.valuesChanged(this, oldUnmodifiable, newUnmodifiable);
         }
     }
 
     /**
      * Notifies the change listeners that values have been removed.
+     * <p/>
+     * Note that the specified map of values will be wrapped in an unmodifiable map before being passed to the
+     * listeners.
      *
      * @param oldValues Removed values.
      */
     protected void doNotifyListenersOfRemovedValues(Map<K, R> oldValues) {
+        Map<K, R> unmodifiable = Collections.unmodifiableMap(oldValues);
         for (MapValueChangeListener<K, R> listener : listeners) {
-            listener.valuesRemoved(this, oldValues);
+            listener.valuesRemoved(this, unmodifiable);
         }
     }
 }

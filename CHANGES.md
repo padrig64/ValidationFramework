@@ -4,6 +4,7 @@
 * Added retainAll() method to the WritableListProperty interface
 * Added asUnmodifiableList() method to the ReadableListProperty interface
 * Added asUnmodifiableMap() method to the ReadableMapProperty interface
+* Made sure that the ListValueChangeListeners and MapValueChangeListeners get notified with unmodifiable lists and maps
 * Added interfaces and abstract implementations of a set property
 * Fixed type erasure problem of the remove() method in the SimpleListProperty
 * Fixed a possible IllegalStateException in the AbstractComponentDecoration when calculating the clipping bounds
