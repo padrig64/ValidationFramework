@@ -1,4 +1,4 @@
-# Version 3.3.0
+# Version 3.3.1
 
 * Added contains() and containsAll() methods to the ReadableListProperty interface
 * Added retainAll() method to the WritableListProperty interface
