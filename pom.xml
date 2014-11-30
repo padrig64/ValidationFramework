@@ -11,7 +11,7 @@
 
     <groupId>com.google.code.validationframework</groupId>
     <artifactId>validationframework-parent</artifactId>
-    <version>3.3.0</version>
+    <version>3.3.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Validation Framework</name>
@@ -29,7 +29,7 @@
         <connection>scm:git:git@github.com:padrig64/ValidationFramework.git</connection>
         <developerConnection>scm:git:git@github.com:padrig64/ValidationFramework.git</developerConnection>
         <url>git@github.com:padrig64/ValidationFramework.git</url>
-      <tag>validationframework-parent-3.3.0</tag>
+      <tag>HEAD</tag>
     </scm>
 
     <developers>
