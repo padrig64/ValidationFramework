@@ -49,7 +49,7 @@ public class SimpleSetProperty<T> extends AbstractReadableWritableSetProperty<T,
     /**
      * Read-only version of the proxied set.
      */
-    private final Set<T> readOnlyWrapper = Collections.unmodifiableSet(internal);
+    private final Set<T> unmodifiable = Collections.unmodifiableSet(internal);
 
     /**
      * Default constructor.
@@ -261,7 +261,7 @@ public class SimpleSetProperty<T> extends AbstractReadableWritableSetProperty<T,
      */
     @Override
     public Iterator<T> iterator() {
-        return readOnlyWrapper.iterator();
+        return unmodifiable.iterator();
     }
 
     /**
@@ -269,6 +269,6 @@ public class SimpleSetProperty<T> extends AbstractReadableWritableSetProperty<T,
      */
     @Override
     public Set<T> asUnmodifiableSet() {
-        return readOnlyWrapper;
+        return unmodifiable;
     }
 }

@@ -27,7 +27,6 @@ package com.google.code.validationframework.base.property.simple;
 
 import com.google.code.validationframework.api.property.SetValueChangeListener;
 import org.junit.Test;
-import org.mockito.Matchers;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -35,16 +34,16 @@ import java.util.Iterator;
 import java.util.Set;
 
 import static com.google.code.validationframework.test.TestUtils.haveEqualElements;
-import static com.google.code.validationframework.test.TestUtils.matchesSet;
+import static com.google.code.validationframework.test.TestUtils.matches;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.verifyZeroInteractions;
 
 public class SimpleSetPropertyTest {
 
@@ -57,9 +56,7 @@ public class SimpleSetPropertyTest {
         assertTrue(haveEqualElements(property, Collections.<Integer>emptySet()));
         assertTrue(haveEqualElements(property.asUnmodifiableSet(), Collections.<Integer>emptySet()));
 
-        verify(listener, times(0)).valuesAdded(eq(property), Matchers.<Set<Integer>>any());
-        verify(listener, times(0)).valuesRemoved(eq(property), Matchers.<Set<Integer>>any());
-        verifyNoMoreInteractions(listener);
+        verifyZeroInteractions(listener);
     }
 
     @Test
@@ -76,9 +73,7 @@ public class SimpleSetPropertyTest {
         assertTrue(haveEqualElements(ref, property));
         assertTrue(haveEqualElements(ref, property.asUnmodifiableSet()));
 
-        verify(listener, times(0)).valuesAdded(eq(property), Matchers.<Set<Integer>>any());
-        verify(listener, times(0)).valuesRemoved(eq(property), Matchers.<Set<Integer>>any());
-        verifyNoMoreInteractions(listener);
+        verifyZeroInteractions(listener);
     }
 
     @Test
@@ -89,10 +84,8 @@ public class SimpleSetPropertyTest {
 
         property.add(4);
 
-        verify(listener1).valuesAdded(eq(property), matchesSet(Collections.singleton(4)));
-        verify(listener2).valuesAdded(eq(property), matchesSet(Collections.singleton(4)));
-        verify(listener1, times(0)).valuesRemoved(eq(property), Matchers.<Set<Integer>>any());
-        verify(listener2, times(0)).valuesRemoved(eq(property), Matchers.<Set<Integer>>any());
+        verify(listener1).valuesAdded(eq(property), matches(Collections.singleton(4)));
+        verify(listener2).valuesAdded(eq(property), matches(Collections.singleton(4)));
         verifyNoMoreInteractions(listener1);
         verifyNoMoreInteractions(listener2);
     }
@@ -113,10 +106,8 @@ public class SimpleSetPropertyTest {
 
         property.add(4);
 
-        verify(listener1).valuesAdded(eq(property), matchesSet(Collections.singleton(4)));
-        verify(listener2).valuesAdded(eq(property), matchesSet(Collections.singleton(4)));
-        verify(listener1, times(0)).valuesRemoved(eq(property), Matchers.<Set<Integer>>any());
-        verify(listener2, times(0)).valuesRemoved(eq(property), Matchers.<Set<Integer>>any());
+        verify(listener1).valuesAdded(eq(property), matches(Collections.singleton(4)));
+        verify(listener2).valuesAdded(eq(property), matches(Collections.singleton(4)));
         verifyNoMoreInteractions(listener1);
         verifyNoMoreInteractions(listener2);
     }
@@ -174,10 +165,9 @@ public class SimpleSetPropertyTest {
         refAll.add(3);
 
         assertTrue(haveEqualElements(refAll, property));
-        verify(listener).valuesAdded(eq(property), matchesSet(refFirst));
-        verify(listener).valuesAdded(eq(property), matchesSet(refSecond));
-        verify(listener).valuesAdded(eq(property), matchesSet(refThird));
-        verify(listener, times(0)).valuesRemoved(eq(property), Matchers.<Set<Integer>>any());
+        verify(listener).valuesAdded(eq(property), matches(refFirst));
+        verify(listener).valuesAdded(eq(property), matches(refSecond));
+        verify(listener).valuesAdded(eq(property), matches(refThird));
         verifyNoMoreInteractions(listener);
     }
 
@@ -196,8 +186,7 @@ public class SimpleSetPropertyTest {
 
         assertEquals(ref.size(), property.size());
         assertTrue(haveEqualElements(ref, property));
-        verify(listener).valuesAdded(eq(property), matchesSet(ref));
-        verify(listener, times(0)).valuesRemoved(eq(property), Matchers.<Set<Integer>>any());
+        verify(listener).valuesAdded(eq(property), matches(ref));
         verifyNoMoreInteractions(listener);
     }
 
@@ -217,10 +206,9 @@ public class SimpleSetPropertyTest {
         property.remove(3);
 
         assertTrue(property.isEmpty());
-        verify(listener, times(0)).valuesAdded(eq(property), Matchers.<Set<Integer>>any());
-        verify(listener).valuesRemoved(eq(property), matchesSet(Collections.singleton(2)));
-        verify(listener).valuesRemoved(eq(property), matchesSet(Collections.singleton(1)));
-        verify(listener).valuesRemoved(eq(property), matchesSet(Collections.singleton(3)));
+        verify(listener).valuesRemoved(eq(property), matches(Collections.singleton(2)));
+        verify(listener).valuesRemoved(eq(property), matches(Collections.singleton(1)));
+        verify(listener).valuesRemoved(eq(property), matches(Collections.singleton(3)));
         verifyNoMoreInteractions(listener);
     }
 
@@ -238,8 +226,7 @@ public class SimpleSetPropertyTest {
         property.removeAll(refAll);
 
         assertTrue(property.isEmpty());
-        verify(listener, times(0)).valuesAdded(eq(property), Matchers.<Set<Integer>>any());
-        verify(listener).valuesRemoved(eq(property), matchesSet(refAll));
+        verify(listener).valuesRemoved(eq(property), matches(refAll));
         verifyNoMoreInteractions(listener);
     }
 
@@ -271,8 +258,7 @@ public class SimpleSetPropertyTest {
         property.retainAll(retained);
 
         assertEquals(3, property.size());
-        verify(listener, times(0)).valuesAdded(eq(property), Matchers.<Set<Integer>>any());
-        verify(listener).valuesRemoved(eq(property), matchesSet(removed));
+        verify(listener).valuesRemoved(eq(property), matches(removed));
         verifyNoMoreInteractions(listener);
     }
 
@@ -290,8 +276,7 @@ public class SimpleSetPropertyTest {
         property.clear();
 
         assertTrue(property.isEmpty());
-        verify(listener, times(0)).valuesAdded(eq(property), Matchers.<Set<Integer>>any());
-        verify(listener).valuesRemoved(eq(property), matchesSet(refAll));
+        verify(listener).valuesRemoved(eq(property), matches(refAll));
         verifyNoMoreInteractions(listener);
     }
 

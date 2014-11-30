@@ -53,12 +53,12 @@ public class SimpleMapProperty<K, V> extends AbstractReadableWritableMapProperty
     /**
      * Proxied map.
      */
-    private final Map<K, V> map = new HashMap<K, V>();
+    private final Map<K, V> internal = new HashMap<K, V>();
 
     /**
      * Read-only version of the proxied map.
      */
-    private final Map<K, V> readOnlyMap = Collections.unmodifiableMap(map);
+    private final Map<K, V> unmodifiable = Collections.unmodifiableMap(internal);
 
     /**
      * Default constructor.
@@ -83,7 +83,7 @@ public class SimpleMapProperty<K, V> extends AbstractReadableWritableMapProperty
      */
     public SimpleMapProperty(Map<K, V> entries) {
         super();
-        map.putAll(entries);
+        internal.putAll(entries);
     }
 
     /**
@@ -97,7 +97,7 @@ public class SimpleMapProperty<K, V> extends AbstractReadableWritableMapProperty
     public SimpleMapProperty(Map<K, V> entries, MapValueChangeListener<K, V>... listeners) {
         super(); // Without listeners
 
-        map.putAll(entries);
+        internal.putAll(entries);
 
         for (MapValueChangeListener<K, V> listener : listeners) {
             addValueChangeListener(listener);
@@ -109,7 +109,7 @@ public class SimpleMapProperty<K, V> extends AbstractReadableWritableMapProperty
      */
     @Override
     public int size() {
-        return map.size();
+        return internal.size();
     }
 
     /**
@@ -117,7 +117,7 @@ public class SimpleMapProperty<K, V> extends AbstractReadableWritableMapProperty
      */
     @Override
     public boolean isEmpty() {
-        return map.isEmpty();
+        return internal.isEmpty();
     }
 
     /**
@@ -125,7 +125,7 @@ public class SimpleMapProperty<K, V> extends AbstractReadableWritableMapProperty
      */
     @Override
     public boolean containsKey(Object key) {
-        return map.containsKey(key);
+        return internal.containsKey(key);
     }
 
     /**
@@ -133,7 +133,7 @@ public class SimpleMapProperty<K, V> extends AbstractReadableWritableMapProperty
      */
     @Override
     public boolean containsValue(Object value) {
-        return map.containsValue(value);
+        return internal.containsValue(value);
     }
 
     /**
@@ -141,7 +141,7 @@ public class SimpleMapProperty<K, V> extends AbstractReadableWritableMapProperty
      */
     @Override
     public V get(Object key) {
-        return map.get(key);
+        return internal.get(key);
     }
 
     /**
@@ -149,8 +149,8 @@ public class SimpleMapProperty<K, V> extends AbstractReadableWritableMapProperty
      */
     @Override
     public V put(K key, V value) {
-        boolean alreadyExists = map.containsKey(key);
-        V oldValue = map.put(key, value);
+        boolean alreadyExists = internal.containsKey(key);
+        V oldValue = internal.put(key, value);
 
         if (alreadyExists) {
             // Changed existing entry
@@ -181,8 +181,8 @@ public class SimpleMapProperty<K, V> extends AbstractReadableWritableMapProperty
         Map<K, V> changedNewValues = new HashMap<K, V>();
 
         for (Entry<? extends K, ? extends V> entry : entries.entrySet()) {
-            boolean alreadyExists = map.containsKey(entry.getKey());
-            V oldValue = map.put(entry.getKey(), entry.getValue());
+            boolean alreadyExists = internal.containsKey(entry.getKey());
+            V oldValue = internal.put(entry.getKey(), entry.getValue());
 
             if (alreadyExists) {
                 // Changed existing entry
@@ -211,11 +211,11 @@ public class SimpleMapProperty<K, V> extends AbstractReadableWritableMapProperty
     @SuppressWarnings("unchecked")
     @Override
     public V remove(Object key) {
-        boolean exists = map.containsKey(key);
+        boolean exists = internal.containsKey(key);
         V previousValue = null;
 
         if (exists) {
-            previousValue = map.remove(key);
+            previousValue = internal.remove(key);
 
             try {
                 Map<K, V> removed = new HashMap<K, V>();
@@ -235,9 +235,9 @@ public class SimpleMapProperty<K, V> extends AbstractReadableWritableMapProperty
      */
     @Override
     public void clear() {
-        if (!map.isEmpty()) {
-            Map<K, V> removed = new HashMap<K, V>(map);
-            map.clear();
+        if (!internal.isEmpty()) {
+            Map<K, V> removed = new HashMap<K, V>(internal);
+            internal.clear();
             doNotifyListenersOfRemovedValues(removed);
         }
     }
@@ -251,7 +251,7 @@ public class SimpleMapProperty<K, V> extends AbstractReadableWritableMapProperty
      */
     @Override
     public Set<K> keySet() {
-        return readOnlyMap.keySet();
+        return unmodifiable.keySet();
     }
 
     /**
@@ -263,7 +263,7 @@ public class SimpleMapProperty<K, V> extends AbstractReadableWritableMapProperty
      */
     @Override
     public Collection<V> values() {
-        return readOnlyMap.values();
+        return unmodifiable.values();
     }
 
     /**
@@ -275,7 +275,7 @@ public class SimpleMapProperty<K, V> extends AbstractReadableWritableMapProperty
      */
     @Override
     public Set<Entry<K, V>> entrySet() {
-        return readOnlyMap.entrySet();
+        return unmodifiable.entrySet();
     }
 
     /**
@@ -283,6 +283,6 @@ public class SimpleMapProperty<K, V> extends AbstractReadableWritableMapProperty
      */
     @Override
     public Map<K, V> asUnmodifiableMap() {
-        return readOnlyMap;
+        return unmodifiable;
     }
 }

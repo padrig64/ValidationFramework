@@ -46,12 +46,12 @@ public class SimpleListProperty<T> extends AbstractReadableWritableListProperty<
     /**
      * Proxied list.
      */
-    private final List<T> list = new ArrayList<T>();
+    private final List<T> internal = new ArrayList<T>();
 
     /**
      * Read-only version of the proxied list.
      */
-    private final List<T> readOnlyList = Collections.unmodifiableList(list);
+    private final List<T> unmodifiable = Collections.unmodifiableList(internal);
 
     /**
      * Default constructor.
@@ -76,7 +76,7 @@ public class SimpleListProperty<T> extends AbstractReadableWritableListProperty<
      */
     public SimpleListProperty(List<T> items) {
         super();
-        list.addAll(items);
+        internal.addAll(items);
     }
 
     /**
@@ -90,7 +90,7 @@ public class SimpleListProperty<T> extends AbstractReadableWritableListProperty<
     public SimpleListProperty(List<T> items, ListValueChangeListener<T>... listeners) {
         super(); // Without listeners
 
-        list.addAll(items);
+        internal.addAll(items);
 
         for (ListValueChangeListener<T> listener : listeners) {
             addValueChangeListener(listener);
@@ -103,7 +103,7 @@ public class SimpleListProperty<T> extends AbstractReadableWritableListProperty<
      */
     @Override
     public int size() {
-        return list.size();
+        return internal.size();
     }
 
     /**
@@ -112,7 +112,7 @@ public class SimpleListProperty<T> extends AbstractReadableWritableListProperty<
      */
     @Override
     public boolean isEmpty() {
-        return list.isEmpty();
+        return internal.isEmpty();
     }
 
     /**
@@ -121,7 +121,7 @@ public class SimpleListProperty<T> extends AbstractReadableWritableListProperty<
      */
     @Override
     public T get(int index) {
-        return list.get(index);
+        return internal.get(index);
     }
 
     /**
@@ -130,7 +130,7 @@ public class SimpleListProperty<T> extends AbstractReadableWritableListProperty<
      */
     @Override
     public T set(int index, T item) {
-        T oldItem = list.set(index, item);
+        T oldItem = internal.set(index, item);
 
         if (!ValueUtils.areEqual(oldItem, item)) {
             List<T> oldItems = Collections.unmodifiableList(Collections.singletonList(oldItem));
@@ -147,10 +147,10 @@ public class SimpleListProperty<T> extends AbstractReadableWritableListProperty<
      */
     @Override
     public boolean add(T item) {
-        boolean added = list.add(item);
+        boolean added = internal.add(item);
 
         if (added) {
-            doNotifyListenersOfAddedValues(list.size() - 1, Collections.unmodifiableList(Collections.singletonList
+            doNotifyListenersOfAddedValues(internal.size() - 1, Collections.unmodifiableList(Collections.singletonList
                     (item)));
         }
 
@@ -163,7 +163,7 @@ public class SimpleListProperty<T> extends AbstractReadableWritableListProperty<
      */
     @Override
     public void add(int index, T item) {
-        list.add(index, item);
+        internal.add(index, item);
         doNotifyListenersOfAddedValues(index, Collections.singletonList(item));
     }
 
@@ -173,7 +173,7 @@ public class SimpleListProperty<T> extends AbstractReadableWritableListProperty<
      */
     @Override
     public boolean remove(Object item) {
-        int index = list.indexOf(item);
+        int index = internal.indexOf(item);
         if (index >= 0) {
             remove(index);
         }
@@ -186,7 +186,7 @@ public class SimpleListProperty<T> extends AbstractReadableWritableListProperty<
      */
     @Override
     public T remove(int index) {
-        T oldItem = list.remove(index);
+        T oldItem = internal.remove(index);
         doNotifyListenersOfRemovedValues(index, Collections.singletonList(oldItem));
         return oldItem;
     }
@@ -197,8 +197,8 @@ public class SimpleListProperty<T> extends AbstractReadableWritableListProperty<
      */
     @Override
     public boolean addAll(Collection<? extends T> items) {
-        int firstIndex = list.size();
-        boolean added = list.addAll(items);
+        int firstIndex = internal.size();
+        boolean added = internal.addAll(items);
         doNotifyListenersOfAddedValues(firstIndex, new ArrayList<T>(items));
         return added;
     }
@@ -209,7 +209,7 @@ public class SimpleListProperty<T> extends AbstractReadableWritableListProperty<
      */
     @Override
     public boolean addAll(int index, Collection<? extends T> items) {
-        boolean added = list.addAll(index, items);
+        boolean added = internal.addAll(index, items);
         doNotifyListenersOfAddedValues(index, new ArrayList<T>(items));
         return added;
     }
@@ -235,7 +235,7 @@ public class SimpleListProperty<T> extends AbstractReadableWritableListProperty<
     public boolean retainAll(Collection<?> items) {
         Collection<T> toBeRemoved = new ArrayList<T>();
 
-        for (T item : list) {
+        for (T item : internal) {
             if (!items.contains(item)) {
                 toBeRemoved.add(item);
             }
@@ -250,9 +250,9 @@ public class SimpleListProperty<T> extends AbstractReadableWritableListProperty<
      */
     @Override
     public void clear() {
-        if (!list.isEmpty()) {
-            List<T> removed = new ArrayList<T>(list);
-            list.clear();
+        if (!internal.isEmpty()) {
+            List<T> removed = new ArrayList<T>(internal);
+            internal.clear();
             doNotifyListenersOfRemovedValues(0, removed);
         }
     }
@@ -263,7 +263,7 @@ public class SimpleListProperty<T> extends AbstractReadableWritableListProperty<
      */
     @Override
     public boolean contains(Object item) {
-        return list.contains(item);
+        return internal.contains(item);
     }
 
     /**
@@ -272,7 +272,7 @@ public class SimpleListProperty<T> extends AbstractReadableWritableListProperty<
      */
     @Override
     public boolean containsAll(Collection<?> items) {
-        return list.containsAll(items);
+        return internal.containsAll(items);
     }
 
     /**
@@ -280,7 +280,7 @@ public class SimpleListProperty<T> extends AbstractReadableWritableListProperty<
      */
     @Override
     public int indexOf(Object item) {
-        return list.indexOf(item);
+        return internal.indexOf(item);
     }
 
     /**
@@ -288,7 +288,7 @@ public class SimpleListProperty<T> extends AbstractReadableWritableListProperty<
      */
     @Override
     public int lastIndexOf(Object item) {
-        return list.lastIndexOf(item);
+        return internal.lastIndexOf(item);
     }
 
     /**
@@ -296,7 +296,7 @@ public class SimpleListProperty<T> extends AbstractReadableWritableListProperty<
      */
     @Override
     public Object[] toArray() {
-        return list.toArray();
+        return internal.toArray();
     }
 
     /**
@@ -304,7 +304,7 @@ public class SimpleListProperty<T> extends AbstractReadableWritableListProperty<
      */
     @Override
     public <U> U[] toArray(U[] a) {
-        return list.toArray(a);
+        return internal.toArray(a);
     }
 
     /**
@@ -313,7 +313,7 @@ public class SimpleListProperty<T> extends AbstractReadableWritableListProperty<
      */
     @Override
     public Iterator<T> iterator() {
-        return readOnlyList.iterator();
+        return unmodifiable.iterator();
     }
 
     /**
@@ -321,7 +321,7 @@ public class SimpleListProperty<T> extends AbstractReadableWritableListProperty<
      */
     @Override
     public ListIterator<T> listIterator() {
-        return readOnlyList.listIterator();
+        return unmodifiable.listIterator();
     }
 
     /**
@@ -329,7 +329,7 @@ public class SimpleListProperty<T> extends AbstractReadableWritableListProperty<
      */
     @Override
     public ListIterator<T> listIterator(int index) {
-        return readOnlyList.listIterator(index);
+        return unmodifiable.listIterator(index);
     }
 
     /**
@@ -337,7 +337,7 @@ public class SimpleListProperty<T> extends AbstractReadableWritableListProperty<
      */
     @Override
     public List<T> subList(int fromIndex, int toIndex) {
-        return readOnlyList.subList(fromIndex, toIndex);
+        return unmodifiable.subList(fromIndex, toIndex);
     }
 
     /**
@@ -345,6 +345,6 @@ public class SimpleListProperty<T> extends AbstractReadableWritableListProperty<
      */
     @Override
     public List<T> asUnmodifiableList() {
-        return readOnlyList;
+        return unmodifiable;
     }
 }

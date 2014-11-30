@@ -51,7 +51,7 @@ public final class TestUtils {
      *
      * @return Set to be used when verifying mocks.
      */
-    public static <T> Set<T> matchesSet(Set<T> ref) {
+    public static <T> Set<T> matches(Set<T> ref) {
         return argThat(new SetMatcher<T>(ref));
     }
 
@@ -63,7 +63,7 @@ public final class TestUtils {
      *
      * @return List to be used when verifying mocks.
      */
-    public static <T> List<T> matchesList(List<T> ref) {
+    public static <T> List<T> matches(List<T> ref) {
         return argThat(new ListMatcher<T>(ref));
     }
 
