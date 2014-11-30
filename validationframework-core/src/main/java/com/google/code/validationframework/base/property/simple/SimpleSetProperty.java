@@ -44,12 +44,12 @@ public class SimpleSetProperty<T> extends AbstractReadableWritableSetProperty<T,
     /**
      * Proxied set.
      */
-    private final Set<T> set = new HashSet<T>();
+    private final Set<T> internal = new HashSet<T>();
 
     /**
      * Read-only version of the proxied set.
      */
-    private final Set<T> readOnlySet = Collections.unmodifiableSet(set);
+    private final Set<T> readOnlyWrapper = Collections.unmodifiableSet(internal);
 
     /**
      * Default constructor.
@@ -74,7 +74,7 @@ public class SimpleSetProperty<T> extends AbstractReadableWritableSetProperty<T,
      */
     public SimpleSetProperty(Set<T> items) {
         super();
-        set.addAll(items);
+        internal.addAll(items);
     }
 
     /**
@@ -88,7 +88,7 @@ public class SimpleSetProperty<T> extends AbstractReadableWritableSetProperty<T,
     public SimpleSetProperty(Set<T> items, SetValueChangeListener<T>... listeners) {
         super(); // Without listeners
 
-        set.addAll(items);
+        internal.addAll(items);
 
         for (SetValueChangeListener<T> listener : listeners) {
             addValueChangeListener(listener);
@@ -101,7 +101,7 @@ public class SimpleSetProperty<T> extends AbstractReadableWritableSetProperty<T,
      */
     @Override
     public int size() {
-        return set.size();
+        return internal.size();
     }
 
     /**
@@ -110,7 +110,7 @@ public class SimpleSetProperty<T> extends AbstractReadableWritableSetProperty<T,
      */
     @Override
     public boolean isEmpty() {
-        return set.isEmpty();
+        return internal.isEmpty();
     }
 
     /**
@@ -119,7 +119,7 @@ public class SimpleSetProperty<T> extends AbstractReadableWritableSetProperty<T,
      */
     @Override
     public boolean add(T item) {
-        boolean modified = set.add(item);
+        boolean modified = internal.add(item);
 
         if (modified) {
             doNotifyListenersOfAddedValues(Collections.singleton(item));
@@ -137,7 +137,7 @@ public class SimpleSetProperty<T> extends AbstractReadableWritableSetProperty<T,
         Set<T> added = new HashSet<T>();
 
         for (T item : items) {
-            if (set.add(item)) {
+            if (internal.add(item)) {
                 added.add(item);
             }
         }
@@ -155,7 +155,7 @@ public class SimpleSetProperty<T> extends AbstractReadableWritableSetProperty<T,
      */
     @Override
     public boolean remove(Object item) {
-        boolean modified = set.remove(item);
+        boolean modified = internal.remove(item);
 
         if (modified) {
             doNotifyListenersOfRemovedValues(Collections.singleton((T) item));
@@ -173,7 +173,7 @@ public class SimpleSetProperty<T> extends AbstractReadableWritableSetProperty<T,
         Set<T> removed = new HashSet<T>();
 
         for (Object item : items) {
-            if (set.remove(item)) {
+            if (internal.remove(item)) {
                 removed.add((T) item);
             }
         }
@@ -193,14 +193,14 @@ public class SimpleSetProperty<T> extends AbstractReadableWritableSetProperty<T,
     public boolean retainAll(Collection<?> items) {
         Set<T> toBeRemoved = new HashSet<T>();
 
-        for (T item : set) {
+        for (T item : internal) {
             if (!items.contains(item)) {
                 toBeRemoved.add(item);
             }
         }
 
         if (!toBeRemoved.isEmpty()) {
-            set.removeAll(toBeRemoved);
+            internal.removeAll(toBeRemoved);
             doNotifyListenersOfRemovedValues(toBeRemoved);
         }
 
@@ -213,9 +213,9 @@ public class SimpleSetProperty<T> extends AbstractReadableWritableSetProperty<T,
      */
     @Override
     public void clear() {
-        if (!set.isEmpty()) {
-            Set<T> removed = new HashSet<T>(set);
-            set.clear();
+        if (!internal.isEmpty()) {
+            Set<T> removed = new HashSet<T>(internal);
+            internal.clear();
             doNotifyListenersOfRemovedValues(removed);
         }
     }
@@ -226,7 +226,7 @@ public class SimpleSetProperty<T> extends AbstractReadableWritableSetProperty<T,
      */
     @Override
     public boolean contains(Object item) {
-        return set.contains(item);
+        return internal.contains(item);
     }
 
     /**
@@ -235,7 +235,7 @@ public class SimpleSetProperty<T> extends AbstractReadableWritableSetProperty<T,
      */
     @Override
     public boolean containsAll(Collection<?> items) {
-        return set.containsAll(items);
+        return internal.containsAll(items);
     }
 
     /**
@@ -243,7 +243,7 @@ public class SimpleSetProperty<T> extends AbstractReadableWritableSetProperty<T,
      */
     @Override
     public Object[] toArray() {
-        return set.toArray();
+        return internal.toArray();
     }
 
     /**
@@ -252,15 +252,16 @@ public class SimpleSetProperty<T> extends AbstractReadableWritableSetProperty<T,
     @SuppressWarnings("unchecked")
     @Override
     public <U> U[] toArray(U[] a) {
-        return set.toArray(a);
+        return internal.toArray(a);
     }
 
     /**
+     * @see AbstractReadableWritableSetProperty#iterator()
      * @see Set#iterator()
      */
     @Override
     public Iterator<T> iterator() {
-        return readOnlySet.iterator();
+        return readOnlyWrapper.iterator();
     }
 
     /**
@@ -268,6 +269,6 @@ public class SimpleSetProperty<T> extends AbstractReadableWritableSetProperty<T,
      */
     @Override
     public Set<T> asUnmodifiableSet() {
-        return readOnlySet;
+        return readOnlyWrapper;
     }
 }

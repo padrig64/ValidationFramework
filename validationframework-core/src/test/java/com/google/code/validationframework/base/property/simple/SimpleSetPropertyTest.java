@@ -25,17 +25,18 @@
 
 package com.google.code.validationframework.base.property.simple;
 
-import com.google.code.validationframework.api.property.ReadableSetProperty;
 import com.google.code.validationframework.api.property.SetValueChangeListener;
 import org.junit.Test;
 import org.mockito.Matchers;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import static com.google.code.validationframework.test.TestUtils.haveEqualElements;
 import static com.google.code.validationframework.test.TestUtils.matchesSet;
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -43,11 +44,12 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 public class SimpleSetPropertyTest {
 
     @Test
-    public void testInitial() {
+    public void testDefaultConstructor() {
         SimpleSetProperty<Integer> property = new SimpleSetProperty<Integer>();
         SetValueChangeListener<Integer> listener = mock(SetValueChangeListener.class);
         property.addValueChangeListener(listener);
@@ -57,6 +59,66 @@ public class SimpleSetPropertyTest {
 
         verify(listener, times(0)).valuesAdded(eq(property), Matchers.<Set<Integer>>any());
         verify(listener, times(0)).valuesRemoved(eq(property), Matchers.<Set<Integer>>any());
+        verifyNoMoreInteractions(listener);
+    }
+
+    @Test
+    public void testConstructorWithItems() {
+        Set<Integer> ref = new HashSet<Integer>();
+        ref.add(1);
+        ref.add(2);
+        ref.add(3);
+
+        SimpleSetProperty<Integer> property = new SimpleSetProperty<Integer>(ref);
+        SetValueChangeListener<Integer> listener = mock(SetValueChangeListener.class);
+        property.addValueChangeListener(listener);
+
+        assertTrue(haveEqualElements(ref, property));
+        assertTrue(haveEqualElements(ref, property.asUnmodifiableSet()));
+
+        verify(listener, times(0)).valuesAdded(eq(property), Matchers.<Set<Integer>>any());
+        verify(listener, times(0)).valuesRemoved(eq(property), Matchers.<Set<Integer>>any());
+        verifyNoMoreInteractions(listener);
+    }
+
+    @Test
+    public void testConstructorWithListeners() {
+        SetValueChangeListener<Integer> listener1 = mock(SetValueChangeListener.class);
+        SetValueChangeListener<Integer> listener2 = mock(SetValueChangeListener.class);
+        SimpleSetProperty<Integer> property = new SimpleSetProperty<Integer>(listener1, listener2);
+
+        property.add(4);
+
+        verify(listener1).valuesAdded(eq(property), matchesSet(Collections.singleton(4)));
+        verify(listener2).valuesAdded(eq(property), matchesSet(Collections.singleton(4)));
+        verify(listener1, times(0)).valuesRemoved(eq(property), Matchers.<Set<Integer>>any());
+        verify(listener2, times(0)).valuesRemoved(eq(property), Matchers.<Set<Integer>>any());
+        verifyNoMoreInteractions(listener1);
+        verifyNoMoreInteractions(listener2);
+    }
+
+    @Test
+    public void testConstructorWithItemsAndListeners() {
+        Set<Integer> ref = new HashSet<Integer>();
+        ref.add(1);
+        ref.add(2);
+        ref.add(3);
+
+        SetValueChangeListener<Integer> listener1 = mock(SetValueChangeListener.class);
+        SetValueChangeListener<Integer> listener2 = mock(SetValueChangeListener.class);
+        SimpleSetProperty<Integer> property = new SimpleSetProperty<Integer>(ref, listener1, listener2);
+
+        assertTrue(haveEqualElements(ref, property));
+        assertTrue(haveEqualElements(ref, property.asUnmodifiableSet()));
+
+        property.add(4);
+
+        verify(listener1).valuesAdded(eq(property), matchesSet(Collections.singleton(4)));
+        verify(listener2).valuesAdded(eq(property), matchesSet(Collections.singleton(4)));
+        verify(listener1, times(0)).valuesRemoved(eq(property), Matchers.<Set<Integer>>any());
+        verify(listener2, times(0)).valuesRemoved(eq(property), Matchers.<Set<Integer>>any());
+        verifyNoMoreInteractions(listener1);
+        verifyNoMoreInteractions(listener2);
     }
 
     @Test
@@ -97,24 +159,6 @@ public class SimpleSetPropertyTest {
         SetValueChangeListener<Integer> listener = mock(SetValueChangeListener.class);
         property.addValueChangeListener(listener);
 
-        property.addValueChangeListener(new SetValueChangeListener<Integer>() {
-            @Override
-            public void valuesAdded(ReadableSetProperty<Integer> setProperty, Set<Integer> newValues) {
-                System.out.println("SimpleSetPropertyTest.valuesAdded");
-                for (Integer value : newValues) {
-                    System.out.println(" |_ " + value);
-                }
-            }
-
-            @Override
-            public void valuesRemoved(ReadableSetProperty<Integer> setProperty, Set<Integer> oldValues) {
-                System.out.println("SimpleSetPropertyTest.valuesRemoved");
-                for (Integer value : oldValues) {
-                    System.out.println(" |_ " + value);
-                }
-            }
-        });
-
         property.add(1);
         property.add(3);
         property.add(2);
@@ -134,6 +178,7 @@ public class SimpleSetPropertyTest {
         verify(listener).valuesAdded(eq(property), matchesSet(refSecond));
         verify(listener).valuesAdded(eq(property), matchesSet(refThird));
         verify(listener, times(0)).valuesRemoved(eq(property), Matchers.<Set<Integer>>any());
+        verifyNoMoreInteractions(listener);
     }
 
     @Test
@@ -153,6 +198,7 @@ public class SimpleSetPropertyTest {
         assertTrue(haveEqualElements(ref, property));
         verify(listener).valuesAdded(eq(property), matchesSet(ref));
         verify(listener, times(0)).valuesRemoved(eq(property), Matchers.<Set<Integer>>any());
+        verifyNoMoreInteractions(listener);
     }
 
     @Test
@@ -175,6 +221,7 @@ public class SimpleSetPropertyTest {
         verify(listener).valuesRemoved(eq(property), matchesSet(Collections.singleton(2)));
         verify(listener).valuesRemoved(eq(property), matchesSet(Collections.singleton(1)));
         verify(listener).valuesRemoved(eq(property), matchesSet(Collections.singleton(3)));
+        verifyNoMoreInteractions(listener);
     }
 
     @Test
@@ -193,5 +240,207 @@ public class SimpleSetPropertyTest {
         assertTrue(property.isEmpty());
         verify(listener, times(0)).valuesAdded(eq(property), Matchers.<Set<Integer>>any());
         verify(listener).valuesRemoved(eq(property), matchesSet(refAll));
+        verifyNoMoreInteractions(listener);
+    }
+
+    @Test
+    public void testRetainAll() {
+        Set<Integer> initial = new HashSet<Integer>();
+        initial.add(1);
+        initial.add(2);
+        initial.add(3);
+        initial.add(4);
+        initial.add(5);
+        initial.add(6);
+        Set<Integer> retained = new HashSet<Integer>();
+        retained.add(1);
+        retained.add(2);
+        retained.add(3);
+        retained.add(11);
+        retained.add(12);
+        retained.add(13);
+        Set<Integer> removed = new HashSet<Integer>();
+        removed.add(4);
+        removed.add(5);
+        removed.add(6);
+
+        SimpleSetProperty<Integer> property = new SimpleSetProperty<Integer>(initial);
+        SetValueChangeListener<Integer> listener = mock(SetValueChangeListener.class);
+        property.addValueChangeListener(listener);
+
+        property.retainAll(retained);
+
+        assertEquals(3, property.size());
+        verify(listener, times(0)).valuesAdded(eq(property), Matchers.<Set<Integer>>any());
+        verify(listener).valuesRemoved(eq(property), matchesSet(removed));
+        verifyNoMoreInteractions(listener);
+    }
+
+    @Test
+    public void testClear() {
+        Set<Integer> refAll = new HashSet<Integer>();
+        refAll.add(1);
+        refAll.add(2);
+        refAll.add(3);
+
+        SimpleSetProperty<Integer> property = new SimpleSetProperty<Integer>(refAll);
+        SetValueChangeListener<Integer> listener = mock(SetValueChangeListener.class);
+        property.addValueChangeListener(listener);
+
+        property.clear();
+
+        assertTrue(property.isEmpty());
+        verify(listener, times(0)).valuesAdded(eq(property), Matchers.<Set<Integer>>any());
+        verify(listener).valuesRemoved(eq(property), matchesSet(refAll));
+        verifyNoMoreInteractions(listener);
+    }
+
+    @Test
+    public void testContains() {
+        SimpleSetProperty<Integer> property = new SimpleSetProperty<Integer>();
+
+        assertFalse(property.contains(1));
+        assertFalse(property.contains(2));
+        assertFalse(property.contains(3));
+        assertFalse(property.contains(4));
+        assertFalse(property.contains(5));
+
+        property.add(1);
+        property.add(2);
+        property.add(3);
+
+        assertTrue(property.contains(1));
+        assertTrue(property.contains(2));
+        assertTrue(property.contains(3));
+        assertFalse(property.contains(4));
+        assertFalse(property.contains(5));
+
+        property.clear();
+
+        assertFalse(property.contains(1));
+        assertFalse(property.contains(2));
+        assertFalse(property.contains(3));
+        assertFalse(property.contains(4));
+        assertFalse(property.contains(5));
+    }
+
+    @Test
+    public void testContainsAll() {
+        Set<Integer> refSmall = new HashSet<Integer>();
+        refSmall.add(1);
+        refSmall.add(2);
+        refSmall.add(3);
+
+        Set<Integer> refBig = new HashSet<Integer>();
+        refBig.add(1);
+        refBig.add(2);
+        refBig.add(3);
+        refBig.add(4);
+        refBig.add(5);
+
+        SimpleSetProperty<Integer> property = new SimpleSetProperty<Integer>();
+        assertFalse(property.containsAll(refSmall));
+        assertFalse(property.containsAll(refBig));
+
+        property.add(1);
+        assertFalse(property.containsAll(refSmall));
+        assertFalse(property.containsAll(refBig));
+
+        property.add(2);
+        assertFalse(property.containsAll(refSmall));
+        assertFalse(property.containsAll(refBig));
+
+        property.add(3);
+        assertTrue(property.containsAll(refSmall));
+        assertFalse(property.containsAll(refBig));
+
+        property.add(4);
+        assertTrue(property.containsAll(refSmall));
+        assertFalse(property.containsAll(refBig));
+
+        property.add(5);
+        assertTrue(property.containsAll(refSmall));
+        assertTrue(property.containsAll(refBig));
+
+        property.clear();
+        assertFalse(property.containsAll(refSmall));
+        assertFalse(property.containsAll(refBig));
+    }
+
+    @Test
+    public void testAsUnmodifiableSetAndIterator() {
+        Set<Integer> ref = new HashSet<Integer>();
+        ref.add(1);
+        ref.add(2);
+        ref.add(3);
+
+        SimpleSetProperty<Integer> property = new SimpleSetProperty<Integer>();
+        Set<Integer> unmodifiable = property.asUnmodifiableSet();
+
+        assertTrue(haveEqualElements(property, unmodifiable));
+        assertTrue(unmodifiable.isEmpty());
+
+        property.addAll(ref);
+        assertTrue(haveEqualElements(property, unmodifiable));
+        assertTrue(haveEqualElements(ref, unmodifiable));
+
+        try {
+            Iterator<Integer> iterator = property.iterator();
+            assertTrue(iterator.hasNext());
+            iterator.next();
+            iterator.remove();
+        } catch (UnsupportedOperationException e) {
+            // As expected
+        }
+        try {
+            unmodifiable.add(4);
+            assertFalse(true);
+        } catch (UnsupportedOperationException e) {
+            // As expected
+        }
+        ref.add(5);
+        try {
+            unmodifiable.addAll(ref);
+            assertFalse(true);
+        } catch (UnsupportedOperationException e) {
+            // As expected
+        }
+        try {
+            unmodifiable.retainAll(ref);
+            assertFalse(true);
+        } catch (UnsupportedOperationException e) {
+            // As expected
+        }
+        try {
+            unmodifiable.remove(1);
+            assertFalse(true);
+        } catch (UnsupportedOperationException e) {
+            // As expected
+        }
+        try {
+            unmodifiable.removeAll(ref);
+            assertFalse(true);
+        } catch (UnsupportedOperationException e) {
+            // As expected
+        }
+        try {
+            unmodifiable.clear();
+            assertFalse(true);
+        } catch (UnsupportedOperationException e) {
+            // As expected
+        }
+    }
+
+    @Test
+    public void testToArray() {
+        Integer[] ref = new Integer[]{1, 2, 3};
+
+        SimpleSetProperty<Integer> property = new SimpleSetProperty<Integer>();
+        property.add(1);
+        property.add(2);
+        property.add(3);
+
+        assertArrayEquals(ref, property.toArray());
+        assertArrayEquals(ref, property.toArray(new Integer[3]));
     }
 }
