@@ -44,48 +44,51 @@ public class SimpleSetProperty<T> extends AbstractReadableWritableSetProperty<T,
     /**
      * Proxied set.
      */
-    private final Set<T> set;
+    private final Set<T> set = new HashSet<T>();
 
     /**
      * Read-only version of the proxied set.
      */
-    private final Set<T> readOnlySet;
+    private final Set<T> readOnlySet = Collections.unmodifiableSet(set);
 
     /**
-     * Default constructor using an {@link HashSet}.
+     * Default constructor.
      */
     public SimpleSetProperty() {
-        this(new HashSet<T>());
+        super();
     }
 
     /**
-     * Constructor using a {@link HashSet} and adding the specified listeners.
+     * Constructor adding the specified listeners.
      *
      * @param listeners Listeners to be added.
      */
     public SimpleSetProperty(SetValueChangeListener<T>... listeners) {
-        this(new HashSet<T>(), listeners);
+        super(listeners);
     }
 
     /**
-     * Constructor specifying the set to be proxied.
+     * Constructor specifying the initial items.
      *
-     * @param set Set to be proxied.
+     * @param items Initial items.
      */
-    public SimpleSetProperty(Set<T> set) {
-        this.set = set;
-        this.readOnlySet = Collections.unmodifiableSet(set);
+    public SimpleSetProperty(Set<T> items) {
+        super();
+        set.addAll(items);
     }
 
     /**
-     * Constructor specifying the set to be proxied and adding the specified listeners.
+     * Constructor specifying the initial items and adding the specified listeners.
+     * <p/>
+     * Note that the specified listeners will not be notified for the addition of the specified initial items.
      *
-     * @param set       Proxied set.
+     * @param items     Initial items.
      * @param listeners Listeners to be added.
      */
-    public SimpleSetProperty(Set<T> set, SetValueChangeListener<T>... listeners) {
-        this.set = set;
-        this.readOnlySet = Collections.unmodifiableSet(set);
+    public SimpleSetProperty(Set<T> items, SetValueChangeListener<T>... listeners) {
+        super(); // Without listeners
+
+        set.addAll(items);
 
         for (SetValueChangeListener<T> listener : listeners) {
             addValueChangeListener(listener);

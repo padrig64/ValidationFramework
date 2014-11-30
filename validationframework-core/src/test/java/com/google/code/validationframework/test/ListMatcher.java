@@ -23,31 +23,36 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.base.property;
+package com.google.code.validationframework.test;
 
-import com.google.code.validationframework.api.property.ReadableWritableSetProperty;
-import com.google.code.validationframework.api.property.SetValueChangeListener;
+import org.hamcrest.Description;
+import org.mockito.ArgumentMatcher;
 
-/**
- * Abstract implementation of a {@link ReadableWritableSetProperty}.
- *
- * @param <R> Type of values that can be read from this set property.
- * @param <W> Type of values that can be written to this set property.
- */
-public abstract class AbstractReadableWritableSetProperty<R, W> extends AbstractReadableSetProperty<R> implements
-        ReadableWritableSetProperty<R, W> {
+import java.util.ArrayList;
+import java.util.List;
 
-    /**
-     * @see AbstractReadableSetProperty#AbstractReadableSetProperty()
-     */
-    public AbstractReadableWritableSetProperty() {
+public class ListMatcher<T> extends ArgumentMatcher<List<T>> {
+
+    private final List<T> refElements;
+
+    public ListMatcher(List<T> refElements) {
         super();
+        this.refElements = new ArrayList<T>(refElements);
     }
 
-    /**
-     * @see AbstractReadableSetProperty#AbstractReadableSetProperty(SetValueChangeListener[])
-     */
-    public AbstractReadableWritableSetProperty(SetValueChangeListener<R>... listeners) {
-        super(listeners);
+    @SuppressWarnings("unchecked")
+    @Override
+    public boolean matches(Object actualElements) {
+        boolean match = false;
+
+        if (actualElements instanceof List<?>) {
+            match = TestUtils.haveEqualElements(refElements, (List<T>) actualElements);
+        }
+
+        return match;
+    }
+
+    public void describeTo(Description description) {
+        // Do nothing
     }
 }

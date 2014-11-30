@@ -25,6 +25,7 @@
 
 package com.google.code.validationframework.base.property;
 
+import com.google.code.validationframework.api.property.ListValueChangeListener;
 import com.google.code.validationframework.api.property.ReadableWritableListProperty;
 
 /**
@@ -35,5 +36,18 @@ import com.google.code.validationframework.api.property.ReadableWritableListProp
  */
 public abstract class AbstractReadableWritableListProperty<R, W> extends AbstractReadableListProperty<R> implements
         ReadableWritableListProperty<R, W> {
-    // Nothing more to be done
+
+    /**
+     * @see AbstractReadableWritableListProperty#AbstractReadableWritableListProperty()
+     */
+    public AbstractReadableWritableListProperty() {
+        super();
+    }
+
+    /**
+     * @see AbstractReadableWritableListProperty#AbstractReadableWritableListProperty(ListValueChangeListener[])
+     */
+    public AbstractReadableWritableListProperty(ListValueChangeListener<R>... listeners) {
+        super(listeners);
+    }
 }

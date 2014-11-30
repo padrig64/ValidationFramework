@@ -46,6 +46,25 @@ public abstract class AbstractReadableSetProperty<R> implements ReadableSetPrope
     private final List<SetValueChangeListener<R>> listeners = new ArrayList<SetValueChangeListener<R>>();
 
     /**
+     * Default constructor adding no listener.
+     */
+    public AbstractReadableSetProperty() {
+        // Nothing to be done
+    }
+
+    /**
+     * Constructor adding the specified listeners.
+     *
+     * @param listeners Listeners to be added.
+     */
+    public AbstractReadableSetProperty(SetValueChangeListener<R>... listeners) {
+        super();
+        for (SetValueChangeListener<R> listener : listeners) {
+            addValueChangeListener(listener);
+        }
+    }
+
+    /**
      * @see ReadableSetProperty#addValueChangeListener(SetValueChangeListener)
      */
     @Override

@@ -46,48 +46,51 @@ public class SimpleListProperty<T> extends AbstractReadableWritableListProperty<
     /**
      * Proxied list.
      */
-    private final List<T> list;
+    private final List<T> list = new ArrayList<T>();
 
     /**
      * Read-only version of the proxied list.
      */
-    private final List<T> readOnlyList;
+    private final List<T> readOnlyList = Collections.unmodifiableList(list);
 
     /**
-     * Default constructor using an {@link ArrayList}.
+     * Default constructor.
      */
     public SimpleListProperty() {
-        this(new ArrayList<T>());
+        super();
     }
 
     /**
-     * Constructor using a {@link ArrayList} and adding the specified listeners.
+     * Constructor adding the specified listeners.
      *
      * @param listeners Listeners to be added.
      */
     public SimpleListProperty(ListValueChangeListener<T>... listeners) {
-        this(new ArrayList<T>(), listeners);
+        super(listeners);
     }
 
     /**
-     * Constructor specifying the list to be proxied.
+     * Constructor specifying the initial items.
      *
-     * @param list List to be proxied.
+     * @param items Initial items.
      */
-    public SimpleListProperty(List<T> list) {
-        this.list = list;
-        this.readOnlyList = Collections.unmodifiableList(list);
+    public SimpleListProperty(List<T> items) {
+        super();
+        list.addAll(items);
     }
 
     /**
-     * Constructor specifying the list to be proxied and adding the specified listeners.
+     * Constructor specifying the initial items and adding the specified listeners.
+     * <p/>
+     * Note that the specified listeners will not be notified for the addition of the specified initial items.
      *
-     * @param list      Proxied list.
+     * @param items     Initial items.
      * @param listeners Listeners to be added.
      */
-    public SimpleListProperty(List<T> list, ListValueChangeListener<T>... listeners) {
-        this.list = list;
-        this.readOnlyList = Collections.unmodifiableList(list);
+    public SimpleListProperty(List<T> items, ListValueChangeListener<T>... listeners) {
+        super(); // Without listeners
+
+        list.addAll(items);
 
         for (ListValueChangeListener<T> listener : listeners) {
             addValueChangeListener(listener);

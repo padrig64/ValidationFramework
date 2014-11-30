@@ -25,6 +25,7 @@
 
 package com.google.code.validationframework.base.property;
 
+import com.google.code.validationframework.api.property.MapValueChangeListener;
 import com.google.code.validationframework.api.property.ReadableWritableMapProperty;
 
 /**
@@ -34,7 +35,20 @@ import com.google.code.validationframework.api.property.ReadableWritableMapPrope
  * @param <R> Type of mapped values that can be read from this map property.
  * @param <W> Type of values that can be written to this map property.
  */
-public abstract class AbstractReadableWritableMapProperty<K, R, W> extends AbstractReadableMapProperty<K,
-        R> implements ReadableWritableMapProperty<K, R, W> {
-    // Nothing more to be done
+public abstract class AbstractReadableWritableMapProperty<K, R, W> extends AbstractReadableMapProperty<K, R>
+        implements ReadableWritableMapProperty<K, R, W> {
+
+    /**
+     * @see AbstractReadableWritableMapProperty#AbstractReadableWritableMapProperty()
+     */
+    public AbstractReadableWritableMapProperty() {
+        super();
+    }
+
+    /**
+     * @see AbstractReadableWritableMapProperty#AbstractReadableWritableMapProperty(MapValueChangeListener[])
+     */
+    public AbstractReadableWritableMapProperty(MapValueChangeListener<K, R>... listeners) {
+        super(listeners);
+    }
 }

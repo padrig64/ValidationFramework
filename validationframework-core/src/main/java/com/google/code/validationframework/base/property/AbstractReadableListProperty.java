@@ -45,6 +45,25 @@ public abstract class AbstractReadableListProperty<R> implements ReadableListPro
     private final List<ListValueChangeListener<R>> listeners = new ArrayList<ListValueChangeListener<R>>();
 
     /**
+     * Default constructor adding no listener.
+     */
+    public AbstractReadableListProperty() {
+        // Nothing to be done
+    }
+
+    /**
+     * Constructor adding the specified listeners.
+     *
+     * @param listeners Listeners to be added.
+     */
+    public AbstractReadableListProperty(ListValueChangeListener<R>... listeners) {
+        super();
+        for (ListValueChangeListener<R> listener : listeners) {
+            addValueChangeListener(listener);
+        }
+    }
+
+    /**
      * @see ReadableListProperty#addValueChangeListener(ListValueChangeListener)
      */
     @Override

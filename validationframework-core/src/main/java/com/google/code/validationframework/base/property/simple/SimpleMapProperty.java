@@ -53,48 +53,51 @@ public class SimpleMapProperty<K, V> extends AbstractReadableWritableMapProperty
     /**
      * Proxied map.
      */
-    private final Map<K, V> map;
+    private final Map<K, V> map = new HashMap<K, V>();
 
     /**
      * Read-only version of the proxied map.
      */
-    private final Map<K, V> readOnlyMap;
+    private final Map<K, V> readOnlyMap = Collections.unmodifiableMap(map);
 
     /**
-     * Default constructor using a {@link HashMap}.
+     * Default constructor.
      */
     public SimpleMapProperty() {
-        this(new HashMap<K, V>());
+        super();
     }
 
     /**
-     * Constructor using a {@link HashMap} and adding the specified listeners.
+     * Constructor adding the specified listeners.
      *
      * @param listeners Listeners to be added.
      */
     public SimpleMapProperty(MapValueChangeListener<K, V>... listeners) {
-        this(new HashMap<K, V>(), listeners);
+        super(listeners);
     }
 
     /**
-     * Constructor specifying the map to be proxied.
+     * Constructor specifying the initial entries.
      *
-     * @param map Proxied map.
+     * @param entries Initial entries.
      */
-    public SimpleMapProperty(Map<K, V> map) {
-        this.map = map;
-        this.readOnlyMap = Collections.unmodifiableMap(map);
+    public SimpleMapProperty(Map<K, V> entries) {
+        super();
+        map.putAll(entries);
     }
 
     /**
-     * Constructor specifying the map to be proxied and adding the specified listeners.
+     * Constructor specifying the initial entries and adding the specified listeners.
+     * <p/>
+     * Note that the specified listeners will not be notified for the addition of the specified initial entries.
      *
-     * @param map       Proxied map.
+     * @param entries   Initial entries.
      * @param listeners Listeners to be added.
      */
-    public SimpleMapProperty(Map<K, V> map, MapValueChangeListener<K, V>... listeners) {
-        this.map = map;
-        this.readOnlyMap = Collections.unmodifiableMap(map);
+    public SimpleMapProperty(Map<K, V> entries, MapValueChangeListener<K, V>... listeners) {
+        super(); // Without listeners
+
+        map.putAll(entries);
 
         for (MapValueChangeListener<K, V> listener : listeners) {
             addValueChangeListener(listener);

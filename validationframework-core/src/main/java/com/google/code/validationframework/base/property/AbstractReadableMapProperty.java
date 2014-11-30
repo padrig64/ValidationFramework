@@ -47,6 +47,25 @@ public abstract class AbstractReadableMapProperty<K, R> implements ReadableMapPr
     private final List<MapValueChangeListener<K, R>> listeners = new ArrayList<MapValueChangeListener<K, R>>();
 
     /**
+     * Default constructor adding no listener.
+     */
+    public AbstractReadableMapProperty() {
+        // Nothing to be done
+    }
+
+    /**
+     * Constructor adding the specified listeners.
+     *
+     * @param listeners Listeners to be added.
+     */
+    public AbstractReadableMapProperty(MapValueChangeListener<K, R>... listeners) {
+        super();
+        for (MapValueChangeListener<K, R> listener : listeners) {
+            addValueChangeListener(listener);
+        }
+    }
+
+    /**
      * @see ReadableMapProperty#addValueChangeListener(MapValueChangeListener)
      */
     @Override

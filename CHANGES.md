@@ -4,6 +4,8 @@
 * Added retainAll() method to the WritableListProperty interface
 * Added asUnmodifiableList() method to the ReadableListProperty interface
 * Added asUnmodifiableMap() method to the ReadableMapProperty interface
+* Added convenient constructors to the ReadableMapProperty, ReadableListProperty and ReadableSetProperty implementations
+* Fixed SimpleMapProperty, SimpleListProperty and SimpleSetProperty to avoid direct re-use of initial collection/map
 * Made sure that the ListValueChangeListeners and MapValueChangeListeners get notified with unmodifiable lists and maps
 * Added interfaces and abstract implementations of a set property
 * Fixed type erasure problem of the remove() method in the SimpleListProperty
