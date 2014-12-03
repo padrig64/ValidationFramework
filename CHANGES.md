@@ -1,3 +1,7 @@
+# Version 3.3.2 (to be released)
+
+* Added convenient constructor to the AbstractComponentDecoration
+
 # Version 3.3.1
 
 * Added contains() and containsAll() methods to the ReadableListProperty interface

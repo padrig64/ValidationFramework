@@ -25,10 +25,10 @@
 
 package com.google.code.validationframework.demo.swing;
 
+import com.google.code.validationframework.demo.swing.support.ButtonStatusDecoration;
 import com.google.code.validationframework.demo.swing.support.CountDecoration;
 import com.google.code.validationframework.swing.decoration.anchor.Anchor;
 import com.google.code.validationframework.swing.decoration.anchor.AnchorLink;
-import com.google.code.validationframework.swing.decoration.utils.IconUtils;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.JButton;
@@ -39,47 +39,42 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-public class CountDecorationDemo extends JFrame {
+public class StatusDecorationDemo extends JFrame {
 
     /**
      * Generated serial UID.
      */
     private static final long serialVersionUID = -8327067408222994890L;
 
-    public CountDecorationDemo() {
+    public StatusDecorationDemo() {
         super();
 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         // Create content pane and button to be decorated
-        JPanel contentPane = new JPanel(new MigLayout("fill, insets 40", "[center]", "[center]"));
+        JPanel contentPane = new JPanel(new MigLayout("fill, insets 40, wrap 1", "[center]",
+                "[center]unrelated[center]"));
         setContentPane(contentPane);
 
-        JButton decoratedButton = new JButton("Messages", IconUtils.loadImageIcon("/images/mails64.png",
-                CountDecoration.class));
-        decoratedButton.setVerticalTextPosition(SwingConstants.BOTTOM);
-        decoratedButton.setHorizontalTextPosition(SwingConstants.CENTER);
-        contentPane.add(decoratedButton);
+        for (int i = 1; i <= 5; i++) {
+            JButton serviceButton = new JButton("Service " + i);
+            Font font = serviceButton.getFont();
+            font = font.deriveFont(20f);
+            serviceButton.setFont(font);
 
-        // Decorate button
-        final CountDecoration countDecoration = new CountDecoration(decoratedButton,
-                new AnchorLink(new Anchor(1.0f, -25, 0.0f, 25), Anchor.CENTER));
-        countDecoration.getCountProperty().setValue(1);
+            serviceButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+            serviceButton.setHorizontalTextPosition(SwingConstants.CENTER);
+            contentPane.add(serviceButton);
 
-        decoratedButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int newCount = countDecoration.getCountProperty().getValue() + 11;
-                if(newCount >= 112) {
-                    newCount = 0;
-                }
-                countDecoration.getCountProperty().setValue(newCount);
-            }
-        });
+            // Decorate button
+            new ButtonStatusDecoration(serviceButton);
+//            CountDecoration countDecoration = new CountDecoration(serviceButton,
+//                    new AnchorLink(new Anchor(1.0f, -25, 0.0f, 25), Anchor.CENTER));
+//            countDecoration.setCountProperty(10);
+        }
 
         // Set size
         pack();
@@ -111,7 +106,7 @@ public class CountDecorationDemo extends JFrame {
                 }
 
                 // Show window
-                CountDecorationDemo frame = new CountDecorationDemo();
+                StatusDecorationDemo frame = new StatusDecorationDemo();
                 Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
                 frame.setLocation((screenSize.width - frame.getWidth()) / 2, (screenSize.height - frame.getHeight())
                         / 3);

@@ -26,6 +26,7 @@
 package com.google.code.validationframework.swing.decoration;
 
 import com.google.code.validationframework.api.common.Disposable;
+import com.google.code.validationframework.swing.decoration.anchor.Anchor;
 import com.google.code.validationframework.swing.decoration.anchor.AnchorLink;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -372,6 +373,21 @@ public abstract class AbstractComponentDecoration implements Disposable {
     }
 
     /**
+     * Constructor specifying the component to be decorated and the two anchors composing the anchor link between the
+     * decorated component and its decoration.
+     *
+     * @param decoratedComponent       Component to be decorated.
+     * @param decoratedComponentAnchor Anchor on the decorated component.
+     * @param decorationAnchor         Anchor on the decoration.
+     *
+     * @see AbstractComponentDecoration#AbstractComponentDecoration(JComponent, AnchorLink)
+     */
+    public AbstractComponentDecoration(JComponent decoratedComponent, Anchor decoratedComponentAnchor, Anchor
+            decorationAnchor) {
+        this(decoratedComponent, new AnchorLink(decoratedComponentAnchor, decorationAnchor));
+    }
+
+    /**
      * Attaches the decoration to the specified component.
      *
      * @param componentToBeDecorated Component to be decorated.
@@ -678,9 +694,10 @@ public abstract class AbstractComponentDecoration implements Disposable {
         } else {
             JComponent clippingComponent = getEffectiveClippingAncestor();
             if (clippingComponent == null) {
-                LOGGER.error("No decoration clipping component can be found for decorated component: " + decoratedComponent);
+                LOGGER.error("No decoration clipping component can be found for decorated component: " +
+                        decoratedComponent);
                 decorationPainter.setClipBounds(null);
-            } else if(!clippingComponent.isShowing()) {
+            } else if (!clippingComponent.isShowing()) {
                 LOGGER.warn("Clipping component is not showing: " + clippingComponent);
                 decorationPainter.setClipBounds(null);
             } else {
