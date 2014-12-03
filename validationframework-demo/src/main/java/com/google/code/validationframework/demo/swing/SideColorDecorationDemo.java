@@ -25,10 +25,7 @@
 
 package com.google.code.validationframework.demo.swing;
 
-import com.google.code.validationframework.demo.swing.support.ButtonStatusDecoration;
-import com.google.code.validationframework.demo.swing.support.CountDecoration;
-import com.google.code.validationframework.swing.decoration.anchor.Anchor;
-import com.google.code.validationframework.swing.decoration.anchor.AnchorLink;
+import com.google.code.validationframework.demo.swing.support.SideColorDecoration;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.JButton;
@@ -42,14 +39,14 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Toolkit;
 
-public class StatusDecorationDemo extends JFrame {
+public class SideColorDecorationDemo extends JFrame {
 
     /**
      * Generated serial UID.
      */
     private static final long serialVersionUID = -8327067408222994890L;
 
-    public StatusDecorationDemo() {
+    public SideColorDecorationDemo() {
         super();
 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -70,10 +67,7 @@ public class StatusDecorationDemo extends JFrame {
             contentPane.add(serviceButton);
 
             // Decorate button
-            new ButtonStatusDecoration(serviceButton);
-//            CountDecoration countDecoration = new CountDecoration(serviceButton,
-//                    new AnchorLink(new Anchor(1.0f, -25, 0.0f, 25), Anchor.CENTER));
-//            countDecoration.setCountProperty(10);
+            new SideColorDecoration(serviceButton);
         }
 
         // Set size
@@ -106,7 +100,7 @@ public class StatusDecorationDemo extends JFrame {
                 }
 
                 // Show window
-                StatusDecorationDemo frame = new StatusDecorationDemo();
+                SideColorDecorationDemo frame = new SideColorDecorationDemo();
                 Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
                 frame.setLocation((screenSize.width - frame.getWidth()) / 2, (screenSize.height - frame.getHeight())
                         / 3);

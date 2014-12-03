@@ -30,7 +30,7 @@ import com.google.code.validationframework.api.property.ReadableWritableProperty
 import com.google.code.validationframework.api.property.ValueChangeListener;
 import com.google.code.validationframework.base.property.simple.SimpleIntegerProperty;
 import com.google.code.validationframework.swing.decoration.AbstractComponentDecoration;
-import com.google.code.validationframework.swing.decoration.anchor.AnchorLink;
+import com.google.code.validationframework.swing.decoration.anchor.Anchor;
 
 import javax.swing.JComponent;
 import java.awt.Color;
@@ -50,8 +50,8 @@ public class CountDecoration extends AbstractComponentDecoration {
 
     private final SimpleIntegerProperty countProperty = new SimpleIntegerProperty(0);
 
-    public CountDecoration(JComponent decoratedComponent, AnchorLink anchorLink) {
-        super(decoratedComponent, anchorLink);
+    public CountDecoration(JComponent decoratedComponent, Anchor decoratedComponentAnchor, Anchor decorationAnchor) {
+        super(decoratedComponent, decoratedComponentAnchor, decorationAnchor);
         countProperty.addValueChangeListener(new CountAdapter());
     }
 

@@ -27,7 +27,6 @@ package com.google.code.validationframework.demo.swing;
 
 import com.google.code.validationframework.demo.swing.support.CountDecoration;
 import com.google.code.validationframework.swing.decoration.anchor.Anchor;
-import com.google.code.validationframework.swing.decoration.anchor.AnchorLink;
 import com.google.code.validationframework.swing.decoration.utils.IconUtils;
 import net.miginfocom.swing.MigLayout;
 
@@ -66,15 +65,15 @@ public class CountDecorationDemo extends JFrame {
         contentPane.add(decoratedButton);
 
         // Decorate button
-        final CountDecoration countDecoration = new CountDecoration(decoratedButton,
-                new AnchorLink(new Anchor(1.0f, -25, 0.0f, 25), Anchor.CENTER));
+        final CountDecoration countDecoration = new CountDecoration(decoratedButton, new Anchor(1.0f, -25, 0.0f, 25),
+                Anchor.CENTER);
         countDecoration.getCountProperty().setValue(1);
 
         decoratedButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int newCount = countDecoration.getCountProperty().getValue() + 11;
-                if(newCount >= 112) {
+                if (newCount >= 112) {
                     newCount = 0;
                 }
                 countDecoration.getCountProperty().setValue(newCount);

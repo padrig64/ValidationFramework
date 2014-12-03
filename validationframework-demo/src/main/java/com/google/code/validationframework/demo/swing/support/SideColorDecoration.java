@@ -25,17 +25,33 @@
 
 package com.google.code.validationframework.demo.swing.support;
 
+import com.google.code.validationframework.api.property.ReadableProperty;
+import com.google.code.validationframework.api.property.ReadableWritableProperty;
+import com.google.code.validationframework.api.property.ValueChangeListener;
 import com.google.code.validationframework.swing.decoration.AbstractComponentDecoration;
 import com.google.code.validationframework.swing.decoration.anchor.Anchor;
+import com.google.code.validationframework.swing.property.simple.SimpleColorProperty;
 
 import javax.swing.JComponent;
 import java.awt.Color;
 import java.awt.Graphics;
 
-public class ButtonStatusDecoration extends AbstractComponentDecoration {
+public class SideColorDecoration extends AbstractComponentDecoration {
 
-    public ButtonStatusDecoration(JComponent decoratedComponent) {
+    private final SimpleColorProperty colorProperty = new SimpleColorProperty(new Color(255, 89, 71));
+
+    public SideColorDecoration(JComponent decoratedComponent) {
         super(decoratedComponent, new Anchor(0.0f, -1, 0.0f, 3), Anchor.TOP_RIGHT);
+        colorProperty.addValueChangeListener(new ValueChangeListener<Color>() {
+            @Override
+            public void valueChanged(ReadableProperty<Color> property, Color oldValue, Color newValue) {
+                followAndRepaint();
+            }
+        });
+    }
+
+    public ReadableWritableProperty<Color, Color> getColorProperty() {
+        return colorProperty;
     }
 
     @Override
@@ -50,7 +66,7 @@ public class ButtonStatusDecoration extends AbstractComponentDecoration {
 
     @Override
     public void paint(Graphics g) {
-        g.setColor(new Color(255, 89, 71));
+        g.setColor(colorProperty.getValue());
         g.fillRect(0, 0, getWidth(), getHeight());
     }
 }
