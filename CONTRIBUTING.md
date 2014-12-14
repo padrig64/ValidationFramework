@@ -1,12 +1,11 @@
-Please note that these guidelines is very likely to evolve depending your questions and remarks, and as well as your
-contributions.
+Please note that these guidelines are very likely to evolve depending your questions, remarks and contributions.
 
 # General considerations
 
 ### Consistency, consistency, consistency
 
-The most important point to consider is to keep consistency in terms of **naming** and **behavior**. Consistent naming
-particularly applies to protected and public classes, methods, constants, etc.
+The most important point to consider is to maintain the consistency in terms of **naming** and **behavior**. Consistent
+naming particularly applies to protected and public classes, methods, constants, etc.
 
 This will help the users find their way in the framework and help them know what to expect.
 
@@ -38,11 +37,11 @@ If you are using IntelliJ IDEA, you may use the defaults settings.
 
 ### Imports
 
-Please do not use wildcard imports (*). Instead, use **individual import** statements.
+Please use **individual import** statements instead of wildcard imports.
 
 ### Documentation
 
-All public and protected classes, methods, constants, etc., should be commented with JavaDoc.
+All **public** and **protected** classes, methods, constants, etc., should be commented with JavaDoc.
 
 ### Tests
 
@@ -54,8 +53,9 @@ For GUI tests in the validationframework-swing module, **Fest-Swing** will be us
 
 For now, static code analysis will be performed using **SonarQube** before releasing the ValidationFramework.
 
-The rules will be made available in the near future, so that all contributors can already do the checks on their code.
+The set of rules will be made available in the near future, so that contributors can perform the checks on their own
+code.
 
-# Copyright header
+### Copyright header
 
 All Java files and text-based resource files should have the copyright header.
