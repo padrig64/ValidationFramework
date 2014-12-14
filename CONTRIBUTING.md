@@ -1,0 +1,61 @@
+Please note that these guidelines is very likely to evolve depending your questions and remarks, and as well as your
+contributions.
+
+# General considerations
+
+### Consistency, consistency, consistency
+
+The most important point to consider is to keep consistency in terms of **naming** and **behavior**. Consistent naming
+particularly applies to protected and public classes, methods, constants, etc.
+
+This will help the users find their way in the framework and help them know what to expect.
+
+### Few dependencies
+
+Keeping the number of dependencies to third-party libraries as low as possible helps the integration of the framework
+in real world projects and reduces the risk of licensing problems.
+
+# Start contributing
+
+To start contributing, just fork and clone the ValidationFramework repository.
+
+You may refer to this article for further information: [For A Repo](https://help.github.com/articles/fork-a-repo/).
+
+Before you begin making changes, it may be a good idea to make sure that all the already existing unit tests actually
+pass on your machine.
+
+When you are done with your changes, you can push them to your fork and submit a pull request.
+
+Please refer to this article for further information: [Using pull requests](https://help.github.com/articles/using-pull-requests/).
+
+# Code organization
+
+### Code style and formatting
+
+There are no strict rules for now.
+
+If you are using IntelliJ IDEA, you may use the defaults settings.
+
+### Imports
+
+Please do not use wildcard imports (*). Instead, use **individual import** statements.
+
+### Documentation
+
+All public and protected classes, methods, constants, etc., should be commented with JavaDoc.
+
+### Tests
+
+Wherever possible, please add **JUnit** tests related to your changes.
+
+For GUI tests in the validationframework-swing module, **Fest-Swing** will be used in the near future.
+
+### Sonar checks
+
+For now, static code analysis will be performed using **SonarQube** before releasing the ValidationFramework.
+
+The rules will be made available in the near future, so that all contributors can already do the checks on their code.
+
+# Copyright header
+
+All Java files and text-based resource files should have the copyright header.

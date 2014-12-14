@@ -10,6 +10,8 @@
 * Collection- and Map-related transformers
 * More JavaFX 2 support
 
+* Clean up demo module
+
 * JFormattedTextFieldOptionalFormatterRule
 * JFormattedTextFieldOptionalValueProvider
 * JTableCellEditorCanceledTrigger
