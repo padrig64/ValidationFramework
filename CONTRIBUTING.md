@@ -3,14 +3,13 @@ Please note that these guidelines are very likely to evolve depending your quest
 # How to start
 
 To start contributing, just fork and clone the ValidationFramework repository. You may refer to this article for further
-information: [For A Repo](https://help.github.com/articles/fork-a-repo/).
+information: [Fork A Repo](https://help.github.com/articles/fork-a-repo/).
 
 Before you begin making changes, it may be a good idea to make sure that all the already existing unit tests actually
 pass on your machine.
 
 When you are done with your changes, you can push them to your fork and submit a pull request. Please refer to this
 article for further information: [Using pull requests](https://help.github.com/articles/using-pull-requests/).
-
 
 # Guidelines
 
