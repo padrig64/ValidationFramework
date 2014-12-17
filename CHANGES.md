@@ -1,6 +1,7 @@
 # Version 3.3.2 (to be released)
 
 * Added convenient constructor to the AbstractComponentDecoration
+* Removed inconvenient warning in case the clipping component of a decoration is not showing
 
 # Version 3.3.1
 

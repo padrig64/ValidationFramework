@@ -697,10 +697,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
                 LOGGER.error("No decoration clipping component can be found for decorated component: " +
                         decoratedComponent);
                 decorationPainter.setClipBounds(null);
-            } else if (!clippingComponent.isShowing()) {
-                LOGGER.warn("Clipping component is not showing: " + clippingComponent);
-                decorationPainter.setClipBounds(null);
-            } else {
+            } else if (clippingComponent.isShowing()) {
                 Rectangle ownerBoundsInParent = decoratedComponent.getBounds();
                 Rectangle decorationBoundsInParent = new Rectangle(ownerBoundsInParent.x + relativeLocationToOwner.x,
                         ownerBoundsInParent.y + relativeLocationToOwner.y, getWidth(), getHeight());
@@ -722,6 +719,9 @@ public abstract class AbstractComponentDecoration implements Disposable {
                             decorationVisibleBoundsInLayeredPane, decorationPainter);
                     decorationPainter.setClipBounds(clipBounds);
                 }
+            } else {
+                // This could happen for example when a dialog is closed, so no need to log anything
+                decorationPainter.setClipBounds(null);
             }
         }
     }
