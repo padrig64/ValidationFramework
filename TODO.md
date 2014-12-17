@@ -1,13 +1,14 @@
-# TO FIX
+# Known issues
 
 * Painting of decoration when decorated component is still (0,0,0,0) and invalid
 * Painting of translucent decorations on OS X
 * Icon decoration steals mouse event even outside clipping bounds
-* Consistent behavior of dispose() methods
+* Inconsistent behavior of dispose() methods
 
-# TO MAKE
+# Ideas for the short term
 
-* Collection- and Map-related transformers
+* Convenient value change listeners to check the correct behavior of the properties (incl. set, list and map properties): always on the same thread, always on EDT, never on EDT, only called when values are different, etc.
+* Set-, List- and Map-related transformers
 * More JavaFX 2 support
 
 * Clean up demo module
@@ -50,7 +51,7 @@
 * Auto-scroll/jump to errors in case of scrollpanes, tabbedpane, etc.
 * Add more examples, javadoc and UML diagrams to wiki (incl. example of Formatter/Format configuration)
 
-# TO THINK ABOUT
+# Ideas for the long term
 
 * Common builder API to build validators and property bindings for general-purpose conditional logic
 * Predicates/conditions
