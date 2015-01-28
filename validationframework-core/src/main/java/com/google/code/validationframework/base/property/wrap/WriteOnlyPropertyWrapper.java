@@ -25,70 +25,38 @@
 
 package com.google.code.validationframework.base.property.wrap;
 
-import com.google.code.validationframework.api.property.ValueChangeListener;
-import com.google.code.validationframework.api.property.ReadableProperty;
-import com.google.code.validationframework.api.common.Disposable;
-import com.google.code.validationframework.base.property.AbstractReadableProperty;
+import com.google.code.validationframework.api.property.WritableProperty;
 
 /**
- * Wrapper for properties (typically both readable/writable) to make them appear as read-only.
+ * Wrapper for properties (typically both readable/writable) to make them appear as write-only.
  * <p/>
- * This can be useful, for example, to return a read-only property in a getter method that is actually a
+ * This can be useful, for example, to return a write-only property in a getter method that is actually a
  * readable/writable property internally. The wrapper then forbids the programmer to cast the returned property to a
- * writable property in order to change its value.
+ * readable property in order to change read its value.
  *
- * @param <R> Type of data that can be read from the wrapped property.
+ * @param <W> Type of data that can be written to the wrapped property.
  */
-public class ReadOnlyPropertyWrapper<R> extends AbstractReadableProperty<R> implements Disposable {
-
-    /**
-     * Entity responsible for forwarding the change events from the wrapped property to the listeners of the read-only
-     * wrapper.
-     */
-    private class ValueChangeForwarder implements ValueChangeListener<R> {
-
-        /**
-         * @see ValueChangeListener#valueChanged(ReadableProperty, Object, Object)
-         */
-        @Override
-        public void valueChanged(ReadableProperty<R> property, R oldValue, R newValue) {
-            maybeNotifyListeners(oldValue, newValue);
-        }
-    }
+public class WriteOnlyPropertyWrapper<W> implements WritableProperty<W> {
 
     /**
      * Wrapped property.
      */
-    private final ReadableProperty<R> wrappedProperty;
-
-    /**
-     * Listener to changes on the wrapped property.
-     */
-    private final ValueChangeListener<R> changeAdapter = new ValueChangeForwarder();
+    private final WritableProperty<W> wrappedProperty;
 
     /**
      * Constructor specifying the property to be wrapped, typically a property that is both readable and writable.
      *
      * @param wrappedProperty Property to be wrapped.
      */
-    public ReadOnlyPropertyWrapper(ReadableProperty<R> wrappedProperty) {
+    public WriteOnlyPropertyWrapper(WritableProperty<W> wrappedProperty) {
         this.wrappedProperty = wrappedProperty;
-        this.wrappedProperty.addValueChangeListener(changeAdapter);
     }
 
     /**
-     * @see AbstractReadableProperty#getValue()
+     * @see WritableProperty#setValue(Object)
      */
     @Override
-    public R getValue() {
-        return wrappedProperty.getValue();
-    }
-
-    /**
-     * @see Disposable#dispose()
-     */
-    @Override
-    public void dispose() {
-        wrappedProperty.removeValueChangeListener(changeAdapter);
+    public void setValue(W value) {
+        wrappedProperty.setValue(value);
     }
 }
