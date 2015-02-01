@@ -40,7 +40,7 @@ import java.awt.event.MouseMotionListener;
 /**
  * Read-only property holding the position of the cell currently hovered by the mouse.
  * <p/>
- * The row and column indices, that make the position of the rollover cell, are expressed in view coordinates.
+ * The row and column indices, that make the position of the hovered cell, are expressed in view coordinates.
  */
 public class JTableRolloverCellProperty extends AbstractReadableProperty<CellPosition> implements Disposable {
 
