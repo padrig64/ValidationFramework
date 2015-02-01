@@ -51,18 +51,40 @@ public class CompositeWritableProperty<W> implements WritableProperty<W> {
     private W value = null;
 
     /**
-     * Default constructor.
+     * Constructor setting the initial value to null.
      */
     public CompositeWritableProperty() {
         super();
     }
 
     /**
-     * Constructor specifying the sub-properties to be added.
+     * Constructor specifying the initial value.
+     *
+     * @param value Initial value.
+     */
+    public CompositeWritableProperty(W value) {
+        super();
+        setValue(value);
+    }
+
+    /**
+     * Constructor specifying the sub-properties to be added, and setting the initial value to null.
      *
      * @param properties Sub-properties to be added.
      */
     public CompositeWritableProperty(Collection<WritableProperty<W>> properties) {
+        super();
+        this.properties.addAll(properties);
+        setValue(value);
+    }
+
+    /**
+     * Constructor specifying the initial value and the sub-properties to be added.
+     *
+     * @param value      Initial value.
+     * @param properties Sub-properties to be added.
+     */
+    public CompositeWritableProperty(W value, Collection<WritableProperty<W>> properties) {
         super();
         this.properties.addAll(properties);
         setValue(value);
@@ -74,6 +96,18 @@ public class CompositeWritableProperty<W> implements WritableProperty<W> {
      * @param properties Sub-properties to be added.
      */
     public CompositeWritableProperty(WritableProperty<W>... properties) {
+        super();
+        Collections.addAll(this.properties, properties);
+        setValue(value);
+    }
+
+    /**
+     * Constructor specifying the initial value and the sub-properties to be added.
+     *
+     * @param value      Initial value.
+     * @param properties Sub-properties to be added.
+     */
+    public CompositeWritableProperty(W value, WritableProperty<W>... properties) {
         super();
         Collections.addAll(this.properties, properties);
         setValue(value);

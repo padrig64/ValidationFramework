@@ -36,6 +36,27 @@ import static org.junit.Assert.assertEquals;
 public class CompositeWritablePropertyTest {
 
     @Test
+    public void testInitialValue() {
+        // Create composite property and set value before adding the sub-properties
+        CompositeWritableProperty<Integer> compositeProperty = new CompositeWritableProperty<Integer>(10);
+
+        // Create sub-properties with different values
+        SimpleIntegerProperty compoundProperty1 = new SimpleIntegerProperty(1);
+        SimpleIntegerProperty compoundProperty2 = new SimpleIntegerProperty(2);
+        SimpleIntegerProperty compoundProperty3 = new SimpleIntegerProperty(3);
+
+        // Add sub-properties to composition
+        compositeProperty.addProperty(compoundProperty1);
+        compositeProperty.addProperty(compoundProperty2);
+        compositeProperty.addProperty(compoundProperty3);
+
+        // Check that the values of the sub-properties is now the value set on the composition
+        assertEquals(Integer.valueOf(10), compoundProperty1.getValue());
+        assertEquals(Integer.valueOf(10), compoundProperty2.getValue());
+        assertEquals(Integer.valueOf(10), compoundProperty3.getValue());
+    }
+
+    @Test
     public void testAddAndValueChange() {
         // Create composite property and set value before adding the sub-properties
         CompositeWritableProperty<Integer> compositeProperty = new CompositeWritableProperty<Integer>();
