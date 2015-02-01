@@ -3,6 +3,7 @@
 * Added convenient constructor to the AbstractComponentDecoration
 * Added WriteOnlyPropertyWrapper to make readable/writable properties write-only
 * Added JTableEditingProperty stating whether a JTable is in the editing state
+* Added JTableRolloverCellProperty holding the position of a table cell under the mouse pointer
 * Added IsParsableRule to check whether a String can be parsed using a Format object
 * Added convenient constructors to the CompositeWritableProperty
 * Removed inconvenient warning in case the clipping component of a decoration is not showing
