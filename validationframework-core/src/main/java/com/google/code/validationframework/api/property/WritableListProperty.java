@@ -79,7 +79,7 @@ public interface WritableListProperty<W> {
     /**
      * @see java.util.List#retainAll(Collection)
      */
-    boolean retainAll(Collection<?> c);
+    boolean retainAll(Collection<?> items);
 
     /**
      * @see java.util.List#clear()

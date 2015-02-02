@@ -50,7 +50,7 @@ public interface WritableMapProperty<K, W> {
     /**
      * @see Map#putAll(Map)
      */
-    void putAll(Map<? extends K, ? extends W> m);
+    void putAll(Map<? extends K, ? extends W> entries);
 
     /**
      * @see Map#clear()

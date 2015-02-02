@@ -23,11 +23,12 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.base.property;
+package com.google.code.validationframework.base.property.wrap;
 
 import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.api.property.MapValueChangeListener;
 import com.google.code.validationframework.api.property.ReadableMapProperty;
+import com.google.code.validationframework.base.property.AbstractReadableMapProperty;
 
 import java.util.Collection;
 import java.util.Map;
