@@ -107,6 +107,19 @@ public class FormatWrapper<T> extends Format {
     }
 
     /**
+     * Constructor specifying the delegate format and whether the parsing of null or empty text should be delegated.
+     * <p/>
+     * By default, strict parsing will be enabled, and formatting of null values will not be delegated either.
+     *
+     * @param delegate                       Delegate format to be used for formatting and parsing.
+     * @param delegateNullOrEmptyTextParsing True to delegate the parsing of null or empty texts, false not to delegate.
+     */
+    public FormatWrapper(Format delegate, boolean delegateNullOrEmptyTextParsing) {
+        this(delegate, null);
+        setDelegateNullOrEmptyTextParsing(delegateNullOrEmptyTextParsing);
+    }
+
+    /**
      * Constructor specifying the delegate format and the transformer to be used to convert the parsed objects.
      * <p/>
      * By default, strict parsing will be enabled, parsing of null or empty text will not be delegated, and formatting
@@ -164,6 +177,9 @@ public class FormatWrapper<T> extends Format {
 
     /**
      * States whether the parsing of null or empty texts should be delegated.
+     * <p/>
+     * If it is delegated, a {@link ParseException} might be thrown depending on the behavior of the delegate format. If
+     * it is not delegated, no exception will be thrown as if the input is valid.
      *
      * @param delegateNullOrEmptyTextParsing True to delegate the parsing of null or empty texts, false not to delegate.
      */

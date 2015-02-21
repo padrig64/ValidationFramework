@@ -1,6 +1,7 @@
 # Version 3.3.2 (to be released)
 
 * Added convenient constructor to the AbstractComponentDecoration
+* Added convenient constructor to the FormatWrapper
 * Added JTableEditingProperty stating whether a JTable is in the editing state
 * Added JTableRolloverCellProperty holding the position of a table cell under the mouse pointer
 * Added IsParsableRule to check whether a String can be parsed using a Format object
