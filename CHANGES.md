@@ -10,6 +10,7 @@
 * Added read-only wrappers for readable/writable set properties, list properties and map properties
 * Added write-only wrappers for readable/writable set properties, list properties and map properties
 * Removed inconvenient warning in case the clipping component of a decoration is not showing
+* Fixed a potential NullPointerException in AbstractColorFeedback
 
 # Version 3.3.1
 

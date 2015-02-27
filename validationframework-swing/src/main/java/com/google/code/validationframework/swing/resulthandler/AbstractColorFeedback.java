@@ -42,7 +42,6 @@ public abstract class AbstractColorFeedback<RHI> implements ResultHandler<RHI> {
 
     /**
      * Constructor specifying the component to attached to.
-     *
      * @param componentToBeColored Component to be colored to show the validation results.
      */
     public AbstractColorFeedback(final JComponent componentToBeColored) {
@@ -51,7 +50,6 @@ public abstract class AbstractColorFeedback<RHI> implements ResultHandler<RHI> {
 
     /**
      * Attaches the feedback to the specified component.
-     *
      * @param componentToBeColored Component to be colored to show the validation results.
      */
     public void attach(final JComponent componentToBeColored) {
@@ -99,7 +97,9 @@ public abstract class AbstractColorFeedback<RHI> implements ResultHandler<RHI> {
         } else {
             owner.setBackground(ColorUtils.alphaBlend(resultBackground, origBackground));
         }
-        owner.getParent().repaint();
+        if (owner.getParent() != null) {
+            owner.getParent().repaint();
+        }
 
         showing = true;
     }

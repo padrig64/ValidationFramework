@@ -242,6 +242,7 @@ public class TransparentToolTipDialog extends JWindow {
         setContentPane(toolTip);
         pack(); // Seems to help for the very first setVisible(true) when window transparency is on
 
+        // This does not seem to be necessary anymore
 //        if (WindowUtils.isWindowAlphaSupported()) {
 //            try {
 //                WindowUtils.setWindowTransparent(this, true);

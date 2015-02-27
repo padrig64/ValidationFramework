@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Patrick Moawad
+ * Copyright (c) 2015, Patrick Moawad
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,14 +25,17 @@
 
 package com.google.code.validationframework.demo.swing;
 
+import com.google.code.validationframework.api.resulthandler.ResultHandler;
 import com.google.code.validationframework.api.rule.Rule;
 import com.google.code.validationframework.api.transform.Transformer;
 import com.google.code.validationframework.base.property.simple.SimpleProperty;
+import com.google.code.validationframework.base.transform.AndBooleanAggregator;
+import com.google.code.validationframework.base.transform.collection.CollectionElementTransformer;
 import com.google.code.validationframework.swing.dataprovider.JTextFieldTextProvider;
+import com.google.code.validationframework.swing.property.ComponentEnabledProperty;
 import com.google.code.validationframework.swing.resulthandler.AbstractColorFeedback;
 import com.google.code.validationframework.swing.resulthandler.AbstractIconFeedback;
 import com.google.code.validationframework.swing.resulthandler.AbstractStickerFeedback;
-import com.google.code.validationframework.swing.resulthandler.bool.IconBooleanFeedback;
 import com.google.code.validationframework.swing.trigger.JTextFieldDocumentChangedTrigger;
 import net.miginfocom.swing.MigLayout;
 
@@ -49,7 +52,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
-import javax.swing.plaf.ColorUIResource;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -57,96 +59,105 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 
+import static com.google.code.validationframework.base.binding.Binder.read;
 import static com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder.on;
 
+/**
+ * Example showing how different types of feedback could be achieve (icon, tooltip, enabling/disabling component,
+ * etc.).
+ */
 public class FeedbackDemo extends JFrame {
 
     /**
-     * UIResource in case look-and-feel changes while result is visible. The new look-and-feel is allowed to replace it
-     * colors, otherwise, we may introduce permanent inconsistencies.
+     * Input validation rule.
      */
-    private static final Color COLOR_NOK_EMPTY = new ColorUIResource(new Color(226, 125, 125, 127));
-
-    private static final Color COLOR_NOK_TOO_LONG = new ColorUIResource(new Color(226, 125, 125));
-
-    private enum InputFieldResult {
-
-        OK("", null, null, null),
-        NOK_EMPTY("Should not be empty", "/images/defaults/warning.png", null, COLOR_NOK_EMPTY),
-        NOK_TOO_LONG("Cannot be more than 4 characters", "/images/defaults/invalid.png", COLOR_NOK_TOO_LONG, null);
-
-        private final String text;
-        private Icon icon;
-        private final Color foreground;
-        private final Color background;
-
-        InputFieldResult(final String text, final String iconName, final Color foreground, final Color background) {
-            this.text = text;
-            this.foreground = foreground;
-            this.background = background;
-
-            // Error icon
-            if ((iconName != null) && !iconName.isEmpty()) {
-                final InputStream inputStream = getClass().getResourceAsStream(iconName);
-                try {
-                    final BufferedImage image = ImageIO.read(inputStream);
-                    icon = new ImageIcon(image);
-                } catch (final IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        public Icon getIcon() {
-            return icon;
-        }
-
-        public Color getForeground() {
-            return foreground;
-        }
-
-        public Color getBackground() {
-            return background;
-        }
+    private class InputFieldRule implements Rule<String, Result> {
 
         @Override
-        public String toString() {
-            return text;
-        }
-    }
+        public Result validate(String input) {
+            Result result;
 
-    private class InputFieldResultToBooleanTransformer implements Transformer<InputFieldResult, Boolean> {
-
-        @Override
-        public Boolean transform(final InputFieldResult input) {
-            return InputFieldResult.OK.equals(input);
-        }
-    }
-
-    private class InputFieldRule implements Rule<String, InputFieldResult> {
-
-        @Override
-        public InputFieldResult validate(final String input) {
-            InputFieldResult result = InputFieldResult.OK;
-
-            if ((input == null) || (input.isEmpty())) {
-                result = InputFieldResult.NOK_EMPTY;
-            } else if (input.length() >= 5) {
-                result = InputFieldResult.NOK_TOO_LONG;
+            if ((input == null) || (input.length() < 5)) {
+                result = Result.OK;
+            } else if (input.length() >= 5 && input.length() < 10) {
+                result = Result.QUITE_LONG;
+            } else {
+                result = Result.TOO_LONG;
             }
 
             return result;
         }
     }
 
-    private class InputFieldToolTipFeedback extends AbstractStickerFeedback<InputFieldResult> {
+    /**
+     * Type of result returned by the validation rules.
+     */
+    private enum Result {
 
-        public InputFieldToolTipFeedback(final JComponent owner) {
+        OK("", null, null),
+        QUITE_LONG("Entered text is quite long", "/images/defaults/warning.png", new Color(230, 175, 0)),
+        TOO_LONG("Entered text is too long", "/images/defaults/invalid.png", new Color(255, 60, 56));
+
+        private final String message;
+        private Icon icon;
+        private final Color feedbackColor;
+
+        Result(String message, String iconName, Color feedbackColor) {
+            this.message = message;
+            this.feedbackColor = feedbackColor;
+
+            // Load icon
+            if ((iconName != null) && !iconName.isEmpty()) {
+                InputStream inputStream = getClass().getResourceAsStream(iconName);
+                try {
+                    BufferedImage image = ImageIO.read(inputStream);
+                    icon = new ImageIcon(image);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        public String getMessage() {
+            return message;
+        }
+
+        public Icon getIcon() {
+            return icon;
+        }
+
+        public Color getFeedbackColor() {
+            return feedbackColor;
+        }
+
+        @Override
+        public String toString() {
+            return message;
+        }
+    }
+
+    /**
+     * Transformer to convert rule results to booleans.
+     */
+    private class ResultToBooleanTransformer implements Transformer<Result, Boolean> {
+
+        @Override
+        public Boolean transform(Result input) {
+            return (input != Result.TOO_LONG);
+        }
+    }
+
+    /**
+     * Result handler showing a sticker on the side of the input field.
+     */
+    private class StickerFeedback extends AbstractStickerFeedback<Result> {
+
+        public StickerFeedback(JComponent owner) {
             super(owner);
         }
 
         @Override
-        public void handleResult(final InputFieldResult result) {
+        public void handleResult(Result result) {
             setToolTipText(result.toString());
             switch (result) {
                 case OK:
@@ -158,16 +169,25 @@ public class FeedbackDemo extends JFrame {
         }
     }
 
-    private class InputFieldColorFeedback extends AbstractColorFeedback<InputFieldResult> {
+    /**
+     * Result handler changing the background or foreground color of the input field.
+     */
+    private class ColorFeedback extends AbstractColorFeedback<Result> {
 
-        public InputFieldColorFeedback(final JComponent owner) {
+        private final boolean background;
+
+        public ColorFeedback(JComponent owner, boolean background) {
             super(owner);
+            this.background = background;
         }
 
         @Override
-        public void handleResult(final InputFieldResult result) {
-            setForeground(result.getForeground());
-            setBackground(result.getBackground());
+        public void handleResult(Result result) {
+            if (background) {
+                setBackground(result.getFeedbackColor());
+            } else {
+                setForeground(result.getFeedbackColor());
+            }
             switch (result) {
                 case OK:
                     hideColors();
@@ -178,15 +198,26 @@ public class FeedbackDemo extends JFrame {
         }
     }
 
-    private class InputFieldIconFeedback extends AbstractIconFeedback<InputFieldResult> {
+    /**
+     * Result handler decorating the input field with an icon with an optional tooltip.
+     */
+    private class IconFeedback extends AbstractIconFeedback<Result> {
 
-        public InputFieldIconFeedback(final JComponent owner) {
+        private final boolean showToolTip;
+
+        public IconFeedback(JComponent owner, boolean showToolTip) {
             super(owner);
+            this.showToolTip = showToolTip;
         }
 
         @Override
-        public void handleResult(final InputFieldResult result) {
+        public void handleResult(Result result) {
             setIcon(result.getIcon());
+            if (showToolTip) {
+                setToolTipText(result.getMessage());
+            } else {
+                setToolTipText(null);
+            }
             switch (result) {
                 case OK:
                     hideIcon();
@@ -218,115 +249,97 @@ public class FeedbackDemo extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         // Create content pane
-        final JPanel contentPane = new JPanel(new MigLayout("fill, wrap 2", "[]related[grow]",
-            "[]related[]related[]related[]unrelated[]"));
-        //		contentPane.setBorder(new EmptyBorder(50, 50, 50, 50));
-        //		setContentPane(new JScrollPane(contentPane));
+        JPanel contentPane = new JPanel(new MigLayout("fill, wrap 2", "[]related[grow]",
+            "[]20[]related[]related[]related[]related[]unrelated[]"));
         setContentPane(contentPane);
 
+        JLabel infoLabel = new JLabel("Fill in the fields with less than 10 characters.");
+        infoLabel.setForeground(Color.GRAY);
+        contentPane.add(infoLabel, "span 2");
+
         // Input fields
-        contentPane.add(new JLabel("Tooltip:"));
-        final JTextField textField1 = new JTextField();
+        contentPane.add(new JLabel("Sticker:"));
+        JTextField textField1 = new JTextField();
         contentPane.add(textField1, "growx");
-        contentPane.add(new JLabel("Color:"));
-        final JTextField textField2 = new JTextField();
+        contentPane.add(new JLabel("Foreground color:"));
+        JTextField textField2 = new JTextField();
         contentPane.add(textField2, "growx");
+        JTextField textField3 = new JTextField();
+        if (!"Nimbus".equals(UIManager.getLookAndFeel().getName())) {
+            // Changing the background color of a textfield with the Nimbus is not easy...
+            contentPane.add(new JLabel("Background color:"));
+            contentPane.add(textField3, "growx");
+        }
         contentPane.add(new JLabel("Icon:"));
-        final JTextField textField3 = new JTextField();
-        contentPane.add(textField3, "growx");
-        contentPane.add(new JLabel("Icon with tooltip:"));
-        final JTextField textField4 = new JTextField();
+        JTextField textField4 = new JTextField();
         contentPane.add(textField4, "growx");
+        contentPane.add(new JLabel("Icon with tooltip:"));
+        JTextField textField5 = new JTextField();
+        contentPane.add(textField5, "growx");
 
         // Apply button
-        final JButton applyButton = new JButton("Apply");
+        JButton applyButton = new JButton("Apply");
         contentPane.add(applyButton, "growx, span");
 
         // Set size
         pack();
-        final Dimension size = getSize();
+        Dimension size = getSize();
         size.width += 100;
         setMinimumSize(size);
 
         // Set location
-        final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation((screenSize.width - size.width) / 2, (screenSize.height - size.height) / 3);
 
-        // Create validators
-        final SimpleProperty<InputFieldResult> resultCollector1 = new SimpleProperty<InputFieldResult>();
-        final SimpleProperty<InputFieldResult> resultCollector2 = new SimpleProperty<InputFieldResult>();
-        final SimpleProperty<InputFieldResult> resultCollector3 = new SimpleProperty<InputFieldResult>();
-        final SimpleProperty<InputFieldResult> resultCollector4 = new SimpleProperty<InputFieldResult>();
-        createValidator1(textField1, resultCollector1);
-        createValidator2(textField2, resultCollector2);
-        createValidator3(textField3, resultCollector3);
-        createValidator4(textField4, resultCollector4);
+        // Create validators and collect the results
+        SimpleProperty<Result> resultCollector1 = new SimpleProperty<Result>();
+        createValidator(textField1, new StickerFeedback(textField1), resultCollector1);
+        SimpleProperty<Result> resultCollector2 = new SimpleProperty<Result>();
+        createValidator(textField2, new ColorFeedback(textField2, false), resultCollector2);
+        SimpleProperty<Result> resultCollector3 = new SimpleProperty<Result>();
+        createValidator(textField3, new ColorFeedback(textField3, true), resultCollector3);
+        SimpleProperty<Result> resultCollector4 = new SimpleProperty<Result>();
+        createValidator(textField4, new IconFeedback(textField4, false), resultCollector4);
+        SimpleProperty<Result> resultCollector5 = new SimpleProperty<Result>();
+        createValidator(textField5, new IconFeedback(textField5, true), resultCollector5);
 
-        //        // Create global validator
-        //        collect(resultCollector1) //
-        //            .collect(resultCollector2) //
-        //            .collect(resultCollector3) //
-        //            .collect(resultCollector4) //
-        //            .check(new AndBooleanRule()) //
-        //            .handleWith(new ComponentEnablingBooleanResultHandler(applyButton));
+        // Enable Apply button only when all fields are valid
+        read(resultCollector1, resultCollector2, resultCollector3, resultCollector4, resultCollector5)
+            .transform(new CollectionElementTransformer<Result, Boolean>(new ResultToBooleanTransformer()))
+            .transform(new AndBooleanAggregator())
+            .write(new ComponentEnabledProperty(applyButton));
     }
 
-    private void createValidator1(final JTextField textField, final SimpleProperty<InputFieldResult> resultCollector) {
+    private void createValidator(JTextField textField, ResultHandler<Result> resultHandler,
+        SimpleProperty<Result> resultCollector) {
         on(new JTextFieldDocumentChangedTrigger(textField))
             .read(new JTextFieldTextProvider(textField))
             .check(new InputFieldRule())
-            .handleWith(new InputFieldToolTipFeedback(textField))
+            .handleWith(resultHandler)
             .handleWith(resultCollector)
             .trigger();
     }
 
-    private void createValidator2(final JTextField textField, final SimpleProperty<InputFieldResult> resultCollector) {
-        on(new JTextFieldDocumentChangedTrigger(textField))
-            .read(new JTextFieldTextProvider(textField))
-            .check(new InputFieldRule())
-            .handleWith(new InputFieldColorFeedback(textField))
-            .handleWith(resultCollector)
-            .trigger();
-    }
-
-    private void createValidator3(final JTextField textField, final SimpleProperty<InputFieldResult> resultCollector) {
-        on(new JTextFieldDocumentChangedTrigger(textField))
-            .read(new JTextFieldTextProvider(textField))
-            .check(new InputFieldRule())
-            .handleWith(new InputFieldIconFeedback(textField))
-            .handleWith(resultCollector)
-            .trigger();
-    }
-
-    private void createValidator4(final JTextField textField, final SimpleProperty<InputFieldResult> resultCollector) {
-        on(new JTextFieldDocumentChangedTrigger(textField))
-            .read(new JTextFieldTextProvider(textField))
-            .check(new InputFieldRule())
-            .handleWith(new InputFieldIconFeedback(textField))
-            .handleWith(resultCollector)
-            .trigger();
-    }
-
-    public static void main(final String[] args) {
+    public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
 
                 // Set look-and-feel
                 try {
-                    for (final UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+                    for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                         if ("Nimbus".equals(info.getName())) {
                             UIManager.setLookAndFeel(info.getClassName());
                             break;
                         }
                     }
-                } catch (final UnsupportedLookAndFeelException e) {
+                } catch (UnsupportedLookAndFeelException e) {
                     // handle exception
-                } catch (final ClassNotFoundException e) {
+                } catch (ClassNotFoundException e) {
                     // handle exception
-                } catch (final InstantiationException e) {
+                } catch (InstantiationException e) {
                     // handle exception
-                } catch (final IllegalAccessException e) {
+                } catch (IllegalAccessException e) {
                     // handle exception
                 }
 
