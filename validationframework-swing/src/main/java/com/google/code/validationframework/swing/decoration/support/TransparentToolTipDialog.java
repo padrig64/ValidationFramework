@@ -128,7 +128,7 @@ public class TransparentToolTipDialog extends JWindow {
                             0.8)).addTarget(this).build();
                     transparencyAnimator.startReverse();
                 }
-            } else {
+            } else if (WindowUtils.isWindowAlphaSupported()) {
                 WindowUtils.setWindowAlpha(TransparentToolTipDialog.this, MIN_ALPHA);
             }
         }
@@ -153,7 +153,7 @@ public class TransparentToolTipDialog extends JWindow {
                             0.8)).addTarget(this).build();
                     transparencyAnimator.start();
                 }
-            } else {
+            } else if (WindowUtils.isWindowAlphaSupported()) {
                 WindowUtils.setWindowAlpha(TransparentToolTipDialog.this, MAX_ALPHA);
             }
         }
@@ -196,7 +196,9 @@ public class TransparentToolTipDialog extends JWindow {
         @Override
         public void timingEvent(final Animator animator, final double v) {
             currentAlpha = (float) (v * (MAX_ALPHA - MIN_ALPHA)) + MIN_ALPHA;
-            WindowUtils.setWindowAlpha(TransparentToolTipDialog.this, currentAlpha);
+            if (WindowUtils.isWindowAlphaSupported()) {
+                WindowUtils.setWindowAlpha(TransparentToolTipDialog.this, currentAlpha);
+            }
         }
     }
 
@@ -240,13 +242,13 @@ public class TransparentToolTipDialog extends JWindow {
         setContentPane(toolTip);
         pack(); // Seems to help for the very first setVisible(true) when window transparency is on
 
-        if (WindowUtils.isWindowAlphaSupported()) {
-            try {
-                WindowUtils.setWindowTransparent(this, true);
-            } catch (IllegalArgumentException e) {
-                LOGGER.warn("Transparency reported as being supported, but it just does not work", e);
-            }
-        }
+//        if (WindowUtils.isWindowAlphaSupported()) {
+//            try {
+//                WindowUtils.setWindowTransparent(this, true);
+//            } catch (final IllegalArgumentException e) {
+//                LOGGER.warn("Transparency reported as being supported, but it just does not work", e);
+//            }
+//        }
     }
 
     @Override
@@ -290,7 +292,7 @@ public class TransparentToolTipDialog extends JWindow {
             toolTip.setTipText(text);
 
             if (wasVisible) {
-                setVisible(wasVisible);
+                setVisible(true);
             }
         }
     }

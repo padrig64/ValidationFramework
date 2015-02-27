@@ -43,7 +43,7 @@ public abstract class AbstractStickerFeedback<RHI> implements ResultHandler<RHI>
 
     public void attach(final JComponent owner) {
         detach();
-        toolTipDialog = new TransparentToolTipDialog(owner, new AnchorLink(Anchor.TOP_RIGHT, Anchor.TOP_LEFT));
+        toolTipDialog = new TransparentToolTipDialog(owner, new AnchorLink(Anchor.CENTER_RIGHT, Anchor.CENTER_LEFT));
     }
 
     public void detach() {

@@ -25,26 +25,14 @@
 
 package com.google.code.validationframework.demo.swing;
 
-import com.google.code.validationframework.api.property.ReadableProperty;
-import com.google.code.validationframework.api.property.ValueChangeListener;
 import com.google.code.validationframework.api.rule.Rule;
 import com.google.code.validationframework.api.transform.Transformer;
-import com.google.code.validationframework.base.resulthandler.ResultCollector;
-import com.google.code.validationframework.base.rule.bool.AndBooleanRule;
-import com.google.code.validationframework.base.rule.string.StringRegexRule;
-import com.google.code.validationframework.base.transform.AndBooleanAggregator;
-import com.google.code.validationframework.base.trigger.ManualTrigger;
-import com.google.code.validationframework.base.validator.generalvalidator.GeneralValidator;
-import com.google.code.validationframework.swing.dataprovider.JFormattedTextFieldTextProvider;
+import com.google.code.validationframework.base.property.simple.SimpleProperty;
 import com.google.code.validationframework.swing.dataprovider.JTextFieldTextProvider;
-import com.google.code.validationframework.swing.property.JTextComponentTextProperty;
 import com.google.code.validationframework.swing.resulthandler.AbstractColorFeedback;
 import com.google.code.validationframework.swing.resulthandler.AbstractIconFeedback;
 import com.google.code.validationframework.swing.resulthandler.AbstractStickerFeedback;
-import com.google.code.validationframework.swing.resulthandler.bool.ComponentEnablingBooleanResultHandler;
 import com.google.code.validationframework.swing.resulthandler.bool.IconBooleanFeedback;
-import com.google.code.validationframework.swing.rule.JFormattedTextFieldFormatterRule;
-import com.google.code.validationframework.swing.trigger.JFormattedTextFieldDocumentChangedTrigger;
 import com.google.code.validationframework.swing.trigger.JTextFieldDocumentChangedTrigger;
 import net.miginfocom.swing.MigLayout;
 
@@ -53,7 +41,6 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -63,17 +50,13 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 import javax.swing.plaf.ColorUIResource;
-import javax.swing.text.NumberFormatter;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.NumberFormat;
 
-import static com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder.collect;
 import static com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder.on;
 
 public class FeedbackDemo extends JFrame {
@@ -83,6 +66,7 @@ public class FeedbackDemo extends JFrame {
      * colors, otherwise, we may introduce permanent inconsistencies.
      */
     private static final Color COLOR_NOK_EMPTY = new ColorUIResource(new Color(226, 125, 125, 127));
+
     private static final Color COLOR_NOK_TOO_LONG = new ColorUIResource(new Color(226, 125, 125));
 
     private enum InputFieldResult {
@@ -96,18 +80,18 @@ public class FeedbackDemo extends JFrame {
         private final Color foreground;
         private final Color background;
 
-        InputFieldResult(String text, String iconName, Color foreground, Color background) {
+        InputFieldResult(final String text, final String iconName, final Color foreground, final Color background) {
             this.text = text;
             this.foreground = foreground;
             this.background = background;
 
             // Error icon
             if ((iconName != null) && !iconName.isEmpty()) {
-                InputStream inputStream = getClass().getResourceAsStream(iconName);
+                final InputStream inputStream = getClass().getResourceAsStream(iconName);
                 try {
-                    BufferedImage image = ImageIO.read(inputStream);
+                    final BufferedImage image = ImageIO.read(inputStream);
                     icon = new ImageIcon(image);
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     e.printStackTrace();
                 }
             }
@@ -134,7 +118,7 @@ public class FeedbackDemo extends JFrame {
     private class InputFieldResultToBooleanTransformer implements Transformer<InputFieldResult, Boolean> {
 
         @Override
-        public Boolean transform(InputFieldResult input) {
+        public Boolean transform(final InputFieldResult input) {
             return InputFieldResult.OK.equals(input);
         }
     }
@@ -142,7 +126,7 @@ public class FeedbackDemo extends JFrame {
     private class InputFieldRule implements Rule<String, InputFieldResult> {
 
         @Override
-        public InputFieldResult validate(String input) {
+        public InputFieldResult validate(final String input) {
             InputFieldResult result = InputFieldResult.OK;
 
             if ((input == null) || (input.isEmpty())) {
@@ -157,12 +141,12 @@ public class FeedbackDemo extends JFrame {
 
     private class InputFieldToolTipFeedback extends AbstractStickerFeedback<InputFieldResult> {
 
-        public InputFieldToolTipFeedback(JComponent owner) {
+        public InputFieldToolTipFeedback(final JComponent owner) {
             super(owner);
         }
 
         @Override
-        public void handleResult(InputFieldResult result) {
+        public void handleResult(final InputFieldResult result) {
             setToolTipText(result.toString());
             switch (result) {
                 case OK:
@@ -176,12 +160,12 @@ public class FeedbackDemo extends JFrame {
 
     private class InputFieldColorFeedback extends AbstractColorFeedback<InputFieldResult> {
 
-        public InputFieldColorFeedback(JComponent owner) {
+        public InputFieldColorFeedback(final JComponent owner) {
             super(owner);
         }
 
         @Override
-        public void handleResult(InputFieldResult result) {
+        public void handleResult(final InputFieldResult result) {
             setForeground(result.getForeground());
             setBackground(result.getBackground());
             switch (result) {
@@ -196,12 +180,12 @@ public class FeedbackDemo extends JFrame {
 
     private class InputFieldIconFeedback extends AbstractIconFeedback<InputFieldResult> {
 
-        public InputFieldIconFeedback(JComponent owner) {
+        public InputFieldIconFeedback(final JComponent owner) {
             super(owner);
         }
 
         @Override
-        public void handleResult(InputFieldResult result) {
+        public void handleResult(final InputFieldResult result) {
             setIcon(result.getIcon());
             switch (result) {
                 case OK:
@@ -234,185 +218,115 @@ public class FeedbackDemo extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         // Create content pane
-        JPanel contentPane = new JPanel(new MigLayout("fill, wrap 2", "[]related[grow]",
-                "[]related[]related[]related[]unrelated[]"));
-//		contentPane.setBorder(new EmptyBorder(50, 50, 50, 50));
-//		setContentPane(new JScrollPane(contentPane));
+        final JPanel contentPane = new JPanel(new MigLayout("fill, wrap 2", "[]related[grow]",
+            "[]related[]related[]related[]unrelated[]"));
+        //		contentPane.setBorder(new EmptyBorder(50, 50, 50, 50));
+        //		setContentPane(new JScrollPane(contentPane));
         setContentPane(contentPane);
 
         // Input fields
         contentPane.add(new JLabel("Tooltip:"));
-        JTextField textField1 = new JTextField();
+        final JTextField textField1 = new JTextField();
         contentPane.add(textField1, "growx");
         contentPane.add(new JLabel("Color:"));
-        JTextField textField2 = new JTextField();
+        final JTextField textField2 = new JTextField();
         contentPane.add(textField2, "growx");
         contentPane.add(new JLabel("Icon:"));
-        JTextField textField3 = new JTextField();
+        final JTextField textField3 = new JTextField();
         contentPane.add(textField3, "growx");
         contentPane.add(new JLabel("Icon with tooltip:"));
-
-        NumberFormat courseFormat = NumberFormat.getIntegerInstance();
-        courseFormat.setMinimumIntegerDigits(3);
-        courseFormat.setMaximumIntegerDigits(4);
-        courseFormat.setMaximumFractionDigits(0);
-        NumberFormatter courseFormatter = new NumberFormatter(courseFormat);
-        courseFormatter.setMinimum(0.0);
-        courseFormatter.setMaximum(359.0);
-        JFormattedTextField formattedTextField4 = new JFormattedTextField(courseFormatter);
-        contentPane.add(formattedTextField4, "growx");
-
-        contentPane.add(new JLabel("Icon with tooltip:"));
-
-        courseFormat = NumberFormat.getIntegerInstance();
-        courseFormat.setMinimumIntegerDigits(3);
-        courseFormat.setMaximumIntegerDigits(4);
-        courseFormat.setMaximumFractionDigits(0);
-        courseFormatter = new NumberFormatter(courseFormat);
-        courseFormatter.setMinimum(0.0);
-        courseFormatter.setMaximum(359.0);
-        JFormattedTextField formattedTextField5 = new JFormattedTextField(courseFormatter);
-        contentPane.add(formattedTextField5, "growx");
-
-        ReadableProperty<String> text = new JTextComponentTextProperty(formattedTextField4);
-        text.addValueChangeListener(new ValueChangeListener<String>() {
-            @Override
-            public void valueChanged(ReadableProperty<String> property, String oldValue, String newValue) {
-                System.out.println("Rollover: " + oldValue + " => " + newValue);
-            }
-        });
+        final JTextField textField4 = new JTextField();
+        contentPane.add(textField4, "growx");
 
         // Apply button
-        JButton applyButton = new JButton("Apply");
+        final JButton applyButton = new JButton("Apply");
         contentPane.add(applyButton, "growx, span");
 
         // Set size
         pack();
-        Dimension size = getSize();
+        final Dimension size = getSize();
         size.width += 100;
         setMinimumSize(size);
 
         // Set location
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation((screenSize.width - size.width) / 2, (screenSize.height - size.height) / 3);
 
         // Create validators
-        ResultCollector<InputFieldResult, Boolean> resultCollector1 = new ResultCollector<InputFieldResult,
-                Boolean>(new InputFieldResultToBooleanTransformer());
-        ResultCollector<InputFieldResult, Boolean> resultCollector2 = new ResultCollector<InputFieldResult,
-                Boolean>(new InputFieldResultToBooleanTransformer());
-        ResultCollector<InputFieldResult, Boolean> resultCollector3 = new ResultCollector<InputFieldResult,
-                Boolean>(new InputFieldResultToBooleanTransformer());
-        ResultCollector<Boolean, Boolean> resultCollector4 = new ResultCollector<Boolean, Boolean>();
-        ResultCollector<Boolean, Boolean> resultCollector5 = new ResultCollector<Boolean, Boolean>();
+        final SimpleProperty<InputFieldResult> resultCollector1 = new SimpleProperty<InputFieldResult>();
+        final SimpleProperty<InputFieldResult> resultCollector2 = new SimpleProperty<InputFieldResult>();
+        final SimpleProperty<InputFieldResult> resultCollector3 = new SimpleProperty<InputFieldResult>();
+        final SimpleProperty<InputFieldResult> resultCollector4 = new SimpleProperty<InputFieldResult>();
         createValidator1(textField1, resultCollector1);
         createValidator2(textField2, resultCollector2);
         createValidator3(textField3, resultCollector3);
-        createValidator4(formattedTextField4, resultCollector4);
-        createValidator4(formattedTextField5, resultCollector5);
+        createValidator4(textField4, resultCollector4);
 
-        // Create global validator
-        collect(resultCollector1) //
-                .collect(resultCollector2) //
-                .collect(resultCollector3) //
-                .collect(resultCollector4) //
-                .collect(resultCollector5) //
-                .check(new AndBooleanRule()) //
-                .handleWith(new ComponentEnablingBooleanResultHandler(applyButton));
+        //        // Create global validator
+        //        collect(resultCollector1) //
+        //            .collect(resultCollector2) //
+        //            .collect(resultCollector3) //
+        //            .collect(resultCollector4) //
+        //            .check(new AndBooleanRule()) //
+        //            .handleWith(new ComponentEnablingBooleanResultHandler(applyButton));
     }
 
-    private Component createValidator1(JTextField textField, ResultCollector<InputFieldResult,
-            Boolean> resultCollector) {
-        GeneralValidator<String, String, InputFieldResult, InputFieldResult> validator = new GeneralValidator<String,
-                String, InputFieldResult, InputFieldResult>();
-
-        validator.addTrigger(new JTextFieldDocumentChangedTrigger(textField));
-        validator.addDataProvider(new JTextFieldTextProvider(textField));
-        validator.addRule(new InputFieldRule());
-        validator.addResultHandler(new InputFieldToolTipFeedback(textField));
-        validator.addResultHandler(resultCollector);
-
-        return textField;
+    private void createValidator1(final JTextField textField, final SimpleProperty<InputFieldResult> resultCollector) {
+        on(new JTextFieldDocumentChangedTrigger(textField))
+            .read(new JTextFieldTextProvider(textField))
+            .check(new InputFieldRule())
+            .handleWith(new InputFieldToolTipFeedback(textField))
+            .handleWith(resultCollector)
+            .trigger();
     }
 
-    private Component createValidator2(JTextField textField, ResultCollector<InputFieldResult,
-            Boolean> resultCollector) {
-        GeneralValidator<String, String, InputFieldResult, InputFieldResult> validator = new GeneralValidator<String,
-                String, InputFieldResult, InputFieldResult>();
-
-        validator.addTrigger(new JTextFieldDocumentChangedTrigger(textField));
-        validator.addDataProvider(new JTextFieldTextProvider(textField));
-        validator.addRule(new InputFieldRule());
-        validator.addResultHandler(new InputFieldColorFeedback(textField));
-        validator.addResultHandler(resultCollector);
-
-        return textField;
+    private void createValidator2(final JTextField textField, final SimpleProperty<InputFieldResult> resultCollector) {
+        on(new JTextFieldDocumentChangedTrigger(textField))
+            .read(new JTextFieldTextProvider(textField))
+            .check(new InputFieldRule())
+            .handleWith(new InputFieldColorFeedback(textField))
+            .handleWith(resultCollector)
+            .trigger();
     }
 
-    private Component createValidator3(JTextField textField, ResultCollector<InputFieldResult,
-            Boolean> resultCollector) {
-        GeneralValidator<String, String, InputFieldResult, InputFieldResult> validator = new GeneralValidator<String,
-                String, InputFieldResult, InputFieldResult>();
-
-        validator.addTrigger(new JTextFieldDocumentChangedTrigger(textField));
-        validator.addDataProvider(new JTextFieldTextProvider(textField));
-        validator.addRule(new InputFieldRule());
-        validator.addResultHandler(new InputFieldIconFeedback(textField));
-        validator.addResultHandler(resultCollector);
-
-        return textField;
+    private void createValidator3(final JTextField textField, final SimpleProperty<InputFieldResult> resultCollector) {
+        on(new JTextFieldDocumentChangedTrigger(textField))
+            .read(new JTextFieldTextProvider(textField))
+            .check(new InputFieldRule())
+            .handleWith(new InputFieldIconFeedback(textField))
+            .handleWith(resultCollector)
+            .trigger();
     }
 
-    private Component createValidator4(JFormattedTextField formattedTextField, ResultCollector<Boolean,
-            Boolean> resultCollector) {
-
-        ManualTrigger manualTrigger = new ManualTrigger();
-        JFormattedTextFieldDocumentChangedTrigger trigger = new JFormattedTextFieldDocumentChangedTrigger
-                (formattedTextField);
-        JFormattedTextFieldTextProvider dataProvider = new JFormattedTextFieldTextProvider(formattedTextField);
-        JFormattedTextFieldFormatterRule rule1 = new JFormattedTextFieldFormatterRule(formattedTextField);
-        StringRegexRule rule2 = new StringRegexRule("^[0-9]{1,3}$");
-        IconBooleanFeedback resultHandler1 = new IconBooleanFeedback(formattedTextField, null, null,
-                IconBooleanFeedback.DEFAULT_INVALID_ICON, "Angle should be between 000 and 359");
-
-        // Example of decoration that would be clipped by the parent panel
-        resultHandler1.setClippingAncestor((JComponent) formattedTextField.getParent().getParent());
-
-        on(trigger) //
-                .on(manualTrigger) //
-                .read(dataProvider) //
-                .check(rule1) //
-                .check(rule2) //
-                .transform(new AndBooleanAggregator()) //
-                .handleWith(resultHandler1) //
-                .handleWith(resultCollector);
-
-        // Test of triggering the validation even before the dialog is visible
-        manualTrigger.trigger();
-
-        return formattedTextField;
+    private void createValidator4(final JTextField textField, final SimpleProperty<InputFieldResult> resultCollector) {
+        on(new JTextFieldDocumentChangedTrigger(textField))
+            .read(new JTextFieldTextProvider(textField))
+            .check(new InputFieldRule())
+            .handleWith(new InputFieldIconFeedback(textField))
+            .handleWith(resultCollector)
+            .trigger();
     }
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
 
                 // Set look-and-feel
                 try {
-                    for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+                    for (final UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                         if ("Nimbus".equals(info.getName())) {
                             UIManager.setLookAndFeel(info.getClassName());
                             break;
                         }
                     }
-                } catch (UnsupportedLookAndFeelException e) {
+                } catch (final UnsupportedLookAndFeelException e) {
                     // handle exception
-                } catch (ClassNotFoundException e) {
+                } catch (final ClassNotFoundException e) {
                     // handle exception
-                } catch (InstantiationException e) {
+                } catch (final InstantiationException e) {
                     // handle exception
-                } catch (IllegalAccessException e) {
+                } catch (final IllegalAccessException e) {
                     // handle exception
                 }
 
