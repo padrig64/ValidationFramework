@@ -1,4 +1,4 @@
-# Version 3.3.2 (to be released)
+# Version 3.3.2
 
 * Added convenient constructor to the AbstractComponentDecoration
 * Added convenient constructor to the FormatWrapper
@@ -11,6 +11,7 @@
 * Added write-only wrappers for readable/writable set properties, list properties and map properties
 * Removed inconvenient warning in case the clipping component of a decoration is not showing
 * Fixed a potential NullPointerException in AbstractColorFeedback
+* Fixed UnsupportedOperationExceptions in the TransparentToolTipDialog in case the sun.java2d.noddraw property is not set to true on Windows
 
 # Version 3.3.1
 
