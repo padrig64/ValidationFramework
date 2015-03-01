@@ -27,7 +27,7 @@ package com.google.code.validationframework.swing.property;
 
 import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.base.property.AbstractReadableProperty;
-import com.google.code.validationframework.swing.basetype.CellPosition;
+import com.google.code.validationframework.swing.type.CellPosition;
 
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;

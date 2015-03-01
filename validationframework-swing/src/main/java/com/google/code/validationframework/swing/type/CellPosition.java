@@ -23,7 +23,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.swing.basetype;
+package com.google.code.validationframework.swing.type;
 
 /**
  * Entity representing the position of a cell in a table.
