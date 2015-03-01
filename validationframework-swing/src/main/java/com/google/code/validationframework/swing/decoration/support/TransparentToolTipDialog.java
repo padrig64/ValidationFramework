@@ -53,6 +53,8 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Small window looking like a tooltip and becoming transparent/translucent upon rollover.
+ *
+ * It can be used, for instance, to show a kind of sticker next to a component.
  */
 public class TransparentToolTipDialog extends JWindow {
 

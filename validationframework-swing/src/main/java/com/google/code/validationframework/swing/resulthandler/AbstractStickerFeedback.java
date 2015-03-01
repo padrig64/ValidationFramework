@@ -33,19 +33,40 @@ import com.google.code.validationframework.swing.decoration.support.TransparentT
 
 import javax.swing.JComponent;
 
+/**
+ * Abstract implementation of a sticker feedback showing a permanent tooltip on the right side of a component.
+ *
+ * @param <RHI> Type of validation result.
+ */
 public abstract class AbstractStickerFeedback<RHI> implements ResultHandler<RHI>, Disposable {
 
+    /**
+     * Tooltip sticker following the owner component.
+     */
     private TransparentToolTipDialog toolTipDialog = null;
 
+    /**
+     * Constructor attaching the tooltip sticker to the specified component.
+     *
+     * @param owner Attaches the tooltip sticker to the specified component.
+     */
     public AbstractStickerFeedback(JComponent owner) {
         attach(owner);
     }
 
+    /**
+     * Attaches the tooltip sticker to the specified component.
+     *
+     * @param owner Component to attach to.
+     */
     public void attach(JComponent owner) {
         detach();
         toolTipDialog = new TransparentToolTipDialog(owner, new AnchorLink(Anchor.CENTER_RIGHT, Anchor.CENTER_LEFT));
     }
 
+    /**
+     * Hides and detaches the tooltip sticker from the owner component.
+     */
     public void detach() {
         if (toolTipDialog != null) {
             toolTipDialog.dispose();
@@ -53,6 +74,11 @@ public abstract class AbstractStickerFeedback<RHI> implements ResultHandler<RHI>
         }
     }
 
+    /**
+     * Gets the tooltip text to be displayed.
+     *
+     * @return Text displaued as a tooltip.
+     */
     protected String getToolTipText() {
         String tip = null;
 
@@ -63,18 +89,29 @@ public abstract class AbstractStickerFeedback<RHI> implements ResultHandler<RHI>
         return tip;
     }
 
+    /**
+     * Sets the tooltip text to be displayed.
+     *
+     * @param text Text to be displayed as a tooltip.
+     */
     protected void setToolTipText(String text) {
         if (toolTipDialog != null) {
             toolTipDialog.setText(text);
         }
     }
 
+    /**
+     * Shows the tooltip sticker.
+     */
     protected void showToolTip() {
         if (toolTipDialog != null) {
             toolTipDialog.setVisible(true);
         }
     }
 
+    /**
+     * Hides the tooltip sticker.
+     */
     protected void hideToolTip() {
         if (toolTipDialog != null) {
             toolTipDialog.setVisible(false);
