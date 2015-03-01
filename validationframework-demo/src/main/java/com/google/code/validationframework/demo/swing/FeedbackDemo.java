@@ -63,7 +63,7 @@ import static com.google.code.validationframework.base.binding.Binder.read;
 import static com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder.on;
 
 /**
- * Example showing how different types of feedback could be achieve (icon, tooltip, enabling/disabling component,
+ * Example showing how different types of feedback could be achieved (icon, tooltip, enabling/disabling component,
  * etc.).
  */
 public class FeedbackDemo extends JFrame {
@@ -100,11 +100,11 @@ public class FeedbackDemo extends JFrame {
 
         private final String message;
         private Icon icon;
-        private final Color feedbackColor;
+        private final Color color;
 
-        Result(String message, String iconName, Color feedbackColor) {
+        Result(String message, String iconName, Color color) {
             this.message = message;
-            this.feedbackColor = feedbackColor;
+            this.color = color;
 
             // Load icon
             if ((iconName != null) && !iconName.isEmpty()) {
@@ -126,13 +126,8 @@ public class FeedbackDemo extends JFrame {
             return icon;
         }
 
-        public Color getFeedbackColor() {
-            return feedbackColor;
-        }
-
-        @Override
-        public String toString() {
-            return message;
+        public Color getColor() {
+            return color;
         }
     }
 
@@ -143,6 +138,7 @@ public class FeedbackDemo extends JFrame {
 
         @Override
         public Boolean transform(Result input) {
+            // OK and QUITE_LONG are valid, but TOO_LONG is invalid
             return (input != Result.TOO_LONG);
         }
     }
@@ -158,7 +154,7 @@ public class FeedbackDemo extends JFrame {
 
         @Override
         public void handleResult(Result result) {
-            setToolTipText(result.toString());
+            setToolTipText(result.getMessage());
             switch (result) {
                 case OK:
                     hideToolTip();
@@ -184,9 +180,9 @@ public class FeedbackDemo extends JFrame {
         @Override
         public void handleResult(Result result) {
             if (background) {
-                setBackground(result.getFeedbackColor());
+                setBackground(result.getColor());
             } else {
-                setForeground(result.getFeedbackColor());
+                setForeground(result.getColor());
             }
             switch (result) {
                 case OK:
@@ -233,24 +229,38 @@ public class FeedbackDemo extends JFrame {
      */
     private static final long serialVersionUID = -2039502440268195814L;
 
+    private JTextField textField1;
+    private JTextField textField2;
+    private JTextField textField3;
+    private JTextField textField4;
+    private JTextField textField5;
+    private JButton applyButton;
+
     /**
-     * Default constructor.
+     * Constructor.
      */
     public FeedbackDemo() {
         super();
-        init();
+        initComponents();
+        initValidation();
     }
 
     /**
      * Initializes the frame by creating its contents.
      */
-    private void init() {
+    private void initComponents() {
         setTitle("Validation Framework Test");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         // Create content pane
-        JPanel contentPane = new JPanel(new MigLayout("fill, wrap 2", "[]related[grow]",
-            "[]20[]related[]related[]related[]related[]unrelated[]"));
+        String notForNimbus;
+        if ("Nimbus".equals(UIManager.getLookAndFeel().getName())) {
+            notForNimbus = "";
+        } else {
+            notForNimbus = "related[]";
+        }
+        JPanel contentPane = new JPanel(new MigLayout("fill, wrap 2", "[]related[grow]", "[]20[]related[]" +
+                notForNimbus + "related[]related[]unrelated[]"));
         setContentPane(contentPane);
 
         JLabel infoLabel = new JLabel("Fill in the fields with less than 10 characters.");
@@ -259,27 +269,27 @@ public class FeedbackDemo extends JFrame {
 
         // Input fields
         contentPane.add(new JLabel("Sticker:"));
-        JTextField textField1 = new JTextField();
+        textField1 = new JTextField();
         contentPane.add(textField1, "growx");
         contentPane.add(new JLabel("Foreground color:"));
-        JTextField textField2 = new JTextField();
+        textField2 = new JTextField();
         contentPane.add(textField2, "growx");
-        JTextField textField3 = new JTextField();
-        if (!"Nimbus".equals(UIManager.getLookAndFeel().getName())) {
+        textField3 = new JTextField();
+        if (!notForNimbus.isEmpty()) {
             // Changing the background color of a textfield with the Nimbus is not easy...
             contentPane.add(new JLabel("Background color:"));
             contentPane.add(textField3, "growx");
         }
         contentPane.add(new JLabel("Icon:"));
-        JTextField textField4 = new JTextField();
+        textField4 = new JTextField();
         contentPane.add(textField4, "growx");
         contentPane.add(new JLabel("Icon with tooltip:"));
-        JTextField textField5 = new JTextField();
+        textField5 = new JTextField();
         contentPane.add(textField5, "growx");
 
         // Apply button
-        JButton applyButton = new JButton("Apply");
-        contentPane.add(applyButton, "growx, span");
+        applyButton = new JButton("Apply");
+        contentPane.add(applyButton, "skip 1, right aligned");
 
         // Set size
         pack();
@@ -290,7 +300,12 @@ public class FeedbackDemo extends JFrame {
         // Set location
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation((screenSize.width - size.width) / 2, (screenSize.height - size.height) / 3);
+    }
 
+    /**
+     * Initializes the input validation and conditional logic.
+     */
+    private void initValidation() {
         // Create validators and collect the results
         SimpleProperty<Result> resultCollector1 = new SimpleProperty<Result>();
         createValidator(textField1, new StickerFeedback(textField1), resultCollector1);
@@ -304,27 +319,31 @@ public class FeedbackDemo extends JFrame {
         createValidator(textField5, new IconFeedback(textField5, true), resultCollector5);
 
         // Enable Apply button only when all fields are valid
-        read(resultCollector1, resultCollector2, resultCollector3, resultCollector4, resultCollector5)
-            .transform(new CollectionElementTransformer<Result, Boolean>(new ResultToBooleanTransformer()))
-            .transform(new AndBooleanAggregator())
-            .write(new ComponentEnabledProperty(applyButton));
+        read(resultCollector1, resultCollector2, resultCollector3, resultCollector4, resultCollector5) //
+                .transform(new CollectionElementTransformer<Result, Boolean>(new ResultToBooleanTransformer())) //
+                .transform(new AndBooleanAggregator()) //
+                .write(new ComponentEnabledProperty(applyButton));
     }
 
-    private void createValidator(JTextField textField, ResultHandler<Result> resultHandler,
-        SimpleProperty<Result> resultCollector) {
-        on(new JTextFieldDocumentChangedTrigger(textField))
-            .read(new JTextFieldTextProvider(textField))
-            .check(new InputFieldRule())
-            .handleWith(resultHandler)
-            .handleWith(resultCollector)
-            .trigger();
+    private void createValidator(JTextField textField, ResultHandler<Result> resultHandler, SimpleProperty<Result>
+            resultCollector) {
+        on(new JTextFieldDocumentChangedTrigger(textField)) //
+                .read(new JTextFieldTextProvider(textField)) //
+                .check(new InputFieldRule()) //
+                .handleWith(resultHandler) //
+                .handleWith(resultCollector) //
+                .trigger();
     }
 
+    /**
+     * Entry point.
+     *
+     * @param args Ignored.
+     */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-
                 // Set look-and-feel
                 try {
                     for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {

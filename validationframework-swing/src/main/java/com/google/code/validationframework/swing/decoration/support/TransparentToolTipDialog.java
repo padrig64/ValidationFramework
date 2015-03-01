@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Patrick Moawad
+ * Copyright (c) 2015, Patrick Moawad
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -56,37 +56,37 @@ public class TransparentToolTipDialog extends JWindow {
     private class LocationAdapter implements ComponentListener, AncestorListener {
 
         @Override
-        public void componentResized(final ComponentEvent e) {
+        public void componentResized(ComponentEvent e) {
             followOwner();
         }
 
         @Override
-        public void componentMoved(final ComponentEvent e) {
+        public void componentMoved(ComponentEvent e) {
             followOwner();
         }
 
         @Override
-        public void componentShown(final ComponentEvent e) {
+        public void componentShown(ComponentEvent e) {
             // Nothing to be done
         }
 
         @Override
-        public void componentHidden(final ComponentEvent e) {
+        public void componentHidden(ComponentEvent e) {
             // Nothing to be done
         }
 
         @Override
-        public void ancestorAdded(final AncestorEvent event) {
+        public void ancestorAdded(AncestorEvent event) {
             // Nothing to be done
         }
 
         @Override
-        public void ancestorRemoved(final AncestorEvent event) {
+        public void ancestorRemoved(AncestorEvent event) {
             // Nothing to be done
         }
 
         @Override
-        public void ancestorMoved(final AncestorEvent event) {
+        public void ancestorMoved(AncestorEvent event) {
             followOwner();
         }
     }
@@ -104,7 +104,7 @@ public class TransparentToolTipDialog extends JWindow {
 
         public TransparencyAdapter() {
             super();
-            final TimingSource ts = new SwingTimerTimingSource();
+            TimingSource ts = new SwingTimerTimingSource();
             Animator.setDefaultTimingSource(ts);
             ts.init();
         }
@@ -113,12 +113,12 @@ public class TransparentToolTipDialog extends JWindow {
          * @see java.awt.event.MouseListener#mouseEntered(MouseEvent)
          */
         @Override
-        public void mouseEntered(final MouseEvent e) {
+        public void mouseEntered(MouseEvent e) {
             if (isRolloverAnimated()) {
                 if ((transparencyAnimator != null) && (transparencyAnimator.isRunning())) {
                     transparencyAnimator.stop();
                 }
-                final long duration = (long) ((currentAlpha - MIN_ALPHA) * FADE_OUT_MAX_DURATION / (MAX_ALPHA -
+                long duration = (long) ((currentAlpha - MIN_ALPHA) * FADE_OUT_MAX_DURATION / (MAX_ALPHA -
                         MIN_ALPHA));
                 if (duration <= 0) {
                     timingEvent(null, 0.0);
@@ -137,13 +137,13 @@ public class TransparentToolTipDialog extends JWindow {
          * @see java.awt.event.MouseListener#mouseExited(MouseEvent)
          */
         @Override
-        public void mouseExited(final MouseEvent e) {
+        public void mouseExited(MouseEvent e) {
             if (isRolloverAnimated()) {
                 if ((transparencyAnimator != null) && (transparencyAnimator.isRunning())) {
                     transparencyAnimator.stop();
                 }
 
-                final long duration = (long) ((MAX_ALPHA - currentAlpha) * FADE_IN_MAX_DURATION / (MAX_ALPHA -
+                long duration = (long) ((MAX_ALPHA - currentAlpha) * FADE_IN_MAX_DURATION / (MAX_ALPHA -
                         MIN_ALPHA));
                 if (duration <= 0) {
                     timingEvent(null, 1.0);
@@ -162,7 +162,7 @@ public class TransparentToolTipDialog extends JWindow {
          * @see TimingTarget#begin(Animator)
          */
         @Override
-        public void begin(final Animator animator) {
+        public void begin(Animator animator) {
             // Nothing to be done because we stop the animation manually
         }
 
@@ -170,7 +170,7 @@ public class TransparentToolTipDialog extends JWindow {
          * @see TimingTarget#end(Animator)
          */
         @Override
-        public void end(final Animator animator) {
+        public void end(Animator animator) {
             // Nothing to be done because we stop the animation manually
         }
 
@@ -178,7 +178,7 @@ public class TransparentToolTipDialog extends JWindow {
          * @see TimingTarget#repeat(Animator)
          */
         @Override
-        public void repeat(final Animator animator) {
+        public void repeat(Animator animator) {
             // Nothing to be done
         }
 
@@ -186,7 +186,7 @@ public class TransparentToolTipDialog extends JWindow {
          * @see TimingTarget#reverse(Animator)
          */
         @Override
-        public void reverse(final Animator animator) {
+        public void reverse(Animator animator) {
             // Nothing to be done
         }
 
@@ -194,7 +194,7 @@ public class TransparentToolTipDialog extends JWindow {
          * @see TimingTarget#timingEvent(Animator, double)
          */
         @Override
-        public void timingEvent(final Animator animator, final double v) {
+        public void timingEvent(Animator animator, double v) {
             currentAlpha = (float) (v * (MAX_ALPHA - MIN_ALPHA)) + MIN_ALPHA;
             if (WindowUtils.isWindowAlphaSupported()) {
                 WindowUtils.setWindowAlpha(TransparentToolTipDialog.this, currentAlpha);
@@ -222,10 +222,11 @@ public class TransparentToolTipDialog extends JWindow {
 
     private boolean rolloverAnimated = true;
 
-    public TransparentToolTipDialog(final JComponent owner, final AnchorLink anchorLink) {
+    public TransparentToolTipDialog(JComponent owner, AnchorLink anchorLink) {
         super(SwingUtilities.getWindowAncestor(owner));
         this.owner = owner;
         this.anchorLink = anchorLink;
+        getRootPane().putClientProperty("apple.awt.draggableWindowBackground", Boolean.FALSE);
         initComponents();
     }
 
@@ -253,7 +254,7 @@ public class TransparentToolTipDialog extends JWindow {
     }
 
     @Override
-    public void setVisible(final boolean visible) {
+    public void setVisible(boolean visible) {
         setSize(toolTip.getPreferredSize());
         followOwner();
 
@@ -273,7 +274,7 @@ public class TransparentToolTipDialog extends JWindow {
         return rolloverAnimated;
     }
 
-    public void setRolloverAnimated(final boolean animated) {
+    public void setRolloverAnimated(boolean animated) {
         this.rolloverAnimated = animated;
     }
 
@@ -281,11 +282,11 @@ public class TransparentToolTipDialog extends JWindow {
         return toolTip.getTipText();
     }
 
-    public void setText(final String text) {
+    public void setText(String text) {
         // Only change if different
         if (!ValueUtils.areEqual(text, toolTip.getTipText())) {
 
-            final boolean wasVisible = isVisible();
+            boolean wasVisible = isVisible();
             if (wasVisible) {
                 setVisible(false);
             }
@@ -301,8 +302,8 @@ public class TransparentToolTipDialog extends JWindow {
     private void followOwner() {
         if (owner.isVisible() && owner.isShowing()) {
             try {
-                final Point screenLocation = owner.getLocationOnScreen();
-                final Point relativeSlaveLocation = anchorLink.getRelativeSlaveLocation(owner.getSize(),
+                Point screenLocation = owner.getLocationOnScreen();
+                Point relativeSlaveLocation = anchorLink.getRelativeSlaveLocation(owner.getSize(),
                         TransparentToolTipDialog.this.getSize());
                 setLocation(screenLocation.x + relativeSlaveLocation.x, screenLocation.y + relativeSlaveLocation.y);
             } catch (IllegalComponentStateException e) {

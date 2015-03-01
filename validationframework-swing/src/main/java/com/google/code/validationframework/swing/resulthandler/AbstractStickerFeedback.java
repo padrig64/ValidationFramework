@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Patrick Moawad
+ * Copyright (c) 2015, Patrick Moawad
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,11 +37,11 @@ public abstract class AbstractStickerFeedback<RHI> implements ResultHandler<RHI>
 
     private TransparentToolTipDialog toolTipDialog = null;
 
-    public AbstractStickerFeedback(final JComponent owner) {
+    public AbstractStickerFeedback(JComponent owner) {
         attach(owner);
     }
 
-    public void attach(final JComponent owner) {
+    public void attach(JComponent owner) {
         detach();
         toolTipDialog = new TransparentToolTipDialog(owner, new AnchorLink(Anchor.CENTER_RIGHT, Anchor.CENTER_LEFT));
     }
@@ -63,7 +63,7 @@ public abstract class AbstractStickerFeedback<RHI> implements ResultHandler<RHI>
         return tip;
     }
 
-    protected void setToolTipText(final String text) {
+    protected void setToolTipText(String text) {
         if (toolTipDialog != null) {
             toolTipDialog.setText(text);
         }
