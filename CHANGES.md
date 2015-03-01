@@ -6,7 +6,7 @@
 * Added JTableRolloverCellProperty holding the position of a table cell under the mouse pointer
 * Added IsParsableRule to check whether a String can be parsed using a Format object
 * Added convenient constructors to the CompositeWritableProperty
-* Added write-ony wrapper for readable/writable properties
+* Added write-only wrapper for readable/writable properties
 * Added read-only wrappers for readable/writable set properties, list properties and map properties
 * Added write-only wrappers for readable/writable set properties, list properties and map properties
 * Removed inconvenient warning in case the clipping component of a decoration is not showing
