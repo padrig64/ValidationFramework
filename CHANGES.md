@@ -11,7 +11,7 @@
 * Added write-only wrappers for readable/writable set properties, list properties and map properties
 * Removed inconvenient warning in case the clipping component of a decoration is not showing
 * Fixed a potential NullPointerException in AbstractColorFeedback
-* Fixed UnsupportedOperationExceptions in the TransparentToolTipDialog in case the sun.java2d.noddraw property is not set to true on Windows
+* Fixed UnsupportedOperationExceptions in the TransparentToolTipDialog in case the sun.java2d.noddraw property is not set to true on Windows (issue #9)
 
 # Version 3.3.1
 
