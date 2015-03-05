@@ -32,6 +32,7 @@ import com.google.code.validationframework.base.property.simple.SimpleProperty;
 import com.google.code.validationframework.base.transform.AndBooleanAggregator;
 import com.google.code.validationframework.base.transform.collection.CollectionElementTransformer;
 import com.google.code.validationframework.swing.dataprovider.JTextFieldTextProvider;
+import com.google.code.validationframework.swing.decoration.utils.IconUtils;
 import com.google.code.validationframework.swing.property.ComponentEnabledProperty;
 import com.google.code.validationframework.swing.resulthandler.AbstractColorFeedback;
 import com.google.code.validationframework.swing.resulthandler.AbstractIconFeedback;
@@ -39,9 +40,7 @@ import com.google.code.validationframework.swing.resulthandler.AbstractStickerFe
 import com.google.code.validationframework.swing.trigger.JTextFieldDocumentChangedTrigger;
 import net.miginfocom.swing.MigLayout;
 
-import javax.imageio.ImageIO;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -55,9 +54,6 @@ import javax.swing.WindowConstants;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
 
 import static com.google.code.validationframework.base.binding.Binder.read;
 import static com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder.on;
@@ -95,27 +91,17 @@ public class FeedbackDemo extends JFrame {
     private enum Result {
 
         OK("", null, null),
-        QUITE_LONG("Entered text is quite long", "/images/defaults/warning.png", new Color(230, 175, 0)),
-        TOO_LONG("Entered text is too long", "/images/defaults/invalid.png", new Color(255, 60, 56));
+        QUITE_LONG("Entered text is quite long", IconUtils.WARNING_ICON, new Color(230, 175, 0)),
+        TOO_LONG("Entered text is too long", IconUtils.INVALID_ICON, new Color(255, 60, 56));
 
         private final String message;
         private Icon icon;
         private final Color color;
 
-        Result(String message, String iconName, Color color) {
+        Result(String message, Icon icon, Color color) {
             this.message = message;
             this.color = color;
-
-            // Load icon
-            if ((iconName != null) && !iconName.isEmpty()) {
-                InputStream inputStream = getClass().getResourceAsStream(iconName);
-                try {
-                    BufferedImage image = ImageIO.read(inputStream);
-                    icon = new ImageIcon(image);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            this.icon = icon;
         }
 
         public String getMessage() {

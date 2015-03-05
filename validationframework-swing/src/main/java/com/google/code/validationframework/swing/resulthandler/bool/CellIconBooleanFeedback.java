@@ -33,11 +33,9 @@ import javax.swing.JTable;
 
 public class CellIconBooleanFeedback extends AbstractCellIconFeedback<Boolean> {
 
-    public static final Icon DEFAULT_VALID_ICON = IconUtils.loadImageIcon("/images/defaults/valid.png",
-            IconBooleanFeedback.class);
+    public static final Icon DEFAULT_VALID_ICON = IconUtils.VALID_ICON;
 
-    public static final Icon DEFAULT_INVALID_ICON = IconUtils.loadImageIcon("/images/defaults/invalid.png",
-            IconBooleanFeedback.class);
+    public static final Icon DEFAULT_INVALID_ICON = IconUtils.INVALID_ICON;
 
     private Icon validIcon = null;
 

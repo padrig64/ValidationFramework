@@ -34,6 +34,7 @@ import com.google.code.validationframework.base.transform.AndBooleanAggregator;
 import com.google.code.validationframework.base.trigger.ManualTrigger;
 import com.google.code.validationframework.swing.dataprovider.JFormattedTextFieldTextProvider;
 import com.google.code.validationframework.swing.dataprovider.JTextFieldTextProvider;
+import com.google.code.validationframework.swing.decoration.utils.IconUtils;
 import com.google.code.validationframework.swing.resulthandler.AbstractColorFeedback;
 import com.google.code.validationframework.swing.resulthandler.AbstractIconFeedback;
 import com.google.code.validationframework.swing.resulthandler.AbstractStickerFeedback;
@@ -45,9 +46,7 @@ import com.google.code.validationframework.swing.trigger.JTextFieldDocumentChang
 import com.google.code.validationframework.swing.trigger.JTextFieldKeyStrokeTrigger;
 import net.miginfocom.swing.MigLayout;
 
-import javax.imageio.ImageIO;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
@@ -66,9 +65,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
 import java.text.NumberFormat;
 
 import static com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder.collect;
@@ -86,29 +82,19 @@ public class GeneralValidatorDemo extends JFrame {
     private enum InputFieldResult {
 
         OK("", null, null, null),
-        NOK_EMPTY("Should not be empty", "/images/defaults/warning.png", null, COLOR_NOK_EMPTY),
-        NOK_TOO_LONG("Cannot be more than 4 characters", "/images/defaults/invalid.png", COLOR_NOK_TOO_LONG, null);
+        NOK_EMPTY("Should not be empty", IconUtils.WARNING_ICON, null, COLOR_NOK_EMPTY),
+        NOK_TOO_LONG("Cannot be more than 4 characters", IconUtils.INVALID_ICON, COLOR_NOK_TOO_LONG, null);
 
         private final String text;
         private Icon icon;
         private final Color foreground;
         private final Color background;
 
-        InputFieldResult(String text, String iconName, Color foreground, Color background) {
+        InputFieldResult(String text, Icon icon, Color foreground, Color background) {
             this.text = text;
             this.foreground = foreground;
             this.background = background;
-
-            // Error icon
-            if ((iconName != null) && !iconName.isEmpty()) {
-                InputStream inputStream = getClass().getResourceAsStream(iconName);
-                try {
-                    BufferedImage image = ImageIO.read(inputStream);
-                    icon = new ImageIcon(image);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            this.icon = icon;
         }
 
         public Icon getIcon() {

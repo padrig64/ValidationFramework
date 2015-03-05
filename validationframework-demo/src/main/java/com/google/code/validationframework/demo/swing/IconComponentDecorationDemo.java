@@ -110,7 +110,7 @@ public class IconComponentDecorationDemo extends JFrame {
         panel.add(textField);
 
         IconComponentDecoration decoration = new IconComponentDecoration(textField);
-        ImageIcon icon = IconUtils.loadImageIcon("/images/defaults/info.png", IconComponentDecoration.class);
+        ImageIcon icon = IconUtils.INFO_ICON;
         decoration.setIcon(icon);
         decoration.setToolTipText("Tooltip");
 

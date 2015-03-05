@@ -41,14 +41,12 @@ public class IconBooleanFeedback extends AbstractIconFeedback<Boolean> {
     /**
      * Default icon to be used for valid results.
      */
-    public static final Icon DEFAULT_VALID_ICON = IconUtils.loadImageIcon("/images/defaults/valid.png",
-            IconBooleanFeedback.class);
+    public static final Icon DEFAULT_VALID_ICON = IconUtils.VALID_ICON;
 
     /**
      * Default icon to be used for invalid results.
      */
-    public static final Icon DEFAULT_INVALID_ICON = IconUtils.loadImageIcon("/images/defaults/invalid.png",
-            IconBooleanFeedback.class);
+    public static final Icon DEFAULT_INVALID_ICON = IconUtils.INVALID_ICON;
 
     /**
      * Icon to be used for valid results.<br>If null, valid results will not be represented.
