@@ -457,14 +457,12 @@ public class TabIconBooleanFeedback implements ResultHandler<Boolean>, Disposabl
     /**
      * Default icon to represent valid results.
      */
-    public static final Icon DEFAULT_VALID_ICON = IconUtils.loadImageIcon("/images/defaults/valid.png",
-            TabIconBooleanFeedback.class);
+    public static final Icon DEFAULT_VALID_ICON = IconUtils.VALID_ICON;
 
     /**
      * Default icon to represent invalid results.
      */
-    public static final Icon DEFAULT_INVALID_ICON = IconUtils.loadImageIcon("/images/defaults/invalid.png",
-            TabIconBooleanFeedback.class);
+    public static final Icon DEFAULT_INVALID_ICON = IconUtils.INVALID_ICON;
 
     /**
      * Default icon position with respect to the tab title.

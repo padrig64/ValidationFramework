@@ -41,6 +41,15 @@ public final class IconUtils {
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(IconUtils.class);
 
+    public static final ImageIcon INFO_ICON = loadImageIcon("/images/defaults/info.png",
+            IconUtils.class);
+    public static final ImageIcon INVALID_ICON = loadImageIcon("/images/defaults/invalid.png",
+            IconUtils.class);
+    public static final ImageIcon VALID_ICON = loadImageIcon("/images/defaults/valid.png",
+            IconUtils.class);
+    public static final ImageIcon WARNING_ICON = loadImageIcon("/images/defaults/warning.png",
+            IconUtils.class);
+
     /**
      * Private constructor for utility class.
      */
