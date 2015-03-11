@@ -1,3 +1,8 @@
+# Version 3.3.3
+
+* Changed copyright holder to "ValidationFramework Authors"
+* Added loading of default icons to IconUtils
+
 # Version 3.3.2
 
 * Added convenient constructor to the AbstractComponentDecoration
