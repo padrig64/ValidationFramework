@@ -1,7 +1,9 @@
-# Other contributors
+# Contributors in order of first contribution
 
+**[padrig64](https://github.com/padrig64)**  
+**[sirchia](https://github.com/sirchia)**  
 **[glimmerveen](https://github.com/glimmerveen)**  
-**[sirchia](https://github.com/sirchia)**
+**[paolofulgoni](https://github.com/paolofulgoni)**
 
 # Third-party libraries
 
