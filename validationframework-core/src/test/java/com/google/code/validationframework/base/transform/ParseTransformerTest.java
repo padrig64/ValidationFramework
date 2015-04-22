@@ -26,9 +26,11 @@
 package com.google.code.validationframework.base.transform;
 
 import com.google.code.validationframework.api.transform.Transformer;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.text.DecimalFormat;
+import java.util.Locale;
 
 import static org.junit.Assert.assertEquals;
 
@@ -36,6 +38,11 @@ import static org.junit.Assert.assertEquals;
  * @see ParseTransformer
  */
 public class ParseTransformerTest {
+
+    @BeforeClass
+    public static void setUp() {
+        Locale.setDefault(Locale.ENGLISH);
+    }
 
     @Test
     public void testDefaultParsing() {
