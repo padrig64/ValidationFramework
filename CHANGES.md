@@ -1,6 +1,7 @@
-# Version 3.3.4
+# Version 3.4.0
 
 * Prevented concurrent modification of property value change listeners while notifying them
+* JavaFX Support module now requires Java 8
 
 # Version 3.3.3
 
