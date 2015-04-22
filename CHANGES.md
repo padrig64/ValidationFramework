@@ -1,3 +1,7 @@
+# Version 3.3.4
+
+* Prevented concurrent modification of property value change listeners while notifying them
+
 # Version 3.3.3
 
 * Changed copyright holder to "ValidationFramework Authors"

@@ -86,8 +86,9 @@ public abstract class AbstractReadableSetProperty<R> implements ReadableSetPrope
      * @param newItems Newly added items.
      */
     protected void doNotifyListenersOfAddedValues(Set<R> newItems) {
+        List<SetValueChangeListener<R>> listenersCopy = new ArrayList<SetValueChangeListener<R>>(listeners);
         Set<R> unmodifiable = Collections.unmodifiableSet(newItems);
-        for (SetValueChangeListener<R> listener : listeners) {
+        for (SetValueChangeListener<R> listener : listenersCopy) {
             listener.valuesAdded(this, unmodifiable);
         }
     }
@@ -98,8 +99,9 @@ public abstract class AbstractReadableSetProperty<R> implements ReadableSetPrope
      * @param oldItems Removed items.
      */
     protected void doNotifyListenersOfRemovedValues(Set<R> oldItems) {
+        List<SetValueChangeListener<R>> listenersCopy = new ArrayList<SetValueChangeListener<R>>(listeners);
         Set<R> unmodifiable = Collections.unmodifiableSet(oldItems);
-        for (SetValueChangeListener<R> listener : listeners) {
+        for (SetValueChangeListener<R> listener : listenersCopy) {
             listener.valuesRemoved(this, unmodifiable);
         }
     }

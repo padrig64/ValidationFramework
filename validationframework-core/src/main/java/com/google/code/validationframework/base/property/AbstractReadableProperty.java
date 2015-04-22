@@ -201,8 +201,9 @@ public abstract class AbstractReadableProperty<R> implements ReadableProperty<R>
      * @param newValue New value.
      */
     private void doNotifyListeners(R oldValue, R newValue) {
+        List<ValueChangeListener<R>> listenersCopy = new ArrayList<ValueChangeListener<R>>(listeners);
         notifyingListeners = true;
-        for (ValueChangeListener<R> listener : listeners) {
+        for (ValueChangeListener<R> listener : listenersCopy) {
             listener.valueChanged(this, oldValue, newValue);
         }
         notifyingListeners = false;
