@@ -40,22 +40,25 @@ import java.util.List;
  * @param <D> Type of data to be validated.<br>It can be, for instance, the type of data handled by a component, or the
  *            type of the component itself.
  * @param <O> Type of validation result.<br>It can be, for instance, an enumeration or just a boolean.
+ *
+ * @deprecated Use {@link com.google.code.validationframework.base.validator.generalvalidator.dsl
+ * .GeneralValidatorBuilder} instead.
  */
+@Deprecated
 public class ValidatorContext<D, O> {
 
     final List<ResultCollector<?, D>> registeredResultCollectors;
     final List<Rule<Collection<D>, O>> registeredRules;
     final List<ResultHandler<O>> registeredResultHandlers;
 
-    public ValidatorContext(final List<ResultCollector<?, D>> registeredResultCollectors,
-                            final List<Rule<Collection<D>, O>> registeredRules,
-                            final List<ResultHandler<O>> registeredResultHandlers) {
+    public ValidatorContext(List<ResultCollector<?, D>> registeredResultCollectors, List<Rule<Collection<D>, O>>
+            registeredRules, List<ResultHandler<O>> registeredResultHandlers) {
         this.registeredResultCollectors = registeredResultCollectors;
         this.registeredRules = registeredRules;
         this.registeredResultHandlers = registeredResultHandlers;
     }
 
-    public ValidatorContext<D, O> handleWith(final ResultHandler<O> resultHandler) {
+    public ValidatorContext<D, O> handleWith(ResultHandler<O> resultHandler) {
         if (resultHandler != null) {
             registeredResultHandlers.add(resultHandler);
         }
@@ -69,14 +72,14 @@ public class ValidatorContext<D, O> {
      *
      * @return Same validator context.
      */
-    public ValidatorContext<D, O> handleWith(final ResultHandler<O>... resultHandlers) {
+    public ValidatorContext<D, O> handleWith(ResultHandler<O>... resultHandlers) {
         if (resultHandlers != null) {
             Collections.addAll(registeredResultHandlers, resultHandlers);
         }
         return this;
     }
 
-    public ValidatorContext<D, O> handleWith(final Collection<ResultHandler<O>> resultHandlers) {
+    public ValidatorContext<D, O> handleWith(Collection<ResultHandler<O>> resultHandlers) {
         if (resultHandlers != null) {
             registeredResultHandlers.addAll(resultHandlers);
         }
@@ -89,15 +92,15 @@ public class ValidatorContext<D, O> {
      * @return Newly created and configured validator.
      */
     public ResultCollectorValidator<D, O> build() {
-        final ResultCollectorValidator<D, O> validator = new ResultCollectorValidator<D, O>();
+        ResultCollectorValidator<D, O> validator = new ResultCollectorValidator<D, O>();
 
-        for (final ResultCollector<?, D> resultCollector : registeredResultCollectors) {
+        for (ResultCollector<?, D> resultCollector : registeredResultCollectors) {
             validator.addResultCollector(resultCollector);
         }
-        for (final Rule<Collection<D>, O> rule : registeredRules) {
+        for (Rule<Collection<D>, O> rule : registeredRules) {
             validator.addRule(rule);
         }
-        for (final ResultHandler<O> resultHandler : registeredResultHandlers) {
+        for (ResultHandler<O> resultHandler : registeredResultHandlers) {
             validator.addResultHandler(resultHandler);
         }
 

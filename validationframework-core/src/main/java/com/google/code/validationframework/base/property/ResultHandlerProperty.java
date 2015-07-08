@@ -32,6 +32,8 @@ import com.google.code.validationframework.api.resulthandler.ResultHandler;
  * Writable property updating a result handler.
  *
  * @param <W> Type of value that can be written to the property and handled by the result handler.
+ *
+ * @see com.google.code.validationframework.base.resulthandler.PropertyResultHandler
  */
 public class ResultHandlerProperty<W> implements WritableProperty<W> {
 

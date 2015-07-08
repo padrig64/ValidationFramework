@@ -32,6 +32,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * @deprecated Use {@link com.google.code.validationframework.base.validator.generalvalidator.dsl
+ * .GeneralValidatorBuilder} instead.
+ */
+@Deprecated
 public class ResultCollectorContext {
 
     public <D> RuleContext<D> collect(ResultCollector<?, D> resultCollector) {
@@ -57,6 +62,4 @@ public class ResultCollectorContext {
         }
         return new RuleContext<D>(registeredResultCollectors);
     }
-
-    // TODO Collect from validator
 }

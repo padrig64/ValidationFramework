@@ -32,8 +32,10 @@ import com.google.code.validationframework.experimental.builder.context.resultco
 import java.util.Collection;
 
 /**
- * Use {@link com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder} instead.
+ * @deprecated Use {@link com.google.code.validationframework.base.validator.generalvalidator.dsl
+ * .GeneralValidatorBuilder} instead.
  */
+@Deprecated
 public final class ResultCollectorValidatorBuilder {
 
     /**
@@ -44,25 +46,28 @@ public final class ResultCollectorValidatorBuilder {
     }
 
     /**
-     * Use {@link com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder}
-     * instead.
+     * @deprecated Use {@link com.google.code.validationframework.base.validator.generalvalidator.dsl
+     * .GeneralValidatorBuilder} instead.
      */
+    @Deprecated
     public static <D> RuleContext<D> collect(ResultCollector<?, D> resultCollector) {
         return new ResultCollectorContext().collect(resultCollector);
     }
 
     /**
-     * Use {@link com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder}
-     * instead.
+     * @deprecated Use {@link com.google.code.validationframework.base.validator.generalvalidator.dsl
+     * .GeneralValidatorBuilder} instead.
      */
+    @Deprecated
     public static <D> RuleContext<D> collect(ResultCollector<?, D>... resultCollectors) {
         return new ResultCollectorContext().collect(resultCollectors);
     }
 
     /**
-     * Use {@link com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder}
-     * instead.
+     * @deprecated Use {@link com.google.code.validationframework.base.validator.generalvalidator.dsl
+     * .GeneralValidatorBuilder} instead.
      */
+    @Deprecated
     public static <D> RuleContext<D> collect(Collection<ResultCollector<?, D>> resultCollectors) {
         return new ResultCollectorContext().collect(resultCollectors);
     }

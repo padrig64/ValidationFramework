@@ -53,6 +53,7 @@
 
 # Ideas for the long term
 
+* Better use of lambdas (e.g. for set/list/map properties)
 * Common builder API to build validators and property bindings for general-purpose conditional logic
 * Predicates/conditions
 * Validation rules depending on component state (visible, enabled, etc.)

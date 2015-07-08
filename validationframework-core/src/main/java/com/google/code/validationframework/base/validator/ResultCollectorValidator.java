@@ -59,7 +59,10 @@ import java.util.Collection;
  * @see DataProvider
  * @see Rule
  * @see ResultHandler
+ * @deprecated Use a {@link com.google.code.validationframework.base.validator.generalvalidator.GeneralValidator} with
+ * {@link com.google.code.validationframework.api.property.ReadableWritableProperty}s instead.
  */
+@Deprecated
 public class ResultCollectorValidator<RI, RO> extends AbstractSimpleValidator<Trigger, DataProvider<RI>, RI,
         Rule<Collection<RI>, RO>, Collection<RI>, RO, ResultHandler<RO>, RO> {
 

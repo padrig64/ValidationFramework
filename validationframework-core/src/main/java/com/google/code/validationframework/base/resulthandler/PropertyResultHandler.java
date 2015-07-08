@@ -34,6 +34,7 @@ import com.google.code.validationframework.api.resulthandler.ResultHandler;
  * @param <RHI> Type of validation result to be set on the property.
  *
  * @see WritableProperty
+ * @see com.google.code.validationframework.base.property.ResultHandlerProperty
  */
 public class PropertyResultHandler<RHI> implements ResultHandler<RHI> {
 

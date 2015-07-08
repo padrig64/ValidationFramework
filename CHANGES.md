@@ -1,3 +1,10 @@
+# Version 3.4.1 (to be released)
+
+* Deprecated the ResultCollector in favor of the ReadableWritableProperty (e.g. SimpleProperty)
+* Deprecated the ResultCollectorValidator in favor of the GeneralValidator
+* Deprecated the experimental ResultCollectorValidatorBuilder in favor of the GeneralValidatorBuilder
+* Removed experimental duplicate of PropertyResultHandler
+
 # Version 3.4.0
 
 * JavaFX Support module now requires Java 8

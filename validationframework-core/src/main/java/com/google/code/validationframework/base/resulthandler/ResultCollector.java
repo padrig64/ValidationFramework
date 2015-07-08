@@ -50,7 +50,9 @@ import com.google.code.validationframework.base.trigger.AbstractTrigger;
  * @see AbstractTrigger
  * @see DataProvider
  * @see Disposable
+ * @deprecated Use a {@link com.google.code.validationframework.api.property.ReadableWritableProperty} instead.
  */
+@Deprecated
 public class ResultCollector<VO, DPO> extends AbstractTrigger implements ResultHandler<VO>, DataProvider<DPO>,
         Disposable {
 
