@@ -4,6 +4,7 @@
 * Deprecated the ResultCollectorValidator in favor of the GeneralValidator
 * Deprecated the experimental ResultCollectorValidatorBuilder in favor of the GeneralValidatorBuilder
 * Removed experimental duplicate of PropertyResultHandler
+* Added PseudoClassResultHandler to JavaFX support
 
 # Version 3.4.0
 
