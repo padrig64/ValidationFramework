@@ -33,7 +33,10 @@ import com.google.code.validationframework.api.transform.Transformer;
  * It is provided for convenience.
  *
  * @see ResultCollector
+ * @deprecated Use a {@link com.google.code.validationframework.api.property.ReadableWritableProperty} instead, for
+ * instance a {@link com.google.code.validationframework.base.property.simple.SimpleBooleanProperty}.
  */
+@Deprecated
 public class BooleanResultCollector extends ResultCollector<Boolean, Boolean> {
 
     /**

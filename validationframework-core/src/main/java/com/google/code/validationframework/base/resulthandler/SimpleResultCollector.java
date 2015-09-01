@@ -35,7 +35,9 @@ import com.google.code.validationframework.api.transform.Transformer;
  * @param <DPO> Type of validation result and data provided.
  *
  * @see ResultCollector
+ * @deprecated Use a {@link com.google.code.validationframework.api.property.ReadableWritableProperty} instead.
  */
+@Deprecated
 public class SimpleResultCollector<DPO> extends ResultCollector<DPO, DPO> {
 
     /**

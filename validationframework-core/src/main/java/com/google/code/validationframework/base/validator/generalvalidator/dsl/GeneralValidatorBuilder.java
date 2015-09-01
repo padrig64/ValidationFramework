@@ -99,6 +99,7 @@ public final class GeneralValidatorBuilder {
      *
      * @return Context allowing further construction of the validator using the DSL.
      */
+    @Deprecated
     public static <DPO> SingleResultCollectorContext<DPO> collect(ResultCollector<?, DPO> resultCollector) {
         List<Trigger> addedTriggers = new ArrayList<Trigger>();
         List<DataProvider<DPO>> addedDataProviders = new ArrayList<DataProvider<DPO>>();
@@ -110,6 +111,7 @@ public final class GeneralValidatorBuilder {
         return new SingleResultCollectorContext<DPO>(addedTriggers, addedDataProviders);
     }
 
+    @Deprecated
     public static <DPO> SingleResultCollectorContext<DPO> collect(ReadableProperty<DPO> property) {
         List<Trigger> addedTriggers = new ArrayList<Trigger>();
         List<DataProvider<DPO>> addedDataProviders = new ArrayList<DataProvider<DPO>>();
@@ -129,6 +131,7 @@ public final class GeneralValidatorBuilder {
      *
      * @return Context allowing further construction of the validator using the DSL.
      */
+    @Deprecated
     public static <DPO> MultipleResultCollectorContext<DPO> collect(Collection<ResultCollector<?,
             DPO>> resultCollectors) {
         List<Trigger> addedTriggers = new ArrayList<Trigger>();
@@ -152,6 +155,7 @@ public final class GeneralValidatorBuilder {
      *
      * @return Context allowing further construction of the validator using the DSL.
      */
+    @Deprecated
     public static <DPO> SingleResultCollectorContext<DPO> collect(SimpleValidator<?, ?, ?, ?, ?, ?,
             ResultHandler<DPO>, DPO> validator) {
         List<Trigger> addedTriggers = new ArrayList<Trigger>();

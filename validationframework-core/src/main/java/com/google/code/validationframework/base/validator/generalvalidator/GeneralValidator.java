@@ -161,7 +161,11 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
      * Adds the specified result collector to the triggers and data providers.
      *
      * @param resultCollector Result collector to be added.
+     *
+     * @deprecated Use a {@link com.google.code.validationframework.base.trigger.PropertyValueChangeTrigger} and a
+     * {@link com.google.code.validationframework.base.dataprovider.PropertyValueProvider} instead.
      */
+    @Deprecated
     public void addResultCollector(ResultCollector<?, DPO> resultCollector) {
         if (resultCollector != null) {
             addTrigger(resultCollector);
@@ -173,7 +177,11 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
      * Removes the specified result collector from the triggers and data providers.
      *
      * @param resultCollector Result collector to be removed.
+     *
+     * @deprecated Use a {@link com.google.code.validationframework.base.trigger.PropertyValueChangeTrigger} and a
+     * {@link com.google.code.validationframework.base.dataprovider.PropertyValueProvider} instead.
      */
+    @Deprecated
     public void removeResultCollector(ResultCollector<?, DPO> resultCollector) {
         if (resultCollector != null) {
             removeTrigger(resultCollector);
