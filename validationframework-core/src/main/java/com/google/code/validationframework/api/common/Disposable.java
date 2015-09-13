@@ -35,7 +35,7 @@ package com.google.code.validationframework.api.common;
 public interface Disposable {
 
     /**
-     * Disposes the component by disconnecting any listener and any reference that would prevent garbage collection.
+     * Disposes the entity by disconnecting any listener and any reference that would prevent garbage collection.
      * <p/>
      * Note that calling this method a second time should have no effect (and certainly not generate an exception).
      */
