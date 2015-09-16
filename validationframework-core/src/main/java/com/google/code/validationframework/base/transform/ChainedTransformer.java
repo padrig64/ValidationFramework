@@ -25,6 +25,7 @@
 
 package com.google.code.validationframework.base.transform;
 
+import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.api.transform.Transformer;
 
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ import java.util.Collection;
  * @param <I> Type of input of the first transformer of the chain.
  * @param <O> Type of output of the last transformer of the chain.
  */
-public class ChainedTransformer<I, O> implements Transformer<I, O> {
+public class ChainedTransformer<I, O> implements Transformer<I, O>, Disposable {
 
     /**
      * Transformers that are part of the chain.
@@ -48,13 +49,32 @@ public class ChainedTransformer<I, O> implements Transformer<I, O> {
      */
     private final Transformer<Object, O> lastTransformer = new CastTransformer<Object, O>();
 
+    private final boolean deepDispose;
+
     /**
-     * Constructor specifying the first transformer.
+     * Constructor.
+     * <p/>
+     * By default, all chained transformers will not be disposed upon {@link #dispose()}.
+     *
+     * @param transformer First transformer.
+     * @see #chain(Transformer)
      */
     public ChainedTransformer(Transformer<I, O> transformer) {
+        this(transformer, false);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param transformer First transformer.
+     * @param deepDispose True to dispose all chained transformers upon {@link #dispose()}, false otherwise.
+     * @see #chain(Transformer)
+     */
+    public ChainedTransformer(Transformer<I, O> transformer, boolean deepDispose) {
         if (transformer != null) {
             transformers.add(transformer);
         }
+        this.deepDispose = deepDispose;
     }
 
     /**
@@ -62,11 +82,10 @@ public class ChainedTransformer<I, O> implements Transformer<I, O> {
      *
      * @param transformer Transformer to be added.
      * @param <TO>        Type of output of the specified transformer.
-     *
      * @return This.
      */
     @SuppressWarnings("unchecked")
-    public <TO> ChainedTransformer<I, TO> chain(Transformer<O, TO> transformer) {
+    public <TO> ChainedTransformer<I, TO> chain(Transformer<? super O, TO> transformer) {
         if (transformer != null) {
             transformers.add(transformer);
         }
@@ -86,5 +105,20 @@ public class ChainedTransformer<I, O> implements Transformer<I, O> {
         }
 
         return lastTransformer.transform(rawOutput);
+    }
+
+    /**
+     * @see Disposable#dispose()
+     */
+    @Override
+    public void dispose() {
+        if (deepDispose) {
+            for (Transformer<?, ?> transformer : transformers) {
+                if (transformer instanceof Disposable) {
+                    ((Disposable) transformer).dispose();
+                }
+            }
+        }
+        transformers.clear();
     }
 }

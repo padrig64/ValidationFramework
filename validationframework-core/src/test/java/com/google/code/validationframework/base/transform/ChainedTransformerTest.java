@@ -25,11 +25,15 @@
 
 package com.google.code.validationframework.base.transform;
 
+import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.api.transform.Transformer;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 
 /**
  * @see ChainedTransformer
@@ -63,5 +67,34 @@ public class ChainedTransformerTest {
         });
 
         assertEquals(Integer.valueOf(3), transformer3.transform(3.2d));
+    }
+
+    @Test
+    public void testDispose() {
+        DisposableTransformer mock1 = mock(DisposableTransformer.class);
+        DisposableTransformer mock2 = mock(DisposableTransformer.class);
+        ChainedTransformer<Object, Object> transformer = new ChainedTransformer<Object, Object>(mock1);
+        transformer.chain(mock2);
+
+        transformer.dispose();
+
+        verifyZeroInteractions(mock1, mock2);
+    }
+
+    @Test
+    public void testDeepDispose() {
+        DisposableTransformer mock1 = mock(DisposableTransformer.class);
+        DisposableTransformer mock2 = mock(DisposableTransformer.class);
+        ChainedTransformer<Object, Object> transformer = new ChainedTransformer<Object, Object>(mock1, true);
+        transformer.chain(mock2);
+
+        transformer.dispose();
+
+        verify(mock1).dispose();
+        verify(mock2).dispose();
+    }
+
+    private interface DisposableTransformer extends Transformer<Object, Object>, Disposable {
+        // Nothing to add
     }
 }

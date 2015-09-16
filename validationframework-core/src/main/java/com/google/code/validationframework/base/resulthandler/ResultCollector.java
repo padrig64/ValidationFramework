@@ -45,7 +45,6 @@ import com.google.code.validationframework.base.trigger.AbstractTrigger;
  * @param <VO>  Type of result collected from another validator.
  * @param <DPO> Type of data provided by the collector.<br>
  *              It could be the same as VO.
- *
  * @see ResultHandler
  * @see AbstractTrigger
  * @see DataProvider
@@ -64,7 +63,7 @@ public class ResultCollector<VO, DPO> extends AbstractTrigger implements ResultH
     /**
      * Transformer to apply on the collected result before providing it.
      */
-    protected final Transformer<VO, DPO> transformer;
+    protected Transformer<VO, DPO> transformer;
 
     /**
      * Default constructor using the simple cast transformer.
@@ -116,5 +115,6 @@ public class ResultCollector<VO, DPO> extends AbstractTrigger implements ResultH
         if (transformer instanceof Disposable) {
             ((Disposable) transformer).dispose();
         }
+        transformer = null;
     }
 }
