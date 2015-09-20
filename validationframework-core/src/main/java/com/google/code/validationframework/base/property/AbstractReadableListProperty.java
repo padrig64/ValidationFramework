@@ -25,6 +25,7 @@
 
 package com.google.code.validationframework.base.property;
 
+import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.api.property.ListValueChangeListener;
 import com.google.code.validationframework.api.property.ReadableListProperty;
 
@@ -37,7 +38,7 @@ import java.util.List;
  *
  * @param <R> Type of values that can be read from this list.
  */
-public abstract class AbstractReadableListProperty<R> implements ReadableListProperty<R> {
+public abstract class AbstractReadableListProperty<R> implements ReadableListProperty<R>, Disposable {
 
     /**
      * Listeners to changes in the list property.
@@ -61,6 +62,20 @@ public abstract class AbstractReadableListProperty<R> implements ReadableListPro
         for (ListValueChangeListener<R> listener : listeners) {
             addValueChangeListener(listener);
         }
+    }
+
+    /**
+     * Disposes this readable list property by removing any references to any listener.
+     * <p/>
+     * Sub-classes should call the dispose() method of their parent class.
+     * <p/>
+     * Note that the listeners will not be disposed.
+     *
+     * @see Disposable#dispose()
+     */
+    @Override
+    public void dispose() {
+        listeners.clear();
     }
 
     /**

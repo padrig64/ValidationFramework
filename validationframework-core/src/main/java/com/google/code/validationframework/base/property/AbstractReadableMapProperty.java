@@ -25,6 +25,7 @@
 
 package com.google.code.validationframework.base.property;
 
+import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.api.property.MapValueChangeListener;
 import com.google.code.validationframework.api.property.ReadableMapProperty;
 
@@ -39,7 +40,7 @@ import java.util.Map;
  * @param <K> Type of keys maintained by this map property.
  * @param <R> Type of mapped values in this map property.
  */
-public abstract class AbstractReadableMapProperty<K, R> implements ReadableMapProperty<K, R> {
+public abstract class AbstractReadableMapProperty<K, R> implements ReadableMapProperty<K, R>, Disposable {
 
     /**
      * Listeners to changes in the list property.
@@ -63,6 +64,20 @@ public abstract class AbstractReadableMapProperty<K, R> implements ReadableMapPr
         for (MapValueChangeListener<K, R> listener : listeners) {
             addValueChangeListener(listener);
         }
+    }
+
+    /**
+     * Disposes this readable map property by removing any references to any listener.
+     * <p/>
+     * Sub-classes should call the dispose() method of their parent class.
+     * <p/>
+     * Note that the listeners will not be disposed.
+     *
+     * @see Disposable#dispose()
+     */
+    @Override
+    public void dispose() {
+        listeners.clear();
     }
 
     /**
@@ -100,7 +115,8 @@ public abstract class AbstractReadableMapProperty<K, R> implements ReadableMapPr
     /**
      * Notifies the change listeners that values have been replaced.
      * <p/>
-     * Note that the specified maps of values will be wrapped in unmodifiable maps before being passed to the listeners.
+     * Note that the specified maps of values will be wrapped in unmodifiable maps before being passed to the
+     * listeners.
      *
      * @param oldValues Previous values.
      * @param newValues New values.

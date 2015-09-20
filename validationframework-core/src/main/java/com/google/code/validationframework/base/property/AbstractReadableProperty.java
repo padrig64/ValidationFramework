@@ -25,6 +25,7 @@
 
 package com.google.code.validationframework.base.property;
 
+import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.api.property.ReadableProperty;
 import com.google.code.validationframework.api.property.ValueChangeListener;
 import com.google.code.validationframework.base.utils.ValueUtils;
@@ -52,7 +53,7 @@ import java.util.List;
  *
  * @param <R> Type of data that can be read from this property.
  */
-public abstract class AbstractReadableProperty<R> implements ReadableProperty<R> {
+public abstract class AbstractReadableProperty<R> implements ReadableProperty<R>, Disposable {
 
     /**
      * Writable properties to be updated.
@@ -91,6 +92,20 @@ public abstract class AbstractReadableProperty<R> implements ReadableProperty<R>
      * This can be used, for instance, to avoid recursion (in case of bi-directional binding).
      */
     private boolean notifyingListeners = false;
+
+    /**
+     * Disposes this readable property by removing any references to any listener.
+     * <p/>
+     * Sub-classes should call the dispose() method of their parent class.
+     * <p/>
+     * Note that the listeners will not be disposed.
+     *
+     * @see Disposable#dispose()
+     */
+    @Override
+    public void dispose() {
+        listeners.clear();
+    }
 
     /**
      * Gets the registered value change listeners.
@@ -155,7 +170,6 @@ public abstract class AbstractReadableProperty<R> implements ReadableProperty<R>
      *
      * @param oldValue Previous value.
      * @param newValue New value.
-     *
      * @see #notifyListenersIfUninhibited(Object, Object)
      * @see #doNotifyListeners(Object, Object)
      */
@@ -170,7 +184,6 @@ public abstract class AbstractReadableProperty<R> implements ReadableProperty<R>
      *
      * @param oldValue Previous value.
      * @param newValue New value.
-     *
      * @see #maybeNotifyListeners(Object, Object)
      * @see #doNotifyListeners(Object, Object)
      */
