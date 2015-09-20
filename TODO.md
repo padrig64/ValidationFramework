@@ -7,6 +7,7 @@
 
 # Ideas for the short term
 
+* Better use of "? super" and "? extends" wildcards (Release 4.0.0)
 * Convenient value change listeners to check the correct behavior of the properties (incl. set, list and map properties): always on the same thread, always on EDT, never on EDT, only called when values are different, etc.
 * Set-, List- and Map-related transformers
 * More JavaFX 2 support

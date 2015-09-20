@@ -25,6 +25,7 @@
 
 package com.google.code.validationframework.base.binding;
 
+import com.google.code.validationframework.api.common.DeepDisposable;
 import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.api.property.ReadableProperty;
 import com.google.code.validationframework.api.property.ValueChangeListener;
@@ -41,27 +42,12 @@ import java.util.Collection;
  *
  * @param <MO> Type of data that can be read from master properties.
  * @param <SI> Type of data that can be written to master properties.
- *
  * @see Binder
  * @see com.google.code.validationframework.base.property.CompositeReadableProperty
  * @see CompositeWritableProperty
  * @see com.google.code.validationframework.base.transform.ChainedTransformer
  */
-public class SimpleBond<MO, SI> implements Disposable {
-
-    /**
-     * Listener to master property changes and updating the slave property.
-     */
-    private class MasterAdapter implements ValueChangeListener<MO> {
-
-        /**
-         * @see ValueChangeListener#valueChanged(ReadableProperty, Object, Object)
-         */
-        @Override
-        public void valueChanged(ReadableProperty<MO> property, MO oldValue, MO newValue) {
-            updateSlaves(newValue);
-        }
-    }
+public class SimpleBond<MO, SI> implements DeepDisposable {
 
     /**
      * Listener to master property changes and updating the slave property.
@@ -82,6 +68,11 @@ public class SimpleBond<MO, SI> implements Disposable {
      * Slave (possibly composite) that is part of the bond.
      */
     private WritableProperty<SI> slave;
+
+    /**
+     * @see DeepDisposable
+     */
+    private boolean deepDispose = false;
 
     /**
      * Constructor specifying the master property, the transformers and the slaves that are part of the binding.
@@ -111,7 +102,8 @@ public class SimpleBond<MO, SI> implements Disposable {
      * @param transformer Transformer (possible composite) to be part of the bond.
      * @param slaves      Slave properties to be part of the bond.
      */
-    public SimpleBond(ReadableProperty<MO> master, Transformer<MO, SI> transformer,
+    public SimpleBond(ReadableProperty<MO> master,
+                      Transformer<MO, SI> transformer,
                       Collection<WritableProperty<SI>> slaves) {
         // Initialize bond
         CompositeWritableProperty<SI> compositeSlave = new CompositeWritableProperty<SI>();
@@ -155,10 +147,63 @@ public class SimpleBond<MO, SI> implements Disposable {
     }
 
     /**
+     * @see DeepDisposable#getDeepDispose()
+     */
+    @Override
+    public boolean getDeepDispose() {
+        return deepDispose;
+    }
+
+    /**
+     * @see DeepDisposable#setDeepDispose(boolean)
+     */
+    @Override
+    public void setDeepDispose(boolean deepDispose) {
+        this.deepDispose = deepDispose;
+    }
+
+    /**
      * @see Disposable#dispose()
      */
     @Override
     public void dispose() {
-        master.removeValueChangeListener(masterAdapter);
+        // Dispose self and master
+        if (master != null) {
+            master.removeValueChangeListener(masterAdapter);
+            if (deepDispose && (master instanceof Disposable)) {
+                ((Disposable) master).dispose();
+            }
+            master = null;
+        }
+
+        // Dispose self and transformer
+        if (transformer != null) {
+            if (deepDispose && (transformer instanceof Disposable)) {
+                ((Disposable) transformer).dispose();
+            }
+            transformer = null;
+        }
+
+        // Dispose self and slave
+        if (slave != null) {
+            if (deepDispose && (slave instanceof Disposable)) {
+                ((Disposable) slave).dispose();
+            }
+            slave = null;
+        }
+    }
+
+    /**
+     * Listener to master property changes and updating the slave property.
+     */
+    private class MasterAdapter implements ValueChangeListener<MO> {
+
+        /**
+         * @see ValueChangeListener#valueChanged(ReadableProperty, Object, Object)
+         */
+        @Override
+        public void valueChanged(ReadableProperty<MO> property, MO oldValue, MO newValue) {
+            updateSlaves(newValue);
+        }
     }
 }

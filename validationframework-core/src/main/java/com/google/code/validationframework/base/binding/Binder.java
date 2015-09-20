@@ -38,8 +38,7 @@ import java.util.Collection;
  * Utility class that can be used to help binding properties and transform their values.
  * <p/>
  * This binder utility will create {@link SimpleBond}s between properties. These bonds can be broken by calling their
- * {@link
- * SimpleBond#dispose()} method.
+ * {@link SimpleBond#dispose()} method.
  * <p/>
  * If you are using JavaFX, you should better use JavaFX's property binding mechanism. The binding mechanism provided by
  * the ValidationFramework is very simple and mostly meant for Swing and other frameworks that can benefit from it.
@@ -50,6 +49,46 @@ import java.util.Collection;
  * @see SimpleBond
  */
 public final class Binder {
+
+    /**
+     * Private constructor for utility class.
+     */
+    private Binder() {
+        // Nothing to be done
+    }
+
+    /**
+     * Specifies the master property that is part of the binding.
+     *
+     * @param master Master property.
+     * @param <MO>   Type of value to be read from the master property.
+     * @return DSL object.
+     */
+    public static <MO> SingleMasterBinding<MO, MO> read(ReadableProperty<MO> master) {
+        return new SingleMasterBinding<MO, MO>(master, null);
+    }
+
+    /**
+     * Specifies the master properties that are part of the binding.
+     *
+     * @param masters Master properties.
+     * @param <MO>    Type of value to be read from the master properties.
+     * @return DSL object.
+     */
+    public static <MO> MultipleMasterBinding<MO, Collection<MO>> read(Collection<ReadableProperty<MO>> masters) {
+        return new MultipleMasterBinding<MO, Collection<MO>>(masters, null);
+    }
+
+    /**
+     * Specifies the master properties that are part of the binding.
+     *
+     * @param masters Master properties.
+     * @param <MO>    Type of value to be read from the master properties.
+     * @return DSL object.
+     */
+    public static <MO> MultipleMasterBinding<MO, Collection<MO>> read(ReadableProperty<MO>... masters) {
+        return new MultipleMasterBinding<MO, Collection<MO>>(Arrays.asList(masters), null);
+    }
 
     /**
      * Builder class that is part of the DSL for binding properties.
@@ -85,7 +124,6 @@ public final class Binder {
          *
          * @param transformer Transformer to be used by the bond.
          * @param <TSI>       Type of output of the specified transformer.
-         *
          * @return Builder object to continue building the bond.
          */
         public <TSI> SingleMasterBinding<MO, TSI> transform(Transformer<SI, TSI> transformer) {
@@ -96,7 +134,6 @@ public final class Binder {
          * Specifies the slave property that is part of the bind and creates the bond between the master and the slave.
          *
          * @param slave Slave property.
-         *
          * @return Bond between the master and the slave.
          */
         public SimpleBond<MO, SI> write(WritableProperty<SI> slave) {
@@ -108,7 +145,6 @@ public final class Binder {
          * slaves.
          *
          * @param slaves Slave properties.
-         *
          * @return Bond between the master and the slaves.
          */
         public SimpleBond<MO, SI> write(Collection<WritableProperty<SI>> slaves) {
@@ -120,7 +156,6 @@ public final class Binder {
          * slaves.
          *
          * @param slaves Slave properties.
-         *
          * @return Bond between the master and the slaves.
          */
         public SimpleBond<MO, SI> write(WritableProperty<SI>... slaves) {
@@ -163,7 +198,6 @@ public final class Binder {
          *
          * @param transformer Transformer to be used by the bond.
          * @param <TSI>       Type of output of the specified transformer.
-         *
          * @return Builder object to continue building the bond.
          */
         public <TSI> MultipleMasterBinding<MO, TSI> transform(Transformer<SI, TSI> transformer) {
@@ -171,10 +205,10 @@ public final class Binder {
         }
 
         /**
-         * Specifies the slave property that is part of the bind and creates the bond between the masters and the slave.
+         * Specifies the slave property that is part of the bind and creates the bond between the masters and the
+         * slave.
          *
          * @param slave Slave property.
-         *
          * @return Bond between the masters and the slave.
          */
         public SimpleBond<Collection<MO>, SI> write(WritableProperty<SI> slave) {
@@ -186,7 +220,6 @@ public final class Binder {
          * slaves.
          *
          * @param slaves Slave properties.
-         *
          * @return Bond between the masters and the slaves.
          */
         public SimpleBond<Collection<MO>, SI> write(Collection<WritableProperty<SI>> slaves) {
@@ -198,54 +231,10 @@ public final class Binder {
          * slaves.
          *
          * @param slaves Slave properties.
-         *
          * @return Bond between the masters and the slaves.
          */
         public SimpleBond<Collection<MO>, SI> write(WritableProperty<SI>... slaves) {
             return write(Arrays.asList(slaves));
         }
-    }
-
-    /**
-     * Private constructor for utility class.
-     */
-    private Binder() {
-        // Nothing to be done
-    }
-
-    /**
-     * Specifies the master property that is part of the binding.
-     *
-     * @param master Master property.
-     * @param <MO>   Type of value to be read from the master property.
-     *
-     * @return DSL object.
-     */
-    public static <MO> SingleMasterBinding<MO, MO> read(ReadableProperty<MO> master) {
-        return new SingleMasterBinding<MO, MO>(master, null);
-    }
-
-    /**
-     * Specifies the master properties that are part of the binding.
-     *
-     * @param masters Master properties.
-     * @param <MO>    Type of value to be read from the master properties.
-     *
-     * @return DSL object.
-     */
-    public static <MO> MultipleMasterBinding<MO, Collection<MO>> read(Collection<ReadableProperty<MO>> masters) {
-        return new MultipleMasterBinding<MO, Collection<MO>>(masters, null);
-    }
-
-    /**
-     * Specifies the master properties that are part of the binding.
-     *
-     * @param masters Master properties.
-     * @param <MO>    Type of value to be read from the master properties.
-     *
-     * @return DSL object.
-     */
-    public static <MO> MultipleMasterBinding<MO, Collection<MO>> read(ReadableProperty<MO>... masters) {
-        return new MultipleMasterBinding<MO, Collection<MO>>(Arrays.asList(masters), null);
     }
 }
