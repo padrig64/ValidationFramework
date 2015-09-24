@@ -46,7 +46,7 @@ public class TransformerProperty<R, W> extends AbstractReadableWritableProperty<
     /**
      * Transformer to be used to transform input values.
      */
-    private final Transformer<W, R> transformer;
+    private Transformer<W, R> transformer;
 
     /**
      * Property output value.
@@ -75,8 +75,20 @@ public class TransformerProperty<R, W> extends AbstractReadableWritableProperty<
      * @param value       Initial property value.
      */
     public TransformerProperty(Transformer<W, R> transformer, W value) {
+        super();
         this.transformer = transformer;
         this.value = transformer.transform(value);
+    }
+
+    /**
+     * @see AbstractReadableProperty#dispose()
+     */
+    @Override
+    public void dispose() {
+        super.dispose();
+        if (transformer != null) {
+            transformer = null;
+        }
     }
 
     /**
@@ -92,7 +104,7 @@ public class TransformerProperty<R, W> extends AbstractReadableWritableProperty<
      */
     @Override
     public void setValue(W value) {
-        if (!settingValue) {
+        if ((transformer != null) && !settingValue) {
             settingValue = true;
 
             // Update slaves only if the new value is different than the previous value
