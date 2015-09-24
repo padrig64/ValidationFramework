@@ -25,6 +25,7 @@
 
 package com.google.code.validationframework.base.transform;
 
+import com.google.code.validationframework.api.common.DeepDisposable;
 import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.api.transform.Transformer;
 
@@ -37,7 +38,7 @@ import java.util.Collection;
  * @param <I> Type of input of the first transformer of the chain.
  * @param <O> Type of output of the last transformer of the chain.
  */
-public class ChainedTransformer<I, O> implements Transformer<I, O>, Disposable {
+public class ChainedTransformer<I, O> implements Transformer<I, O>, DeepDisposable {
 
     /**
      * Transformers that are part of the chain.
@@ -49,18 +50,21 @@ public class ChainedTransformer<I, O> implements Transformer<I, O>, Disposable {
      */
     private final Transformer<Object, O> lastTransformer = new CastTransformer<Object, O>();
 
-    private final boolean deepDispose;
+    /**
+     * @see DeepDisposable
+     */
+    private boolean deepDispose;
 
     /**
      * Constructor.
      * <p/>
-     * By default, all chained transformers will not be disposed upon {@link #dispose()}.
+     * By default, all chained transformers will be disposed upon {@link #dispose()}.
      *
      * @param transformer First transformer.
      * @see #chain(Transformer)
      */
     public ChainedTransformer(Transformer<I, O> transformer) {
-        this(transformer, false);
+        this(transformer, true);
     }
 
     /**
@@ -108,7 +112,23 @@ public class ChainedTransformer<I, O> implements Transformer<I, O>, Disposable {
     }
 
     /**
-     * @see Disposable#dispose()
+     * @see DeepDisposable#getDeepDispose()
+     */
+    @Override
+    public boolean getDeepDispose() {
+        return deepDispose;
+    }
+
+    /**
+     * @see DeepDisposable#setDeepDispose(boolean)
+     */
+    @Override
+    public void setDeepDispose(boolean deepDispose) {
+        this.deepDispose = deepDispose;
+    }
+
+    /**
+     * @see DeepDisposable#dispose()
      */
     @Override
     public void dispose() {

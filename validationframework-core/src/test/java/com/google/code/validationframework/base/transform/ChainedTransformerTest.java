@@ -70,12 +70,25 @@ public class ChainedTransformerTest {
     }
 
     @Test
+    public void testCompilation() {
+        new ChainedTransformer<Integer, Number>(new CastTransformer<Integer, Number>())
+                .chain(new Transformer<Object, String>() {
+                    @Override
+                    public String transform(Object input) {
+                        return input.toString();
+                    }
+                });
+    }
+
+    @Test
     public void testDispose() {
         DisposableTransformer mock1 = mock(DisposableTransformer.class);
         DisposableTransformer mock2 = mock(DisposableTransformer.class);
-        ChainedTransformer<Object, Object> transformer = new ChainedTransformer<Object, Object>(mock1);
+        ChainedTransformer<Object, Object> transformer = new ChainedTransformer<Object, Object>(mock1, false);
         transformer.chain(mock2);
 
+        transformer.dispose();
+        transformer.dispose();
         transformer.dispose();
 
         verifyZeroInteractions(mock1, mock2);
@@ -88,6 +101,8 @@ public class ChainedTransformerTest {
         ChainedTransformer<Object, Object> transformer = new ChainedTransformer<Object, Object>(mock1, true);
         transformer.chain(mock2);
 
+        transformer.dispose();
+        transformer.dispose();
         transformer.dispose();
 
         verify(mock1).dispose();
