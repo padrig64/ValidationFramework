@@ -1,7 +1,5 @@
 # Version 3.5.0 (to be released)
 
-## Non-breaking changes
-
 * Harmonized behavior of dispose() methods for properties => See below for potential breaking behavior changes
 * Removed experimental duplicate of PropertyResultHandler
 * AbstractReadableProperty now implements the Disposable interface: sub-classes should call super.dispose()
