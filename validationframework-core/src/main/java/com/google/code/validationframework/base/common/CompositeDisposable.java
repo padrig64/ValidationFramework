@@ -25,6 +25,7 @@
 
 package com.google.code.validationframework.base.common;
 
+import com.google.code.validationframework.api.common.DeepDisposable;
 import com.google.code.validationframework.api.common.Disposable;
 
 import java.util.Collection;
@@ -35,14 +36,19 @@ import java.util.Set;
 /**
  * Collection of {@link Disposable}s that can all be disposed at once.
  * <p/>
- * Note that the order of disposal is not specified.
+ * Note that this class implements the {@link DeepDisposable} and, by default, does dispose all {@link Disposable}s
+ * elements at once. However, it is possible to disable the deep dispose and use this class as a simple collection.
+ * <p/>
+ * Finally, note that the order of disposal is not specified.
  */
-public class CompositeDisposable implements Disposable {
+public class CompositeDisposable implements DeepDisposable {
 
     /**
      * {@link Disposable}s to be disposed.
      */
     private final Set<Disposable> disposables = new HashSet<Disposable>();
+
+    private boolean deepDispose = true;
 
     /**
      * Constructor.
@@ -96,12 +102,30 @@ public class CompositeDisposable implements Disposable {
     }
 
     /**
-     * @see Disposable#dispose()
+     * @see DeepDisposable#getDeepDispose()
+     */
+    @Override
+    public boolean getDeepDispose() {
+        return deepDispose;
+    }
+
+    /**
+     * @see DeepDisposable#setDeepDispose(boolean)
+     */
+    @Override
+    public void setDeepDispose(boolean deepDispose) {
+        this.deepDispose = deepDispose;
+    }
+
+    /**
+     * @see DeepDisposable#dispose()
      */
     @Override
     public void dispose() {
-        for (Disposable disposable : disposables) {
-            disposable.dispose();
+        if (deepDispose) {
+            for (Disposable disposable : disposables) {
+                disposable.dispose();
+            }
         }
         disposables.clear();
     }
