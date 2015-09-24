@@ -1,19 +1,20 @@
 # Version 3.5.0 (to be released)
 
 * Harmonized behavior of dispose() methods for properties => See below for potential breaking behavior changes
-* Removed experimental duplicate of PropertyResultHandler
 * AbstractReadableProperty now implements the Disposable interface: sub-classes should call super.dispose()
 * AbstractReadableSetProperty now implements the Disposable interface: sub-classes should call super.dispose()
 * AbstractReadableListProperty now implements the Disposable interface: sub-classes should call super.dispose()
 * AbstractReadableMapProperty now implements the Disposable interface: sub-classes should call super.dispose()
-* ChainedTransformer now implements the DeepDisposable interface
-* ChainedTransformer now does a deepDispose by default
+* ChainedTransformer now implements DeepDisposable and disposes the chained transformers by default
+* NegateBooleanPropertyWrapper now implements DeepDisposable and disposes the wrapped property by default 
+* Added AbstractReadablePropertyWrapper which can be disposed to release all listeners and deep dispose the wrapped property
+* Added CompositeDisposable to dispose multiple entities at once
 * Deprecated the ResultCollector in favor of the ReadableWritableProperty (e.g. SimpleProperty)
 * Deprecated the ResultCollectorValidator in favor of the GeneralValidator
 * Deprecated the experimental ResultCollectorValidatorBuilder in favor of the GeneralValidatorBuilder
+* Removed experimental duplicate of PropertyResultHandler
+* Removed experimental duplicate of JFormattedTextFieldValueProperty
 * Added PseudoClassResultHandler to JavaFX support
-* Added AbstractReadablePropertyWrapper which can be disposed to release all listeners and deep dispose the wrapped property
-* Added CompositeDisposable to dispose multiple entities at once
 
 # Version 3.4.0
 
