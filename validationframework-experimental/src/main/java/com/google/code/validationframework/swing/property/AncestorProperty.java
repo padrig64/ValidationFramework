@@ -39,27 +39,16 @@ import java.beans.PropertyChangeListener;
  * <p/>
  * Note that change listeners will not be notified if the {@link Component} is not a {@link javax.swing.JComponent}.
  */
-public class AncestorProperty extends AbstractReadableProperty<Container> implements Disposable {
-
-    private class PropertyChangeAdapter implements PropertyChangeListener {
-
-        @Override
-        public void propertyChange(PropertyChangeEvent evt) {
-            if (evt.getNewValue() instanceof Container) {
-                setValue((Container) evt.getNewValue());
-            } else {
-                setValue(null);
-            }
-        }
-    }
-
-    private final Component component;
+public class AncestorProperty extends AbstractReadableProperty<Container> {
 
     private final PropertyChangeAdapter propertyChangeAdapter = new PropertyChangeAdapter();
+
+    private Component component;
 
     private Container value = null;
 
     public AncestorProperty(Component component) {
+        super();
         this.component = component;
         this.component.addPropertyChangeListener("ancestor", propertyChangeAdapter);
         setValue(component.getParent());
@@ -70,7 +59,11 @@ public class AncestorProperty extends AbstractReadableProperty<Container> implem
      */
     @Override
     public void dispose() {
-        component.removePropertyChangeListener("ancestor", propertyChangeAdapter);
+        super.dispose();
+        if (component != null) {
+            component.removePropertyChangeListener("ancestor", propertyChangeAdapter);
+            component = null;
+        }
     }
 
     /**
@@ -86,6 +79,18 @@ public class AncestorProperty extends AbstractReadableProperty<Container> implem
             Container oldValue = this.value;
             this.value = value;
             maybeNotifyListeners(oldValue, value);
+        }
+    }
+
+    private class PropertyChangeAdapter implements PropertyChangeListener {
+
+        @Override
+        public void propertyChange(PropertyChangeEvent evt) {
+            if (evt.getNewValue() instanceof Container) {
+                setValue((Container) evt.getNewValue());
+            } else {
+                setValue(null);
+            }
         }
     }
 }

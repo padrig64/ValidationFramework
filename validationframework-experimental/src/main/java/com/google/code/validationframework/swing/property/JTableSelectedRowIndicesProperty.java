@@ -49,8 +49,101 @@ import java.util.List;
  * @see JTable#getSelectedRow()
  * @see ListSelectionModel#clearSelection()
  */
-public class JTableSelectedRowIndicesProperty extends AbstractReadableWritableProperty<List<Integer>,
-        List<Integer>> implements Disposable {
+public class JTableSelectedRowIndicesProperty extends AbstractReadableWritableProperty<List<Integer>, List<Integer>> {
+
+    /**
+     * Entity tracking changes of selection (and selection model).
+     */
+    private final SelectionAdapter selectionAdapter = new SelectionAdapter();
+
+    /**
+     * Table whose selected row index is represented by this property.
+     */
+    private JTable table = null;
+
+    /**
+     * Current property value.
+     */
+    private List<Integer> value = new ArrayList<Integer>();
+
+    /**
+     * Flag indicating whether the {@link #setValue(Object)} call is due to a property change event.
+     */
+    private boolean updatingFromComponent = false;
+
+    /**
+     * Constructor specifying the table
+     *
+     * @param table Table whose selected row index is represented by this property.
+     */
+    public JTableSelectedRowIndicesProperty(JTable table) {
+        super();
+        this.table = table;
+        table.addPropertyChangeListener("selectionModel", selectionAdapter);
+        table.getSelectionModel().addListSelectionListener(selectionAdapter);
+        value = getSelectedRowsAsList();
+    }
+
+    /**
+     * @see Disposable#dispose()
+     */
+    @Override
+    public void dispose() {
+        super.dispose();
+        if (table != null) {
+            table.getSelectionModel().removeListSelectionListener(selectionAdapter);
+            table.removePropertyChangeListener("selectionModel", selectionAdapter);
+            table = null;
+        }
+    }
+
+    /**
+     * @see AbstractReadableWritableProperty#getValue()
+     */
+    @Override
+    public List<Integer> getValue() {
+        return value;
+    }
+
+    /**
+     * @see AbstractReadableWritableProperty#setValue(Object)
+     */
+    @Override
+    public void setValue(List<Integer> value) {
+        if (table != null) {
+            List<Integer> effectiveValue = value;
+            if (effectiveValue == null) {
+                effectiveValue = new ArrayList<Integer>();
+            }
+
+            if (!isNotifyingListeners()) {
+                if (updatingFromComponent) {
+                    List<Integer> oldValue = this.value;
+                    this.value = effectiveValue;
+                    maybeNotifyListeners(oldValue, this.value);
+                } else if (effectiveValue.isEmpty()) {
+                    table.getSelectionModel().clearSelection();
+                } else {
+                    table.getSelectionModel().setValueIsAdjusting(true);
+                    table.getSelectionModel().clearSelection();
+                    table.getSelectionModel().setValueIsAdjusting(false);
+                    table.getSelectionModel().setLeadSelectionIndex(effectiveValue.iterator().next());
+                }
+            }
+        }
+    }
+
+    private List<Integer> getSelectedRowsAsList() {
+        List<Integer> selectedRowsList = new ArrayList<Integer>();
+
+        if (table != null) {
+            for (int row : table.getSelectedRows()) {
+                selectedRowsList.add(row);
+            }
+        }
+
+        return selectedRowsList;
+    }
 
     /**
      * Entity tracking changes of selection (and selection model).
@@ -89,95 +182,6 @@ public class JTableSelectedRowIndicesProperty extends AbstractReadableWritablePr
                 updatingFromComponent = true;
                 setValue(getSelectedRowsAsList());
                 updatingFromComponent = false;
-            }
-        }
-    }
-
-    /**
-     * Table whose selected row index is represented by this property.
-     */
-    private JTable table = null;
-
-    /**
-     * Entity tracking changes of selection (and selection model).
-     */
-    private final SelectionAdapter selectionAdapter = new SelectionAdapter();
-
-    /**
-     * Current property value.
-     */
-    private List<Integer> value = new ArrayList<Integer>();
-
-    /**
-     * Flag indicating whether the {@link #setValue(Object)} call is due to a property change event.
-     */
-    private boolean updatingFromComponent = false;
-
-    /**
-     * Constructor specifying the table
-     *
-     * @param table Table whose selected row index is represented by this property.
-     */
-    public JTableSelectedRowIndicesProperty(JTable table) {
-        this.table = table;
-        table.addPropertyChangeListener("selectionModel", selectionAdapter);
-        table.getSelectionModel().addListSelectionListener(selectionAdapter);
-        value = getSelectedRowsAsList();
-    }
-
-    /**
-     * @see Disposable#dispose()
-     */
-    @Override
-    public void dispose() {
-        if (table != null) {
-            table.getSelectionModel().removeListSelectionListener(selectionAdapter);
-            table.removePropertyChangeListener("selectionModel", selectionAdapter);
-            table = null;
-        }
-    }
-
-    /**
-     * @see AbstractReadableWritableProperty#getValue()
-     */
-    @Override
-    public List<Integer> getValue() {
-        return value;
-    }
-
-    private List<Integer> getSelectedRowsAsList() {
-        int[] selectedRows = table.getSelectedRows();
-
-        List<Integer> selectedRowsList = new ArrayList<Integer>();
-        for (int row : selectedRows) {
-            selectedRowsList.add(row);
-        }
-
-        return selectedRowsList;
-    }
-
-    /**
-     * @see AbstractReadableWritableProperty#setValue(Object)
-     */
-    @Override
-    public void setValue(List<Integer> value) {
-        List<Integer> effectiveValue = value;
-        if (effectiveValue == null) {
-            effectiveValue = new ArrayList<Integer>();
-        }
-
-        if (!isNotifyingListeners()) {
-            if (updatingFromComponent) {
-                List<Integer> oldValue = this.value;
-                this.value = effectiveValue;
-                maybeNotifyListeners(oldValue, this.value);
-            } else if (effectiveValue.isEmpty()) {
-                table.getSelectionModel().clearSelection();
-            } else {
-                table.getSelectionModel().setValueIsAdjusting(true);
-                table.getSelectionModel().clearSelection();
-                table.getSelectionModel().setValueIsAdjusting(false);
-                table.getSelectionModel().setLeadSelectionIndex(effectiveValue.iterator().next());
             }
         }
     }
