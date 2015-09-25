@@ -27,6 +27,7 @@ package com.google.code.validationframework.base.property;
 
 import com.google.code.validationframework.api.property.ValueChangeListener;
 import com.google.code.validationframework.base.property.simple.SimpleIntegerProperty;
+import com.google.code.validationframework.base.property.wrap.AbstractReadablePropertyWrapper;
 import com.google.code.validationframework.test.ListMatcher;
 import org.junit.Test;
 
@@ -35,10 +36,12 @@ import java.util.Collection;
 import java.util.List;
 
 import static com.google.code.validationframework.test.TestUtils.haveEqualElements;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 /**
@@ -94,5 +97,62 @@ public class CompositeReadablePropertyTest {
         expectedNewValues.add(6);
         verify(mockListener).valueChanged(eq(compositeProperty), argThat(new ListMatcher<Integer>(expectedOldValues))
                 , argThat(new ListMatcher<Integer>(expectedNewValues)));
+    }
+
+    @Test
+    public void testDefaultDeepDispose() {
+        AbstractReadablePropertyWrapper<Integer> compoundProperty1 = mock(AbstractReadablePropertyWrapper.class);
+        AbstractReadablePropertyWrapper<Integer> compoundProperty2 = mock(AbstractReadablePropertyWrapper.class);
+        CompositeReadableProperty<Integer> compositeProperty = new CompositeReadableProperty<Integer>
+                (compoundProperty1, compoundProperty2);
+
+        assertTrue(compositeProperty.getDeepDispose());
+
+        compositeProperty.removeProperty(compoundProperty2);
+
+        compositeProperty.dispose();
+        compositeProperty.dispose();
+        compositeProperty.dispose();
+
+        verify(compoundProperty1).dispose();
+        verify(compoundProperty2, times(0)).dispose();
+    }
+
+    @Test
+    public void testDeepDispose() {
+        AbstractReadablePropertyWrapper<Integer> compoundProperty1 = mock(AbstractReadablePropertyWrapper.class);
+        AbstractReadablePropertyWrapper<Integer> compoundProperty2 = mock(AbstractReadablePropertyWrapper.class);
+        CompositeReadableProperty<Integer> compositeProperty = new CompositeReadableProperty<Integer>
+                (compoundProperty1, compoundProperty2);
+        compositeProperty.setDeepDispose(true);
+
+        assertTrue(compositeProperty.getDeepDispose());
+
+        compositeProperty.removeProperty(compoundProperty2);
+
+        compositeProperty.dispose();
+        compositeProperty.dispose();
+        compositeProperty.dispose();
+
+        verify(compoundProperty1).dispose();
+        verify(compoundProperty2, times(0)).dispose();
+    }
+
+    @Test
+    public void testShallowDispose() {
+        AbstractReadablePropertyWrapper<Integer> compoundProperty1 = mock(AbstractReadablePropertyWrapper.class);
+        AbstractReadablePropertyWrapper<Integer> compoundProperty2 = mock(AbstractReadablePropertyWrapper.class);
+        CompositeReadableProperty<Integer> compositeProperty = new CompositeReadableProperty<Integer>
+                (compoundProperty1, compoundProperty2);
+        compositeProperty.setDeepDispose(false);
+
+        assertFalse(compositeProperty.getDeepDispose());
+
+        compositeProperty.dispose();
+        compositeProperty.dispose();
+        compositeProperty.dispose();
+
+        verify(compoundProperty1, times(0)).dispose();
+        verify(compoundProperty2, times(0)).dispose();
     }
 }

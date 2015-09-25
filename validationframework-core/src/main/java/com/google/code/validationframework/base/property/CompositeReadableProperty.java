@@ -25,6 +25,8 @@
 
 package com.google.code.validationframework.base.property;
 
+import com.google.code.validationframework.api.common.DeepDisposable;
+import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.api.property.ReadableProperty;
 import com.google.code.validationframework.api.property.ValueChangeListener;
 import com.google.code.validationframework.base.utils.ValueUtils;
@@ -44,23 +46,7 @@ import java.util.List;
  *
  * @param <R> Type of data that can be read from the sub-properties.
  */
-public class CompositeReadableProperty<R> extends AbstractReadableProperty<Collection<R>> {
-
-    /**
-     * Listener to changes in the sub-properties.
-     */
-    private class ValueChangeAdapter implements ValueChangeListener<R> {
-
-        /**
-         * @see ValueChangeListener#valueChanged(ReadableProperty, Object, Object)
-         */
-        @Override
-        public void valueChanged(ReadableProperty<R> property, R oldValue, R newValue) {
-            if (!ValueUtils.areEqual(oldValue, newValue)) {
-                updateFromProperties();
-            }
-        }
-    }
+public class CompositeReadableProperty<R> extends AbstractReadableProperty<Collection<R>> implements DeepDisposable {
 
     /**
      * Sub-properties.
@@ -73,27 +59,57 @@ public class CompositeReadableProperty<R> extends AbstractReadableProperty<Colle
     private final ValueChangeListener<R> changeAdapter = new ValueChangeAdapter();
 
     /**
+     * True to dispose all sub-properties upon {@link #dispose()}, false otherwise.
+     */
+    private boolean deepDispose;
+
+    /**
      * Collection of current values of the sub-properties.
      */
     private Collection<R> values = Collections.emptyList();
 
     /**
-     * Default constructor.
+     * Constructor.
      * <p/>
-     * The default value of this property will be an empty list. It will not be null.
+     * The default value of this property will be an empty list. It will not be null. Also, the sub-properties will be
+     * disposed whenever this property is disposed.
      */
     public CompositeReadableProperty() {
+        this(true);
+    }
+
+    /**
+     * Constructor.
+     * <p/>
+     * The default value of this property will be an empty list. It will not be null.
+     *
+     * @param deepDispose True to dispose the sub-properties whenever this property is disposed, false otherwise.
+     */
+    public CompositeReadableProperty(boolean deepDispose) {
         super();
+        this.deepDispose = deepDispose;
+    }
+
+    /**
+     * Constructor specifying the sub-properties to be added.
+     * <p/>
+     * The sub-properties will be disposed whenever this property is disposed.
+     *
+     * @param properties Sub-properties to be added.
+     */
+    public CompositeReadableProperty(Collection<ReadableProperty<R>> properties) {
+        this(properties, true);
     }
 
     /**
      * Constructor specifying the sub-properties to be added.
      *
-     * @param properties Sub-properties to be added.
+     * @param properties  Sub-properties to be added.
+     * @param deepDispose True to dispose the sub-properties whenever this property is disposed, false otherwise.
      */
-    public CompositeReadableProperty(Collection<ReadableProperty<R>> properties) {
+    public CompositeReadableProperty(Collection<ReadableProperty<R>> properties, boolean deepDispose) {
         super();
-
+        this.deepDispose = deepDispose;
         for (ReadableProperty<R> property : properties) {
             addProperty(property);
         }
@@ -101,14 +117,49 @@ public class CompositeReadableProperty<R> extends AbstractReadableProperty<Colle
 
     /**
      * Constructor specifying the sub-properties to be added.
+     * <p/>
+     * The sub-properties will be disposed whenever this property is disposed.
      *
      * @param properties Sub-properties to be added.
      */
     public CompositeReadableProperty(ReadableProperty<R>... properties) {
         super();
-
+        this.deepDispose = true;
         for (ReadableProperty<R> property : properties) {
             addProperty(property);
+        }
+    }
+
+    /**
+     * @see DeepDisposable#getDeepDispose()
+     */
+    @Override
+    public boolean getDeepDispose() {
+        return deepDispose;
+    }
+
+    /**
+     * @see DeepDisposable#setDeepDispose(boolean)
+     */
+    @Override
+    public void setDeepDispose(boolean deepDispose) {
+        this.deepDispose = deepDispose;
+    }
+
+    /**
+     * @see AbstractReadableProperty#dispose()
+     * @see DeepDisposable#dispose()
+     */
+    @Override
+    public void dispose() {
+        super.dispose();
+        if (deepDispose) {
+            for (ReadableProperty<R> property : properties) {
+                if (property instanceof Disposable) {
+                    ((Disposable) property).dispose();
+                }
+            }
+            properties.clear();
         }
     }
 
@@ -140,8 +191,7 @@ public class CompositeReadableProperty<R> extends AbstractReadableProperty<Colle
      * This will trigger the change listeners.
      *
      * @param property Sub-property to be removed.
-     *
-     * @see #clear();
+     * @see #clear()
      */
     public void removeProperty(ReadableProperty<R> property) {
         property.removeValueChangeListener(changeAdapter);
@@ -168,6 +218,17 @@ public class CompositeReadableProperty<R> extends AbstractReadableProperty<Colle
     }
 
     /**
+     * Sets the new collection of values to be returned by {@link #getValue()}.
+     *
+     * @param values New collection of values.
+     */
+    private void setValue(Collection<R> values) {
+        Collection<R> oldValues = this.values;
+        this.values = values;
+        maybeNotifyListeners(oldValues, values);
+    }
+
+    /**
      * Updates the current collection of values from the sub-properties and notifies the listeners.
      */
     private void updateFromProperties() {
@@ -182,13 +243,18 @@ public class CompositeReadableProperty<R> extends AbstractReadableProperty<Colle
     }
 
     /**
-     * Sets the new collection of values to be returned by {@link #getValue()}.
-     *
-     * @param values New collection of values.
+     * Listener to changes in the sub-properties.
      */
-    private void setValue(Collection<R> values) {
-        Collection<R> oldValues = this.values;
-        this.values = values;
-        maybeNotifyListeners(oldValues, values);
+    private class ValueChangeAdapter implements ValueChangeListener<R> {
+
+        /**
+         * @see ValueChangeListener#valueChanged(ReadableProperty, Object, Object)
+         */
+        @Override
+        public void valueChanged(ReadableProperty<R> property, R oldValue, R newValue) {
+            if (!ValueUtils.areEqual(oldValue, newValue)) {
+                updateFromProperties();
+            }
+        }
     }
 }
