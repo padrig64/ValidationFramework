@@ -10,6 +10,7 @@
 * ReadOnlyPropertyWrapper now implements DeepDisposable and disposes the wrapped property by default
 * ReadOnlySetPropertyWrapper now implements DeepDisposable and disposes the wrapped set property by default
 * ReadOnlyListPropertyWrapper now implements DeepDisposable and disposes the wrapped list property by default
+* ReadOnlyMapPropertyWrapper now implements DeepDisposable and disposes the wrapped map property by default
 * CompositeReadableProperty now implements DeepDisposable and disposes the compound property by default
 * Added AbstractReadablePropertyWrapper which can be disposed to release all listeners and deep dispose the wrapped property
 * Added CompositeDisposable to dispose multiple entities at once

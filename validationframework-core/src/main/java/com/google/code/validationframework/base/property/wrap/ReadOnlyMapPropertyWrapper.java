@@ -25,12 +25,14 @@
 
 package com.google.code.validationframework.base.property.wrap;
 
+import com.google.code.validationframework.api.common.DeepDisposable;
 import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.api.property.MapValueChangeListener;
 import com.google.code.validationframework.api.property.ReadableMapProperty;
 import com.google.code.validationframework.base.property.AbstractReadableMapProperty;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
@@ -44,57 +46,76 @@ import java.util.Set;
  * @param <K> Type of keys maintained by this map property.
  * @param <R> Type of mapped values in this map property.
  */
-public class ReadOnlyMapPropertyWrapper<K, R> extends AbstractReadableMapProperty<K, R> implements Disposable {
-
-    /**
-     * Entity responsible for forwarding the change events from the wrapped map property to the listeners of the
-     * read-only wrapper.
-     */
-    private class MapValueChangeForwarder implements MapValueChangeListener<K, R> {
-
-        @Override
-        public void valuesAdded(ReadableMapProperty<K, R> mapProperty, Map<K, R> newValues) {
-            doNotifyListenersOfAddedValues(newValues);
-        }
-
-        @Override
-        public void valuesChanged(ReadableMapProperty<K, R> mapProperty, Map<K, R> oldValues, Map<K, R> newValues) {
-            doNotifyListenersOfChangedValues(oldValues, newValues);
-        }
-
-        @Override
-        public void valuesRemoved(ReadableMapProperty<K, R> mapProperty, Map<K, R> oldValues) {
-            doNotifyListenersOfRemovedValues(oldValues);
-        }
-    }
-
-    /**
-     * Wrapped map property.
-     */
-    private final ReadableMapProperty<K, R> wrappedMapProperty;
+public class ReadOnlyMapPropertyWrapper<K, R> extends AbstractReadableMapProperty<K, R> implements DeepDisposable {
 
     /**
      * Listener to changes on the wrapped property.
      */
     private final MapValueChangeListener<K, R> changeAdapter = new MapValueChangeForwarder();
 
+    private boolean deepDispose;
+
+    /**
+     * Wrapped map property.
+     */
+    private ReadableMapProperty<K, R> wrappedMapProperty;
+
+    /**
+     * Constructor specifying the map property to be wrapped, typically a map property that is both readable and
+     * writable.
+     * <p/>
+     * The wrapped map property will be disposed whenever this map property is disposed.
+     *
+     * @param wrappedMapProperty Map property to be wrapped.
+     */
+    public ReadOnlyMapPropertyWrapper(ReadableMapProperty<K, R> wrappedMapProperty) {
+        this(wrappedMapProperty, true);
+    }
+
     /**
      * Constructor specifying the map property to be wrapped, typically a map property that is both readable and
      * writable.
      *
      * @param wrappedMapProperty Map property to be wrapped.
+     * @param deepDispose        True to dispose the wrapped map property whenever this map property is disposed, false
+     *                           otherwise.
      */
-    public ReadOnlyMapPropertyWrapper(ReadableMapProperty<K, R> wrappedMapProperty) {
+    public ReadOnlyMapPropertyWrapper(ReadableMapProperty<K, R> wrappedMapProperty, boolean deepDispose) {
+        super();
         this.wrappedMapProperty = wrappedMapProperty;
         this.wrappedMapProperty.addValueChangeListener(changeAdapter);
+        this.deepDispose = deepDispose;
     }
 
     /**
-     * @see Disposable#dispose()
+     * @see DeepDisposable#getDeepDispose()
+     */
+    @Override
+    public boolean getDeepDispose() {
+        return deepDispose;
+    }
+
+    /**
+     * @see DeepDisposable#setDeepDispose(boolean)
+     */
+    @Override
+    public void setDeepDispose(boolean deepDispose) {
+        this.deepDispose = deepDispose;
+    }
+
+    /**
+     * @see DeepDisposable#dispose()
      */
     @Override
     public void dispose() {
-        wrappedMapProperty.removeValueChangeListener(changeAdapter);
+        super.dispose();
+        if (wrappedMapProperty != null) {
+            wrappedMapProperty.removeValueChangeListener(changeAdapter);
+            if (deepDispose && (wrappedMapProperty instanceof Disposable)) {
+                ((Disposable) wrappedMapProperty).dispose();
+            }
+            wrappedMapProperty = null;
+        }
     }
 
     /**
@@ -102,7 +123,13 @@ public class ReadOnlyMapPropertyWrapper<K, R> extends AbstractReadableMapPropert
      */
     @Override
     public int size() {
-        return wrappedMapProperty.size();
+        int size;
+        if (wrappedMapProperty == null) {
+            size = 0;
+        } else {
+            size = wrappedMapProperty.size();
+        }
+        return size;
     }
 
     /**
@@ -110,7 +137,7 @@ public class ReadOnlyMapPropertyWrapper<K, R> extends AbstractReadableMapPropert
      */
     @Override
     public boolean isEmpty() {
-        return wrappedMapProperty.isEmpty();
+        return (wrappedMapProperty == null) || wrappedMapProperty.isEmpty();
     }
 
     /**
@@ -118,7 +145,7 @@ public class ReadOnlyMapPropertyWrapper<K, R> extends AbstractReadableMapPropert
      */
     @Override
     public boolean containsKey(Object key) {
-        return wrappedMapProperty.containsKey(key);
+        return (wrappedMapProperty != null) && wrappedMapProperty.containsKey(key);
     }
 
     /**
@@ -126,7 +153,7 @@ public class ReadOnlyMapPropertyWrapper<K, R> extends AbstractReadableMapPropert
      */
     @Override
     public boolean containsValue(Object value) {
-        return wrappedMapProperty.containsValue(value);
+        return (wrappedMapProperty != null) && wrappedMapProperty.containsValue(value);
     }
 
     /**
@@ -134,7 +161,13 @@ public class ReadOnlyMapPropertyWrapper<K, R> extends AbstractReadableMapPropert
      */
     @Override
     public R get(Object key) {
-        return wrappedMapProperty.get(key);
+        R value;
+        if (wrappedMapProperty == null) {
+            value = null;
+        } else {
+            value = wrappedMapProperty.get(key);
+        }
+        return value;
     }
 
     /**
@@ -166,6 +199,34 @@ public class ReadOnlyMapPropertyWrapper<K, R> extends AbstractReadableMapPropert
      */
     @Override
     public Map<K, R> asUnmodifiableMap() {
-        return wrappedMapProperty.asUnmodifiableMap();
+        Map<K, R> unmodifiable;
+        if (wrappedMapProperty == null) {
+            unmodifiable = Collections.emptyMap();
+        } else {
+            unmodifiable = wrappedMapProperty.asUnmodifiableMap();
+        }
+        return unmodifiable;
+    }
+
+    /**
+     * Entity responsible for forwarding the change events from the wrapped map property to the listeners of the
+     * read-only wrapper.
+     */
+    private class MapValueChangeForwarder implements MapValueChangeListener<K, R> {
+
+        @Override
+        public void valuesAdded(ReadableMapProperty<K, R> mapProperty, Map<K, R> newValues) {
+            doNotifyListenersOfAddedValues(newValues);
+        }
+
+        @Override
+        public void valuesChanged(ReadableMapProperty<K, R> mapProperty, Map<K, R> oldValues, Map<K, R> newValues) {
+            doNotifyListenersOfChangedValues(oldValues, newValues);
+        }
+
+        @Override
+        public void valuesRemoved(ReadableMapProperty<K, R> mapProperty, Map<K, R> oldValues) {
+            doNotifyListenersOfRemovedValues(oldValues);
+        }
     }
 }
