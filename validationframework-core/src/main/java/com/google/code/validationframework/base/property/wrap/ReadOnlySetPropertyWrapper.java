@@ -103,7 +103,7 @@ public class ReadOnlySetPropertyWrapper<R> extends AbstractReadableSetProperty<R
     }
 
     /**
-     * @see Disposable#dispose()
+     * @see DeepDisposable#dispose()
      */
     @Override
     public void dispose() {
