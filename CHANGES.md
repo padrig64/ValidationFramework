@@ -7,6 +7,7 @@
 * AbstractReadableMapProperty now implements the Disposable interface: sub-classes should call super.dispose()
 * ChainedTransformer now implements DeepDisposable and disposes the chained transformers by default
 * NegateBooleanPropertyWrapper now implements DeepDisposable and disposes the wrapped property by default
+* ReadOnlyPropertyWrapper now implements DeepDisposable and disposes the wrapped property by default
 * CompositeReadableProperty now implements DeepDisposable and disposes the compound property by default
 * Added AbstractReadablePropertyWrapper which can be disposed to release all listeners and deep dispose the wrapped property
 * Added CompositeDisposable to dispose multiple entities at once

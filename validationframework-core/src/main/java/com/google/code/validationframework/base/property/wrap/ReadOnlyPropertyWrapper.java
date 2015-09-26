@@ -25,10 +25,7 @@
 
 package com.google.code.validationframework.base.property.wrap;
 
-import com.google.code.validationframework.api.property.ValueChangeListener;
 import com.google.code.validationframework.api.property.ReadableProperty;
-import com.google.code.validationframework.api.common.Disposable;
-import com.google.code.validationframework.base.property.AbstractReadableProperty;
 
 /**
  * Wrapper for properties (typically both readable/writable) to make them appear as read-only.
@@ -39,56 +36,42 @@ import com.google.code.validationframework.base.property.AbstractReadablePropert
  *
  * @param <R> Type of data that can be read from the wrapped property.
  */
-public class ReadOnlyPropertyWrapper<R> extends AbstractReadableProperty<R> implements Disposable {
+public class ReadOnlyPropertyWrapper<R> extends AbstractReadablePropertyWrapper<R> {
 
     /**
-     * Entity responsible for forwarding the change events from the wrapped property to the listeners of the read-only
-     * wrapper.
-     */
-    private class ValueChangeForwarder implements ValueChangeListener<R> {
-
-        /**
-         * @see ValueChangeListener#valueChanged(ReadableProperty, Object, Object)
-         */
-        @Override
-        public void valueChanged(ReadableProperty<R> property, R oldValue, R newValue) {
-            maybeNotifyListeners(oldValue, newValue);
-        }
-    }
-
-    /**
-     * Wrapped property.
-     */
-    private final ReadableProperty<R> wrappedProperty;
-
-    /**
-     * Listener to changes on the wrapped property.
-     */
-    private final ValueChangeListener<R> changeAdapter = new ValueChangeForwarder();
-
-    /**
-     * Constructor specifying the property to be wrapped, typically a property that is both readable and writable.
-     *
-     * @param wrappedProperty Property to be wrapped.
+     * @see AbstractReadablePropertyWrapper#AbstractReadablePropertyWrapper(ReadableProperty)
      */
     public ReadOnlyPropertyWrapper(ReadableProperty<R> wrappedProperty) {
-        this.wrappedProperty = wrappedProperty;
-        this.wrappedProperty.addValueChangeListener(changeAdapter);
+        super(wrappedProperty);
     }
 
     /**
-     * @see AbstractReadableProperty#getValue()
+     * @see AbstractReadablePropertyWrapper#AbstractReadablePropertyWrapper(ReadableProperty, boolean)
+     */
+    public ReadOnlyPropertyWrapper(ReadableProperty<R> wrappedProperty, boolean deepDispose) {
+        super(wrappedProperty, deepDispose);
+    }
+
+    /**
+     * @see AbstractReadablePropertyWrapper#wrappedPropertyValueChanged(ReadableProperty, Object, Object)
+     */
+    @Override
+    protected void wrappedPropertyValueChanged(ReadableProperty<R> property, R oldValue, R newValue) {
+        // Just forward the property change
+        maybeNotifyListeners(oldValue, newValue);
+    }
+
+    /**
+     * @see AbstractReadablePropertyWrapper#getValue()
      */
     @Override
     public R getValue() {
-        return wrappedProperty.getValue();
-    }
-
-    /**
-     * @see Disposable#dispose()
-     */
-    @Override
-    public void dispose() {
-        wrappedProperty.removeValueChangeListener(changeAdapter);
+        R value;
+        if (wrappedProperty == null) {
+            value = null;
+        } else {
+            value = wrappedProperty.getValue();
+        }
+        return value;
     }
 }
