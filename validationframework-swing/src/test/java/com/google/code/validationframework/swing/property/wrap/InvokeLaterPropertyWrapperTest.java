@@ -25,12 +25,18 @@
 
 package com.google.code.validationframework.swing.property.wrap;
 
+import com.google.code.validationframework.api.property.ReadableProperty;
 import com.google.code.validationframework.api.property.ReadableWritableProperty;
 import com.google.code.validationframework.api.property.ValueChangeListener;
 import com.google.code.validationframework.base.property.simple.SimpleBooleanProperty;
+import com.google.code.validationframework.base.property.simple.SimpleIntegerProperty;
 import com.google.code.validationframework.base.transform.OrBooleanAggregator;
-import org.junit.Ignore;
 import org.junit.Test;
+
+import javax.swing.SwingUtilities;
+import java.lang.reflect.InvocationTargetException;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import static com.google.code.validationframework.base.binding.Binder.read;
 import static org.junit.Assert.assertFalse;
@@ -46,76 +52,274 @@ import static org.mockito.Mockito.verifyZeroInteractions;
  */
 public class InvokeLaterPropertyWrapperTest {
 
-    @Ignore
     @Test
     public void testNoEventFired() throws InterruptedException {
-        ReadableWritableProperty<Boolean, Boolean> rolloverProperty1 = new SimpleBooleanProperty(false);
-        ReadableWritableProperty<Boolean, Boolean> rolloverProperty2 = new SimpleBooleanProperty(false);
-        ReadableWritableProperty<Boolean, Boolean> orRolloverProperty = new SimpleBooleanProperty(false);
-        read(rolloverProperty1, rolloverProperty2).transform(new OrBooleanAggregator()).write(orRolloverProperty);
+        final CountDownLatch finished = new CountDownLatch(1);
 
-        ReadableWritableProperty<Boolean, Boolean> globalRolloverProperty = new SimpleBooleanProperty(false);
-        read(new InvokeLaterPropertyWrapper<Boolean>(orRolloverProperty)).write(globalRolloverProperty);
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                ReadableWritableProperty<Boolean, Boolean> rolloverProperty1 = new SimpleBooleanProperty(false);
+                ReadableWritableProperty<Boolean, Boolean> rolloverProperty2 = new SimpleBooleanProperty(false);
+                ReadableWritableProperty<Boolean, Boolean> orRolloverProperty = new SimpleBooleanProperty(false);
+                read(rolloverProperty1, rolloverProperty2).transform(new OrBooleanAggregator()).write
+                        (orRolloverProperty);
 
-        ValueChangeListener<Boolean> rolloverListener = mock(ValueChangeListener.class);
-        globalRolloverProperty.addValueChangeListener(rolloverListener);
+                final ReadableWritableProperty<Boolean, Boolean> globalRolloverProperty = new SimpleBooleanProperty
+                        (false);
+                read(new InvokeLaterPropertyWrapper<Boolean>(orRolloverProperty)).write(globalRolloverProperty);
 
-        rolloverProperty1.setValue(true);
-        assertTrue(orRolloverProperty.getValue());
-        rolloverProperty1.setValue(false);
-        assertFalse(orRolloverProperty.getValue());
-        rolloverProperty2.setValue(true);
-        assertTrue(orRolloverProperty.getValue());
-        rolloverProperty2.setValue(false);
-        assertFalse(orRolloverProperty.getValue());
+                final ValueChangeListener<Boolean> rolloverListener = mock(ValueChangeListener.class);
+                globalRolloverProperty.addValueChangeListener(rolloverListener);
 
-        Thread.sleep(2000);
+                rolloverProperty1.setValue(true);
+                assertTrue(orRolloverProperty.getValue());
+                assertFalse(globalRolloverProperty.getValue());
+                rolloverProperty1.setValue(false);
+                assertFalse(orRolloverProperty.getValue());
+                assertFalse(globalRolloverProperty.getValue());
+                rolloverProperty2.setValue(true);
+                assertTrue(orRolloverProperty.getValue());
+                assertFalse(globalRolloverProperty.getValue());
+                rolloverProperty2.setValue(false);
+                assertFalse(orRolloverProperty.getValue());
+                assertFalse(globalRolloverProperty.getValue());
 
-        assertFalse(globalRolloverProperty.getValue());
-        verifyZeroInteractions(rolloverListener);
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        assertFalse(globalRolloverProperty.getValue());
+                        verifyZeroInteractions(rolloverListener);
+
+                        finished.countDown();
+                    }
+                });
+            }
+        });
+
+        finished.await(5, TimeUnit.SECONDS);
     }
 
-    @Ignore
     @Test
     public void testEventsFired() throws InterruptedException {
-        ReadableWritableProperty<Boolean, Boolean> rolloverProperty1 = new SimpleBooleanProperty(false);
-        ReadableWritableProperty<Boolean, Boolean> rolloverProperty2 = new SimpleBooleanProperty(false);
-        ReadableWritableProperty<Boolean, Boolean> orRolloverProperty = new SimpleBooleanProperty(false);
-        read(rolloverProperty1, rolloverProperty2).transform(new OrBooleanAggregator()).write(orRolloverProperty);
+        final CountDownLatch finished = new CountDownLatch(1);
 
-        ReadableWritableProperty<Boolean, Boolean> globalRolloverProperty = new SimpleBooleanProperty(false);
-        read(new InvokeLaterPropertyWrapper<Boolean>(orRolloverProperty)).write(globalRolloverProperty);
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                final ReadableWritableProperty<Boolean, Boolean> rolloverProperty1 = new SimpleBooleanProperty(false);
+                final ReadableWritableProperty<Boolean, Boolean> rolloverProperty2 = new SimpleBooleanProperty(false);
+                final ReadableWritableProperty<Boolean, Boolean> orRolloverProperty = new SimpleBooleanProperty(false);
+                read(rolloverProperty1, rolloverProperty2).transform(new OrBooleanAggregator()).write
+                        (orRolloverProperty);
 
-        ValueChangeListener<Boolean> rolloverListener = mock(ValueChangeListener.class);
-        globalRolloverProperty.addValueChangeListener(rolloverListener);
+                final ReadableWritableProperty<Boolean, Boolean> globalRolloverProperty = new SimpleBooleanProperty
+                        (false);
+                read(new InvokeLaterPropertyWrapper<Boolean>(orRolloverProperty)).write(globalRolloverProperty);
 
-        rolloverProperty1.setValue(true);
-        assertTrue(orRolloverProperty.getValue());
-        rolloverProperty1.setValue(false);
-        assertFalse(orRolloverProperty.getValue());
-        rolloverProperty2.setValue(true);
-        assertTrue(orRolloverProperty.getValue());
+                final ValueChangeListener<Boolean> rolloverListener = mock(ValueChangeListener.class);
+                globalRolloverProperty.addValueChangeListener(rolloverListener);
 
-        Thread.sleep(2000);
-        assertTrue(globalRolloverProperty.getValue());
+                rolloverProperty1.setValue(true);
+                assertTrue(orRolloverProperty.getValue());
+                assertFalse(globalRolloverProperty.getValue());
 
-        rolloverProperty2.setValue(false);
-        assertFalse(orRolloverProperty.getValue());
-        rolloverProperty1.setValue(true);
-        assertTrue(orRolloverProperty.getValue());
-        assertTrue(globalRolloverProperty.getValue());
+                rolloverProperty1.setValue(false);
+                assertFalse(orRolloverProperty.getValue());
+                assertFalse(globalRolloverProperty.getValue());
 
-        Thread.sleep(2000);
-        assertTrue(globalRolloverProperty.getValue());
+                rolloverProperty2.setValue(true);
+                assertTrue(orRolloverProperty.getValue());
+                assertFalse(globalRolloverProperty.getValue());
 
-        rolloverProperty1.setValue(false);
-        assertFalse(orRolloverProperty.getValue());
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        assertTrue(globalRolloverProperty.getValue());
 
-        Thread.sleep(2000);
-        assertFalse(globalRolloverProperty.getValue());
+                        rolloverProperty2.setValue(false);
+                        assertFalse(orRolloverProperty.getValue());
+                        assertTrue(globalRolloverProperty.getValue());
 
-        verify(rolloverListener, times(1)).valueChanged(globalRolloverProperty, false, true);
-        verify(rolloverListener, times(0)).valueChanged(globalRolloverProperty, true, false);
-        verifyNoMoreInteractions(rolloverListener);
+                        rolloverProperty1.setValue(true);
+                        assertTrue(orRolloverProperty.getValue());
+                        assertTrue(globalRolloverProperty.getValue());
+
+                        SwingUtilities.invokeLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                assertTrue(globalRolloverProperty.getValue());
+
+                                rolloverProperty1.setValue(false);
+                                assertFalse(orRolloverProperty.getValue());
+                                assertTrue(globalRolloverProperty.getValue());
+
+                                SwingUtilities.invokeLater(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        assertFalse(globalRolloverProperty.getValue());
+
+                                        verify(rolloverListener, times(1))
+                                                .valueChanged(globalRolloverProperty, false, true);
+                                        verify(rolloverListener, times(1))
+                                                .valueChanged(globalRolloverProperty, true, false);
+                                        verifyNoMoreInteractions(rolloverListener);
+
+                                        finished.countDown();
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+        });
+
+        finished.await(5, TimeUnit.SECONDS);
+    }
+
+    @Test
+    public void defaultDeepDispose() throws InterruptedException {
+        final SimpleIntegerProperty wrapped = mock(SimpleIntegerProperty.class);
+        InvokeLaterPropertyWrapper<Integer> wrapper = new InvokeLaterPropertyWrapper<Integer>(wrapped);
+
+        assertTrue(wrapper.getDeepDispose());
+
+        wrapper.dispose();
+        wrapper.dispose();
+        wrapper.dispose();
+
+        verify(wrapped).dispose();
+    }
+
+    @Test
+    public void noEventAfterDefaultDeepDispose() throws InterruptedException, InvocationTargetException {
+        final SimpleIntegerProperty wrapped = new SimpleIntegerProperty();
+        InvokeLaterPropertyWrapper<Integer> wrapper = new InvokeLaterPropertyWrapper<Integer>(wrapped);
+        wrapper.addValueChangeListener(new ValueChangeListener<Integer>() {
+            @Override
+            public void valueChanged(ReadableProperty<Integer> property, Integer oldValue, Integer newValue) {
+                // Should not happen
+                assertTrue(false);
+            }
+        });
+
+        assertTrue(wrapper.getDeepDispose());
+
+        wrapper.dispose();
+
+        // Modify wrapped value and check that no event is fired by the wrapper
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                wrapped.setValue(10);
+            }
+        });
+        final CountDownLatch finished = new CountDownLatch(1);
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                finished.countDown();
+            }
+        });
+        finished.await(5, TimeUnit.SECONDS);
+    }
+
+    @Test
+    public void setDeepDispose() {
+        SimpleIntegerProperty wrapped = mock(SimpleIntegerProperty.class);
+        InvokeLaterPropertyWrapper<Integer> wrapper = new InvokeLaterPropertyWrapper<Integer>(wrapped);
+        wrapper.setDeepDispose(true);
+
+        assertTrue(wrapper.getDeepDispose());
+
+        wrapper.dispose();
+        wrapper.dispose();
+        wrapper.dispose();
+
+        verify(wrapped).dispose();
+    }
+
+    @Test
+    public void noEventAfterSetDeepDispose() throws InterruptedException, InvocationTargetException {
+        final SimpleIntegerProperty wrapped = new SimpleIntegerProperty();
+        InvokeLaterPropertyWrapper<Integer> wrapper = new InvokeLaterPropertyWrapper<Integer>(wrapped);
+        wrapper.setDeepDispose(true);
+        wrapper.addValueChangeListener(new ValueChangeListener<Integer>() {
+            @Override
+            public void valueChanged(ReadableProperty<Integer> property, Integer oldValue, Integer newValue) {
+                // Should not happen
+                assertTrue(false);
+            }
+        });
+
+        assertTrue(wrapper.getDeepDispose());
+
+        wrapper.dispose();
+
+        // Modify wrapped value and check that no event is fired by the wrapper
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                wrapped.setValue(10);
+            }
+        });
+        final CountDownLatch finished = new CountDownLatch(1);
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                finished.countDown();
+            }
+        });
+        finished.await(5, TimeUnit.SECONDS);
+    }
+
+    @Test
+    public void setShallowDispose() {
+        SimpleIntegerProperty wrapped = mock(SimpleIntegerProperty.class);
+        InvokeLaterPropertyWrapper<Integer> wrapper = new InvokeLaterPropertyWrapper<Integer>(wrapped);
+        wrapper.setDeepDispose(false);
+
+        assertFalse(wrapper.getDeepDispose());
+
+        wrapper.dispose();
+        wrapper.dispose();
+        wrapper.dispose();
+
+        verify(wrapped, times(0)).dispose();
+    }
+
+    @Test
+    public void noEventAfterSetShallowDispose() throws InterruptedException, InvocationTargetException {
+        final SimpleIntegerProperty wrapped = new SimpleIntegerProperty();
+        InvokeLaterPropertyWrapper<Integer> wrapper = new InvokeLaterPropertyWrapper<Integer>(wrapped);
+        wrapper.setDeepDispose(false);
+        wrapper.addValueChangeListener(new ValueChangeListener<Integer>() {
+            @Override
+            public void valueChanged(ReadableProperty<Integer> property, Integer oldValue, Integer newValue) {
+                // Should not happen
+                assertTrue(false);
+            }
+        });
+
+        assertFalse(wrapper.getDeepDispose());
+
+        wrapper.dispose();
+
+        // Modify wrapped value and check that no event is fired by the wrapper
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                wrapped.setValue(10);
+            }
+        });
+        final CountDownLatch finished = new CountDownLatch(1);
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                finished.countDown();
+            }
+        });
+        finished.await(5, TimeUnit.SECONDS);
     }
 }
