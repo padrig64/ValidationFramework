@@ -39,33 +39,14 @@ import javax.swing.event.ListSelectionListener;
 public class JListSelectionChangedTrigger extends AbstractTrigger implements Disposable {
 
     /**
-     * Listener to selection changes in the selection model of the list, triggering the validation.
-     * <p/>
-     * Note that there is no need to track replacement of the selection model in the list as this is already done in
-     * {@link JList}.
+     * Listener to selection changes.
      */
-    private class SelectionAdapter implements ListSelectionListener {
-
-        /**
-         * @see ListSelectionListener#valueChanged(ListSelectionEvent)
-         */
-        @Override
-        public void valueChanged(ListSelectionEvent e) {
-            if (!e.getValueIsAdjusting()) {
-                fireTriggerEvent(new TriggerEvent(source));
-            }
-        }
-    }
+    private final SelectionAdapter selectionAdapter = new SelectionAdapter();
 
     /**
      * List to track selection changes.
      */
-    private final JList source;
-
-    /**
-     * Listener to selection changes.
-     */
-    private final SelectionAdapter selectionAdapter = new SelectionAdapter();
+    private JList source;
 
     /**
      * Constructor specifying the list whose selection changes are meant to trigger validation.
@@ -92,6 +73,28 @@ public class JListSelectionChangedTrigger extends AbstractTrigger implements Dis
      */
     @Override
     public void dispose() {
-        source.removeListSelectionListener(selectionAdapter);
+        if (source != null) {
+            source.removeListSelectionListener(selectionAdapter);
+            source = null;
+        }
+    }
+
+    /**
+     * Listener to selection changes in the selection model of the list, triggering the validation.
+     * <p/>
+     * Note that there is no need to track replacement of the selection model in the list as this is already done in
+     * {@link JList}.
+     */
+    private class SelectionAdapter implements ListSelectionListener {
+
+        /**
+         * @see ListSelectionListener#valueChanged(ListSelectionEvent)
+         */
+        @Override
+        public void valueChanged(ListSelectionEvent e) {
+            if (!e.getValueIsAdjusting()) {
+                fireTriggerEvent(new TriggerEvent(source));
+            }
+        }
     }
 }
