@@ -16,6 +16,7 @@
 * `InvokeLaterPropertyWrapper`'s `getValue()` method is not consistent with its value change events
 * Added `AbstractReadablePropertyWrapper` which can be disposed to release all listeners and deep dispose the wrapped property
 * Added `CompositeDisposable` to dispose multiple entities at once
+* Added `ConstantProperty` to hold a constant reference to a typically constant object/value
 * Deprecated the `ResultCollector` in favor of the `ReadableWritableProperty` (e.g. `SimpleProperty`)
 * Deprecated the `ResultCollectorValidator` in favor of the `GeneralValidator`
 * Deprecated the experimental `ResultCollectorValidatorBuilder` in favor of the `GeneralValidatorBuilder`
