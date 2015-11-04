@@ -28,7 +28,7 @@ package com.google.code.validationframework.swing.property;
 import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.base.property.AbstractReadableWritableProperty;
 
-import java.awt.Component;
+import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -42,29 +42,7 @@ import java.beans.PropertyChangeListener;
  * @param <C> Type of component.
  * @param <P> Type of bean property.
  */
-public abstract class AbstractComponentProperty<C extends Component, P> extends AbstractReadableWritableProperty<P,
-        P> implements Disposable {
-
-    /**
-     * Bean property tracker.
-     */
-    private class EventAdapter implements PropertyChangeListener {
-
-        /**
-         * @see PropertyChangeListener#propertyChange(PropertyChangeEvent)
-         */
-        @Override
-        public void propertyChange(PropertyChangeEvent evt) {
-            updatingFromComponent = true;
-            setValue(getPropertyValueFromComponent());
-            updatingFromComponent = false;
-        }
-    }
-
-    /**
-     * Component to track the bean property of.
-     */
-    protected final C component;
+public abstract class AbstractComponentProperty<C extends Component, P> extends AbstractReadableWritableProperty<P, P> {
 
     /**
      * Name of the property to be tracked.
@@ -75,6 +53,11 @@ public abstract class AbstractComponentProperty<C extends Component, P> extends 
      * Bean property tracker.
      */
     private final EventAdapter eventAdapter = new EventAdapter();
+
+    /**
+     * Component to track the bean property of.
+     */
+    protected C component;
 
     /**
      * Current property value.
@@ -111,8 +94,11 @@ public abstract class AbstractComponentProperty<C extends Component, P> extends 
      */
     @Override
     public void dispose() {
-        // Unhook from component
-        component.removePropertyChangeListener(propertyName, eventAdapter);
+        super.dispose();
+        if (component != null) {
+            component.removePropertyChangeListener(propertyName, eventAdapter);
+            component = null;
+        }
     }
 
     /**
@@ -133,13 +119,45 @@ public abstract class AbstractComponentProperty<C extends Component, P> extends 
                 P oldValue = this.value;
                 this.value = value;
                 maybeNotifyListeners(oldValue, this.value);
-            } else {
+            } else if (component != null) {
                 setPropertyValueToComponent(value);
             }
         }
     }
 
+    /**
+     * Reads the value from {@link #component}.
+     * <p/>
+     * Note that whenever this method is called, {@link #component} is not null.
+     *
+     * @return Component value.
+     */
     protected abstract P getPropertyValueFromComponent();
 
+    /**
+     * Sets the value to {@link #component}.
+     * <p/>
+     * Note that whenever this method is called, {@link #component} is not null.
+     *
+     * @param value Component value.
+     */
     protected abstract void setPropertyValueToComponent(P value);
+
+    /**
+     * Bean property tracker.
+     */
+    private class EventAdapter implements PropertyChangeListener {
+
+        /**
+         * @see PropertyChangeListener#propertyChange(PropertyChangeEvent)
+         */
+        @Override
+        public void propertyChange(PropertyChangeEvent evt) {
+            if (component != null) {
+                updatingFromComponent = true;
+                setValue(getPropertyValueFromComponent());
+                updatingFromComponent = false;
+            }
+        }
+    }
 }
