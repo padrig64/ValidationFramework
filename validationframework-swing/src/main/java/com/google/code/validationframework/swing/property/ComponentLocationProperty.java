@@ -28,8 +28,7 @@ package com.google.code.validationframework.swing.property;
 import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.base.property.AbstractReadableWritableProperty;
 
-import java.awt.Component;
-import java.awt.Point;
+import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
@@ -50,7 +49,79 @@ import java.awt.event.ComponentListener;
  * @see Component#getLocation()
  * @see Component#setLocation(Point)
  */
-public class ComponentLocationProperty extends AbstractReadableWritableProperty<Point, Point> implements Disposable {
+public class ComponentLocationProperty extends AbstractReadableWritableProperty<Point, Point> {
+
+    /**
+     * Location tracker.
+     */
+    private final EventAdapter eventAdapter = new EventAdapter();
+
+    /**
+     * Component to track the location of.
+     */
+    private Component component;
+
+    /**
+     * Current property value.
+     */
+    private Point value = null;
+
+    /**
+     * Flag indicating whether the {@link #setValue(Point)} call is due to a property change event.
+     */
+    private boolean updatingFromComponent = false;
+
+    /**
+     * Constructor specifying the component for which the property applies.
+     *
+     * @param component Component whose location property is to be tracked.
+     */
+    public ComponentLocationProperty(Component component) {
+        super();
+
+        // Hook to component
+        this.component = component;
+        this.component.addComponentListener(eventAdapter);
+
+        // Set initial value
+        value = component.getLocation();
+    }
+
+    /**
+     * @see Disposable#dispose()
+     */
+    @Override
+    public void dispose() {
+        super.dispose();
+        if (component != null) {
+            component.removeComponentListener(eventAdapter);
+            component = null;
+        }
+    }
+
+    /**
+     * @see AbstractReadableWritableProperty#getValue()
+     */
+    @Override
+    public Point getValue() {
+        return value;
+    }
+
+    /**
+     * @see AbstractReadableWritableProperty#setValue(Object)
+     */
+    @Override
+    public void setValue(Point value) {
+        if (!isNotifyingListeners()) {
+            if (updatingFromComponent) {
+                Point oldValue = this.value;
+                this.value = value;
+                maybeNotifyListeners(oldValue, this.value);
+            } else if (component != null) {
+                component.setLocation(value);
+            }
+        }
+    }
 
     /**
      * Location tracker.
@@ -93,77 +164,10 @@ public class ComponentLocationProperty extends AbstractReadableWritableProperty<
          * Sets the value of the property based on the location of the component.
          */
         private void updateFromComponent() {
-            updatingFromComponent = true;
-            setValue(component.getLocation());
-            updatingFromComponent = false;
-        }
-    }
-
-    /**
-     * Component to track the location of.
-     */
-    private final Component component;
-
-    /**
-     * Location tracker.
-     */
-    private final EventAdapter eventAdapter = new EventAdapter();
-
-    /**
-     * Current property value.
-     */
-    private Point value = null;
-
-    /**
-     * Flag indicating whether the {@link #setValue(Point)} call is due to a property change event.
-     */
-    private boolean updatingFromComponent = false;
-
-    /**
-     * Constructor specifying the component for which the property applies.
-     *
-     * @param component Component whose location property is to be tracked.
-     */
-    public ComponentLocationProperty(Component component) {
-        super();
-
-        // Hook to component
-        this.component = component;
-        this.component.addComponentListener(eventAdapter);
-
-        // Set initial value
-        value = component.getLocation();
-    }
-
-    /**
-     * @see Disposable#dispose()
-     */
-    @Override
-    public void dispose() {
-        // Unhook from component
-        component.removeComponentListener(eventAdapter);
-    }
-
-    /**
-     * @see AbstractReadableWritableProperty#getValue()
-     */
-    @Override
-    public Point getValue() {
-        return value;
-    }
-
-    /**
-     * @see AbstractReadableWritableProperty#setValue(Object)
-     */
-    @Override
-    public void setValue(Point value) {
-        if (!isNotifyingListeners()) {
-            if (updatingFromComponent) {
-                Point oldValue = this.value;
-                this.value = value;
-                maybeNotifyListeners(oldValue, this.value);
-            } else {
-                component.setLocation(value);
+            if (component != null) {
+                updatingFromComponent = true;
+                setValue(component.getLocation());
+                updatingFromComponent = false;
             }
         }
     }

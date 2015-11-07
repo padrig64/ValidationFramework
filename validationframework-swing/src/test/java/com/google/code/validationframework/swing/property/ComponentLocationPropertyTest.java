@@ -37,12 +37,10 @@ import java.awt.Container;
 import java.awt.Point;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 /**
  * @see ComponentLocationProperty
@@ -105,5 +103,50 @@ public class ComponentLocationPropertyTest {
         // Check exactly one event fired
         verify(listenerMock).valueChanged(property, new Point(0, 0), new Point(13, 14));
         verify(listenerMock).valueChanged(any(ComponentLocationProperty.class), any(Point.class), any(Point.class));
+    }
+
+    @Test
+    public void testDispose() {
+        JFrame frame = new JFrame();
+        frame.setLocation(0, 0);
+        ComponentLocationProperty property = new ComponentLocationProperty(frame);
+        ValueChangeListener<Point> listener = mock(ValueChangeListener.class);
+        property.addValueChangeListener(listener);
+
+        frame.setLocation(10, 10);
+        // Wait a little bit because the location may be applied asynchronously
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        frame.setLocation(20, 20);
+        // Wait a little bit because the location may be applied asynchronously
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        property.dispose();
+
+        frame.setLocation(30, 30);
+        // Wait a little bit because the location may be applied asynchronously
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        frame.setLocation(40, 40);
+        // Wait a little bit because the location may be applied asynchronously
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        verify(listener).valueChanged(property, new Point(0, 0), new Point(10, 10));
+        verify(listener).valueChanged(property, new Point(10, 10), new Point(20, 20));
+        verifyNoMoreInteractions(listener);
     }
 }
