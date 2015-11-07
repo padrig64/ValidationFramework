@@ -42,6 +42,7 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 /**
  * @see ActionProperty
@@ -120,6 +121,22 @@ public class ActionPropertyTest {
         verify(listenerMock).valueChanged(property, null, DESCRIPTION1);
         verify(listenerMock).valueChanged(property, DESCRIPTION1, DESCRIPTION2);
         verify(listenerMock, times(2)).valueChanged(any(ActionProperty.class), anyString(), anyString());
+    }
+
+    @Test
+    public void testDispose() {
+        Action action = new TestAction();
+        ActionProperty<String> property = new ActionProperty<String>(action, Action.NAME);
+        ValueChangeListener<String> listener = (ValueChangeListener<String>) mock(ValueChangeListener.class);
+        property.addValueChangeListener(listener);
+
+        property.setValue("First");
+        property.dispose();
+        property.setValue("Second");
+        property.setValue("Third");
+
+        verify(listener).valueChanged(property, null, "First");
+        verifyNoMoreInteractions(listener);
     }
 
     /**

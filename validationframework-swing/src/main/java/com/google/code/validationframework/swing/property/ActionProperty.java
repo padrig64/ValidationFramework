@@ -44,15 +44,9 @@ import java.beans.PropertyChangeListener;
  * Refer to {@link Action} for a list of supported property names, as well as the associated types and values.
  *
  * @param <P> Type of bean property.
- *
  * @see Action
  */
-public class ActionProperty<P> extends AbstractReadableWritableProperty<P, P> implements Disposable {
-
-    /**
-     * Action to track the bean property of.
-     */
-    protected final Action action;
+public class ActionProperty<P> extends AbstractReadableWritableProperty<P, P> {
 
     /**
      * Name of the property to be tracked.
@@ -65,11 +59,19 @@ public class ActionProperty<P> extends AbstractReadableWritableProperty<P, P> im
     private final EventAdapter eventAdapter = new EventAdapter();
 
     /**
+     * Transformer used to cast the property value to the required type.
+     */
+    private final Transformer<Object, P> castTransformer = new CastTransformer<Object, P>();
+
+    /**
+     * Action to track the bean property of.
+     */
+    protected Action action;
+
+    /**
      * Current property value.
      */
     private P value = null;
-
-    private final Transformer<Object, P> castTransformer = new CastTransformer<Object, P>();
 
     /**
      * Flag indicating whether the {@link #setValue(Object)} call is due to a property change event.
@@ -100,8 +102,11 @@ public class ActionProperty<P> extends AbstractReadableWritableProperty<P, P> im
      */
     @Override
     public void dispose() {
-        // Unhook from action
-        action.removePropertyChangeListener(eventAdapter);
+        super.dispose();
+        if (action != null) {
+            action.removePropertyChangeListener(eventAdapter);
+            action = null;
+        }
     }
 
     /**
@@ -128,23 +133,39 @@ public class ActionProperty<P> extends AbstractReadableWritableProperty<P, P> im
         }
     }
 
+    /**
+     * Effectively gets the value from the property of the action.
+     *
+     * @return Action property value.
+     */
     protected P getPropertyValueFromAction() {
         Object actionValue;
 
-        if ("enabled".equals(propertyName)) {
-            actionValue = action.isEnabled();
+        if (action == null) {
+            actionValue = null;
         } else {
-            actionValue = action.getValue(propertyName);
+            if ("enabled".equals(propertyName)) {
+                actionValue = action.isEnabled();
+            } else {
+                actionValue = action.getValue(propertyName);
+            }
         }
 
         return castTransformer.transform(actionValue);
     }
 
+    /**
+     * Effectively sets the value to the property of the action.
+     *
+     * @param value New action property value.
+     */
     protected void setPropertyValueToAction(P value) {
-        if ("enabled".equals(propertyName)) {
-            action.setEnabled(Boolean.TRUE.equals(value));
-        } else {
-            action.putValue(propertyName, value);
+        if (action != null) {
+            if ("enabled".equals(propertyName)) {
+                action.setEnabled(Boolean.TRUE.equals(value));
+            } else {
+                action.putValue(propertyName, value);
+            }
         }
     }
 

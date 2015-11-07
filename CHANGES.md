@@ -1,6 +1,6 @@
 # Version 4.0.0 (to be released)
 
-* Harmonized behavior of `dispose()` methods for properties => See below for potential breaking behavior changes
+* Harmonized behavior of `dispose()` methods for properties: see below for potential breaking behavior changes
 * `AbstractReadableProperty` now implements the `Disposable` interface: sub-classes should call `super.dispose()`
 * `AbstractReadableSetProperty` now implements the `Disposable` interface: sub-classes should call `super.dispose()`
 * `AbstractReadableListProperty` now implements the `Disposable` interface: sub-classes should call `super.dispose()`
