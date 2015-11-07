@@ -29,7 +29,7 @@ import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.base.property.AbstractReadableProperty;
 import com.google.code.validationframework.base.utils.ValueUtils;
 
-import java.awt.Component;
+import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
@@ -42,39 +42,7 @@ import java.awt.event.FocusListener;
  *
  * @see Component#isFocusOwner()
  */
-public class ComponentFocusedProperty extends AbstractReadableProperty<Boolean> implements Disposable {
-
-    /**
-     * Focus tracker.
-     */
-    private class FocusAdapter implements FocusListener {
-
-        /**
-         * @see FocusListener#focusGained(FocusEvent)
-         */
-        @Override
-        public void focusGained(FocusEvent e) {
-            setValue(true);
-        }
-
-        /**
-         * @see FocusListener#focusLost(FocusEvent)
-         */
-        @Override
-        public void focusLost(FocusEvent e) {
-            setValue(false);
-        }
-    }
-
-    /**
-     * Flag stating whether the component is focused or not.
-     */
-    private boolean focused = false;
-
-    /**
-     * Component whose focus is to be tracked.
-     */
-    private final Component component;
+public class ComponentFocusedProperty extends AbstractReadableProperty<Boolean> {
 
     /**
      * Focus tracker.
@@ -82,11 +50,22 @@ public class ComponentFocusedProperty extends AbstractReadableProperty<Boolean> 
     private final FocusListener focusAdapter = new FocusAdapter();
 
     /**
+     * Component whose focus is to be tracked.
+     */
+    private Component component;
+
+    /**
+     * Flag stating whether the component is focused or not.
+     */
+    private boolean focused = false;
+
+    /**
      * Constructor specifying the component whose focus is to be tracked.
      *
      * @param component Component whose focus is to be tracked.
      */
     public ComponentFocusedProperty(Component component) {
+        super();
         this.component = component;
         this.component.addFocusListener(focusAdapter);
 
@@ -99,7 +78,11 @@ public class ComponentFocusedProperty extends AbstractReadableProperty<Boolean> 
      */
     @Override
     public void dispose() {
-        component.removeFocusListener(focusAdapter);
+        super.dispose();
+        if (component != null) {
+            component.removeFocusListener(focusAdapter);
+            component = null;
+        }
     }
 
     /**
@@ -120,6 +103,28 @@ public class ComponentFocusedProperty extends AbstractReadableProperty<Boolean> 
             boolean oldValue = this.focused;
             this.focused = focused;
             maybeNotifyListeners(oldValue, focused);
+        }
+    }
+
+    /**
+     * Focus tracker.
+     */
+    private class FocusAdapter implements FocusListener {
+
+        /**
+         * @see FocusListener#focusGained(FocusEvent)
+         */
+        @Override
+        public void focusGained(FocusEvent e) {
+            setValue(true);
+        }
+
+        /**
+         * @see FocusListener#focusLost(FocusEvent)
+         */
+        @Override
+        public void focusLost(FocusEvent e) {
+            setValue(false);
         }
     }
 }
