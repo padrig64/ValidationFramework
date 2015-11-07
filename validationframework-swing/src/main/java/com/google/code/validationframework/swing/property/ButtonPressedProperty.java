@@ -28,7 +28,7 @@ package com.google.code.validationframework.swing.property;
 import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.base.property.AbstractReadableProperty;
 
-import javax.swing.AbstractButton;
+import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -42,31 +42,7 @@ import javax.swing.event.ChangeListener;
  * @see JMenuItemPressedProperty
  * @see JToggleButtonPressedProperty
  */
-public class ButtonPressedProperty extends AbstractReadableProperty<Boolean> implements Disposable {
-
-    /**
-     * Pressed state tracker.
-     */
-    private class EventAdapter implements ChangeListener {
-
-        /**
-         * @see ChangeListener#stateChanged(ChangeEvent)
-         */
-        @Override
-        public void stateChanged(ChangeEvent e) {
-            setValue(button.getModel().isPressed());
-        }
-    }
-
-    /**
-     * Flag stating whether the button is pressed or not.
-     */
-    private boolean pressed = false;
-
-    /**
-     * Button whose pressed state is to be tracked.
-     */
-    private final AbstractButton button;
+public class ButtonPressedProperty extends AbstractReadableProperty<Boolean> {
 
     /**
      * Pressed state tracker.
@@ -74,11 +50,22 @@ public class ButtonPressedProperty extends AbstractReadableProperty<Boolean> imp
     private final ChangeListener pressedStateAdapter = new EventAdapter();
 
     /**
+     * Button whose pressed state is to be tracked.
+     */
+    private AbstractButton button;
+
+    /**
+     * Flag stating whether the button is pressed or not.
+     */
+    private boolean pressed = false;
+
+    /**
      * Constructor specifying the button whose pressed state is to be tracked.
      *
      * @param button Button whose pressed state is to be tracked.
      */
     public ButtonPressedProperty(AbstractButton button) {
+        super();
         this.button = button;
         this.button.addChangeListener(pressedStateAdapter);
 
@@ -91,7 +78,11 @@ public class ButtonPressedProperty extends AbstractReadableProperty<Boolean> imp
      */
     @Override
     public void dispose() {
-        button.removeChangeListener(pressedStateAdapter);
+        super.dispose();
+        if (button != null) {
+            button.removeChangeListener(pressedStateAdapter);
+            button = null;
+        }
     }
 
     /**
@@ -111,5 +102,21 @@ public class ButtonPressedProperty extends AbstractReadableProperty<Boolean> imp
         boolean oldValue = this.pressed;
         this.pressed = pressed;
         maybeNotifyListeners(oldValue, pressed);
+    }
+
+    /**
+     * Pressed state tracker.
+     */
+    private class EventAdapter implements ChangeListener {
+
+        /**
+         * @see ChangeListener#stateChanged(ChangeEvent)
+         */
+        @Override
+        public void stateChanged(ChangeEvent e) {
+            if (button != null) {
+                setValue(button.getModel().isPressed());
+            }
+        }
     }
 }
