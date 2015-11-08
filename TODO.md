@@ -3,7 +3,7 @@
 * Painting of decoration when decorated component is still (0,0,0,0) and invalid
 * Painting of translucent decorations on OS X
 * Icon decoration steals mouse event even outside clipping bounds
-* Inconsistent behavior of dispose() methods
+* Inconsistent behavior of dispose() methods: test setting value before/after dispose() (from property, from component), test listener before/after dispose(), test multiple dispose() 
 
 # Ideas for the short term
 
