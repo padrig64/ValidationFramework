@@ -53,6 +53,9 @@ public class ButtonPressedPropertyTest {
         button.getModel().setPressed(false);
         button.getModel().setPressed(true);
 
+        property.dispose();
+        property.dispose();
+
         verify(listener).valueChanged(property, false, true);
         verify(listener).valueChanged(property, true, false);
         verifyNoMoreInteractions(listener);

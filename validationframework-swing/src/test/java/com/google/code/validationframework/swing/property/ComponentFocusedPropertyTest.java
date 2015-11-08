@@ -98,6 +98,14 @@ public class ComponentFocusedPropertyTest {
         focus(buttonUnderTest);
         focus(otherButton);
 
+        SwingUtilities.invokeAndWait(new Runnable() {
+            @Override
+            public void run() {
+                propertyUnderTest.dispose();
+                propertyUnderTest.dispose();
+            }
+        });
+
         verify(listener).valueChanged(propertyUnderTest, false, true);
         verify(listener).valueChanged(propertyUnderTest, true, false);
         verifyNoMoreInteractions(listener);

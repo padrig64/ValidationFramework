@@ -135,6 +135,9 @@ public class ActionPropertyTest {
         property.setValue("Second");
         property.setValue("Third");
 
+        property.dispose();
+        property.dispose();
+
         verify(listener).valueChanged(property, null, "First");
         verifyNoMoreInteractions(listener);
     }

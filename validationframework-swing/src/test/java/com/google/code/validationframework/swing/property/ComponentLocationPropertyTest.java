@@ -145,6 +145,9 @@ public class ComponentLocationPropertyTest {
             e.printStackTrace();
         }
 
+        property.dispose();
+        property.dispose();
+
         verify(listener).valueChanged(property, new Point(0, 0), new Point(10, 10));
         verify(listener).valueChanged(property, new Point(10, 10), new Point(20, 20));
         verifyNoMoreInteractions(listener);
