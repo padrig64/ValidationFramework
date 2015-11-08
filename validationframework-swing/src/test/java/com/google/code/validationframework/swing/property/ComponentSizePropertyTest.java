@@ -130,7 +130,7 @@ public class ComponentSizePropertyTest {
     private void setSize(Component component, Dimension size) {
         component.setSize(size);
 
-        // Wait a little bit because the size
+        // Wait a little bit
         try {
             Thread.sleep(100);
         } catch (InterruptedException e) {
