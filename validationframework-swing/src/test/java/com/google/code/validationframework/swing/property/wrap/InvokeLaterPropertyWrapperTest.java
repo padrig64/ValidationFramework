@@ -179,147 +179,138 @@ public class InvokeLaterPropertyWrapperTest {
     }
 
     @Test
-    public void defaultDeepDispose() throws InterruptedException {
-        final SimpleIntegerProperty wrapped = mock(SimpleIntegerProperty.class);
-        InvokeLaterPropertyWrapper<Integer> wrapper = new InvokeLaterPropertyWrapper<Integer>(wrapped);
+    public void defaultDeepDispose() throws InterruptedException, InvocationTargetException {
+        SwingUtilities.invokeAndWait(new Runnable() {
+            @Override
+            public void run() {
+                final SimpleIntegerProperty wrapped = mock(SimpleIntegerProperty.class);
+                InvokeLaterPropertyWrapper<Integer> wrapper = new InvokeLaterPropertyWrapper<Integer>(wrapped);
 
-        assertTrue(wrapper.getDeepDispose());
+                assertTrue(wrapper.getDeepDispose());
 
-        wrapper.dispose();
-        wrapper.dispose();
-        wrapper.dispose();
+                wrapper.dispose();
+                wrapper.dispose();
+                wrapper.dispose();
 
-        verify(wrapped).dispose();
+                verify(wrapped).dispose();
+            }
+        });
     }
 
     @Test
     public void noEventAfterDefaultDeepDispose() throws InterruptedException, InvocationTargetException {
-        final SimpleIntegerProperty wrapped = new SimpleIntegerProperty();
-        InvokeLaterPropertyWrapper<Integer> wrapper = new InvokeLaterPropertyWrapper<Integer>(wrapped);
-        wrapper.addValueChangeListener(new ValueChangeListener<Integer>() {
-            @Override
-            public void valueChanged(ReadableProperty<Integer> property, Integer oldValue, Integer newValue) {
-                // Should not happen
-                assertTrue(false);
-            }
-        });
-
-        assertTrue(wrapper.getDeepDispose());
-
-        wrapper.dispose();
-
-        // Modify wrapped value and check that no event is fired by the wrapper
-        SwingUtilities.invokeLater(new Runnable() {
+        SwingUtilities.invokeAndWait(new Runnable() {
             @Override
             public void run() {
+                final SimpleIntegerProperty wrapped = new SimpleIntegerProperty();
+                InvokeLaterPropertyWrapper<Integer> wrapper = new InvokeLaterPropertyWrapper<Integer>(wrapped);
+                wrapper.addValueChangeListener(new ValueChangeListener<Integer>() {
+                    @Override
+                    public void valueChanged(ReadableProperty<Integer> property, Integer oldValue, Integer newValue) {
+                        // Should not happen
+                        assertTrue(false);
+                    }
+                });
+
+                assertTrue(wrapper.getDeepDispose());
+
+                wrapper.dispose();
+
+                // Modify wrapped value and check that no event is fired by the wrapper
                 wrapped.setValue(10);
             }
         });
-        final CountDownLatch finished = new CountDownLatch(1);
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                finished.countDown();
-            }
-        });
-        finished.await(5, TimeUnit.SECONDS);
     }
 
     @Test
-    public void setDeepDispose() {
-        SimpleIntegerProperty wrapped = mock(SimpleIntegerProperty.class);
-        InvokeLaterPropertyWrapper<Integer> wrapper = new InvokeLaterPropertyWrapper<Integer>(wrapped);
-        wrapper.setDeepDispose(true);
+    public void setDeepDispose() throws InvocationTargetException, InterruptedException {
+        SwingUtilities.invokeAndWait(new Runnable() {
+            @Override
+            public void run() {
+                SimpleIntegerProperty wrapped = mock(SimpleIntegerProperty.class);
+                InvokeLaterPropertyWrapper<Integer> wrapper = new InvokeLaterPropertyWrapper<Integer>(wrapped);
+                wrapper.setDeepDispose(true);
 
-        assertTrue(wrapper.getDeepDispose());
+                assertTrue(wrapper.getDeepDispose());
 
-        wrapper.dispose();
-        wrapper.dispose();
-        wrapper.dispose();
+                wrapper.dispose();
+                wrapper.dispose();
+                wrapper.dispose();
 
-        verify(wrapped).dispose();
+                verify(wrapped).dispose();
+            }
+        });
     }
 
     @Test
     public void noEventAfterSetDeepDispose() throws InterruptedException, InvocationTargetException {
-        final SimpleIntegerProperty wrapped = new SimpleIntegerProperty();
-        InvokeLaterPropertyWrapper<Integer> wrapper = new InvokeLaterPropertyWrapper<Integer>(wrapped);
-        wrapper.setDeepDispose(true);
-        wrapper.addValueChangeListener(new ValueChangeListener<Integer>() {
-            @Override
-            public void valueChanged(ReadableProperty<Integer> property, Integer oldValue, Integer newValue) {
-                // Should not happen
-                assertTrue(false);
-            }
-        });
-
-        assertTrue(wrapper.getDeepDispose());
-
-        wrapper.dispose();
-
-        // Modify wrapped value and check that no event is fired by the wrapper
-        SwingUtilities.invokeLater(new Runnable() {
+        SwingUtilities.invokeAndWait(new Runnable() {
             @Override
             public void run() {
+                final SimpleIntegerProperty wrapped = new SimpleIntegerProperty();
+                InvokeLaterPropertyWrapper<Integer> wrapper = new InvokeLaterPropertyWrapper<Integer>(wrapped);
+                wrapper.setDeepDispose(true);
+                wrapper.addValueChangeListener(new ValueChangeListener<Integer>() {
+                    @Override
+                    public void valueChanged(ReadableProperty<Integer> property, Integer oldValue, Integer newValue) {
+                        // Should not happen
+                        assertTrue(false);
+                    }
+                });
+
+                assertTrue(wrapper.getDeepDispose());
+
+                wrapper.dispose();
+
+                // Modify wrapped value and check that no event is fired by the wrapper
                 wrapped.setValue(10);
             }
         });
-        final CountDownLatch finished = new CountDownLatch(1);
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                finished.countDown();
-            }
-        });
-        finished.await(5, TimeUnit.SECONDS);
     }
 
     @Test
-    public void setShallowDispose() {
-        SimpleIntegerProperty wrapped = mock(SimpleIntegerProperty.class);
-        InvokeLaterPropertyWrapper<Integer> wrapper = new InvokeLaterPropertyWrapper<Integer>(wrapped);
-        wrapper.setDeepDispose(false);
+    public void setShallowDispose() throws InvocationTargetException, InterruptedException {
+        SwingUtilities.invokeAndWait(new Runnable() {
+            @Override
+            public void run() {
+                SimpleIntegerProperty wrapped = mock(SimpleIntegerProperty.class);
+                InvokeLaterPropertyWrapper<Integer> wrapper = new InvokeLaterPropertyWrapper<Integer>(wrapped);
+                wrapper.setDeepDispose(false);
 
-        assertFalse(wrapper.getDeepDispose());
+                assertFalse(wrapper.getDeepDispose());
 
-        wrapper.dispose();
-        wrapper.dispose();
-        wrapper.dispose();
+                wrapper.dispose();
+                wrapper.dispose();
+                wrapper.dispose();
 
-        verify(wrapped, times(0)).dispose();
+                verify(wrapped, times(0)).dispose();
+            }
+        });
     }
 
     @Test
     public void noEventAfterSetShallowDispose() throws InterruptedException, InvocationTargetException {
-        final SimpleIntegerProperty wrapped = new SimpleIntegerProperty();
-        InvokeLaterPropertyWrapper<Integer> wrapper = new InvokeLaterPropertyWrapper<Integer>(wrapped);
-        wrapper.setDeepDispose(false);
-        wrapper.addValueChangeListener(new ValueChangeListener<Integer>() {
-            @Override
-            public void valueChanged(ReadableProperty<Integer> property, Integer oldValue, Integer newValue) {
-                // Should not happen
-                assertTrue(false);
-            }
-        });
-
-        assertFalse(wrapper.getDeepDispose());
-
-        wrapper.dispose();
-
-        // Modify wrapped value and check that no event is fired by the wrapper
-        SwingUtilities.invokeLater(new Runnable() {
+        SwingUtilities.invokeAndWait(new Runnable() {
             @Override
             public void run() {
+                final SimpleIntegerProperty wrapped = new SimpleIntegerProperty();
+                InvokeLaterPropertyWrapper<Integer> wrapper = new InvokeLaterPropertyWrapper<Integer>(wrapped);
+                wrapper.setDeepDispose(false);
+                wrapper.addValueChangeListener(new ValueChangeListener<Integer>() {
+                    @Override
+                    public void valueChanged(ReadableProperty<Integer> property, Integer oldValue, Integer newValue) {
+                        // Should not happen
+                        assertTrue(false);
+                    }
+                });
+
+                assertFalse(wrapper.getDeepDispose());
+
+                wrapper.dispose();
+
+                // Modify wrapped value and check that no event is fired by the wrapper
                 wrapped.setValue(10);
             }
         });
-        final CountDownLatch finished = new CountDownLatch(1);
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                finished.countDown();
-            }
-        });
-        finished.await(5, TimeUnit.SECONDS);
     }
 }
