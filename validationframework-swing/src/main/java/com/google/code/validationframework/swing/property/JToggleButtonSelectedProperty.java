@@ -28,7 +28,7 @@ package com.google.code.validationframework.swing.property;
 import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.base.property.AbstractReadableWritableProperty;
 
-import javax.swing.JToggleButton;
+import javax.swing.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
@@ -45,34 +45,17 @@ import java.awt.event.ItemListener;
  * @see JToggleButton#isSelected()
  * @see JToggleButton#setSelected(boolean)
  */
-public class JToggleButtonSelectedProperty extends AbstractReadableWritableProperty<Boolean,
-        Boolean> implements Disposable {
-
-    /**
-     * Selected index tracker.
-     */
-    private class EventAdapter implements ItemListener {
-
-        /**
-         * @see ItemListener#itemStateChanged(ItemEvent)
-         */
-        @Override
-        public void itemStateChanged(ItemEvent e) {
-            updatingFromComponent = true;
-            setValue(component.isSelected());
-            updatingFromComponent = false;
-        }
-    }
-
-    /**
-     * Component to track the selected state for.
-     */
-    private final JToggleButton component;
+public class JToggleButtonSelectedProperty extends AbstractReadableWritableProperty<Boolean, Boolean> {
 
     /**
      * Selected index tracker.
      */
     private final EventAdapter eventAdapter = new EventAdapter();
+
+    /**
+     * Component to track the selected state for.
+     */
+    private JToggleButton component;
 
     /**
      * Current property value.
@@ -105,8 +88,11 @@ public class JToggleButtonSelectedProperty extends AbstractReadableWritablePrope
      */
     @Override
     public void dispose() {
-        // Unhook from component
-        component.removeItemListener(eventAdapter);
+        super.dispose();
+        if (component != null) {
+            component.removeItemListener(eventAdapter);
+            component = null;
+        }
     }
 
     /**
@@ -127,8 +113,26 @@ public class JToggleButtonSelectedProperty extends AbstractReadableWritablePrope
                 Boolean oldValue = this.value;
                 this.value = value;
                 maybeNotifyListeners(oldValue, this.value);
-            } else {
+            } else if (component != null) {
                 component.setSelected(value);
+            }
+        }
+    }
+
+    /**
+     * Selected index tracker.
+     */
+    private class EventAdapter implements ItemListener {
+
+        /**
+         * @see ItemListener#itemStateChanged(ItemEvent)
+         */
+        @Override
+        public void itemStateChanged(ItemEvent e) {
+            if (component != null) {
+                updatingFromComponent = true;
+                setValue(component.isSelected());
+                updatingFromComponent = false;
             }
         }
     }

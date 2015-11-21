@@ -37,6 +37,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 /**
  * @see JToggleButtonSelectedProperty
@@ -77,5 +78,29 @@ public class JToggleButtonSelectedPropertyTest {
         // Check exactly one event fired
         verify(listenerMock).valueChanged(property, true, false);
         verify(listenerMock).valueChanged(any(JToggleButtonSelectedProperty.class), anyBoolean(), anyBoolean());
+    }
+
+    @Test
+    public void testDispose() {
+        JToggleButton component = new JToggleButton();
+        JToggleButtonSelectedProperty property = new JToggleButtonSelectedProperty(component);
+        ValueChangeListener<Boolean> listener = mock(ValueChangeListener.class);
+        property.addValueChangeListener(listener);
+
+        component.setSelected(true);
+        component.setSelected(false);
+
+        property.dispose();
+
+        component.setSelected(true);
+        component.setSelected(false);
+
+        property.dispose();
+        property.dispose();
+        property.dispose();
+
+        verify(listener).valueChanged(property, false, true);
+        verify(listener).valueChanged(property, true, false);
+        verifyNoMoreInteractions(listener);
     }
 }
