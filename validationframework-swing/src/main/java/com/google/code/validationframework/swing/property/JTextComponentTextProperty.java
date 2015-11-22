@@ -52,7 +52,91 @@ import java.beans.PropertyChangeListener;
  * @see javax.swing.text.AbstractDocument#replace(int, int, String, javax.swing.text.AttributeSet)
  * @see Document
  */
-public class JTextComponentTextProperty extends AbstractReadableWritableProperty<String, String> implements Disposable {
+public class JTextComponentTextProperty extends AbstractReadableWritableProperty<String, String> {
+
+    /**
+     * Document changes tracker.
+     */
+    private final ContentAdapter documentTracker = new ContentAdapter();
+
+    /**
+     * Text component this property applies to.
+     */
+    private JTextComponent textComponent;
+
+    /**
+     * Property value.
+     */
+    private String value = null;
+
+    /**
+     * Flag indicating whether the call to {@link #setValue(String)} comes from the document change.
+     * <p/>
+     * This is used to distinguish whether the call to {@link #setValue(String)} is direct (call from the outside) or
+     * indirect (change of the document itself from the outside or by the user).
+     */
+    private boolean settingPropertyValue = false;
+
+    private boolean updatingFromComponent = false;
+
+    /**
+     * Constructor specifying the text component to which the property applies.
+     *
+     * @param textComponent Text component to which the property applies.
+     */
+    public JTextComponentTextProperty(JTextComponent textComponent) {
+        super();
+        this.textComponent = textComponent;
+
+        // Hook to component
+        textComponent.addPropertyChangeListener("document", documentTracker);
+        textComponent.getDocument().addDocumentListener(documentTracker);
+
+        // Set initial value
+        this.value = textComponent.getText();
+    }
+
+    /**
+     * @see Disposable#dispose()
+     */
+    @Override
+    public void dispose() {
+        super.dispose();
+        if (textComponent != null) {
+            textComponent.removePropertyChangeListener("document", documentTracker);
+            textComponent.getDocument().removeDocumentListener(documentTracker);
+            textComponent = null;
+        }
+    }
+
+    /**
+     * @see AbstractReadableWritableProperty#getValue()
+     */
+    @Override
+    public String getValue() {
+        return value;
+    }
+
+    /**
+     * @see AbstractReadableWritableProperty#setValue(Object)
+     */
+    @Override
+    public void setValue(String value) {
+        if (!isNotifyingListeners()) {
+            settingPropertyValue = true;
+            try {
+                String oldValue = this.value;
+                this.value = value;
+                if (!updatingFromComponent && (textComponent != null)) {
+                    // Use setText() because it already does all what is needed to update the document
+                    textComponent.setText(value);
+                }
+                maybeNotifyListeners(oldValue, value);
+            } finally {
+                settingPropertyValue = false;
+            }
+        }
+    }
 
     /**
      * Entity tracking changes of/in the document.
@@ -108,93 +192,13 @@ public class JTextComponentTextProperty extends AbstractReadableWritableProperty
          * Updates the value of the property, possibly notifying the value change listeners.
          */
         private void updateValue() {
-            if (!settingPropertyValue) {
+            if ((textComponent != null) && !settingPropertyValue) {
                 updatingFromComponent = true;
                 try {
                     setValue(textComponent.getText());
                 } finally {
                     updatingFromComponent = false;
                 }
-            }
-        }
-    }
-
-    /**
-     * Text component this property applies to.
-     */
-    private final JTextComponent textComponent;
-
-    /**
-     * Document changes tracker.
-     */
-    private final ContentAdapter documentTracker = new ContentAdapter();
-
-    /**
-     * Property value.
-     */
-    private String value = null;
-
-    /**
-     * Flag indicating whether the call to {@link #setValue(String)} comes from the document change.
-     * <p/>
-     * This is used to distinguish whether the call to {@link #setValue(String)} is direct (call from the outside) or
-     * indirect (change of the document itself from the outside or by the user).
-     */
-    private boolean settingPropertyValue = false;
-
-    private boolean updatingFromComponent = false;
-
-    /**
-     * Constructor specifying the text component to which the property applies.
-     *
-     * @param textComponent Text component to which the property applies.
-     */
-    public JTextComponentTextProperty(JTextComponent textComponent) {
-        this.textComponent = textComponent;
-
-        // Hook to component
-        textComponent.addPropertyChangeListener("document", documentTracker);
-        textComponent.getDocument().addDocumentListener(documentTracker);
-
-        // Set initial value
-        this.value = textComponent.getText();
-    }
-
-    /**
-     * @see Disposable#dispose()
-     */
-    @Override
-    public void dispose() {
-        // Unhook from component
-        textComponent.removePropertyChangeListener("document", documentTracker);
-        textComponent.getDocument().removeDocumentListener(documentTracker);
-    }
-
-    /**
-     * @see AbstractReadableWritableProperty#getValue()
-     */
-    @Override
-    public String getValue() {
-        return value;
-    }
-
-    /**
-     * @see AbstractReadableWritableProperty#setValue(Object)
-     */
-    @Override
-    public void setValue(String value) {
-        if (!isNotifyingListeners()) {
-            settingPropertyValue = true;
-            try {
-                String oldValue = this.value;
-                this.value = value;
-                if (!updatingFromComponent) {
-                    // Use setText() because it already does all what is needed to update the document
-                    textComponent.setText(value);
-                }
-                maybeNotifyListeners(oldValue, value);
-            } finally {
-                settingPropertyValue = false;
             }
         }
     }
