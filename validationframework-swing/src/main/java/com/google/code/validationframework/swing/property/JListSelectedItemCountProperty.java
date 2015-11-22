@@ -28,8 +28,7 @@ package com.google.code.validationframework.swing.property;
 import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.base.property.AbstractReadableProperty;
 
-import javax.swing.JList;
-import javax.swing.ListSelectionModel;
+import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.beans.PropertyChangeEvent;
@@ -38,7 +37,7 @@ import java.beans.PropertyChangeListener;
 /**
  * Read-only property representing the number of selected items in a {@link JList}.
  */
-public class JListSelectedItemCountProperty extends AbstractReadableProperty<Integer> implements Disposable {
+public class JListSelectedItemCountProperty extends AbstractReadableProperty<Integer> {
 
     /**
      * Entity tracking changes of selection (and selection model).
@@ -61,6 +60,7 @@ public class JListSelectedItemCountProperty extends AbstractReadableProperty<Int
      * @param list List whose selection count is to be tracked.
      */
     public JListSelectedItemCountProperty(JList list) {
+        super();
         this.list = list;
         list.addPropertyChangeListener("selectionModel", selectionAdapter);
         list.getSelectionModel().addListSelectionListener(selectionAdapter);
@@ -72,6 +72,7 @@ public class JListSelectedItemCountProperty extends AbstractReadableProperty<Int
      */
     @Override
     public void dispose() {
+        super.dispose();
         if (list != null) {
             list.getSelectionModel().removeListSelectionListener(selectionAdapter);
             list.removePropertyChangeListener("selectionModel", selectionAdapter);

@@ -25,7 +25,6 @@
 
 package com.google.code.validationframework.swing.property;
 
-import com.google.code.validationframework.api.property.ReadableProperty;
 import com.google.code.validationframework.api.property.ValueChangeListener;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,6 +40,7 @@ import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 /**
  * @see JListSelectedItemCountProperty
@@ -51,7 +51,7 @@ public class JListSelectedItemCountPropertyTest {
 
     private ListSelectionModel selectionModel;
 
-    private ReadableProperty<Integer> property;
+    private JListSelectedItemCountProperty property;
 
     private ValueChangeListener<Integer> listenerMock;
 
@@ -138,5 +138,23 @@ public class JListSelectedItemCountPropertyTest {
         verify(listenerMock).valueChanged(property, 0, 2);
         verify(listenerMock).valueChanged(property, 2, 0);
         verify(listenerMock, times(2)).valueChanged(any(JListSelectedItemCountProperty.class), anyInt(), anyInt());
+    }
+
+    @Test
+    public void testDispose() {
+        selectionModel.setSelectionInterval(0, 1);
+        selectionModel.setSelectionInterval(0, 2);
+
+        property.dispose();
+
+        selectionModel.setSelectionInterval(1, 2);
+        selectionModel.setSelectionInterval(2, 2);
+
+        property.dispose();
+        property.dispose();
+        property.dispose();
+
+        verify(listenerMock, times(2)).valueChanged(any(JListSelectedItemCountProperty.class), anyInt(), anyInt());
+        verifyNoMoreInteractions(listenerMock);
     }
 }
