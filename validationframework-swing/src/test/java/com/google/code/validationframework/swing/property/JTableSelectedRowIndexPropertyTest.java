@@ -25,7 +25,6 @@
 
 package com.google.code.validationframework.swing.property;
 
-import com.google.code.validationframework.api.property.ReadableWritableProperty;
 import com.google.code.validationframework.api.property.ValueChangeListener;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,6 +40,7 @@ import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 /**
  * @see JTableSelectedRowIndexProperty
@@ -51,7 +51,7 @@ public class JTableSelectedRowIndexPropertyTest {
 
     private ListSelectionModel selectionModel;
 
-    private ReadableWritableProperty<Integer, Integer> property;
+    private JTableSelectedRowIndexProperty property;
 
     private ValueChangeListener<Integer> listenerMock;
 
@@ -168,5 +168,24 @@ public class JTableSelectedRowIndexPropertyTest {
         verify(listenerMock).valueChanged(property, -1, 2);
         verify(listenerMock).valueChanged(property, 2, -1);
         verify(listenerMock, times(4)).valueChanged(any(JTableSelectedRowIndexProperty.class), anyInt(), anyInt());
+    }
+
+    @Test
+    public void testDispose() {
+        selectionModel.addSelectionInterval(0, 0);
+        selectionModel.setSelectionInterval(2, 2);
+
+        property.dispose();
+
+        selectionModel.clearSelection();
+        selectionModel.addSelectionInterval(1, 1);
+
+        property.dispose();
+        property.dispose();
+        property.dispose();
+
+        verify(listenerMock).valueChanged(property, -1, 0);
+        verify(listenerMock).valueChanged(property, 0, 2);
+        verifyNoMoreInteractions(listenerMock);
     }
 }

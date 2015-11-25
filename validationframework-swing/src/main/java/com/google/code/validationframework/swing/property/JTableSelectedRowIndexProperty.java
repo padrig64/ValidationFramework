@@ -28,8 +28,7 @@ package com.google.code.validationframework.swing.property;
 import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.base.property.AbstractReadableWritableProperty;
 
-import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
+import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.beans.PropertyChangeEvent;
@@ -47,59 +46,17 @@ import java.beans.PropertyChangeListener;
  * @see JTable#getSelectedRow()
  * @see ListSelectionModel#clearSelection()
  */
-public class JTableSelectedRowIndexProperty extends AbstractReadableWritableProperty<Integer,
-        Integer> implements Disposable {
-
-    /**
-     * Entity tracking changes of selection (and selection model).
-     */
-    private class SelectionAdapter implements ListSelectionListener, PropertyChangeListener {
-
-        /**
-         * @see PropertyChangeListener#propertyChange(PropertyChangeEvent)
-         */
-        @Override
-        public void propertyChange(PropertyChangeEvent evt) {
-            if ("selectionModel".equals(evt.getPropertyName())) {
-                // Unregister from previous selection model
-                if (evt.getOldValue() instanceof ListSelectionModel) {
-                    ((ListSelectionModel) evt.getOldValue()).removeListSelectionListener(this);
-                }
-
-                // Register to new selection model
-                if (evt.getNewValue() instanceof ListSelectionModel) {
-                    ((ListSelectionModel) evt.getNewValue()).addListSelectionListener(this);
-
-                    // Update value from new selection model
-                    updatingFromComponent = true;
-                    setValue(table.getSelectedRow());
-                    updatingFromComponent = false;
-                }
-            }
-        }
-
-        /**
-         * @see ListSelectionListener#valueChanged(ListSelectionEvent)
-         */
-        @Override
-        public void valueChanged(ListSelectionEvent e) {
-            if (!e.getValueIsAdjusting()) {
-                updatingFromComponent = true;
-                setValue(table.getSelectedRow());
-                updatingFromComponent = false;
-            }
-        }
-    }
-
-    /**
-     * Table whose selected row index is represented by this property.
-     */
-    private JTable table = null;
+public class JTableSelectedRowIndexProperty extends AbstractReadableWritableProperty<Integer, Integer> {
 
     /**
      * Entity tracking changes of selection (and selection model).
      */
     private final SelectionAdapter selectionAdapter = new SelectionAdapter();
+
+    /**
+     * Table whose selected row index is represented by this property.
+     */
+    private JTable table = null;
 
     /**
      * Current property value.
@@ -117,6 +74,7 @@ public class JTableSelectedRowIndexProperty extends AbstractReadableWritableProp
      * @param table Table whose selected row index is represented by this property.
      */
     public JTableSelectedRowIndexProperty(JTable table) {
+        super();
         this.table = table;
         table.addPropertyChangeListener("selectionModel", selectionAdapter);
         table.getSelectionModel().addListSelectionListener(selectionAdapter);
@@ -128,6 +86,7 @@ public class JTableSelectedRowIndexProperty extends AbstractReadableWritableProp
      */
     @Override
     public void dispose() {
+        super.dispose();
         if (table != null) {
             table.getSelectionModel().removeListSelectionListener(selectionAdapter);
             table.removePropertyChangeListener("selectionModel", selectionAdapter);
@@ -148,21 +107,64 @@ public class JTableSelectedRowIndexProperty extends AbstractReadableWritableProp
      */
     @Override
     public void setValue(Integer value) {
-        Integer effectiveValue = value;
-        if (effectiveValue == null) {
-            effectiveValue = -1;
+        if (table != null) {
+            Integer effectiveValue = value;
+            if (effectiveValue == null) {
+                effectiveValue = -1;
+            }
+
+            if (!isNotifyingListeners()) {
+                if (updatingFromComponent) {
+                    Integer oldValue = this.value;
+                    this.value = effectiveValue;
+                    maybeNotifyListeners(oldValue, this.value);
+                } else if (effectiveValue < 0) {
+                    table.getSelectionModel().clearSelection();
+                } else {
+                    table.getSelectionModel().setLeadSelectionIndex(effectiveValue);
+                    table.getSelectionModel().setSelectionInterval(effectiveValue, effectiveValue);
+                }
+            }
+        }
+    }
+
+    /**
+     * Entity tracking changes of selection (and selection model).
+     */
+    private class SelectionAdapter implements ListSelectionListener, PropertyChangeListener {
+
+        /**
+         * @see PropertyChangeListener#propertyChange(PropertyChangeEvent)
+         */
+        @Override
+        public void propertyChange(PropertyChangeEvent evt) {
+            if ("selectionModel".equals(evt.getPropertyName())) {
+                // Unregister from previous selection model
+                if (evt.getOldValue() instanceof ListSelectionModel) {
+                    ((ListSelectionModel) evt.getOldValue()).removeListSelectionListener(this);
+                }
+
+                // Register to new selection model
+                if ((table != null) && (evt.getNewValue() instanceof ListSelectionModel)) {
+                    ((ListSelectionModel) evt.getNewValue()).addListSelectionListener(this);
+
+                    // Update value from new selection model
+                    updatingFromComponent = true;
+                    setValue(table.getSelectedRow());
+                    updatingFromComponent = false;
+                }
+            }
         }
 
-        if (!isNotifyingListeners()) {
-            if (updatingFromComponent) {
-                Integer oldValue = this.value;
-                this.value = effectiveValue;
-                maybeNotifyListeners(oldValue, this.value);
-            } else if (effectiveValue < 0) {
-                table.getSelectionModel().clearSelection();
-            } else {
-                table.getSelectionModel().setLeadSelectionIndex(effectiveValue);
-                table.getSelectionModel().setSelectionInterval(effectiveValue, effectiveValue);
+        /**
+         * @see ListSelectionListener#valueChanged(ListSelectionEvent)
+         */
+        @Override
+        public void valueChanged(ListSelectionEvent e) {
+            if ((table != null) && !e.getValueIsAdjusting()) {
+                updatingFromComponent = true;
+                setValue(table.getSelectedRow());
+                updatingFromComponent = false;
             }
         }
     }
