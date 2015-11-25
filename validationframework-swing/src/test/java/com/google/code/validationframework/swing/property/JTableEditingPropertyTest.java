@@ -25,25 +25,21 @@
 
 package com.google.code.validationframework.swing.property;
 
-import com.google.code.validationframework.api.property.ReadableProperty;
 import com.google.code.validationframework.api.property.ValueChangeListener;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.swing.DefaultListSelectionModel;
 import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 /**
  * @see JTableEditingProperty
@@ -52,7 +48,7 @@ public class JTableEditingPropertyTest {
 
     private JTable table;
 
-    private ReadableProperty<Boolean> property;
+    private JTableEditingProperty property;
 
     private ValueChangeListener<Boolean> listenerMock;
 
@@ -60,7 +56,7 @@ public class JTableEditingPropertyTest {
     @Before
     public void setUp() {
         // Create table model
-        DefaultTableModel tableModel = new DefaultTableModel(){
+        DefaultTableModel tableModel = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return true;
@@ -87,7 +83,7 @@ public class JTableEditingPropertyTest {
     @Test
     public void testEditing() {
         assertFalse(property.getValue());
-        table.editCellAt(1,1);
+        table.editCellAt(1, 1);
         assertTrue(property.getValue());
 
         table.getCellEditor().cancelCellEditing();
@@ -97,5 +93,25 @@ public class JTableEditingPropertyTest {
         verify(listenerMock).valueChanged(property, false, true);
         verify(listenerMock).valueChanged(property, true, false);
         verify(listenerMock, times(2)).valueChanged(any(JTableEditingProperty.class), anyBoolean(), anyBoolean());
+    }
+
+    @Test
+    public void testDispose() {
+        table.editCellAt(1, 1);
+        table.getCellEditor().cancelCellEditing();
+
+        property.dispose();
+
+        table.editCellAt(0, 0);
+        table.getCellEditor().cancelCellEditing();
+        table.editCellAt(0, 1);
+        table.getCellEditor().cancelCellEditing();
+
+        property.dispose();
+        property.dispose();
+
+        verify(listenerMock).valueChanged(property, false, true);
+        verify(listenerMock).valueChanged(property, true, false);
+        verifyNoMoreInteractions(listenerMock);
     }
 }
