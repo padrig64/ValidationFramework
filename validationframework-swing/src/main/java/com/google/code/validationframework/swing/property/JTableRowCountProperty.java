@@ -28,7 +28,7 @@ package com.google.code.validationframework.swing.property;
 import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.base.property.AbstractReadableProperty;
 
-import javax.swing.JTable;
+import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
@@ -40,7 +40,67 @@ import java.beans.PropertyChangeListener;
  * <p/>
  * Note that this row count corresponds to the view and therefore may differ from the row count in the table model.
  */
-public class JTableRowCountProperty extends AbstractReadableProperty<Integer> implements Disposable {
+public class JTableRowCountProperty extends AbstractReadableProperty<Integer> {
+
+    /**
+     * Entity tracking changes in the table model.
+     */
+    private final RowAdapter rowAdapter = new RowAdapter();
+
+    /**
+     * Table whose row count is to be tracked.
+     */
+    private JTable table = null;
+
+    /**
+     * Current property value.
+     */
+    private int count = 0;
+
+    /**
+     * Constructor specifying the table whose row count is represented by this property.
+     *
+     * @param table Table whose row count is to be tracked.
+     */
+    public JTableRowCountProperty(JTable table) {
+        super();
+        this.table = table;
+        table.addPropertyChangeListener("model", rowAdapter);
+        table.getModel().addTableModelListener(rowAdapter);
+        count = table.getRowCount();
+    }
+
+    /**
+     * @see Disposable#dispose()
+     */
+    @Override
+    public void dispose() {
+        super.dispose();
+        if (table != null) {
+            table.getModel().removeTableModelListener(rowAdapter);
+            table.removePropertyChangeListener("model", rowAdapter);
+            table = null;
+        }
+    }
+
+    /**
+     * @see AbstractReadableProperty#getValue()
+     */
+    @Override
+    public Integer getValue() {
+        return count;
+    }
+
+    /**
+     * Updates the value of this property and notify the listeners.
+     */
+    private void updateValue() {
+        if (table != null) {
+            int oldCount = this.count;
+            this.count = table.getRowCount();
+            maybeNotifyListeners(oldCount, count);
+        }
+    }
 
     /**
      * Entity tracking changes in the table model.
@@ -75,64 +135,6 @@ public class JTableRowCountProperty extends AbstractReadableProperty<Integer> im
         public void tableChanged(TableModelEvent e) {
             // Could be optimized, but good enough for now
             updateValue();
-        }
-    }
-
-    /**
-     * Table whose row count is to be tracked.
-     */
-    private JTable table = null;
-
-    /**
-     * Entity tracking changes in the table model.
-     */
-    private final RowAdapter rowAdapter = new RowAdapter();
-
-    /**
-     * Current property value.
-     */
-    private int count = 0;
-
-    /**
-     * Constructor specifying the table whose row count is represented by this property.
-     *
-     * @param table Table whose row count is to be tracked.
-     */
-    public JTableRowCountProperty(JTable table) {
-        this.table = table;
-        table.addPropertyChangeListener("model", rowAdapter);
-        table.getModel().addTableModelListener(rowAdapter);
-        count = table.getRowCount();
-    }
-
-    /**
-     * @see Disposable#dispose()
-     */
-    @Override
-    public void dispose() {
-        if (table != null) {
-            table.getModel().removeTableModelListener(rowAdapter);
-            table.removePropertyChangeListener("model", rowAdapter);
-            table = null;
-        }
-    }
-
-    /**
-     * @see AbstractReadableProperty#getValue()
-     */
-    @Override
-    public Integer getValue() {
-        return count;
-    }
-
-    /**
-     * Updates the value of this property and notify the listeners.
-     */
-    private void updateValue() {
-        if (table != null) {
-            int oldCount = this.count;
-            this.count = table.getRowCount();
-            maybeNotifyListeners(oldCount, count);
         }
     }
 }

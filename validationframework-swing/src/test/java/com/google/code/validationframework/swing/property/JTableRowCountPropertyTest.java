@@ -25,7 +25,6 @@
 
 package com.google.code.validationframework.swing.property;
 
-import com.google.code.validationframework.api.property.ReadableProperty;
 import com.google.code.validationframework.api.property.ValueChangeListener;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,6 +38,7 @@ import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 /**
  * @see JTableRowCountProperty
@@ -49,7 +49,7 @@ public class JTableRowCountPropertyTest {
 
     private JTable table;
 
-    private ReadableProperty<Integer> property;
+    private JTableRowCountProperty property;
 
     private ValueChangeListener<Integer> listenerMock;
 
@@ -182,5 +182,24 @@ public class JTableRowCountPropertyTest {
         // Check fired events
         verify(listenerMock).valueChanged(property, 3, 0);
         verify(listenerMock).valueChanged(any(JTableRowCountProperty.class), anyInt(), anyInt());
+    }
+
+    @Test
+    public void testDispose() {
+        tableModel.addRow(new Object[]{1, 2, 3});
+        tableModel.removeRow(0);
+
+        property.dispose();
+
+        tableModel.addRow(new Object[]{1, 2, 3});
+        tableModel.removeRow(0);
+
+        property.dispose();
+        property.dispose();
+        property.dispose();
+
+        verify(listenerMock).valueChanged(property, 3, 4);
+        verify(listenerMock).valueChanged(property, 4, 3);
+        verifyNoMoreInteractions(listenerMock);
     }
 }
