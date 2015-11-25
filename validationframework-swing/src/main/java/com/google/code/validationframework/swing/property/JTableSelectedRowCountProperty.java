@@ -28,8 +28,7 @@ package com.google.code.validationframework.swing.property;
 import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.base.property.AbstractReadableProperty;
 
-import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
+import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.beans.PropertyChangeEvent;
@@ -38,7 +37,67 @@ import java.beans.PropertyChangeListener;
 /**
  * Read-only property representing the number of selected rows in a {@link JTable}.
  */
-public class JTableSelectedRowCountProperty extends AbstractReadableProperty<Integer> implements Disposable {
+public class JTableSelectedRowCountProperty extends AbstractReadableProperty<Integer> {
+
+    /**
+     * Entity tracking changes of selection (and selection model).
+     */
+    private final SelectionAdapter selectionAdapter = new SelectionAdapter();
+
+    /**
+     * Table whose selection count is to be tracked.
+     */
+    private JTable table = null;
+
+    /**
+     * Current property value.
+     */
+    private int count = 0;
+
+    /**
+     * Constructor specifying the table whose selection count is represented by this property.
+     *
+     * @param table Table whose selection count is to be tracked.
+     */
+    public JTableSelectedRowCountProperty(JTable table) {
+        super();
+        this.table = table;
+        table.addPropertyChangeListener("selectionModel", selectionAdapter);
+        table.getSelectionModel().addListSelectionListener(selectionAdapter);
+        count = table.getSelectedRowCount();
+    }
+
+    /**
+     * @see Disposable#dispose()
+     */
+    @Override
+    public void dispose() {
+        super.dispose();
+        if (table != null) {
+            table.getSelectionModel().removeListSelectionListener(selectionAdapter);
+            table.removePropertyChangeListener("selectionModel", selectionAdapter);
+            table = null;
+        }
+    }
+
+    /**
+     * @see AbstractReadableProperty#getValue()
+     */
+    @Override
+    public Integer getValue() {
+        return count;
+    }
+
+    /**
+     * Updates the value of this property based on the table's selection model and notify the listeners.
+     */
+    private void updateValue() {
+        if (table != null) {
+            int oldCount = this.count;
+            this.count = table.getSelectedRowCount();
+            maybeNotifyListeners(oldCount, count);
+        }
+    }
 
     /**
      * Entity tracking changes of selection (and selection model).
@@ -74,64 +133,6 @@ public class JTableSelectedRowCountProperty extends AbstractReadableProperty<Int
             if (!e.getValueIsAdjusting()) {
                 updateValue();
             }
-        }
-    }
-
-    /**
-     * Table whose selection count is to be tracked.
-     */
-    private JTable table = null;
-
-    /**
-     * Entity tracking changes of selection (and selection model).
-     */
-    private final SelectionAdapter selectionAdapter = new SelectionAdapter();
-
-    /**
-     * Current property value.
-     */
-    private int count = 0;
-
-    /**
-     * Constructor specifying the table whose selection count is represented by this property.
-     *
-     * @param table Table whose selection count is to be tracked.
-     */
-    public JTableSelectedRowCountProperty(JTable table) {
-        this.table = table;
-        table.addPropertyChangeListener("selectionModel", selectionAdapter);
-        table.getSelectionModel().addListSelectionListener(selectionAdapter);
-        count = table.getSelectedRowCount();
-    }
-
-    /**
-     * @see Disposable#dispose()
-     */
-    @Override
-    public void dispose() {
-        if (table != null) {
-            table.getSelectionModel().removeListSelectionListener(selectionAdapter);
-            table.removePropertyChangeListener("selectionModel", selectionAdapter);
-            table = null;
-        }
-    }
-
-    /**
-     * @see AbstractReadableProperty#getValue()
-     */
-    @Override
-    public Integer getValue() {
-        return count;
-    }
-
-    /**
-     * Updates the value of this property based on the table's selection model and notify the listeners.
-     */
-    private void updateValue() {
-        if (table != null) {
-            int oldCount = this.count;
-            this.count = table.getSelectedRowCount();
-            maybeNotifyListeners(oldCount, count);
         }
     }
 }
