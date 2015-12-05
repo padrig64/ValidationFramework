@@ -108,4 +108,15 @@ public class CellPosition {
         result = 31 * result + column;
         return result;
     }
+
+    /**
+     * Generated.
+     */
+    @Override
+    public String toString() {
+        return "CellPosition{" +
+                "row=" + row +
+                ", column=" + column +
+                '}';
+    }
 }

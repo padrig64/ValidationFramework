@@ -42,17 +42,17 @@ import java.awt.event.MouseMotionListener;
  * <p/>
  * The row and column indices, that make the position of the hovered cell, are expressed in view coordinates.
  */
-public class JTableRolloverCellProperty extends AbstractReadableProperty<CellPosition> implements Disposable {
-
-    /**
-     * Table subject to rollover.
-     */
-    private final JTable table;
+public class JTableRolloverCellProperty extends AbstractReadableProperty<CellPosition> {
 
     /**
      * Entity tracking the mouse over the table and updating the value of this property accordingly.
      */
     private final RolloverAdapter rolloverAdapter = new RolloverAdapter();
+
+    /**
+     * Table subject to rollover.
+     */
+    private JTable table;
 
     /**
      * Current value of this property.
@@ -84,8 +84,12 @@ public class JTableRolloverCellProperty extends AbstractReadableProperty<CellPos
      */
     @Override
     public void dispose() {
-        table.removeMouseListener(rolloverAdapter);
-        table.removeMouseMotionListener(rolloverAdapter);
+        super.dispose();
+        if (table != null) {
+            table.removeMouseListener(rolloverAdapter);
+            table.removeMouseMotionListener(rolloverAdapter);
+            table = null;
+        }
     }
 
     /**
@@ -103,7 +107,7 @@ public class JTableRolloverCellProperty extends AbstractReadableProperty<CellPos
      */
     private void updateValue(Point location) {
         CellPosition oldValue = value;
-        if (location == null) {
+        if ((location == null) || (table == null)) {
             value = null;
         } else {
             int row = table.rowAtPoint(location);

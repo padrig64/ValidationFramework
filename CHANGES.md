@@ -8,7 +8,7 @@
 * `ChainedTransformer` now implements `DeepDisposable` and disposes the chained transformers by default
 * `NegateBooleanPropertyWrapper` now implements `DeepDisposable` and disposes the wrapped property by default
 * `ReadOnlyPropertyWrapper` now implements `DeepDisposable` and disposes the wrapped property by default
-* `ReadOnlySetPropertyWrapper` now implements D`eepDisposable` and disposes the wrapped set property by default
+* `ReadOnlySetPropertyWrapper` now implements `DeepDisposable` and disposes the wrapped set property by default
 * `ReadOnlyListPropertyWrapper` now implements `DeepDisposable` and disposes the wrapped list property by default
 * `ReadOnlyMapPropertyWrapper` now implements `DeepDisposable` and disposes the wrapped map property by default
 * `CompositeReadableProperty` now implements `DeepDisposable` and disposes the compound property by default
