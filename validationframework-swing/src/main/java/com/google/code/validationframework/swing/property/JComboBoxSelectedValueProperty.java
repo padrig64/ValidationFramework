@@ -30,7 +30,7 @@ import com.google.code.validationframework.api.transform.Transformer;
 import com.google.code.validationframework.base.property.AbstractReadableWritableProperty;
 import com.google.code.validationframework.base.transform.CastTransformer;
 
-import javax.swing.JComboBox;
+import javax.swing.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
@@ -46,29 +46,7 @@ import java.awt.event.ItemListener;
  * @see JComboBox#setSelectedItem(Object)
  * @see JComboBoxSelectedIndexProperty
  */
-public class JComboBoxSelectedValueProperty<T> extends AbstractReadableWritableProperty<T, T> implements Disposable {
-
-    /**
-     * Selected value tracker.
-     */
-    private class EventAdapter implements ItemListener {
-
-        /**
-         * @see ItemListener#itemStateChanged(ItemEvent)
-         */
-        @Override
-        public void itemStateChanged(ItemEvent e) {
-            updatingFromComponent = true;
-            T selectedItem = castTransformer.transform(component.getSelectedItem());
-            setValue(selectedItem);
-            updatingFromComponent = false;
-        }
-    }
-
-    /**
-     * Component to track the selected value for.
-     */
-    private final JComboBox component;
+public class JComboBoxSelectedValueProperty<T> extends AbstractReadableWritableProperty<T, T> {
 
     /**
      * Selected value tracker.
@@ -79,6 +57,11 @@ public class JComboBoxSelectedValueProperty<T> extends AbstractReadableWritableP
      * Transformer to get the value of the combobox of the specified type.
      */
     private final Transformer<Object, T> castTransformer = new CastTransformer<Object, T>();
+
+    /**
+     * Component to track the selected value for.
+     */
+    private JComboBox component;
 
     /**
      * Current property value.
@@ -111,8 +94,11 @@ public class JComboBoxSelectedValueProperty<T> extends AbstractReadableWritableP
      */
     @Override
     public void dispose() {
-        // Unhook from component
-        component.removeItemListener(eventAdapter);
+        super.dispose();
+        if (component != null) {
+            component.removeItemListener(eventAdapter);
+            component = null;
+        }
     }
 
     /**
@@ -133,8 +119,27 @@ public class JComboBoxSelectedValueProperty<T> extends AbstractReadableWritableP
                 T oldValue = this.value;
                 this.value = value;
                 maybeNotifyListeners(oldValue, this.value);
-            } else {
+            } else if (component != null) {
                 component.setSelectedItem(value);
+            }
+        }
+    }
+
+    /**
+     * Selected value tracker.
+     */
+    private class EventAdapter implements ItemListener {
+
+        /**
+         * @see ItemListener#itemStateChanged(ItemEvent)
+         */
+        @Override
+        public void itemStateChanged(ItemEvent e) {
+            if (component != null) {
+                updatingFromComponent = true;
+                T selectedItem = castTransformer.transform(component.getSelectedItem());
+                setValue(selectedItem);
+                updatingFromComponent = false;
             }
         }
     }
