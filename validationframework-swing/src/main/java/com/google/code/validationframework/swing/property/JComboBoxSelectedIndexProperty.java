@@ -28,7 +28,7 @@ package com.google.code.validationframework.swing.property;
 import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.base.property.AbstractReadableWritableProperty;
 
-import javax.swing.JComboBox;
+import javax.swing.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
@@ -44,34 +44,17 @@ import java.awt.event.ItemListener;
  * @see JComboBox#setSelectedIndex(int)
  * @see JComboBoxSelectedValueProperty
  */
-public class JComboBoxSelectedIndexProperty extends AbstractReadableWritableProperty<Integer,
-        Integer> implements Disposable {
-
-    /**
-     * Selected index tracker.
-     */
-    private class EventAdapter implements ItemListener {
-
-        /**
-         * @see ItemListener#itemStateChanged(ItemEvent)
-         */
-        @Override
-        public void itemStateChanged(ItemEvent e) {
-            updatingFromComponent = true;
-            setValue(component.getSelectedIndex());
-            updatingFromComponent = false;
-        }
-    }
-
-    /**
-     * Component to track the selected index for.
-     */
-    private final JComboBox component;
+public class JComboBoxSelectedIndexProperty extends AbstractReadableWritableProperty<Integer, Integer> {
 
     /**
      * Selected index tracker.
      */
     private final EventAdapter eventAdapter = new EventAdapter();
+
+    /**
+     * Component to track the selected index for.
+     */
+    private JComboBox component;
 
     /**
      * Current property value.
@@ -104,8 +87,11 @@ public class JComboBoxSelectedIndexProperty extends AbstractReadableWritableProp
      */
     @Override
     public void dispose() {
-        // Unhook from component
-        component.removeItemListener(eventAdapter);
+        super.dispose();
+        if (component != null) {
+            component.removeItemListener(eventAdapter);
+            component = null;
+        }
     }
 
     /**
@@ -126,8 +112,26 @@ public class JComboBoxSelectedIndexProperty extends AbstractReadableWritableProp
                 Integer oldValue = this.value;
                 this.value = value;
                 maybeNotifyListeners(oldValue, this.value);
-            } else {
+            } else if (component != null) {
                 component.setSelectedIndex(value);
+            }
+        }
+    }
+
+    /**
+     * Selected index tracker.
+     */
+    private class EventAdapter implements ItemListener {
+
+        /**
+         * @see ItemListener#itemStateChanged(ItemEvent)
+         */
+        @Override
+        public void itemStateChanged(ItemEvent e) {
+            if (component != null) {
+                updatingFromComponent = true;
+                setValue(component.getSelectedIndex());
+                updatingFromComponent = false;
             }
         }
     }
