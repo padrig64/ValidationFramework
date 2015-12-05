@@ -39,7 +39,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 /**
  * @see JComboBoxSelectedIndexProperty
  */
-public class JComboBoxSelectedIndexCountPropertyTest {
+public class JComboBoxSelectedIndexPropertyTest {
 
     private JComboBox comboBox;
 
