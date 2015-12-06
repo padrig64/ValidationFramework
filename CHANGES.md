@@ -24,6 +24,44 @@
 * Removed experimental duplicate of `JFormattedTextFieldValueProperty `
 * Added `PseudoClassResultHandler` to JavaFX support
 
+## Backward incompatibilities in terms of compilation
+
+TODO
+
+## Backward incompatibilities in terms of behavior
+
+In this release, the `dispose()` methods of the triggers, data providers, rules, result handlers, validators,
+transformers and properties have been harmonized with the following principles:
+
+* Objects referring to other objects should typically clear their references: this idea is that disposed objects should
+not prevent garbage collection of other objects. This is typically handy and needed for objects having listeners (e.g.
+triggers and readable properties), referring to GUI components (such as the properties from the
+validationframework-swing module) or wrapping other objects (e.g. NegateBooleanPropertyWrapper and
+ReadOnlyPropertyWrapper).
+* Objects acting as wrappers around other objects (e.g. NegateBooleanPropertyWrapper and ReadOnlyPropertyWrapper) may
+optionally dispose the wrapped objects. This gives better control over what needs to be disposed and when. For that
+purpose, the `DeepDisposable` interface has been introduced.
+
+This means that you probably need to verify all the places where you call or override the `dispose()` method and check
+what you do with the disposed objects afterwards.
+
+In particular, you should check:
+* What the `dispose()` method should actually do: should it dispose other (referenced) objects as well? Should the other
+objects be disposed manually?
+* Whether you use the disposed objects: disposed objects cannot be re-used and calling their methods leads to
+unspecified behavior, which may differ in other versions of the framework.
+* Where you override the `dispose()` method: should `super.dispose()` be called as well?
+* Where you implemented the `Disposable` interface: should the `DeepDisposable` interface also be implemented? Should a
+deep or shallow disposed be done? Should it be configurable?
+
+For example, the `dispose()` method of properties relating to Swing components now removes all references to these
+components. So calling the `getComponent()` method of these properties after disposal will return `null`.
+
+Furthermore, some classes now implement the `DeepDisposable`. This is typically the case for wrapper classes (e.g.
+NegateBooleanPropertyWrapper class with wraps a ReadableProperty<Boolean>). Some of the `DeepDisposable` classes dispose
+the wrapped objects by default. So you may want to check whether it does not dispose too much (depending on your
+use-case). You may then call there `setDeepDispose()` method to reach the desired behavior.
+
 # Version 3.4.0
 
 * JavaFX Support module now requires Java 8

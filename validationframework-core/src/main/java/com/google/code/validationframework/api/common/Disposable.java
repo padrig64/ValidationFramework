@@ -31,6 +31,9 @@ package com.google.code.validationframework.api.common;
  * <p/>
  * For example, if the disposable entity registers some listeners to other objects, disposing this entity should remove
  * those listeners.
+ * <p/>
+ * Note that after disposing an object, it cannot be re-used for other purposes. Also, calling methods on previously
+ * disposed objects has unspecified behavior.
  */
 public interface Disposable {
 
