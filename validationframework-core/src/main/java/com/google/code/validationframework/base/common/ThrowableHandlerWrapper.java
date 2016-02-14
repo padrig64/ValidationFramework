@@ -25,27 +25,30 @@
 
 package com.google.code.validationframework.base.common;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
- * Unchecked exception handler logging an warning message to handled the runtime exceptions and errors.
- *
- * @see UncheckedExceptionHandler
+ * Convenient wrapper for {@link UncheckedExceptionHandler}s that implements the {@link ThrowableHandler} interface.
+ * <p/>
+ * All unchecked exceptions will be forwarded to the wrapped {@link UncheckedExceptionHandler}.
  */
-public class LogWarningUncheckedExceptionHandler implements ThrowableHandler<Throwable>, UncheckedExceptionHandler {
+public class ThrowableHandlerWrapper implements ThrowableHandler<Throwable>, UncheckedExceptionHandler {
 
     /**
      * Logger for this class.
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(LogWarningUncheckedExceptionHandler.class);
+    private static final ThrowableHandler<Throwable> FALLBACK_HANDLER = new LogErrorUncheckedExceptionHandler();
 
     /**
-     * @see UncheckedExceptionHandler#handleException(Exception)
+     * Wrapped unchecked exception handler.
      */
-    @Override
-    public void handleException(RuntimeException exception) {
-        handleThrowable(exception);
+    private final UncheckedExceptionHandler wrapped;
+
+    /**
+     * Constructor.
+     *
+     * @param wrapped Unchecked exception handler to be wrapped.
+     */
+    public ThrowableHandlerWrapper(UncheckedExceptionHandler wrapped) {
+        this.wrapped = wrapped;
     }
 
     /**
@@ -53,7 +56,15 @@ public class LogWarningUncheckedExceptionHandler implements ThrowableHandler<Thr
      */
     @Override
     public void handleError(Error error) {
-        handleThrowable(error);
+        wrapped.handleError(error);
+    }
+
+    /**
+     * @see UncheckedExceptionHandler#handleException(Exception)
+     */
+    @Override
+    public void handleException(RuntimeException exception) {
+        wrapped.handleException(exception);
     }
 
     /**
@@ -61,6 +72,12 @@ public class LogWarningUncheckedExceptionHandler implements ThrowableHandler<Thr
      */
     @Override
     public void handleThrowable(Throwable throwable) {
-        LOGGER.warn("An exception or error occurred", throwable);
+        if (throwable instanceof RuntimeException) {
+            handleException((RuntimeException) throwable);
+        } else if (throwable instanceof Error) {
+            handleError((Error) throwable);
+        } else {
+            FALLBACK_HANDLER.handleThrowable(throwable);
+        }
     }
 }

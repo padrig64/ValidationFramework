@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ValidationFramework Authors
+ * Copyright (c) 2016, ValidationFramework Authors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,7 +33,7 @@ import org.slf4j.LoggerFactory;
  *
  * @see UncheckedExceptionHandler
  */
-public class LogErrorUncheckedExceptionHandler implements UncheckedExceptionHandler {
+public class LogErrorUncheckedExceptionHandler implements ThrowableHandler<Throwable>, UncheckedExceptionHandler {
 
     /**
      * Logger for this class.
@@ -45,7 +45,7 @@ public class LogErrorUncheckedExceptionHandler implements UncheckedExceptionHand
      */
     @Override
     public void handleException(RuntimeException exception) {
-        LOGGER.error("A runtime exception occurred", exception);
+        handleThrowable(exception);
     }
 
     /**
@@ -53,6 +53,14 @@ public class LogErrorUncheckedExceptionHandler implements UncheckedExceptionHand
      */
     @Override
     public void handleError(Error error) {
-        LOGGER.error("An error occurred", error);
+        handleThrowable(error);
+    }
+
+    /**
+     * @see ThrowableHandler#handleThrowable(Throwable)
+     */
+    @Override
+    public void handleThrowable(Throwable throwable) {
+        LOGGER.error("An exception or error occurred", throwable);
     }
 }

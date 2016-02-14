@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ValidationFramework Authors
+ * Copyright (c) 2016, ValidationFramework Authors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,14 +30,19 @@ package com.google.code.validationframework.base.common;
  *
  * @see UncheckedExceptionHandler
  */
-public class RethrowUncheckedExceptionHandler implements UncheckedExceptionHandler {
+public class RethrowUncheckedExceptionHandler implements ThrowableHandler<Throwable>, UncheckedExceptionHandler {
+
+    /**
+     * Logger for this class.
+     */
+    private static final ThrowableHandler<Throwable> FALLBACK_HANDLER = new LogErrorUncheckedExceptionHandler();
 
     /**
      * @see UncheckedExceptionHandler#handleException(Exception)
      */
     @Override
     public void handleException(RuntimeException exception) {
-        throw exception;
+        handleThrowable(exception);
     }
 
     /**
@@ -45,6 +50,20 @@ public class RethrowUncheckedExceptionHandler implements UncheckedExceptionHandl
      */
     @Override
     public void handleError(Error error) {
-        throw error;
+        handleThrowable(error);
+    }
+
+    /**
+     * @see ThrowableHandler#handleThrowable(Throwable)
+     */
+    @Override
+    public void handleThrowable(Throwable throwable) {
+        if (throwable instanceof RuntimeException) {
+            throw (RuntimeException) throwable;
+        } else if (throwable instanceof Error) {
+            throw (Error) throwable;
+        } else {
+            FALLBACK_HANDLER.handleThrowable(throwable);
+        }
     }
 }

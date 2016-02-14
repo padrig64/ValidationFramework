@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ValidationFramework Authors
+ * Copyright (c) 2016, ValidationFramework Authors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,10 @@ package com.google.code.validationframework.base.common;
  * Exception handler.
  *
  * @param <T> Type of exception to be handled.
+ * @see ThrowableHandler
+ * @deprecated For simplification, you may use the {@link ThrowableHandler} instead.
  */
+@Deprecated
 public interface ExceptionHandler<T extends Exception> {
 
     /**

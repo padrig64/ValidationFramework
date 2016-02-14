@@ -25,42 +25,17 @@
 
 package com.google.code.validationframework.base.common;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
- * Unchecked exception handler logging an warning message to handled the runtime exceptions and errors.
+ * Throwable handler, typically used for unchecked exception (runtime exceptions and errors).
  *
- * @see UncheckedExceptionHandler
+ * @param <T> Type of throwable to be handled.
  */
-public class LogWarningUncheckedExceptionHandler implements ThrowableHandler<Throwable>, UncheckedExceptionHandler {
+public interface ThrowableHandler<T extends Throwable> {
 
     /**
-     * Logger for this class.
+     * Handles the specified exception or error.
+     *
+     * @param throwable Throwable to be handled.
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(LogWarningUncheckedExceptionHandler.class);
-
-    /**
-     * @see UncheckedExceptionHandler#handleException(Exception)
-     */
-    @Override
-    public void handleException(RuntimeException exception) {
-        handleThrowable(exception);
-    }
-
-    /**
-     * @see UncheckedExceptionHandler#handleError(Error)
-     */
-    @Override
-    public void handleError(Error error) {
-        handleThrowable(error);
-    }
-
-    /**
-     * @see ThrowableHandler#handleThrowable(Throwable)
-     */
-    @Override
-    public void handleThrowable(Throwable throwable) {
-        LOGGER.warn("An exception or error occurred", throwable);
-    }
+    void handleThrowable(T throwable);
 }
