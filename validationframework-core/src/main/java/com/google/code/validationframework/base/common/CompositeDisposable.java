@@ -48,6 +48,9 @@ public class CompositeDisposable implements DeepDisposable {
      */
     private final Set<Disposable> disposables = new HashSet<Disposable>();
 
+    /**
+     * True to disposable all sub-disposable upon {@link #dispose()}, false otherwise.
+     */
     private boolean deepDispose = true;
 
     /**
