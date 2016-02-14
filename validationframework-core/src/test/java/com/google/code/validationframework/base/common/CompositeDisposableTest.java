@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ValidationFramework Authors
+ * Copyright (c) 2016, ValidationFramework Authors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -71,7 +71,7 @@ public class CompositeDisposableTest {
         composite.addDisposable(disposable);
         composite.removeDisposable(disposable);
 
-        // Should not thrown any exception
+        // Should not throw any exception
         composite.addDisposable(null);
         composite.removeDisposable(null);
 

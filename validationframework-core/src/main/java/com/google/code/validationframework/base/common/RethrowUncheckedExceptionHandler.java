@@ -63,6 +63,7 @@ public class RethrowUncheckedExceptionHandler implements ThrowableHandler<Throwa
         } else if (throwable instanceof Error) {
             throw (Error) throwable;
         } else {
+            // Cannot re-throw without changing interface
             FALLBACK_HANDLER.handleThrowable(throwable);
         }
     }

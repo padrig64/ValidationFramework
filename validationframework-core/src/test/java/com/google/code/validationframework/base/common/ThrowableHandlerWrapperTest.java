@@ -25,43 +25,31 @@
 
 package com.google.code.validationframework.base.common;
 
+import org.junit.Test;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+
 /**
- * Convenient wrapper for {@link UncheckedExceptionHandler}s that implements the {@link ThrowableHandler} interface.
- * <p/>
- * All unchecked exceptions will be forwarded to the wrapped {@link UncheckedExceptionHandler}.
+ * @see ThrowableHandlerWrapper
  */
-public class ThrowableHandlerWrapper implements ThrowableHandler<Throwable> {
+public class ThrowableHandlerWrapperTest {
 
-    /**
-     * Logger for this class.
-     */
-    private static final ThrowableHandler<Throwable> FALLBACK_HANDLER = new LogErrorUncheckedExceptionHandler();
+    @Test
+    public void testForward() {
+        UncheckedExceptionHandler wrapped = mock(UncheckedExceptionHandler.class);
+        ThrowableHandlerWrapper wrapper = new ThrowableHandlerWrapper(wrapped);
 
-    /**
-     * Wrapped unchecked exception handler.
-     */
-    private final UncheckedExceptionHandler wrapped;
+        RuntimeException rte = new RuntimeException();
+        wrapper.handleThrowable(rte);
+        Error e = new Error();
+        wrapper.handleThrowable(e);
+        IllegalAccessException iae = new IllegalAccessException();
+        wrapper.handleThrowable(iae);
 
-    /**
-     * Constructor.
-     *
-     * @param wrapped Unchecked exception handler to be wrapped.
-     */
-    public ThrowableHandlerWrapper(UncheckedExceptionHandler wrapped) {
-        this.wrapped = wrapped;
-    }
-
-    /**
-     * @see ThrowableHandler#handleThrowable(Throwable)
-     */
-    @Override
-    public void handleThrowable(Throwable throwable) {
-        if (throwable instanceof RuntimeException) {
-            wrapped.handleException((RuntimeException) throwable);
-        } else if (throwable instanceof Error) {
-            wrapped.handleError((Error) throwable);
-        } else {
-            FALLBACK_HANDLER.handleThrowable(throwable);
-        }
+        verify(wrapped).handleException(rte);
+        verify(wrapped).handleError(e);
+        verifyNoMoreInteractions(wrapped);
     }
 }

@@ -25,18 +25,126 @@
 
 package com.google.code.validationframework.base.common;
 
+import com.google.code.validationframework.api.common.DeepDisposable;
+import com.google.code.validationframework.api.common.Disposable;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Composite throwable handler.
  *
  * @param <T> Type of throwable that can be handled by all handlers.
  */
-public class CompositeThrowableHandler<T extends Throwable> implements ThrowableHandler<T> {
+public class CompositeThrowableHandler<T extends Throwable> implements ThrowableHandler<T>, DeepDisposable {
+
+    /**
+     * Sub-handlers.
+     */
+    private final List<ThrowableHandler<? super T>> handlers = new ArrayList<ThrowableHandler<? super T>>();
+
+    /**
+     * True to dispose all sub-handlers upon {@link #dispose()}, false otherwise.
+     */
+    private boolean deepDispose = true;
+
+    /**
+     * Constructor.
+     */
+    public CompositeThrowableHandler() {
+        // Nothing to be done
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param handlers Sub-handlers.
+     */
+    public CompositeThrowableHandler(Collection<? extends ThrowableHandler<? super T>> handlers) {
+        this.handlers.addAll(handlers);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param handlers Sub-handlers.
+     */
+    public CompositeThrowableHandler(ThrowableHandler<? super T>... handlers) {
+        Collections.addAll(this.handlers, handlers);
+    }
+
+    /**
+     * @see DeepDisposable#getDeepDispose()
+     */
+    @Override
+    public boolean getDeepDispose() {
+        return deepDispose;
+    }
+
+    /**
+     * @see DeepDisposable#setDeepDispose(boolean)
+     */
+    @Override
+    public void setDeepDispose(boolean deepDispose) {
+        this.deepDispose = deepDispose;
+    }
+
+    /**
+     * @see DeepDisposable#dispose()
+     */
+    @Override
+    public void dispose() {
+        for (ThrowableHandler<? super T> handler : handlers) {
+            if (handler instanceof Disposable) {
+                ((Disposable) handler).dispose();
+            }
+        }
+        handlers.clear();
+    }
+
+    /**
+     * Gets the sub-handlers.
+     *
+     * @return Sub-handlers.
+     */
+    public Collection<ThrowableHandler<? super T>> getHandlers() {
+        return Collections.unmodifiableList(handlers);
+    }
+
+    /**
+     * Adds the specified throwable handler.
+     *
+     * @param handler Throwable handler to be added.
+     */
+    public void addThrowableHandler(ThrowableHandler<? super T> handler) {
+        handlers.add(handler);
+    }
+
+    /**
+     * Removes the specified throwable handler.
+     *
+     * @param handler Throwable handler to be removed.
+     */
+    public void removeThrowableHandler(ThrowableHandler<? super T> handler) {
+        handlers.remove(handler);
+    }
+
+    /**
+     * Removes all sub-handlers without disposing them.
+     */
+    public void clear() {
+        handlers.clear();
+    }
 
     /**
      * @see ThrowableHandler#handleThrowable(Throwable)
      */
     @Override
     public void handleThrowable(T throwable) {
-
+        for (ThrowableHandler<? super T> handler : handlers) {
+            handler.handleThrowable(throwable);
+        }
     }
 }

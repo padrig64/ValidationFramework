@@ -21,8 +21,9 @@
 * Deprecated the `ResultCollectorValidator` in favor of the `GeneralValidator`
 * Deprecated the experimental `ResultCollectorValidatorBuilder` in favor of the `GeneralValidatorBuilder`
 * Removed experimental duplicate of `PropertyResultHandler`
-* Removed experimental duplicate of `JFormattedTextFieldValueProperty `
-* Deprecated the ExceptionHandler and the UncheckedExceptionHandler in favor of the new ThrowableHandler
+* Removed experimental duplicate of `JFormattedTextFieldValueProperty`
+* Added `ThrowableHandler` and deprecated the `ExceptionHandler` and the `UncheckedExceptionHandler`
+* Added `CompositeThrowableHandler`
 * Added `PseudoClassResultHandler` to JavaFX support
 
 ## Backward incompatibilities in terms of compilation
