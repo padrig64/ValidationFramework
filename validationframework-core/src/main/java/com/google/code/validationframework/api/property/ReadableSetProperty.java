@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ValidationFramework Authors
+ * Copyright (c) 2016, ValidationFramework Authors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,14 +42,14 @@ public interface ReadableSetProperty<R> extends Iterable<R> {
      *
      * @param listener Listener to be added.
      */
-    void addValueChangeListener(SetValueChangeListener<R> listener);
+    void addValueChangeListener(SetValueChangeListener<? super R> listener);
 
     /**
      * Removes the specified set item change listener.
      *
      * @param listener Listener to be removed.
      */
-    void removeValueChangeListener(SetValueChangeListener<R> listener);
+    void removeValueChangeListener(SetValueChangeListener<? super R> listener);
 
     /**
      * @see java.util.Set#size()

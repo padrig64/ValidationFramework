@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ValidationFramework Authors
+ * Copyright (c) 2016, ValidationFramework Authors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,7 +41,8 @@ public interface MapValueChangeListener<K, R> {
      * @param mapProperty Map property to which values have been added.
      * @param newValues   Newly added values.
      */
-    void valuesAdded(ReadableMapProperty<K, R> mapProperty, Map<K, R> newValues);
+    void valuesAdded(ReadableMapProperty<? extends K, ? extends R> mapProperty,
+                     Map<? extends K, ? extends R> newValues);
 
     /**
      * Called when entries have been replaced in map property.
@@ -50,7 +51,9 @@ public interface MapValueChangeListener<K, R> {
      * @param oldValues   Previous values.
      * @param newValues   New values.
      */
-    void valuesChanged(ReadableMapProperty<K, R> mapProperty, Map<K, R> oldValues, Map<K, R> newValues);
+    void valuesChanged(ReadableMapProperty<? extends K, ? extends R> mapProperty,
+                       Map<? extends K, ? extends R> oldValues,
+                       Map<? extends K, ? extends R> newValues);
 
     /**
      * Called when entries have been removed from the map property.
@@ -58,5 +61,6 @@ public interface MapValueChangeListener<K, R> {
      * @param mapProperty Map property from which values have been removed.
      * @param oldValues   Removed values.
      */
-    void valuesRemoved(ReadableMapProperty<K, R> mapProperty, Map<K, R> oldValues);
+    void valuesRemoved(ReadableMapProperty<? extends K, ? extends R> mapProperty,
+                       Map<? extends K, ? extends R> oldValues);
 }

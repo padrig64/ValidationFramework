@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ValidationFramework Authors
+ * Copyright (c) 2016, ValidationFramework Authors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -43,14 +43,14 @@ public interface ReadableProperty<R> {
      *
      * @param listener Value change listener to be added.
      */
-    void addValueChangeListener(ValueChangeListener<R> listener);
+    void addValueChangeListener(ValueChangeListener<? super R> listener);
 
     /**
      * Removes the value change listener.
      *
      * @param listener Value change listener to be removed..
      */
-    void removeValueChangeListener(ValueChangeListener<R> listener);
+    void removeValueChangeListener(ValueChangeListener<? super R> listener);
 
     /**
      * Gets the value of the property.

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ValidationFramework Authors
+ * Copyright (c) 2016, ValidationFramework Authors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,7 +40,7 @@ public interface SetValueChangeListener<R> {
      * @param setProperty Set property to which the values have been added.
      * @param newValues   Newly added values.
      */
-    void valuesAdded(ReadableSetProperty<R> setProperty, Set<R> newValues);
+    void valuesAdded(ReadableSetProperty<? extends R> setProperty, Set<? extends R> newValues);
 
     /**
      * Called whenever values have been removed from the set property.
@@ -48,5 +48,5 @@ public interface SetValueChangeListener<R> {
      * @param setProperty Set property from which the values have been removed.
      * @param oldValues   Removed values.
      */
-    void valuesRemoved(ReadableSetProperty<R> setProperty, Set<R> oldValues);
+    void valuesRemoved(ReadableSetProperty<? extends R> setProperty, Set<? extends R> oldValues);
 }

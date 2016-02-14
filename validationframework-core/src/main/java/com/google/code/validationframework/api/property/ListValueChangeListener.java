@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ValidationFramework Authors
+ * Copyright (c) 2016, ValidationFramework Authors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,7 +41,9 @@ public interface ListValueChangeListener<R> {
      * @param startIndex   Index of the first added value.
      * @param newValues    Newly added values.
      */
-    void valuesAdded(ReadableListProperty<R> listProperty, int startIndex, List<R> newValues);
+    void valuesAdded(ReadableListProperty<? extends R> listProperty,
+                     int startIndex,
+                     List<? extends R> newValues);
 
     /**
      * Called whenever values have been replaced in the list property.
@@ -51,7 +53,10 @@ public interface ListValueChangeListener<R> {
      * @param oldValues    Previous values.
      * @param newValues    New values.
      */
-    void valuesChanged(ReadableListProperty<R> listProperty, int startIndex, List<R> oldValues, List<R> newValues);
+    void valuesChanged(ReadableListProperty<? extends R> listProperty,
+                       int startIndex,
+                       List<? extends R> oldValues,
+                       List<? extends R> newValues);
 
     /**
      * Called whenever values have been removed from the list property.
@@ -60,5 +65,7 @@ public interface ListValueChangeListener<R> {
      * @param startIndex   Index of the first removed value.
      * @param oldValues    Removed values.
      */
-    void valuesRemoved(ReadableListProperty<R> listProperty, int startIndex, List<R> oldValues);
+    void valuesRemoved(ReadableListProperty<? extends R> listProperty,
+                       int startIndex,
+                       List<? extends R> oldValues);
 }

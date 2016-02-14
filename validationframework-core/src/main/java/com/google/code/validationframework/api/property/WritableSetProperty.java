@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ValidationFramework Authors
+ * Copyright (c) 2016, ValidationFramework Authors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -53,12 +53,12 @@ public interface WritableSetProperty<W> {
 
     /**
      * @see java.util.Set#removeAll(Collection)
-     * @see java.util.Set#retainAll(java.util.Collection)
+     * @see java.util.Set#retainAll(Collection)
      */
     boolean removeAll(Collection<?> items);
 
     /**
-     * @see java.util.Set#retainAll(java.util.Collection)
+     * @see java.util.Set#retainAll(Collection)
      */
     boolean retainAll(Collection<?> items);
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ValidationFramework Authors
+ * Copyright (c) 2016, ValidationFramework Authors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,14 +42,14 @@ public interface ReadableListProperty<R> extends Iterable<R> {
      *
      * @param listener Listener to be added.
      */
-    void addValueChangeListener(ListValueChangeListener<R> listener);
+    void addValueChangeListener(ListValueChangeListener<? super R> listener);
 
     /**
      * Removes the specified list item change listener.
      *
      * @param listener Listener to be removed.
      */
-    void removeValueChangeListener(ListValueChangeListener<R> listener);
+    void removeValueChangeListener(ListValueChangeListener<? super R> listener);
 
     /**
      * @see java.util.List#size()
