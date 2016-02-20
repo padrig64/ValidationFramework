@@ -40,13 +40,7 @@ public class PropertyValueChangeTrigger extends AbstractTrigger {
     /**
      * Listener to property change events and triggering the validation.
      */
-    private class ValueChangeAdapter implements ValueChangeListener<Object> {
-
-        @Override
-        public void valueChanged(ReadableProperty<Object> property, Object oldValue, Object newValue) {
-            fireTriggerEvent(new TriggerEvent(property));
-        }
-    }
+    private final ValueChangeListener<Object> changeAdapter;
 
     /**
      * Property whose value changes should trigger the validation.
@@ -54,21 +48,15 @@ public class PropertyValueChangeTrigger extends AbstractTrigger {
     private ReadableProperty<?> property = null;
 
     /**
-     * Listener to property change events and triggering the validation.
-     */
-    private final ValueChangeListener<Object> changeAdapter;
-
-    /**
      * Constructor specifying the property whose value changes should trigger the validation.
      *
      * @param property Property whose value changes should trigger the validation.
      */
-    @SuppressWarnings("unchecked")
     public PropertyValueChangeTrigger(ReadableProperty<?> property) {
         super();
         this.property = property;
         this.changeAdapter = new ValueChangeAdapter();
-        this.property.addValueChangeListener((ValueChangeListener) changeAdapter);
+        this.property.addValueChangeListener(changeAdapter);
     }
 
     /**
@@ -80,5 +68,16 @@ public class PropertyValueChangeTrigger extends AbstractTrigger {
         super.dispose();
         property.removeValueChangeListener((ValueChangeListener) changeAdapter);
         property = null;
+    }
+
+    /**
+     * Listener to property change events and triggering the validation.
+     */
+    private class ValueChangeAdapter implements ValueChangeListener<Object> {
+
+        @Override
+        public void valueChanged(ReadableProperty<?> property, Object oldValue, Object newValue) {
+            fireTriggerEvent(new TriggerEvent(property));
+        }
     }
 }
