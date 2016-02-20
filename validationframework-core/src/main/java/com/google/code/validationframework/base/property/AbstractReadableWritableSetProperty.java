@@ -34,8 +34,8 @@ import com.google.code.validationframework.api.property.SetValueChangeListener;
  * @param <R> Type of values that can be read from this set property.
  * @param <W> Type of values that can be written to this set property.
  */
-public abstract class AbstractReadableWritableSetProperty<R, W> extends AbstractReadableSetProperty<R> implements
-        ReadableWritableSetProperty<R, W> {
+public abstract class AbstractReadableWritableSetProperty<R, W> extends AbstractReadableSetProperty<R>
+        implements ReadableWritableSetProperty<R, W> {
 
     /**
      * @see AbstractReadableSetProperty#AbstractReadableSetProperty()
@@ -47,7 +47,7 @@ public abstract class AbstractReadableWritableSetProperty<R, W> extends Abstract
     /**
      * @see AbstractReadableSetProperty#AbstractReadableSetProperty(SetValueChangeListener[])
      */
-    public AbstractReadableWritableSetProperty(SetValueChangeListener<R>... listeners) {
+    public AbstractReadableWritableSetProperty(SetValueChangeListener<? super R>... listeners) {
         super(listeners);
     }
 }

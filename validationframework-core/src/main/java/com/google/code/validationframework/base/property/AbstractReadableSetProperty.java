@@ -60,9 +60,9 @@ public abstract class AbstractReadableSetProperty<R> implements ReadableSetPrope
      *
      * @param listeners Listeners to be added.
      */
-    public AbstractReadableSetProperty(SetValueChangeListener<R>... listeners) {
+    public AbstractReadableSetProperty(SetValueChangeListener<? super R>... listeners) {
         super();
-        for (SetValueChangeListener<R> listener : listeners) {
+        for (SetValueChangeListener<? super R> listener : listeners) {
             addValueChangeListener(listener);
         }
     }

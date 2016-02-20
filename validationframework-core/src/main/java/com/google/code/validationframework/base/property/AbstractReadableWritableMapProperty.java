@@ -48,7 +48,7 @@ public abstract class AbstractReadableWritableMapProperty<K, R, W> extends Abstr
     /**
      * @see AbstractReadableWritableMapProperty#AbstractReadableWritableMapProperty(MapValueChangeListener[])
      */
-    public AbstractReadableWritableMapProperty(MapValueChangeListener<K, R>... listeners) {
+    public AbstractReadableWritableMapProperty(MapValueChangeListener<? super K, ? super R>... listeners) {
         super(listeners);
     }
 }

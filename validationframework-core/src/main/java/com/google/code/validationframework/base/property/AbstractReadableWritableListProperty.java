@@ -34,8 +34,8 @@ import com.google.code.validationframework.api.property.ReadableWritableListProp
  * @param <R> Type of values that can be read from this list property.
  * @param <W> Type of values that can be written to this list property.
  */
-public abstract class AbstractReadableWritableListProperty<R, W> extends AbstractReadableListProperty<R> implements
-        ReadableWritableListProperty<R, W> {
+public abstract class AbstractReadableWritableListProperty<R, W> extends AbstractReadableListProperty<R>
+        implements ReadableWritableListProperty<R, W> {
 
     /**
      * @see AbstractReadableWritableListProperty#AbstractReadableWritableListProperty()
@@ -47,7 +47,7 @@ public abstract class AbstractReadableWritableListProperty<R, W> extends Abstrac
     /**
      * @see AbstractReadableWritableListProperty#AbstractReadableWritableListProperty(ListValueChangeListener[])
      */
-    public AbstractReadableWritableListProperty(ListValueChangeListener<R>... listeners) {
+    public AbstractReadableWritableListProperty(ListValueChangeListener<? super R>... listeners) {
         super(listeners);
     }
 }
