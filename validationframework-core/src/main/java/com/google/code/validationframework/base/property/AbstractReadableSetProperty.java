@@ -30,6 +30,7 @@ import com.google.code.validationframework.api.property.ReadableSetProperty;
 import com.google.code.validationframework.api.property.SetValueChangeListener;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -44,7 +45,8 @@ public abstract class AbstractReadableSetProperty<R> implements ReadableSetPrope
     /**
      * Listeners to changes in the list property.
      */
-    private final List<SetValueChangeListener<R>> listeners = new ArrayList<SetValueChangeListener<R>>();
+    private final List<SetValueChangeListener<? super R>> listeners = new ArrayList<SetValueChangeListener<? super
+            R>>();
 
     /**
      * Default constructor adding no listener.
@@ -80,10 +82,21 @@ public abstract class AbstractReadableSetProperty<R> implements ReadableSetPrope
     }
 
     /**
+     * Gets the registered set item change listeners.
+     * <p/>
+     * Note that the returned collection is not modifiable.
+     *
+     * @return Set item change listeners.
+     */
+    public Collection<SetValueChangeListener<? super R>> getValueChangeListeners() {
+        return Collections.unmodifiableList(listeners);
+    }
+
+    /**
      * @see ReadableSetProperty#addValueChangeListener(SetValueChangeListener)
      */
     @Override
-    public void addValueChangeListener(SetValueChangeListener<R> listener) {
+    public void addValueChangeListener(SetValueChangeListener<? super R> listener) {
         listeners.add(listener);
     }
 
@@ -91,7 +104,7 @@ public abstract class AbstractReadableSetProperty<R> implements ReadableSetPrope
      * @see ReadableSetProperty#removeValueChangeListener(SetValueChangeListener)
      */
     @Override
-    public void removeValueChangeListener(SetValueChangeListener<R> listener) {
+    public void removeValueChangeListener(SetValueChangeListener<? super R> listener) {
         listeners.remove(listener);
     }
 
@@ -100,10 +113,11 @@ public abstract class AbstractReadableSetProperty<R> implements ReadableSetPrope
      *
      * @param newItems Newly added items.
      */
-    protected void doNotifyListenersOfAddedValues(Set<R> newItems) {
-        List<SetValueChangeListener<R>> listenersCopy = new ArrayList<SetValueChangeListener<R>>(listeners);
-        Set<R> unmodifiable = Collections.unmodifiableSet(newItems);
-        for (SetValueChangeListener<R> listener : listenersCopy) {
+    protected void doNotifyListenersOfAddedValues(Set<? extends R> newItems) {
+        List<SetValueChangeListener<? super R>> listenersCopy = new ArrayList<SetValueChangeListener<? super R>>
+                (listeners);
+        Set<? extends R> unmodifiable = Collections.unmodifiableSet(newItems);
+        for (SetValueChangeListener<? super R> listener : listenersCopy) {
             listener.valuesAdded(this, unmodifiable);
         }
     }
@@ -113,10 +127,11 @@ public abstract class AbstractReadableSetProperty<R> implements ReadableSetPrope
      *
      * @param oldItems Removed items.
      */
-    protected void doNotifyListenersOfRemovedValues(Set<R> oldItems) {
-        List<SetValueChangeListener<R>> listenersCopy = new ArrayList<SetValueChangeListener<R>>(listeners);
-        Set<R> unmodifiable = Collections.unmodifiableSet(oldItems);
-        for (SetValueChangeListener<R> listener : listenersCopy) {
+    protected void doNotifyListenersOfRemovedValues(Set<? extends R> oldItems) {
+        List<SetValueChangeListener<? super R>> listenersCopy = new ArrayList<SetValueChangeListener<? super R>>
+                (listeners);
+        Set<? extends R> unmodifiable = Collections.unmodifiableSet(oldItems);
+        for (SetValueChangeListener<? super R> listener : listenersCopy) {
             listener.valuesRemoved(this, unmodifiable);
         }
     }

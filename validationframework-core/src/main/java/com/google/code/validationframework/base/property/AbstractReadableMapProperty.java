@@ -30,6 +30,7 @@ import com.google.code.validationframework.api.property.MapValueChangeListener;
 import com.google.code.validationframework.api.property.ReadableMapProperty;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -45,7 +46,8 @@ public abstract class AbstractReadableMapProperty<K, R> implements ReadableMapPr
     /**
      * Listeners to changes in the list property.
      */
-    private final List<MapValueChangeListener<K, R>> listeners = new ArrayList<MapValueChangeListener<K, R>>();
+    private final List<MapValueChangeListener<? super K, ? super R>> listeners = new
+            ArrayList<MapValueChangeListener<? super K, ? super R>>();
 
     /**
      * Default constructor adding no listener.
@@ -59,9 +61,9 @@ public abstract class AbstractReadableMapProperty<K, R> implements ReadableMapPr
      *
      * @param listeners Listeners to be added.
      */
-    public AbstractReadableMapProperty(MapValueChangeListener<K, R>... listeners) {
+    public AbstractReadableMapProperty(MapValueChangeListener<? super K, ? super R>... listeners) {
         super();
-        for (MapValueChangeListener<K, R> listener : listeners) {
+        for (MapValueChangeListener<? super K, ? super R> listener : listeners) {
             addValueChangeListener(listener);
         }
     }
@@ -81,10 +83,21 @@ public abstract class AbstractReadableMapProperty<K, R> implements ReadableMapPr
     }
 
     /**
+     * Gets the registered map value change listeners.
+     * <p/>
+     * Note that the returned collection is not modifiable.
+     *
+     * @return Map value change listeners.
+     */
+    public Collection<MapValueChangeListener<? super K, ? super R>> getValueChangeListeners() {
+        return Collections.unmodifiableList(listeners);
+    }
+
+    /**
      * @see ReadableMapProperty#addValueChangeListener(MapValueChangeListener)
      */
     @Override
-    public void addValueChangeListener(MapValueChangeListener<K, R> listener) {
+    public void addValueChangeListener(MapValueChangeListener<? super K, ? super R> listener) {
         listeners.add(listener);
     }
 
@@ -92,7 +105,7 @@ public abstract class AbstractReadableMapProperty<K, R> implements ReadableMapPr
      * @see ReadableMapProperty#removeValueChangeListener(MapValueChangeListener)
      */
     @Override
-    public void removeValueChangeListener(MapValueChangeListener<K, R> listener) {
+    public void removeValueChangeListener(MapValueChangeListener<? super K, ? super R> listener) {
         listeners.remove(listener);
     }
 
@@ -104,10 +117,11 @@ public abstract class AbstractReadableMapProperty<K, R> implements ReadableMapPr
      *
      * @param newValues Newly added values.
      */
-    protected void doNotifyListenersOfAddedValues(Map<K, R> newValues) {
-        List<MapValueChangeListener<K, R>> listenersCopy = new ArrayList<MapValueChangeListener<K, R>>(listeners);
+    protected void doNotifyListenersOfAddedValues(Map<? extends K, ? extends R> newValues) {
+        List<MapValueChangeListener<? super K, ? super R>> listenersCopy = new ArrayList<MapValueChangeListener<?
+                super K, ? super R>>(listeners);
         Map<K, R> unmodifiable = Collections.unmodifiableMap(newValues);
-        for (MapValueChangeListener<K, R> listener : listenersCopy) {
+        for (MapValueChangeListener<? super K, ? super R> listener : listenersCopy) {
             listener.valuesAdded(this, unmodifiable);
         }
     }
@@ -121,11 +135,13 @@ public abstract class AbstractReadableMapProperty<K, R> implements ReadableMapPr
      * @param oldValues Previous values.
      * @param newValues New values.
      */
-    protected void doNotifyListenersOfChangedValues(Map<K, R> oldValues, Map<K, R> newValues) {
-        List<MapValueChangeListener<K, R>> listenersCopy = new ArrayList<MapValueChangeListener<K, R>>(listeners);
+    protected void doNotifyListenersOfChangedValues(Map<? extends K, ? extends R> oldValues,
+                                                    Map<? extends K, ? extends R> newValues) {
+        List<MapValueChangeListener<? super K, ? super R>> listenersCopy = new ArrayList<MapValueChangeListener<?
+                super K, ? super R>>(listeners);
         Map<K, R> oldUnmodifiable = Collections.unmodifiableMap(oldValues);
         Map<K, R> newUnmodifiable = Collections.unmodifiableMap(newValues);
-        for (MapValueChangeListener<K, R> listener : listenersCopy) {
+        for (MapValueChangeListener<? super K, ? super R> listener : listenersCopy) {
             listener.valuesChanged(this, oldUnmodifiable, newUnmodifiable);
         }
     }
@@ -138,10 +154,11 @@ public abstract class AbstractReadableMapProperty<K, R> implements ReadableMapPr
      *
      * @param oldValues Removed values.
      */
-    protected void doNotifyListenersOfRemovedValues(Map<K, R> oldValues) {
-        List<MapValueChangeListener<K, R>> listenersCopy = new ArrayList<MapValueChangeListener<K, R>>(listeners);
+    protected void doNotifyListenersOfRemovedValues(Map<? extends K, ? extends R> oldValues) {
+        List<MapValueChangeListener<? super K, ? super R>> listenersCopy = new ArrayList<MapValueChangeListener<?
+                super K, ? super R>>(listeners);
         Map<K, R> unmodifiable = Collections.unmodifiableMap(oldValues);
-        for (MapValueChangeListener<K, R> listener : listenersCopy) {
+        for (MapValueChangeListener<? super K, ? super R> listener : listenersCopy) {
             listener.valuesRemoved(this, unmodifiable);
         }
     }

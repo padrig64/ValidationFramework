@@ -58,7 +58,7 @@ public abstract class AbstractReadableProperty<R> implements ReadableProperty<R>
     /**
      * Writable properties to be updated.
      */
-    private final List<ValueChangeListener<R>> listeners = new ArrayList<ValueChangeListener<R>>();
+    private final List<ValueChangeListener<? super R>> listeners = new ArrayList<ValueChangeListener<? super R>>();
 
     /**
      * Flag stating whether the inhibit the firing of value change events.
@@ -114,7 +114,7 @@ public abstract class AbstractReadableProperty<R> implements ReadableProperty<R>
      *
      * @return Value change listeners.
      */
-    public Collection<ValueChangeListener<R>> getValueChangeListeners() {
+    public Collection<ValueChangeListener<? super R>> getValueChangeListeners() {
         return Collections.unmodifiableList(listeners);
     }
 
@@ -122,7 +122,7 @@ public abstract class AbstractReadableProperty<R> implements ReadableProperty<R>
      * @see ReadableProperty#addValueChangeListener(ValueChangeListener)
      */
     @Override
-    public void addValueChangeListener(ValueChangeListener<R> listener) {
+    public void addValueChangeListener(ValueChangeListener<? super R> listener) {
         listeners.add(listener);
     }
 
@@ -130,7 +130,7 @@ public abstract class AbstractReadableProperty<R> implements ReadableProperty<R>
      * @see ReadableProperty#removeValueChangeListener(ValueChangeListener)
      */
     @Override
-    public void removeValueChangeListener(ValueChangeListener<R> listener) {
+    public void removeValueChangeListener(ValueChangeListener<? super R> listener) {
         listeners.remove(listener);
     }
 
@@ -214,9 +214,9 @@ public abstract class AbstractReadableProperty<R> implements ReadableProperty<R>
      * @param newValue New value.
      */
     private void doNotifyListeners(R oldValue, R newValue) {
-        List<ValueChangeListener<R>> listenersCopy = new ArrayList<ValueChangeListener<R>>(listeners);
+        List<ValueChangeListener<? super R>> listenersCopy = new ArrayList<ValueChangeListener<? super R>>(listeners);
         notifyingListeners = true;
-        for (ValueChangeListener<R> listener : listenersCopy) {
+        for (ValueChangeListener<? super R> listener : listenersCopy) {
             listener.valueChanged(this, oldValue, newValue);
         }
         notifyingListeners = false;
