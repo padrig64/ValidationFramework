@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ValidationFramework Authors
+ * Copyright (c) 2016, ValidationFramework Authors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -57,17 +57,17 @@ public class SimpleBond<MO, SI> implements DeepDisposable {
     /**
      * Master (possibly composite) that is part of the bond.
      */
-    private ReadableProperty<MO> master;
+    private ReadableProperty<? extends MO> master;
 
     /**
      * Transformer (possible composite) to be part of the bond.
      */
-    private Transformer<MO, SI> transformer;
+    private Transformer<? super MO, ? extends SI> transformer;
 
     /**
      * Slave (possibly composite) that is part of the bond.
      */
-    private WritableProperty<SI> slave;
+    private WritableProperty<? super SI> slave;
 
     /**
      * @see DeepDisposable
@@ -86,7 +86,9 @@ public class SimpleBond<MO, SI> implements DeepDisposable {
      * @param transformer Transformer (possibly composite) to be part of the bond.
      * @param slave       Slave (possibly composite) property to be part of the bond.
      */
-    public SimpleBond(ReadableProperty<MO> master, Transformer<MO, SI> transformer, WritableProperty<SI> slave) {
+    public SimpleBond(ReadableProperty<? extends MO> master,
+                      Transformer<? super MO, ? extends SI> transformer,
+                      WritableProperty<? super SI> slave) {
         init(master, transformer, slave);
     }
 
@@ -102,15 +104,15 @@ public class SimpleBond<MO, SI> implements DeepDisposable {
      * @param transformer Transformer (possible composite) to be part of the bond.
      * @param slaves      Slave properties to be part of the bond.
      */
-    public SimpleBond(ReadableProperty<MO> master,
-                      Transformer<MO, SI> transformer,
-                      Collection<WritableProperty<SI>> slaves) {
+    public SimpleBond(ReadableProperty<? extends MO> master,
+                      Transformer<? super MO, ? extends SI> transformer,
+                      Collection<WritableProperty<? super SI>> slaves) {
         // Initialize bond
         CompositeWritableProperty<SI> compositeSlave = new CompositeWritableProperty<SI>();
         init(master, transformer, compositeSlave);
 
         // Add slave properties only after initialization, otherwise they will first be set to null
-        for (WritableProperty<SI> wrappedSlave : slaves) {
+        for (WritableProperty<? super SI> wrappedSlave : slaves) {
             compositeSlave.addProperty(wrappedSlave);
         }
     }
@@ -122,7 +124,9 @@ public class SimpleBond<MO, SI> implements DeepDisposable {
      * @param transformer Value transformer.
      * @param slave       Slave (possibly composite) property.
      */
-    private void init(ReadableProperty<MO> master, Transformer<MO, SI> transformer, WritableProperty<SI> slave) {
+    private void init(ReadableProperty<? extends MO> master,
+                      Transformer<? super MO, ? extends SI> transformer,
+                      WritableProperty<? super SI> slave) {
         this.master = master;
         this.transformer = transformer;
         this.slave = slave;
@@ -202,7 +206,7 @@ public class SimpleBond<MO, SI> implements DeepDisposable {
          * @see ValueChangeListener#valueChanged(ReadableProperty, Object, Object)
          */
         @Override
-        public void valueChanged(ReadableProperty<MO> property, MO oldValue, MO newValue) {
+        public void valueChanged(ReadableProperty<? extends MO> property, MO oldValue, MO newValue) {
             updateSlaves(newValue);
         }
     }
