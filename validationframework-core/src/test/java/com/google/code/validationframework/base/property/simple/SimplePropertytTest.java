@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ValidationFramework Authors
+ * Copyright (c) 2016, ValidationFramework Authors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,6 +25,7 @@
 
 package com.google.code.validationframework.base.property.simple;
 
+import com.google.code.validationframework.api.property.ReadableProperty;
 import com.google.code.validationframework.api.property.ValueChangeListener;
 import org.junit.Test;
 
@@ -109,5 +110,44 @@ public class SimplePropertytTest {
 
         // Check no event fired
         verify(listenerMock, never()).valueChanged(any(SimpleProperty.class), anyInt(), anyInt());
+    }
+
+    @Test
+    public void testAPI() {
+        SimpleObjectProperty objectProperty = new SimpleObjectProperty();
+        SimpleNumberProperty numberProperty = new SimpleNumberProperty();
+        SimpleIntegerProperty integerProperty = new SimpleIntegerProperty();
+
+        // The following should compile
+        objectProperty.addValueChangeListener(new ObjectValueListener());
+        numberProperty.addValueChangeListener(new ObjectValueListener());
+        numberProperty.addValueChangeListener(new NumberValueListener());
+        integerProperty.addValueChangeListener(new ObjectValueListener());
+        integerProperty.addValueChangeListener(new NumberValueListener());
+        integerProperty.addValueChangeListener(new IntegerValueListener());
+    }
+
+    private static class ObjectValueListener implements ValueChangeListener<Object> {
+
+        @Override
+        public void valueChanged(ReadableProperty<? extends Object> property, Object oldValue, Object newValue) {
+            // Nothing to be done
+        }
+    }
+
+    private static class NumberValueListener implements ValueChangeListener<Number> {
+
+        @Override
+        public void valueChanged(ReadableProperty<? extends Number> property, Number oldValue, Number newValue) {
+            // Nothing to be done
+        }
+    }
+
+    private static class IntegerValueListener implements ValueChangeListener<Integer> {
+
+        @Override
+        public void valueChanged(ReadableProperty<? extends Integer> property, Integer oldValue, Integer newValue) {
+            // Nothing to be done
+        }
     }
 }
