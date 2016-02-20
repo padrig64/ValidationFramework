@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ValidationFramework Authors
+ * Copyright (c) 2016, ValidationFramework Authors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -38,49 +38,32 @@ import com.google.code.validationframework.base.transform.CastTransformer;
  *
  * @param <RHI>  Type of result to be transformed.
  * @param <TRHI> Type of result handled by the wrapped result handler.
- *
  * @see ResultHandler
  * @see Disposable
  */
 public class TransformedResultHandler<RHI, TRHI> implements ResultHandler<RHI>, Disposable {
 
     /**
-     * Wrapped result handler whose input will be transformed.
-     */
-    private final ResultHandler<TRHI> wrappedResultHandler;
-
-    /**
      * Transformer adapting the result before processing with the wrapped result handler.
      */
-    final Transformer<RHI, TRHI> resultTransformer;
+    final Transformer<? super RHI, ? extends TRHI> resultTransformer;
 
     /**
-     * Constructor specifying the wrapped result handler and the transformer to be used to adapt the result
-     * before processing with the wrapped result handler.
+     * Wrapped result handler whose input will be transformed.
+     */
+    private final ResultHandler<? super TRHI> wrappedResultHandler;
+
+    /**
+     * Constructor specifying the wrapped result handler and the transformer to be used to adapt the result before
+     * processing with the wrapped result handler.
      *
      * @param resultTransformer    Transformer adapting the result before processing with the wrapped result
-     *                             handler.<br>
-     *                             If null, the result will be cast to the wanted type. In case the result cannot be
-     *                             cast, null will be provided.
+     *                             handler.<br> If null, the result will be cast to the wanted type. In case the result
+     *                             cannot be cast, null will be provided.
      * @param wrappedResultHandler Wrapped result handler whose input will be transformed.
      */
-    public TransformedResultHandler(Transformer<RHI, TRHI> resultTransformer,
-                                    ResultHandler<TRHI> wrappedResultHandler) {
-        this.wrappedResultHandler = wrappedResultHandler;
-        if (resultTransformer == null) {
-            this.resultTransformer = new CastTransformer<RHI, TRHI>();
-        } else {
-            this.resultTransformer = resultTransformer;
-        }
-    }
-
-    /**
-     * @deprecated Use {@link #TransformedResultHandler(Transformer, ResultHandler)} instead.<br>
-     * This method will be removed in a future release.
-     */
-    @Deprecated
-    public TransformedResultHandler(ResultHandler<TRHI> wrappedResultHandler, Transformer<RHI,
-            TRHI> resultTransformer) {
+    public TransformedResultHandler(Transformer<? super RHI, ? extends TRHI> resultTransformer,
+                                    ResultHandler<? super TRHI> wrappedResultHandler) {
         this.wrappedResultHandler = wrappedResultHandler;
         if (resultTransformer == null) {
             this.resultTransformer = new CastTransformer<RHI, TRHI>();
