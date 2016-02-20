@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ValidationFramework Authors
+ * Copyright (c) 2016, ValidationFramework Authors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,7 +35,6 @@ import java.util.List;
  * Composite result handler that will process results using all delegate result handlers.
  *
  * @param <RHI> Type of validation result.<br>It can be, for instance, an enumeration or just a boolean.
- *
  * @see ResultHandler
  * @see Disposable
  */
@@ -44,7 +43,7 @@ public class CompositeResultHandler<RHI> implements ResultHandler<RHI>, Disposab
     /**
      * Delegate result handlers.
      */
-    private final List<ResultHandler<RHI>> resultHandlers = new ArrayList<ResultHandler<RHI>>();
+    private final List<ResultHandler<? super RHI>> resultHandlers = new ArrayList<ResultHandler<? super RHI>>();
 
     /**
      * Default constructor.
@@ -57,12 +56,11 @@ public class CompositeResultHandler<RHI> implements ResultHandler<RHI>, Disposab
      * Constructor specifying the delegate result handler(s).
      *
      * @param resultHandlers Delegate result handler(s).
-     *
      * @see #addResultHandler(ResultHandler)
      */
-    public CompositeResultHandler(ResultHandler<RHI>... resultHandlers) {
+    public CompositeResultHandler(ResultHandler<? super RHI>... resultHandlers) {
         if (resultHandlers != null) {
-            for (ResultHandler<RHI> resultHandler : resultHandlers) {
+            for (ResultHandler<? super RHI> resultHandler : resultHandlers) {
                 addResultHandler(resultHandler);
             }
         }
@@ -73,7 +71,7 @@ public class CompositeResultHandler<RHI> implements ResultHandler<RHI>, Disposab
      *
      * @param resultHandler Delegate result handler to be added.
      */
-    public void addResultHandler(ResultHandler<RHI> resultHandler) {
+    public void addResultHandler(ResultHandler<? super RHI> resultHandler) {
         resultHandlers.add(resultHandler);
     }
 
@@ -82,7 +80,7 @@ public class CompositeResultHandler<RHI> implements ResultHandler<RHI>, Disposab
      *
      * @param resultHandler Delegate result handler to be removed.
      */
-    public void removeResultHandler(ResultHandler<RHI> resultHandler) {
+    public void removeResultHandler(ResultHandler<? super RHI> resultHandler) {
         resultHandlers.remove(resultHandler);
     }
 
@@ -90,12 +88,11 @@ public class CompositeResultHandler<RHI> implements ResultHandler<RHI>, Disposab
      * Processes the specified result using all delegate result handlers.
      *
      * @param result Validation result to be handled.
-     *
      * @see ResultHandler#handleResult(Object)
      */
     @Override
     public void handleResult(RHI result) {
-        for (ResultHandler<RHI> resultHandler : resultHandlers) {
+        for (ResultHandler<? super RHI> resultHandler : resultHandlers) {
             resultHandler.handleResult(result);
         }
     }
@@ -105,7 +102,7 @@ public class CompositeResultHandler<RHI> implements ResultHandler<RHI>, Disposab
      */
     @Override
     public void dispose() {
-        for (ResultHandler<RHI> resultHandler : resultHandlers) {
+        for (ResultHandler<? super RHI> resultHandler : resultHandlers) {
             if (resultHandler instanceof Disposable) {
                 ((Disposable) resultHandler).dispose();
             }
