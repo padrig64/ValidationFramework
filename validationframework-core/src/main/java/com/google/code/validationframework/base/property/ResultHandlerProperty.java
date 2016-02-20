@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ValidationFramework Authors
+ * Copyright (c) 2016, ValidationFramework Authors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,7 +32,6 @@ import com.google.code.validationframework.api.resulthandler.ResultHandler;
  * Writable property updating a result handler.
  *
  * @param <W> Type of value that can be written to the property and handled by the result handler.
- *
  * @see com.google.code.validationframework.base.resulthandler.PropertyResultHandler
  */
 public class ResultHandlerProperty<W> implements WritableProperty<W> {
@@ -40,14 +39,14 @@ public class ResultHandlerProperty<W> implements WritableProperty<W> {
     /**
      * Result handler to be controller by the property.
      */
-    private final ResultHandler<W> resultHandler;
+    private final ResultHandler<? super W> resultHandler;
 
     /**
      * Constructor specifying the result handler to be controlled by the property.
      *
      * @param resultHandler Result handler to be controlled by the property.
      */
-    public ResultHandlerProperty(ResultHandler<W> resultHandler) {
+    public ResultHandlerProperty(ResultHandler<? super W> resultHandler) {
         this.resultHandler = resultHandler;
     }
 
