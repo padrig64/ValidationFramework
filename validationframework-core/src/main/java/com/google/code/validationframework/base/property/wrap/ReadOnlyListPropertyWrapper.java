@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ValidationFramework Authors
+ * Copyright (c) 2016, ValidationFramework Authors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -50,14 +50,14 @@ public class ReadOnlyListPropertyWrapper<R> extends AbstractReadableListProperty
     /**
      * Listener to changes on the wrapped property.
      */
-    private final ListValueChangeListener<R> changeAdapter = new ListValueChangeForwarder();
+    private final ListValueChangeListener<? super R> changeAdapter = new ListValueChangeForwarder();
 
     private boolean deepDispose;
 
     /**
      * Wrapped list property.
      */
-    private ReadableListProperty<R> wrappedListProperty;
+    private ReadableListProperty<? extends R> wrappedListProperty;
 
     /**
      * Constructor specifying the list property to be wrapped, typically a list property that is both readable and
@@ -67,7 +67,7 @@ public class ReadOnlyListPropertyWrapper<R> extends AbstractReadableListProperty
      *
      * @param wrappedListProperty List property to be wrapped.
      */
-    public ReadOnlyListPropertyWrapper(ReadableListProperty<R> wrappedListProperty) {
+    public ReadOnlyListPropertyWrapper(ReadableListProperty<? extends R> wrappedListProperty) {
         this(wrappedListProperty, true);
     }
 
@@ -79,7 +79,7 @@ public class ReadOnlyListPropertyWrapper<R> extends AbstractReadableListProperty
      * @param deepDispose         True to dispose the wrapped list property whenever this list property is disposed,
      *                            false otherwise.
      */
-    public ReadOnlyListPropertyWrapper(ReadableListProperty<R> wrappedListProperty, boolean deepDispose) {
+    public ReadOnlyListPropertyWrapper(ReadableListProperty<? extends R> wrappedListProperty, boolean deepDispose) {
         super();
         this.wrappedListProperty = wrappedListProperty;
         this.wrappedListProperty.addValueChangeListener(changeAdapter);
@@ -178,7 +178,8 @@ public class ReadOnlyListPropertyWrapper<R> extends AbstractReadableListProperty
         if (wrappedListProperty == null) {
             unmodifiable = Collections.emptyList();
         } else {
-            unmodifiable = wrappedListProperty.asUnmodifiableList();
+            // Safe to cast
+            unmodifiable = (List<R>) wrappedListProperty.asUnmodifiableList();
         }
         return unmodifiable;
     }
@@ -201,7 +202,9 @@ public class ReadOnlyListPropertyWrapper<R> extends AbstractReadableListProperty
          * @see ListValueChangeListener#valuesAdded(ReadableListProperty, int, List)
          */
         @Override
-        public void valuesAdded(ReadableListProperty<R> listProperty, int startIndex, List<R> newValues) {
+        public void valuesAdded(ReadableListProperty<? extends R> listProperty,
+                                int startIndex,
+                                List<? extends R> newValues) {
             doNotifyListenersOfAddedValues(startIndex, newValues);
         }
 
@@ -209,8 +212,10 @@ public class ReadOnlyListPropertyWrapper<R> extends AbstractReadableListProperty
          * @see ListValueChangeListener#valuesChanged(ReadableListProperty, int, List, List)
          */
         @Override
-        public void valuesChanged(ReadableListProperty<R> listProperty, int startIndex, List<R> oldValues, List<R>
-                newValues) {
+        public void valuesChanged(ReadableListProperty<? extends R> listProperty,
+                                  int startIndex,
+                                  List<? extends R> oldValues,
+                                  List<? extends R> newValues) {
             doNotifyListenersOfChangedValues(startIndex, oldValues, newValues);
         }
 
@@ -218,7 +223,9 @@ public class ReadOnlyListPropertyWrapper<R> extends AbstractReadableListProperty
          * @see ListValueChangeListener#valuesRemoved(ReadableListProperty, int, List)
          */
         @Override
-        public void valuesRemoved(ReadableListProperty<R> listProperty, int startIndex, List<R> oldValues) {
+        public void valuesRemoved(ReadableListProperty<? extends R> listProperty,
+                                  int startIndex,
+                                  List<? extends R> oldValues) {
             doNotifyListenersOfRemovedValues(startIndex, oldValues);
         }
     }

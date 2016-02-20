@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ValidationFramework Authors
+ * Copyright (c) 2016, ValidationFramework Authors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,12 +41,12 @@ public abstract class AbstractReadablePropertyWrapper<R> extends AbstractReadabl
      *
      * @see #wrappedPropertyValueChanged(ReadableProperty, Object, Object)
      */
-    protected final ValueChangeListener<R> wrappedPropertyAdapter;
+    protected final ValueChangeListener<? super R> wrappedPropertyAdapter;
 
     /**
      * Wrapped property.
      */
-    protected ReadableProperty<R> wrappedProperty;
+    protected ReadableProperty<? extends R> wrappedProperty;
 
     /**
      * True to dispose the wrapped property upon {@link #dispose()}, false otherwise.
@@ -60,7 +60,7 @@ public abstract class AbstractReadablePropertyWrapper<R> extends AbstractReadabl
      *
      * @param wrappedProperty Property to be wrapped.
      */
-    public AbstractReadablePropertyWrapper(ReadableProperty<R> wrappedProperty) {
+    public AbstractReadablePropertyWrapper(ReadableProperty<? extends R> wrappedProperty) {
         this(wrappedProperty, true);
     }
 
@@ -70,7 +70,7 @@ public abstract class AbstractReadablePropertyWrapper<R> extends AbstractReadabl
      * @param wrappedProperty Property to be wrapped.
      * @param deepDispose     True to dispose the wrapped property whenever this property is disposed, false otherwise.
      */
-    public AbstractReadablePropertyWrapper(ReadableProperty<R> wrappedProperty, boolean deepDispose) {
+    public AbstractReadablePropertyWrapper(ReadableProperty<? extends R> wrappedProperty, boolean deepDispose) {
         super();
         this.wrappedProperty = wrappedProperty;
         this.wrappedPropertyAdapter = new ValueChangeAdapter();
@@ -119,7 +119,7 @@ public abstract class AbstractReadablePropertyWrapper<R> extends AbstractReadabl
      * @param oldValue Old value.
      * @param newValue New value.
      */
-    protected abstract void wrappedPropertyValueChanged(ReadableProperty<R> property, R oldValue, R newValue);
+    protected abstract void wrappedPropertyValueChanged(ReadableProperty<? extends R> property, R oldValue, R newValue);
 
     /**
      * Listener to changes of the value of the wrapped property.
@@ -130,7 +130,7 @@ public abstract class AbstractReadablePropertyWrapper<R> extends AbstractReadabl
          * @see ValueChangeListener#valueChanged(ReadableProperty, Object, Object)
          */
         @Override
-        public void valueChanged(ReadableProperty<R> property, R oldValue, R newValue) {
+        public void valueChanged(ReadableProperty<? extends R> property, R oldValue, R newValue) {
             wrappedPropertyValueChanged(property, oldValue, newValue);
         }
     }

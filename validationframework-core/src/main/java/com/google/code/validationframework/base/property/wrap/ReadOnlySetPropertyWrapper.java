@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ValidationFramework Authors
+ * Copyright (c) 2016, ValidationFramework Authors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -50,14 +50,14 @@ public class ReadOnlySetPropertyWrapper<R> extends AbstractReadableSetProperty<R
     /**
      * Listener to changes on the wrapped property.
      */
-    private final SetValueChangeListener<R> changeAdapter = new SetValueChangeForwarder();
+    private final SetValueChangeListener<? super R> changeAdapter = new SetValueChangeForwarder();
 
     private boolean deepDispose;
 
     /**
      * Wrapped set property.
      */
-    private ReadableSetProperty<R> wrappedSetProperty;
+    private ReadableSetProperty<? extends R> wrappedSetProperty;
 
     /**
      * Constructor specifying the set property to be wrapped, typically a set property that is both readable and
@@ -67,7 +67,7 @@ public class ReadOnlySetPropertyWrapper<R> extends AbstractReadableSetProperty<R
      *
      * @param wrappedSetProperty Set property to be wrapped.
      */
-    public ReadOnlySetPropertyWrapper(ReadableSetProperty<R> wrappedSetProperty) {
+    public ReadOnlySetPropertyWrapper(ReadableSetProperty<? extends R> wrappedSetProperty) {
         this(wrappedSetProperty, true);
     }
 
@@ -79,7 +79,7 @@ public class ReadOnlySetPropertyWrapper<R> extends AbstractReadableSetProperty<R
      * @param deepDispose        True to dispose the wrapped set property whenever this set property is disposed, false
      *                           otherwise.
      */
-    public ReadOnlySetPropertyWrapper(ReadableSetProperty<R> wrappedSetProperty, boolean deepDispose) {
+    public ReadOnlySetPropertyWrapper(ReadableSetProperty<? extends R> wrappedSetProperty, boolean deepDispose) {
         super();
         this.wrappedSetProperty = wrappedSetProperty;
         this.wrappedSetProperty.addValueChangeListener(changeAdapter);
@@ -164,7 +164,8 @@ public class ReadOnlySetPropertyWrapper<R> extends AbstractReadableSetProperty<R
         if (wrappedSetProperty == null) {
             unmodifiable = Collections.emptySet();
         } else {
-            unmodifiable = wrappedSetProperty.asUnmodifiableSet();
+            // Safe to cast
+            unmodifiable = (Set<R>) wrappedSetProperty.asUnmodifiableSet();
         }
         return unmodifiable;
     }
@@ -187,7 +188,7 @@ public class ReadOnlySetPropertyWrapper<R> extends AbstractReadableSetProperty<R
          * @see SetValueChangeListener#valuesAdded(ReadableSetProperty, Set)
          */
         @Override
-        public void valuesAdded(ReadableSetProperty<R> setProperty, Set<R> newValues) {
+        public void valuesAdded(ReadableSetProperty<? extends R> setProperty, Set<? extends R> newValues) {
             doNotifyListenersOfAddedValues(newValues);
         }
 
@@ -195,7 +196,7 @@ public class ReadOnlySetPropertyWrapper<R> extends AbstractReadableSetProperty<R
          * @see SetValueChangeListener#valuesRemoved(ReadableSetProperty, Set)
          */
         @Override
-        public void valuesRemoved(ReadableSetProperty<R> setProperty, Set<R> oldValues) {
+        public void valuesRemoved(ReadableSetProperty<? extends R> setProperty, Set<? extends R> oldValues) {
             doNotifyListenersOfRemovedValues(oldValues);
         }
     }
