@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ValidationFramework Authors
+ * Copyright (c) 2016, ValidationFramework Authors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,9 +36,8 @@ import com.google.code.validationframework.base.transform.CastTransformer;
  * This can be useful to adapt existing data providers to be put in validators requiring another type of input.
  *
  * @param <DPO>  Type of data returned by the wrapped data provider.
- * @param <TDPO> Type of data to be validated.<br>
- *               It can be, for instance, the type of data handled by a component, or the type of the component itself.
- *
+ * @param <TDPO> Type of data to be validated.<br> It can be, for instance, the type of data handled by a component, or
+ *               the type of the component itself.
  * @see DataProvider
  * @see Disposable
  */
@@ -47,23 +46,24 @@ public class TransformedDataProvider<DPO, TDPO> implements DataProvider<TDPO>, D
     /**
      * Wrapped data provider whose output is to be transformed.
      */
-    private final DataProvider<DPO> wrappedDataProvider;
+    private final DataProvider<? extends DPO> wrappedDataProvider;
 
     /**
      * Transformer adapting the output of the wrapped data provider.
      */
-    private final Transformer<DPO, TDPO> dataTransformer;
+    private final Transformer<? super DPO, ? extends TDPO> dataTransformer;
 
     /**
      * Constructor specifying the wrapped data provider and the transformer to be used to adapt the output of the
      * wrapped data provider.
      *
      * @param wrappedDataProvider Wrapped data provider whose output is to be transformed.
-     * @param dataTransformer     Transformer adapting the output of the wrapped data provider.<br>
-     *                            If null, the provided data will be cast to the wanted type. In case the data cannot be
-     *                            cast, null will be provided.
+     * @param dataTransformer     Transformer adapting the output of the wrapped data provider.<br> If null, the
+     *                            provided data will be cast to the wanted type. In case the data cannot be cast, null
+     *                            will be provided.
      */
-    public TransformedDataProvider(DataProvider<DPO> wrappedDataProvider, Transformer<DPO, TDPO> dataTransformer) {
+    public TransformedDataProvider(DataProvider<? extends DPO> wrappedDataProvider,
+                                   Transformer<? super DPO, ? extends TDPO> dataTransformer) {
         this.wrappedDataProvider = wrappedDataProvider;
         if (dataTransformer == null) {
             this.dataTransformer = new CastTransformer<DPO, TDPO>();
