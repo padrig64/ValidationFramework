@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ValidationFramework Authors
+ * Copyright (c) 2016, ValidationFramework Authors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,7 +32,6 @@ import com.google.code.validationframework.api.property.ReadableProperty;
  * Data provider reading the value of a {@link ReadableProperty}.
  *
  * @param <DPO> Type of data to be read from the property.
- *
  * @see ReadableProperty
  */
 public class PropertyValueProvider<DPO> implements DataProvider<DPO> {
@@ -40,14 +39,14 @@ public class PropertyValueProvider<DPO> implements DataProvider<DPO> {
     /**
      * Property to get the value from.
      */
-    private final ReadableProperty<DPO> property;
+    private final ReadableProperty<? extends DPO> property;
 
     /**
      * Constructor specifying the property to get the value from.
      *
      * @param property Property to get the value from.
      */
-    public PropertyValueProvider(ReadableProperty<DPO> property) {
+    public PropertyValueProvider(ReadableProperty<? extends DPO> property) {
         this.property = property;
     }
 
