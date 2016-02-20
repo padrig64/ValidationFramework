@@ -99,7 +99,7 @@ public class PrintStreamValueChangeAdapter<T> implements ValueChangeListener<T> 
      * @see ValueChangeListener#valueChanged(ReadableProperty, Object, Object)
      */
     @Override
-    public void valueChanged(ReadableProperty<T> property, T oldValue, T newValue) {
+    public void valueChanged(ReadableProperty<? extends T> property, T oldValue, T newValue) {
         String name = propertyName;
         if (name == null) {
             name = property.getClass().getSimpleName();
