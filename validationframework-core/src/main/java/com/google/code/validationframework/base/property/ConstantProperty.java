@@ -36,7 +36,7 @@ public class ConstantProperty<R> implements ReadableProperty<R> {
      * @see ReadableProperty#addValueChangeListener(ValueChangeListener)
      */
     @Override
-    public void addValueChangeListener(ValueChangeListener<R> listener) {
+    public void addValueChangeListener(ValueChangeListener<? super R> listener) {
         // Nothing to be done
     }
 
@@ -47,7 +47,7 @@ public class ConstantProperty<R> implements ReadableProperty<R> {
      * @see #addValueChangeListener(ValueChangeListener)
      */
     @Override
-    public void removeValueChangeListener(ValueChangeListener<R> listener) {
+    public void removeValueChangeListener(ValueChangeListener<? super R> listener) {
         // Nothing to be done
     }
 
