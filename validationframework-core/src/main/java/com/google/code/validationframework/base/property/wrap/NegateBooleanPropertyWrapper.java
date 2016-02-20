@@ -88,7 +88,8 @@ public class NegateBooleanPropertyWrapper extends AbstractReadablePropertyWrappe
      * @param nullNegation    Value representing the negation of a null value.
      * @param deepDispose     True to dispose the wrapped property whenever this property is disposed, false otherwise.
      */
-    public NegateBooleanPropertyWrapper(ReadableProperty<Boolean> wrappedProperty, Boolean nullNegation, boolean deepDispose) {
+    public NegateBooleanPropertyWrapper(ReadableProperty<Boolean> wrappedProperty, Boolean nullNegation,
+                                        boolean deepDispose) {
         super(wrappedProperty, deepDispose);
         this.transformer = new NegateBooleanTransformer(nullNegation);
     }
@@ -97,7 +98,9 @@ public class NegateBooleanPropertyWrapper extends AbstractReadablePropertyWrappe
      * @see AbstractReadablePropertyWrapper#wrappedPropertyValueChanged(ReadableProperty, Object, Object)
      */
     @Override
-    protected void wrappedPropertyValueChanged(ReadableProperty<Boolean> property, Boolean oldValue, Boolean newValue) {
+    protected void wrappedPropertyValueChanged(ReadableProperty<? extends Boolean> property,
+                                               Boolean oldValue,
+                                               Boolean newValue) {
         Boolean transformedOldValue = transformer.transform(oldValue);
         Boolean transformedNewValue = transformer.transform(newValue);
         maybeNotifyListeners(transformedOldValue, transformedNewValue);
