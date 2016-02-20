@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ValidationFramework Authors
+ * Copyright (c) 2016, ValidationFramework Authors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,7 +32,6 @@ import com.google.code.validationframework.api.resulthandler.ResultHandler;
  * Result handler set the value of a {@link WritableProperty} with the validation result.
  *
  * @param <RHI> Type of validation result to be set on the property.
- *
  * @see WritableProperty
  * @see com.google.code.validationframework.base.property.ResultHandlerProperty
  */
@@ -41,14 +40,14 @@ public class PropertyResultHandler<RHI> implements ResultHandler<RHI> {
     /**
      * Property to be set with the validation result.
      */
-    private final WritableProperty<RHI> property;
+    private final WritableProperty<? super RHI> property;
 
     /**
      * Constructor specifying the property to be set with the validation result.
      *
      * @param property Property to be set with the validation result.
      */
-    public PropertyResultHandler(WritableProperty<RHI> property) {
+    public PropertyResultHandler(WritableProperty<? super RHI> property) {
         this.property = property;
     }
 
