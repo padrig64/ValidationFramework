@@ -34,7 +34,6 @@ import com.google.code.validationframework.api.transform.Transformer;
  *
  * @param <RI> Type of data to be transformed to RO.
  * @param <RO> Type of data transformed form RI.
- *
  * @see Rule
  * @see Disposable
  */
@@ -43,14 +42,14 @@ public class TransformerRule<RI, RO> implements Rule<RI, RO>, Disposable {
     /**
      * Transformer that will transform the data under validation to a result.
      */
-    private final Transformer<RI, RO> transformer;
+    private final Transformer<? super RI, ? extends RO> transformer;
 
     /**
      * Constructor specifying the {@link Transformer} to be used to produce the results.
      *
      * @param transformer Transformer to be used to produce the results.
      */
-    public TransformerRule(Transformer<RI, RO> transformer) {
+    public TransformerRule(Transformer<? super RI, ? extends RO> transformer) {
         this.transformer = transformer;
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ValidationFramework Authors
+ * Copyright (c) 2016, ValidationFramework Authors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,7 +32,6 @@ import com.google.code.validationframework.api.rule.Rule;
  * Rule wrapper to negate/invert the result of a provided rule.
  *
  * @param <RHI> Type of data to be validated by the wrapped rule.
- *
  * @see Rule
  * @see Disposable
  */
@@ -46,7 +45,7 @@ public class NegateBooleanRule<RHI> implements Rule<RHI, Boolean>, Disposable {
     /**
      * Wrapped rule whose boolean result is to be negated/inverted.
      */
-    private final Rule<RHI, Boolean> wrappedRule;
+    private final Rule<? super RHI, Boolean> wrappedRule;
 
     /**
      * Value to be returned when the result of the wrapped rule is null.
@@ -58,18 +57,18 @@ public class NegateBooleanRule<RHI> implements Rule<RHI, Boolean>, Disposable {
      *
      * @param wrappedRule Rule whose result is to be negated.
      */
-    public NegateBooleanRule(final Rule<RHI, Boolean> wrappedRule) {
+    public NegateBooleanRule(final Rule<? super RHI, Boolean> wrappedRule) {
         this(wrappedRule, DEFAULT_NULL_RESULT_NEGATION);
     }
 
     /**
-     * Constructor specifying the wrapped rule whose result is to be negated and the default value to return in case
-     * the wrapped rule's result is null.
+     * Constructor specifying the wrapped rule whose result is to be negated and the default value to return in case the
+     * wrapped rule's result is null.
      *
      * @param wrappedRule        Wrapped rule whose boolean result is to be negated/inverted.
      * @param nullResultNegation Value to be returned when the result of the wrapped rule is null.
      */
-    public NegateBooleanRule(final Rule<RHI, Boolean> wrappedRule, final Boolean nullResultNegation) {
+    public NegateBooleanRule(final Rule<? super RHI, Boolean> wrappedRule, final Boolean nullResultNegation) {
         this.wrappedRule = wrappedRule;
         this.nullResultNegation = nullResultNegation;
     }

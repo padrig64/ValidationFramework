@@ -37,9 +37,8 @@ import java.util.Collection;
  * Composite rule checking data of a known specific type using sub-rules, and returning a boolean as an aggregation of
  * the boolean results from its sub-rules.
  *
- * @param <RI> Type of data to be validated.<br>
- *             It can be, for instance, the type of data handled by a component, or the type of the component itself.
- *
+ * @param <RI> Type of data to be validated.<br> It can be, for instance, the type of data handled by a component, or
+ *             the type of the component itself.
  * @see AbstractCompositeRule
  * @see AndCompositeBooleanRule
  */
@@ -62,7 +61,7 @@ public class OrCompositeBooleanRule<RI> extends AbstractCompositeRule<RI, Boolea
     /**
      * @see AbstractCompositeRule#AbstractCompositeRule(Rule[])
      */
-    public OrCompositeBooleanRule(Rule<RI, Boolean>... rules) {
+    public OrCompositeBooleanRule(Rule<? super RI, Boolean>... rules) {
         super(rules);
     }
 
@@ -73,7 +72,7 @@ public class OrCompositeBooleanRule<RI> extends AbstractCompositeRule<RI, Boolea
     public Boolean validate(RI data) {
         // Collect results
         Collection<Boolean> results = new ArrayList<Boolean>();
-        for (Rule<RI, Boolean> rule : rules) {
+        for (Rule<? super RI, ? extends Boolean> rule : rules) {
             Boolean result = rule.validate(data);
             results.add(result);
         }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ValidationFramework Authors
+ * Copyright (c) 2016, ValidationFramework Authors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,21 +37,19 @@ import com.google.code.validationframework.base.utils.ValueUtils;
  * Refer to {@link ValueUtils#areEqual(Object, Object)} to see how null, {@link Float#NaN} and {@link Float#NaN} values
  * are treated.
  *
- * @param <RI> Type of data to be validated.
- *
  * @see Rule
  * @see ValueUtils#areEqual(Object, Object)
  */
-public class EqualsRule<RI> implements Rule<RI, Boolean> {
+public class EqualsRule<Object> implements Rule<Object, Boolean> {
 
-    private final RI referenceData;
+    private final Object referenceData;
 
     /**
      * Constructor specifying the reference object against which the input data will be checked.
      *
      * @param referenceData Reference object, or null.
      */
-    public EqualsRule(RI referenceData) {
+    public EqualsRule(Object referenceData) {
         this.referenceData = referenceData;
     }
 
@@ -60,7 +58,7 @@ public class EqualsRule<RI> implements Rule<RI, Boolean> {
      * @see ValueUtils#areEqual(Object, Object)
      */
     @Override
-    public Boolean validate(RI data) {
+    public Boolean validate(Object data) {
         return ValueUtils.areEqual(referenceData, data);
     }
 }

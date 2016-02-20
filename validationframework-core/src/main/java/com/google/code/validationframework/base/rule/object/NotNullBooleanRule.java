@@ -35,18 +35,15 @@ import com.google.code.validationframework.api.rule.Rule;
  * Note that even though generics are not needed in the logic of this class, providing a specific type makes it more
  * convenient to reduce compilation warnings and errors.
  *
- * @param <RI> Type of data to be validated.<br>
- *             It can be, for instance, the type of data handled by a component, or the type of the component itself.
- *
  * @see Rule
  */
-public class NotNullBooleanRule<RI> implements Rule<RI, Boolean> {
+public class NotNullBooleanRule implements Rule<Object, Boolean> {
 
     /**
      * @see Rule#validate(Object)
      */
     @Override
-    public Boolean validate(RI data) {
+    public Boolean validate(Object data) {
         return (data != null);
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ValidationFramework Authors
+ * Copyright (c) 2016, ValidationFramework Authors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,11 +34,9 @@ import java.util.List;
 /**
  * Abstraction of a composite rule composed of sub-rules.
  *
- * @param <RI> Type of data to be validated.<br>
- *             It can be, for instance, the type of data handled by a component, or the type of the component itself.
- * @param <RO> Type of validation result.<br>
- *             It can be, for instance, an enumeration or just a boolean.
- *
+ * @param <RI> Type of data to be validated.<br> It can be, for instance, the type of data handled by a component, or
+ *             the type of the component itself.
+ * @param <RO> Type of validation result.<br> It can be, for instance, an enumeration or just a boolean.
  * @see Rule
  * @see Disposable
  */
@@ -47,7 +45,7 @@ public abstract class AbstractCompositeRule<RI, RO> implements Rule<RI, RO>, Dis
     /**
      * Sub-rules to be checked.
      */
-    protected final List<Rule<RI, RO>> rules = new ArrayList<Rule<RI, RO>>();
+    protected final List<Rule<? super RI, ? extends RO>> rules = new ArrayList<Rule<? super RI, ? extends RO>>();
 
     /**
      * Default constructor.
@@ -60,12 +58,11 @@ public abstract class AbstractCompositeRule<RI, RO> implements Rule<RI, RO>, Dis
      * Constructor specifying the sub-rule(s) to be added.
      *
      * @param rules Sub-rule(s) to be added.
-     *
      * @see #addRule(Rule)
      */
-    public AbstractCompositeRule(Rule<RI, RO>... rules) {
+    public AbstractCompositeRule(Rule<? super RI, ? extends RO>... rules) {
         if (rules != null) {
-            for (Rule<RI, RO> rule : rules) {
+            for (Rule<? super RI, ? extends RO> rule : rules) {
                 addRule(rule);
             }
         }
@@ -76,7 +73,7 @@ public abstract class AbstractCompositeRule<RI, RO> implements Rule<RI, RO>, Dis
      *
      * @param rule Sub-rule to be added.
      */
-    public void addRule(Rule<RI, RO> rule) {
+    public void addRule(Rule<? super RI, ? extends RO> rule) {
         rules.add(rule);
     }
 
@@ -85,7 +82,7 @@ public abstract class AbstractCompositeRule<RI, RO> implements Rule<RI, RO>, Dis
      *
      * @param rule Sub-rule tobe removed
      */
-    public void removeRule(Rule<RI, RO> rule) {
+    public void removeRule(Rule<? super RI, ? extends RO> rule) {
         rules.remove(rule);
     }
 
@@ -94,7 +91,7 @@ public abstract class AbstractCompositeRule<RI, RO> implements Rule<RI, RO>, Dis
      */
     @Override
     public void dispose() {
-        for (Rule<RI, RO> rule : rules) {
+        for (Rule<? super RI, ? extends RO> rule : rules) {
             if (rule instanceof Disposable) {
                 ((Disposable) rule).dispose();
             }
