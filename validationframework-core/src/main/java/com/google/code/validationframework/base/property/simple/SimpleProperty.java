@@ -58,6 +58,7 @@ public class SimpleProperty<T> extends AbstractReadableWritableProperty<T, T> {
      * @param value Initial property value.
      */
     public SimpleProperty(T value) {
+        super();
         this.value = value;
     }
 
