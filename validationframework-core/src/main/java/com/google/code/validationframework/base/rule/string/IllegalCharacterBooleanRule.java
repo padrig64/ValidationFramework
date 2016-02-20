@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ValidationFramework Authors
+ * Copyright (c) 2016, ValidationFramework Authors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -59,6 +59,7 @@ public class IllegalCharacterBooleanRule extends AbstractStringBooleanRule {
      * @param illegalCharacters String containing all illegal characters.
      */
     public IllegalCharacterBooleanRule(final String illegalCharacters) {
+        super();
         setIllegalCharacters(illegalCharacters);
     }
 
