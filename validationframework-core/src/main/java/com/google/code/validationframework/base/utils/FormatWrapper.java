@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ValidationFramework Authors
+ * Copyright (c) 2016, ValidationFramework Authors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -49,13 +49,12 @@ import java.text.ParsePosition;
  * fire any exception. Formatting a null object will result in an empty string. It may be useful to wrap a {@link
  * Format} object that does not support null values.
  * <p/>
- * Finally, the wrapper allows to transform the parsed object before returning it. This can be useful when wrapping
- * a number format, for example, that does not return always the same type of parsed {@link java.lang.Number} (sometimes
- * a Long, sometimes a Double, sometimes an Integer, etc.). So this wrapper makes sure that the type of output is always
+ * Finally, the wrapper allows to transform the parsed object before returning it. This can be useful when wrapping a
+ * number format, for example, that does not return always the same type of parsed {@link java.lang.Number} (sometimes a
+ * Long, sometimes a Double, sometimes an Integer, etc.). So this wrapper makes sure that the type of output is always
  * the same, what can be more convenient to applications.
  *
  * @param <T> Type of parsed objects.
- *
  * @see #strictParsing
  * @see #delegateNullValueFormatting
  * @see #delegateNullOrEmptyTextParsing
@@ -77,7 +76,7 @@ public class FormatWrapper<T> extends Format {
      * <p/>
      * By default, the transformation will just be a cast.
      */
-    private final Transformer<Object, T> parsedObjectTransformer;
+    private final Transformer<Object, ? extends T> parsedObjectTransformer;
 
     /**
      * Flag indicating whether strict parsing should be enabled.
@@ -112,7 +111,8 @@ public class FormatWrapper<T> extends Format {
      * By default, strict parsing will be enabled, and formatting of null values will not be delegated either.
      *
      * @param delegate                       Delegate format to be used for formatting and parsing.
-     * @param delegateNullOrEmptyTextParsing True to delegate the parsing of null or empty texts, false not to delegate.
+     * @param delegateNullOrEmptyTextParsing True to delegate the parsing of null or empty texts, false not to
+     *                                       delegate.
      */
     public FormatWrapper(Format delegate, boolean delegateNullOrEmptyTextParsing) {
         this(delegate, null);
@@ -128,7 +128,7 @@ public class FormatWrapper<T> extends Format {
      * @param delegate                Delegate format to be used for formatting and parsing.
      * @param parsedObjectTransformer Transformer to convert the parsed objects
      */
-    public FormatWrapper(Format delegate, Transformer<Object, T> parsedObjectTransformer) {
+    public FormatWrapper(Format delegate, Transformer<Object, ? extends T> parsedObjectTransformer) {
         super();
         this.delegate = delegate;
 
@@ -181,7 +181,8 @@ public class FormatWrapper<T> extends Format {
      * If it is delegated, a {@link ParseException} might be thrown depending on the behavior of the delegate format. If
      * it is not delegated, no exception will be thrown as if the input is valid.
      *
-     * @param delegateNullOrEmptyTextParsing True to delegate the parsing of null or empty texts, false not to delegate.
+     * @param delegateNullOrEmptyTextParsing True to delegate the parsing of null or empty texts, false not to
+     *                                       delegate.
      */
     public void setDelegateNullOrEmptyTextParsing(boolean delegateNullOrEmptyTextParsing) {
         this.delegateNullOrEmptyTextParsing = delegateNullOrEmptyTextParsing;

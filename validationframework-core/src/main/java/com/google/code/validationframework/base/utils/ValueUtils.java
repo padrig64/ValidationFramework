@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ValidationFramework Authors
+ * Copyright (c) 2016, ValidationFramework Authors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -46,7 +46,6 @@ public final class ValueUtils {
      *
      * @param value1 First value.
      * @param value2 Second value.
-     *
      * @return True if both values are equal or if both are null.
      */
     public static boolean areEqual(Object value1, Object value2) {
@@ -62,10 +61,9 @@ public final class ValueUtils {
      * @param value2     Second value.
      * @param comparator Comparator to be used to compare the two values in case they are both non null.
      * @param <T>        Type of values to be compared.
-     *
      * @return True if both values are null, or equal according to the comparator.
      */
-    public static <T> boolean areEqual(T value1, T value2, Comparator<T> comparator) {
+    public static <T> boolean areEqual(T value1, T value2, Comparator<? super T> comparator) {
         return ((value1 == null) && (value2 == null)) || //
                 ((value1 != null) && (value2 != null) && (comparator.compare(value1, value2) == 0));
     }
@@ -74,7 +72,6 @@ public final class ValueUtils {
      * Checks if the specified value is either NaN.
      *
      * @param value Value to be checked.
-     *
      * @return True if the value is NaN, false otherwise.
      */
     private static boolean isNaN(Object value) {
