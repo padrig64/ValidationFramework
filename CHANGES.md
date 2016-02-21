@@ -22,6 +22,8 @@
 * Deprecated the experimental `ResultCollectorValidatorBuilder` in favor of the `GeneralValidatorBuilder`
 * Removed experimental duplicate of `PropertyResultHandler`
 * Removed experimental duplicate of `JFormattedTextFieldValueProperty`
+* Removed deprecated `Transformer` and `Aggregator` interfaces from `base` package (they are still in the `api` package)
+* Removed `CollectionElementTransformer` from `transform` package (it is still in the `transform.collection` package)
 * Added `ThrowableHandler` and deprecated the `ExceptionHandler` and the `UncheckedExceptionHandler`
 * Added `CompositeThrowableHandler`
 * Added `PseudoClassResultHandler` to JavaFX support
