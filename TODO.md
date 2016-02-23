@@ -3,7 +3,7 @@
 * Painting of decoration when decorated component is still (0,0,0,0) and invalid
 * Painting of translucent decorations on OS X
 * Icon decoration steals mouse event even outside clipping bounds
-* Inconsistent behavior of dispose() methods: test setting value before/after dispose() (from property, from component), test listener before/after dispose(), test multiple dispose() 
+* Inconsistent behavior of dispose() methods: test setting value before/after dispose() (from property, from component), test listener before/after dispose(), test multiple dispose() (Release 4.0.0)
 
 # Ideas for the short term
 
@@ -11,6 +11,8 @@
 * Convenient value change listeners to check the correct behavior of the properties (incl. set, list and map properties): always on the same thread, always on EDT, never on EDT, only called when values are different, etc.
 * Set-, List- and Map-related transformers
 * More JavaFX 2 support
+
+* Separate the property binding mechanism from the validation framework (Release 5.0.0?)
 
 * Clean up demo module
 
@@ -54,7 +56,7 @@
 
 # Ideas for the long term
 
-* Better use of lambdas (e.g. for set/list/map properties)
+* Better support for Java 8 regarding the use of lambdas and method references (e.g. for set/list/map properties)
 * Common builder API to build validators and property bindings for general-purpose conditional logic
 * Predicates/conditions
 * Validation rules depending on component state (visible, enabled, etc.)
