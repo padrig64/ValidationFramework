@@ -45,7 +45,7 @@ public class FormatTransformer<T> implements Transformer<T, String> {
     /**
      * Format property to be used for formatting.
      */
-    private final ReadableWritableProperty<Format, Format> formatProperty;
+    private final ReadableWritableProperty<Format> formatProperty;
 
     /**
      * Constructor specifying the format object to be used for formatting.
@@ -61,7 +61,7 @@ public class FormatTransformer<T> implements Transformer<T, String> {
      *
      * @param formatProperty Format property to be used for formatting.
      */
-    public FormatTransformer(ReadableWritableProperty<Format, Format> formatProperty) {
+    public FormatTransformer(ReadableWritableProperty<Format> formatProperty) {
         this.formatProperty = formatProperty;
     }
 
@@ -70,7 +70,7 @@ public class FormatTransformer<T> implements Transformer<T, String> {
      *
      * @return Format property.
      */
-    public ReadableWritableProperty<Format, Format> getFormatProperty() {
+    public ReadableWritableProperty<Format> getFormatProperty() {
         return formatProperty;
     }
 

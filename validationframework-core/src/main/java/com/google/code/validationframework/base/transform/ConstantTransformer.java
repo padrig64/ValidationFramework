@@ -40,7 +40,7 @@ public class ConstantTransformer<I, O> implements Transformer<I, O> {
     /**
      * Property holding the constant output value.
      */
-    private final ReadableWritableProperty<O, O> outputProperty;
+    private final ReadableWritableProperty<O> outputProperty;
 
     /**
      * Default constructor using null as the output constant.
@@ -55,7 +55,6 @@ public class ConstantTransformer<I, O> implements Transformer<I, O> {
      * Constructor specifying the constant output value.
      *
      * @param output Constant output value.
-     *
      * @see #getOutputProperty()
      */
     public ConstantTransformer(O output) {
@@ -66,10 +65,9 @@ public class ConstantTransformer<I, O> implements Transformer<I, O> {
      * Constructor specifying a property holding the constant output value.
      *
      * @param outputProperty Property holding the constant output value.
-     *
      * @see #getOutputProperty()
      */
-    public ConstantTransformer(ReadableWritableProperty<O, O> outputProperty) {
+    public ConstantTransformer(ReadableWritableProperty<O> outputProperty) {
         this.outputProperty = outputProperty;
     }
 
@@ -78,7 +76,7 @@ public class ConstantTransformer<I, O> implements Transformer<I, O> {
      *
      * @return Property holding the constant output value.
      */
-    public ReadableWritableProperty<O, O> getOutputProperty() {
+    public ReadableWritableProperty<O> getOutputProperty() {
         return outputProperty;
     }
 

@@ -25,8 +25,11 @@
 
 package com.google.code.validationframework.base.property;
 
+import com.google.code.validationframework.api.property.ReadableProperty;
 import com.google.code.validationframework.api.property.ValueChangeListener;
 import com.google.code.validationframework.base.property.simple.SimpleIntegerProperty;
+import com.google.code.validationframework.base.property.simple.SimpleNumberProperty;
+import com.google.code.validationframework.base.property.simple.SimpleObjectProperty;
 import com.google.code.validationframework.base.property.wrap.AbstractReadablePropertyWrapper;
 import com.google.code.validationframework.test.ListMatcher;
 import org.junit.Test;
@@ -154,5 +157,47 @@ public class CompositeReadablePropertyTest {
 
         verify(compoundProperty1, times(0)).dispose();
         verify(compoundProperty2, times(0)).dispose();
+    }
+
+    @Test
+    public void testCompileInteger() {
+        CompositeReadableProperty<Integer> compositeProperty = new CompositeReadableProperty<Integer>();
+
+        compositeProperty.addProperty(new SimpleIntegerProperty());
+        // compositeProperty.addProperty(new SimpleNumberProperty()); // Should not compile
+        // compositeProperty.addProperty(new SimpleObjectProperty()); // Should not compile
+
+        Collection<ReadableProperty<? extends Integer>> properties = compositeProperty.getProperties();
+        for (ReadableProperty<? extends Integer> property : properties) {
+            Integer value = property.getValue();
+        }
+    }
+
+    @Test
+    public void testCompileNumber() {
+        CompositeReadableProperty<Number> compositeProperty = new CompositeReadableProperty<Number>();
+
+        compositeProperty.addProperty(new SimpleIntegerProperty());
+        compositeProperty.addProperty(new SimpleNumberProperty());
+        // compositeProperty.addProperty(new SimpleObjectProperty()); // Should not compile
+
+        Collection<ReadableProperty<? extends Number>> properties = compositeProperty.getProperties();
+        for (ReadableProperty<? extends Number> property : properties) {
+            Number value = property.getValue();
+        }
+    }
+
+    @Test
+    public void testCompileObject() {
+        CompositeReadableProperty<Object> compositeProperty = new CompositeReadableProperty<Object>();
+
+        compositeProperty.addProperty(new SimpleIntegerProperty());
+        compositeProperty.addProperty(new SimpleNumberProperty());
+        compositeProperty.addProperty(new SimpleObjectProperty());
+
+        Collection<ReadableProperty<?>> properties = compositeProperty.getProperties();
+        for (ReadableProperty<?> property : properties) {
+            Object value = property.getValue();
+        }
     }
 }

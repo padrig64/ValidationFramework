@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ValidationFramework Authors
+ * Copyright (c) 2016, ValidationFramework Authors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,6 +30,8 @@ import com.google.code.validationframework.api.trigger.Trigger;
 import com.google.code.validationframework.api.trigger.TriggerEvent;
 import com.google.code.validationframework.api.trigger.TriggerListener;
 import com.google.code.validationframework.base.common.RethrowUncheckedExceptionHandler;
+import com.google.code.validationframework.base.common.ThrowableHandler;
+import com.google.code.validationframework.base.common.ThrowableHandlerWrapper;
 import com.google.code.validationframework.base.common.UncheckedExceptionHandler;
 
 import java.util.ArrayList;
@@ -52,7 +54,7 @@ public abstract class AbstractTrigger implements Trigger, Disposable {
     /**
      * Strategy for handling exceptions thrown when the trigger events are fired.
      */
-    protected final UncheckedExceptionHandler uncheckedExceptionHandler;
+    protected final ThrowableHandler<? super Throwable> uncheckedExceptionHandler;
 
     /**
      * Trigger listeners.
@@ -67,7 +69,7 @@ public abstract class AbstractTrigger implements Trigger, Disposable {
      * @see RethrowUncheckedExceptionHandler
      */
     public AbstractTrigger() {
-        this(null);
+        this((ThrowableHandler<? super Throwable>) null);
     }
 
     /**
@@ -75,15 +77,28 @@ public abstract class AbstractTrigger implements Trigger, Disposable {
      *
      * @param uncheckedExceptionHandler Strategy for handling exceptions thrown when the trigger events are fired.<br>
      *                                  If null, the default {@link RethrowUncheckedExceptionHandler} will be used.
+     * @see UncheckedExceptionHandler
+     * @see RethrowUncheckedExceptionHandler
+     * @deprecated Use {@link #AbstractTrigger(ThrowableHandler)} instead.
+     */
+    @Deprecated
+    public AbstractTrigger(UncheckedExceptionHandler uncheckedExceptionHandler) {
+        this(new ThrowableHandlerWrapper(uncheckedExceptionHandler));
+    }
+
+    /**
+     * Constructor specifying what to do when an exception occurs when the trigger event is fired.
      *
+     * @param throwableHandler Strategy for handling exceptions thrown when the trigger events are fired.<br>If null,
+     *                         the default {@link RethrowUncheckedExceptionHandler} will be used.
      * @see UncheckedExceptionHandler
      * @see RethrowUncheckedExceptionHandler
      */
-    public AbstractTrigger(UncheckedExceptionHandler uncheckedExceptionHandler) {
-        if (uncheckedExceptionHandler == null) {
+    public AbstractTrigger(ThrowableHandler<? super Throwable> throwableHandler) {
+        if (throwableHandler == null) {
             this.uncheckedExceptionHandler = new RethrowUncheckedExceptionHandler();
         } else {
-            this.uncheckedExceptionHandler = uncheckedExceptionHandler;
+            this.uncheckedExceptionHandler = throwableHandler;
         }
     }
 
@@ -113,10 +128,8 @@ public abstract class AbstractTrigger implements Trigger, Disposable {
             for (TriggerListener listener : listeners) {
                 listener.triggerValidation(event);
             }
-        } catch (RuntimeException e) {
-            uncheckedExceptionHandler.handleException(e);
-        } catch (Error e) {
-            uncheckedExceptionHandler.handleError(e);
+        } catch (Throwable e) {
+            uncheckedExceptionHandler.handleThrowable(e);
         }
     }
 

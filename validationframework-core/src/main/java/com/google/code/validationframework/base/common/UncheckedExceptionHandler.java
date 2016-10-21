@@ -41,6 +41,8 @@ public interface UncheckedExceptionHandler extends ExceptionHandler<RuntimeExcep
      * Handle the specified error.
      *
      * @param error Error to be handled.
+     * @deprecated For simplification, you may use the {@link ThrowableHandler#handleThrowable(Throwable)} instead.
      */
+    @Deprecated
     void handleError(Error error);
 }

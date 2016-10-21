@@ -36,10 +36,9 @@ import com.google.code.validationframework.api.property.ReadableWritableProperty
  * <p/>
  * Note that this class is not thread-safe.
  *
- * @param <R> Type of data that can be read from this property.
- * @param <W> Type of data that can be written to this property.
+ * @param <T> Type of data that can be read from this property.
  */
-public abstract class AbstractReadableWritableProperty<R, W> extends AbstractReadableProperty<R> implements
-        ReadableWritableProperty<R, W> {
+public abstract class AbstractReadableWritableProperty<T> extends AbstractReadableProperty<T>
+        implements ReadableWritableProperty<T> {
     // Nothing more to be done
 }

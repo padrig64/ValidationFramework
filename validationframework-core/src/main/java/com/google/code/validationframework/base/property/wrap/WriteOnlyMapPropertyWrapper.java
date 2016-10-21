@@ -25,6 +25,8 @@
 
 package com.google.code.validationframework.base.property.wrap;
 
+import com.google.code.validationframework.api.common.DeepDisposable;
+import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.api.property.WritableMapProperty;
 
 import java.util.Map;
@@ -39,12 +41,17 @@ import java.util.Map;
  * @param <K> Type of keys maintained by this map property.
  * @param <W> Type of values that can be written to this map property.
  */
-public class WriteOnlyMapPropertyWrapper<K, W> implements WritableMapProperty<K, W> {
+public class WriteOnlyMapPropertyWrapper<K, W> implements WritableMapProperty<K, W>, DeepDisposable {
 
     /**
      * Wrapped map property.
      */
-    private final WritableMapProperty<K, W> wrappedMapProperty;
+    private WritableMapProperty<K, W> wrappedMapProperty;
+
+    /**
+     * True to dispose the wrapped property upon {@link #dispose()}, false otherwise.
+     */
+    private boolean deepDispose = true;
 
     /**
      * Constructor specifying the map property to be wrapped, typically a map property that is both readable and
@@ -54,6 +61,33 @@ public class WriteOnlyMapPropertyWrapper<K, W> implements WritableMapProperty<K,
      */
     public WriteOnlyMapPropertyWrapper(WritableMapProperty<K, W> wrappedMapProperty) {
         this.wrappedMapProperty = wrappedMapProperty;
+    }
+
+    /**
+     * @see DeepDisposable#getDeepDispose()
+     */
+    @Override
+    public boolean getDeepDispose() {
+        return deepDispose;
+    }
+
+    /**
+     * @see DeepDisposable#setDeepDispose(boolean)
+     */
+    @Override
+    public void setDeepDispose(boolean deepDispose) {
+        this.deepDispose = deepDispose;
+    }
+
+    /**
+     * @see DeepDisposable#dispose()
+     */
+    @Override
+    public void dispose() {
+        if (deepDispose && (wrappedMapProperty instanceof Disposable)) {
+            ((Disposable) wrappedMapProperty).dispose();
+        }
+        wrappedMapProperty = null;
     }
 
     /**

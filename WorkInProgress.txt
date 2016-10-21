@@ -1,0 +1,119 @@
+=============================
+= (Deep)Dispose
+=============================
+
+SimpleBond                              deep    false   x
+
+CompositeDisposable                     deep    true    v
+
+ListCompositeDataProvider               shallow         x
+MapCompositeDataProvider                shallow         x
+PropertyValueProvider                   -               x
+TransformerDataProvider                 shallow         ?
+
+AbstractReadablePropertyWrapper         deep    true    v
+NegateBooleanPropertyWrapper            deep    true    v
+ReadOnlyListPropertyWrapper             deep    true    v
+ReadOnlyMapPropertyWrapper              deep    true    v
+ReadOnlyPropertyWrapper                 deep    true    v
+ReadOnlySetPropertyWrapper              deep    true    v
+WriteOnlyListPropertyWrapper            -               x
+WriteOnlyMapPropertyWrapper             -               x
+WriteOnlyPropertyWrapper                -               x
+WriteOnlySetPropertyWrapper             -               x
+
+AbstractReadableListProperty            shallow         v
+AbstractReadableMapProperty             shallow         v
+AbstractReadableProperty                shallow         v
+AbstractReadableSetProperty             shallow         v
+AbstractReadableWritableListProperty    shallow         v
+AbstractReadableWritableMapProperty     shallow         v
+AbstractReadableWritableProperty        shallow         v
+AbstractReadableWritableSetProperty     shallow         v
+CompositeReadableProperty               deep    true    v
+CompositeWritableProperty               -               x
+ConstantProperty                        -               v
+ResultHandlerProperty                   -               x
+
+CompositeResultHandler                  shallow         x
+PropertyResultHandler                   -               x
+TransformedResultHandler                shallow         x
+
+rule
+transform
+trigger
+utils
+validator
+
+swing
+javafx
+experimental
+
+=============================
+= extends/super
+=============================
+
+Check all methods (including constructors) and test:
+ |_ Aggregator
+ |_ validators
+ |_ bonds
+ |_ ListCompositeDataProvider
+ |_ MapCompositeDataProvider
+ |_ PropertyValueProvider
+ |_ TransformedDataProvider
+ |_ SimpleListProperty
+ |_ SimpleMapProperty
+ |_ SimpleSetProperty
+ |_ AbstractReadablePropertyWrapper
+ |_ ReadOnlyListPropertyWrapper
+ |_ ReadOnlyMapPropertyWrapper
+ |_ ReadOnlyPropertyWrapper
+ |_ ReadOnlySetPropertyWrapper
+ |_ WriteOnlyListPropertyWrapper
+ |_ WriteOnlyMapPropertyWrapper
+ |_ WriteOnlyPropertyWrapper
+ |_ WriteOnlySetPropertyWrapper
+ |_ AbstractReadableListProperty
+ |_ AbstractReadableMapProperty
+ |_ AbstractReadableProperty
+ |_ AbstractReadableSetProperty
+ |_ AbstractReadableWritableListProperty
+ |_ AbstractReadableWritableMapProperty
+ |_ AbstractReadableWritableProperty
+ |_ AbstractReadableWritableSetProperty
+ |_ CompositeReadableProperty (/!\ setValue() method)
+ |_ CompositeWritableProperty
+ |_ ConstantProperty
+ |_ PrintStreamValueChangeAdapter
+ |_ ResultHandlerProperty
+ |_ CompositeResultHandler
+ |_ PropertyResultHandler
+ |_ TransformedResultHandler
+ |_ EqualsRule
+ |_ NonNullBooleanRule
+ |_ NullBooleanRule
+ |_ AbstractCompositeRule
+ |_ AggregatorRule
+ |_ AndCompositeBooleanRule
+ |_ NegateBooleanRule
+ |_ OrCompositeBooleanRule
+ |_ TransformerRule
+ |_ CollectionElementTransformer
+ |_ GetCollectionSizeTransformer
+ |_ FormatWrapper
+ |_ ValueUtils
+ |
+ |_ Everything in packages transform and validator
+ |_ Everything in modules demo, experimental, itest-osgi, javafx and swing
+
+Check all methods having Collection as argument or other generic
+
+=============================
+= Misc
+=============================
+
+Add constructor with listeners for AbstractReadableProperty and sub-classes
+All Composite classes should have a clear method
+Add getListeners() in Abstract*Properties?
+
+Update copyright year

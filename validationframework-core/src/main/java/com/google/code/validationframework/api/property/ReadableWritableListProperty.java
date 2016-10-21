@@ -30,9 +30,8 @@ package com.google.code.validationframework.api.property;
  * <p/>
  * Note that most of the methods are based on the {@link java.util.List} interface.
  *
- * @param <R> Type of values that can be read from this list property.
- * @param <W> Type of values that can be written to this list property.
+ * @param <T> Type of values that can be read from and written to this list property.
  */
-public interface ReadableWritableListProperty<R, W> extends ReadableListProperty<R>, WritableListProperty<W> {
+public interface ReadableWritableListProperty<T> extends ReadableListProperty<T>, WritableListProperty<T> {
     // Nothing more to be done
 }

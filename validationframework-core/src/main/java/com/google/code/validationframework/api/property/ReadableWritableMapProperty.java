@@ -31,9 +31,8 @@ package com.google.code.validationframework.api.property;
  * Note that most of the methods are based on the {@link java.util.Map} interface.
  *
  * @param <K> Type of keys maintained by this map property
- * @param <R> Type of values that can be read from this map property.
- * @param <W> Type of values that can be written to this map property.
+ * @param <V> Type of values that can be read from and written to this map property.
  */
-public interface ReadableWritableMapProperty<K, R, W> extends ReadableMapProperty<K, R>, WritableMapProperty<K, W> {
+public interface ReadableWritableMapProperty<K, V> extends ReadableMapProperty<K, V>, WritableMapProperty<K, V> {
     // Nothing more to be done
 }

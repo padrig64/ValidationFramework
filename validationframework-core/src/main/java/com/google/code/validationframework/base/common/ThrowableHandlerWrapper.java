@@ -35,7 +35,7 @@ public class ThrowableHandlerWrapper implements ThrowableHandler<Throwable> {
     /**
      * Logger for this class.
      */
-    private static final ThrowableHandler<Throwable> FALLBACK_HANDLER = new LogErrorUncheckedExceptionHandler();
+    private static final ThrowableHandler<Throwable> FALLBACK_HANDLER = new RethrowUncheckedExceptionHandler();
 
     /**
      * Wrapped unchecked exception handler.

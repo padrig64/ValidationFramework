@@ -43,7 +43,7 @@ import java.util.Set;
  * @param <K> Type of keys maintained by this map property and the proxied map.
  * @param <V> Type mapped values.
  */
-public class SimpleMapProperty<K, V> extends AbstractReadableWritableMapProperty<K, V, V> implements Map<K, V> {
+public class SimpleMapProperty<K, V> extends AbstractReadableWritableMapProperty<K, V> implements Map<K, V> {
 
     /**
      * Logger for this class.

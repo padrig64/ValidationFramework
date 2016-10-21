@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ValidationFramework Authors
+ * Copyright (c) 2016, ValidationFramework Authors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -51,7 +51,7 @@ public class CompositeReadableProperty<R> extends AbstractReadableProperty<Colle
     /**
      * Sub-properties.
      */
-    private final Collection<ReadableProperty<R>> properties = new ArrayList<ReadableProperty<R>>();
+    private final Collection<ReadableProperty<? extends R>> properties = new ArrayList<ReadableProperty<? extends R>>();
 
     /**
      * Listener to changes in the sub-properties.
@@ -154,7 +154,7 @@ public class CompositeReadableProperty<R> extends AbstractReadableProperty<Colle
     public void dispose() {
         super.dispose();
         if (deepDispose) {
-            for (ReadableProperty<R> property : properties) {
+            for (ReadableProperty<? extends R> property : properties) {
                 if (property instanceof Disposable) {
                     ((Disposable) property).dispose();
                 }
@@ -168,8 +168,8 @@ public class CompositeReadableProperty<R> extends AbstractReadableProperty<Colle
      *
      * @return Collection containing all sub-properties.
      */
-    public Collection<ReadableProperty<R>> getProperties() {
-        return new ArrayList<ReadableProperty<R>>(properties);
+    public Collection<ReadableProperty<? extends R>> getProperties() {
+        return new ArrayList<ReadableProperty<? extends R>>(properties);
     }
 
     /**
@@ -179,7 +179,7 @@ public class CompositeReadableProperty<R> extends AbstractReadableProperty<Colle
      *
      * @param property Sub-property to be added.
      */
-    public void addProperty(ReadableProperty<R> property) {
+    public void addProperty(ReadableProperty<? extends R> property) {
         property.addValueChangeListener(changeAdapter);
         properties.add(property);
         updateFromProperties();
@@ -193,7 +193,7 @@ public class CompositeReadableProperty<R> extends AbstractReadableProperty<Colle
      * @param property Sub-property to be removed.
      * @see #clear()
      */
-    public void removeProperty(ReadableProperty<R> property) {
+    public void removeProperty(ReadableProperty<? extends R> property) {
         property.removeValueChangeListener(changeAdapter);
         properties.remove(property);
         updateFromProperties();
@@ -234,7 +234,7 @@ public class CompositeReadableProperty<R> extends AbstractReadableProperty<Colle
     private void updateFromProperties() {
         // Get value from all properties: use a new collection so that equals() returns false
         List<R> newValues = new ArrayList<R>();
-        for (ReadableProperty<R> master : properties) {
+        for (ReadableProperty<? extends R> master : properties) {
             newValues.add(master.getValue());
         }
 
@@ -251,7 +251,7 @@ public class CompositeReadableProperty<R> extends AbstractReadableProperty<Colle
          * @see ValueChangeListener#valueChanged(ReadableProperty, Object, Object)
          */
         @Override
-        public void valueChanged(ReadableProperty<R> property, R oldValue, R newValue) {
+        public void valueChanged(ReadableProperty<? extends R> property, R oldValue, R newValue) {
             if (!ValueUtils.areEqual(oldValue, newValue)) {
                 updateFromProperties();
             }

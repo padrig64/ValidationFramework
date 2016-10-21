@@ -42,7 +42,7 @@ public class IsParsableRule implements Rule<String, Boolean> {
     /**
      * Property holding the format object.
      */
-    private final ReadableWritableProperty<Format, Format> formatProperty = new SimpleProperty<Format>();
+    private final ReadableWritableProperty<Format> formatProperty = new SimpleProperty<Format>();
 
     /**
      * Constructor leaving the format property unset.
@@ -68,7 +68,7 @@ public class IsParsableRule implements Rule<String, Boolean> {
      *
      * @return Format property.
      */
-    public ReadableWritableProperty<Format, Format> getFormatProperty() {
+    public ReadableWritableProperty<Format> getFormatProperty() {
         return formatProperty;
     }
 

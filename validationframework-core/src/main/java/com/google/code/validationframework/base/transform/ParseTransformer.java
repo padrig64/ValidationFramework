@@ -43,7 +43,6 @@ import java.text.ParsePosition;
  * If the format object or the input string to be parsed are null, then the output will be null.
  *
  * @param <O> Type of parsed object.
- *
  * @see ParseTransformer
  */
 public class ParseTransformer<O> implements Transformer<String, O> {
@@ -51,12 +50,7 @@ public class ParseTransformer<O> implements Transformer<String, O> {
     /**
      * Format object to be used for parsing;
      */
-    private final ReadableWritableProperty<Format, Format> parserProperty;
-
-    /**
-     * Flag indicating whether strict parsing is enabled or not.
-     */
-    private boolean strictParsing;
+    private final ReadableWritableProperty<Format> parserProperty;
 
     /**
      * Transformer used to cast the parsed object to the wanted type.
@@ -65,6 +59,11 @@ public class ParseTransformer<O> implements Transformer<String, O> {
      */
     private final Transformer<Object, O> typeTransformer = new CastTransformer<Object,
             O>(CastTransformer.CastErrorBehavior.IGNORE);
+
+    /**
+     * Flag indicating whether strict parsing is enabled or not.
+     */
+    private boolean strictParsing;
 
     /**
      * Constructor specifying the {@link Format} object to be used for parsing.
@@ -95,7 +94,7 @@ public class ParseTransformer<O> implements Transformer<String, O> {
      *
      * @param parserProperty Format property to be used for parsing.
      */
-    public ParseTransformer(ReadableWritableProperty<Format, Format> parserProperty) {
+    public ParseTransformer(ReadableWritableProperty<Format> parserProperty) {
         this(parserProperty, true);
     }
 
@@ -106,7 +105,7 @@ public class ParseTransformer<O> implements Transformer<String, O> {
      * @param parserProperty Format property to be used for parsing.
      * @param strictParsing  True to enable strict parsing, false otherwise.
      */
-    public ParseTransformer(ReadableWritableProperty<Format, Format> parserProperty, boolean strictParsing) {
+    public ParseTransformer(ReadableWritableProperty<Format> parserProperty, boolean strictParsing) {
         this.parserProperty = parserProperty;
         this.strictParsing = strictParsing;
     }
@@ -116,7 +115,7 @@ public class ParseTransformer<O> implements Transformer<String, O> {
      *
      * @return Format property.
      */
-    public ReadableWritableProperty<Format, Format> getParserProperty() {
+    public ReadableWritableProperty<Format> getParserProperty() {
         return parserProperty;
     }
 

@@ -41,7 +41,7 @@ import java.util.ListIterator;
  *
  * @param <T> Type of values handled by this list property and the proxied list.
  */
-public class SimpleListProperty<T> extends AbstractReadableWritableListProperty<T, T> implements List<T> {
+public class SimpleListProperty<T> extends AbstractReadableWritableListProperty<T> implements List<T> {
 
     /**
      * Proxied list.
@@ -150,8 +150,8 @@ public class SimpleListProperty<T> extends AbstractReadableWritableListProperty<
         boolean added = internal.add(item);
 
         if (added) {
-            doNotifyListenersOfAddedValues(internal.size() - 1, Collections.unmodifiableList(Collections.singletonList
-                    (item)));
+            doNotifyListenersOfAddedValues(internal.size() - 1,
+                    Collections.unmodifiableList(Collections.singletonList(item)));
         }
 
         return added;

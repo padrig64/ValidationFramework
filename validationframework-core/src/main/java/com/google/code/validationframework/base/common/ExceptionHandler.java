@@ -39,6 +39,8 @@ public interface ExceptionHandler<T extends Exception> {
      * Handles the specified exception.
      *
      * @param exception Exception to be handled.
+     * @deprecated For simplification, you may use the {@link ThrowableHandler#handleThrowable(Throwable)} instead.
      */
+    @Deprecated
     void handleException(T exception);
 }

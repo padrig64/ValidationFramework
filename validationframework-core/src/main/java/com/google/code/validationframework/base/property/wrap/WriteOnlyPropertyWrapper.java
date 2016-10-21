@@ -25,6 +25,8 @@
 
 package com.google.code.validationframework.base.property.wrap;
 
+import com.google.code.validationframework.api.common.DeepDisposable;
+import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.api.property.WritableProperty;
 
 /**
@@ -36,12 +38,17 @@ import com.google.code.validationframework.api.property.WritableProperty;
  *
  * @param <W> Type of data that can be written to the wrapped property.
  */
-public class WriteOnlyPropertyWrapper<W> implements WritableProperty<W> {
+public class WriteOnlyPropertyWrapper<W> implements WritableProperty<W>, DeepDisposable {
 
     /**
      * Wrapped property.
      */
-    private final WritableProperty<W> wrappedProperty;
+    private WritableProperty<W> wrappedProperty;
+
+    /**
+     * True to dispose the wrapped property upon {@link #dispose()}, false otherwise.
+     */
+    private boolean deepDispose = true;
 
     /**
      * Constructor specifying the property to be wrapped, typically a property that is both readable and writable.
@@ -53,10 +60,39 @@ public class WriteOnlyPropertyWrapper<W> implements WritableProperty<W> {
     }
 
     /**
+     * @see DeepDisposable#getDeepDispose()
+     */
+    @Override
+    public boolean getDeepDispose() {
+        return deepDispose;
+    }
+
+    /**
+     * @see DeepDisposable#setDeepDispose(boolean)
+     */
+    @Override
+    public void setDeepDispose(boolean deepDispose) {
+        this.deepDispose = deepDispose;
+    }
+
+    /**
+     * @see DeepDisposable#dispose()
+     */
+    @Override
+    public void dispose() {
+        if (deepDispose && (wrappedProperty instanceof Disposable)) {
+            ((Disposable) wrappedProperty).dispose();
+        }
+        wrappedProperty = null;
+    }
+
+    /**
      * @see WritableProperty#setValue(Object)
      */
     @Override
     public void setValue(W value) {
-        wrappedProperty.setValue(value);
+        if (wrappedProperty != null) {
+            wrappedProperty.setValue(value);
+        }
     }
 }
