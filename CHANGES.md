@@ -62,6 +62,11 @@ NegateBooleanPropertyWrapper class with wraps a ReadableProperty<Boolean>). Some
 the wrapped objects by default. So you may want to check whether it does not dispose too much (depending on your
 use-case). You may then call there `setDeepDispose()` method to reach the desired behavior.
 
+# Version 3.4.1
+
+* Added a few property bindings in the experimental module until release 4.0.0
+* Updated a few dependency versions (see main POM file)
+
 # Version 3.4.0
 
 * JavaFX Support module now requires Java 8
