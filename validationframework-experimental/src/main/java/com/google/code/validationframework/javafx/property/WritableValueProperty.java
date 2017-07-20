@@ -23,42 +23,24 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.google.code.validationframework.swing.trigger;
+package com.google.code.validationframework.javafx.property;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.google.code.validationframework.api.property.WritableProperty;
+import com.google.code.validationframework.base.utils.ValueUtils;
+import javafx.beans.value.WritableValue;
 
-import javax.swing.JComponent;
-import javax.swing.JSpinner;
-import javax.swing.text.JTextComponent;
+public class WritableValueProperty<W> implements WritableProperty<W> {
 
-// TODO Don't extend from JTextComponentDocumentChangedTrigger
-public class JSpinnerEditorModelChangedTrigger extends JTextComponentDocumentChangedTrigger {
+    private final WritableValue<W> wrapped;
 
-    /**
-     * Logger for this class.
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(JSpinnerEditorModelChangedTrigger.class);
-
-    public JSpinnerEditorModelChangedTrigger(final JSpinner source) {
-        super(getEditorTextComponent(source));
-        // TODO Track editor component and document changes
+    public WritableValueProperty(WritableValue<W> wrapped) {
+        this.wrapped = wrapped;
     }
 
-    private static JTextComponent getEditorTextComponent(final JSpinner spinner) {
-        JTextComponent textComponent = null;
-
-        // Try to find a text component in the spinner
-        final JComponent spinnerEditor = spinner.getEditor();
-        if (spinnerEditor instanceof JTextComponent) {
-            textComponent = (JTextComponent) spinnerEditor;
-        } else if (spinnerEditor instanceof JSpinner.DefaultEditor) {
-            textComponent = ((JSpinner.DefaultEditor) spinnerEditor).getTextField();
-        } else {
-            LOGGER.error("Cannot find any text component in the spinner editor component: " + spinnerEditor);
-            textComponent = null;
+    @Override
+    public void setValue(W w) {
+        if (!ValueUtils.areEqual(wrapped.getValue(), w)) {
+            wrapped.setValue(w);
         }
-
-        return textComponent;
     }
 }
