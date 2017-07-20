@@ -30,12 +30,12 @@ import com.google.code.validationframework.base.utils.ValueUtils;
 
 /**
  * Implementation of a readable and writable property whose output is the result of the transformation of the input.
- * <p/>
+ * <p>
  * Listeners will only be notified if the new output value resulting from a new input value differs from the previous
  * one.
- * <p/>
+ * <p>
  * Note that binding can be bi-directional. Infinite recursion will be prevented.
- * <p/>
+ * <p>
  * Finally note that this class is not thread-safe.
  *
  * @param <R> Type of data that can be read from this property.

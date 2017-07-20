@@ -36,7 +36,7 @@ import java.awt.event.MouseListener;
 
 /**
  * Read-only property representing the rollover state of a component.
- * <p/>
+ * <p>
  * If the mouse is over the component, the property value will be true.
  */
 public class ComponentRolloverProperty extends AbstractReadableProperty<Boolean> implements Disposable {

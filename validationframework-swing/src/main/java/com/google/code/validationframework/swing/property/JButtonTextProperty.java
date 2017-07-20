@@ -29,10 +29,10 @@ import javax.swing.JButton;
 
 /**
  * Readable/writable property representing the text bean property of a {@link JButton}.
- * <p/>
+ * <p>
  * It is possible to control the text of the button by setting the value of this property or by calling the {@link
  * JButton#setText(String)} method of that button.
- * <p/>
+ * <p>
  * If the value of this property is set to null, the button will be emptied.
  *
  * @see JButton#getText()

@@ -31,7 +31,7 @@ import java.util.Collection;
 
 /**
  * Wrapper for list properties (typically both readable/writable) to make them appear as write-only.
- * <p/>
+ * <p>
  * This can be useful, for example, to return a write-only list property in a getter method that is actually a
  * readable/writable list property internally. The wrapper then forbids the programmer to cast the returned list
  * property to a readable list property in order to change read its values.

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ValidationFramework Authors
+ * Copyright (c) 2017, ValidationFramework Authors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,9 +33,11 @@ import com.google.code.validationframework.api.transform.Transformer;
  */
 @Deprecated
 public class CollectionElementTransformer<I, O> extends com.google.code.validationframework.base.transform.collection
-        .CollectionElementTransformer<I, O> {
+                                                                .CollectionElementTransformer<I, O> {
 
     /**
+     * {@inheritDoc}
+     *
      * @deprecated Use {@link com.google.code.validationframework.base.transform.collection
      * .CollectionElementTransformer#CollectionElementTransformer()} instead.
      */
@@ -45,6 +47,8 @@ public class CollectionElementTransformer<I, O> extends com.google.code.validati
     }
 
     /**
+     * {@inheritDoc}
+     *
      * @deprecated Use {@link com.google.code.validationframework.base.transform.collection
      * .CollectionElementTransformer#CollectionElementTransformer(Transformer)} instead.
      */

@@ -207,7 +207,7 @@ public class ResultHandlerContext<DPO, RI, RO, RHI> {
 
     /**
      * Gets the fully constructed validator.
-     * <p/>
+     * <p>
      * Note that this method does not build the validator. At this point, the validator is already fully constructed
      * and effective since the addition of the first result handler.
      *
@@ -219,7 +219,7 @@ public class ResultHandlerContext<DPO, RI, RO, RHI> {
 
     /**
      * Triggers the validation of the fully constructor validator.
-     * <p/>
+     * <p>
      * This method is provided as a convenience, as it has the same effect as calling {@link GeneralValidator#trigger()}
      * on the fully constructed validator returned by {@link #getValidator()}.
      */

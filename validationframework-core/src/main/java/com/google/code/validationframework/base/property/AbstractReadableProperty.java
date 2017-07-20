@@ -36,18 +36,18 @@ import java.util.List;
 
 /**
  * Abstract implementation of a {@link ReadableProperty}.
- * <p/>
+ * <p>
  * Sub-classes should call the {@link #maybeNotifyListeners(Object, Object)} method whenever the property value changes.
  * Sub-classes that are also writable should prevent recursion by checking the result of {@link #isNotifyingListeners()}
  * when setting the new value.
- * <p/>
+ * <p>
  * This abstract implementation allows to inhibit the firing of value change events. When the property is inhibited,
  * changing its value will not fire any value change event. When the property is un-inhibited again, one single value
  * change event will be fired only if the last property value is different than the property value of the last change
  * event fired.
- * <p/>
+ * <p>
  * By default, the property is not inhibited.
- * <p/>
+ * <p>
  * Note that this class is not thread-safe.
  *
  * @param <R> Type of data that can be read from this property.
@@ -71,7 +71,7 @@ public abstract class AbstractReadableProperty<R> implements ReadableProperty<R>
 
     /**
      * Property value when the last (non-inhibited) value change event was fired.
-     * <p/>
+     * <p>
      * It should be updated only if {@link #inhibited} is false. It should be read read only when un-inhibiting and
      * {@link #inhibitCount} is 0.
      */
@@ -79,7 +79,7 @@ public abstract class AbstractReadableProperty<R> implements ReadableProperty<R>
 
     /**
      * Property value when the last value change event was inhibited (not fired).
-     * <p/>
+     * <p>
      * It should be updated at least when {@link #inhibited} is true. It should be read only when un-inhibiting and
      * {@link #inhibitCount} is 0.
      */
@@ -87,14 +87,14 @@ public abstract class AbstractReadableProperty<R> implements ReadableProperty<R>
 
     /**
      * Flag indicating whether the property is currently notifying its value change listeners.
-     * <p/>
+     * <p>
      * This can be used, for instance, to avoid recursion (in case of bi-directional binding).
      */
     private boolean notifyingListeners = false;
 
     /**
      * Gets the registered value change listeners.
-     * <p/>
+     * <p>
      * Note that the returned collection is not modifiable.
      *
      * @return Value change listeners.
@@ -148,9 +148,9 @@ public abstract class AbstractReadableProperty<R> implements ReadableProperty<R>
     /**
      * Notifies the listeners that the property value has changed, if all the conditions are fulfilled (typically, if
      * the old and new values are different, and if the property is not inhibited).
-     * <p/>
+     * <p>
      * Sub-classes should typically call this method when they are ready to fire value change events.
-     * <p/>
+     * <p>
      * However, sub-classes may override this method to perform additional checks.
      *
      * @param oldValue Previous value.

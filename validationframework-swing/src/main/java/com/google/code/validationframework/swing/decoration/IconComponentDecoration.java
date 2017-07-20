@@ -127,10 +127,10 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
 
     /**
      * Dialog representing the tooltip.
-     * <p/>
+     * <p>
      * The tooltip is not based on the general tooltip mechanism to make so that it does not get influenced by the
      * different timings and tricky mouse behavior (sometimes hard to make a real tooltip appear).
-     * <p/>
+     * <p>
      * It is lazy-initialized to make sure we will have a parent and a window ancestor (owner of the dialog).
      *
      * @see com.google.code.validationframework.swing.decoration.IconComponentDecoration
@@ -178,7 +178,7 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
     /**
      * Constructor specifying the component to be decorated and the anchor link with its owner (the decorated
      * component).
-     * <p/>
+     * <p>
      * This constructor is provided as a convenient alternative to {@link #IconComponentDecoration(JComponent,
      * AnchorLink)}.
      *
@@ -345,10 +345,10 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
 
     /**
      * Creates the dialog showing the tooltip if it is not created yet.
-     * <p/>
+     * <p>
      * We do this only here to make sure that we have a parent and to make sure that we actually have a window
      * ancestor.
-     * <p/>
+     * <p>
      * If we create the dialog before having a window ancestor, it will have no owner (see {@link
      * ToolTipDialog#ToolTipDialog(JComponent, AnchorLink)} and that will result in having the tooltip behind the
      * other windows of the application.

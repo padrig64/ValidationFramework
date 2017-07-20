@@ -27,7 +27,7 @@ package com.google.code.validationframework.api.property;
 
 /**
  * Interface to be implemented by readable property that can notify {@link ValueChangeListener}s.
- * <p/>
+ * <p>
  * If you are using JavaFX, you should better use JavaFX's property binding mechanism. The binding mechanism provided by
  * the ValidationFramework is very simple and mostly meant for Swing and other frameworks that can benefit from it.
  * JavaFX has a much more furnished API to achieve similar goals and much more.
@@ -38,7 +38,7 @@ public interface ReadableProperty<R> {
 
     /**
      * Adds a value change listener.
-     * <p/>
+     * <p>
      * Anytime readable property value changes, the listener will be notified.
      *
      * @param listener Value change listener to be added.

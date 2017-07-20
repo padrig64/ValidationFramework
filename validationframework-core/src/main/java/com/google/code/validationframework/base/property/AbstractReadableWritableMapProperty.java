@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ValidationFramework Authors
+ * Copyright (c) 2017, ValidationFramework Authors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,6 +39,8 @@ public abstract class AbstractReadableWritableMapProperty<K, R, W> extends Abstr
         implements ReadableWritableMapProperty<K, R, W> {
 
     /**
+     * {@inheritDoc}
+     *
      * @see AbstractReadableWritableMapProperty#AbstractReadableWritableMapProperty()
      */
     public AbstractReadableWritableMapProperty() {
@@ -46,6 +48,8 @@ public abstract class AbstractReadableWritableMapProperty<K, R, W> extends Abstr
     }
 
     /**
+     * {@inheritDoc}
+     *
      * @see AbstractReadableWritableMapProperty#AbstractReadableWritableMapProperty(MapValueChangeListener[])
      */
     public AbstractReadableWritableMapProperty(MapValueChangeListener<K, R>... listeners) {

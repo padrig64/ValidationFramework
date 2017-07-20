@@ -38,7 +38,7 @@ import java.text.ParseException;
 
 /**
  * Data provider reading the value from a spinner.
- * <p/>
+ * <p>
  * Note that the value is not read from the model, but instead corresponds to the current text.
  *
  * @param <DPO> Type of data in the spinner editor.<br>
@@ -56,7 +56,7 @@ public class JSpinnerEditorValueProvider<DPO> implements DataProvider<DPO> {
 
     /**
      * Spinner to get the data from.
-     * <p/>
+     * <p>
      * Note that the text and the formatter are retrieved every time they are needed so that we do not have to listener
      * to changes in the spinner to track them.
      */
@@ -121,7 +121,7 @@ public class JSpinnerEditorValueProvider<DPO> implements DataProvider<DPO> {
 
     /**
      * Retrieves the text currently in the text component of the spinner, if any.
-     * <p/>
+     * <p>
      * Note that if editor of the spinner has been customized, this method may need to be adapted in a sub-class.
      *
      * @return Spinner text or null if not found.
@@ -150,7 +150,7 @@ public class JSpinnerEditorValueProvider<DPO> implements DataProvider<DPO> {
 
     /**
      * Retrieves the formatter currently in the text component of the spinner, if any.
-     * <p/>
+     * <p>
      * Note that if editor of the spinner has been customized, this method may need to be adapted in a sub-class.
      *
      * @return Spinner formatter or null if not found.

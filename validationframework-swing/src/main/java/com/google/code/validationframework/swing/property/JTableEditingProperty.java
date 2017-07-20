@@ -39,7 +39,7 @@ public class JTableEditingProperty extends AbstractReadableProperty<Boolean> imp
 
     /**
      * Name of the bean property to be used to track changes of the editor in the table.
-     * <p/>
+     * <p>
      * Depending on the value of this property, it can be determined whether the table is in the editing state or not.
      */
     private static final String EDITING_BEAN_PROPERTY_NAME = "tableCellEditor";

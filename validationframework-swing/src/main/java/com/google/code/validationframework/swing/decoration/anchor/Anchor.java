@@ -30,7 +30,7 @@ import java.awt.Point;
 
 /**
  * Entity representing an anchor.
- * <p/>
+ * <p>
  * An anchor is, for instance, a virtual point on a component relatively to its bounds, and can be used as the point to
  * attach decoration.
  */
@@ -83,7 +83,7 @@ public class Anchor {
 
     /**
      * Relative position in percentage relatively to the origin and length on the X axis.
-     * <p/>
+     * <p>
      * For instance, on a component whose bounds are defined by the rectangle [X,Y,W,H], a value of 0.0f would represent
      * X, and a value of 1.0f would represent X+W.
      */
@@ -91,7 +91,7 @@ public class Anchor {
 
     /**
      * Relative position in percentage relatively to the origin and length on the Y axis.
-     * <p/>
+     * <p>
      * For instance, on a component whose bounds are defined by the rectangle [X,Y,W,H], a value of 0.0f would represent
      * Y, and a value of 1.0f would represent Y+H.
      */

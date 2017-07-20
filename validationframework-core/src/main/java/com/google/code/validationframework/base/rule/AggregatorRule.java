@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ValidationFramework Authors
+ * Copyright (c) 2017, ValidationFramework Authors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -38,6 +38,8 @@ import java.util.Collection;
 public class AggregatorRule<RI, RO> extends TransformerRule<Collection<RI>, RO> {
 
     /**
+     * {@inheritDoc}
+     *
      * @see TransformerRule#TransformerRule(com.google.code.validationframework.api.transform.Transformer)
      */
     public AggregatorRule(Aggregator<RI, RO> transformer) {

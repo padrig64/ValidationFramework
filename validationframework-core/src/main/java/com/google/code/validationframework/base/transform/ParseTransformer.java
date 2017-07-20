@@ -34,12 +34,12 @@ import java.text.ParsePosition;
 
 /**
  * Transformer using a {@link Format} to parse the input string into an object.
- * <p/>
+ * <p>
  * It is also possible to specify whether strict parsing should be enabled or not. Strict parsing considers the input
  * string invalid if there is still some characters left to be parsed. For example, if the given {@link Format} object
  * is a {@link java.text.DecimalFormat}, parsing the string "1.4sdf" strictly will not be consider the parsed value to
  * be 1.4.
- * <p/>
+ * <p>
  * If the format object or the input string to be parsed are null, then the output will be null.
  *
  * @param <O> Type of parsed object.
@@ -60,7 +60,7 @@ public class ParseTransformer<O> implements Transformer<String, O> {
 
     /**
      * Transformer used to cast the parsed object to the wanted type.
-     * <p/>
+     * <p>
      * If types are incompatible, the output value will be null.
      */
     private final Transformer<Object, O> typeTransformer = new CastTransformer<Object,
@@ -68,7 +68,7 @@ public class ParseTransformer<O> implements Transformer<String, O> {
 
     /**
      * Constructor specifying the {@link Format} object to be used for parsing.
-     * <p/>
+     * <p>
      * Note that by default, strict parsing is enabled.
      *
      * @param parser Format object to be used for parsing.
@@ -90,7 +90,7 @@ public class ParseTransformer<O> implements Transformer<String, O> {
 
     /**
      * Constructor specifying the {@link Format} property to be used for parsing.
-     * <p/>
+     * <p>
      * Note that by default, strict parsing is enabled.
      *
      * @param parserProperty Format property to be used for parsing.

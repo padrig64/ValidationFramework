@@ -38,7 +38,7 @@ import java.text.ParseException;
 
 /**
  * Provider of the value of the current formatted text editor component from a given table.
- * <p/>
+ * <p>
  * Note that if the table is not in editing state, no value can be provided.
  *
  * @param <DPO> Type of data in the text editor.<br>

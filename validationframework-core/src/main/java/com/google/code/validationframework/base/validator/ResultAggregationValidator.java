@@ -39,9 +39,9 @@ import java.util.Collection;
 /**
  * Concrete implementation of a simple validator that aggregates the results of all the rules into a single result
  * before passing it to the results handlers.
- * <p/>
+ * <p>
  * This can be useful, for instance, to combine boolean results using the AND or OR operations.
- * <p/>
+ * <p>
  * Use {@link com.google.code.validationframework.base.validator.generalvalidator.GeneralValidator} or
  * {@link com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder} instead.
  *

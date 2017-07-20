@@ -83,7 +83,7 @@ public abstract class AbstractReadableMapProperty<K, R> implements ReadableMapPr
 
     /**
      * Notifies the change listeners that values have been added.
-     * <p/>
+     * <p>
      * Note that the specified map of values will be wrapped in an unmodifiable map before being passed to the
      * listeners.
      *
@@ -99,7 +99,7 @@ public abstract class AbstractReadableMapProperty<K, R> implements ReadableMapPr
 
     /**
      * Notifies the change listeners that values have been replaced.
-     * <p/>
+     * <p>
      * Note that the specified maps of values will be wrapped in unmodifiable maps before being passed to the listeners.
      *
      * @param oldValues Previous values.
@@ -116,7 +116,7 @@ public abstract class AbstractReadableMapProperty<K, R> implements ReadableMapPr
 
     /**
      * Notifies the change listeners that values have been removed.
-     * <p/>
+     * <p>
      * Note that the specified map of values will be wrapped in an unmodifiable map before being passed to the
      * listeners.
      *

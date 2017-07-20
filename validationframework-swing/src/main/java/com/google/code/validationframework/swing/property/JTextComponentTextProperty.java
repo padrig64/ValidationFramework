@@ -38,12 +38,12 @@ import java.beans.PropertyChangeListener;
 /**
  * Read/writable property representing the text in the document of a {@link JTextComponent} (for instance, a textfield,
  * a text area, etc.).
- * <p/>
+ * <p>
  * This property will always be synchronized with the contents of the document. Also, it is possible to modify the
  * component text by calling its {@link JTextComponent#setText(String)} method, or by modifying the contents of its
  * {@link Document}, or by call the {@link #setValue(String)} method. In all cases, this property will notify its
  * listeners of any change.
- * <p/>
+ * <p>
  * However, please note that calling {@link JTextComponent#setText(String)} is very likely to make this property fire
  * two value change events, because replacing is usually first done by removing the old text and inserting the new one.
  *
@@ -136,7 +136,7 @@ public class JTextComponentTextProperty extends AbstractReadableWritableProperty
 
     /**
      * Flag indicating whether the call to {@link #setValue(String)} comes from the document change.
-     * <p/>
+     * <p>
      * This is used to distinguish whether the call to {@link #setValue(String)} is direct (call from the outside) or
      * indirect (change of the document itself from the outside or by the user).
      */

@@ -36,7 +36,7 @@ import java.util.Collection;
 
 /**
  * Simple implementation of a bond between master properties and slave properties.
- * <p/>
+ * <p>
  * It is typically created using the {@link Binder}.
  *
  * @param <MO> Type of data that can be read from master properties.
@@ -85,10 +85,10 @@ public class SimpleBond<MO, SI> implements Disposable {
 
     /**
      * Constructor specifying the master property, the transformers and the slaves that are part of the binding.
-     * <p/>
+     * <p>
      * Note that the master property can be a composition of multiple properties, for instance, using the {@link
      * com.google.code.validationframework.base.property.CompositeReadableProperty}.
-     * <p/>
+     * <p>
      * For type safety, it is highly advised to use the {@link Binder} to create the bond.
      *
      * @param master      Master (possibly composite) property to be part of the bond.
@@ -101,10 +101,10 @@ public class SimpleBond<MO, SI> implements Disposable {
 
     /**
      * Constructor specifying the master property, the transformers and the slaves that are part of the binding.
-     * <p/>
+     * <p>
      * Note that the master property can be a composition of multiple properties, for instance, using the {@link
      * com.google.code.validationframework.base.property.CompositeReadableProperty}.
-     * <p/>
+     * <p>
      * For type safety, it is highly advised to use the {@link Binder} to create the bond.
      *
      * @param master      Master (possibly composite) property to be part of the bond.

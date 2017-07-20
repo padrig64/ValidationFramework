@@ -34,7 +34,7 @@ import java.text.ParseException;
 
 /**
  * Data provider reading the value from a formatted textfield.
- * <p/>
+ * <p>
  * Note that the value is not read from the model, but instead corresponds to the current text.
  *
  * @see DataProvider
@@ -45,7 +45,7 @@ public class JFormattedTextFieldValueProvider<DPO> implements DataProvider<DPO> 
 
     /**
      * Formatted textfield to get the data from.
-     * <p/>
+     * <p>
      * Note that the text and the formatter are retrieved every time they are needed so that we do not have to listener
      * to changes in the formatted textfield to track them.
      */

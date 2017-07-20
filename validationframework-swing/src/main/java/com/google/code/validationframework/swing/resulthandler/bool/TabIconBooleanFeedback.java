@@ -63,17 +63,17 @@ import static com.google.code.validationframework.base.binding.Binder.read;
 
 /**
  * Result handler showing an icon in the tab of a specific index inside a tabbed pane.
- * <p/>
+ * <p>
  * Note that the tab to which it is attached must already be present in the tabbed pane. This restriction will be lifted
  * out in the future.
- * <p/>
+ * <p>
  * Finally, note that any icon set using the method {@link JTabbedPane#setIconAt(int, Icon)} will not be shown.
  */
 public class TabIconBooleanFeedback implements ResultHandler<Boolean>, Disposable {
 
     /**
      * Panel holding the validation icons (valid and invalid).
-     * <p/>
+     * <p>
      * It is used to easily add the extra spacing between the displayed icon and the tab title.
      */
     private static class ValidationIconPanel extends JPanel {
@@ -157,7 +157,7 @@ public class TabIconBooleanFeedback implements ResultHandler<Boolean>, Disposabl
 
         /**
          * Flag indicating the last known enabled state of the tab.
-         * <p/>
+         * <p>
          * It is used to check if the enabled state changed when painting because the {@link JTabbedPane} does not
          * trigger anything when the enabled state of the tabs is changed by calling {@link JTabbedPane#setEnabledAt
          * (int, boolean)}.
@@ -301,7 +301,7 @@ public class TabIconBooleanFeedback implements ResultHandler<Boolean>, Disposabl
 
     /**
      * Entity handling the tooltip display for the validation icon.
-     * <p/>
+     * <p>
      * It adjust the text to be displayed, shows the tooltip whenever the mouse enters the validation icon, and forward
      * mouse events to the parent component (the title renderer).
      */
@@ -491,7 +491,7 @@ public class TabIconBooleanFeedback implements ResultHandler<Boolean>, Disposabl
 
     /**
      * Constructor specifying the tabbed pane and the index of the tab to show the decoration on.
-     * <p/>
+     * <p>
      * The default valid icon and default invalid icons will be used. No tooltip will be shown for these icons.
      *
      * @param tabbedPane Tabbed pane to show the icon tip feedback on.
@@ -504,7 +504,7 @@ public class TabIconBooleanFeedback implements ResultHandler<Boolean>, Disposabl
     /**
      * Constructor specifying the tabbed pane, the index of the tab to show the decoration on, and the tooltip text to
      * be shown for the invalid icon.
-     * <p/>
+     * <p>
      * No valid icon will be shown, and the default invalid icon will be used.
      *
      * @param tabbedPane  Tabbed pane to show the icon tip feedback on.
@@ -519,7 +519,7 @@ public class TabIconBooleanFeedback implements ResultHandler<Boolean>, Disposabl
     /**
      * Constructor specifying the tabbed pane, the index of the tab to show the decoration on, the invalid icon and the
      * tooltip text to be shown for the invalid icon.
-     * <p/>
+     * <p>
      * No valid icon will be shown.
      *
      * @param tabbedPane  Tabbed pane to show the icon tip feedback on.

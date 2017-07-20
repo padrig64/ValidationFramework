@@ -29,10 +29,10 @@ import javax.swing.JDialog;
 
 /**
  * Readable/writable property representing the title bean property of a {@link JDialog}.
- * <p/>
+ * <p>
  * It is possible to control the title of the dialog by setting the value of this property or by calling the {@link
  * JDialog#setTitle(String)} method of that dialog.
- * <p/>
+ * <p>
  * Note that in conformance with the behavior of the {@link JDialog}, unlike the {@link javax.swing.JFrame}, a null
  * value will not be replaced by an empty string.
  *

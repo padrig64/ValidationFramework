@@ -33,7 +33,7 @@ import javafx.application.Platform;
 
 /**
  * Trigger wrapper to re-schedule the wrapped trigger on the FX Application Thread.
- * <p/>
+ * <p>
  * This can be useful when triggers are initially trigger outside the application thread, but also to schedule the
  * trigger later.
  */
@@ -92,7 +92,7 @@ public class RunLaterTrigger extends AbstractTrigger {
 
     /**
      * Constructor specifying the wrapped trigger to be rescheduled.
-     * <p/>
+     * <p>
      * By default, the trigger will always be re-scheduled later on the application thread, even if it is already
      * triggered on the application thread.
      *

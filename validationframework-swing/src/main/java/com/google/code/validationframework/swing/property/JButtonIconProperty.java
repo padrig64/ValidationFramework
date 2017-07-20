@@ -30,10 +30,10 @@ import javax.swing.JButton;
 
 /**
  * Readable/writable property representing the icon bean property of a {@link JButton}.
- * <p/>
+ * <p>
  * It is possible to control the icon of the button by setting the value of this property or by calling the {@link
  * JButton#setIcon(Icon)} method of that button.
- * <p/>
+ * <p>
  * If the value of this property is set to null, the button will have no icon.
  *
  * @see JButton#getIcon()

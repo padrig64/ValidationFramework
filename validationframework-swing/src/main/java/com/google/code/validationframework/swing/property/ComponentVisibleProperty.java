@@ -34,10 +34,10 @@ import java.awt.event.ComponentListener;
 
 /**
  * Readable/writable property representing the visible state of a {@link Component}.
- * <p/>
+ * <p>
  * It is possible to control the visible state of the component by setting the value of this property or by calling the
  * {@link Component#setVisible(boolean)} method of that component.
- * <p/>
+ * <p>
  * Finally note that null values are not supported by this property.
  *
  * @see Component#isVisible()

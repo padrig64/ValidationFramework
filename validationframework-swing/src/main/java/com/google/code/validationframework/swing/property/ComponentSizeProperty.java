@@ -35,16 +35,16 @@ import java.awt.event.ComponentListener;
 
 /**
  * Readable/writable property representing the size of a {@link Component} (possibly a {@link java.awt.Window}).
- * <p/>
+ * <p>
  * It is possible to control the size of the component by setting the value of this property or by calling the {@link
  * Component#setSize(Dimension)} method of that component.
  *
- * <p/>
+ * <p>
  * However, note that the layout manager of the parent container may also modify the size of the component.
- * <p/>
+ * <p>
  * Note that changing the width or height attribute of the {@link Dimension} object directly will have no effect on this
  * property. It is therefore not advised to do so.
- * <p/>
+ * <p>
  * Finally note that null values are not supported by this property.
  *
  * @see Component#getSize()

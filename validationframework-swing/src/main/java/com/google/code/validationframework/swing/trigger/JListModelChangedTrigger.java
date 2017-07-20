@@ -40,7 +40,7 @@ public class JListModelChangedTrigger extends AbstractTrigger implements Disposa
 
     /**
      * Listener to changes in the model of the list, triggering the validation.
-     * <p/>
+     * <p>
      * Note that there is no need to track replacement of the model in the list as this is already done in {@link
      * JList}.
      */

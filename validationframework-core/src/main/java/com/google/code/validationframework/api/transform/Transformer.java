@@ -27,7 +27,7 @@ package com.google.code.validationframework.api.transform;
 
 /**
  * Interface to be implemented by entities transforming one object into another.
- * <p/>
+ * <p>
  * It can be used, for instance, to transform data before validation, or to transform results before their handling.
  *
  * @param <I> Type of the input object to be transformed.

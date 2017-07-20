@@ -47,7 +47,7 @@ public class JTableComboBoxEditorModelChangedTrigger extends AbstractTrigger imp
 
     /**
      * Entity responsible of tracking combobox editors whenever the table is being edited.
-     * <p/>
+     * <p>
      * This entity will create and install a trigger for any new combobox component responsible for editing the cell.
      */
     private class SourceAdapter implements PropertyChangeListener, Disposable {
@@ -244,7 +244,7 @@ public class JTableComboBoxEditorModelChangedTrigger extends AbstractTrigger imp
 
     /**
      * Constructor specifying the table whose combobox editor should trigger the validation.
-     * <p/>
+     * <p>
      * Validation will be triggered for any edited cell.
      *
      * @param table Table whose combobox editor should trigger the validation.

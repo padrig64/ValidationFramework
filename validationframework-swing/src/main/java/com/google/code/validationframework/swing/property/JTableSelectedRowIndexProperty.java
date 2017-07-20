@@ -37,10 +37,10 @@ import java.beans.PropertyChangeListener;
 
 /**
  * Property representing the index of the selected row of a {@link JTable}.
- * <p/>
+ * <p>
  * The selection can be controlled by using the selection model of the table, by interacting with the table, or by
  * setting the value of this property.
- * <p/>
+ * <p>
  * If the value is to -1, then the selected row(s) will be de-selected. If the value is set to null, it will be
  * converted to -1 and therefore the selected row(s) will be de-selected.
  *

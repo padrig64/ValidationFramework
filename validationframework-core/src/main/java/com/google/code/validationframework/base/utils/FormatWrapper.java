@@ -35,20 +35,20 @@ import java.text.ParsePosition;
 
 /**
  * Wrapper for {@link Format} objects that adds convenient features.
- * <p/>
+ * <p>
  * The wrapper allows stricter parsing of input strings. This means that if an object has been successfully parsed from
  * an input string, but if there are still characters left, the input string will be considered invalid. This differs
  * from the default best-effort parsing from the super class. For example, it may be useful to wrap the {@link java
  * .text.DecimalFormat} to consider the string "0.7dfg" invalid.
- * <p/>
+ * <p>
  * Also, the wrapper allows null and empty strings to be parsed without throwing an exception. For example, it may be
  * useful to wrap a {@link java.text.DecimalFormat} to consider an input field valid when the user leaves the field
  * empty.
- * <p/>
+ * <p>
  * Additionally, the wrapper allows null objects to be formatted. The behavior is that it will just be ignore and not
  * fire any exception. Formatting a null object will result in an empty string. It may be useful to wrap a {@link
  * Format} object that does not support null values.
- * <p/>
+ * <p>
  * Finally, the wrapper allows to transform the parsed object before returning it. This can be useful when wrapping
  * a number format, for example, that does not return always the same type of parsed {@link java.lang.Number} (sometimes
  * a Long, sometimes a Double, sometimes an Integer, etc.). So this wrapper makes sure that the type of output is always
@@ -74,7 +74,7 @@ public class FormatWrapper<T> extends Format {
 
     /**
      * Transformer used to convert successfully parsed objects to a specific type.
-     * <p/>
+     * <p>
      * By default, the transformation will just be a cast.
      */
     private final Transformer<Object, T> parsedObjectTransformer;
@@ -96,7 +96,7 @@ public class FormatWrapper<T> extends Format {
 
     /**
      * Constructor specifying the delegate format.
-     * <p/>
+     * <p>
      * By default, strict parsing will be enabled, parsing of null or empty text will not be delegated, and formatting
      * of null values will not be delegated either.
      *
@@ -108,7 +108,7 @@ public class FormatWrapper<T> extends Format {
 
     /**
      * Constructor specifying the delegate format and whether the parsing of null or empty text should be delegated.
-     * <p/>
+     * <p>
      * By default, strict parsing will be enabled, and formatting of null values will not be delegated either.
      *
      * @param delegate                       Delegate format to be used for formatting and parsing.
@@ -121,7 +121,7 @@ public class FormatWrapper<T> extends Format {
 
     /**
      * Constructor specifying the delegate format and the transformer to be used to convert the parsed objects.
-     * <p/>
+     * <p>
      * By default, strict parsing will be enabled, parsing of null or empty text will not be delegated, and formatting
      * of null values will not be delegated either.
      *
@@ -177,7 +177,7 @@ public class FormatWrapper<T> extends Format {
 
     /**
      * States whether the parsing of null or empty texts should be delegated.
-     * <p/>
+     * <p>
      * If it is delegated, a {@link ParseException} might be thrown depending on the behavior of the delegate format. If
      * it is not delegated, no exception will be thrown as if the input is valid.
      *

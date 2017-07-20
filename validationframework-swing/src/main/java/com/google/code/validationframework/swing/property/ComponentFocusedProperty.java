@@ -35,7 +35,7 @@ import java.awt.event.FocusListener;
 
 /**
  * Read-only property representing the focused state of a component.
- * <p/>
+ * <p>
  * This property is not writable because of the difficulty of remaining platform-independent and because focus handling
  * is asynchronous: setting the property value to true would not guarantee that the component will be focused and it
  * would also not be immediate either.

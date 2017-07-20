@@ -32,7 +32,7 @@ import com.google.code.validationframework.base.transform.CastTransformer;
 
 /**
  * Wrapper for data providers that will transform the data to another type.
- * <p/>
+ * <p>
  * This can be useful to adapt existing data providers to be put in validators requiring another type of input.
  *
  * @param <DPO>  Type of data returned by the wrapped data provider.

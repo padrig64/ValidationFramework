@@ -27,7 +27,7 @@ package com.google.code.validationframework.api.property;
 
 /**
  * Convenient interface that can be used to mark properties as being both readable and writable.
- * <p/>
+ * <p>
  * If you are using JavaFX, you should better use JavaFX's property binding mechanism. The binding mechanism provided by
  * the ValidationFramework is very simple and mostly meant for Swing and other frameworks that can benefit from it.
  * JavaFX has a much more furnished API to achieve similar goals and much more.

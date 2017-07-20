@@ -31,7 +31,7 @@ import java.util.Collection;
 
 /**
  * Wrapper for set properties (typically both readable/writable) to make them appear as write-only.
- * <p/>
+ * <p>
  * This can be useful, for example, to return a write-only set property in a getter method that is actually a
  * readable/writable set property internally. The wrapper then forbids the programmer to cast the returned set property
  * to a readable set property in order to change read its values.

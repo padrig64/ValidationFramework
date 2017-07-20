@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ValidationFramework Authors
+ * Copyright (c) 2017, ValidationFramework Authors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,6 +40,8 @@ public class SimpleIntegerProperty extends SimpleProperty<Integer> implements Se
     private static final long serialVersionUID = -5710546311525776841L;
 
     /**
+     * {@inheritDoc}
+     *
      * @see SimpleProperty#SimpleProperty()
      */
     public SimpleIntegerProperty() {
@@ -47,6 +49,8 @@ public class SimpleIntegerProperty extends SimpleProperty<Integer> implements Se
     }
 
     /**
+     * {@inheritDoc}
+     *
      * @see SimpleProperty#SimpleProperty(Object)
      */
     public SimpleIntegerProperty(Integer value) {

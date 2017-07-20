@@ -30,10 +30,10 @@ import com.google.code.validationframework.base.utils.ValueUtils;
 
 /**
  * Rule making sure that the provided data is null.
- * <p/>
+ * <p>
  * It will return true if the data is null, and false otherwise.<br>Note that even though generics are not needed in the
  * logic of this class, providing a specific type makes it more convenient to reduce compilation warnings and errors.
- * <p/>
+ * <p>
  * Refer to {@link ValueUtils#areEqual(Object, Object)} to see how null, {@link Float#NaN} and {@link Float#NaN} values
  * are treated.
  *

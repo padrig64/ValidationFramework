@@ -30,10 +30,10 @@ import java.awt.event.KeyEvent;
 
 /**
  * Readable/writable property representing the displayed mnemonic bean property of a {@link JLabel}.
- * <p/>
+ * <p>
  * It is possible to control the displayed mnemonic of the label by setting the value of this property or by calling the
  * {@link JLabel#setDisplayedMnemonic(char)} or {@link JLabel#setDisplayedMnemonic(int)} methods of that label.
- * <p/>
+ * <p>
  * If the value of this property is set to null, the displayed mnemonic will be set to {@link KeyEvent#VK_UNDEFINED}.
  *
  * @see JLabel#getDisplayedMnemonic()

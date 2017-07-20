@@ -66,7 +66,7 @@ public class NegateBooleanPropertyWrapper extends AbstractReadableProperty<Boole
 
     /**
      * Constructor specifying the property to be wrapped and negated.
-     * <p/>
+     * <p>
      * The value representing the negation of a null value will be a null value.
      *
      * @param wrappedProperty Property to be wrapped and negated.

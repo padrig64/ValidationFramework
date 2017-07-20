@@ -36,7 +36,7 @@ import java.util.Set;
 
 /**
  * Wrapper for set properties (typically both readable/writable) to make them appear as read-only.
- * <p/>
+ * <p>
  * This can be useful, for example, to return a read-only set property in a getter method that is actually a
  * readable/writable set property internally. The wrapper then forbids the programmer to cast the returned set property
  * to a writable set property in order to change its contents.

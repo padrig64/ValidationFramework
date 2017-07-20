@@ -29,14 +29,14 @@ import java.awt.Component;
 
 /**
  * Readable/writable property representing the enabled state of a {@link Component}.
- * <p/>
+ * <p>
  * It is possible to control the enabled state of the component by setting the value of this property or by calling the
  * {@link Component#setEnabled(boolean)} method of that component.
- * <p/>
+ * <p>
  * Please note that a plain {@link Component} does not a fire property change event when it gets enabled/disabled. A
  * Swing {@link javax.swing.JComponent} does. However, the type {@link Component} is used by this property instead of
  * {@link javax.swing.JComponent} for convenience.
- * <p/>
+ * <p>
  * Finally note that null values are not supported by this property.
  *
  * @see Component#isEnabled()

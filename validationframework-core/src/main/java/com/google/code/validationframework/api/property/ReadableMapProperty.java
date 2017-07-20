@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ValidationFramework Authors
+ * Copyright (c) 2017, ValidationFramework Authors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,7 +31,7 @@ import java.util.Set;
 
 /**
  * Interface to be implemented by readable map properties.
- * <p/>
+ * <p>
  * Note that most of the methods are based on the {@link java.util.Map} interface.
  *
  * @param <K> Type of keys maintained by this map property.
@@ -54,48 +54,75 @@ public interface ReadableMapProperty<K, R> {
     void removeValueChangeListener(MapValueChangeListener<K, R> listener);
 
     /**
+     * Gets the size of the map.
+     *
+     * @return Map size.
      * @see Map#size()
      */
     int size();
 
     /**
+     * States whether the map is empty or not.
+     *
+     * @return True if the map is empty, false otherwise.
      * @see Map#isEmpty()
      */
     boolean isEmpty();
 
     /**
+     * States whether the map contains the specified key or not.
+     *
+     * @param key Key whose presence is to be checked.
+     * @return True if the map contains the key, false otherwise.
      * @see Map#containsKey(Object)
      */
     boolean containsKey(Object key);
 
     /**
+     * States whether the map contains the specified value or not.
+     *
+     * @param value Value whose presence is to be checked.
+     * @return True if the map contains the key, false otherwise.
      * @see Map#containsValue(Object)
      */
     boolean containsValue(Object value);
 
     /**
+     * Gets the value for the specified key.
+     *
+     * @param key Key to get the value for.
+     * @return Value for the specified key.
      * @see Map#get(Object)
      */
     R get(Object key);
 
     /**
+     * Gets the keys of the map.
+     *
+     * @return Map keys.
      * @see Map#keySet()
      */
     Set<K> keySet();
 
     /**
+     * Gets the values of the map.
+     *
+     * @return Map values.
      * @see Map#values()
      */
     Collection<R> values();
 
     /**
+     * Gets the entries of the map.
+     *
+     * @return Map entries.
      * @see Map#entrySet()
      */
     Set<Map.Entry<K, R>> entrySet();
 
     /**
      * Returns a {@link Map} containing the same elements as this map property, and that cannot be modified directly.
-     * <p/>
+     * <p>
      * Unless specified otherwise in the implementing classes, the returned map always represents the contains of this
      * map property, meaning that if items are added/updated/removed from this map property, the contents of the
      * unmodifiable map will also change.

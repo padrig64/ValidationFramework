@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ValidationFramework Authors
+ * Copyright (c) 2017, ValidationFramework Authors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,6 +40,8 @@ public class SimpleShortProperty extends SimpleProperty<Short> implements Serial
     private static final long serialVersionUID = -2695587930015896750L;
 
     /**
+     * {@inheritDoc}
+     *
      * @see SimpleProperty#SimpleProperty()
      */
     public SimpleShortProperty() {
@@ -47,6 +49,8 @@ public class SimpleShortProperty extends SimpleProperty<Short> implements Serial
     }
 
     /**
+     * {@inheritDoc}
+     *
      * @see SimpleProperty#SimpleProperty(Object)
      */
     public SimpleShortProperty(Short value) {

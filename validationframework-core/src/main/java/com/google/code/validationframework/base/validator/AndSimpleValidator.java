@@ -30,7 +30,7 @@ import com.google.code.validationframework.base.transform.AndBooleanAggregator;
 /**
  * Simple validator using boolean results and aggregating all results from the rules into a single result using the AND
  * operation.
- * <p/>
+ * <p>
  * Use {@link com.google.code.validationframework.base.validator.generalvalidator.GeneralValidator} or
  * {@link com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder} instead.
  *

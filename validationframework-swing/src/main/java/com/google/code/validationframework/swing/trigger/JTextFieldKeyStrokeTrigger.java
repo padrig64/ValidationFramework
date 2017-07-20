@@ -30,7 +30,7 @@ import javax.swing.KeyStroke;
 
 /**
  * Trigger that initiates the validation whenever registered key strokes happen on a component.
- * <p/>
+ * <p>
  * It is provided for convenience over the {@link BaseComponentKeyStrokeTrigger} to make it easier to find while
  * building the validators.
  *

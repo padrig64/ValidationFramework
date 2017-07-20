@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ValidationFramework Authors
+ * Copyright (c) 2017, ValidationFramework Authors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,10 +34,12 @@ import com.google.code.validationframework.api.property.ReadableWritableListProp
  * @param <R> Type of values that can be read from this list property.
  * @param <W> Type of values that can be written to this list property.
  */
-public abstract class AbstractReadableWritableListProperty<R, W> extends AbstractReadableListProperty<R> implements
-        ReadableWritableListProperty<R, W> {
+public abstract class AbstractReadableWritableListProperty<R, W> extends AbstractReadableListProperty<R>
+        implements ReadableWritableListProperty<R, W> {
 
     /**
+     * {@inheritDoc}
+     *
      * @see AbstractReadableWritableListProperty#AbstractReadableWritableListProperty()
      */
     public AbstractReadableWritableListProperty() {
@@ -45,6 +47,8 @@ public abstract class AbstractReadableWritableListProperty<R, W> extends Abstrac
     }
 
     /**
+     * {@inheritDoc}
+     *
      * @see AbstractReadableWritableListProperty#AbstractReadableWritableListProperty(ListValueChangeListener[])
      */
     public AbstractReadableWritableListProperty(ListValueChangeListener<R>... listeners) {

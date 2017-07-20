@@ -29,7 +29,7 @@ import com.google.code.validationframework.api.transform.Transformer;
 
 /**
  * Transformer checking whether the data, being a number, is equal to a specific value.
- * <p/>
+ * <p>
  * Note that if the input number and the specified value are both null, or both NaN, they will be considered equal.
  *
  * @param <I> Type of number handled by this transformer.<br>

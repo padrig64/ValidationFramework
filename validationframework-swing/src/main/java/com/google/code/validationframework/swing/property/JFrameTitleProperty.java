@@ -29,10 +29,10 @@ import javax.swing.JFrame;
 
 /**
  * Readable/writable property representing the title bean property of a {@link JFrame}.
- * <p/>
+ * <p>
  * It is possible to control the title of the frame by setting the value of this property or by calling the {@link
  * JFrame#setTitle(String)} method of that frame.
- * <p/>
+ * <p>
  * Note that in conformance with the behavior of the {@link JFrame}, unlike the {@link javax.swing.JDialog}, a null
  * value will be replaced by an empty string.
  *

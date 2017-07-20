@@ -27,7 +27,7 @@ package com.google.code.validationframework.api.property;
 
 /**
  * Interface to be implemented by map properties that are both readable and writable.
- * <p/>
+ * <p>
  * Note that most of the methods are based on the {@link java.util.Map} interface.
  *
  * @param <K> Type of keys maintained by this map property

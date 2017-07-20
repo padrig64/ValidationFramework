@@ -52,7 +52,7 @@ import java.beans.PropertyChangeListener;
 
 /**
  * Abstract implementation of a decoration that can be attached to a component.
- * <p/>
+ * <p>
  * Concrete implementations will just need to provide the size and do the painting on the already-computed location.
  */
 public abstract class AbstractComponentDecoration implements Disposable {
@@ -162,9 +162,9 @@ public abstract class AbstractComponentDecoration implements Disposable {
 
     /**
      * Entity responsible of calling the {@link AbstractComponentDecoration#paint(Graphics)} method.
-     * <p/>
+     * <p>
      * It works as a hook in the Swing painting mechanism.
-     * <p/>
+     * <p>
      * Note that the painter is made invisible whenever the decorated component is no longer showing on the screen, so
      * that the decoration does not try to paint when the component is on a hidden tab, for instance, and does not steal
      * the mouse events from other decorations at the same location on other tabs.
@@ -180,7 +180,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
 
         /**
          * Clipping bounds of the decoration.
-         * <p/>
+         * <p>
          * The decoration can be clipped by scrollpane viewports, parent containers, etc..
          */
         private Rectangle clipBounds = null;
@@ -269,7 +269,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
 
         /**
          * Checks whether the specified clipping bounds can be used for painting.
-         * <p/>
+         * <p>
          * If the bounds cannot be used, it is not necessary to paint the decoration.
          *
          * @param bounds Clipping bounds to be checked.
@@ -288,7 +288,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
 
     /**
      * Offset in the layer of the layered pane where the decoration is to be put.
-     * <p/>
+     * <p>
      * The decoration will be added to the layered pane at the same layer index as the decorated component, incremented
      * by this offset.
      *
@@ -303,7 +303,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
 
     /**
      * Ancestor component that will be used to determine the clipping bounds of the decoration.
-     * <p/>
+     * <p>
      * If the default null value is specified, the parent component of the decorated component will be used.
      */
     private JComponent clippingAncestor = null;
@@ -321,9 +321,9 @@ public abstract class AbstractComponentDecoration implements Disposable {
 
     /**
      * Decoration painter component.
-     * <p/>
+     * <p>
      * It is merely a hook into the Swing painting mechanism.
-     * <p/>
+     * <p>
      * This is the component that is actually added to the layered pane.
      *
      * @see #DECORATION_LAYER_OFFSET
@@ -335,7 +335,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
 
     /**
      * Layered pane to which the decoration painter will be added.
-     * <p/>
+     * <p>
      * The decoration will actually contain a component responsible of painting the decoration.
      *
      * @see #decorationPainter
@@ -344,7 +344,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
 
     /**
      * Flag indicating whether the decoration is visible or not.
-     * <p/>
+     * <p>
      * Note that it does not mean that it is showing on the screen.
      *
      * @see #isVisible()
@@ -482,7 +482,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
 
     /**
      * Gets the custom clipping ancestor component that will be used to clip the decoration.
-     * <p/>
+     * <p>
      * If null is returned, the parent container of the decorated component is used.
      *
      * @return Clipping ancestor or null.
@@ -493,9 +493,9 @@ public abstract class AbstractComponentDecoration implements Disposable {
 
     /**
      * Sets the custom clipping ancestor component that will be used to clip the decoration.
-     * <p/>
+     * <p>
      * If set to null, the parent container of the decorated component will be used.
-     * <p/>
+     * <p>
      * Note that the specified clipping component shall be an ancestor of the decorated component, or the component
      * itself.
      *
@@ -508,7 +508,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
 
     /**
      * Gets the effective clipping ancestor.
-     * <p/>
+     * <p>
      * If no custom clipping ancestor is set, the parent container of the decorated component will be returned.
      *
      * @return Effective clipping ancestor.
@@ -619,10 +619,10 @@ public abstract class AbstractComponentDecoration implements Disposable {
 
     /**
      * Updates the decoration painter with respect to the decorated component.
-     * <p/>
+     * <p>
      * This method is to be called whenever changes on the decorated component have an impact on the decoration (for
      * instance, its size, location, etc.).
-     * <p/>
+     * <p>
      * This method has been made protected so that it can be easily called from the implementing sub-classes.
      */
     protected void followDecoratedComponent() {
@@ -736,7 +736,7 @@ public abstract class AbstractComponentDecoration implements Disposable {
 
     /**
      * Triggers a repaint of the component decoration.
-     * <p/>
+     * <p>
      * Note that this will also make the decoration follow the component.
      *
      * @see #followDecoratedComponent()

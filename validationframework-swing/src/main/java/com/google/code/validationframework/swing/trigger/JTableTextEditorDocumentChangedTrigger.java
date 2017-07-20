@@ -47,7 +47,7 @@ public class JTableTextEditorDocumentChangedTrigger extends AbstractTrigger impl
 
     /**
      * Entity responsible of tracking text editors whenever the table is being edited.
-     * <p/>
+     * <p>
      * This entity will create and install a trigger for any new text component responsible for editing the cell.
      */
     private class SourceAdapter implements PropertyChangeListener, Disposable {
@@ -244,7 +244,7 @@ public class JTableTextEditorDocumentChangedTrigger extends AbstractTrigger impl
 
     /**
      * Constructor specifying the table whose text editor should trigger the validation.
-     * <p/>
+     * <p>
      * Validation will be triggered for any edited cell.
      *
      * @param table Table whose text editor should trigger the validation.

@@ -35,10 +35,10 @@ import java.util.List;
 
 /**
  * Transformer transformer each element of a collection using a wrapped transformer.
- * <p/>
+ * <p>
  * The input of the transformer is a collection of elements of one type, and the output is a collection of elements of
  * a same type. Both input and output collections have the same size.
- * <p/>
+ * <p>
  * Note the output collection built is not a {@link java.util.Set}. So the transformation may lead to duplicates in the
  * output collection.
  *

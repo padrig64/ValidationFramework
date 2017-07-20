@@ -28,7 +28,7 @@ package com.google.code.validationframework.api.property;
 /**
  * Interface to be implemented by writable properties whose value can be set by the programmer or slave to readable
  * properties.
- * <p/>
+ * <p>
  * If you are using JavaFX, you should better use JavaFX's property binding mechanism. The binding mechanism provided by
  * the ValidationFramework is very simple and mostly meant for Swing and other frameworks that can benefit from it.
  * JavaFX has a much more furnished API to achieve similar goals and much more.
@@ -41,7 +41,7 @@ public interface WritableProperty<W> {
 
     /**
      * Sets the value of the property.
-     * <p/>
+     * <p>
      * This method can be called by the programmer or a {@link ReadableProperty} that is bound to it.
      *
      * @param value Property value.

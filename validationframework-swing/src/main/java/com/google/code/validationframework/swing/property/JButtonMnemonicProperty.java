@@ -30,10 +30,10 @@ import java.awt.event.KeyEvent;
 
 /**
  * Readable/writable property representing the mnemonic bean property of a {@link JButton}.
- * <p/>
+ * <p>
  * It is possible to control the mnemonic of the button by setting the value of this property or by calling the {@link
  * JButton#setMnemonic(char)} or {@link JButton#setMnemonic(int)} methods of that button.
- * <p/>
+ * <p>
  * If the value of this property is set to null, the mnemonic will be set to {@link KeyEvent#VK_UNDEFINED}.
  *
  * @see JButton#getMnemonic()

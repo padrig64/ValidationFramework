@@ -70,7 +70,7 @@ public class JComboBoxModelChangedTrigger extends AbstractTrigger implements Dis
 
     /**
      * Constructor specifying the source combobox that will trigger the validation.
-     * <p/>
+     * <p>
      * Note that a default handler for unchecked exceptions occurring when firing trigger events will be used.
      *
      * @param source Source combobox that will trigger the validation.

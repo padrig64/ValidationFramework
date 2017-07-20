@@ -31,9 +31,9 @@ import com.google.code.validationframework.api.trigger.TriggerListener;
 
 /**
  * Composite trigger.
- * <p/>
+ * <p>
  * It can be used, for instance, to easily add a same set of triggers to several validators.
- * <p/>
+ * <p>
  * Note that no reference will be kept to the added triggers. Only a trigger listener will be added to them.
  */
 public class CompositeTrigger extends AbstractTrigger {
@@ -82,7 +82,7 @@ public class CompositeTrigger extends AbstractTrigger {
 
     /**
      * Adds the specified trigger to the composition.
-     * <p/>
+     * <p>
      * Note that no reference to the given trigger will be kept. Only a trigger listener will be added to it.
      *
      * @param trigger Trigger to be added.
@@ -95,7 +95,7 @@ public class CompositeTrigger extends AbstractTrigger {
 
     /**
      * Removes the specified trigger to the composition.
-     * <p/>
+     * <p>
      * The trigger listener added
      *
      * @param trigger Trigger to be removed.

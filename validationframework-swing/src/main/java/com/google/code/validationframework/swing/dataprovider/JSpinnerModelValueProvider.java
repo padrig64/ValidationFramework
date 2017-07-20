@@ -54,7 +54,7 @@ public class JSpinnerModelValueProvider<DPO> implements DataProvider<DPO> {
 
     /**
      * Constructor specifying the spinner to get the value from.
-     * <p/>
+     * <p>
      * By default, the spinner value will be cast to DPO.
      *
      * @param spinner Spinner to get the value from.

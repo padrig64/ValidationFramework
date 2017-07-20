@@ -36,10 +36,10 @@ import java.util.Collection;
 /**
  * Trigger that can be added as a {@link PropertyChangeListener} and triggers the validation when a property change
  * event is received.
- * <p/>
+ * <p>
  * This is particularly handy if the entity you register to is based on a {@link java.beans.PropertyChangeSupport} or
  * equivalent.
- * <p/>
+ * <p>
  * However, it is still possible in this trigger to initiate the validation only on some properties, instead of all
  * properties.
  *
@@ -52,7 +52,7 @@ public class PropertyChangeTrigger extends AbstractTrigger implements PropertyCh
 
     /**
      * Default constructor.
-     * <p/>
+     * <p>
      * The trigger will initiate the validation whenever any property change is trigger.
      */
     public PropertyChangeTrigger() {
@@ -61,7 +61,7 @@ public class PropertyChangeTrigger extends AbstractTrigger implements PropertyCh
 
     /**
      * Constructor specifying the properties to initiate the validation.
-     * <p/>
+     * <p>
      * Any other property change will not initiate the validation. However, if the specified collection is empty, any
      * property change will initiate the validation.
      *
@@ -73,7 +73,7 @@ public class PropertyChangeTrigger extends AbstractTrigger implements PropertyCh
 
     /**
      * Constructor specifying the properties to initiate the validation.
-     * <p/>
+     * <p>
      * Any other property change will not initiate the validation. However, if the specified collection is empty, any
      * property change will initiate the validation.
      *

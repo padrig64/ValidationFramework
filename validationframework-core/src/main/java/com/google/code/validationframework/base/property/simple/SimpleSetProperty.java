@@ -79,7 +79,7 @@ public class SimpleSetProperty<T> extends AbstractReadableWritableSetProperty<T,
 
     /**
      * Constructor specifying the initial items and adding the specified listeners.
-     * <p/>
+     * <p>
      * Note that the specified listeners will not be notified for the addition of the specified initial items.
      *
      * @param items     Initial items.

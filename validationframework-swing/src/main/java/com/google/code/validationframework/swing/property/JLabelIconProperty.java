@@ -30,10 +30,10 @@ import javax.swing.JLabel;
 
 /**
  * Readable/writable property representing the icon bean property of a {@link JLabel}.
- * <p/>
+ * <p>
  * It is possible to control the icon of the label by setting the value of this property or by calling the {@link
  * JLabel#setIcon(Icon)} method of that label.
- * <p/>
+ * <p>
  * If the value of this property is set to null, the label will have no icon.
  *
  * @see JLabel#getIcon()

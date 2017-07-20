@@ -36,10 +36,10 @@ import java.awt.event.ItemListener;
 
 /**
  * Readable/writable property representing the selected value of a {@link JComboBox}.
- * <p/>
+ * <p>
  * It is possible to control the selected value of the component by setting the value of this property or by calling the
  * {@link JComboBox#setSelectedItem(Object)} or {@link JComboBox#setSelectedIndex(int)} methods of that component.
- * <p/>
+ * <p>
  * If the value of this property is set to null, the component selected value will not be changed.
  *
  * @see JComboBox#getSelectedItem()

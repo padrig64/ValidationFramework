@@ -29,9 +29,9 @@ import com.google.code.validationframework.api.rule.Rule;
 
 /**
  * Rule making sure that the provided data is not null.
- * <p/>
+ * <p>
  * It will return true if the data is not null, and false otherwise.
- * <p/>
+ * <p>
  * Note that even though generics are not needed in the logic of this class, providing a specific type makes it more
  * convenient to reduce compilation warnings and errors.
  *

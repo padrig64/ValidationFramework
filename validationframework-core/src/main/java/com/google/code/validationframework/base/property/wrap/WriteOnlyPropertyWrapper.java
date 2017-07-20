@@ -29,7 +29,7 @@ import com.google.code.validationframework.api.property.WritableProperty;
 
 /**
  * Wrapper for properties (typically both readable/writable) to make them appear as write-only.
- * <p/>
+ * <p>
  * This can be useful, for example, to return a write-only property in a getter method that is actually a
  * readable/writable property internally. The wrapper then forbids the programmer to cast the returned property to a
  * readable property in order to change read its value.

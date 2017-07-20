@@ -42,7 +42,7 @@ import java.util.Map;
 
 /**
  * Abstract implementation of a simple validator.
- * <p/>
+ * <p>
  * It merely implements the methods to add and remove triggers, data providers, rules and result handlers. However, the
  * use the connection between triggers, data providers, rules and result handlers, as well as all the validation logic
  * is left to the sub-classes.
@@ -279,7 +279,7 @@ public abstract class AbstractSimpleValidator<T extends Trigger, DP extends Data
 
     /**
      * Performs the whole validation logic for the specified trigger.
-     * <p/>
+     * <p>
      * Typically, data will be read from the data providers and passed to the rules, and the rule results will be
      * processed by the result handlers.
      *

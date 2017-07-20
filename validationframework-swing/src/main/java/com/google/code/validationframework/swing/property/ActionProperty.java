@@ -37,10 +37,10 @@ import java.beans.PropertyChangeListener;
 /**
  * Implementation of a readable/writable property representing a bean property of an {@link Action} that can be tracked
  * using a {@link PropertyChangeListener}.
- * <p/>
+ * <p>
  * It is possible to control the bean property of the action by setting the value of this property or by calling the
  * bean property setter method of that action.
- * <p/>
+ * <p>
  * Refer to {@link Action} for a list of supported property names, as well as the associated types and values.
  *
  * @param <P> Type of bean property.

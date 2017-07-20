@@ -36,7 +36,7 @@ import java.util.Set;
 
 /**
  * Wrapper for map properties (typically both readable/writable) to make them appear as read-only.
- * <p/>
+ * <p>
  * This can be useful, for example, to return a read-only map property in a getter method that is actually a
  * readable/writable map property internally. The wrapper then forbids the programmer to cast the returned map property
  * to a writable map property in order to change its contents.

@@ -37,7 +37,7 @@ import javax.swing.JComponent;
 /**
  * Abstract implementation of a result handler using an {@link IconComponentDecoration} to show feedback to the user on
  * component.
- * <p/>
+ * <p>
  * Concrete classes only need to implement the {@link #handleResult(Object)} method by calling the {@link #showIcon()}
  * and {@link #hideIcon()} methods according to the result.
  *

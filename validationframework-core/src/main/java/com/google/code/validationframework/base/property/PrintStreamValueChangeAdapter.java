@@ -49,7 +49,7 @@ public class PrintStreamValueChangeAdapter<T> implements ValueChangeListener<T> 
 
     /**
      * Default constructor.
-     * <p/>
+     * <p>
      * By default, the {@link System#out} print stream will be used, and the simple class name of the property will be
      * printed out.
      */
@@ -59,7 +59,7 @@ public class PrintStreamValueChangeAdapter<T> implements ValueChangeListener<T> 
 
     /**
      * Constructor specifying the print stream to be used to print the change information.
-     * <p/>
+     * <p>
      * By default, the simple class name of the property will be printed with the change information.
      *
      * @param stream Print stream to be used to print the change information.
@@ -70,7 +70,7 @@ public class PrintStreamValueChangeAdapter<T> implements ValueChangeListener<T> 
 
     /**
      * Constructor specifying the property name to be printed with the change information.
-     * <p/>
+     * <p>
      * By default, the {@link System#out} print stream will be used.
      *
      * @param propertyName Property name to be printed with the change information.

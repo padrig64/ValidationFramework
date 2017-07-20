@@ -33,7 +33,7 @@ import java.text.Format;
 
 /**
  * Transformer using a {@link Format} to format the input object into a string.
- * <p/>
+ * <p>
  * If the specified format object or the input object to be formatted are null, then the output will be null. If the
  * input object cannot be formatted (the {@link Format} object throwing an {@link IllegalArgumentException}), then the
  * output will be null.

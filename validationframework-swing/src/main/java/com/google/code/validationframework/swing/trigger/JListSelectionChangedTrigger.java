@@ -40,7 +40,7 @@ public class JListSelectionChangedTrigger extends AbstractTrigger implements Dis
 
     /**
      * Listener to selection changes in the selection model of the list, triggering the validation.
-     * <p/>
+     * <p>
      * Note that there is no need to track replacement of the selection model in the list as this is already done in
      * {@link JList}.
      */

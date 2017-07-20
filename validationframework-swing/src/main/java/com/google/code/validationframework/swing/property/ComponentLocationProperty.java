@@ -36,15 +36,15 @@ import java.awt.event.ComponentListener;
 /**
  * Readable/writable property representing the location of a {@link Component} (possibly a {@link java.awt.Window}),
  * relatively to its parent.
- * <p/>
+ * <p>
  * It is possible to control the location of the component by setting the value of this property or by calling the
  * {@link Component#setLocation(Point)} method of that component.
- * <p/>
+ * <p>
  * However, note that the layout manager of the parent container may also modify the location of the component.
- * <p/>
+ * <p>
  * Note that changing the X or Y coordinate of the {@link Point} object directly will have no effect on this property.
  * It is therefore not advised to do so.
- * <p/>
+ * <p>
  * Finally note that null values are not supported by this property.
  *
  * @see Component#getLocation()

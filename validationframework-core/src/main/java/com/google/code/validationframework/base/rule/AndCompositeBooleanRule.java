@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ValidationFramework Authors
+ * Copyright (c) 2017, ValidationFramework Authors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,9 +37,8 @@ import java.util.Collection;
  * Composite rule checking data of a known specific type using sub-rules, and returning a boolean as an aggregation of
  * the boolean results from its sub-rules.
  *
- * @param <RI> Type of data to be validated.<br>
- *             It can be, for instance, the type of data handled by a component, or the type of the component itself.
- *
+ * @param <RI> Type of data to be validated.<br> It can be, for instance, the type of data handled by a component, or
+ *             the type of the component itself.
  * @see AbstractCompositeRule
  * @see OrCompositeBooleanRule
  */
@@ -53,6 +52,8 @@ public class AndCompositeBooleanRule<RI> extends AbstractCompositeRule<RI, Boole
     private final Transformer<Collection<Boolean>, Boolean> aggregator = new AndBooleanAggregator();
 
     /**
+     * {@inheritDoc}
+     *
      * @see AbstractCompositeRule#AbstractCompositeRule()
      */
     public AndCompositeBooleanRule() {
@@ -60,6 +61,8 @@ public class AndCompositeBooleanRule<RI> extends AbstractCompositeRule<RI, Boole
     }
 
     /**
+     * {@inheritDoc}
+     *
      * @see AbstractCompositeRule#AbstractCompositeRule(Rule[])
      */
     public AndCompositeBooleanRule(Rule<RI, Boolean>... rules) {
@@ -67,6 +70,8 @@ public class AndCompositeBooleanRule<RI> extends AbstractCompositeRule<RI, Boole
     }
 
     /**
+     * {@inheritDoc}
+     *
      * @see AbstractCompositeRule#validate(Object)
      */
     @Override
@@ -83,6 +88,8 @@ public class AndCompositeBooleanRule<RI> extends AbstractCompositeRule<RI, Boole
     }
 
     /**
+     * {@inheritDoc}
+     *
      * @see AbstractCompositeRule#dispose()
      */
     @Override

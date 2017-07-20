@@ -37,7 +37,7 @@ import java.beans.PropertyChangeListener;
 
 /**
  * Read-only property representing the number of rows in a {@link JTable}.
- * <p/>
+ * <p>
  * Note that this row count corresponds to the view and therefore may differ from the row count in the table model.
  */
 public class JTableRowCountProperty extends AbstractReadableProperty<Integer> implements Disposable {

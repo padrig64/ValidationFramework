@@ -34,10 +34,10 @@ import java.awt.event.ItemListener;
 
 /**
  * Readable/writable property representing the selected index of a {@link JComboBox}.
- * <p/>
+ * <p>
  * It is possible to control the selected index of the component by setting the value of this property or by calling the
  * {@link JComboBox#setSelectedIndex(int)} or {@link JComboBox#setSelectedItem(Object)} methods of that component.
- * <p/>
+ * <p>
  * If the value of this property is set to null, the component selected index will not be changed.
  *
  * @see JComboBox#getSelectedIndex()

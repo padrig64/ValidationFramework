@@ -127,7 +127,7 @@ public class MultipleRuleContext<DPO, RI, RO> {
 
     /**
      * Makes the validator process each rule independently.
-     * <p/>
+     * <p>
      * This corresponds to the use of {@link GeneralValidator.MappingStrategy#SPLIT}.
      *
      * @return Context allowing further construction of the validator using the DSL.

@@ -36,11 +36,11 @@ import java.util.Collection;
 
 /**
  * Utility class that can be used to help binding properties and transform their values.
- * <p/>
+ * <p>
  * This binder utility will create {@link SimpleBond}s between properties. These bonds can be broken by calling their
  * {@link
  * SimpleBond#dispose()} method.
- * <p/>
+ * <p>
  * If you are using JavaFX, you should better use JavaFX's property binding mechanism. The binding mechanism provided by
  * the ValidationFramework is very simple and mostly meant for Swing and other frameworks that can benefit from it.
  * JavaFX has a much more furnished API to achieve similar goals and much more.

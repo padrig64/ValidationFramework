@@ -27,14 +27,14 @@ package com.google.code.validationframework.base.rule.string;
 
 /**
  * Simple rule making sure that the input string under validation is not empty.
- * <p/>
+ * <p>
  * The result in case of null input string can be specified. By default, null values are considered to be invalid.
  */
 public class StringNotEmptyRule extends AbstractStringBooleanRule {
 
     /**
      * Result for null input data.
-     * <p/>
+     * <p>
      * Note that it can be null.
      */
     private final Boolean nullResult;

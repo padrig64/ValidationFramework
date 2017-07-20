@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ValidationFramework Authors
+ * Copyright (c) 2017, ValidationFramework Authors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@ import java.util.Collection;
 
 /**
  * Interface to be implemented by writable list properties.
- * <p/>
+ * <p>
  * Note that most of the methods are based on the {@link java.util.List} interface.
  *
  * @param <W> Type of values that can be written to this list property.
@@ -37,51 +37,91 @@ import java.util.Collection;
 public interface WritableListProperty<W> {
 
     /**
+     * Sets the specified element at the specified index.
+     *
+     * @param index Index where to set the element.
+     * @param item  Element to be set.
+     * @return Previous element at that index if any, null otherwise.
      * @see java.util.List#set(int, Object)
      */
     W set(int index, W item);
 
     /**
+     * Adds the specified element to the end of the list.
+     *
+     * @param item Item to be added.
+     * @return True.
      * @see java.util.List#add(Object)
      */
     boolean add(W item);
 
     /**
+     * Inserts the specified element at the specified index.
+     *
+     * @param index Index where to insert the element.
+     * @param item  Element to be inserted.
      * @see java.util.List#add(int, Object)
      */
     void add(int index, W item);
 
     /**
+     * Adds all the specified elements at the end of the list.
+     *
+     * @param items Elements to be added.
+     * @return True if the list was changed, false otherwise.
      * @see java.util.List#addAll(Collection)
      */
     boolean addAll(Collection<? extends W> items);
 
     /**
+     * Inserts all the specified elements at the specified index.
+     *
+     * @param index Index where to insert the elements.
+     * @param items Elements to be inserted.
+     * @return True if the list was changed, false otherwise.
      * @see java.util.List#addAll(int, Collection)
      */
     boolean addAll(int index, Collection<? extends W> items);
 
     /**
+     * Removes the specified element.
+     *
+     * @param item Element to be removed.
+     * @return True if the element was in the list, false otherwise.
      * @see java.util.List#remove(Object)
      */
     boolean remove(Object item);
 
     /**
+     * Removes the element at the specified index.
+     *
+     * @param index Index of the element to be removed.
+     * @return Removed element.
      * @see java.util.List#remove(int)
      */
     W remove(int index);
 
     /**
+     * Removes all elements that are in the specified collection.
+     *
+     * @param items Elements to be removed.
+     * @return True if the list was changed, false otherwise.
      * @see java.util.List#removeAll(Collection)
      */
     boolean removeAll(Collection<?> items);
 
     /**
+     * Removes all elements that are not in the specified collection.
+     *
+     * @param items Elements to be retained.
+     * @return True if the list was changed, false otherwise.
      * @see java.util.List#retainAll(Collection)
      */
     boolean retainAll(Collection<?> items);
 
     /**
+     * Removes all elements from the list.
+     *
      * @see java.util.List#clear()
      */
     void clear();

@@ -31,13 +31,13 @@ import java.awt.Window;
 
 /**
  * Readable/writable property representing the resizable state of a {@link Frame} or a {@link Dialog}.
- * <p/>
+ * <p>
  * It is possible to control the resizable state of the component by setting the value of this property or by calling
  * the {@link Frame#setResizable(boolean)} or {@link Dialog#setResizable(boolean)} method of that window.
- * <p/>
+ * <p>
  * Please note that a plain {@link Window} does not have this bean property. A {@link Frame}, {@link Dialog} or
  * sub-class does. However, the type {@link Window} is still used by this property for convenience.
- * <p/>
+ * <p>
  * Finally note that null values are not supported by this property.
  *
  * @see Frame#isResizable()

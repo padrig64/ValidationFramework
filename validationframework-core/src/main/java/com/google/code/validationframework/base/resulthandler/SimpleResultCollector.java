@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ValidationFramework Authors
+ * Copyright (c) 2017, ValidationFramework Authors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,16 +29,17 @@ import com.google.code.validationframework.api.transform.Transformer;
 
 /**
  * Simpler alternative to the {@link ResultCollector}.
- * <p/>
+ * <p>
  * It is provided for convenience.
  *
  * @param <DPO> Type of validation result and data provided.
- *
  * @see ResultCollector
  */
 public class SimpleResultCollector<DPO> extends ResultCollector<DPO, DPO> {
 
     /**
+     * {@inheritDoc}
+     *
      * @see ResultCollector#ResultCollector()
      */
     public SimpleResultCollector() {
@@ -46,6 +47,8 @@ public class SimpleResultCollector<DPO> extends ResultCollector<DPO, DPO> {
     }
 
     /**
+     * {@inheritDoc}
+     *
      * @see ResultCollector#ResultCollector(Transformer)
      */
     public SimpleResultCollector(Transformer<DPO, DPO> transformer) {

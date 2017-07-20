@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ValidationFramework Authors
+ * Copyright (c) 2017, ValidationFramework Authors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@ import com.google.code.validationframework.api.transform.Transformer;
 
 /**
  * Simpler alternative to the {@link ResultCollector} collecting and providing boolean results.
- * <p/>
+ * <p>
  * It is provided for convenience.
  *
  * @see ResultCollector
@@ -37,6 +37,8 @@ import com.google.code.validationframework.api.transform.Transformer;
 public class BooleanResultCollector extends ResultCollector<Boolean, Boolean> {
 
     /**
+     * {@inheritDoc}
+     *
      * @see ResultCollector#ResultCollector()
      */
     public BooleanResultCollector() {
@@ -44,6 +46,8 @@ public class BooleanResultCollector extends ResultCollector<Boolean, Boolean> {
     }
 
     /**
+     * {@inheritDoc}
+     *
      * @see ResultCollector#ResultCollector(Transformer)
      */
     public BooleanResultCollector(Transformer<Boolean, Boolean> transformer) {

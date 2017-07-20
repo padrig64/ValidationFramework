@@ -32,7 +32,7 @@ import javax.swing.SwingUtilities;
 /**
  * Result handler wrapper to re-schedule the handling of the result by the wrapped result handler on the Event Dispatch
  * Thread.
- * <p/>
+ * <p>
  * This can be useful when validation is performed outside the EDT but the handling needs to be done on the EDT.
  */
 public class InvokeLaterResultHandler<RHI> implements ResultHandler<RHI> {
@@ -83,7 +83,7 @@ public class InvokeLaterResultHandler<RHI> implements ResultHandler<RHI> {
 
     /**
      * Constructor specifying the wrapped result handler to be re-scheduled.
-     * <p/>
+     * <p>
      * By default, the handling of the result by the wrapped result handler will always be re-scheduled later, even if
      * already on the EDT.
      *

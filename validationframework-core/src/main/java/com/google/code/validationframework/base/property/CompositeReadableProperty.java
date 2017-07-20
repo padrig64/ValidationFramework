@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ValidationFramework Authors
+ * Copyright (c) 2017, ValidationFramework Authors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,31 +36,15 @@ import java.util.List;
 
 /**
  * {@link ReadableProperty} gathering several other readable properties of the same type.
- * <p/>
+ * <p>
  * Whenever a sub-property changes, this composite property will trigger its change listeners. Also, reading the value
  * from this property will return the collection of values from all sub-properties.
- * <p/>
+ * <p>
  * The value returned by {@link #getValue()} will never be null, but it may very well be an empty collection.
  *
  * @param <R> Type of data that can be read from the sub-properties.
  */
 public class CompositeReadableProperty<R> extends AbstractReadableProperty<Collection<R>> {
-
-    /**
-     * Listener to changes in the sub-properties.
-     */
-    private class ValueChangeAdapter implements ValueChangeListener<R> {
-
-        /**
-         * @see ValueChangeListener#valueChanged(ReadableProperty, Object, Object)
-         */
-        @Override
-        public void valueChanged(ReadableProperty<R> property, R oldValue, R newValue) {
-            if (!ValueUtils.areEqual(oldValue, newValue)) {
-                updateFromProperties();
-            }
-        }
-    }
 
     /**
      * Sub-properties.
@@ -79,7 +63,7 @@ public class CompositeReadableProperty<R> extends AbstractReadableProperty<Colle
 
     /**
      * Default constructor.
-     * <p/>
+     * <p>
      * The default value of this property will be an empty list. It will not be null.
      */
     public CompositeReadableProperty() {
@@ -123,7 +107,7 @@ public class CompositeReadableProperty<R> extends AbstractReadableProperty<Colle
 
     /**
      * Adds the specified sub-property.
-     * <p/>
+     * <p>
      * This will trigger the change listeners.
      *
      * @param property Sub-property to be added.
@@ -136,12 +120,11 @@ public class CompositeReadableProperty<R> extends AbstractReadableProperty<Colle
 
     /**
      * Removes the specified sub-properties.
-     * <p/>
+     * <p>
      * This will trigger the change listeners.
      *
      * @param property Sub-property to be removed.
-     *
-     * @see #clear();
+     * @see #clear()
      */
     public void removeProperty(ReadableProperty<R> property) {
         property.removeValueChangeListener(changeAdapter);
@@ -160,11 +143,24 @@ public class CompositeReadableProperty<R> extends AbstractReadableProperty<Colle
     }
 
     /**
+     * {@inheritDoc}
+     *
      * @see AbstractReadableProperty#getValue()
      */
     @Override
     public Collection<R> getValue() {
         return values;
+    }
+
+    /**
+     * Sets the new collection of values to be returned by {@link #getValue()}.
+     *
+     * @param values New collection of values.
+     */
+    private void setValue(Collection<R> values) {
+        Collection<R> oldValues = this.values;
+        this.values = values;
+        maybeNotifyListeners(oldValues, values);
     }
 
     /**
@@ -182,13 +178,20 @@ public class CompositeReadableProperty<R> extends AbstractReadableProperty<Colle
     }
 
     /**
-     * Sets the new collection of values to be returned by {@link #getValue()}.
-     *
-     * @param values New collection of values.
+     * Listener to changes in the sub-properties.
      */
-    private void setValue(Collection<R> values) {
-        Collection<R> oldValues = this.values;
-        this.values = values;
-        maybeNotifyListeners(oldValues, values);
+    private class ValueChangeAdapter implements ValueChangeListener<R> {
+
+        /**
+         * {@inheritDoc}
+         *
+         * @see ValueChangeListener#valueChanged(ReadableProperty, Object, Object)
+         */
+        @Override
+        public void valueChanged(ReadableProperty<R> property, R oldValue, R newValue) {
+            if (!ValueUtils.areEqual(oldValue, newValue)) {
+                updateFromProperties();
+            }
+        }
     }
 }

@@ -29,10 +29,10 @@ import javax.swing.JComponent;
 
 /**
  * Readable/writable property representing the tooltip text client property of a {@link JComponent}.
- * <p/>
+ * <p>
  * It is possible to control the tooltip text of the component by setting the value of this property or by calling the
  * {@link JComponent#setToolTipText(String)} method of that component.
- * <p/>
+ * <p>
  * If the value of this property is set to null, the tooltip will be emptied.
  *
  * @see JComponent#getToolTipText()

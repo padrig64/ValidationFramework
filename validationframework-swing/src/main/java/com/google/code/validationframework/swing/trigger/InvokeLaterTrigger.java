@@ -34,7 +34,7 @@ import javax.swing.SwingUtilities;
 
 /**
  * Trigger wrapper to re-schedule the wrapped trigger on the Event Dispatch Thread.
- * <p/>
+ * <p>
  * This can be useful when triggers are initially trigger outside the EDT, but also to schedule the trigger later. The
  * latter case is useful if you have triggers initiated on keystrokes on an input field and data providers reading the
  * text of the same input field: this trigger wrapper can be used to make sure that the input field treats the
@@ -92,7 +92,7 @@ public class InvokeLaterTrigger extends AbstractTrigger {
 
     /**
      * Constructor specifying the wrapped trigger to be rescheduled.
-     * <p/>
+     * <p>
      * By default, the trigger will always be re-scheduled later on the EDT, even if it is already triggered on the
      * EDT.
      *

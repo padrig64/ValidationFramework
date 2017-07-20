@@ -38,7 +38,7 @@ import java.util.List;
 
 /**
  * Trigger initiating the validation when an action is performed.
- * <p/>
+ * <p>
  * This trigger can be used wherever actions and {@link java.awt.event.ActionListener}s are used (for instance, on
  * buttons).
  */

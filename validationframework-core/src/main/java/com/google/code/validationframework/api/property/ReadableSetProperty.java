@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ValidationFramework Authors
+ * Copyright (c) 2017, ValidationFramework Authors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,7 +30,7 @@ import java.util.Set;
 
 /**
  * Interface to be implemented by readable set properties.
- * <p/>
+ * <p>
  * Note that most of the methods are based on the {@link java.util.Set} interface.
  *
  * @param <R> Type of values in this set property.
@@ -52,28 +52,41 @@ public interface ReadableSetProperty<R> extends Iterable<R> {
     void removeValueChangeListener(SetValueChangeListener<R> listener);
 
     /**
+     * Gets the size of the set.
+     *
+     * @return Set size.
      * @see java.util.Set#size()
      */
     int size();
 
     /**
+     * States whether the set is empty or not.
+     *
+     * @return True if the set is empty, false otherwise.
      * @see java.util.Set#isEmpty()
      */
     boolean isEmpty();
 
     /**
-     * @see java.util.Set#contains(Object)
+     * States whether the set contains the specified element or not.
+     *
+     * @param item Element whose presence is to be checked.
+     * @return True if the set contains the element, false otherwise.
      */
     boolean contains(Object item);
 
     /**
+     * States whether the set contains all the specified elements or not.
+     *
+     * @param items Elements whose presence is to be checked.
+     * @return True if the set contains all elements, false otherwise.
      * @see java.util.Set#containsAll(Collection)
      */
     boolean containsAll(Collection<?> items);
 
     /**
      * Returns a {@link Set} containing the same elements as this set property, and that cannot be modified directly.
-     * <p/>
+     * <p>
      * Unless specified otherwise in the implementing classes, the returned set always represents the contains of this
      * set property, meaning that if items are added/removed from this set property, the contents of the unmodifiable
      * set will also change.

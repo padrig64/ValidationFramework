@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ValidationFramework Authors
+ * Copyright (c) 2017, ValidationFramework Authors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,6 +40,8 @@ public class SimpleFloatProperty extends SimpleProperty<Float> implements Serial
     private static final long serialVersionUID = 2636737135890412740L;
 
     /**
+     * {@inheritDoc}
+     *
      * @see SimpleProperty#SimpleProperty()
      */
     public SimpleFloatProperty() {
@@ -47,6 +49,8 @@ public class SimpleFloatProperty extends SimpleProperty<Float> implements Serial
     }
 
     /**
+     * {@inheritDoc}
+     *
      * @see SimpleProperty#SimpleProperty(Object)
      */
     public SimpleFloatProperty(Float value) {

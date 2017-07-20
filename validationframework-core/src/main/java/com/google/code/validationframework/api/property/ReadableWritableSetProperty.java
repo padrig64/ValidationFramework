@@ -27,7 +27,7 @@ package com.google.code.validationframework.api.property;
 
 /**
  * Interface to be implemented by set properties that are both readable and writable.
- * <p/>
+ * <p>
  * Note that most of the methods are based on the {@link java.util.Set} interface.
  *
  * @param <R> Type of values that can be read from this set property.

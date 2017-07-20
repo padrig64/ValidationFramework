@@ -32,7 +32,7 @@ import com.google.code.validationframework.base.property.AbstractReadablePropert
 
 /**
  * Wrapper for properties (typically both readable/writable) to make them appear as read-only.
- * <p/>
+ * <p>
  * This can be useful, for example, to return a read-only property in a getter method that is actually a
  * readable/writable property internally. The wrapper then forbids the programmer to cast the returned property to a
  * writable property in order to change its value.

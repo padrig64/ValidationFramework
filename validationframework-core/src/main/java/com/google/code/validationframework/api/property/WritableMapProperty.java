@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ValidationFramework Authors
+ * Copyright (c) 2017, ValidationFramework Authors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@ import java.util.Map;
 
 /**
  * Interface to be implemented by writable map properties.
- * <p/>
+ * <p>
  * Note that most of the methods are based on the {@link java.util.Map} interface.
  *
  * @param <K> Type of keys maintained by this map property.
@@ -38,21 +38,35 @@ import java.util.Map;
 public interface WritableMapProperty<K, W> {
 
     /**
+     * Puts the specified value at the specified key.
+     *
+     * @param key   Key to put the value at.
+     * @param value Value to be put at the specified key.
+     * @return Previous element for the specified key, or null.
      * @see Map#put(Object, Object)
      */
     W put(K key, W value);
 
     /**
+     * Removes the entry at the specified key.
+     *
+     * @param key Key to be removed.
+     * @return Value that was removed, or null.
      * @see Map#remove(Object)
      */
     W remove(Object key);
 
     /**
+     * Puts all the specified entries.
+     *
+     * @param entries Entries to be put in the map.
      * @see Map#putAll(Map)
      */
     void putAll(Map<? extends K, ? extends W> entries);
 
     /**
+     * Removes all entries from the map.
+     *
      * @see Map#clear()
      */
     void clear();

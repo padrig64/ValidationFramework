@@ -51,7 +51,7 @@ import java.beans.PropertyChangeListener;
 /**
  * Abstract implementation of a result handler using an {@link IconComponentDecoration} to show feedback to the user on
  * a table cell.
- * <p/>
+ * <p>
  * Concrete classes only need to implement the {@link #handleResult(Object)} method by calling the {@link #showIcon()}
  * and {@link #hideIcon()} methods according to the result.
  *
@@ -225,7 +225,7 @@ public abstract class AbstractCellIconFeedback<RHI> extends AbstractIconFeedback
 
     /**
      * Anchor link between the cell and the decoration.
-     * <p/>
+     * <p>
      * It is used to slave the decoration to the cell in terms of location.
      */
     private AnchorLink anchorLinkWithCell = IconComponentDecoration.DEFAULT_ANCHOR_LINK_WITH_OWNER;

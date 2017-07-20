@@ -28,7 +28,7 @@ package com.google.code.validationframework.api.common;
 /**
  * Interface to be implemented by entities that would require an explicit disposal for complete disconnection from other
  * entities and to allow garbage collection.
- * <p/>
+ * <p>
  * For example, if the disposable entity registers some listeners to other objects, disposing this entity should remove
  * those listeners.
  */
@@ -36,7 +36,7 @@ public interface Disposable {
 
     /**
      * Disposes the component by disconnecting any listener and any reference that would prevent garbage collection.
-     * <p/>
+     * <p>
      * Note that calling this method a second time should have no effect (and certainly not generate an exception).
      */
     void dispose();

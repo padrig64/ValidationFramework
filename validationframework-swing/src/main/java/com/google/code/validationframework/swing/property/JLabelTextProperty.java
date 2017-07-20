@@ -29,10 +29,10 @@ import javax.swing.JLabel;
 
 /**
  * Readable/writable property representing the text bean property of a {@link JLabel}.
- * <p/>
+ * <p>
  * It is possible to control the text of the label by setting the value of this property or by calling the {@link
  * JLabel#setText(String)} method of that label.
- * <p/>
+ * <p>
  * If the value of this property is set to null, the label will be emptied.
  *
  * @see JLabel#getText()

@@ -81,7 +81,7 @@ public abstract class AbstractReadableListProperty<R> implements ReadableListPro
 
     /**
      * Notifies the change listeners that items have been added.
-     * <p/>
+     * <p>
      * Note that the specified list of items will be wrapped in an unmodifiable list before being passed to the
      * listeners.
      *
@@ -98,7 +98,7 @@ public abstract class AbstractReadableListProperty<R> implements ReadableListPro
 
     /**
      * Notifies the change listeners that items have been replaced.
-     * <p/>
+     * <p>
      * Note that the specified lists of items will be wrapped in unmodifiable lists before being passed to the
      * listeners.
      *
@@ -117,7 +117,7 @@ public abstract class AbstractReadableListProperty<R> implements ReadableListPro
 
     /**
      * Notifies the change listeners that items have been removed.
-     * <p/>
+     * <p>
      * Note that the specified list of items will be wrapped in an unmodifiable list before being passed to the
      * listeners.
      *

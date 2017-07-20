@@ -27,16 +27,16 @@ package com.google.code.validationframework.swing.type;
 
 /**
  * Entity representing the position of a cell in a table.
- * <p/>
+ * <p>
  * The row and column indices may be model or view indices, depending on where this class is used.
- * <p/>
+ * <p>
  * A row index of -1 represents the table header.
  */
 public class CellPosition {
 
     /**
      * Row index.
-     * <p/>
+     * <p>
      * A value of -1 represents the table header.
      */
     private final int row;

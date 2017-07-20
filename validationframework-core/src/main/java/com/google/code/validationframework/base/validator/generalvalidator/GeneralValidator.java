@@ -43,34 +43,34 @@ import java.util.List;
 
 /**
  * Simple validator allowing to have different mapping between data providers, rules and result handlers.
- * <p/>
+ * <p>
  * For type safety, it is highly advised to use the {@link com.google.code.validationframework.base.validator
  * .generalvalidator.dsl.GeneralValidatorBuilder}.
- * <p/>
+ * <p>
  * The validator allows to transform the data providers' output before mapping, the rules' input after mapping, the
  * rules' output before mapping and the result handlers' input after mapping.
- * <p/>
+ * <p>
  * This means that the output of each data provider will be transformed using a series of data provider output {@link
  * Transformer}s. Then, if the data provider to rule mapping is {@link MappingStrategy#SPLIT}, the output of each data
  * provider output transformation will transformed again using a series of rule input {@link Transformer}s, before being
  * passed to each rule. If the data provider to rule mapping is {@link MappingStrategy#JOIN}, the output of all data
  * provider output transformations will be put in a collection and transformed again using the series of rule input
  * {@link Transformer}s, before being passed to each rule.
- * <p/>
+ * <p>
  * The output of each rule will be transformed using a series of rule output {@link Transformer}s. Then, if the rule to
  * result handler mapping is {@link MappingStrategy#SPLIT}, the output of each rule output transformation will be
  * transformed again using a series of result handler input {@link Transformer}s, before being passed to each result
  * handler.
- * <p/>
+ * <p>
  * If the rule to result handler mapping is {@link MappingStrategy#JOIN}, the output of all rule output transformations
  * will be put in a collection and transformed as a whole using the series of result handler input {@link Transformer}s,
  * before being passed to each result handler.
- * <p/>
+ * <p>
  * The general validation flow can be represented by the following pattern:<br>
- * triggers -> data providers -> data provider output transformers -> data provider to rule mapping -> rule input
- * transformers -> rules -> rule output transformers -> rule output to result handler input transformers -> result
- * handler input transformers -> result handlers
- * <p/>
+ * triggers - data providers - data provider output transformers - data provider to rule mapping - rule input
+ * transformers - rules - rule output transformers - rule output to result handler input transformers - result handler
+ * input transformers - result handlers
+ * <p>
  * Note that the use of transformers is optional. By default, the data provider to rule mapping is set to {@link
  * MappingStrategy#SPLIT} and the rule to result handler mapping is set to {@link MappingStrategy#SPLIT}.
  *
@@ -106,7 +106,7 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
 
     /**
      * List of {@link Transformer}s transforming the output of each data provider.
-     * <p/>
+     * <p>
      * The type of input of the first transformer shall match the type of output of the data providers. The type of the
      * input of a subsequent transformer shall match the type of output of the previous transformer.
      *
@@ -121,7 +121,7 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
 
     /**
      * List of {@link Transformer}s transforming the input of each rule.
-     * <p/>
+     * <p>
      * The type of input of the first transformer shall match the type of output of the data provider to rule mapping:
      * so either the type of data provider output or a {@link Collection} of objects of the same type as the data
      * provider output. The type of the input of a subsequent transformer shall match the type of output of the previous
@@ -133,7 +133,7 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
 
     /**
      * List of {@link Transformer}s transforming the output of each rule.
-     * <p/>
+     * <p>
      * The type of input of the first transformer shall match the type of output of the rules. The type of the input of
      * a subsequent transformer shall match the type of output of the previous transformer.
      *
@@ -148,7 +148,7 @@ public class GeneralValidator<DPO, RI, RO, RHI> extends AbstractSimpleValidator<
 
     /**
      * List of {@link Transformer}s transforming the input of each result handler.
-     * <p/>
+     * <p>
      * The type of input of the first transformer shall match the type of rule to result handler mapping: so either the
      * type of rule output or a {@link Collection} of objects of the same type as the rule output. The type of the input
      * of a subsequent transformer shall match the type of output of the previous transformer.

@@ -36,7 +36,7 @@ import java.beans.PropertyChangeListener;
 
 /**
  * Readable property representing the ancestor property of a {@link Component}.
- * <p/>
+ * <p>
  * Note that change listeners will not be notified if the {@link Component} is not a {@link javax.swing.JComponent}.
  */
 public class AncestorProperty extends AbstractReadableProperty<Container> implements Disposable {

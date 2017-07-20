@@ -88,7 +88,7 @@ public class SimpleMapProperty<K, V> extends AbstractReadableWritableMapProperty
 
     /**
      * Constructor specifying the initial entries and adding the specified listeners.
-     * <p/>
+     * <p>
      * Note that the specified listeners will not be notified for the addition of the specified initial entries.
      *
      * @param entries   Initial entries.

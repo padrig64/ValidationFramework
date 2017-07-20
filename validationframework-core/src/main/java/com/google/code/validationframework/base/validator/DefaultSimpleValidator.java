@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
  * bound to a known specific type of data, and result handlers that are bound to a known specific type of
  * result.<br>When any of its triggers is initiated, the simple validator will read all the data from all of its data
  * providers, check them all against all of its rules, and handles all the results using all of its result handlers.
- * <p/>
+ * <p>
  * Use {@link com.google.code.validationframework.base.validator.generalvalidator.GeneralValidator} or
  * {@link com.google.code.validationframework.base.validator.generalvalidator.dsl
  * .GeneralValidatorBuilder} instead.

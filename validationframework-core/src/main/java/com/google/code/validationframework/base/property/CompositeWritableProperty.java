@@ -33,7 +33,7 @@ import java.util.Collections;
 
 /**
  * {@link WritableProperty} gathering several other writable properties of the same type.
- * <p/>
+ * <p>
  * Whenever the value of this composite property is set, it will set the same value on all the sub-properties.
  *
  * @param <W> Type of data that can be set on the sub-properties.

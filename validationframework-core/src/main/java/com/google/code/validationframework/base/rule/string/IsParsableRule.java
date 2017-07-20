@@ -34,7 +34,7 @@ import java.text.ParseException;
 
 /**
  * Rule checking whether the input can be parsed using a specific format object.
- * <p/>
+ * <p>
  * Note that if not format object is specified, the input will be considered parsable.
  */
 public class IsParsableRule implements Rule<String, Boolean> {
@@ -53,7 +53,7 @@ public class IsParsableRule implements Rule<String, Boolean> {
 
     /**
      * Constructor specifying the format object to be used to check whether the input is parsable.
-     * <p/>
+     * <p>
      * The format project get be read and set using the format property.
      *
      * @param format Format to be used.

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ValidationFramework Authors
+ * Copyright (c) 2017, ValidationFramework Authors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -50,6 +50,8 @@ public class ChainedTransformer<I, O> implements Transformer<I, O> {
 
     /**
      * Constructor specifying the first transformer.
+     *
+     * @param transformer First transformer.
      */
     public ChainedTransformer(Transformer<I, O> transformer) {
         if (transformer != null) {
@@ -62,7 +64,6 @@ public class ChainedTransformer<I, O> implements Transformer<I, O> {
      *
      * @param transformer Transformer to be added.
      * @param <TO>        Type of output of the specified transformer.
-     *
      * @return This.
      */
     @SuppressWarnings("unchecked")
@@ -74,6 +75,8 @@ public class ChainedTransformer<I, O> implements Transformer<I, O> {
     }
 
     /**
+     * {@inheritDoc}
+     *
      * @see Transformer#transform(Object)
      */
     @SuppressWarnings("unchecked")

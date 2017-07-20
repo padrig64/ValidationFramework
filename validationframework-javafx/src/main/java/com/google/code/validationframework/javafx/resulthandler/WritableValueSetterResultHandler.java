@@ -30,7 +30,7 @@ import javafx.beans.value.WritableValue;
 
 /**
  * Result handler setting the result in a specified {@link WritableValue}.
- * <p/>
+ * <p>
  * This can be useful, for instance, to update a property with the (possibly transformed) result.
  *
  * @param <RHI>
@@ -49,7 +49,7 @@ public class WritableValueSetterResultHandler<RHI> implements ResultHandler<RHI>
 
     /**
      * Constructor specifying the writable value to be updated.
-     * <p/>
+     * <p>
      * By default, null will be set in the writable value in case of a null result handler input.
      *
      * @param writableValue Writable value to be updated with the result handler input.

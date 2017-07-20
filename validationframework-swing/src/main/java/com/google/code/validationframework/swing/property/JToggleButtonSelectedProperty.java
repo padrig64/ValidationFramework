@@ -34,12 +34,12 @@ import java.awt.event.ItemListener;
 
 /**
  * Readable/writable property representing the selected state of a {@link JToggleButton}.
- * <p/>
+ * <p>
  * This includes toggle buttons, radio buttons and checkboxes.
- * <p/>
+ * <p>
  * It is possible to control the selected state of the component by setting the value of this property or by calling the
  * {@link JToggleButton#setSelected(boolean)} method of that component.
- * <p/>
+ * <p>
  * Finally note that null values are not supported by this property.
  *
  * @see JToggleButton#isSelected()

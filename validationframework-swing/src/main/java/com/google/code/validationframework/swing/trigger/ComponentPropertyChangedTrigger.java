@@ -29,7 +29,7 @@ import java.awt.Component;
 
 /**
  * Trigger initiating the validation when one or several properties of a component change.
- * <p/>
+ * <p>
  * It is provided for convenience over the {@link BaseComponentPropertyChangedTrigger} to make it easier to find while
  * building the validators.
  *

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ValidationFramework Authors
+ * Copyright (c) 2017, ValidationFramework Authors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,9 +35,11 @@ import com.google.code.validationframework.api.property.SetValueChangeListener;
  * @param <W> Type of values that can be written to this set property.
  */
 public abstract class AbstractReadableWritableSetProperty<R, W> extends AbstractReadableSetProperty<R> implements
-        ReadableWritableSetProperty<R, W> {
+                                                                                                       ReadableWritableSetProperty<R, W> {
 
     /**
+     * {@inheritDoc}
+     *
      * @see AbstractReadableSetProperty#AbstractReadableSetProperty()
      */
     public AbstractReadableWritableSetProperty() {
@@ -45,6 +47,8 @@ public abstract class AbstractReadableWritableSetProperty<R, W> extends Abstract
     }
 
     /**
+     * {@inheritDoc}
+     *
      * @see AbstractReadableSetProperty#AbstractReadableSetProperty(SetValueChangeListener[])
      */
     public AbstractReadableWritableSetProperty(SetValueChangeListener<R>... listeners) {

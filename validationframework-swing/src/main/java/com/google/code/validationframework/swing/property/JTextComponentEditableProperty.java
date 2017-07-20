@@ -29,10 +29,10 @@ import javax.swing.text.JTextComponent;
 
 /**
  * Readable/writable property representing the editable state of a {@link JTextComponent}.
- * <p/>
+ * <p>
  * It is possible to control the editable state of the component by setting the value of this property or by calling the
  * {@link JTextComponent#setEditable(boolean)} method of that component.
- * <p/>
+ * <p>
  * Finally note that null values are not supported by this property.
  *
  * @see JTextComponent#isEditable()

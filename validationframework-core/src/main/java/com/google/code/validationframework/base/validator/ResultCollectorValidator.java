@@ -45,7 +45,7 @@ import java.util.Collection;
  * them all against all of its rules, and handles all the results using all of its result handlers.<br>The result
  * collector validator can be useful to aggregate the validation from a group of components (for instance, from
  * different tabs) to enable/disable some buttons accordingly.
- * <p/>
+ * <p>
  * Use {@link com.google.code.validationframework.base.validator.generalvalidator.GeneralValidator} or
  * {@link com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder} instead.
  *

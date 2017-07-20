@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ValidationFramework Authors
+ * Copyright (c) 2017, ValidationFramework Authors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,22 +32,16 @@ import com.google.code.validationframework.base.transform.CastTransformer;
 
 /**
  * Wrapper for result handlers that will transform the result to another type.
- * <p/>
+ * <p>
  * This can be useful, for instance, to adapt existing result handlers to be put in validators requiring another type of
  * result.
  *
  * @param <RHI>  Type of result to be transformed.
  * @param <TRHI> Type of result handled by the wrapped result handler.
- *
  * @see ResultHandler
  * @see Disposable
  */
 public class TransformedResultHandler<RHI, TRHI> implements ResultHandler<RHI>, Disposable {
-
-    /**
-     * Wrapped result handler whose input will be transformed.
-     */
-    private final ResultHandler<TRHI> wrappedResultHandler;
 
     /**
      * Transformer adapting the result before processing with the wrapped result handler.
@@ -55,13 +49,17 @@ public class TransformedResultHandler<RHI, TRHI> implements ResultHandler<RHI>, 
     final Transformer<RHI, TRHI> resultTransformer;
 
     /**
-     * Constructor specifying the wrapped result handler and the transformer to be used to adapt the result
-     * before processing with the wrapped result handler.
+     * Wrapped result handler whose input will be transformed.
+     */
+    private final ResultHandler<TRHI> wrappedResultHandler;
+
+    /**
+     * Constructor specifying the wrapped result handler and the transformer to be used to adapt the result before
+     * processing with the wrapped result handler.
      *
      * @param resultTransformer    Transformer adapting the result before processing with the wrapped result
-     *                             handler.<br>
-     *                             If null, the result will be cast to the wanted type. In case the result cannot be
-     *                             cast, null will be provided.
+     *                             handler.<br> If null, the result will be cast to the wanted type. In case the result
+     *                             cannot be cast, null will be provided.
      * @param wrappedResultHandler Wrapped result handler whose input will be transformed.
      */
     public TransformedResultHandler(Transformer<RHI, TRHI> resultTransformer,
@@ -75,12 +73,19 @@ public class TransformedResultHandler<RHI, TRHI> implements ResultHandler<RHI>, 
     }
 
     /**
-     * @deprecated Use {@link #TransformedResultHandler(Transformer, ResultHandler)} instead.<br>
-     * This method will be removed in a future release.
+     * Constructor specifying the wrapped result handler and the transformer to be used to adapt the result before
+     * processing with the wrapped result handler.
+     *
+     * @param wrappedResultHandler Wrapped result handler whose input will be transformed.
+     * @param resultTransformer    Transformer adapting the result before processing with the wrapped result
+     *                             handler.<br> If null, the result will be cast to the wanted type. In case the result
+     *                             cannot be cast, null will be provided.
+     * @deprecated Use {@link #TransformedResultHandler(Transformer, ResultHandler)} instead.<br> This method will be
+     * removed in a future release.
      */
     @Deprecated
-    public TransformedResultHandler(ResultHandler<TRHI> wrappedResultHandler, Transformer<RHI,
-            TRHI> resultTransformer) {
+    public TransformedResultHandler(ResultHandler<TRHI> wrappedResultHandler,
+                                    Transformer<RHI, TRHI> resultTransformer) {
         this.wrappedResultHandler = wrappedResultHandler;
         if (resultTransformer == null) {
             this.resultTransformer = new CastTransformer<RHI, TRHI>();
@@ -90,6 +95,8 @@ public class TransformedResultHandler<RHI, TRHI> implements ResultHandler<RHI>, 
     }
 
     /**
+     * {@inheritDoc}
+     *
      * @see ResultHandler#handleResult(Object)
      */
     @Override
@@ -100,6 +107,8 @@ public class TransformedResultHandler<RHI, TRHI> implements ResultHandler<RHI>, 
     }
 
     /**
+     * {@inheritDoc}
+     *
      * @see Disposable#dispose()
      */
     @Override

@@ -112,9 +112,9 @@ public class BaseComponentKeyStrokeTrigger<C extends Component> extends Abstract
 
     /**
      * Constructor specifying the text component to listen to and the virtual key codes to trigger the validation.
-     * <p/>
+     * <p>
      * If no virtual key code is provided, the trigger will initiate the validation on any key stroke.
-     * <p/>
+     * <p>
      * You may refer to the {@link KeyStroke} constants to see the available virtual key codes.
      *
      * @param source   Text component to listen to.
@@ -149,9 +149,9 @@ public class BaseComponentKeyStrokeTrigger<C extends Component> extends Abstract
 
     /**
      * Constructor specifying the text component to listen to and the key stroke to trigger the validation.
-     * <p/>
+     * <p>
      * If no key stroke is provided, the trigger will initiate the validation on any key stroke.
-     * <p/>
+     * <p>
      * You may use {@link KeyStroke} utility methods to build a {@link KeyStroke}.
      *
      * @param source     Text component to listen to.
@@ -191,7 +191,7 @@ public class BaseComponentKeyStrokeTrigger<C extends Component> extends Abstract
 
     /**
      * Adds a key stroke for which the validation will be triggered.
-     * <p/>
+     * <p>
      * You may use {@link KeyStroke} utility methods to build a {@link KeyStroke}.
      *
      * @param keyStroke Key stroke to be added to trigger the validation.
@@ -204,7 +204,7 @@ public class BaseComponentKeyStrokeTrigger<C extends Component> extends Abstract
 
     /**
      * Removes a key stroke for which the validation should no longer be triggered.
-     * <p/>
+     * <p>
      * If all key strokes are removed, the trigger will initiate the validation on any key stroke.
      *
      * @param keyStroke Key stroke to be removed.

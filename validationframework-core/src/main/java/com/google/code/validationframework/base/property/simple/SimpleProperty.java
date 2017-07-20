@@ -29,11 +29,11 @@ import com.google.code.validationframework.base.property.AbstractReadableWritabl
 
 /**
  * Simple implementation of a property that is both readable and writable.
- * <p/>
+ * <p>
  * Slaved properties will only be updated if the new value set on this property differs from the previous one.
- * <p/>
+ * <p>
  * Note that binding can be bi-directional. Infinite recursion will be prevented.
- * <p/>
+ * <p>
  * Finally note that this class is not thread-safe.
  *
  * @param <T> Type of data that can be read from and written to this property.

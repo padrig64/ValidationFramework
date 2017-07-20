@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ValidationFramework Authors
+ * Copyright (c) 2017, ValidationFramework Authors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,6 +33,8 @@ package com.google.code.validationframework.base.property.simple;
 public class SimpleObjectProperty extends SimpleProperty<Object> {
 
     /**
+     * {@inheritDoc}
+     *
      * @see SimpleProperty#SimpleProperty()
      */
     public SimpleObjectProperty() {
@@ -40,6 +42,8 @@ public class SimpleObjectProperty extends SimpleProperty<Object> {
     }
 
     /**
+     * {@inheritDoc}
+     *
      * @see SimpleProperty#SimpleProperty()
      */
     public SimpleObjectProperty(Object value) {

@@ -32,8 +32,11 @@ import com.google.code.validationframework.experimental.builder.context.simpleva
 import java.util.Collection;
 
 /**
- * Use {@link com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder} instead.
+ * @deprecated Use
+ * {@link com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder}
+ * instead.
  */
+@Deprecated
 public final class SimpleValidatorBuilder {
 
     /**
@@ -44,33 +47,57 @@ public final class SimpleValidatorBuilder {
     }
 
     /**
-     * Use {@link com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder}
+     * Adds the first trigger to the validator.
+     *
+     * @param trigger First trigger to be added.
+     * @return Next component to continue building the validator.
+     * @deprecated Use
+     * {@link com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder}
      * instead.
      */
+    @Deprecated
     public static DataProviderContext on(Trigger trigger) {
         return new TriggerContext().on(trigger);
     }
 
     /**
-     * Use {@link com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder}
+     * Adds the first triggers to the validator.
+     *
+     * @param triggers First triggers to be added.
+     * @return Next component to continue building the validator.
+     * @deprecated Use
+     * {@link com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder}
      * instead.
      */
+    @Deprecated
     public static DataProviderContext on(Trigger... triggers) {
         return new TriggerContext().on(triggers);
     }
 
     /**
-     * Use {@link com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder}
+     * Adds the first triggers to the validator.
+     *
+     * @param triggers First triggers to be added.
+     * @return Next component to continue building the validator.
+     * @deprecated Use
+     * {@link com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder}
      * instead.
      */
+    @Deprecated
     public static DataProviderContext on(Collection<Trigger> triggers) {
         return new TriggerContext().on(triggers);
     }
 
     /**
-     * Use {@link com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder}
+     * Instantiates a trigger of the specified class and adds it as the first trigger to the validator.
+     *
+     * @param triggerClass Class of the trigger to be instantiated and added.
+     * @return Next component to continue building the validator.
+     * @deprecated Use
+     * {@link com.google.code.validationframework.base.validator.generalvalidator.dsl.GeneralValidatorBuilder}
      * instead.
      */
+    @Deprecated
     public static DataProviderContext on(Class<? extends Trigger> triggerClass) {
         return new TriggerContext().on(triggerClass);
     }

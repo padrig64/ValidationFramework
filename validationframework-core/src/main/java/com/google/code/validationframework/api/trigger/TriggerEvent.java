@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ValidationFramework Authors
+ * Copyright (c) 2017, ValidationFramework Authors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,6 +42,8 @@ public class TriggerEvent extends EventObject {
     private static final long serialVersionUID = 1598246986663737227L;
 
     /**
+     * {@inheritDoc}
+     *
      * @see EventObject#EventObject(Object)
      */
     public TriggerEvent(final Object source) {

@@ -35,10 +35,10 @@ import com.google.code.validationframework.base.trigger.AbstractTrigger;
 
 /**
  * Result collector providing the result from one validator as validation input to another validator.
- * <p/>
+ * <p>
  * So this collector is meant to be registered as a result handler to one validator, and as a trigger and data provider
  * to one or several other validators.
- * <p/>
+ * <p>
  * This can be useful to aggregate the validation results from a group in independent fields, for instance to enable or
  * disable an Apply button on a dialog.
  *

@@ -30,13 +30,13 @@ import java.awt.Dimension;
 
 /**
  * Readable/writable property representing the maximum size of a {@link java.awt.Component}.
- * <p/>
+ * <p>
  * It is possible to control the maximum size of the component by setting the value of this property or by calling the
  * {@link Component#setMaximumSize(Dimension)} method of that component.
- * <p/>
+ * <p>
  * Note that changing the width or height attribute of the {@link Dimension} object directly will have no effect on this
  * property. It is therefore not advised to do so.
- * <p/>
+ * <p>
  * Finally, note that null values are supported by this property.
  *
  * @see Component#getMaximumSize()

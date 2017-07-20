@@ -29,7 +29,7 @@ import javax.swing.JFormattedTextField;
 
 /**
  * Readable/writable property representing the value of a {@link JFormattedTextField}.
- * <p/>
+ * <p>
  * It is possible to control the value of the component by setting the value of this property or by calling the
  * {@link JFormattedTextField#setValue(Object)} method of that component.
  *

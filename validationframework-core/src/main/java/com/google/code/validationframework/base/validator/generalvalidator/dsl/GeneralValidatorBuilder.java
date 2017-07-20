@@ -42,7 +42,7 @@ import java.util.List;
 /**
  * General validator builder that can be used to construct a {@link com.google.code.validationframework.base
  * .validator.generalvalidator.GeneralValidator} using a DSL.
- * <p/>
+ * <p>
  * Note that the {@link com.google.code.validationframework.base.validator.generalvalidator.GeneralValidator} will be
  * constructed and effective only after the addition of the first result handler.
  *

@@ -56,7 +56,7 @@ public class JComboBoxSelectedValueProvider<DPO> implements DataProvider<DPO> {
 
     /**
      * Constructor specifying the combobox to get the selected value from.
-     * <p/>
+     * <p>
      * By default, the combobox value will be cast to DPO.
      *
      * @param comboBox Combobox to get the selected value from.

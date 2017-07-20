@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ValidationFramework Authors
+ * Copyright (c) 2017, ValidationFramework Authors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@ import com.google.code.validationframework.api.trigger.TriggerEvent;
 
 /**
  * Trigger allowing the programmer to fire trigger events using a single method call.
- * <p/>
+ * <p>
  * This is for convenience purposes as it allows to trigger validation at convenient times without having to implement a
  * custom {@link com.google.code.validationframework.api.trigger.Trigger}. It can be used, for instance, to trigger an
  * initial validation when a dialog pops up, or when some other events occur in the system.
@@ -39,6 +39,8 @@ import com.google.code.validationframework.api.trigger.TriggerEvent;
 public class ManualTrigger extends AbstractTrigger {
 
     /**
+     * {@inheritDoc}
+     *
      * @deprecated Use {@link #trigger()} instead.<br>This method will be removed in future releases.
      */
     @Deprecated
@@ -57,8 +59,10 @@ public class ManualTrigger extends AbstractTrigger {
     }
 
     /**
+     * {@inheritDoc}
+     *
      * @deprecated Use {@link #trigger(TriggerEvent)} instead.<br>This method will be made protected again in future
-     *             releases.
+     * releases.
      */
     @Deprecated
     @Override
@@ -67,7 +71,8 @@ public class ManualTrigger extends AbstractTrigger {
     }
 
     /**
-     * Fires the specified trigger event.<br>This method, from the super class, has been made public for convenience.
+     * {@inheritDoc} Fires the specified trigger event.<br>This method, from the super class, has been made public for
+     * convenience.
      *
      * @see AbstractTrigger#fireTriggerEvent(TriggerEvent)
      * @see TriggerEvent

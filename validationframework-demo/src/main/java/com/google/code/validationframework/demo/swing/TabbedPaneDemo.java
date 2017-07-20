@@ -197,7 +197,7 @@ public class TabbedPaneDemo extends JFrame {
 
     /**
      * Sets up the tab-wise validation.
-     * <p/>
+     * <p>
      * A tab is considered valid only if all of its fields are valid.
      *
      * @param tabbedPane         Tabbed pane holding the tab on which the validation should be installed.
@@ -223,7 +223,7 @@ public class TabbedPaneDemo extends JFrame {
 
     /**
      * Sets up the tabbed-pane wise (global validation).
-     * <p/>
+     * <p>
      * The tabbed pane is considered valid only if all of its tabs are valid.
      *
      * @param tabbedPaneResultsProperty Results of the individual tabs inside the tabbed pane.

@@ -41,7 +41,7 @@ public final class ValueUtils {
 
     /**
      * Compares the two given values by taking null and NaN values into account.
-     * <p/>
+     * <p>
      * Two null values will be considered equal. Two NaN values (either Double or Float) will be considered equal.
      *
      * @param value1 First value.

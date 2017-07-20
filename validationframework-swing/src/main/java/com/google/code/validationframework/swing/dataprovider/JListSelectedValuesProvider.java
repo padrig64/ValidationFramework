@@ -60,7 +60,7 @@ public class JListSelectedValuesProvider<DPO> implements DataProvider<Collection
 
     /**
      * Constructor specifying the list to get the selected values from.
-     * <p/>
+     * <p>
      * By default, the list values will be cast to DPO.
      *
      * @param list List to get the selected values from.

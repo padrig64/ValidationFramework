@@ -38,28 +38,28 @@ public class AndBooleanAggregator implements Aggregator<Boolean, Boolean> {
 
     /**
      * Default boolean value to be used when transforming an empty or null collection.
-     * <p/>
+     * <p>
      * This value can be null.
      */
     public static final Boolean DEFAULT_EMPTY_COLLECTION_VALUE = true;
 
     /**
      * Default boolean value to be used when transforming a null value from the collection.
-     * <p/>
+     * <p>
      * This value can be null.
      */
     public static final Boolean DEFAULT_NULL_ELEMENT_VALUE = false;
 
     /**
      * Boolean value to be used when transforming an empty collection.
-     * <p/>
+     * <p>
      * This value can be null.
      */
     private final Boolean emptyCollectionValid;
 
     /**
      * Boolean value to be used when transforming a null value from the collection.
-     * <p/>
+     * <p>
      * If this value is set to null, then the element will be ignored from the aggregation.
      */
     private final Boolean nullElementValid;

@@ -36,7 +36,7 @@ import java.awt.event.FocusListener;
 
 /**
  * Base class for triggers on focus loss.
- * <p/>
+ * <p>
  * When this trigger is not longer required, do not forget to call {@link #dispose()}.
  *
  * @param <C> Type of component whose focus is to be tracked.
@@ -72,7 +72,7 @@ public class BaseJComponentFocusLostTrigger<C extends JComponent> extends Abstra
 
     /**
      * Constructor specified the component whose focus is to be tracked.
-     * <p/>
+     * <p>
      * A focus listener will be installed. So you may need to call {@link #dispose()} when trigger is no longer needed.
      *
      * @param source Component whose focus is to be tracked.

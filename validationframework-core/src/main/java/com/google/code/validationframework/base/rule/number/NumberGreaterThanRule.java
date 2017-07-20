@@ -29,7 +29,7 @@ import com.google.code.validationframework.api.rule.Rule;
 
 /**
  * Rule checking whether the data, being a number, is strictly greater than a specific value.
- * <p/>
+ * <p>
  * Note that if the data and the specified value are both null or both NaN, they will be considered equal. Everything is
  * considered bigger than null.
  *

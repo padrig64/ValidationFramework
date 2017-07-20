@@ -34,7 +34,7 @@ import javax.swing.event.ChangeListener;
 
 /**
  * Read-only property representing the pressed state of a button.
- * <p/>
+ * <p>
  * Note that this property is not writable because the pressed state is normally controller by user action. But it might
  * become writable in the future.
  *

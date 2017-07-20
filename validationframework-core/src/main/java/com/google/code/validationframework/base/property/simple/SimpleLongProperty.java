@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, ValidationFramework Authors
+ * Copyright (c) 2017, ValidationFramework Authors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,6 +40,8 @@ public class SimpleLongProperty extends SimpleProperty<Long> implements Serializ
     private static final long serialVersionUID = -6278888028263402208L;
 
     /**
+     * {@inheritDoc}
+     *
      * @see SimpleProperty#SimpleProperty()
      */
     public SimpleLongProperty() {
@@ -47,6 +49,8 @@ public class SimpleLongProperty extends SimpleProperty<Long> implements Serializ
     }
 
     /**
+     * {@inheritDoc}
+     *
      * @see SimpleProperty#SimpleProperty(Object)
      */
     public SimpleLongProperty(Long value) {

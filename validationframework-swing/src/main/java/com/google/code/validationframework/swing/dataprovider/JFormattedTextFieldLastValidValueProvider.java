@@ -55,7 +55,7 @@ public class JFormattedTextFieldLastValidValueProvider<DPO> implements DataProvi
 
     /**
      * Constructor specifying the formatted textfield to retrieve the last valid value from.
-     * <p/>
+     * <p>
      * By default, the formatted textfield will be cast to DPO.
      *
      * @param formattedTextField Formatted textfield to retrieve the last valid value from.

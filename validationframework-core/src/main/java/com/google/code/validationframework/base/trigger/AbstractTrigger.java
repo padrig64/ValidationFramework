@@ -37,7 +37,7 @@ import java.util.List;
 
 /**
  * Abstract implementation of a typical trigger.
- * <p/>
+ * <p>
  * It merely implements the methods to add and remove trigger listeners, and provides the method {@link
  * #fireTriggerEvent(TriggerEvent)} to fire a trigger event to these listeners. However, the call of this method is left
  * to the sub-classes.
@@ -61,7 +61,7 @@ public abstract class AbstractTrigger implements Trigger, Disposable {
 
     /**
      * Default constructor.
-     * <p/>
+     * <p>
      * By default, any exception occurring when the trigger events are fired will not be caught.
      *
      * @see RethrowUncheckedExceptionHandler

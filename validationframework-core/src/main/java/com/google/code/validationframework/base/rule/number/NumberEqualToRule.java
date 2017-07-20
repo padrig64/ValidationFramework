@@ -29,7 +29,7 @@ import com.google.code.validationframework.api.rule.Rule;
 
 /**
  * Rule checking whether the data, being a number, is equal to a specific value.
- * <p/>
+ * <p>
  * Note that if the data and the specified value are both null or both NaN, they will be considered equal.
  *
  * @param <RI> Type of number handled by this rule.<br>
