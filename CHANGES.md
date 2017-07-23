@@ -62,12 +62,11 @@ NegateBooleanPropertyWrapper class with wraps a ReadableProperty<Boolean>). Some
 the wrapped objects by default. So you may want to check whether it does not dispose too much (depending on your
 use-case). You may then call there `setDeepDispose()` method to reach the desired behavior.
 
-# Version 3.4.1 (to be released)
+# Version 3.4.1
 
 * Added a few property bindings in the experimental module until release 4.0.0
 * Updated a few dependency versions (see main POM file)
-* Deprecated the `SimpleValidatorBuilder` and `ResultCollectorValidatorBuilder` in favor of the
-`GeneralValidatorBuilder`
+* Deprecated the `SimpleValidatorBuilder` and `ResultCollectorValidatorBuilder` in favor of the `GeneralValidatorBuilder`
 * Updated javadoc to satisfy JDK 8 doclint
 
 # Version 3.4.0
