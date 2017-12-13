@@ -1,4 +1,4 @@
-[![GitHub version](https://badge.fury.io/gh/padrig64%2FValidationFramework.svg)](https://badge.fury.io/gh/padrig64%2FValidationFramework)
+[![GitHub version](http://github-release-version.herokuapp.com/github/padrig64/ValidationFramework/release.svg?style=flat)](https://github.com/padrig64/ValidationFramework/releases/latest)
 [![Build Status](https://travis-ci.org/padrig64/ValidationFramework.svg?branch=master)](https://travis-ci.org/padrig64/ValidationFramework)
 [![GitHub license](https://img.shields.io/badge/license-BSD-blue.svg)](https://raw.githubusercontent.com/padrig64/ValidationFramework/master/LICENSE.md)
 
