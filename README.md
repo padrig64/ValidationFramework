@@ -5,3 +5,5 @@
 Simple and flexible validation framework mainly (but not strictly) designed to validate user input and provide appropriate feedback.
 
 Please refer to the [WIKI](https://github.com/padrig64/ValidationFramework/wiki) for more information.
+
+Note that the upcoming release 4 will be based on the [PropertiesFramework](https://github.com/LeanFrameworks/PropertiesFramework).
