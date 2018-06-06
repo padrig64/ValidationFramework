@@ -42,6 +42,7 @@ import java.awt.event.MouseMotionListener;
  * <p/>
  * The row and column indices, that make the position of the hovered cell, are expressed in view coordinates.
  */
+@Deprecated
 public class JTableRolloverCellProperty extends AbstractReadableProperty<CellPosition> {
 
     /**

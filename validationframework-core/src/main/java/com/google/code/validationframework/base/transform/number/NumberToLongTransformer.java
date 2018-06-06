@@ -32,6 +32,7 @@ import com.google.code.validationframework.api.transform.Transformer;
  *
  * @see Number#longValue()
  */
+@Deprecated
 public class NumberToLongTransformer implements Transformer<Number, Long> {
 
     /**

@@ -32,6 +32,7 @@ import javax.swing.JTable;
 /**
  * Transformer converting table column model indices to view indices.
  */
+@Deprecated
 public class JTableColumnIndexToViewTransformer implements Transformer<Integer, Integer> {
 
     /**

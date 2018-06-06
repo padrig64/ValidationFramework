@@ -34,6 +34,7 @@ import java.util.Map;
  *
  * @param <I> Type of map to get the size from.
  */
+@Deprecated
 public class GetMapSizeTransformer<I extends Map<?, ?>> implements Transformer<I, Integer> {
 
     /**

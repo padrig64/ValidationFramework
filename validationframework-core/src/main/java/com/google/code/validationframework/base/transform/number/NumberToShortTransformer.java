@@ -32,6 +32,7 @@ import com.google.code.validationframework.api.transform.Transformer;
  *
  * @see Number#shortValue()
  */
+@Deprecated
 public class NumberToShortTransformer implements Transformer<Number, Short> {
 
     /**

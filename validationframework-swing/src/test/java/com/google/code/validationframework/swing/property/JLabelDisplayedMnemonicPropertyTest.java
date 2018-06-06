@@ -41,6 +41,7 @@ import static org.mockito.Mockito.verify;
 /**
  * @see JLabelDisplayedMnemonicProperty
  */
+@Deprecated
 public class JLabelDisplayedMnemonicPropertyTest {
 
     private static final Integer MNEMONIC1 = KeyEvent.VK_C;
@@ -50,7 +51,7 @@ public class JLabelDisplayedMnemonicPropertyTest {
     @Test
     public void testInitialValueFromLabel() {
         JLabel label = new JLabel();
-        ReadableWritableProperty<Integer, Integer> mnemonicProperty = new JLabelDisplayedMnemonicProperty(label);
+        ReadableWritableProperty<Integer> mnemonicProperty = new JLabelDisplayedMnemonicProperty(label);
 
         assertEquals(KeyEvent.VK_UNDEFINED, label.getDisplayedMnemonic());
         assertEquals(Integer.valueOf(KeyEvent.VK_UNDEFINED), mnemonicProperty.getValue());
@@ -61,7 +62,7 @@ public class JLabelDisplayedMnemonicPropertyTest {
     public void testNullFromProperty() {
         JLabel label = new JLabel();
         label.setDisplayedMnemonic(MNEMONIC1);
-        ReadableWritableProperty<Integer, Integer> mnemonicProperty = new JLabelDisplayedMnemonicProperty(label);
+        ReadableWritableProperty<Integer> mnemonicProperty = new JLabelDisplayedMnemonicProperty(label);
         ValueChangeListener<Integer> listenerMock = (ValueChangeListener<Integer>) mock(ValueChangeListener.class);
         mnemonicProperty.addValueChangeListener(listenerMock);
 
@@ -79,7 +80,7 @@ public class JLabelDisplayedMnemonicPropertyTest {
     public void testNonNullFromProperty() {
         JLabel label = new JLabel();
         label.setDisplayedMnemonic(MNEMONIC1);
-        ReadableWritableProperty<Integer, Integer> mnemonicProperty = new JLabelDisplayedMnemonicProperty(label);
+        ReadableWritableProperty<Integer> mnemonicProperty = new JLabelDisplayedMnemonicProperty(label);
         ValueChangeListener<Integer> listenerMock = (ValueChangeListener<Integer>) mock(ValueChangeListener.class);
         mnemonicProperty.addValueChangeListener(listenerMock);
 
@@ -97,7 +98,7 @@ public class JLabelDisplayedMnemonicPropertyTest {
     public void testNoDisplayedMnemonicFromComponent() {
         JLabel label = new JLabel();
         label.setDisplayedMnemonic(MNEMONIC1);
-        ReadableWritableProperty<Integer, Integer> mnemonicProperty = new JLabelDisplayedMnemonicProperty(label);
+        ReadableWritableProperty<Integer> mnemonicProperty = new JLabelDisplayedMnemonicProperty(label);
         ValueChangeListener<Integer> listenerMock = (ValueChangeListener<Integer>) mock(ValueChangeListener.class);
         mnemonicProperty.addValueChangeListener(listenerMock);
 
@@ -115,7 +116,7 @@ public class JLabelDisplayedMnemonicPropertyTest {
     public void testNonNullFromComponent() {
         JLabel label = new JLabel();
         label.setDisplayedMnemonic(MNEMONIC1);
-        ReadableWritableProperty<Integer, Integer> mnemonicProperty = new JLabelDisplayedMnemonicProperty(label);
+        ReadableWritableProperty<Integer> mnemonicProperty = new JLabelDisplayedMnemonicProperty(label);
         ValueChangeListener<Integer> listenerMock = (ValueChangeListener<Integer>) mock(ValueChangeListener.class);
         mnemonicProperty.addValueChangeListener(listenerMock);
 

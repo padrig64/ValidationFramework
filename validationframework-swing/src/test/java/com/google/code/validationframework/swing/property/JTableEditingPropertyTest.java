@@ -44,6 +44,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 /**
  * @see JTableEditingProperty
  */
+@Deprecated
 public class JTableEditingPropertyTest {
 
     private JTable table;

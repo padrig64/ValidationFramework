@@ -35,6 +35,7 @@ import java.util.Map;
  *
  * @param <I> Type of map to get the values from.
  */
+@Deprecated
 public class GetMapValuesTransformer<I extends Map<?, V>, V> implements Transformer<I, Collection<V>> {
 
     /**

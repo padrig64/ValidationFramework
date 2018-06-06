@@ -38,6 +38,7 @@ import java.util.Collection;
  * @param <I> Type of input of the first transformer of the chain.
  * @param <O> Type of output of the last transformer of the chain.
  */
+@Deprecated
 public class ChainedTransformer<I, O> implements Transformer<I, O>, DeepDisposable {
 
     /**

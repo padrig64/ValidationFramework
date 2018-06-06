@@ -43,6 +43,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 /**
  * @see JTableRowCountProperty
  */
+@Deprecated
 public class JTableRowCountPropertyTest {
 
     private DefaultTableModel tableModel;

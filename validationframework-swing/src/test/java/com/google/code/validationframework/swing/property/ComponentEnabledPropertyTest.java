@@ -42,13 +42,14 @@ import static org.mockito.Mockito.verify;
 /**
  * @see ComponentEnabledProperty
  */
+@Deprecated
 public class ComponentEnabledPropertyTest {
 
     @SuppressWarnings("unchecked")
     @Test
     public void testNonNullFromProperty() {
         Component component = new JLabel();
-        ReadableWritableProperty<Boolean, Boolean> property = new ComponentEnabledProperty(component);
+        ReadableWritableProperty<Boolean> property = new ComponentEnabledProperty(component);
         ValueChangeListener<Boolean> listenerMock = (ValueChangeListener<Boolean>) mock(ValueChangeListener.class);
         property.addValueChangeListener(listenerMock);
 
@@ -66,7 +67,7 @@ public class ComponentEnabledPropertyTest {
     @Test
     public void testNonNullFromComponent() {
         Component component = new JLabel();
-        ReadableWritableProperty<Boolean, Boolean> property = new ComponentEnabledProperty(component);
+        ReadableWritableProperty<Boolean> property = new ComponentEnabledProperty(component);
         ValueChangeListener<Boolean> listenerMock = (ValueChangeListener<Boolean>) mock(ValueChangeListener.class);
         property.addValueChangeListener(listenerMock);
 

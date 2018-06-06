@@ -34,6 +34,7 @@ import java.awt.Font;
  *
  * @see SimpleProperty
  */
+@Deprecated
 public class SimpleFontProperty extends SimpleProperty<Font> {
 
     /**

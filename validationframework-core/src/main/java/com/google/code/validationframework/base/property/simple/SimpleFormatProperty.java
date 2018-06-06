@@ -33,6 +33,7 @@ import java.text.Format;
  *
  * @see SimpleProperty
  */
+@Deprecated
 public class SimpleFormatProperty extends SimpleProperty<Format> implements Serializable {
 
     /**

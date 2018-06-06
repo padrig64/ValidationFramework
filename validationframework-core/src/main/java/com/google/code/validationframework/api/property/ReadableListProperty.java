@@ -35,6 +35,7 @@ import java.util.List;
  *
  * @param <R> Type of values in this list property.
  */
+@Deprecated
 public interface ReadableListProperty<R> extends Iterable<R> {
 
     /**

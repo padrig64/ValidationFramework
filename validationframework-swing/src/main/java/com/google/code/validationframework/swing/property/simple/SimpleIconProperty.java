@@ -34,6 +34,7 @@ import javax.swing.Icon;
  *
  * @see SimpleProperty
  */
+@Deprecated
 public class SimpleIconProperty extends SimpleProperty<Icon> {
 
     /**

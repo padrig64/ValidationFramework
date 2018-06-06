@@ -34,6 +34,7 @@ import com.google.code.validationframework.base.property.AbstractReadablePropert
 /**
  * Abstract implementation of a wrapper for a readable property.
  */
+@Deprecated
 public abstract class AbstractReadablePropertyWrapper<R> extends AbstractReadableProperty<R> implements DeepDisposable {
 
     /**

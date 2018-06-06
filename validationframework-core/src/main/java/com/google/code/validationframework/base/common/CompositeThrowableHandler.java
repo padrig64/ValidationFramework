@@ -38,6 +38,7 @@ import java.util.List;
  *
  * @param <T> Type of throwable that can be handled by all handlers.
  */
+@Deprecated
 public class CompositeThrowableHandler<T extends Throwable> implements ThrowableHandler<T>, DeepDisposable {
 
     /**

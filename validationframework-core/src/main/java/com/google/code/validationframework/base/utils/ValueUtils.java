@@ -30,6 +30,7 @@ import java.util.Comparator;
 /**
  * Utility class dealing with various objects and values.
  */
+@Deprecated
 public final class ValueUtils {
 
     /**

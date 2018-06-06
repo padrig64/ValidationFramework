@@ -27,4 +27,5 @@
  * This package contains the implementation of simple properties that are both readable and writable, without
  * transforming data.
  */
+@Deprecated
 package com.google.code.validationframework.base.property.simple;

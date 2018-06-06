@@ -43,6 +43,7 @@ import java.awt.Dimension;
  * @see Component#setMaximumSize(Dimension)
  * @see Component#isMaximumSizeSet()
  */
+@Deprecated
 public class ComponentMaximumSizeProperty extends AbstractComponentProperty<Component, Dimension> {
 
     /**

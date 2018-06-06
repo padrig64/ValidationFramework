@@ -45,6 +45,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 /**
  * @see JListSelectedItemCountProperty
  */
+@Deprecated
 public class JListSelectedItemCountPropertyTest {
 
     private JList list;

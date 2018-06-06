@@ -40,6 +40,7 @@ import java.util.Collections;
  *
  * @param <W> Type of data that can be set on the sub-properties.
  */
+// TODO Migrate DeepDispose implementation to PropertiesFramework
 public class CompositeWritableProperty<W> implements WritableProperty<W>, DeepDisposable {
 
     /**

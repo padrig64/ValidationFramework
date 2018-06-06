@@ -41,6 +41,7 @@ import java.util.ListIterator;
  *
  * @param <T> Type of values handled by this list property and the proxied list.
  */
+@Deprecated
 public class SimpleListProperty<T> extends AbstractReadableWritableListProperty<T> implements List<T> {
 
     /**

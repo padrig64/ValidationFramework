@@ -32,6 +32,7 @@ import java.io.Serializable;
  *
  * @see SimpleProperty
  */
+@Deprecated
 public class SimpleFloatProperty extends SimpleProperty<Float> implements Serializable {
 
     /**

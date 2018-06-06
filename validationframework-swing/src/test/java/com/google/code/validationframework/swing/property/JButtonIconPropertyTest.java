@@ -41,6 +41,7 @@ import static org.mockito.Mockito.verify;
 /**
  * @see JButtonIconProperty
  */
+@Deprecated
 public class JButtonIconPropertyTest {
 
     private static final Icon ICON1 = IconUtils.loadImageIcon("/images/info.png", JButtonIconPropertyTest.class);
@@ -51,7 +52,7 @@ public class JButtonIconPropertyTest {
     @Test
     public void testNullFromProperty() {
         JButton button = new JButton(ICON1);
-        ReadableWritableProperty<Icon, Icon> iconProperty = new JButtonIconProperty(button);
+        ReadableWritableProperty<Icon> iconProperty = new JButtonIconProperty(button);
         ValueChangeListener<Icon> listenerMock = (ValueChangeListener<Icon>) mock(ValueChangeListener.class);
         iconProperty.addValueChangeListener(listenerMock);
 
@@ -68,7 +69,7 @@ public class JButtonIconPropertyTest {
     @Test
     public void testNonNullFromProperty() {
         JButton button = new JButton(ICON1);
-        ReadableWritableProperty<Icon, Icon> iconProperty = new JButtonIconProperty(button);
+        ReadableWritableProperty<Icon> iconProperty = new JButtonIconProperty(button);
         ValueChangeListener<Icon> listenerMock = (ValueChangeListener<Icon>) mock(ValueChangeListener.class);
         iconProperty.addValueChangeListener(listenerMock);
 
@@ -85,7 +86,7 @@ public class JButtonIconPropertyTest {
     @Test
     public void testNullFromComponent() {
         JButton button = new JButton(ICON1);
-        ReadableWritableProperty<Icon, Icon> iconProperty = new JButtonIconProperty(button);
+        ReadableWritableProperty<Icon> iconProperty = new JButtonIconProperty(button);
         ValueChangeListener<Icon> listenerMock = (ValueChangeListener<Icon>) mock(ValueChangeListener.class);
         iconProperty.addValueChangeListener(listenerMock);
 
@@ -102,7 +103,7 @@ public class JButtonIconPropertyTest {
     @Test
     public void testNonNullFromComponent() {
         JButton button = new JButton(ICON1);
-        ReadableWritableProperty<Icon, Icon> iconProperty = new JButtonIconProperty(button);
+        ReadableWritableProperty<Icon> iconProperty = new JButtonIconProperty(button);
         ValueChangeListener<Icon> listenerMock = (ValueChangeListener<Icon>) mock(ValueChangeListener.class);
         iconProperty.addValueChangeListener(listenerMock);
 

@@ -37,6 +37,7 @@ import java.beans.PropertyChangeListener;
 /**
  * Read-only property representing the number of selected rows in a {@link JTable}.
  */
+@Deprecated
 public class JTableSelectedRowCountProperty extends AbstractReadableProperty<Integer> {
 
     /**

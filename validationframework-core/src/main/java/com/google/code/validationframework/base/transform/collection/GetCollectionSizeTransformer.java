@@ -32,6 +32,7 @@ import java.util.Collection;
 /**
  * Transformer getting a collection as input and returning its size as output.
  */
+@Deprecated
 public class GetCollectionSizeTransformer implements Transformer<Collection<?>, Integer> {
 
     /**

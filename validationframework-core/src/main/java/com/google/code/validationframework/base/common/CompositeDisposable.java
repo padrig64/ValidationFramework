@@ -41,6 +41,7 @@ import java.util.Set;
  * <p/>
  * Finally, note that the order of disposal is not specified.
  */
+@Deprecated
 public class CompositeDisposable implements DeepDisposable {
 
     /**

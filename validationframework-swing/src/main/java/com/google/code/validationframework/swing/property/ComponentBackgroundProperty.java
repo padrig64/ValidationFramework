@@ -40,6 +40,7 @@ import java.awt.Component;
  * @see Component#setBackground(Color)
  * @see Component#isBackgroundSet()
  */
+@Deprecated
 public class ComponentBackgroundProperty extends AbstractComponentProperty<Component, Color> {
 
     /**

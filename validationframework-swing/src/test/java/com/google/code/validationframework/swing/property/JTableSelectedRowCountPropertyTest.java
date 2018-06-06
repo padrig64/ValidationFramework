@@ -45,6 +45,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 /**
  * @see JTableSelectedRowCountProperty
  */
+@Deprecated
 public class JTableSelectedRowCountPropertyTest {
 
     private JTable table;

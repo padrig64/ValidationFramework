@@ -33,6 +33,7 @@ import javax.swing.RowSorter;
 /**
  * Transformer converting table row model indices to view indices.
  */
+@Deprecated
 public class JTableRowIndexToViewTransformer implements Transformer<Integer, Integer> {
 
     /**

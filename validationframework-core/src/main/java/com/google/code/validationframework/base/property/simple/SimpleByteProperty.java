@@ -32,6 +32,7 @@ import java.io.Serializable;
  *
  * @see SimpleProperty
  */
+@Deprecated
 public class SimpleByteProperty extends SimpleProperty<Byte> implements Serializable {
 
     /**

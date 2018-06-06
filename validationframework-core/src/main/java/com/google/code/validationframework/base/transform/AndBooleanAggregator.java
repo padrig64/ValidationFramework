@@ -34,6 +34,7 @@ import java.util.Collection;
  *
  * @see Aggregator
  */
+@Deprecated
 public class AndBooleanAggregator implements Aggregator<Boolean, Boolean> {
 
     /**

@@ -32,6 +32,7 @@ import javax.swing.JButton;
  *
  * @see ButtonPressedProperty
  */
+@Deprecated
 public class JButtonPressedProperty extends ButtonPressedProperty {
 
     /**

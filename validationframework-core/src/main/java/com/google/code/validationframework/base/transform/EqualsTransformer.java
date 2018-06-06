@@ -35,6 +35,7 @@ import com.google.code.validationframework.base.utils.ValueUtils;
  *
  * @see NotEqualsTransformer
  */
+@Deprecated
 public class EqualsTransformer<T> implements Transformer<T, Boolean> {
 
     /**

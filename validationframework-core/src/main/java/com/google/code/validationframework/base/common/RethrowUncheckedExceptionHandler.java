@@ -30,6 +30,7 @@ package com.google.code.validationframework.base.common;
  *
  * @see UncheckedExceptionHandler
  */
+@Deprecated
 public class RethrowUncheckedExceptionHandler implements ThrowableHandler<Throwable>, UncheckedExceptionHandler {
 
     /**

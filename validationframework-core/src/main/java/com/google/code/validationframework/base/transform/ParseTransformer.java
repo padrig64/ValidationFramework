@@ -45,6 +45,7 @@ import java.text.ParsePosition;
  * @param <O> Type of parsed object.
  * @see ParseTransformer
  */
+@Deprecated
 public class ParseTransformer<O> implements Transformer<String, O> {
 
     /**

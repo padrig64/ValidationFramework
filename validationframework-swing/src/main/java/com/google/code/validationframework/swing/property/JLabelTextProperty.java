@@ -38,6 +38,7 @@ import javax.swing.JLabel;
  * @see JLabel#getText()
  * @see JLabel#setText(String)
  */
+@Deprecated
 public class JLabelTextProperty extends AbstractComponentProperty<JLabel, String> {
 
     /**

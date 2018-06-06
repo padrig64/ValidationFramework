@@ -35,6 +35,7 @@ import java.util.Set;
  *
  * @param <R> Type of values in this set property.
  */
+@Deprecated
 public interface ReadableSetProperty<R> extends Iterable<R> {
 
     /**

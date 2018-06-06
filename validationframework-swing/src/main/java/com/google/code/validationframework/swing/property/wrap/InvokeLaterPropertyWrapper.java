@@ -39,6 +39,7 @@ import javax.swing.SwingUtilities;
  *
  * @param <R> Type of data that can be read from this property and the wrapped property.
  */
+@Deprecated
 public class InvokeLaterPropertyWrapper<R> extends AbstractReadablePropertyWrapper<R> {
 
     /**
@@ -76,7 +77,7 @@ public class InvokeLaterPropertyWrapper<R> extends AbstractReadablePropertyWrapp
      * @see AbstractReadablePropertyWrapper#wrappedPropertyValueChanged(ReadableProperty, Object, Object)
      */
     @Override
-    protected void wrappedPropertyValueChanged(ReadableProperty<R> property, R oldValue, final R newValue) {
+    protected void wrappedPropertyValueChanged(ReadableProperty<? extends R> property, R oldValue, final R newValue) {
         assert SwingUtilities.isEventDispatchThread();
         SwingUtilities.invokeLater(new Runnable() {
             @Override

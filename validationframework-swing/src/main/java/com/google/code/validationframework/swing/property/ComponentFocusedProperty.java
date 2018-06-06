@@ -42,6 +42,7 @@ import java.awt.event.FocusListener;
  *
  * @see Component#isFocusOwner()
  */
+@Deprecated
 public class ComponentFocusedProperty extends AbstractReadableProperty<Boolean> {
 
     /**

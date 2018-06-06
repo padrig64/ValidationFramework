@@ -32,6 +32,7 @@ import java.io.Serializable;
  *
  * @see SimpleProperty
  */
+@Deprecated
 public class SimpleCharacterProperty extends SimpleProperty<Character> implements Serializable {
 
     /**

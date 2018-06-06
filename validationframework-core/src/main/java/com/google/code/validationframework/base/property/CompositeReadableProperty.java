@@ -46,6 +46,7 @@ import java.util.List;
  *
  * @param <R> Type of data that can be read from the sub-properties.
  */
+// TODO Migrate DeepDispose implementation to PropertiesFramework
 public class CompositeReadableProperty<R> extends AbstractReadableProperty<Collection<R>> implements DeepDisposable {
 
     /**

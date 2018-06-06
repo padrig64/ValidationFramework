@@ -33,6 +33,7 @@ import com.google.code.validationframework.api.property.SetValueChangeListener;
  *
  * @param <T> Type of values that can be read from and written to this set property.
  */
+@Deprecated
 public abstract class AbstractReadableWritableSetProperty<T> extends AbstractReadableSetProperty<T>
         implements ReadableWritableSetProperty<T> {
 

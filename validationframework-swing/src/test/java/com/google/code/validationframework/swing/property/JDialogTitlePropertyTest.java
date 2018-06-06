@@ -40,6 +40,7 @@ import static org.mockito.Mockito.verify;
 /**
  * @see JDialogTitleProperty
  */
+@Deprecated
 public class JDialogTitlePropertyTest {
 
     private static final String TITLE1 = "First Title";
@@ -50,7 +51,7 @@ public class JDialogTitlePropertyTest {
     @Test
     public void testNullFromProperty() {
         JDialog dialog = new JDialog((JDialog) null, TITLE1);
-        ReadableWritableProperty<String, String> titleProperty = new JDialogTitleProperty(dialog);
+        ReadableWritableProperty<String> titleProperty = new JDialogTitleProperty(dialog);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
         titleProperty.addValueChangeListener(listenerMock);
 
@@ -67,7 +68,7 @@ public class JDialogTitlePropertyTest {
     @Test
     public void testNonNullFromProperty() {
         JDialog dialog = new JDialog((JDialog) null, TITLE1);
-        ReadableWritableProperty<String, String> titleProperty = new JDialogTitleProperty(dialog);
+        ReadableWritableProperty<String> titleProperty = new JDialogTitleProperty(dialog);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
         titleProperty.addValueChangeListener(listenerMock);
 
@@ -84,7 +85,7 @@ public class JDialogTitlePropertyTest {
     @Test
     public void testNullFromComponent() {
         JDialog dialog = new JDialog((JDialog) null, TITLE1);
-        ReadableWritableProperty<String, String> titleProperty = new JDialogTitleProperty(dialog);
+        ReadableWritableProperty<String> titleProperty = new JDialogTitleProperty(dialog);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
         titleProperty.addValueChangeListener(listenerMock);
 
@@ -101,7 +102,7 @@ public class JDialogTitlePropertyTest {
     @Test
     public void testNonNullFromComponent() {
         JDialog dialog = new JDialog((JDialog) null, TITLE1);
-        ReadableWritableProperty<String, String> titleProperty = new JDialogTitleProperty(dialog);
+        ReadableWritableProperty<String> titleProperty = new JDialogTitleProperty(dialog);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
         titleProperty.addValueChangeListener(listenerMock);
 

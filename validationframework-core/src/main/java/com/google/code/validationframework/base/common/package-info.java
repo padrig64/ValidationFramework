@@ -26,4 +26,5 @@
 /**
  * This package contains common base classes and interfaces that can be used all over the ValidationFramework.
  */
+@Deprecated
 package com.google.code.validationframework.base.common;

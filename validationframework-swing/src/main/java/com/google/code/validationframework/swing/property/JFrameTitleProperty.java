@@ -25,7 +25,7 @@
 
 package com.google.code.validationframework.swing.property;
 
-import javax.swing.*;
+import javax.swing.JFrame;
 
 /**
  * Readable/writable property representing the title bean property of a {@link JFrame}.
@@ -39,6 +39,7 @@ import javax.swing.*;
  * @see JFrame#getTitle()
  * @see JFrame#setTitle(String)
  */
+@Deprecated
 public class JFrameTitleProperty extends AbstractComponentProperty<JFrame, String> {
 
     /**

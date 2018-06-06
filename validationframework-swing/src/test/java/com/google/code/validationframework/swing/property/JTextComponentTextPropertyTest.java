@@ -44,13 +44,14 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 /**
  * @see JTextComponentTextProperty
  */
+@Deprecated
 public class JTextComponentTextPropertyTest {
 
     @SuppressWarnings("unchecked")
     @Test
     public void testNonNullFromPropertyWithoutInitialText() throws BadLocationException {
         JTextComponent component = new JTextField();
-        ReadableWritableProperty<String, String> property = new JTextComponentTextProperty(component);
+        ReadableWritableProperty<String> property = new JTextComponentTextProperty(component);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
         property.addValueChangeListener(listenerMock);
 
@@ -69,7 +70,7 @@ public class JTextComponentTextPropertyTest {
     @Test
     public void testNonNullFromComponentWithoutInitialText() throws BadLocationException {
         JTextComponent component = new JTextField();
-        ReadableWritableProperty<String, String> property = new JTextComponentTextProperty(component);
+        ReadableWritableProperty<String> property = new JTextComponentTextProperty(component);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
         property.addValueChangeListener(listenerMock);
 
@@ -88,7 +89,7 @@ public class JTextComponentTextPropertyTest {
     @Test
     public void testNonNullFromPropertyWithInitialText() throws BadLocationException {
         JTextComponent component = new JTextField("initial text");
-        ReadableWritableProperty<String, String> property = new JTextComponentTextProperty(component);
+        ReadableWritableProperty<String> property = new JTextComponentTextProperty(component);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
         property.addValueChangeListener(listenerMock);
 
@@ -107,7 +108,7 @@ public class JTextComponentTextPropertyTest {
     @Test
     public void testNonNullFromComponentWithInitialText() throws BadLocationException {
         JTextComponent component = new JTextField("initial text");
-        ReadableWritableProperty<String, String> property = new JTextComponentTextProperty(component);
+        ReadableWritableProperty<String> property = new JTextComponentTextProperty(component);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
         property.addValueChangeListener(listenerMock);
 

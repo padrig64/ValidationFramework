@@ -40,13 +40,14 @@ import static org.mockito.Mockito.verify;
 /**
  * @see JLabelTextProperty
  */
+@Deprecated
 public class JLabelTextPropertyTest {
 
     @SuppressWarnings("unchecked")
     @Test
     public void testNullFromProperty() {
         JLabel label = new JLabel("Text");
-        ReadableWritableProperty<String, String> textProperty = new JLabelTextProperty(label);
+        ReadableWritableProperty<String> textProperty = new JLabelTextProperty(label);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
         textProperty.addValueChangeListener(listenerMock);
 
@@ -63,7 +64,7 @@ public class JLabelTextPropertyTest {
     @Test
     public void testNonNullFromProperty() {
         JLabel label = new JLabel("Text");
-        ReadableWritableProperty<String, String> textProperty = new JLabelTextProperty(label);
+        ReadableWritableProperty<String> textProperty = new JLabelTextProperty(label);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
         textProperty.addValueChangeListener(listenerMock);
 
@@ -80,7 +81,7 @@ public class JLabelTextPropertyTest {
     @Test
     public void testNullFromComponent() {
         JLabel label = new JLabel("Text");
-        ReadableWritableProperty<String, String> textProperty = new JLabelTextProperty(label);
+        ReadableWritableProperty<String> textProperty = new JLabelTextProperty(label);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
         textProperty.addValueChangeListener(listenerMock);
 
@@ -97,7 +98,7 @@ public class JLabelTextPropertyTest {
     @Test
     public void testNonNullFromComponent() {
         JLabel label = new JLabel("Text");
-        ReadableWritableProperty<String, String> textProperty = new JLabelTextProperty(label);
+        ReadableWritableProperty<String> textProperty = new JLabelTextProperty(label);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
         textProperty.addValueChangeListener(listenerMock);
 

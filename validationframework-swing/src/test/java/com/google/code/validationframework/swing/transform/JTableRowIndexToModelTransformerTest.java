@@ -37,6 +37,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * @see JTableRowIndexToModelTransformer
  */
+@Deprecated
 public class JTableRowIndexToModelTransformerTest {
 
     private Transformer<Integer, Integer> transformer;

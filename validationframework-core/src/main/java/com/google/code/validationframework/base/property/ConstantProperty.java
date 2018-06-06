@@ -14,6 +14,7 @@ import com.google.code.validationframework.api.property.ValueChangeListener;
  *
  * @param <R> Type of data that can be read from this property.
  */
+@Deprecated
 public class ConstantProperty<R> implements ReadableProperty<R> {
 
     /**

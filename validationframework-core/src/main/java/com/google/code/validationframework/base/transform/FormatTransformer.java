@@ -40,6 +40,7 @@ import java.text.Format;
  *
  * @see ParseTransformer
  */
+@Deprecated
 public class FormatTransformer<T> implements Transformer<T, String> {
 
     /**

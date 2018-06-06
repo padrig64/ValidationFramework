@@ -32,6 +32,7 @@ import java.io.Serializable;
  *
  * @see SimpleProperty
  */
+@Deprecated
 public class SimpleBooleanProperty extends SimpleProperty<Boolean> implements Serializable {
 
     /**

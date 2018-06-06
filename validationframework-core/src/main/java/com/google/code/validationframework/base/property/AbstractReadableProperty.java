@@ -53,6 +53,7 @@ import java.util.List;
  *
  * @param <R> Type of data that can be read from this property.
  */
+@Deprecated
 public abstract class AbstractReadableProperty<R> implements ReadableProperty<R>, Disposable {
 
     /**

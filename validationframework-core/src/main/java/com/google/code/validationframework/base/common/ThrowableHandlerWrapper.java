@@ -30,6 +30,7 @@ package com.google.code.validationframework.base.common;
  * <p/>
  * All unchecked exceptions will be forwarded to the wrapped {@link UncheckedExceptionHandler}.
  */
+@Deprecated
 public class ThrowableHandlerWrapper implements ThrowableHandler<Throwable> {
 
     /**

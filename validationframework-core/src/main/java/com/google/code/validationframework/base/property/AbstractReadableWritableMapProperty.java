@@ -34,6 +34,7 @@ import com.google.code.validationframework.api.property.ReadableWritableMapPrope
  * @param <K> Type of keys maintained by this map property.
  * @param <V> Type of mapped values that can be read from and written to this map property.
  */
+@Deprecated
 public abstract class AbstractReadableWritableMapProperty<K, V> extends AbstractReadableMapProperty<K, V>
         implements ReadableWritableMapProperty<K, V> {
 

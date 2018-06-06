@@ -45,7 +45,7 @@ import java.awt.event.ItemListener;
  * @see JToggleButton#isSelected()
  * @see JToggleButton#setSelected(boolean)
  */
-public class JToggleButtonSelectedProperty extends AbstractReadableWritableProperty<Boolean, Boolean> {
+public class JToggleButtonSelectedProperty extends AbstractReadableWritableProperty<Boolean> {
 
     /**
      * Selected index tracker.

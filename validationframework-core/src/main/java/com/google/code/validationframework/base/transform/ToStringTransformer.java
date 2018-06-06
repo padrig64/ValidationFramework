@@ -33,6 +33,7 @@ import com.google.code.validationframework.api.transform.Transformer;
  * @param <I> Type of input to be transformed.<br>
  *            It is needed only to avoid compilation warning when using the validator builders.
  */
+@Deprecated
 public class ToStringTransformer<I> implements Transformer<I, String> {
 
     /**

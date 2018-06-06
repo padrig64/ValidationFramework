@@ -26,4 +26,5 @@
 /**
  * This package contains the base implementation of property binders and the resulting bonds.
  */
+@Deprecated
 package com.google.code.validationframework.base.binding;

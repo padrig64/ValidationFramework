@@ -45,6 +45,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 /**
  * @see ComponentSizeProperty
  */
+@Deprecated
 public class ComponentSizePropertyTest {
 
     @SuppressWarnings("unchecked")
@@ -56,7 +57,7 @@ public class ComponentSizePropertyTest {
         Component component = new JLabel();
         contentPane.add(component);
 
-        ReadableWritableProperty<Dimension, Dimension> property = new ComponentSizeProperty(component);
+        ReadableWritableProperty<Dimension> property = new ComponentSizeProperty(component);
         ValueChangeListener<Dimension> listenerMock = (ValueChangeListener<Dimension>) mock(ValueChangeListener.class);
         property.addValueChangeListener(listenerMock);
 
@@ -85,7 +86,7 @@ public class ComponentSizePropertyTest {
         Component component = new JLabel();
         contentPane.add(component);
 
-        ReadableWritableProperty<Dimension, Dimension> property = new ComponentSizeProperty(component);
+        ReadableWritableProperty<Dimension> property = new ComponentSizeProperty(component);
         ValueChangeListener<Dimension> listenerMock = (ValueChangeListener<Dimension>) mock(ValueChangeListener.class);
         property.addValueChangeListener(listenerMock);
 

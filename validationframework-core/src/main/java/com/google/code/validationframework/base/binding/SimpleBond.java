@@ -47,6 +47,7 @@ import java.util.Collection;
  * @see CompositeWritableProperty
  * @see com.google.code.validationframework.base.transform.ChainedTransformer
  */
+@Deprecated
 public class SimpleBond<MO, SI> implements DeepDisposable {
 
     /**

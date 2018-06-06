@@ -35,6 +35,7 @@ import java.beans.PropertyChangeListener;
 /**
  * Read-only property stating whether a specified table is in the editing state or not.
  */
+@Deprecated
 public class JTableEditingProperty extends AbstractReadableProperty<Boolean> {
 
     /**

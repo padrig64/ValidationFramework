@@ -46,7 +46,8 @@ import java.beans.PropertyChangeListener;
  * @param <P> Type of bean property.
  * @see Action
  */
-public class ActionProperty<P> extends AbstractReadableWritableProperty<P, P> {
+@Deprecated
+public class ActionProperty<P> extends AbstractReadableWritableProperty<P> {
 
     /**
      * Name of the property to be tracked.

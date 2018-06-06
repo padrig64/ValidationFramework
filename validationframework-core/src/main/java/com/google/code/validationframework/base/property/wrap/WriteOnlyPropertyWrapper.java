@@ -38,6 +38,7 @@ import com.google.code.validationframework.api.property.WritableProperty;
  *
  * @param <W> Type of data that can be written to the wrapped property.
  */
+@Deprecated
 public class WriteOnlyPropertyWrapper<W> implements WritableProperty<W>, DeepDisposable {
 
     /**

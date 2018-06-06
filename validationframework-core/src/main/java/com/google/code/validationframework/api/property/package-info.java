@@ -30,4 +30,5 @@
  * the ValidationFramework is very simple and mostly meant for Swing and other frameworks that can benefit from it.
  * JavaFX has a much more furnished API to achieve similar goals and much more.
  */
+@Deprecated
 package com.google.code.validationframework.api.property;

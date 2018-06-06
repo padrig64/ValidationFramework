@@ -42,6 +42,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 /**
  * @see ComponentVisibleProperty
  */
+@Deprecated
 public class ComponentVisiblePropertyTest {
 
     @Test

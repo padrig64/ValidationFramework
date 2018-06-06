@@ -26,4 +26,5 @@
 /**
  * This package contains the base implementation of properties.
  */
+@Deprecated
 package com.google.code.validationframework.base.property;

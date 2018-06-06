@@ -37,6 +37,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 /**
  * @see ButtonPressedProperty
  */
+@Deprecated
 public class ButtonPressedPropertyTest {
 
     @Test

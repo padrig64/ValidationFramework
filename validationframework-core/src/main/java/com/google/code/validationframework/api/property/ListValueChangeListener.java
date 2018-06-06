@@ -32,6 +32,7 @@ import java.util.List;
  *
  * @param <R> Type of values in the list property.
  */
+@Deprecated
 public interface ListValueChangeListener<R> {
 
     /**

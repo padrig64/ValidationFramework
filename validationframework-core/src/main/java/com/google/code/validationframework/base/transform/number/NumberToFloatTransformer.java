@@ -32,6 +32,7 @@ import com.google.code.validationframework.api.transform.Transformer;
  *
  * @see Number#floatValue()
  */
+@Deprecated
 public class NumberToFloatTransformer implements Transformer<Number, Float> {
 
     /**

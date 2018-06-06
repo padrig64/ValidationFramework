@@ -33,6 +33,7 @@ package com.google.code.validationframework.api.transform;
  * @param <I> Type of the input object to be transformed.
  * @param <O> Type of the output object after transformation.
  */
+@Deprecated
 public interface Transformer<I, O> {
 
     /**

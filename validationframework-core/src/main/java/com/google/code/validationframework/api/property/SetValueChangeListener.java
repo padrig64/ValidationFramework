@@ -32,6 +32,7 @@ import java.util.Set;
  *
  * @param <R> Type of values in the set property.
  */
+@Deprecated
 public interface SetValueChangeListener<R> {
 
     /**

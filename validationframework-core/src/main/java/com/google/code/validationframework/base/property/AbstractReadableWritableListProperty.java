@@ -33,6 +33,7 @@ import com.google.code.validationframework.api.property.ReadableWritableListProp
  *
  * @param <T> Type of values that can be read from and written to this list property.
  */
+@Deprecated
 public abstract class AbstractReadableWritableListProperty<T> extends AbstractReadableListProperty<T>
         implements ReadableWritableListProperty<T> {
 

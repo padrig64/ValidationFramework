@@ -33,6 +33,7 @@ import org.slf4j.LoggerFactory;
  *
  * @see UncheckedExceptionHandler
  */
+@Deprecated
 public class LogErrorUncheckedExceptionHandler implements ThrowableHandler<Throwable>, UncheckedExceptionHandler {
 
     /**

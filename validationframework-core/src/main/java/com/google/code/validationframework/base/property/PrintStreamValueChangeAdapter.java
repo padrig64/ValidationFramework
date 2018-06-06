@@ -35,6 +35,7 @@ import java.io.PrintStream;
  *
  * @param <T> Type of property value.
  */
+@Deprecated
 public class PrintStreamValueChangeAdapter<T> implements ValueChangeListener<T> {
 
     /**

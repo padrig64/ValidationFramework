@@ -26,4 +26,5 @@
 /**
  * This package contains the main API that can be used all over the ValidationFramework.
  */
+@Deprecated
 package com.google.code.validationframework.api.common;

@@ -40,6 +40,7 @@ import java.beans.PropertyChangeListener;
  * <p/>
  * Note that this row count corresponds to the view and therefore may differ from the row count in the table model.
  */
+@Deprecated
 public class JTableRowCountProperty extends AbstractReadableProperty<Integer> {
 
     /**

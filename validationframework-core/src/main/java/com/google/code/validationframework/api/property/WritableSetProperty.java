@@ -34,6 +34,7 @@ import java.util.Collection;
  *
  * @param <W> Type of values that can be written to this set property.
  */
+@Deprecated
 public interface WritableSetProperty<W> {
 
     /**

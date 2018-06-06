@@ -32,6 +32,7 @@ import java.io.Serializable;
  *
  * @see SimpleProperty
  */
+@Deprecated
 public class SimpleDoubleProperty extends SimpleProperty<Double> implements Serializable {
 
     /**

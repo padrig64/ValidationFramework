@@ -45,6 +45,7 @@ import java.util.List;
  * @param <I> Type of collection element to be transformed.
  * @param <O> Type of transformed collection element.
  */
+@Deprecated
 public class CollectionElementTransformer<I, O> implements Transformer<Collection<I>, Collection<O>>, Disposable {
 
     /**

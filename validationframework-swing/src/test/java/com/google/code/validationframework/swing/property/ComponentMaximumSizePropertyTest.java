@@ -44,6 +44,7 @@ import static org.mockito.Mockito.verify;
 /**
  * @see ComponentMaximumSizeProperty
  */
+@Deprecated
 public class ComponentMaximumSizePropertyTest {
 
     @SuppressWarnings("unchecked")
@@ -51,7 +52,7 @@ public class ComponentMaximumSizePropertyTest {
     public void testNonNullFromProperty() {
         Component component = new JLabel();
 
-        ReadableWritableProperty<Dimension, Dimension> property = new ComponentMaximumSizeProperty(component);
+        ReadableWritableProperty<Dimension> property = new ComponentMaximumSizeProperty(component);
         ValueChangeListener<Dimension> listenerMock = (ValueChangeListener<Dimension>) mock(ValueChangeListener.class);
         property.addValueChangeListener(listenerMock);
 
@@ -75,7 +76,7 @@ public class ComponentMaximumSizePropertyTest {
         Component component = new JLabel();
         contentPane.add(component);
 
-        ReadableWritableProperty<Dimension, Dimension> property = new ComponentMaximumSizeProperty(component);
+        ReadableWritableProperty<Dimension> property = new ComponentMaximumSizeProperty(component);
         ValueChangeListener<Dimension> listenerMock = (ValueChangeListener<Dimension>) mock(ValueChangeListener.class);
         property.addValueChangeListener(listenerMock);
 

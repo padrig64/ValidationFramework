@@ -36,6 +36,7 @@ import com.google.code.validationframework.api.property.ReadableProperty;
  *
  * @param <R> Type of data that can be read from the wrapped property.
  */
+@Deprecated
 public class ReadOnlyPropertyWrapper<R> extends AbstractReadablePropertyWrapper<R> {
 
     /**

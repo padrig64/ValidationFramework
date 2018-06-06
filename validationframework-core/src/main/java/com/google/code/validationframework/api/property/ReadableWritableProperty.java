@@ -37,6 +37,7 @@ package com.google.code.validationframework.api.property;
  * @see ReadableProperty
  * @see WritableProperty
  */
+@Deprecated
 public interface ReadableWritableProperty<T> extends ReadableProperty<T>, WritableProperty<T> {
     // Nothing more to be done
 }

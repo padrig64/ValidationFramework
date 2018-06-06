@@ -32,6 +32,7 @@ import com.google.code.validationframework.api.transform.Transformer;
  *
  * @see Number#doubleValue()
  */
+@Deprecated
 public class NumberToDoubleTransformer implements Transformer<Number, Double> {
 
     /**

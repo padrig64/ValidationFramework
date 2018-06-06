@@ -39,6 +39,7 @@ import javax.swing.JDialog;
  * @see JDialog#getTitle()
  * @see JDialog#setTitle(String)
  */
+@Deprecated
 public class JDialogTitleProperty extends AbstractComponentProperty<JDialog, String> {
 
     /**

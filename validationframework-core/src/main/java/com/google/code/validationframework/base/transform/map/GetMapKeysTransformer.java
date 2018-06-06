@@ -35,6 +35,7 @@ import java.util.Map;
  *
  * @param <I> Type of map to get the keys from.
  */
+@Deprecated
 public class GetMapKeysTransformer<I extends Map<K, ?>, K> implements Transformer<I, Collection<K>> {
 
     /**

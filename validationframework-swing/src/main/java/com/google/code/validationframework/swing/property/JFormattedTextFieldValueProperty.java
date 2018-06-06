@@ -36,6 +36,7 @@ import javax.swing.JFormattedTextField;
  * @see JFormattedTextField#getValue()
  * @see JFormattedTextField#setValue(Object)
  */
+@Deprecated
 public class JFormattedTextFieldValueProperty extends AbstractComponentProperty<JFormattedTextField, Object> {
 
     /**

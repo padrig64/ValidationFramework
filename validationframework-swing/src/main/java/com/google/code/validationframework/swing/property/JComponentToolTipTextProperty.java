@@ -38,6 +38,7 @@ import javax.swing.JComponent;
  * @see JComponent#getToolTipText()
  * @see JComponent#setToolTipText(String)
  */
+@Deprecated
 public class JComponentToolTipTextProperty extends AbstractComponentProperty<JComponent, String> {
 
     /**

@@ -41,6 +41,7 @@ import java.util.Map;
  * @param <K> Type of keys maintained by this map property.
  * @param <R> Type of mapped values in this map property.
  */
+@Deprecated
 public abstract class AbstractReadableMapProperty<K, R> implements ReadableMapProperty<K, R>, Disposable {
 
     /**

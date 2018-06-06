@@ -34,6 +34,7 @@ package com.google.code.validationframework.api.property;
  *
  * @param <R> Type of data that can be read from this property.
  */
+@Deprecated
 public interface ReadableProperty<R> {
 
     /**

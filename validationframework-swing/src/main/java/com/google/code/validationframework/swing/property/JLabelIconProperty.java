@@ -39,6 +39,7 @@ import javax.swing.JLabel;
  * @see JLabel#getIcon()
  * @see JLabel#setIcon(Icon)
  */
+@Deprecated
 public class JLabelIconProperty extends AbstractComponentProperty<JLabel, Icon> {
 
     /**

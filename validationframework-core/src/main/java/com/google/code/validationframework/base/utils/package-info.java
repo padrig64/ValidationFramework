@@ -27,4 +27,5 @@
  * This package contains core utility classes that can be used to extend the framework and used in the application
  * logic.
  */
+@Deprecated
 package com.google.code.validationframework.base.utils;

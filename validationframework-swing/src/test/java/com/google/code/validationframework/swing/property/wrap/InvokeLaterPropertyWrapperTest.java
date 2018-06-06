@@ -50,6 +50,7 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 /**
  * @see InvokeLaterPropertyWrapper
  */
+@Deprecated
 public class InvokeLaterPropertyWrapperTest {
 
     @Test
@@ -59,13 +60,13 @@ public class InvokeLaterPropertyWrapperTest {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                ReadableWritableProperty<Boolean, Boolean> rolloverProperty1 = new SimpleBooleanProperty(false);
-                ReadableWritableProperty<Boolean, Boolean> rolloverProperty2 = new SimpleBooleanProperty(false);
-                ReadableWritableProperty<Boolean, Boolean> orRolloverProperty = new SimpleBooleanProperty(false);
+                ReadableWritableProperty<Boolean> rolloverProperty1 = new SimpleBooleanProperty(false);
+                ReadableWritableProperty<Boolean> rolloverProperty2 = new SimpleBooleanProperty(false);
+                ReadableWritableProperty<Boolean> orRolloverProperty = new SimpleBooleanProperty(false);
                 read(rolloverProperty1, rolloverProperty2).transform(new OrBooleanAggregator()).write
                         (orRolloverProperty);
 
-                final ReadableWritableProperty<Boolean, Boolean> globalRolloverProperty = new SimpleBooleanProperty
+                final ReadableWritableProperty<Boolean> globalRolloverProperty = new SimpleBooleanProperty
                         (false);
                 read(new InvokeLaterPropertyWrapper<Boolean>(orRolloverProperty)).write(globalRolloverProperty);
 
@@ -107,13 +108,13 @@ public class InvokeLaterPropertyWrapperTest {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                final ReadableWritableProperty<Boolean, Boolean> rolloverProperty1 = new SimpleBooleanProperty(false);
-                final ReadableWritableProperty<Boolean, Boolean> rolloverProperty2 = new SimpleBooleanProperty(false);
-                final ReadableWritableProperty<Boolean, Boolean> orRolloverProperty = new SimpleBooleanProperty(false);
+                final ReadableWritableProperty<Boolean> rolloverProperty1 = new SimpleBooleanProperty(false);
+                final ReadableWritableProperty<Boolean> rolloverProperty2 = new SimpleBooleanProperty(false);
+                final ReadableWritableProperty<Boolean> orRolloverProperty = new SimpleBooleanProperty(false);
                 read(rolloverProperty1, rolloverProperty2).transform(new OrBooleanAggregator()).write
                         (orRolloverProperty);
 
-                final ReadableWritableProperty<Boolean, Boolean> globalRolloverProperty = new SimpleBooleanProperty
+                final ReadableWritableProperty<Boolean> globalRolloverProperty = new SimpleBooleanProperty
                         (false);
                 read(new InvokeLaterPropertyWrapper<Boolean>(orRolloverProperty)).write(globalRolloverProperty);
 
@@ -206,7 +207,7 @@ public class InvokeLaterPropertyWrapperTest {
                 InvokeLaterPropertyWrapper<Integer> wrapper = new InvokeLaterPropertyWrapper<Integer>(wrapped);
                 wrapper.addValueChangeListener(new ValueChangeListener<Integer>() {
                     @Override
-                    public void valueChanged(ReadableProperty<Integer> property, Integer oldValue, Integer newValue) {
+                    public void valueChanged(ReadableProperty<? extends Integer> property, Integer oldValue, Integer newValue) {
                         // Should not happen
                         assertTrue(false);
                     }
@@ -252,7 +253,7 @@ public class InvokeLaterPropertyWrapperTest {
                 wrapper.setDeepDispose(true);
                 wrapper.addValueChangeListener(new ValueChangeListener<Integer>() {
                     @Override
-                    public void valueChanged(ReadableProperty<Integer> property, Integer oldValue, Integer newValue) {
+                    public void valueChanged(ReadableProperty<? extends Integer> property, Integer oldValue, Integer newValue) {
                         // Should not happen
                         assertTrue(false);
                     }
@@ -298,7 +299,7 @@ public class InvokeLaterPropertyWrapperTest {
                 wrapper.setDeepDispose(false);
                 wrapper.addValueChangeListener(new ValueChangeListener<Integer>() {
                     @Override
-                    public void valueChanged(ReadableProperty<Integer> property, Integer oldValue, Integer newValue) {
+                    public void valueChanged(ReadableProperty<? extends Integer> property, Integer oldValue, Integer newValue) {
                         // Should not happen
                         assertTrue(false);
                     }

@@ -39,6 +39,7 @@ import java.awt.event.MouseListener;
  * <p/>
  * If the mouse is over the component, the property value will be true.
  */
+@Deprecated
 public class ComponentRolloverProperty extends AbstractReadableProperty<Boolean> {
 
     /**

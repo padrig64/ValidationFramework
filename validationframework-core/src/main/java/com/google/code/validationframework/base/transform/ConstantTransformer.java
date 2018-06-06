@@ -35,6 +35,7 @@ import com.google.code.validationframework.base.property.simple.SimpleProperty;
  * @param <I> Type of the input object to be transformed.
  * @param <O> Type of the output object after transformation.
  */
+@Deprecated
 public class ConstantTransformer<I, O> implements Transformer<I, O> {
 
     /**

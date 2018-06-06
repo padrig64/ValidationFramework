@@ -31,6 +31,7 @@ import org.mockito.ArgumentMatcher;
 import java.util.HashSet;
 import java.util.Set;
 
+@Deprecated
 public class SetMatcher<T> extends ArgumentMatcher<Set<T>> {
 
     private final Set<T> refElements;

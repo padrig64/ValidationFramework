@@ -40,6 +40,7 @@ import java.awt.event.KeyEvent;
  * @see JLabel#setDisplayedMnemonic(char)
  * @see JLabel#setDisplayedMnemonic(int)
  */
+@Deprecated
 public class JLabelDisplayedMnemonicProperty extends AbstractComponentProperty<JLabel, Integer> {
 
     /**

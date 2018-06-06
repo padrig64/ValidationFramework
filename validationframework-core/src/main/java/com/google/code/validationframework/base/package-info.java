@@ -28,4 +28,5 @@
  *
  * @see com.google.code.validationframework.api
  */
+@Deprecated
 package com.google.code.validationframework.base;

@@ -39,6 +39,7 @@ import java.util.Set;
  *
  * @param <T> Type of values handled by this set property and the proxied set.
  */
+@Deprecated
 public class SimpleSetProperty<T> extends AbstractReadableWritableSetProperty<T> implements Set<T> {
 
     /**

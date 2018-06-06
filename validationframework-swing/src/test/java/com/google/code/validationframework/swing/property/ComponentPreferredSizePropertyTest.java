@@ -44,6 +44,7 @@ import static org.mockito.Mockito.verify;
 /**
  * @see ComponentPreferredSizeProperty
  */
+@Deprecated
 public class ComponentPreferredSizePropertyTest {
 
     @SuppressWarnings("unchecked")
@@ -51,7 +52,7 @@ public class ComponentPreferredSizePropertyTest {
     public void testNonNullFromProperty() {
         Component component = new JLabel();
 
-        ReadableWritableProperty<Dimension, Dimension> property = new ComponentPreferredSizeProperty(component);
+        ReadableWritableProperty<Dimension> property = new ComponentPreferredSizeProperty(component);
         ValueChangeListener<Dimension> listenerMock = (ValueChangeListener<Dimension>) mock(ValueChangeListener.class);
         property.addValueChangeListener(listenerMock);
 
@@ -75,7 +76,7 @@ public class ComponentPreferredSizePropertyTest {
         Component component = new JLabel();
         contentPane.add(component);
 
-        ReadableWritableProperty<Dimension, Dimension> property = new ComponentPreferredSizeProperty(component);
+        ReadableWritableProperty<Dimension> property = new ComponentPreferredSizeProperty(component);
         ValueChangeListener<Dimension> listenerMock = (ValueChangeListener<Dimension>) mock(ValueChangeListener.class);
         property.addValueChangeListener(listenerMock);
 

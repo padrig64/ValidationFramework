@@ -46,6 +46,7 @@ import java.util.Set;
  * @param <K> Type of keys maintained by this map property.
  * @param <R> Type of mapped values in this map property.
  */
+@Deprecated
 public class ReadOnlyMapPropertyWrapper<K, R> extends AbstractReadableMapProperty<K, R> implements DeepDisposable {
 
     /**

@@ -39,6 +39,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 /**
  * @see JComboBoxSelectedValueProperty
  */
+@Deprecated
 public class JComboBoxSelectedValuePropertyTest {
 
     private JComboBox comboBox;

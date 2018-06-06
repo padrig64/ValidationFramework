@@ -38,6 +38,7 @@ import javax.swing.JButton;
  * @see JButton#getText()
  * @see JButton#setText(String)
  */
+@Deprecated
 public class JButtonTextProperty extends AbstractComponentProperty<JButton, String> {
 
     /**

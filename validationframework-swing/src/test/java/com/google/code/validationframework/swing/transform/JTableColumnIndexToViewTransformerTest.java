@@ -39,6 +39,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * @see JTableColumnIndexToViewTransformer
  */
+@Deprecated
 public class JTableColumnIndexToViewTransformerTest {
 
     private Transformer<Integer, Integer> transformer;

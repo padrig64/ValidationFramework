@@ -33,6 +33,7 @@ import java.util.Collection;
  * @param <E> Type of the element object to be aggregated.
  * @param <O> Type of the output object after aggregation.
  */
+@Deprecated
 public interface Aggregator<E, O> extends Transformer<Collection<E>, O> {
     // Nothing to be done
 }

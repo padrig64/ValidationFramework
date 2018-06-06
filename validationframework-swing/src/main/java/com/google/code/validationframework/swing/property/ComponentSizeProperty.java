@@ -49,7 +49,8 @@ import java.awt.event.ComponentListener;
  * @see Component#getSize()
  * @see Component#setSize(Dimension)
  */
-public class ComponentSizeProperty extends AbstractReadableWritableProperty<Dimension, Dimension> {
+@Deprecated
+public class ComponentSizeProperty extends AbstractReadableWritableProperty<Dimension> {
 
     /**
      * Size tracker.

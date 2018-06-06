@@ -40,6 +40,7 @@ import java.util.Collection;
  *
  * @param <W> Type of data that can be written to the wrapped set property.
  */
+@Deprecated
 public class WriteOnlySetPropertyWrapper<W> implements WritableSetProperty<W>, DeepDisposable {
 
     /**

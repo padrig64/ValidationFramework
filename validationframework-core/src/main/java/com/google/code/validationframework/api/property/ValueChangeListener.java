@@ -35,6 +35,7 @@ package com.google.code.validationframework.api.property;
  * @param <R> Type of data that can be read from the changed readable property.
  * @see ReadableProperty
  */
+@Deprecated
 public interface ValueChangeListener<R> {
 
     /**

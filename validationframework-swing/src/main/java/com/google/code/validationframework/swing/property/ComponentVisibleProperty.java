@@ -43,7 +43,8 @@ import java.awt.event.ComponentListener;
  * @see Component#isVisible()
  * @see Component#setVisible(boolean)
  */
-public class ComponentVisibleProperty extends AbstractReadableWritableProperty<Boolean, Boolean> {
+@Deprecated
+public class ComponentVisibleProperty extends AbstractReadableWritableProperty<Boolean> {
 
     /**
      * Visible state tracker.

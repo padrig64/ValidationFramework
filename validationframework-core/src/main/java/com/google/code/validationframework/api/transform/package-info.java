@@ -26,4 +26,5 @@
 /**
  * This package contains the interfaces related to data transformation.
  */
+@Deprecated
 package com.google.code.validationframework.api.transform;

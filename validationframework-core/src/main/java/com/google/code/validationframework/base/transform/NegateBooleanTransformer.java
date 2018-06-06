@@ -32,6 +32,7 @@ import com.google.code.validationframework.api.transform.Transformer;
  *
  * @see Transformer
  */
+@Deprecated
 public class NegateBooleanTransformer implements Transformer<Boolean, Boolean> {
 
     /**

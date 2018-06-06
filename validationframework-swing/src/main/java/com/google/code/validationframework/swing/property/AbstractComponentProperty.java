@@ -42,7 +42,8 @@ import java.beans.PropertyChangeListener;
  * @param <C> Type of component.
  * @param <P> Type of bean property.
  */
-public abstract class AbstractComponentProperty<C extends Component, P> extends AbstractReadableWritableProperty<P, P> {
+@Deprecated
+public abstract class AbstractComponentProperty<C extends Component, P> extends AbstractReadableWritableProperty<P> {
 
     /**
      * Name of the property to be tracked.

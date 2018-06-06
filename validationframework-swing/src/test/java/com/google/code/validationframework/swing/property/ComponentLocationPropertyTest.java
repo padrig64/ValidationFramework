@@ -45,6 +45,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 /**
  * @see ComponentLocationProperty
  */
+@Deprecated
 public class ComponentLocationPropertyTest {
 
     @SuppressWarnings("unchecked")
@@ -56,7 +57,7 @@ public class ComponentLocationPropertyTest {
         Component component = new JLabel();
         contentPane.add(component);
 
-        ReadableWritableProperty<Point, Point> property = new ComponentLocationProperty(component);
+        ReadableWritableProperty<Point> property = new ComponentLocationProperty(component);
         ValueChangeListener<Point> listenerMock = (ValueChangeListener<Point>) mock(ValueChangeListener.class);
         property.addValueChangeListener(listenerMock);
 
@@ -85,7 +86,7 @@ public class ComponentLocationPropertyTest {
         Component component = new JLabel();
         contentPane.add(component);
 
-        ReadableWritableProperty<Point, Point> property = new ComponentLocationProperty(component);
+        ReadableWritableProperty<Point> property = new ComponentLocationProperty(component);
         ValueChangeListener<Point> listenerMock = (ValueChangeListener<Point>) mock(ValueChangeListener.class);
         property.addValueChangeListener(listenerMock);
 

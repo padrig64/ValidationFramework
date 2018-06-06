@@ -37,6 +37,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * @see JTableRowIndexToViewTransformer
  */
+@Deprecated
 public class JTableRowIndexToViewTransformerTest {
 
     private Transformer<Integer, Integer> transformer;

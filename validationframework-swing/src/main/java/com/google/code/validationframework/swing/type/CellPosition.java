@@ -32,6 +32,7 @@ package com.google.code.validationframework.swing.type;
  * <p/>
  * A row index of -1 represents the table header.
  */
+@Deprecated
 public class CellPosition {
 
     /**

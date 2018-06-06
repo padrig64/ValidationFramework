@@ -32,6 +32,7 @@ import javax.swing.JToggleButton;
  *
  * @see ButtonPressedProperty
  */
+@Deprecated
 public class JToggleButtonPressedProperty extends ButtonPressedProperty {
 
     /**

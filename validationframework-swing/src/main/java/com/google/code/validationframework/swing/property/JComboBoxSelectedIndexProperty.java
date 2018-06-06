@@ -28,7 +28,7 @@ package com.google.code.validationframework.swing.property;
 import com.google.code.validationframework.api.common.Disposable;
 import com.google.code.validationframework.base.property.AbstractReadableWritableProperty;
 
-import javax.swing.*;
+import javax.swing.JComboBox;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
@@ -44,7 +44,8 @@ import java.awt.event.ItemListener;
  * @see JComboBox#setSelectedIndex(int)
  * @see JComboBoxSelectedValueProperty
  */
-public class JComboBoxSelectedIndexProperty extends AbstractReadableWritableProperty<Integer, Integer> {
+@Deprecated
+public class JComboBoxSelectedIndexProperty extends AbstractReadableWritableProperty<Integer> {
 
     /**
      * Selected index tracker.

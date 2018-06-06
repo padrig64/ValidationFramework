@@ -42,6 +42,7 @@ import java.awt.Component;
  * @see Component#isEnabled()
  * @see Component#setEnabled(boolean)
  */
+@Deprecated
 public class ComponentEnabledProperty extends AbstractComponentProperty<Component, Boolean> {
 
     /**

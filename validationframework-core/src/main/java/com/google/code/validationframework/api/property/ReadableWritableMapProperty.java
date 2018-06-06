@@ -33,6 +33,7 @@ package com.google.code.validationframework.api.property;
  * @param <K> Type of keys maintained by this map property
  * @param <V> Type of values that can be read from and written to this map property.
  */
+@Deprecated
 public interface ReadableWritableMapProperty<K, V> extends ReadableMapProperty<K, V>, WritableMapProperty<K, V> {
     // Nothing more to be done
 }

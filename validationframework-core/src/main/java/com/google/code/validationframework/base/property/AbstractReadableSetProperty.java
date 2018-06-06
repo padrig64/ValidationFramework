@@ -40,6 +40,7 @@ import java.util.Set;
  *
  * @param <R> Type of values that can be read from this set.
  */
+@Deprecated
 public abstract class AbstractReadableSetProperty<R> implements ReadableSetProperty<R>, Disposable {
 
     /**

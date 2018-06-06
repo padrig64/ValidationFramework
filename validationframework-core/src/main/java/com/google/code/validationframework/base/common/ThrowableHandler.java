@@ -30,6 +30,7 @@ package com.google.code.validationframework.base.common;
  *
  * @param <T> Type of throwable to be handled.
  */
+@Deprecated
 public interface ThrowableHandler<T extends Throwable> {
 
     /**

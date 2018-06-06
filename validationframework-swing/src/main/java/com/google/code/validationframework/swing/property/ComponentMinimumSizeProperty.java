@@ -43,6 +43,7 @@ import java.awt.Dimension;
  * @see Component#setMinimumSize(Dimension)
  * @see Component#isMinimumSizeSet()
  */
+@Deprecated
 public class ComponentMinimumSizeProperty extends AbstractComponentProperty<Component, Dimension> {
 
     /**

@@ -33,6 +33,7 @@ import java.util.Map;
  * @param <K> Type of keys maintained by the map property.
  * @param <R> Type mapped values that can be read from the map property.
  */
+@Deprecated
 public interface MapValueChangeListener<K, R> {
 
     /**

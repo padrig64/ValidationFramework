@@ -39,6 +39,7 @@ import java.io.Serializable;
  *
  * @see Transformer
  */
+@Deprecated
 public class CastTransformer<I, O> implements Transformer<I, O>, Serializable {
 
     /**

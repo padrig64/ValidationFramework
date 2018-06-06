@@ -30,6 +30,7 @@ package com.google.code.validationframework.base.property.simple;
  *
  * @see SimpleProperty
  */
+@Deprecated
 public class SimpleObjectProperty extends SimpleProperty<Object> {
 
     /**

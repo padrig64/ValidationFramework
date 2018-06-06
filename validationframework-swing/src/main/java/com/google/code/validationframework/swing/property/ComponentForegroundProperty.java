@@ -40,6 +40,7 @@ import java.awt.Component;
  * @see Component#setForeground(Color)
  * @see Component#isForegroundSet()
  */
+@Deprecated
 public class ComponentForegroundProperty extends AbstractComponentProperty<Component, Color> {
 
     /**

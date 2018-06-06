@@ -35,6 +35,7 @@ package com.google.code.validationframework.api.common;
  * Note that after disposing an object, it cannot be re-used for other purposes. Also, calling methods on previously
  * disposed objects has unspecified behavior.
  */
+@Deprecated
 public interface Disposable {
 
     /**

@@ -39,6 +39,7 @@ import com.google.code.validationframework.api.transform.Transformer;
  *
  * @see Transformer
  */
+@Deprecated
 public class NumberGreaterThanOrEqualToTransformer<I extends Number> implements Transformer<I, Boolean> {
 
     /**

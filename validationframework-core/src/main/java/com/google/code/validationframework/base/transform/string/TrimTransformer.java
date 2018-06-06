@@ -32,6 +32,7 @@ import com.google.code.validationframework.api.transform.Transformer;
  *
  * @see String#trim()
  */
+@Deprecated
 public class TrimTransformer implements Transformer<String, String> {
 
     /**

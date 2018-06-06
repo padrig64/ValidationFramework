@@ -38,6 +38,7 @@ import javax.swing.text.JTextComponent;
  * @see JTextComponent#isEditable()
  * @see JTextComponent#setEditable(boolean)
  */
+@Deprecated
 public class JTextComponentEditableProperty extends AbstractComponentProperty<JTextComponent, Boolean> {
 
     /**

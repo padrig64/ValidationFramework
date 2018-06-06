@@ -35,6 +35,7 @@ import java.util.Map;
  * @param <K> Type of keys maintained by this map property.
  * @param <W> Type of values that can be written to this map property.
  */
+@Deprecated
 public interface WritableMapProperty<K, W> {
 
     /**

@@ -37,6 +37,7 @@ import java.beans.PropertyChangeListener;
 /**
  * Read-only property representing the number of selected items in a {@link JList}.
  */
+@Deprecated
 public class JListSelectedItemCountProperty extends AbstractReadableProperty<Integer> {
 
     /**

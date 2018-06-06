@@ -32,6 +32,7 @@ import com.google.code.validationframework.api.transform.Transformer;
  *
  * @see Number#byteValue()
  */
+@Deprecated
 public class NumberToByteTransformer implements Transformer<Number, Byte> {
 
     /**

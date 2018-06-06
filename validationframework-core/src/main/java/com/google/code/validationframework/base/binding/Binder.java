@@ -48,6 +48,7 @@ import java.util.Collection;
  * @see WritableProperty
  * @see SimpleBond
  */
+@Deprecated
 public final class Binder {
 
     /**

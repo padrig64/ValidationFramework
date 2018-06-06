@@ -46,7 +46,8 @@ import java.beans.PropertyChangeListener;
  * @see JTable#getSelectedRow()
  * @see ListSelectionModel#clearSelection()
  */
-public class JTableSelectedRowIndexProperty extends AbstractReadableWritableProperty<Integer, Integer> {
+@Deprecated
+public class JTableSelectedRowIndexProperty extends AbstractReadableWritableProperty<Integer> {
 
     /**
      * Entity tracking changes of selection (and selection model).

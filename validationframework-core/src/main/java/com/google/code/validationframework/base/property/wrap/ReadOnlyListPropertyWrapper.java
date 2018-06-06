@@ -45,6 +45,7 @@ import java.util.List;
  *
  * @param <R> Type of data that can be read from the wrapped list property.
  */
+@Deprecated
 public class ReadOnlyListPropertyWrapper<R> extends AbstractReadableListProperty<R> implements DeepDisposable {
 
     /**

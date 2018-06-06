@@ -27,4 +27,5 @@
  * This package contains core implementations of interface {@link com.google.code.validationframework.api.transform
  * .Transformer}.
  */
+@Deprecated
 package com.google.code.validationframework.base.transform;

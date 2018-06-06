@@ -42,13 +42,14 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 /**
  * @see JToggleButtonSelectedProperty
  */
+@Deprecated
 public class JToggleButtonSelectedPropertyTest {
 
     @SuppressWarnings("unchecked")
     @Test
     public void testNonNullFromProperty() {
         JToggleButton component = new JToggleButton();
-        ReadableWritableProperty<Boolean, Boolean> property = new JToggleButtonSelectedProperty(component);
+        ReadableWritableProperty<Boolean> property = new JToggleButtonSelectedProperty(component);
         ValueChangeListener<Boolean> listenerMock = (ValueChangeListener<Boolean>) mock(ValueChangeListener.class);
         property.addValueChangeListener(listenerMock);
 
@@ -67,7 +68,7 @@ public class JToggleButtonSelectedPropertyTest {
     public void testNonNullFromComponent() {
         JToggleButton component = new JToggleButton();
         component.setSelected(true);
-        ReadableWritableProperty<Boolean, Boolean> property = new JToggleButtonSelectedProperty(component);
+        ReadableWritableProperty<Boolean> property = new JToggleButtonSelectedProperty(component);
         ValueChangeListener<Boolean> listenerMock = (ValueChangeListener<Boolean>) mock(ValueChangeListener.class);
         property.addValueChangeListener(listenerMock);
 

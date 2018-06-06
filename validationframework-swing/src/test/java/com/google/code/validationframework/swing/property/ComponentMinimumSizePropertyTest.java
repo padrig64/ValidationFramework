@@ -44,6 +44,7 @@ import static org.mockito.Mockito.verify;
 /**
  * @see ComponentMinimumSizeProperty
  */
+@Deprecated
 public class ComponentMinimumSizePropertyTest {
 
     @SuppressWarnings("unchecked")
@@ -51,7 +52,7 @@ public class ComponentMinimumSizePropertyTest {
     public void testNonNullFromProperty() {
         Component component = new JLabel();
 
-        ReadableWritableProperty<Dimension, Dimension> property = new ComponentMinimumSizeProperty(component);
+        ReadableWritableProperty<Dimension> property = new ComponentMinimumSizeProperty(component);
         ValueChangeListener<Dimension> listenerMock = (ValueChangeListener<Dimension>) mock(ValueChangeListener.class);
         property.addValueChangeListener(listenerMock);
 
@@ -75,7 +76,7 @@ public class ComponentMinimumSizePropertyTest {
         Component component = new JLabel();
         contentPane.add(component);
 
-        ReadableWritableProperty<Dimension, Dimension> property = new ComponentMinimumSizeProperty(component);
+        ReadableWritableProperty<Dimension> property = new ComponentMinimumSizeProperty(component);
         ValueChangeListener<Dimension> listenerMock = (ValueChangeListener<Dimension>) mock(ValueChangeListener.class);
         property.addValueChangeListener(listenerMock);
 

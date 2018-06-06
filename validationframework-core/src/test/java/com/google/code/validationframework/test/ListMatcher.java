@@ -31,6 +31,7 @@ import org.mockito.ArgumentMatcher;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
 public class ListMatcher<T> extends ArgumentMatcher<List<T>> {
 
     private final List<T> refElements;

@@ -46,7 +46,8 @@ import java.awt.event.ItemListener;
  * @see JComboBox#setSelectedItem(Object)
  * @see JComboBoxSelectedIndexProperty
  */
-public class JComboBoxSelectedValueProperty<T> extends AbstractReadableWritableProperty<T, T> {
+@Deprecated
+public class JComboBoxSelectedValueProperty<T> extends AbstractReadableWritableProperty<T> {
 
     /**
      * Selected value tracker.

@@ -38,6 +38,7 @@ import com.google.code.validationframework.base.property.AbstractReadableWritabl
  *
  * @param <T> Type of data that can be read from and written to this property.
  */
+@Deprecated
 public class SimpleProperty<T> extends AbstractReadableWritableProperty<T> {
 
     /**

@@ -32,6 +32,7 @@ package com.google.code.validationframework.api.property;
  *
  * @param <T> Type of values that can be read from and written to this set property.
  */
+@Deprecated
 public interface ReadableWritableSetProperty<T> extends ReadableSetProperty<T>, WritableSetProperty<T> {
     // Nothing more to be done
 }

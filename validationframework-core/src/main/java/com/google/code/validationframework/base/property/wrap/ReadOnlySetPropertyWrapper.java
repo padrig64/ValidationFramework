@@ -45,6 +45,7 @@ import java.util.Set;
  *
  * @param <R> Type of data that can be read from the wrapped set property.
  */
+@Deprecated
 public class ReadOnlySetPropertyWrapper<R> extends AbstractReadableSetProperty<R> implements DeepDisposable {
 
     /**

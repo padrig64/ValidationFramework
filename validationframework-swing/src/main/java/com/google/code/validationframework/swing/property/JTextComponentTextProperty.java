@@ -52,7 +52,8 @@ import java.beans.PropertyChangeListener;
  * @see javax.swing.text.AbstractDocument#replace(int, int, String, javax.swing.text.AttributeSet)
  * @see Document
  */
-public class JTextComponentTextProperty extends AbstractReadableWritableProperty<String, String> {
+@Deprecated
+public class JTextComponentTextProperty extends AbstractReadableWritableProperty<String> {
 
     /**
      * Document changes tracker.

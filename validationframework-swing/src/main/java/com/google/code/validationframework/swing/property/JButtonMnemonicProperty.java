@@ -40,6 +40,7 @@ import java.awt.event.KeyEvent;
  * @see JButton#setMnemonic(char)
  * @see JButton#setMnemonic(int)
  */
+@Deprecated
 public class JButtonMnemonicProperty extends AbstractComponentProperty<JButton, Integer> {
 
     /**

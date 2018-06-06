@@ -46,6 +46,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 /**
  * @see ComponentFocusedProperty
  */
+@Deprecated
 public class ComponentFocusedPropertyTest {
 
     private JFrame frame;

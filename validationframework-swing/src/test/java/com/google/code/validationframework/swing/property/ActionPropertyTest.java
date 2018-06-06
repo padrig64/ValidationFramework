@@ -47,6 +47,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 /**
  * @see ActionProperty
  */
+@Deprecated
 public class ActionPropertyTest {
 
     private static final String DESCRIPTION1 = "First long description";
@@ -84,7 +85,7 @@ public class ActionPropertyTest {
     @Test
     public void testNonNullFromProperty() {
         Action action = new TestAction();
-        ReadableWritableProperty<String, String> property = new ActionProperty<String>(action, Action.LONG_DESCRIPTION);
+        ReadableWritableProperty<String> property = new ActionProperty<String>(action, Action.LONG_DESCRIPTION);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
         property.addValueChangeListener(listenerMock);
 
@@ -106,7 +107,7 @@ public class ActionPropertyTest {
     @Test
     public void testNonNullFromAction() {
         Action action = new TestAction();
-        ReadableWritableProperty<String, String> property = new ActionProperty<String>(action, Action.LONG_DESCRIPTION);
+        ReadableWritableProperty<String> property = new ActionProperty<String>(action, Action.LONG_DESCRIPTION);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
         property.addValueChangeListener(listenerMock);
 

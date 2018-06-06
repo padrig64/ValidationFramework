@@ -32,6 +32,7 @@ import javax.swing.JMenuItem;
  *
  * @see ButtonPressedProperty
  */
+@Deprecated
 public class JMenuItemPressedProperty extends ButtonPressedProperty {
 
     /**

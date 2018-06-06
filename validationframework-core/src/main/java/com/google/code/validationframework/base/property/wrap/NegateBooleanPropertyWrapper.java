@@ -35,6 +35,7 @@ import com.google.code.validationframework.base.transform.NegateBooleanTransform
  *
  * @see NegateBooleanTransformer
  */
+@Deprecated
 public class NegateBooleanPropertyWrapper extends AbstractReadablePropertyWrapper<Boolean> {
 
     /**

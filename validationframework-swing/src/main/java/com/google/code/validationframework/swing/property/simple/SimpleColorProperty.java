@@ -34,6 +34,7 @@ import java.awt.Color;
  *
  * @see SimpleProperty
  */
+@Deprecated
 public class SimpleColorProperty extends SimpleProperty<Color> {
 
     /**

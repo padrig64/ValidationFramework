@@ -39,6 +39,7 @@ import javax.swing.JButton;
  * @see JButton#getIcon()
  * @see JButton#setIcon(Icon)
  */
+@Deprecated
 public class JButtonIconProperty extends AbstractComponentProperty<JButton, Icon> {
 
     /**

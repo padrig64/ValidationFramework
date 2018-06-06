@@ -32,6 +32,7 @@ import com.google.code.validationframework.api.transform.Transformer;
  *
  * @see Number#intValue()
  */
+@Deprecated
 public class NumberToIntegerTransformer implements Transformer<Number, Integer> {
 
     /**

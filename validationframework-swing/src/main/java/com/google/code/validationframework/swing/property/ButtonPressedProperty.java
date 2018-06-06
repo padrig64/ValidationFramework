@@ -42,6 +42,7 @@ import javax.swing.event.ChangeListener;
  * @see JMenuItemPressedProperty
  * @see JToggleButtonPressedProperty
  */
+@Deprecated
 public class ButtonPressedProperty extends AbstractReadableProperty<Boolean> {
 
     /**

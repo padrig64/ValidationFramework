@@ -37,6 +37,7 @@ import java.util.Set;
  * @param <K> Type of keys maintained by this map property.
  * @param <R> Type of values that can be read from this map property.
  */
+@Deprecated
 public interface ReadableMapProperty<K, R> {
 
     /**

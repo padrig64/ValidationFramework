@@ -41,6 +41,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 /**
  * @see JFrameTitleProperty
  */
+@Deprecated
 public class JFrameTitlePropertyTest {
 
     private static final String TITLE1 = "First Title";
@@ -51,7 +52,7 @@ public class JFrameTitlePropertyTest {
     @Test
     public void testNullFromProperty() {
         JFrame frame = new JFrame(TITLE1);
-        ReadableWritableProperty<String, String> titleProperty = new JFrameTitleProperty(frame);
+        ReadableWritableProperty<String> titleProperty = new JFrameTitleProperty(frame);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
         titleProperty.addValueChangeListener(listenerMock);
 
@@ -68,7 +69,7 @@ public class JFrameTitlePropertyTest {
     @Test
     public void testNonNullFromProperty() {
         JFrame frame = new JFrame(TITLE1);
-        ReadableWritableProperty<String, String> titleProperty = new JFrameTitleProperty(frame);
+        ReadableWritableProperty<String> titleProperty = new JFrameTitleProperty(frame);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
         titleProperty.addValueChangeListener(listenerMock);
 
@@ -85,7 +86,7 @@ public class JFrameTitlePropertyTest {
     @Test
     public void testNullFromComponent() {
         JFrame frame = new JFrame(TITLE1);
-        ReadableWritableProperty<String, String> titleProperty = new JFrameTitleProperty(frame);
+        ReadableWritableProperty<String> titleProperty = new JFrameTitleProperty(frame);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
         titleProperty.addValueChangeListener(listenerMock);
 
@@ -102,7 +103,7 @@ public class JFrameTitlePropertyTest {
     @Test
     public void testNonNullFromComponent() {
         JFrame frame = new JFrame(TITLE1);
-        ReadableWritableProperty<String, String> titleProperty = new JFrameTitleProperty(frame);
+        ReadableWritableProperty<String> titleProperty = new JFrameTitleProperty(frame);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
         titleProperty.addValueChangeListener(listenerMock);
 

@@ -43,6 +43,7 @@ import java.awt.Dimension;
  * @see Component#setPreferredSize(Dimension)
  * @see Component#isPreferredSizeSet()
  */
+@Deprecated
 public class ComponentPreferredSizeProperty extends AbstractComponentProperty<Component, Dimension> {
 
     /**

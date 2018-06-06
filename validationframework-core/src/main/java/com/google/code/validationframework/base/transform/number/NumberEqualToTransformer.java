@@ -38,6 +38,7 @@ import com.google.code.validationframework.api.transform.Transformer;
  *
  * @see Transformer
  */
+@Deprecated
 public class NumberEqualToTransformer<I extends Number> implements Transformer<I, Boolean> {
 
     /**

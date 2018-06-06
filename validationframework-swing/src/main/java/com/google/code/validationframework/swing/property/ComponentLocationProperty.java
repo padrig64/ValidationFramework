@@ -49,7 +49,8 @@ import java.awt.event.ComponentListener;
  * @see Component#getLocation()
  * @see Component#setLocation(Point)
  */
-public class ComponentLocationProperty extends AbstractReadableWritableProperty<Point, Point> {
+@Deprecated
+public class ComponentLocationProperty extends AbstractReadableWritableProperty<Point> {
 
     /**
      * Location tracker.
