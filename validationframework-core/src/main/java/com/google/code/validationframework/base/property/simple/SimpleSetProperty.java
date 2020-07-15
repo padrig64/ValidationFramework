@@ -153,11 +153,13 @@ public class SimpleSetProperty<T> extends AbstractReadableWritableSetProperty<T,
      * @see AbstractReadableWritableSetProperty#remove(Object)
      * @see Set#remove(Object)
      */
+    @SuppressWarnings("unchecked")
     @Override
     public boolean remove(Object item) {
         boolean modified = internal.remove(item);
 
         if (modified) {
+            // Safe to cast because it was removed from the collection in which we could only put objects of this type
             doNotifyListenersOfRemovedValues(Collections.singleton((T) item));
         }
 
@@ -168,12 +170,14 @@ public class SimpleSetProperty<T> extends AbstractReadableWritableSetProperty<T,
      * @see AbstractReadableWritableSetProperty#removeAll(Collection)
      * @see Set#removeAll(Collection)
      */
+    @SuppressWarnings("unchecked")
     @Override
     public boolean removeAll(Collection<?> items) {
         Set<T> removed = new HashSet<T>();
 
         for (Object item : items) {
             if (internal.remove(item)) {
+                // Safe to cast because it was removed from the collection in which we could only put objects of this type
                 removed.add((T) item);
             }
         }
@@ -249,7 +253,6 @@ public class SimpleSetProperty<T> extends AbstractReadableWritableSetProperty<T,
     /**
      * @see Set#toArray(Object[])
      */
-    @SuppressWarnings("unchecked")
     @Override
     public <U> U[] toArray(U[] a) {
         return internal.toArray(a);

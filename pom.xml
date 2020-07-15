@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -29,7 +30,7 @@
         <connection>scm:git:git@github.com:padrig64/ValidationFramework.git</connection>
         <developerConnection>scm:git:git@github.com:padrig64/ValidationFramework.git</developerConnection>
         <url>git@github.com:padrig64/ValidationFramework.git</url>
-      <tag>HEAD</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <developers>
@@ -43,13 +44,16 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
+        <!-- Maven plugins configuration -->
+
+        <java.compiler.version>1.6</java.compiler.version>
+
         <!-- Maven plugins versions -->
 
         <dependsmavenplugin.version>1.4.0</dependsmavenplugin.version>
-        <failsafeplugin.version>2.14.1</failsafeplugin.version>
-        <java.compiler.version>1.6</java.compiler.version>
         <mavenbundleplugin.version>3.3.0</mavenbundleplugin.version>
         <mavencompilerplugin.version>3.6.1</mavencompilerplugin.version>
+        <mavenfailsafeplugin.version>2.14.1</mavenfailsafeplugin.version>
         <mavengpgplugin.version>1.6</mavengpgplugin.version>
         <mavenjavadocplugin.version>2.10.4</mavenjavadocplugin.version>
         <mavensourceplugin.version>3.0.1</mavensourceplugin.version>
@@ -236,7 +240,7 @@
                     <execution>
                         <id>attach-sources</id>
                         <goals>
-                            <goal>jar</goal>
+                            <goal>jar-no-fork</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -248,7 +252,7 @@
                 <version>${mavenjavadocplugin.version}</version>
                 <executions>
                     <execution>
-                        <id>attach-javadocs</id>
+                        <id>attach-javadoc</id>
                         <goals>
                             <goal>jar</goal>
                         </goals>
@@ -302,7 +306,7 @@
 
                 <plugin>
                     <artifactId>maven-failsafe-plugin</artifactId>
-                    <version>${failsafeplugin.version}</version>
+                    <version>${mavenfailsafeplugin.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
