@@ -50,7 +50,7 @@ public final class ValueUtils {
      * @return True if both values are equal or if both are null.
      */
     public static boolean areEqual(Object value1, Object value2) {
-        return ((value1 == null) && (value2 == null)) || //
+        return (value1 == value2) || //
                 (isNaN(value1) && isNaN(value2)) || //
                 ((value1 != null) && value1.equals(value2));
     }
@@ -66,7 +66,7 @@ public final class ValueUtils {
      * @return True if both values are null, or equal according to the comparator.
      */
     public static <T> boolean areEqual(T value1, T value2, Comparator<T> comparator) {
-        return ((value1 == null) && (value2 == null)) || //
+        return (value1 == value2) || //
                 ((value1 != null) && (value2 != null) && (comparator.compare(value1, value2) == 0));
     }
 
