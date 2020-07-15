@@ -134,7 +134,7 @@ public class SimpleListProperty<T> extends AbstractReadableWritableListProperty<
 
         if (!ValueUtils.areEqual(oldItem, item)) {
             List<T> oldItems = Collections.unmodifiableList(Collections.singletonList(oldItem));
-            List<T> newItems = Collections.unmodifiableList(Collections.singletonList(oldItem));
+            List<T> newItems = Collections.unmodifiableList(Collections.singletonList(item));
             doNotifyListenersOfChangedValues(index, oldItems, newItems);
         }
 
