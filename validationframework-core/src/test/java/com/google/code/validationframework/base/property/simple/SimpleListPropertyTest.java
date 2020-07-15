@@ -244,6 +244,25 @@ public class SimpleListPropertyTest {
     }
 
     @Test
+    public void testSet() {
+        List<String> refAll = new ArrayList<String>();
+        refAll.add("A");
+        refAll.add("B");
+        refAll.add("C");
+
+        SimpleListProperty<String> property = new SimpleListProperty<String>(refAll);
+        ListValueChangeListener<String> listener = mock(ListValueChangeListener.class);
+        property.addValueChangeListener(listener);
+
+        property.set(1, "D");
+        refAll.set(1, "D");
+
+        assertTrue(haveEqualElements(refAll, property));
+        verify(listener).valuesChanged(eq(property), eq(1), matches(Collections.singletonList("B")), matches(Collections.singletonList("D")));
+        verifyNoMoreInteractions(listener);
+    }
+
+    @Test
     public void testRemoveAll() {
         List<Integer> refAll = new ArrayList<Integer>();
         refAll.add(1);
