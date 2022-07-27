@@ -3,7 +3,8 @@
 **[padrig64](https://github.com/padrig64)**  
 **[sirchia](https://github.com/sirchia)**  
 **[glimmerveen](https://github.com/glimmerveen)**  
-**[paolofulgoni](https://github.com/paolofulgoni)**
+**[paolofulgoni](https://github.com/paolofulgoni)**  
+**[wijtserekker](https://github.com/wijtserekker)**
 
 # Third-party libraries
 
