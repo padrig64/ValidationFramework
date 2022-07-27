@@ -321,6 +321,11 @@ public class IconComponentDecoration extends AbstractComponentDecoration {
         // Update tooltip dialog visibility if changed
         if ((toolTipDialog != null) && (toolTipDialog.isVisible() != shouldBeVisible)) {
             toolTipDialog.setVisible(shouldBeVisible);
+            if (!shouldBeVisible) {
+                // Workaround for https://bugs.openjdk.org/browse/JDK-8173332 in case the visibility is set to false too
+                // quickly after it has been set to true. Otherwise, the tooltip might stay visible
+                toolTipDialog.dispose();
+            }
         }
     }
 
