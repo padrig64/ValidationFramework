@@ -4,6 +4,7 @@
 **[sirchia](https://github.com/sirchia)**  
 **[glimmerveen](https://github.com/glimmerveen)**  
 **[paolofulgoni](https://github.com/paolofulgoni)**  
+**[mvdz](https://github.com/mvdz)**  
 **[wijtserekker](https://github.com/wijtserekker)**
 
 # Third-party libraries
