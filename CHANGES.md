@@ -62,6 +62,10 @@ NegateBooleanPropertyWrapper class with wraps a ReadableProperty<Boolean>). Some
 the wrapped objects by default. So you may want to check whether it does not dispose too much (depending on your
 use-case). You may then call there `setDeepDispose()` method to reach the desired behavior.
 
+# Version 3.4.3
+
+* Fixed `IconComponentDecoration` tooltip not always hiding on some systems when made visible and invisible too quickly.
+
 # Version 3.4.2
 
 * Fixed incorrect new values passed to `ListValueChangeListener`s when calling `SimpleListProperty#set(int, Object)`.
